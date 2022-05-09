@@ -1,4 +1,7 @@
-#include <lib/std.mi>
+//Taken from Winamp Modern, does not come with the channels
+//handling, as that is done inside monoster.m
+
+#include "..\..\..\lib/std.mi"
 
 Function string tokenizeSongInfo(String tkn, String sinfo);
 Function getSonginfo(String SongInfoString);
@@ -7,7 +10,7 @@ Global Group player;
 Global Text bitrateText, FrequencyText;
 Global Timer songInfoTimer;
 Global String SongInfoString;
-// Global AlbumArtLayer waaa;
+Global AlbumArtLayer waaa;
 
 System.onScriptLoaded(){
 	player = getScriptGroup();
@@ -78,7 +81,6 @@ String tokenizeSongInfo(String tkn, String sinfo){
 			rtn = getToken(sinfo, " ", i);
 			searchResult = strsearch(rtn, "kbps");
 			if (searchResult>0) return StrMid(rtn, 0, searchResult);
-			// if (searchResult>0) return Strleft(rtn, 3); //mmd3
 		}
 		return "";
 	}
@@ -112,7 +114,7 @@ getSonginfo(String SongInfoString) {
 	if(bitrateint < 10) {bitrateText.setText("  "+tkn);}
 	if(bitrateint > 1000) {bitrateText.setText(strleft(tkn, 2)+"H");} //what's this? Hhousands?
 	if(bitrateint > 10000) {bitrateText.setText(strleft(tkn, 1)+"C");} //Cillions???
-	if(bitrateint == 0 || bitrateint == -1) {bitrateText.setText(" 0");}
+	if(bitrateint == 0 || bitrateint == -1) {bitrateText.setText("  0");}
 
 	tkn = tokenizeSongInfo("Channels", SongInfoString);
 	tkn = tokenizeSongInfo("Frequency", SongInfoString);
@@ -122,4 +124,9 @@ getSonginfo(String SongInfoString) {
 	if(freqint < 100) {frequencyText.setText(tkn);}
 	if(freqint < 10) {frequencyText.setText(" "+tkn);}
 	if(freqint == 0 || freqint == -1 ) {frequencyText.setText(" 0");}
+
+	if(getStatus() == 0){
+		bitrateText.setText("   ");
+		frequencyText.setText("  ");
+	}
 }

@@ -1,0 +1,137 @@
+	<!--color id="colorband1" value="24,132,8"/> <bottom of spec>
+    <color id="colorband2" value="41,148,0"/>
+    <color id="colorband3" value="49,156,8"/>
+    <color id="colorband4" value="57,181,16"/>
+    <color id="colorband5" value="50,190,16"/>
+    <color id="colorband6" value="41,206,16"/>
+    <color id="colorband7" value="148,222,33"/>
+    <color id="colorband8" value="189,222,41"/>
+    <color id="colorband9" value="214,181,33"/>
+    <color id="colorband10" value="222,165,24"/>
+    <color id="colorband11" value="198,123,8"/>
+    <color id="colorband12" value="214,115,0"/>
+    <color id="colorband13" value="214,102,0"/>
+    <color id="colorband14" value="214,90,0"/>
+    <color id="colorband15" value="206,41,16"/>
+    <color id="colorband16" value="239,49,16"/> <top of spec>
+    <color id="colorpeak" value="150,150,150"/> <analyzer peak dots>
+
+    <color id="colorosc1" value="255,255,255"/>
+    <color id="colorosc2" value="214,214,222"/>
+    <color id="colorosc3" value="181,189,189"/>
+    <color id="colorosc4" value="160,170,175"/>
+    <color id="colorosc5" value="148,156,165"/-->
+    
+    <!-- Generic Lists -->
+	<color id="wasabi.list.text" value="x50"/> <!--lists/trees item foreground (also edit text) -->
+	<color id="wasabi.list.background" value="x48"/>	<!--lists/trees item background (also bg for edit) -->
+	<color id="wasabi.list.text.alternate" value="x50"/> <!-- ML txt and such -->
+	<color id="wasabi.list.background.alternate" value="x48"/>	
+
+    <color id="wasabi.list.text.selected" value="x56"/> <!--listview/treeview selection bar text color -->
+	<color id="wasabi.list.text.selected.background" value="x60"/> <!--listview/treeview selection bar background color -->
+	<color id="studio.list.item.selected" value="x60"/>
+	<color id="studio.list.item.focused" value="x60"/>
+    <color id="studio.list.item.selected.fg" value="x60"/>
+
+	<color id="wasabi.list.text.current" value="x56"/> <!-- currently playing item in lists -->
+	<color id="wasabi.list.text.selected.inactive" value="240,240,240"/> <!-- listview/treeview selection bar textcolor (inactive) -->
+	<color id="wasabi.list.text.selected.background.inactive" value="x60-ext"/> <!-- listview/treeview selectionbar back color (inactive) -->
+
+	<!-- edit wnds -->
+	<color id="wasabi.window.background" value="x52"/> <!-- window background. -	If this color is not defined, a whole container is created in memory to 
+	extract a pixel, so specifying it makes skin loading faster --> <!-- also, look below, this needs to be loaded 1st, don't move it -->
+	
+	<color id="wasabi.list.column.background" value="x62"/> <!-- listview header background color -->
+	<color id="wasabi.list.column.text" value="x64"/> <!-- listview header text color -->
+    <color id="studio.list.column.separator" value="x58"/>
+	<color id="wasabi.list.column.frame.top" value="x66"/> <!-- listview header frame top color -->
+	<color id="wasabi.list.column.frame.middle" value="x68"/> <!-- listview header frame middle color -->
+	<color id="wasabi.list.column.frame.bottom" value="x70"/> <!-- listview header frame bottom color -->
+	<color id="wasabi.list.column.empty" value="x72"/>  <!-- listview header empty color (beyond the columns -->
+
+	<color id="wasabi.window.text" value="x56"/> <!--text color within windows -->
+	<color id="wasabi.border.sunken" value="x58"/> <!-- color of dividers and sunken borders (also affects playlist scrollbar outline at the sides) -->
+
+    <!-- Generic Trees -->
+    <color id="studio.tree.text" value="x50"/>
+    <color id="studio.tree.selected" value="x60"/>
+    <color id="studio.tree.hilited" value="greentxtsui"/>
+    <color id="studio.tree.hiliteddrop" value="greentxtsui"/>
+
+    <!-- Generic Lists -->
+    <color id="studio.list.text" value="x50"/>
+
+    <!-- Item Lists -->
+    <color id="common.itemlist.outline.current" value="greentxtsui"/>
+    <color id="common.itemlist.outline.focus" value="240,240,240"/>
+
+    <!-- playlist editor -->
+    <color id="pledit.text" value="x50"/>
+    <color id="pledit.text.current" value="x56"/>
+    <color id="pledit.currentoutline" value="190,190,190"/>
+    <color id="pledit.dir.plitem.currect" value="255,255,255"/>
+    <color id="pledit.dir.plitem" value="greentxtsui"/>
+    <color id="pledit.dir.working" value="175,175,175"/>
+    <color id="pledit.dir.workingbg" value="124,124,124"/>
+    <color id="pledit.text.readonly" value="200,200,200"/>
+
+    <!-- Message box -->
+    <color id="studio.msgBox.background" value="32,32,32"/>
+    <color id="studio.textBar.text" value="75,75,75"/>
+    <color id="studio.textBar.background" value="32,32,32"/>
+
+    <!-- Buttons -->
+    <color id="studio.button.text" value="x54"/>
+    <color id="studio.button.hiliteText" value="132,144,160"/>
+    <color id="studio.button.dimmedText" value="122,134,150"/>
+
+    <!-- Popup menus -->
+
+    <!-- pre 5.55:	-->
+    <color id="wasabi.popupmenu.background" value="wasabi.window.background"/>
+    <color id="wasabi.popupmenu.text" value="x56"/>
+    <color id="wasabi.popupmenu.text.selected" value="wasabi.popupmenu.text"/>
+    <color id="wasabi.popupmenu.text.inactive" value="183,183,183"/>
+
+    <!-- Winamp 5.53+ PopupMenu -->
+
+    <color id="wasabi.popupmenu.frame" value="x78"/>
+    <color id="wasabi.popupmenu.separator" value="wasabi.popupmenu.frame"/>
+    <color id="wasabi.popupmenu.background.selected" value="x50"/>
+
+    <!-- Tooltip/Button -->	
+    <color id="wasabi.tooltip.text" value="wasabi.popupmenu.text"/>
+    <color id="wasabi.tooltip.background" value="wasabi.popupmenu.background"/>
+    <color id="wasabi.tooltip.frame" value="wasabi.popupmenu.frame"/>
+
+
+    <!-- Components -->
+    <color id="studio.status.text" value="240,240,240"/>
+    <color id="studio.component.title.foreground" value="255,255,255"/>
+    <color id="studio.component.title.border" value="1,1,1"/>
+
+    <!-- labeled windows -->
+    <color id="common.labelwnd.foreground" value="240,240,240"/>
+    <color id="common.labelwnd.background" value="0,0,0"/>
+
+    <!-- edit wnds -->
+    <color id="wasabi.edit.selection" value="0,0,180"/>
+    <color id="wasabi.edit.text" value="greentxtsui"/>
+    <color id="wasabi.edit.background" value="0,0,180"/>
+
+    <elementalias id="wasabi.scrollbar.foreground" target="wasabi.scrollbar.background"/>
+    <elementalias id="wasabi.scrollbar.background" target="wasabi.scrollbar.background"/>
+    <elementalias id="wasabi.scrollbar.foreground.inverted" target="wasabi.scrollbar.background"/>
+    <elementalias id="wasabi.scrollbar.background.inverted" target="wasabi.scrollbar.background"/>
+
+    <color id="wasabi.scrollbar.foreground.inverted" value="88,91,101"/> <!-- inverse scrollbar foreground color -->
+    <color id="wasabi.scrollbar.background.inverted" value="20,18,28"/> <!-- inverse inverse scrollbar background color AND PL Editor bg-->
+    <color id="wasabi.scrollbar.foreground" value="88,91,101"/> <!-- scrollbar foreground color -->
+    <color id="wasabi.scrollbar.background" value="20,18,28"/> <!-- scrollbar background color -->
+    
+    <!-- WACUP only: Waveseeker >
+
+    <color id="plugin.waveseeker.background" value="31,31,54"/>
+    <color id="plugin.waveseeker.wave_normal" value="148,147,165"/>
+    <color id="plugin.waveseeker.wave_playing" value="138,196,64"/-->

@@ -1,0 +1,110 @@
+<!-- =======================================================================================================
+
+  <Wasabi:TitleBar /> implmentation
+
+    Available parameters :
+
+      - All params for Group
+      - All params for Text
+
+    Required objects : (these objects are manipulated by the script, so overriding with script content inheritance
+                        will require you to have these objects. Otherwise, you should be fine)
+
+      - Group id="wasabi.titlebar.streak.left" 
+      - Group id="wasabi.titlebar.streak.right" 
+      - Layer id="mousetrap" (this object shoud cover the content of the group)
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.titlebar" xuitag="Wasabi:TitleBar" embed_xui="window.titlebar.title">
+  <group 
+    id="wasabi.titlebar.streak"
+    instanceid="wasabi.titlebar.streak.left"
+    x="0" y="0"
+    w="95" h="20" 
+  />
+  <sendparams group="wasabi.titlebar.streak.left" target="titlebar.center.active" w="-7"/>
+  <sendparams group="wasabi.titlebar.streak.left" target="titlebar.right.active" x="-25"/>
+
+  <text
+    id="window.titlebar.title"
+    x="100" y="2"
+    w="50" h="11" 
+    default=":componentname"
+    font="studio.component.title"
+    inactiveAlpha="128"
+  />
+
+  <group 
+    id="wasabi.titlebar.streak.r"
+    instanceid="wasabi.titlebar.streak.right"
+    x="155" y="0"
+    w="-155" relatw="1" h="20"
+  />
+  <sendparams group="wasabi.titlebar.streak.right" target="titlebar.center.active" x="25" w="-32"/>
+  <sendparams group="wasabi.titlebar.streak.right" target="titlebar.left.active" x="0"/>
+
+  <layer id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+  <script id="titlebar" file="xml\wasabi.classic\xui\titlebar\titlebar.maki" param="wasabi.titlebar.streak.left;window.titlebar.title;wasabi.titlebar.streak.right" />
+</groupdef>
+
+
+
+<!-- =======================================================================================================
+
+  This implements a title streak bar. Dependencies are limited to the wasabi.titlebar group, in other words, if you remove
+  the sendparams in the above group, none of these objects are required.
+
+======================================================================================================== -->
+
+<elements>
+
+<bitmap id="wasabi.titlebar.left.active" file="skin/gen.bmp" x="78" y="0" w="25" h="20"/>
+<bitmap id="wasabi.titlebar.left.inactive" file="skin/gen.bmp" x="78" y="21" w="25" h="20"/>
+
+<bitmap id="wasabi.titlebar.center.active" file="skin/gen.bmp" x="104" y="0" w="25" h="20"/>
+<bitmap id="wasabi.titlebar.center.inactive" file="skin/gen.bmp" x="104" y="21" w="25" h="20"/>
+
+<bitmap id="wasabi.titlebar.right.active" file="skin/gen.bmp" x="26" y="0" w="25" h="20"/>
+<bitmap id="wasabi.titlebar.right.inactive" file="skin/gen.bmp" x="26" y="21" w="25" h="20"/>
+
+</elements>
+
+<groupdef id="wasabi.titlebar.streak">
+
+  <layer
+    id="titlebar.center.active"
+    x="10" y="0" w="-7"
+    relatw="1"
+    image="wasabi.titlebar.center.active"
+    inactiveimage="wasabi.titlebar.center.inactive"
+    tile="1"
+  />
+  <layer
+    id="titlebar.right.active"
+    x="-7" y="0"
+    relatx="1"
+    image="wasabi.titlebar.right.active"
+    inactiveimage="wasabi.titlebar.right.inactive"
+  />
+
+</groupdef>
+
+<groupdef id="wasabi.titlebar.streak.r">
+
+  <layer
+    id="titlebar.left.active"
+    x="0" y="0"
+    image="wasabi.titlebar.left.active"
+    inactiveimage="wasabi.titlebar.left.inactive"
+  />
+  <layer
+    id="titlebar.center.active"
+    x="25" y="0" w="-32"
+    relatw="1"
+    image="wasabi.titlebar.center.active"
+    inactiveimage="wasabi.titlebar.center.inactive"
+    tile="1"
+  />
+
+</groupdef>

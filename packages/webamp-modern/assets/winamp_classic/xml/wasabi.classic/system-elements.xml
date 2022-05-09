@@ -1,0 +1,126 @@
+<!--  You are probably wondering "What happened to all the studio. elements?" because
+      that is how you implemented your Wasabi skins in the past.  That's okay.  All of
+      those element ids still work.  They have been turned into aliases and now exist
+      in "system-element-aliases.xml" which allows us all to be backwards compatible.
+-->
+
+<include file="system-element-aliases.xml" />
+
+<elements>
+
+<!-- Fonts >
+  <bitmapfont id="studio.component.title" file="fonts/titlebar-font.png" hspacing="-3" vspacing="0" charwidth="10" charheight="11" gammagroup="Titlebar Font"/>
+  <bitmapfont id="wasabi.font.button.small" file="fonts/button-font-small.png" hspacing="-1" vspacing="0" charwidth="5" charheight="5"  gammagroup="Button Fonts"/>
+  <bitmapfont id="wasabi.font.button.normal" file="fonts/button-font-normal.png" charwidth="5" charheight="6" hspacing="0" vspacing="0" gammagroup="Button Fonts"/>
+  <bitmapfont id="wasabi.font.default" file="fonts/default-font.png" charwidth="5" charheight="6" hspacing="0" vspacing="0" gammagroup="Display Fonts"/>
+  <bitmapfont id="studio.component.statusbar" file="fonts/default-font.png" charwidth="5" charheight="6" hspacing="0" vspacing="0" gammagroup="Display Fonts"/-->
+
+<!-- Frame windows -->
+  <bitmap id="wasabi.framewnd.verticaldivider" file="skin/wasabi/window-elements.png" x="124" y="53" h="65" w="8" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.framewnd.verticalgrabber" file="skin/wasabi/window-elements.png" x="115" y="53" h="65" w="8" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.framewnd.horizontaldivider" file="skin/wasabi/window-elements.png" x="40" y="97" h="8" w="65" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.framewnd.horizontalgrabber" file="skin/wasabi/window-elements.png" x="40" y="106" h="8" w="65" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.framewnd.windowshade" file="window/framewnd-windowshade.png" gammagroup="Backgrounds"/>
+
+  <bitmap id="wasabi.frame.divider.arrow.up" file="skin/wasabi/window-elements.png" x="64" y="124" h="4" w="7"/>
+  <bitmap id="wasabi.frame.divider.arrow.down" file="skin/wasabi/window-elements.png" x="64" y="128" h="4" w="7"/>
+
+
+<!-- Generic Lists and Trees -->
+  <bitmap id="wasabi.list.background" file="skin/wasabi/window-elements.png" x="1" y="115" h="17" w="17" gammagroup="Display Backgrounds"/> <!-- List background bitmap (tile) -->
+  <bitmap id="wasabi.tree.background" file="skin/wasabi/window-elements.png" x="1" y="115" h="17" w="17" gammagroup="Display Backgrounds"/> <!-- Tree background bitmap (tile) -->
+
+  <bitmap id="wasabi.tree.tab.closed" file="skin/wasabi/window-elements.png" x="149" y="0" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.tab.open" file="skin/wasabi/window-elements.png" x="135" y="0" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.top.bottom" file="skin/wasabi/window-elements.png" x="135" y="14" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.top.right" file="skin/wasabi/window-elements.png" x="135" y="42" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.top.rightBottom" file="skin/wasabi/window-elements.png" x="135" y="28" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.tab.top.bottom" file="skin/wasabi/window-elements.png" x="149" y="14" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.tab.top.right" file="skin/wasabi/window-elements.png" x="149" y="42" h="14" w="14" gammagroup="Tree Color"/>
+  <bitmap id="wasabi.tree.link.tab.top.rightBottom" file="skin/wasabi/window-elements.png" x="149" y="28" h="14" w="14" gammagroup="Tree Color"/>
+
+<!-- labelwnd titles -->
+  <bitmap id="wasabi.label.top.left" file="skin/wasabi/window-elements.png" x="0" y="170" w="2" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.top" file="skin/wasabi/window-elements.png" x="2" y="170" w="101" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.top.right" file="skin/wasabi/window-elements.png" x="103" y="170" w="2" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.left" file="skin/wasabi/window-elements.png" x="0" y="172" w="2" h="7" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.middle" file="skin/wasabi/window-elements.png" x="2" y="172" w="101" h="7" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.right" file="skin/wasabi/window-elements.png" x="103" y="172" w="2" h="7" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.bottom.left" file="skin/wasabi/window-elements.png" x="0" y="179" w="2" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.bottom" file="skin/wasabi/window-elements.png" x="2" y="179" w="101" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.label.bottom.right" file="skin/wasabi/window-elements.png" x="103" y="179" w="2" h="2" gammagroup="Backgrounds"/>
+
+<!-- Checkboxes and Radiobuttons -->
+  <bitmap id="wasabi.button.checkbox" file="skin/wasabi/window-elements.png" x="79" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+  <bitmap id="wasabi.button.checkbox.pressed" file="skin/wasabi/window-elements.png" x="58" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+
+  <!-- "xbox" isnt used by default, but we offer the graphics so you can change your theme to use them -->
+  <bitmap id="wasabi.button.checkbox.xbox" file="skin/wasabi/window-elements.png" x="79" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+  <bitmap id="wasabi.button.checkbox.xbox.pressed" file="skin/wasabi/window-elements.png" x="65" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+
+  <bitmap id="wasabi.button.radio.background" file="skin/wasabi/window-elements.png" x="58" y="66" h="11" w="11" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.button.radio.background.display" file="skin/wasabi/window-elements.png" x="69" y="66" h="9" w="9" gammagroup="Display Backgrounds"/>
+  <bitmap id="wasabi.button.radio" file="skin/wasabi/window-elements.png" x="79" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+  <bitmap id="wasabi.button.radio.pressed" file="skin/wasabi/window-elements.png" x="72" y="77" h="7" w="7" gammagroup="Checkboxes and Radio Buttons"/>
+
+<!-- Panel Bevels -->
+  <bitmap id="wasabi.panel.top.left" file="skin/wasabi/window-elements.png" x="19" y="114" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.top" file="skin/wasabi/window-elements.png" x="21" y="114" h="2" w="16" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.top.right" file="skin/wasabi/window-elements.png" x="37" y="114" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.left" file="skin/wasabi/window-elements.png" x="19" y="116" h="16" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.right" file="skin/wasabi/window-elements.png" x="37" y="116" h="16" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.bottom.left" file="skin/wasabi/window-elements.png" x="19" y="132" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.bottom" file="skin/wasabi/window-elements.png" x="21" y="132" h="2" w="16" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.bottom.right" file="skin/wasabi/window-elements.png" x="37" y="132" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.panel.tint" file="skin/wasabi/window-elements.png" x="24" y="119" h="10" w="10" gammagroup="Backgrounds"/>
+
+
+<!-- Object Frame-->
+  <bitmap id="wasabi.objectframe.top.left"          file="skin/wasabi/objectframe.png" x="0" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.top"               file="skin/wasabi/objectframe.png" x="2" y="0" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.top.right"         file="skin/wasabi/objectframe.png" x="159" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.left"              file="skin/wasabi/objectframe.png" x="0" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.center"            file="skin/wasabi/objectframe.png" x="2" y="2" h="157" w="12" gammagroup="Display Backgrounds"/>
+  <bitmap id="wasabi.objectframe.right"             file="skin/wasabi/objectframe.png" x="159" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.bottom.left"       file="skin/wasabi/objectframe.png" x="0" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.bottom"            file="skin/wasabi/objectframe.png" x="2" y="14" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.objectframe.bottom.right"      file="skin/wasabi/objectframe.png" x="159" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+
+
+<!-- Combo Box List-->
+  <bitmap id="wasabi.dropdownlist.list.top.left" file="skin/wasabi/window-elements.png" x="40" y="124" h="1" w="1"/>
+  <bitmap id="wasabi.dropdownlist.list.top" file="skin/wasabi/window-elements.png" x="41" y="124" h="1" w="10"/>
+  <bitmap id="wasabi.dropdownlist.list.top.right" file="skin/wasabi/window-elements.png" x="51" y="124" h="1" w="1"/>
+  <bitmap id="wasabi.dropdownlist.list.left" file="skin/wasabi/window-elements.png" x="40" y="125" h="8" w="1"/>
+  <bitmap id="wasabi.dropdownlist.list.center" file="skin/wasabi/window-elements.png" x="41" y="125" h="8" w="10" gammagroup="Display Backgrounds"/>
+  <bitmap id="wasabi.dropdownlist.list.right" file="skin/wasabi/window-elements.png" x="51" y="125" h="8" w="1"/>
+  <bitmap id="wasabi.dropdownlist.list.bottom.left" file="skin/wasabi/window-elements.png" x="40" y="133" h="1" w="1"/>
+  <bitmap id="wasabi.dropdownlist.list.bottom" file="skin/wasabi/window-elements.png" x="41" y="133" h="1" w="10"/>
+  <bitmap id="wasabi.dropdownlist.list.bottom.right" file="skin/wasabi/window-elements.png" x="51" y="133" h="1" w="1"/>
+
+
+<!-- Embedded Window -->
+  <bitmap id="wasabi.window.top.left"               file="skin/wasabi/objectframe.png" x="0" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.top"                    file="skin/wasabi/objectframe.png" x="2" y="0" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.top.right"              file="skin/wasabi/objectframe.png" x="159" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.left"                   file="skin/wasabi/objectframe.png" x="0" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.center"                 file="skin/wasabi/objectframe.png" x="2" y="2" h="157" w="12" gammagroup="Display Backgrounds"/>/>
+  <bitmap id="wasabi.window.right"                  file="skin/wasabi/objectframe.png" x="159" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.bottom.left"            file="skin/wasabi/objectframe.png" x="0" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.bottom"                 file="skin/wasabi/objectframe.png" x="2" y="14" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.window.bottom.right"           file="skin/wasabi/objectframe.png" x="159" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+
+<!-- Generic Group Box -->
+  <bitmap id="wasabi.groupbox.top.left"          file="skin/wasabi/objectframe.png" x="0" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.top"               file="skin/wasabi/objectframe.png" x="2" y="0" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.top.right"         file="skin/wasabi/objectframe.png" x="159" y="0" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.left"              file="skin/wasabi/objectframe.png" x="0" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.center"            file="skin/wasabi/objectframe.png" x="2" y="2" h="157" w="12" gammagroup="Display Backgrounds"/>
+  <bitmap id="wasabi.groupbox.right"             file="skin/wasabi/objectframe.png" x="159" y="2" h="12" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.bottom.left"       file="skin/wasabi/objectframe.png" x="0" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.bottom"            file="skin/wasabi/objectframe.png" x="2" y="14" h="2" w="157" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.groupbox.bottom.right"      file="skin/wasabi/objectframe.png" x="159" y="14" h="2" w="2" gammagroup="Backgrounds"/>
+
+</elements>
+
+<include file="system-element-aliases.xml"/>

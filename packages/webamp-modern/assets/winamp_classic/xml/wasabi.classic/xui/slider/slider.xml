@@ -1,0 +1,96 @@
+<!-- =======================================================================================================
+
+  <Wasabi:HSlider/> implementation
+
+======================================================================================================== -->
+
+<elements>
+
+<bitmap id="wasabi.slider.horizontal.left" file="xml/wasabi.classic/xui/slider/slider.png" x="0" y="0" w="4" h="140"/>
+<bitmap id="wasabi.slider.horizontal.middle" file="xml/wasabi.classic/xui/slider/slider.png" x="4" y="0" w="59" h="140"/>
+<bitmap id="wasabi.slider.horizontal.right" file="xml/wasabi.classic/xui/slider/slider.png" x="63" y="0" w="1" h="140"/>
+
+<bitmap id="wasabi.slider.horizontal.button" file="xml/wasabi.classic/xui/slider/slider.png" x="14" y="140" w="14" h="11"/>
+<bitmap id="wasabi.slider.horizontal.button.pressed" file="xml/wasabi.classic/xui/slider/slider.png" x="0" y="140" w="14" h="11"/>
+
+</elements>
+
+<groupdef id="wasabi.slider.horizontal" embed_xui="slider.button" xuitag="Wasabi:HSlider" h="15" >
+
+    <animatedlayer
+        id="slider.background1"
+        x="0" y="4"
+        image="wasabi.slider.horizontal.left"
+        frameheight="5"
+    />
+    <animatedlayer
+        id="slider.background2"
+        x="4" y="4"
+        w="-12"
+        relatw="1"
+        image="wasabi.slider.horizontal.middle"
+        frameheight="5"
+    />
+    <animatedlayer
+        id="slider.background3"
+        x="-8" y="4"
+        relatx="1"
+        image="wasabi.slider.horizontal.right"
+        frameheight="5"
+    />
+
+    <slider
+        id="slider.button"
+        x="0" y="0" 
+        w="0" h="13"
+        relatw="1"
+        thumb="wasabi.slider.horizontal.button"
+        downThumb="wasabi.slider.horizontal.button.pressed"
+        wantfocus="1"
+    />
+
+<script file="xml/wasabi.classic/xui/slider/slider.maki"/>
+
+</groupdef>
+
+<!-- =======================================================================================================
+
+    <Wasabi:VSlider/> implementation 
+
+======================================================================================================== -->
+
+
+<groupdef id="wasabi.slider.vertical" embed_xui="slider.button" xuitag="Wasabi:VSlider" w="16"> <!-- default_h="100"  -->	
+
+    <layer
+        id="slider.background"
+        x="4" y="0"
+        image="wasabi.slider.vertical.top"
+    />
+    <layer
+        id="slider.background"
+        x="4" y="8"
+        h="-17"
+        relath="1"
+        image="wasabi.slider.vertical.middle"
+    />
+    <layer
+        id="slider.background"
+        x="4" y="-9"
+        relaty="1"
+        image="wasabi.slider.vertical.bottom"
+    />
+
+    <slider
+        id="slider.button"
+        x="0" y="0" 
+        w="16" h="0"
+        relath="1"
+        thumb="wasabi.slider.vertical.button"
+        downThumb="wasabi.slider.vertical.button.pressed"
+        orientation="v"
+        wantfocus="1"
+    />
+
+</groupdef>
+

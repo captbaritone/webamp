@@ -1,143 +1,153 @@
 <elements>
-  <!-- Used Pledit.png to Pledit.png -->
-  <!-- <bitmap id="wa2.playlist.base" file="wsz_root/plmain.bmp"/> -->
-  <bitmap id="wa2.pl.glass" file="wsz_root/glassploverlay.bmp"/>
-  <color id="wasabi.list.background" value="0,0,0"/>
 
-  <bitmap id="playlist.topleft" file="wsz_root/pledit.bmp" x="0" y="0" h="20" w="25"/>
-  <bitmap id="playlist.topcenter" file="wsz_root/pledit.bmp" x="127" y="0" h="20" w="25"/>
-  <bitmap id="playlist.topright" file="wsz_root/pledit.bmp" x="153" y="0" h="20" w="25"/>
+    <!-- pledit shade elements -->
+    <bitmap id="wa2.plshade.right.active" file="skin/pledit.bmp" x="99" y="42" h="14" w="50"/>
+    <bitmap id="wa2.plshade.right.inactive" file="skin/pledit.bmp" x="99" y="57" h="14" w="50"/>
 
-  <bitmap id="playlist.topleft.inactive" file="wsz_root/pledit.bmp" x="0" y="21" h="20" w="25"/>
-  <bitmap id="playlist.topcenter.inactive" file="wsz_root/pledit.bmp" x="127" y="21" h="20" w="25"/>
-  <bitmap id="playlist.topright.inactive" file="wsz_root/pledit.bmp" x="153" y="21" h="20" w="25"/>
+    <bitmap id="wa2.plshade.left" file="skin/pledit.bmp" x="72" y="42" h="14" w="25"/>
 
-  <bitmap id="playlist.middleright" file="wsz_root/pledit.bmp" x="26" y="42" h="29" w="25"/>
-  <bitmap id="playlist.middleleft" file="wsz_root/pledit.bmp" x="0" y="42" h="29" w="25"/>
+    <bitmap id="wa2.plshade.middle" file="skin/pledit.bmp" x="72" y="57" h="14" w="25"/>
 
-  <bitmap id="playlist.bottomleft" file="wsz_root/pledit.bmp" x="0" y="72" h="38" w="125"/>
-  <bitmap id="playlist.bottomcenter" file="wsz_root/pledit.bmp" x="179" y="0" h="38" w="25"/>
-  <bitmap id="playlist.bottomright" file="wsz_root/pledit.bmp" x="126" y="72" h="38" w="150"/>
+    <bitmap id="wa2.plshade.close" file="skin/pledit.bmp" x="138" y="45" h="9" w="9"/>
+    <bitmap id="wa2.plshade.shade" file="skin/pledit.bmp" x="128" y="45" h="9" w="9"/>
+    <bitmap id="wa2.plshade.shadep" file="skin/pledit.bmp" x="150" y="42" h="9" w="9"/>
 
-  <bitmap id="playlist.scrollleft" file="wsz_root/pledit.bmp" x="15" y="81" h="14" w="18"/>
-  <bitmap id="playlist.scrollright" file="wsz_root/pledit.bmp" x="44" y="81" h="14" w="18"/>
-  <bitmap id="playlist.scroll.thumb" file="wsz_root/pledit.bmp" x="52" y="53" h="18" w="8"/>
-  <bitmap id="playlist.scroll.thumb.down" file="wsz_root/pledit.bmp" x="61" y="53" h="18" w="8"/>
-  <elementalias id="studio.button" target="playlist.scroll.thumb"/>
-  <elementalias id="studio.button.pressed" target="playlist.scroll.thumb.down"/>
+    <!--Playlist Grid Elements-->
+    <bitmap id="wa2.pl.base" file="skin/plmain.bmp" x="0" y="0" h="116" w="275"/>
+    <bitmap id="wa2.pl.1" file="skin/pledit.bmp"  x="0" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.2" file="skin/pledit.bmp"  x="127" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.center" file="skin/pledit.bmp"  x="26" y="0" h="20" w="100"/>
+    <bitmap id="wa2.pl.3" file="skin/pledit.bmp"  x="153" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.4" file="skin/pledit.bmp"  x="0" y="42" h="29" w="25"/>
+    <bitmap id="wa2.pl.5" file="$solid" h="64" w="64" color="0,0,0"/>
+    <bitmap id="wa2.pl.6" file="skin/pledit.bmp"  x="26" y="42" h="29" w="25"/>
+    <bitmap id="wa2.pl.7" file="skin/pledit.bmp"  x="0" y="72" h="38" w="125"/>
+    <bitmap id="wa2.pl.8" file="skin/pledit.bmp"  x="179" y="0" h="38" w="25"/>
+    <bitmap id="wa2.pl.8.vis" file="skin/pledit.bmp"  x="205" y="0" h="38" w="75"/>
+    <bitmap id="wa2.pl.9" file="skin/pledit.bmp"  x="126" y="72" h="38" w="150"/>
 
-  <bitmap id="wa2.playlist.add" file="wsz_root/pledit.bmp" x="14" y="80" h="18" w="22"/>
-  <bitmap id="wa2.playlist.rem" file="wsz_root/pledit.bmp" x="43" y="80" h="18" w="22"/>
-  <bitmap id="wa2.playlist.sel" file="wsz_root/pledit.bmp" x="72" y="80" h="18" w="22"/>
-  <bitmap id="wa2.playlist.misc" file="wsz_root/pledit.bmp" x="101" y="80" h="18" w="22"/>
-  <bitmap id="wa2.playlist.load" file="wsz_root/pledit.bmp" x="232" y="80" h="18" w="22"/>
+    <bitmap id="wa2.pl.1.disabled" file="skin/pledit.bmp" x="0" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.disabled" file="skin/pledit.bmp"  x="127" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.center.disabled" file="skin/pledit.bmp"  x="26" y="21" h="20" w="100"/>
+    <bitmap id="wa2.pl.3.disabled" file="skin/pledit.bmp"  x="153" y="21" h="20" w="25"/>
+
+    <!-- PL Titlebar -->
+    <bitmap id="wa2.pl.titlebar.left.enabled" file="skin/pledit.bmp" x="0" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.titlebar.left.disabled" file="skin/pledit.bmp" x="0" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.titlebar.middle.enabled" file="skin/pledit.bmp" x="26" y="21" h="20" w="100"/>
+    <bitmap id="wa2.pl.titlebar.middle.disabled" file="skin/pledit.bmp" x="26" y="0" h="20" w="100"/>
+    <bitmap id="wa2.pl.titlebar.right.enabled" file="skin/pledit.bmp" x="153" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.titlebar.right.disabled" file="skin/pledit.bmp" x="153" y="0" h="20" w="25"/>
+
+    <bitmap id="wa2.pl.close" file="skin/pledit.bmp" x="167" y="3" h="9" w="9"/>
+    <bitmap id="wa2.pl.closep" file="skin/pledit.bmp" x="52" y="42" h="9" w="9"/>
+    <bitmap id="wa2.pl.shade" file="skin/pledit.bmp" x="157" y="3" h="9" w="9"/>
+    <bitmap id="wa2.pl.shadep" file="skin/pledit.bmp" x="62" y="42" h="9" w="9"/>
+
+    <!-- PL Buttons-->
+    <bitmap id="wa2.pl.add" file="skin/pledit.bmp" x="14" y="86" h="12" w="22"/>
+    <bitmap id="wa2.pl.rem" file="skin/pledit.bmp" x="43" y="86" h="12" w="22"/>
+    <bitmap id="wa2.pl.sel" file="skin/pledit.bmp" x="72" y="86" h="12" w="22"/>
+    <bitmap id="wa2.pl.misc" file="skin/pledit.bmp" x="101" y="86" h="12" w="22"/>
+    <bitmap id="wa2.pl.load" file="skin/pledit.bmp" x="227" y="86" h="12" w="22"/>
+
+    <!-- PL Player Controls-->
+    <bitmap id="wa2.pl.prev" file="skin/pledit.bmp" x="134" y="96" h="5" w="5"/>
+    <bitmap id="wa2.pl.play" file="skin/pledit.bmp" x="142" y="96" h="5" w="5"/>
+    <bitmap id="wa2.pl.pause" file="skin/pledit.bmp" x="152" y="96" h="5" w="5"/>
+    <bitmap id="wa2.pl.stop" file="skin/pledit.bmp" x="162" y="96" h="5" w="5"/>
+    <bitmap id="wa2.pl.next" file="skin/pledit.bmp" x="171" y="96" h="5" w="5"/>
+    <bitmap id="wa2.pl.eject" file="skin/pledit.bmp" x="180" y="96" h="5" w="5"/>
+
 </elements>
 
-<groupdef id="pledit.buttons.group" relatw="1" w="0" h="21">
-  <layer x="0" y="0" image="player.pl.button.add.bg" />
-  <button id="pl.add" action="PE_Add" x="3" y="4" image="player.pl.button.add" downImage="player.pl.button.add.pressed" hoverImage="player.pl.button.add.hover" tooltip="Add Files to Playlist" />
+<container id="PL" name="Playlist Editor" default_x="0" default_y="232" default_visible="1">
+	<layout id="normal" image="wa2.pl.base" minimum_h="116" minimum_w="275" linkwidth="shadepl">
+		<!-- Can use the grid object here but then you won't have the inactive image option -->
+		<layer image="wa2.pl.1" x="0" y="0" inactivealpha="0" regionop="1"/>
+		<layer image="wa2.pl.1.disabled" x="0" y="0" activealpha="0" regionop="1"/>
+		<layer image="wa2.pl.2" x="25" y="0" w="-50" relatw="1" inactivealpha="0" regionop="1"/>
+		<layer image="wa2.pl.2.disabled" x="25" y="0" w="-50" relatw="1" activealpha="0" regionop="1"/>
+		<layer image="wa2.pl.3" x="-25" y="0" relatx="1" inactivealpha="0" regionop="1"/>
+		<layer image="wa2.pl.3.disabled" x="-25" y="0" relatx="1" activealpha="0" regionop="1"/>
+		<layer image="wa2.pl.4" x="0" y="20" h="-58" relath="1" regionop="1"/>
+		<layer image="wa2.pl.5" x="25" y="20" w="-50" h="-58" relatw="1" relath="1" regionop="1"/>
+		<layer image="wa2.pl.6" x="-25" y="20" h="-58" relatx="1" relath="1" regionop="1"/>
+		<layer image="wa2.pl.7" x="0" y="-38" relaty="1" regionop="1"/>
+		<layer image="wa2.pl.8" x="125" y="-38" w="-275" relaty="1" relatw="1" regionop="1"/>
+		<layer image="wa2.pl.9" x="-150" y="-38" relatx="1" relaty="1" regionop="1"/>
+		<layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
 
-  <layer x="42" y="0" image="player.pl.button.rem.bg" />
-  <button id="pl.rem" action="PE_Rem" x="46" y="4" image="player.pl.button.rem" downImage="player.pl.button.rem.pressed" hoverImage="player.pl.button.rem.hover" tooltip="Remove Files from Playlist" />
+		<!-- Layers that needs to be hidden or centered -->
+		<layer id="pl.center.logo.active" image="wa2.pl.2.center" x="-100" y="0" inactivealpha="0"/>
+		<script file="scripts/_wa2-easylayout.maki" param="pl.center.logo.active;0;0;1;0;0;0"/>
 
-  <layer x="86" y="0" image="player.pl.button.sel.bg" />
-  <button id="pl.sel" action="PE_Sel" x="90" y="4" image="player.pl.button.sel" downImage="player.pl.button.sel.pressed" hoverImage="player.pl.button.sel.hover" tooltip="Select Files in Playlist" />
+		<layer id="pl.center.logo.inactive" image="wa2.pl.2.center.disabled" x="-100" y="0" activealpha="0"/>
+		<script file="scripts/_wa2-easylayout.maki" param="pl.center.logo.inactive;0;0;1;0;0;0"/>
 
-  <layer x="123" y="0" image="player.pl.button.misc.bg" />
-  <button id="pl.misc" action="PE_Misc" x="127" y="4" image="player.pl.button.misc" downImage="player.pl.button.misc.pressed" hoverImage="player.pl.button.misc.hover" tooltip="Misc Actions" />
+        <layer dblClickAction="SWITCH;shadepl" x="0" y="0" w="0" h="14" relatw="1" move="1"/>
 
-  <layer x="-119" y="0" relatx="1" image="player.pl.button.list.bg" />
-  <button id="pl.list" action="PE_List" x="-115" y="4" relatx="1" image="player.pl.button.list" downImage="player.pl.button.list.pressed" hoverImage="player.pl.button.list.hover" tooltip="Manage Playlist" />
+		<layer id="pl.vis.area" image="wa2.pl.8.vis" x="-225" y="-38" relatx="1" relaty="1"/>
+        <group id="waclassicvis" x="-223" y="-26" w="76" h="16" relatx="1" relaty="1"/>
+        <!--script file="scripts/hideplvis.maki"/-->
+		<script file="scripts/_wa2-easylayout.maki" param="pl.vis.area;350;0;0;0;0;0"/>
+        <script file="scripts/_wa2-easylayout.maki" param="waclassicvis;350;0;0;0;0;0"/>
+		<!-- Small Ticker/Timer -->
+		<text id="pe.info" display="PE_INFO" x="-145" y="-28" w="91" h="6" font="wasabi.font.default" relatx="1" relaty="1"/>
+		<text id="timer" display="time" x="-83" y="-15" w="31" h="6" timeroffstyle="2" align="right" font="wasabi.font.default" relatx="1" relaty="1"  timecolonwidth="5"/>
+        <layer id="TimerTrigger" x="-83" y="-15" w="31" h="6" relatx="1" relaty="1"/>
+        <script file="scripts/wa2songtimer.maki"/>
 
-  <layer x="-187" y="1" relatx="1" image="player.pl.time" />
-  <layer x="-182" y="5" relatx="1" image="player.pl.time.display" />
-  <layer id="player.pl.time.left" x="-227" y="1" relatx="1" image="player.pl.time.left" visible="0" />
-  <layer id="player.pl.time.display.left" x="-222" y="5" relatx="1" image="player.pl.time.display.left" visible="0" />
-  <text id="PLTime" ticker="1" display="PE_Info" x="-180" y="7" w="55" h="8" relatx="1" font="player.pe.time.font" align="left" valign="top" fontsize="8" color="font.display" />
+		<!-- Add Playlist Entry (List) -->
+		<button action="PE_ADD"	x="11" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_REM"	x="40" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_SEL"	x="69" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_MISC" x="98" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_LIST" x="-47" y="-30" w="25" h="18" relatx="1" relaty="1" rectrgn="1"/>
+		<!-- End Playlist Entries -->
 
-  <layer x="-24" y="4" relatx="1" image="player.pl.resizer" resize="bottomright" />
-</groupdef>
+		<!-- Since Winamp 5.0 the component xml object was renamed to windowholder -->
+		<windowholder id="wasabi.list" component="guid:{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}"  fitparent="1"
+			x="12" y="20" w="-31" h="-58" relatw="1" relath="1"
+			noshowcmdbar="1" autoopen="1" autoclose="1" opacity="120"
+			param="guid:pl"
+		/> <!-- change w to -20 for the editor to take up the whole space -->
 
+		<!-- Playback buttons - No images so must use rectrgn="1" -->
+		<button x="-145" y="-16" w="8" h="9" relatx="1" relaty="1" action="Prev" rectrgn="1"/>
+		<button x="-137" y="-16" w="10" h="9" relatx="1" relaty="1" action="Play" rectrgn="1"/>
+		<button x="-127" y="-16" w="10" h="9" relatx="1" relaty="1" action="Pause" rectrgn="1"/>
+		<button x="-117" y="-16" w="9" h="9" relatx="1" relaty="1" action="Stop" rectrgn="1"/>
+		<button x="-108" y="-16" w="8" h="9" relatx="1" relaty="1" action="Next" rectrgn="1"/>
+		<button x="-100" y="-16" w="10" h="9" relatx="1" relaty="1" action="Eject" rectrgn="1"/>
+		<!-- Close Button -->
+		<button image="wa2.pl.close" downImage="wa2.pl.closep" inactiveAlpha="0" x="-11" y="3" relatx="1" relaty="0" action="Close" rectrgn="1"
+		/>
+		<!-- Playlist Shade -->
+		<button id="winshade" action="SWITCH" param="shadepl" x="-21" y="3" relatx="1" relaty="0" image="wa2.pl.shade" downImage="wa2.pl.shadep" inactiveAlpha="0"/>
+	</layout>
+    <layout id="shadepl" background="wasabi.frame.basetexture" minimum_h="14" maximum_h="14" minimum_w="275" linkwidth="normal">
 
-<groupdef id="pledit.bottom" relatw="1" relaty="1" w="0" y="-38" h="38" background="playlist.bottomcenter">
-  <layer image="playlist.bottomleft" x="0" y="-38" relaty="1"  />
-  <!-- <layer image="playlist.bottomcenter" x="20" y="-38" w="-40" relatw="1" relaty="1" resize="bottom" /> -->
-  <layer image="playlist.bottomright" x="-150" y="-38" relatx="1" relaty="1"  />
-</groupdef>
+        <layer image="wa2.plshade.left" ghost="1"/>
+        <layer image="wa2.plshade.middle" x="25" w="-75" relatw="1" tile="1" ghost="1"/>
+        <layer x="-50" relatx="1" image="wa2.plshade.right.active" inactiveimage="wa2.plshade.right.inactive" ghost="1"/>
 
-<groupdef id="pl.frame.layout" relatw="1" relath="1" w="0" h="0">
-  <layer image="playlist.topleft"   inactiveimage="playlist.topleft.inactive" x="0" y="0"  />
-  <layer image="playlist.topcenter" inactiveimage="playlist.topcenter.inactive" x="20" y="0" w="-12" relatw="1"  />
-  <layer image="playlist.topright" inactiveimage="playlist.topright.inactive" x="-25" y="0" relatx="1"  />
+        <Songticker
+		id="songticker"
+		x="4" y="4"
+		w="-34" h="9" relatw="1"
+		font="wasabi.font.default" altfont="arial" fontsize="13"
+		altvalign="center" ghost="1"/>
 
-  <layer image="playlist.middleleft" x="0" y="20" relath="1" h="-15" />
-  <layer image="playlist.middleright" x="-25" y="20" relatx="1" relath="1" h="-15"  />
+        <layer dblClickAction="SWITCH;normal" x="0" y="0" w="0" h="14" relatw="1" move="1"/>
 
-  <!-- <layer image="playlist.bottomleft" x="0" y="-38" relaty="1" resize="bottomleft" />
-  <layer image="playlist.bottomcenter" x="20" y="-38" w="-40" relatw="1" relaty="1" resize="bottom" />
-  <layer image="playlist.bottomright" x="-150" y="-38" relatx="1" relaty="1" resize="bottomright" /> -->
+        <layer x="-29" y="3" relatx="1" w="9" h="10" resize="right"/>
 
-  <!-- <layer image="player.main.left.region" x="0" y="-6" sysregion="-2" relaty="1" resize="left" /> -->
-  <!-- <layer image="player.main.right.region" x="-6" y="-6" sysregion="-2" relaty="1" relatx="1" /> -->
-  <group id="pledit.buttons.group" x="5" y="0" relaty="1"/>
-  <group id="pledit.bottom"/>
-</groupdef>
+        <!-- Close Button -->
+		<button image="wa2.plshade.close" downImage="wa2.pl.closep" inactiveAlpha="0" x="-11" y="3" relatx="1" relaty="0" action="Close" rectrgn="1"/>
+		<!-- Playlist Shade -->
+		<button id="winshade" action="SWITCH" param="normal" x="-21" y="3" relatx="1" relaty="0" image="wa2.plshade.shade" downImage="wa2.plshade.shadep" inactiveAlpha="0"/>
 
-<groupdef id="player.content.pl.dummy.group" name="PlaylistDummyGroup" relatw="1" relath="1" w="0" h="0">
-  <layer id="pleditwin.bg"  x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
-  <group id="pl.frame.layout" x="0" y="0"/>
-  <component x="12" y="20" w="-17" relatw="1" h="-58" relath="1" noshowcmdbar="1" autoopen="1" autoclose="0" param="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" />
-</groupdef>
-
-<groupdef id="pledit.content.group" name="PlaylistContent">
-  <group id="player.content.pl.dummy.group" x="0" y="17" sysregion="1"/>
-  <!-- <script id="plmenu.script" file="scripts/plmenu.maki" /> -->
-  <!-- <script id="pltime.script" file="scripts/pltime.maki" /> -->
-</groupdef>
-
-
-<!-- 
-
-<container id="Pledit" name="Playlist Editor" dynamic="1" component="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" default_x="300" default_y="232" default_visible="0">
-  <layout id="normal" minimum_w="275" minimum_h="164" h="164" w="275" linkwidth="shade" appbar="left|top|right|bottom">
-    <Wasabi:PlaylistFrame:NoStatus x="0" y="0" w="0" h="0" relatw="1" relath="1" content="pledit.content.group" padtitleleft="10" padtitleright="12" />
-    <sendparams target="mousetrap" dblClickAction="SWITCH;shade"/>
-    <sendparams target="window.top.left;window.top;window.top.right;window.left;window.right;window.bottom.left.top;window.bottom.left;window.bottom.left.bottom;window.bottom.top;window.bottom;window.bottom.bottom;window.bottom.right.top;window.bottom.right;window.bottom.right.bottom;" 
-    resize="0"/>
-
-    <layer x="-30" y="4" relatx="1" image="wasabi.button.bg.title" />
-    <button id="winshade" action="SWITCH" param="shade" x="-29" y="4" relatx="1" image="wasabi.button.winshade.inactive" tooltip="Windowshade Mode" activeAlpha="0" />
-    <button id="winshade" action="SWITCH" param="shade" x="-29" y="4" relatx="1" image="wasabi.button.winshade" downImage="wasabi.button.winshade.pressed" hoverImage="wasabi.button.winshade.hover" tooltip="Windowshade Mode" inactiveAlpha="0" />
-
-  </layout>
-
-</container> -->
-
-
-
-
-
-
-
-
-<container id="PL" name="Playlist" component="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" default_x="0" default_y="232" default_visible="1">
-  <!-- <include file="pledit-normal.xml"/> -->
-  <layout id="normal" minimum_w="275" minimum_h="116" h="116" w="475">
-    <!-- <PlaylistDirectory id="pldirectory" x="10" y="10" w="260" h="75" inactivealpha="128" font="player.SmallFixed" fontsize="8" color="255,255,255"/> -->
-    <group id="player.content.pl.dummy.group" x="0" y="0" sysregion="1"/>
-    <!--BUTTONS-->
-    <!-- <button id="add" action="PE_ADD" image="wa2.playlist.add" inactivealpha="128" tooltip="Add Files" x="15" y="92"/>
-    <button id="rem" action="PE_REM" image="wa2.playlist.rem" inactivealpha="128" tooltip="Add Files" x="39" y="92"/>
-    <button id="sel" action="PE_SEL" image="wa2.playlist.sel" inactivealpha="128" tooltip="Add Files" x="63" y="92"/>
-    <button id="misc" action="PE_MISC" image="wa2.playlist.misc" inactivealpha="128" tooltip="Add Files" x="87" y="92"/>
-    <button id="load" action="PE_LIST" image="wa2.playlist.load" inactivealpha="128" tooltip="Add Files" x="230" y="92"/> -->
-    <!--END BUTTONS-->
-    <!-- Add Playlist Entry (List) -->
-    <!-- End Playlist Entries -->
-    <!--Bottom Stuff-->
-    <layer id="glass" x="0" y="0" image="wa2.pl.glass" ghost="1"/>
-    <layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
-    <!-- <AlbumArt id="wa2.player.eq.album" notfoundImage="notfound" valign="top" align="left" stretched="false" w="275" h="116" x="0" y="0" alpha="15"/> -->
-  </layout>
-  <!-- <include file="pledit-shade.xml"/> -->
+		<!--group id="shadepl" x="0" y="0"/-->
+	</layout>
 </container>

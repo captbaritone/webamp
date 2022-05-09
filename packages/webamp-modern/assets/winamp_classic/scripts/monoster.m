@@ -14,7 +14,7 @@ System.onScriptLoaded(){
     stereo = player.findObject("stereo");
 
     getchanneltimer = new Timer;
-	getchanneltimer.setDelay(50);
+	getchanneltimer.setDelay(250);
 
     c = getChannels();
 

@@ -1,4 +1,4 @@
-#include <lib/std.mi>
+#include "..\..\..\lib/std.mi"
 
 Global Group frameGroup, content, titlebar;
 Global String x, y, w, h, rx, ry, rw, rh;

@@ -1,0 +1,168 @@
+<elements>
+
+<bitmap id="wa.eq" file="skin/eqmain.bmp" x="0" y="0" w="275" h="116"/>
+<bitmap id="wa.eqvis.bg" file="skin/eqmain.bmp" x="0" y="294" w="113" h="19"/>
+<bitmap id="waeq.titlebar.on" file="skin/eqmain.bmp" x="0" y="134" w="275" h="14"/>
+<bitmap id="waeq.titlebar.off" file="skin/eqmain.bmp" x="0" y="149" w="275" h="14"/>
+
+<bitmap id="eq.shade.on" file="skin/eq_ex.bmp" x="0" y="0" h="14" w="275"/>
+<bitmap id="eq.shade.off" file="skin/eq_ex.bmp" x="0" y="15" h="14" w="275"/>
+
+<bitmap id="eq.close" file="skin/eqmain.bmp" x="0" y="116" w="9" h="9"/>
+<bitmap id="eq.closep" file="skin/eqmain.bmp" x="0" y="125" w="9" h="9"/>
+
+<bitmap id="eqs.close" file="skin/eq_ex.bmp"  x="11" y="38" w="9" h="9"/>
+<bitmap id="eqs.closep" file="skin/eq_ex.bmp" x="11" y="47" w="9" h="9"/>
+
+<bitmap id="eq.switch" file="skin/eqmain.bmp" x="254" y="137" h="9" w="9"/>
+<bitmap id="eq.switchp" file="skin/eq_ex.bmp" x="1" y="38" h="9" w="9"/>
+
+<bitmap id="eq.presets" file="skin/eqmain.bmp"  x="224" y="164" w="44" h="12"/>
+<bitmap id="eq.presetsp" file="skin/eqmain.bmp" x="224" y="176" w="44" h="12"/>
+
+<bitmap id="eq.off" file="skin/eqmain.bmp"  x="10" y="119" w="25" h="12"/>
+<bitmap id="eq.offp" file="skin/eqmain.bmp" x="128" y="119" w="25" h="12"/>
+<bitmap id="eq.on" file="skin/eqmain.bmp"  x="69" y="119" w="25" h="12"/>
+
+<bitmap id="eq.auto" file="skin/eqmain.bmp"   x="35" y="119" w="33" h="12"/>
+<bitmap id="eq.autop" file="skin/eqmain.bmp"  x="153" y="119" w="33" h="12"/>
+<bitmap id="eq.autoon" file="skin/eqmain.bmp" x="94" y="119" w="33" h="12"/>
+
+<bitmap id="eq.slider0" file="skin/eqmain.bmp" x="13" y="229" h="63" w="14"/>
+<bitmap id="eq.slider1" file="skin/eqmain.bmp" x="13" y="229" h="63" w="14"/>
+<bitmap id="eq.slider2" file="skin/eqmain.bmp" x="28" y="229" h="63" w="14"/>
+<bitmap id="eq.slider3" file="skin/eqmain.bmp" x="43" y="229" h="63" w="14"/>
+<bitmap id="eq.slider4" file="skin/eqmain.bmp" x="58" y="229" h="63" w="14"/>
+<bitmap id="eq.slider5" file="skin/eqmain.bmp" x="73" y="229" h="63" w="14"/>
+<bitmap id="eq.slider6" file="skin/eqmain.bmp" x="88" y="229" h="63" w="14"/>
+<bitmap id="eq.slider7" file="skin/eqmain.bmp" x="103" y="229" h="63" w="14"/>
+<bitmap id="eq.slider8" file="skin/eqmain.bmp" x="118" y="229" h="63" w="14"/>
+<bitmap id="eq.slider9" file="skin/eqmain.bmp" x="133" y="229" h="63" w="14"/>
+<bitmap id="eq.slider10" file="skin/eqmain.bmp" x="148" y="229" h="63" w="14"/>
+<bitmap id="eq.slider11" file="skin/eqmain.bmp" x="163" y="229" h="63" w="14"/>
+<bitmap id="eq.slider12" file="skin/eqmain.bmp" x="178" y="229" h="63" w="14"/>
+<bitmap id="eq.slider13" file="skin/eqmain.bmp" x="193" y="229" h="63" w="14"/>
+<bitmap id="eq.slider14" file="skin/eqmain.bmp" x="208" y="229" h="63" w="14"/>
+<bitmap id="eq.slider-1" file="skin/eqmain.bmp" x="208" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-2" file="skin/eqmain.bmp" x="193" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-3" file="skin/eqmain.bmp" x="178" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-4" file="skin/eqmain.bmp" x="163" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-5" file="skin/eqmain.bmp" x="148" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-6" file="skin/eqmain.bmp" x="133" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-7" file="skin/eqmain.bmp" x="118" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-8" file="skin/eqmain.bmp" x="103" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-9" file="skin/eqmain.bmp" x="88" y="164" h="63" w="14" />
+<bitmap id="eq.slider-10" file="skin/eqmain.bmp" x="73" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-11" file="skin/eqmain.bmp" x="58" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-12" file="skin/eqmain.bmp" x="43" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-13" file="skin/eqmain.bmp" x="28" y="164" h="63" w="14"/>
+<bitmap id="eq.slider-14" file="skin/eqmain.bmp" x="13" y="164" h="63" w="14"/>
+
+<bitmap id="eq.slider" file="skin/eqmain.bmp" x="0" y="164" h="11" w="11"/>
+<bitmap id="eq.sliderp" file="skin/eqmain.bmp" x="0" y="176" h="11" w="11"/>
+
+<bitmap id="eqshade.vol.seekl" file="skin/eq_ex.bmp" x="1" y="30" w="3" h="7"/>
+<bitmap id="eqshade.vol.seekm" file="skin/eq_ex.bmp" x="4" y="30" w="3" h="7"/>
+<bitmap id="eqshade.vol.seekr" file="skin/eq_ex.bmp" x="7" y="30" w="3" h="7"/>
+
+<bitmap id="eqshade.bal.seekl" file="skin/eq_ex.bmp" x="11" y="30" w="3" h="7"/>
+<bitmap id="eqshade.bal.seekm" file="skin/eq_ex.bmp" x="14" y="30" w="3" h="7"/>
+<bitmap id="eqshade.bal.seekr" file="skin/eq_ex.bmp" x="17" y="30" w="3" h="7"/>
+
+<bitmap id="eqshade.close" file="skin/eq_ex.bmp" x="11" y="38" w="9" h="9"/>
+<bitmap id="eqshade.closep" file="skin/eq_ex.bmp" x="11" y="47" w="9" h="9"/>
+
+<bitmap id="eqshade.shade" file="skin/eq_ex.bmp" x="254" y="3" w="9" h="9"/>
+<bitmap id="eqshade.shadep" file="skin/eq_ex.bmp" x="1" y="47" w="9" h="9"/>
+
+</elements>
+
+<container id="EQ" name="Equalizer" default_w="275">
+    <groupdef id="eq">
+
+        <layer id="blah" dblClickAction="SWITCH;shadeeq" x="0" y="0" h="14" w="275" move="1"/>
+        <layer id="waeq.titlebar" x="0" y="0" image="waeq.titlebar.on" inactiveimage="waeq.titlebar.off" ghost="1"/>
+        <layer id="waeq.titlebar" x="86" y="17" image="wa.eqvis.bg" ghost="1"/>
+
+        <button id="eq.switch" x="254" y="3" action="SWITCH" param="shadeeq" image="eq.switch" downimage="eq.switchp" activealpha="255" inactivealpha="0"/>
+        <button id="eq.close" x="264" y="3" action="CLOSE" image="eq.close" downimage="eq.closep" activealpha="255" inactivealpha="0"/>
+
+        <Button id="eq.on" action="EQ_TOGGLE" x="14" y="18" image="eq.off" downimage="eq.offp" activeImage="eq.on"/>
+        <Button id="eq.auto" visible="1" action="EQ_AUTO" x="39" y="18" image="eq.auto" downimage="eq.autop" activeImage="eq.autoon"/>
+
+        <togglebutton id="eq.presets" x="217" y="18" image="eq.presets" downimage="eq.presetsp" action="MENU" param="PRESETS"/>
+
+        <button id="12db" x="44" y="36" w="22" h="7" rectrgn="1"/>
+        <button id="0db" x="45" y="65" w="20" h="7" rectrgn="1"/>
+        <button id="-12db" x="44" y="95" w="22" h="7" rectrgn="1"/>
+
+        <eqvis x="88" y="17" w="109" h="19" colortop="239,24,16" colormiddle="239,231,49" colorbottom="24,156,8" colorpreamp="156,181,206"/>
+			<layer id="preamp_layer" x="21" y="38" image="eq.slider0"/>
+			<layer id="eq1back" x="78" y="38" image="eq.slider0"/>
+			<layer id="eq2back" x="96" y="38" image="eq.slider0"/>
+			<layer id="eq3back" x="114" y="38" image="eq.slider0"/>
+			<layer id="eq4back" x="132" y="38" image="eq.slider0"/>
+			<layer id="eq5back" x="150" y="38" image="eq.slider0"/>
+			<layer id="eq6back" x="168" y="38" image="eq.slider0"/>
+			<layer id="eq7back" x="186" y="38" image="eq.slider0"/>
+			<layer id="eq8back" x="204" y="38" image="eq.slider0"/>
+			<layer id="eq9back" x="222" y="38" image="eq.slider0"/>
+			<layer id="eq10back" x="240" y="38" image="eq.slider0"/>
+
+            <script file="scripts/eqmain_dbs.maki"/>
+
+			<slider id="preamp" action="EQ_PREAMP" x="22" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq1" action="EQ_BAND" param="1" x="79" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq2" action="EQ_BAND" param="2" x="97" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq3" action="EQ_BAND" param="3" x="115" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq4" action="EQ_BAND" param="4" x="133" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq5" action="EQ_BAND" param="5" x="151" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq6" action="EQ_BAND" param="6" x="169" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq7" action="EQ_BAND" param="7" x="187" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq8" action="EQ_BAND" param="8" x="205" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq9" action="EQ_BAND" param="9" x="223" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="eq10" action="EQ_BAND" param="10" x="241" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+
+        <script file="scripts/eq_layers.maki"/>
+
+        <!--grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="74" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="111" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="149" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="186" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="224" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="261" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="299" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="336" y="127" h="88" w="8"/>
+        <Slider id="eq1" orientation="vertical" action="EQ_BAND" param="1" x="67" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq2" orientation="vertical" action="EQ_BAND" param="2" x="104" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq3" orientation="vertical" action="EQ_BAND" param="3" x="142" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq4" orientation="vertical" action="EQ_BAND" param="4" x="179" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq5" orientation="vertical" action="EQ_BAND" param="5" x="217" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq6" orientation="vertical" action="EQ_BAND" param="6" x="254" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq7" orientation="vertical" action="EQ_BAND" param="7" x="292" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq8" orientation="vertical" action="EQ_BAND" param="8" x="329" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/-->
+
+    </groupdef>
+
+    <groupdef id="shadeeq">
+    
+        <layer id="blah" dblClickAction="SWITCH;eq" x="0" y="0" h="14" w="275" image="eq.shade.on" inactiveimage="eq.shade.off" move="1"/>
+
+        <button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="eqshade.shade" downImage="eqshade.shadep"/>
+        <button id="Close" inactivealpha="0" action="close" x="264" y="3" image="eqshade.close" downImage="eqshade.closep"/>
+
+        <slider id="volume" action="volume" x="61" y="4" h="7" w="97" thumb="eqshade.vol.seekm"/>
+        <slider id="balance" action="pan" x="164" y="4" h="7" w="43" thumb="eqshade.vol.seekm"/>
+
+        <script file="scripts/actioninfo.maki"/>
+
+    </groupdef>
+
+    <layout id="EQ" background="wa.eq" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
+        <group id="eq"/>
+    </layout>
+    <layout id="shadeeq" background="eq.shade.on" minimum_h="14" minimum_w="275">
+		<group id="shadeeq" x="0" y="0" sysregion="1"/>
+	</layout>
+
+</container>
