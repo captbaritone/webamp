@@ -135,8 +135,8 @@ async function initializeSkinListMenu() {
   window.onpopstate = function (e) {
     if (e.state) {
       document.title = e.state.pageTitle;
-      changeSkinByUrl();
     }
+    changeSkinByUrl();
   };
 
   document.body.appendChild(select);
