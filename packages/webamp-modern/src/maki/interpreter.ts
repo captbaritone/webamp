@@ -192,7 +192,6 @@ class Interpreter {
           }
           this.push(V.newInt(b.value >= a.value));
           break;
-          break;
         }
         // <
         case 12: {
@@ -321,50 +320,51 @@ class Interpreter {
           );
 
           // let value = obj.value[methodName](...methodArgs);
-          let value;
+          let result = null;
           try {
-            value = obj.value[methodName](...methodArgs);
+            result = obj.value[methodName](...methodArgs);
           } catch (err) {
+            const args = JSON.stringify(methodArgs)
+              .replace("[", "")
+              .replace("]", "");
             console.warn(
-              `error call: ${klass.name}.${methodName}(...${JSON.stringify(
-                methodArgs
-              )})`,
+              `error call: ${klass.name}.${methodName}(${args})`,
               `err: ${err.message} obj:`,
               obj
             );
-            value = null;
+            result = null;
           }
 
-          if (value === undefined && returnType !== "NULL") {
+          if (result === undefined && returnType !== "NULL") {
             throw new Error(
               `Did not expect ${klass.name}.${methodName}: ${returnType} to return undefined`
             );
           }
-          if (value === null) {
+          if (result === null) {
             // variables[1] holds global NULL value
-            value = this.variables[1];
+            result = this.variables[1];
           }
           if (returnType === "BOOLEAN") {
             assert(
-              typeof value === "boolean",
+              typeof result === "boolean",
               `${
                 klass.name
               }.${methodName} should return a boolean, but "${JSON.stringify(
-                value
+                result
               )}"`
             );
-            value = value ? 1 : 0;
+            result = result ? 1 : 0;
           }
           if (returnType === "OBJECT") {
             assert(
-              typeof value === "object",
-              `Expected the returned value of ${klass.name}.${methodName} to be an object, but it was "${value}"`
+              typeof result === "object",
+              `Expected the returned value of ${klass.name}.${methodName} to be an object, but it was "${result}"`
             );
           }
           if (this.debug) {
             console.log(`Calling method ${methodName}`);
           }
-          this.push({ type: returnType, value } as any);
+          this.push({ type: returnType, value: result } as any);
           break;
         }
         // callGlobal
