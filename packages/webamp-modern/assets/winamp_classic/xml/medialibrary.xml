@@ -1,0 +1,10 @@
+<container id="MLibrary" name="Media Library" component="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}" default_visible="@HAVE_LIBRARY@" default_x="275" default_y="0" >
+	
+<groupdef id="mlibrary.content.group">
+	<component x="0" y="0" w="0" relatw="1" h="0" relath="1" noshowcmdbar="1" autoopen="1" autoclose="0" param="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}" />
+</groupdef>
+
+<layout id="normal" background="component.basetexture" minimum_h="116" minimum_w="275" default_w="500" default_h="348" appbar="top|bottom|left|right">
+	<Wasabi:StandardFrame:NoStatus x="0" y="0" w="0" h="0" relatw="1" relath="1" content="mlibrary.content.group" />
+</layout> 
+</container>

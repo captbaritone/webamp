@@ -5,15 +5,9 @@
 	although those too came from different sources and tweaked to
 	fit my own needs.-->
 
-<elements>	
-<bitmap id="wa.main" file="skin/main.bmp" gammagroup="Background"/>	
-<include file="classic-elements.xml"/>
-<include file="classic-colors.xml"/>
-<include file="classic-genex.xml"/>
-</elements>	
-
-<groupdef id="mainwindow" x="0" y="0" w="275" h="116" relatw="1" relath="1">
+<groupdef id="mainwindow" x="0" y="0" w="275" h="116">
 	
+	<layer id="mainwnd" image="wa.main" ghost="1"/>
 	<layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
 
 	<layer image="clutterbar" x="10" y="22" tooltip="Clutterbar is not done yet, sorry. :("/>
@@ -156,6 +150,7 @@
 
 <groupdef id="shademain">
 
+	<layer id="washade" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" ghost="1"/>
     <layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" h="14" w="275" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" move="1"/>
 
     <text id="timer" display="time" x="128" y="2" w="31" h="10" font="wasabi.font.default" align="right" timecolonwidth="5"/>
@@ -174,7 +169,7 @@
     <vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/>
 	<layer id="main.vis.trigger" x="79" y="5" w="38" h="5"/>
 
-    <button id="winshade" inactivealpha="0" tooltip="Toggle Windowshade mode" action="SWITCH" param="normal" x="254" y="3" image="wa2.player.title.shademode" downImage="wa2.player.title.shademode.pressed"/>
+    <button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="wa2.player.title.shademode" downImage="wa2.player.title.shademode.pressed"/>
     <button id="Close" inactivealpha="0" action="close" x="264" y="3" image="wa2.player.title.quit" downImage="wa2.player.title.quit.pressed" tooltip="Close" />
     <button id="Minimize" inactivealpha="0" action="MINIMIZE" x="244" y="3" image="wa2.player.title.min" downImage="wa2.player.title.min.pressed" tooltip="Minimize Winamp" />
     <button id="sysbutton" inactivealpha="0" action="SYSMENU" x="6" y="3" image="wa2.player.shade.menu" downImage="wa2.player.shade.menu.pressed" />
@@ -184,11 +179,11 @@
 
 </groupdef>
 
-<container id="main" name="Main Window" default_x="0" default_y="0" default_visible="1" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
-	<layout id="normal" background="wa.main" droptarget="pldr">
-		<group id="mainwindow"/>
+<container id="main" name="Main Window" default_y="0" default_visible="1" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
+	<layout id="normal" background="mainwnd_fallback" droptarget="pldr">
+		<group id="mainwindow" w="275" h="116"/>
 	</layout>
-	<layout id="shade" background="wa2.player.shade.enabled" inactive="wa2.player.shade.disabled" minimum_h="14" minimum_w="275">
+	<layout id="shade" background="shade_fallback" minimum_h="14" minimum_w="275">
 		<group id="shademain" x="0" y="0" sysregion="1"/>
 	</layout>
 </container>

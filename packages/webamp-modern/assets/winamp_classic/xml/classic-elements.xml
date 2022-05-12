@@ -1,5 +1,7 @@
 <elements>
-	<bitmap id="wa.main" file="skin/main.bmp"/>	
+	<bitmap id="shade_fallback" file="skin/wasabi/shade_fallback.png"/> <!-- DO NOT TOUCH -->
+	<bitmap id="mainwnd_fallback" file="skin/wasabi/main_fallback.png"/> <!-- DO NOT TOUCH -->
+	<bitmap id="wa.main" file="skin/main.bmp"/>
 
 	<bitmap id="posbarbg" file="skin/posbar.bmp" x="0" y="0" w="248" h="10"/>
 	<bitmap id="posbar" file="skin/posbar.bmp" x="248" y="0" w="29" h="10"/>
@@ -12,6 +14,7 @@
 	<!-- NUMFONT -->
 	<bitmapfont id="player.BIGNUM" file="skin/numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>
 	<bitmap id="disabled.dash" file="skin/nums_ex.bmp" x="90" y="0" w="9" h="13"/>
+
 	<!-- SONGTICKERFONT -->	
 	<bitmapfont id="wasabi.font.default" file="skin/text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>	
 
@@ -75,8 +78,6 @@
 	<bitmap id="switchp" file="skin/titlebar.bmp"  x="9" y="18" h="9" w="9"/>
 
 	<!-- titlebar.png to titlebar.png -->
-	<bitmap id="wa2.player.title.enabled" file="skin/titlebar.bmp" x="27" y="0" h="13" w="275"/>
-	<bitmap id="wa2.player.title.dissabled" file="skin/titlebar.bmp" x="27" y="15" h="13" w="275"/>
 	<bitmap id="wa2.player.title.quit" file="skin/titlebar.bmp" x="18" y="0" h="9" w="9"/>
 	<bitmap id="wa2.player.title.quit.pressed" file="skin/titlebar.bmp" x="18" y="9" h="9" w="9"/>
 	<bitmap id="wa2.player.title.shade" file="skin/titlebar.bmp" x="0" y="18" h="9" w="9"/>
@@ -93,6 +94,7 @@
 	<!-- Winshade Stuff -->
 	<bitmap id="wa2.player.shade.enabled" file="skin/titlebar.bmp" x="27" y="29" h="14" w="275"/>
 	<bitmap id="wa2.player.shade.disabled" file="skin/titlebar.bmp" x="27" y="42" h="14" w="275"/>
+
 	<bitmap id="wa2.player.shade.menu" file="skin/titlebar.bmp" x="0" y="0" h="9" w="9"/>
 	<bitmap id="wa2.player.shade.menu.pressed" file="skin/titlebar.bmp" x="0" y="9" h="9" w="9"/>
 
@@ -107,7 +109,6 @@
 	<bitmap id="panbtn" file="skin/balance.bmp" x="15" y="422" w="14" h="11"/>
 
 	<!-- video -->
-
 	<bitmap id="video.topleft.active" file="skin/video.bmp" x="0" y="0" h="20" w="25"/>
 	<bitmap id="video.top.center.active" file="skin/video.bmp" x="26" y="0" h="20" w="100"/>
 	<bitmap id="video.top.stretchybit.active" file="skin/video.bmp" x="127" y="0" h="20" w="25"/>
@@ -121,7 +122,7 @@
 	<bitmap id="video.left" file="skin/video.bmp" x="127" y="42" h="29" w="11"/>
 	<bitmap id="video.right" file="skin/video.bmp" x="139" y="42" h="29" w="8"/>
 	<bitmap id="video.bottomleft" file="skin/video.bmp" x="0" y="42" h="38" w="125"/>
-	<bitmap id="video.borrom.stretchybit" file="skin/video.bmp" x="127" y="81" h="38" w="25"/>
+	<bitmap id="video.bottom.stretchybit" file="skin/video.bmp" x="127" y="81" h="38" w="25"/>
 	<bitmap id="video.bottomright" file="skin/video.bmp" x="0" y="81" h="38" w="125"/>
 
 	<bitmap id="video.close" file="skin/video.bmp" x="167" y="3" h="9" w="9"/>
@@ -139,7 +140,175 @@
 	<bitmap id="video.misc" file="skin/video.bmp" x="69" y="51" h="18" w="15"/>
 	<bitmap id="video.miscp" file="skin/video.bmp" x="218" y="42" h="18" w="15"/>
 
-<include file="classic-colors.xml"/>
+	<!-- playlist editor -->
+
+    <!-- pledit shade elements -->
+    <bitmap id="wa2.plshade.right.active" file="skin/pledit.bmp" x="99" y="42" h="14" w="50"/>
+    <bitmap id="wa2.plshade.right.inactive" file="skin/pledit.bmp" x="99" y="57" h="14" w="50"/>
+
+    <bitmap id="wa2.plshade.left" file="skin/pledit.bmp" x="72" y="42" h="14" w="25"/>
+
+    <bitmap id="wa2.plshade.middle" file="skin/pledit.bmp" x="72" y="57" h="14" w="25"/>
+
+    <bitmap id="wa2.plshade.close" file="skin/pledit.bmp" x="138" y="45" h="9" w="9"/>
+    <bitmap id="wa2.plshade.shade" file="skin/pledit.bmp" x="128" y="45" h="9" w="9"/>
+    <bitmap id="wa2.plshade.shadep" file="skin/pledit.bmp" x="150" y="42" h="9" w="9"/>
+
+    <!--Playlist Grid Elements-->
+    <bitmap id="wa2.pl.1" file="skin/pledit.bmp"  x="0" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.2" file="skin/pledit.bmp"  x="127" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.center" file="skin/pledit.bmp"  x="26" y="0" h="20" w="100"/>
+    <bitmap id="wa2.pl.3" file="skin/pledit.bmp"  x="153" y="0" h="20" w="25"/>
+    <bitmap id="wa2.pl.4" file="skin/pledit.bmp"  x="0" y="42" h="29" w="25"/>
+    <bitmap id="wa2.pl.5" file="$solid" h="64" w="64" color="0,0,0"/>
+    <bitmap id="wa2.pl.6" file="skin/pledit.bmp"  x="26" y="42" h="29" w="25"/>
+    <bitmap id="wa2.pl.7" file="skin/pledit.bmp"  x="0" y="72" h="38" w="125"/>
+    <bitmap id="wa2.pl.8" file="skin/pledit.bmp"  x="179" y="0" h="38" w="25"/>
+    <bitmap id="wa2.pl.8.vis" file="skin/pledit.bmp"  x="205" y="0" h="38" w="75"/>
+    <bitmap id="wa2.pl.9" file="skin/pledit.bmp"  x="126" y="72" h="38" w="150"/>
+
+    <bitmap id="wa2.pl.1.disabled" file="skin/pledit.bmp" x="0" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.disabled" file="skin/pledit.bmp"  x="127" y="21" h="20" w="25"/>
+    <bitmap id="wa2.pl.2.center.disabled" file="skin/pledit.bmp"  x="26" y="21" h="20" w="100"/>
+    <bitmap id="wa2.pl.3.disabled" file="skin/pledit.bmp"  x="153" y="21" h="20" w="25"/>
+
+    <bitmap id="wa2.pl.close" file="skin/pledit.bmp" x="167" y="3" h="9" w="9"/>
+    <bitmap id="wa2.pl.closep" file="skin/pledit.bmp" x="52" y="42" h="9" w="9"/>
+    <bitmap id="wa2.pl.shade" file="skin/pledit.bmp" x="157" y="3" h="9" w="9"/>
+    <bitmap id="wa2.pl.shadep" file="skin/pledit.bmp" x="62" y="42" h="9" w="9"/>
+
+	<!-- Equalizer -->
+	<bitmap id="wa.eq" file="skin/eqmain.bmp" x="0" y="0" w="275" h="116"/>
+	<bitmap id="wa.eqvis.bg" file="skin/eqmain.bmp" x="0" y="294" w="113" h="19"/>
+	<bitmap id="waeq.titlebar.on" file="skin/eqmain.bmp" x="0" y="134" w="275" h="14"/>
+	<bitmap id="waeq.titlebar.off" file="skin/eqmain.bmp" x="0" y="149" w="275" h="14"/>
+
+	<bitmap id="eq.shade.on" file="skin/eq_ex.bmp" x="0" y="0" h="14" w="275"/>
+	<bitmap id="eq.shade.off" file="skin/eq_ex.bmp" x="0" y="15" h="14" w="275"/>
+
+	<bitmap id="eq.close" file="skin/eqmain.bmp" x="0" y="116" w="9" h="9"/>
+	<bitmap id="eq.closep" file="skin/eqmain.bmp" x="0" y="125" w="9" h="9"/>
+
+	<bitmap id="eqs.close" file="skin/eq_ex.bmp"  x="11" y="38" w="9" h="9"/>
+	<bitmap id="eqs.closep" file="skin/eq_ex.bmp" x="11" y="47" w="9" h="9"/>
+
+	<bitmap id="eq.switch" file="skin/eqmain.bmp" x="254" y="137" h="9" w="9"/>
+	<bitmap id="eq.switchp" file="skin/eq_ex.bmp" x="1" y="38" h="9" w="9"/>
+
+	<bitmap id="eq.presets" file="skin/eqmain.bmp"  x="224" y="164" w="44" h="12"/>
+	<bitmap id="eq.presetsp" file="skin/eqmain.bmp" x="224" y="176" w="44" h="12"/>
+
+	<bitmap id="eq.off" file="skin/eqmain.bmp"  x="10" y="119" w="25" h="12"/>
+	<bitmap id="eq.offp" file="skin/eqmain.bmp" x="128" y="119" w="25" h="12"/>
+	<bitmap id="eq.on" file="skin/eqmain.bmp"  x="69" y="119" w="25" h="12"/>
+
+	<bitmap id="eq.auto" file="skin/eqmain.bmp"   x="35" y="119" w="33" h="12"/>
+	<bitmap id="eq.autop" file="skin/eqmain.bmp"  x="153" y="119" w="33" h="12"/>
+	<bitmap id="eq.autoon" file="skin/eqmain.bmp" x="94" y="119" w="33" h="12"/>
+
+	<bitmap id="eq.slider0" file="skin/eqmain.bmp" x="13" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider1" file="skin/eqmain.bmp" x="13" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider2" file="skin/eqmain.bmp" x="28" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider3" file="skin/eqmain.bmp" x="43" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider4" file="skin/eqmain.bmp" x="58" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider5" file="skin/eqmain.bmp" x="73" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider6" file="skin/eqmain.bmp" x="88" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider7" file="skin/eqmain.bmp" x="103" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider8" file="skin/eqmain.bmp" x="118" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider9" file="skin/eqmain.bmp" x="133" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider10" file="skin/eqmain.bmp" x="148" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider11" file="skin/eqmain.bmp" x="163" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider12" file="skin/eqmain.bmp" x="178" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider13" file="skin/eqmain.bmp" x="193" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider14" file="skin/eqmain.bmp" x="208" y="229" h="63" w="14"/>
+	<bitmap id="eq.slider-1" file="skin/eqmain.bmp" x="208" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-2" file="skin/eqmain.bmp" x="193" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-3" file="skin/eqmain.bmp" x="178" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-4" file="skin/eqmain.bmp" x="163" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-5" file="skin/eqmain.bmp" x="148" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-6" file="skin/eqmain.bmp" x="133" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-7" file="skin/eqmain.bmp" x="118" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-8" file="skin/eqmain.bmp" x="103" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-9" file="skin/eqmain.bmp" x="88" y="164" h="63" w="14" />
+	<bitmap id="eq.slider-10" file="skin/eqmain.bmp" x="73" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-11" file="skin/eqmain.bmp" x="58" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-12" file="skin/eqmain.bmp" x="43" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-13" file="skin/eqmain.bmp" x="28" y="164" h="63" w="14"/>
+	<bitmap id="eq.slider-14" file="skin/eqmain.bmp" x="13" y="164" h="63" w="14"/>
+
+	<bitmap id="eq.slider" file="skin/eqmain.bmp" x="0" y="164" h="11" w="11"/>
+	<bitmap id="eq.sliderp" file="skin/eqmain.bmp" x="0" y="176" h="11" w="11"/>
+
+	<bitmap id="eqshade.vol.seekl" file="skin/eq_ex.bmp" x="1" y="30" w="3" h="7"/>
+	<bitmap id="eqshade.vol.seekm" file="skin/eq_ex.bmp" x="4" y="30" w="3" h="7"/>
+	<bitmap id="eqshade.vol.seekr" file="skin/eq_ex.bmp" x="7" y="30" w="3" h="7"/>
+
+	<bitmap id="eqshade.bal.seekl" file="skin/eq_ex.bmp" x="11" y="30" w="3" h="7"/>
+	<bitmap id="eqshade.bal.seekm" file="skin/eq_ex.bmp" x="14" y="30" w="3" h="7"/>
+	<bitmap id="eqshade.bal.seekr" file="skin/eq_ex.bmp" x="17" y="30" w="3" h="7"/>
+
+	<bitmap id="eqshade.close" file="skin/eq_ex.bmp" x="11" y="38" w="9" h="9"/>
+	<bitmap id="eqshade.closep" file="skin/eq_ex.bmp" x="11" y="47" w="9" h="9"/>
+
+	<bitmap id="eqshade.shade" file="skin/eq_ex.bmp" x="254" y="3" w="9" h="9"/>
+	<bitmap id="eqshade.shadep" file="skin/eq_ex.bmp" x="1" y="47" w="9" h="9"/>
+
+	<bitmap id="wa.iso.eq" file="skin/eqmain_iso.bmp" x="0" y="0" w="275" h="116"/>
+	<bitmap id="wa.iso.eqvis.bg" file="skin/eqmain_iso.bmp" x="0" y="294" w="113" h="19"/>
+	<bitmap id="waisoeq.titlebar.on" file="skin/eqmain_iso.bmp" x="0" y="134" w="275" h="14"/>
+	<bitmap id="waisoeq.titlebar.off" file="skin/eqmain_iso.bmp" x="0" y="149" w="275" h="14"/>
+
+	<bitmap id="iso.eq.close" file="skin/eqmain_iso.bmp" x="0" y="116" w="9" h="9"/>
+	<bitmap id="iso.eq.closep" file="skin/eqmain_iso.bmp" x="0" y="125" w="9" h="9"/>
+
+	<bitmap id="iso.eq.switch" file="skin/eqmain_iso.bmp" x="254" y="137" h="9" w="9"/>
+
+	<bitmap id="iso.eq.presets" file="skin/eqmain_iso.bmp"  x="224" y="164" w="44" h="12"/>
+	<bitmap id="iso.eq.presetsp" file="skin/eqmain_iso.bmp" x="224" y="176" w="44" h="12"/>
+
+	<bitmap id="iso.eq.off" file="skin/eqmain_iso.bmp"  x="10" y="119" w="25" h="12"/>
+	<bitmap id="iso.eq.offp" file="skin/eqmain_iso.bmp" x="128" y="119" w="25" h="12"/>
+	<bitmap id="iso.eq.on" file="skin/eqmain_iso.bmp"  x="69" y="119" w="25" h="12"/>
+
+	<bitmap id="iso.eq.auto" file="skin/eqmain_iso.bmp"   x="35" y="119" w="33" h="12"/>
+	<bitmap id="iso.eq.autop" file="skin/eqmain_iso.bmp"  x="153" y="119" w="33" h="12"/>
+	<bitmap id="iso.eq.autoon" file="skin/eqmain_iso.bmp" x="94" y="119" w="33" h="12"/>
+
+	<bitmap id="iso.eq.slider0" file="skin/eqmain_iso.bmp" x="13" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider1" file="skin/eqmain_iso.bmp" x="13" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider2" file="skin/eqmain_iso.bmp" x="28" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider3" file="skin/eqmain_iso.bmp" x="43" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider4" file="skin/eqmain_iso.bmp" x="58" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider5" file="skin/eqmain_iso.bmp" x="73" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider6" file="skin/eqmain_iso.bmp" x="88" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider7" file="skin/eqmain_iso.bmp" x="103" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider8" file="skin/eqmain_iso.bmp" x="118" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider9" file="skin/eqmain_iso.bmp" x="133" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider10" file="skin/eqmain_iso.bmp" x="148" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider11" file="skin/eqmain_iso.bmp" x="163" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider12" file="skin/eqmain_iso.bmp" x="178" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider13" file="skin/eqmain_iso.bmp" x="193" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider14" file="skin/eqmain_iso.bmp" x="208" y="229" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-1" file="skin/eqmain_iso.bmp" x="208" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-2" file="skin/eqmain_iso.bmp" x="193" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-3" file="skin/eqmain_iso.bmp" x="178" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-4" file="skin/eqmain_iso.bmp" x="163" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-5" file="skin/eqmain_iso.bmp" x="148" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-6" file="skin/eqmain_iso.bmp" x="133" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-7" file="skin/eqmain_iso.bmp" x="118" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-8" file="skin/eqmain_iso.bmp" x="103" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-9" file="skin/eqmain_iso.bmp" x="88" y="164" h="63" w="14" />
+	<bitmap id="iso.eq.slider-10" file="skin/eqmain_iso.bmp" x="73" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-11" file="skin/eqmain_iso.bmp" x="58" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-12" file="skin/eqmain_iso.bmp" x="43" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-13" file="skin/eqmain_iso.bmp" x="28" y="164" h="63" w="14"/>
+	<bitmap id="iso.eq.slider-14" file="skin/eqmain_iso.bmp" x="13" y="164" h="63" w="14"/>
+
+	<bitmap id="iso.eq.slider" file="skin/eqmain_iso.bmp" x="0" y="164" h="11" w="11"/>
+	<bitmap id="iso.eq.sliderp" file="skin/eqmain_iso.bmp" x="0" y="176" h="11" w="11"/>
+
+<include file="wacup-classic-elements.xml"/>
 <include file="classic-genex.xml"/>
+<include file="classic-colors.xml"/>
 
 </elements>	

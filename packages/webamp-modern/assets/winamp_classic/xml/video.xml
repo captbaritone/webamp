@@ -1,15 +1,15 @@
-<container id="video" name="Video Window" default_x="0" default_y="232" default_visible="1">
+<container id="video" name="Video Window" default_x="0" default_y="232" default_visible="0">
 	<layout id="normal" background="wasabi.frame.basetexture" minimum_h="116" minimum_w="275">
-		<layer image="video.topleft.active" x="0" y="0" inactiveimage="video.topleft.inactive" regionop="1"/>
-		<layer image="video.top.stretchybit.active" x="25" y="0" w="-50" relatw="1" inactiveimage="video.top.stretchybit.inactive" regionop="1"/>
+		<layer id="video.topleft" image="video.topleft.active" x="0" y="0" inactiveimage="video.topleft.inactive" regionop="1"/>
+		<layer id="video.stretchybit" image="video.top.stretchybit.active" x="25" y="0" w="-50" relatw="1" inactiveimage="video.top.stretchybit.inactive" regionop="1"/>
         <layer id="video.center" x="-100" y="0" image="video.top.center.active" inactiveimage="video.top.center.inactive"/>
         <script file="scripts/_wa2-easylayout.maki" param="video.center;0;0;1;0;0;0"/>
-		<layer image="video.topright.active" x="-25" y="0" relatx="1" inactiveimage="video.topright.inactive" regionop="1"/>
-		<layer image="video.left" x="0" y="20" h="-58" relath="1" regionop="1"/>
-		<layer image="video.right" x="-8" y="20" h="-58" relatx="1" relath="1" regionop="1"/>
-		<layer image="video.bottomleft" x="0" y="-38" relaty="1" regionop="1"/>
-		<layer image="video.borrom.stretchybit" x="125" y="-38" w="-250" relaty="1" relatw="1" regionop="1"/>
-		<layer image="video.bottomright" x="-125" y="-38" relatx="1" relaty="1" regionop="1"/>
+		<layer id="video.topright" image="video.topright.active" x="-25" y="0" relatx="1" inactiveimage="video.topright.inactive" regionop="1"/>
+		<layer id="video.left" image="video.left" x="0" y="20" h="-58" relath="1" regionop="1"/>
+		<layer id="video.right" image="video.right" x="-8" y="20" h="-58" relatx="1" relath="1" regionop="1"/>
+		<layer id="video.bottomleft" image="video.bottomleft" x="0" y="-38" relaty="1" regionop="1"/>
+		<layer id="video.bottom.stretchybit" image="video.bottom.stretchybit" x="125" y="-38" w="-250" relaty="1" relatw="1" regionop="1"/>
+		<layer id="video.bottomright" image="video.bottomright" x="-125" y="-38" relatx="1" relaty="1" regionop="1"/>
 		<layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
 
 		<!-- Since Winamp 5.0 the component xml object was renamed to windowholder -->

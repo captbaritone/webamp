@@ -1,0 +1,56 @@
+    <!-- Main Window -->
+    <bitmap id="wacup.main" file="skin/main_wacup.bmp"/>
+
+    <!-- Title bar, on and off respectively -->
+	<bitmap id="wacup.titlebar.on" file="skin/titlebar_wacup.bmp"  x="27" y="0" h="13" w="275"/>
+	<bitmap id="wacup.titlebar.off" file="skin/titlebar_wacup.bmp"  x="27" y="15" h="13" w="275"/>
+
+    <!-- Main Window shade mode, on and off respectively -->
+	<bitmap id="wacup.player.shade.enabled" file="skin/titlebar_wacup.bmp" x="27" y="29" h="14" w="275"/>
+	<bitmap id="wacup.player.shade.disabled" file="skin/titlebar_wacup.bmp" x="27" y="42" h="14" w="275"/>
+
+    <!-- Video window -->
+    <bitmap id="wacup.video.topleft.active" file="skin/video_wacup.bmp" x="0" y="0" h="20" w="25"/>
+	<bitmap id="wacup.video.top.center.active" file="skin/video_wacup.bmp" x="26" y="0" h="20" w="100"/>
+	<bitmap id="wacup.video.top.stretchybit.active" file="skin/video_wacup.bmp" x="127" y="0" h="20" w="25"/>
+	<bitmap id="wacup.video.topright.active" file="skin/video_wacup.bmp" x="153" y="0" h="20" w="25"/>
+
+	<bitmap id="wacup.video.topleft.inactive" file="skin/video_wacup.bmp" x="0" y="21" h="20" w="25"/>
+	<bitmap id="wacup.video.top.center.inactive" file="skin/video_wacup.bmp" x="26" y="21" h="20" w="100"/>
+	<bitmap id="wacup.video.top.stretchybit.inactive" file="skin/video_wacup.bmp" x="127" y="21" h="20" w="25"/>
+	<bitmap id="wacup.video.topright.inactive" file="skin/video_wacup.bmp" x="153" y="21" h="20" w="25"/>
+
+	<bitmap id="wacup.video.left" file="skin/video_wacup.bmp" x="127" y="42" h="29" w="11"/>
+	<bitmap id="wacup.video.right" file="skin/video_wacup.bmp" x="139" y="42" h="29" w="8"/>
+	<bitmap id="wacup.video.bottomleft" file="skin/video_wacup.bmp" x="0" y="42" h="38" w="125"/>
+	<bitmap id="wacup.video.bottom.stretchybit" file="skin/video_wacup.bmp" x="127" y="81" h="38" w="25"/>
+	<bitmap id="wacup.video.bottomright" file="skin/video_wacup.bmp" x="0" y="81" h="38" w="125"/>
+
+    <!-- Playlist Editor -->
+    <bitmap id="wacup.pl.1" file="skin/pledit_wacup.bmp"  x="0" y="0" h="20" w="25"/>
+    <bitmap id="wacup.pl.2" file="skin/pledit_wacup.bmp"  x="127" y="0" h="20" w="25"/>
+    <bitmap id="wacup.pl.2.center" file="skin/pledit_wacup.bmp"  x="26" y="0" h="20" w="100"/>
+    <bitmap id="wacup.pl.3" file="skin/pledit_wacup.bmp"  x="153" y="0" h="20" w="25"/>
+    <bitmap id="wacup.pl.4" file="skin/pledit_wacup.bmp"  x="0" y="42" h="29" w="25"/>
+    <bitmap id="wacup.pl.6" file="skin/pledit_wacup.bmp"  x="26" y="42" h="29" w="25"/>
+    <bitmap id="wacup.pl.7" file="skin/pledit_wacup.bmp"  x="0" y="72" h="38" w="125"/>
+    <bitmap id="wacup.pl.8" file="skin/pledit_wacup.bmp"  x="179" y="0" h="38" w="25"/>
+    <bitmap id="wacup.pl.8.vis" file="skin/pledit_wacup.bmp"  x="205" y="0" h="38" w="75"/>
+    <bitmap id="wacup.pl.9" file="skin/pledit_wacup.bmp"  x="126" y="72" h="38" w="150"/>
+
+    <bitmap id="wacup.pl.1.disabled" file="skin/pledit_wacup.bmp" x="0" y="21" h="20" w="25"/>
+    <bitmap id="wacup.pl.2.disabled" file="skin/pledit_wacup.bmp"  x="127" y="21" h="20" w="25"/>
+    <bitmap id="wacup.pl.2.center.disabled" file="skin/pledit_wacup.bmp"  x="26" y="21" h="20" w="100"/>
+    <bitmap id="wacup.pl.3.disabled" file="skin/pledit_wacup.bmp"  x="153" y="21" h="20" w="25"/>
+
+    <!-- Equalizer, Winamp Frequencies -->
+    <bitmap id="wacup.eq" file="skin/eqmain_wacup.bmp" x="0" y="0" w="275" h="116"/>
+	<bitmap id="wacup.eqvis.bg" file="skin/eqmain_wacup.bmp" x="0" y="294" w="113" h="19"/>
+	<bitmap id="wacupeq.titlebar.on" file="skin/eqmain_wacup.bmp" x="0" y="134" w="275" h="14"/>
+	<bitmap id="wacupeq.titlebar.off" file="skin/eqmain_wacup.bmp" x="0" y="149" w="275" h="14"/>
+
+    <!-- Equalizer, ISO Frquencies -->
+	<bitmap id="wacup.iso.eq" file="skin/eqmain_iso_wacup.bmp" x="0" y="0" w="275" h="116"/>
+	<bitmap id="wacup.iso.eqvis.bg" file="skin/eqmain_iso_wacup.bmp" x="0" y="294" w="113" h="19"/>
+	<bitmap id="wacupisoeq.titlebar.on" file="skin/eqmain_iso_wacup.bmp" x="0" y="134" w="275" h="14"/>
+	<bitmap id="wacupisoeq.titlebar.off" file="skin/eqmain_iso_wacup.bmp" x="0" y="149" w="275" h="14"/>
