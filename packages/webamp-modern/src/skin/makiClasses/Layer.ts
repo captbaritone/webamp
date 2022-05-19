@@ -67,14 +67,18 @@ export default class Layer extends Movable {
 
   _renderRegion() {
     if (this._sysregion == 1 && this._image) {
-      const canvas = UI_ROOT.getBitmap(this._image).getCanvas();
-      const edge = new Edges();
-      edge.parseCanvasTransparency(canvas, this.getwidth(), this.getheight());
-      if (edge.isSimpleRect()) {
-        this.setXmlAttr("sysregion", "0");
-      } else {
-        this._div.style.clipPath = edge.getPolygon();
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      if (bitmap && bitmap.getImg()) {
+        const canvas = bitmap.getCanvas();
+        const edge = new Edges();
+        edge.parseCanvasTransparency(canvas, this.getwidth(), this.getheight());
+        if (!edge.isSimpleRect()) {
+          this._div.style.clipPath = edge.getPolygon();
+          return
+        }
       }
+      // if anything failed, don't repeat:
+      this.setXmlAttr("sysregion", "0");
     }
   }
 

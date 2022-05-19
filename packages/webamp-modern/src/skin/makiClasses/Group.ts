@@ -123,7 +123,7 @@ export default class Group extends Movable {
   // This shadows `getheight()` on GuiObj
   getheight(): number {
     const h = super.getheight();
-    if (h == null && this._background != null) {
+    if (!h && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
     }
@@ -139,7 +139,7 @@ export default class Group extends Movable {
       }
     }
     const w = super.getwidth();
-    if (w == 0 && this._background != null) {
+    if (!w && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
@@ -222,6 +222,7 @@ export default class Group extends Movable {
     const bitmap = child._backgroundBitmap;
     if (bitmap) {
       const img = bitmap.getImg();
+      try{
       ctx2.drawImage(
         img,
         bitmap._x,
@@ -234,6 +235,11 @@ export default class Group extends Movable {
         r.width,
         r.height
       );
+      }
+      catch(e) {
+        console.log('failed to draw bitmap:', bitmap, 'img:',img)
+        throw(e)
+      }
     }
   }
 

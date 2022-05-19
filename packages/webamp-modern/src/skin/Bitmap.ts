@@ -95,7 +95,10 @@ export default class Bitmap {
     // await imageManager.setImage(this._file, url);
     // await this.ensureImageLoaded(imageManager);
     this._img = img;
-    this._ownCache = true;
+  }
+
+  loaded(): boolean {
+    return this._img !=null;
   }
 
   // Ensure we've loaded the image into our image loader.
@@ -163,7 +166,7 @@ export default class Bitmap {
 
   getCanvas(): HTMLCanvasElement {
     if (this._canvas == null) {
-      assert(this._img != null, "Expected bitmap image to be loaded");
+      assert(this._img != null, "Expected bitmap image to be loaded: "+ this.getId() );
       this._canvas = document.createElement("canvas");
       this._canvas.width = this.getWidth() || this._img.width;
       this._canvas.height = this.getHeight() || this._img.height;

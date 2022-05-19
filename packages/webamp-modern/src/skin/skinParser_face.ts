@@ -275,7 +275,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     //? load bitmaps
     const bitmaps = await Promise.all(
       filesPath.map(async (filePath) => {
-        return await this.loadPlainBitmap(filePath, filePath);
+        return this.loadPlainBitmap(filePath, filePath);
       })
     );
 

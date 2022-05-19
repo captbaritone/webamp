@@ -135,7 +135,7 @@ export default class SkinParser {
    */
   async _loadBitmaps() {
     await this._solveMissingBitmaps();
-    await this._imageManager.loadUniquePaths();
+    // await this._imageManager.loadUniquePaths();
     await this._imageManager.ensureBitmapsLoaded();
   }
 
@@ -468,14 +468,15 @@ export default class SkinParser {
     );
     const bitmap = new Bitmap();
     bitmap.setXmlAttributes(node.attributes);
-    this._imageManager.addBitmap(bitmap);
+    //this._imageManager.addBitmap(bitmap);
 
     this._uiRoot.addBitmap(bitmap);
     this._res.bitmaps[node.attributes.id] = true;
 
-    if (this._phase == GROUP_PHASE) {
-      this._imageManager.setBimapImg(bitmap);
-    }
+    // if (this._phase == GROUP_PHASE) {
+      // this._imageManager.setBimapImg(bitmap);
+      bitmap.ensureImageLoaded(this._imageManager)
+    // }
     return bitmap
   }
 
@@ -633,7 +634,7 @@ export default class SkinParser {
     this._res.bitmaps["studio.button.pressed.bottom"] = false;
     this._res.bitmaps["studio.button.pressed.lowerRight"] = false;
 
-    await this.buildWasabiButtonFace();
+    // await this.buildWasabiButtonFace();
 
     return this.newGui(WasabiButton, node, parent);
   }
@@ -683,7 +684,7 @@ export default class SkinParser {
         await this.bitmap(btnPressedFace);
       } else {
         // we can't find ingredient, lets search the raw material
-        if (!this._imageManager.isFilePathAdded("window/window-elements.png"))
+        if (!this._uiRoot.hasBitmapFilepath("window/window-elements.png"))
           return;
 
         //? default
@@ -714,7 +715,7 @@ export default class SkinParser {
       }
 
       //TODO: why this new created bitmap doesn't loaded?
-      await this._imageManager.loadUniquePaths();
+      // await this._imageManager.loadUniquePaths();
       await this._imageManager.ensureBitmapsLoaded();
     }
   }
