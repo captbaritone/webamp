@@ -21,7 +21,7 @@ import {
 } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
-import { API_URL, CHUNK_SIZE } from "../constants";
+import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
 
 const urlChangedEpic = (actions) =>
