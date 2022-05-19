@@ -13,6 +13,13 @@ export default class ImageManager {
   _bitmaps: { [key: string]: Bitmap } = {}; //? Bitmap:file
   _bitmapAlias = {}; //? file|id : true|false|null //for BitmapFont
 
+  /**
+   * cleanup resources
+   */
+  dispose() {
+
+  }
+
   async getUrl(filePath: string): Promise<string | null> {
     if (!this._urlCache.has(filePath)) {
       const imgBlob = await UI_ROOT.getFileAsBlob(filePath);

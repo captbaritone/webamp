@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 import UI_ROOT from "../UIRoot";
 import SkinParser from "./parse";
+import AudionFaceSkinParser from "./skinParser_face";
 import ClassicSkinParser from "./skinParser_wsz";
 
 async function _loadSkin_WAL(skinPath: string) {
@@ -60,6 +61,16 @@ async function _loadSkin_WSZ(skinPath: string) {
   UI_ROOT._div.classList.add("classic");
 }
 
+async function _loadSkin_AudionFace(skinPath: string) {
+  const response = await fetch(skinPath);
+  const skinZipBlob = await response.blob();
+
+  UI_ROOT.logMessage("Loading .face archive...");
+  const zip = await JSZip.loadAsync(skinZipBlob);
+  UI_ROOT.setZip(zip);
+  await _parseSkin_WAL(AudionFaceSkinParser);
+}
+
 function prepareXuiTags() {
   UI_ROOT.addXuitagGroupDefId(
     "wasabi:mainframe:nostatus",
@@ -110,6 +121,8 @@ export async function loadSkin(container: HTMLElement, skinPath: string) {
     //
   } else if (skinPath.endsWith(".wsz")) {
     await _loadSkin_WSZ(skinPath);
+  } else if (skinPath.endsWith(".face")) {
+    await _loadSkin_AudionFace(skinPath);
     //
   } else {
     //TODO: support .swz and localhost path/to/skin-name/

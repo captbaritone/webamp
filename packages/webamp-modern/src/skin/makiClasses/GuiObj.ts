@@ -935,6 +935,12 @@ export default class GuiObj extends XmlObj {
     }
   }
 
+  setDisabledBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsDisabledBackground(this._div);
+    }
+  }
+
   draw() {
     this.getId() && this._div.setAttribute("id", this.getId());
     this._renderVisibility();

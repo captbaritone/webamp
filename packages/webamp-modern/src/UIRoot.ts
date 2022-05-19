@@ -22,9 +22,11 @@ import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit, Track } from "./skin/makiClasses/PlayList";
 import PRIVATE_CONFIG from "./skin/PrivateConfig";
+import ImageManager from "./skin/ImageManager";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
+  _imageManager: ImageManager;
   // Just a temporary place to stash things
   _bitmaps: { [id: string]: Bitmap } = {};
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -62,6 +64,8 @@ export class UIRoot {
     // document.body.appendChild(this._input);
     // TODO: dispose
     this._input.onchange = this._inputChanged;
+
+    this._imageManager = new ImageManager();
   }
 
   // shortcut of this.Emitter
@@ -83,6 +87,8 @@ export class UIRoot {
     this.deinitSkin();
     this.dispose();
     this._bitmaps = {};
+    this._imageManager.dispose();
+    this._imageManager = new ImageManager(); //TODO: dispose first
     this._fonts = [];
     this._colors = [];
     this._groupDefs = {};
@@ -113,6 +119,13 @@ export class UIRoot {
 
   getRootDiv() {
     return this._div;
+  }
+
+  getImageManager(): ImageManager {
+    return this._imageManager;
+  }
+  setImageManager(imageManager:ImageManager) {
+    this._imageManager = imageManager;
   }
 
   addObject(obj: BaseObject) {

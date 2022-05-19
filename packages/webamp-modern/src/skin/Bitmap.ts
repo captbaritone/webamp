@@ -10,7 +10,7 @@ export default class Bitmap {
   _id: string;
   _cssVar: string;
   _url: string;
-  _img: HTMLImageElement;
+  _img: CanvasImageSource;
   _canvas: HTMLCanvasElement;
   _x: number = 0;
   _y: number = 0;
@@ -29,8 +29,8 @@ export default class Bitmap {
     const key = _key.toLowerCase();
     switch (key) {
       case "id":
-        this._id = value;
-        this._cssVar = `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g, "-")}`;
+        this._id = value; //TODO: should be lowerCase here.
+        this._cssVar = genCssVar(this.getId());
         break;
       case "x":
         this._x = num(value) ?? 0;
@@ -88,8 +88,14 @@ export default class Bitmap {
     return this._gammagroup;
   }
 
-  getImg(): HTMLImageElement {
+  getImg(): CanvasImageSource {
     return this._img;
+  }
+  setImage(img: CanvasImageSource) {
+    // await imageManager.setImage(this._file, url);
+    // await this.ensureImageLoaded(imageManager);
+    this._img = img;
+    this._ownCache = true;
   }
 
   // Ensure we've loaded the image into our image loader.
@@ -149,6 +155,10 @@ export default class Bitmap {
 
   setAsHoverBackground(div: HTMLElement) {
     this._setAsBackground(div, "hover-");
+  }
+
+  setAsDisabledBackground(div: HTMLElement) {
+    this._setAsBackground(div, "disabled-");
   }
 
   getCanvas(): HTMLCanvasElement {

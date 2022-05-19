@@ -91,8 +91,8 @@ export default class SkinParser {
 
   constructor(uiRoot: UIRoot) {
     /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
-    this._imageManager = new ImageManager();
     this._uiRoot = uiRoot;
+    this._imageManager = uiRoot.getImageManager();
   }
 
   // bad name, okay I know
@@ -461,7 +461,7 @@ export default class SkinParser {
     }
   }
 
-  async bitmap(node: XmlElement) {
+  async bitmap(node: XmlElement): Promise<Bitmap> {
     assume(
       node.children.length === 0,
       "Unexpected children in <bitmap> XML node."
@@ -476,9 +476,10 @@ export default class SkinParser {
     if (this._phase == GROUP_PHASE) {
       this._imageManager.setBimapImg(bitmap);
     }
+    return bitmap
   }
 
-  async bitmapFont(node: XmlElement) {
+  async bitmapFont(node: XmlElement): Promise<BitmapFont> {
     assume(
       node.children.length === 0,
       "Unexpected children in <bitmapFont> XML node."
@@ -490,10 +491,11 @@ export default class SkinParser {
     if (externalBitmap) {
       font.setExternalBitmap(true);
     } else {
-      this._imageManager.addBitmap(font);
+      // this._imageManager.addBitmap(font);
     }
 
     this._uiRoot.addFont(font);
+    return font
   }
 
   _isExternalBitmapFont(font: BitmapFont) {
@@ -869,11 +871,12 @@ export default class SkinParser {
     await this.traverseChildren(node, parent);
   }
 
-  async container(node: XmlElement, parent: any) {
+  async container(node: XmlElement):Promise<Container> {
     const container = new Container();
     container.setXmlAttributes(node.attributes);
     this._uiRoot.addContainers(container);
     await this.traverseChildren(node, container);
+    return container;
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
