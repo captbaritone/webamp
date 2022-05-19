@@ -44,11 +44,6 @@ function hack() {
   classResolver("A funny joke about why this is needed.");
 }
 
-class ParserContext {
-  container: Container | null = null;
-  parentGroup: Group | /* Group includes Layout | */ null = null;
-}
-
 export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
   // below are some resource that immediatelly popped (removed) from xml structure.
@@ -330,7 +325,6 @@ export default class SkinParser {
    * @returns
    */
   async _predefinedXuiNode(tag: string): Promise<boolean> {
-    console.log("handling _predefinedXuiNode", tag);
     let xmlRootPath: string = "assets/freeform/xml/";
     let xmlFilePath: string = null;
     switch (tag) {
@@ -348,6 +342,7 @@ export default class SkinParser {
       default:
         return false;
     }
+    console.log("handling _predefinedXuiNode", tag);
     // push
     const oldZip = UI_ROOT.getZip();
     const oldSkinDir = UI_ROOT.getSkinDir();
@@ -474,10 +469,10 @@ export default class SkinParser {
     this._res.bitmaps[node.attributes.id] = true;
 
     // if (this._phase == GROUP_PHASE) {
-      // this._imageManager.setBimapImg(bitmap);
-      bitmap.ensureImageLoaded(this._imageManager)
+    // this._imageManager.setBimapImg(bitmap);
+    bitmap.ensureImageLoaded(this._imageManager);
     // }
-    return bitmap
+    return bitmap;
   }
 
   async bitmapFont(node: XmlElement): Promise<BitmapFont> {
@@ -496,7 +491,7 @@ export default class SkinParser {
     }
 
     this._uiRoot.addFont(font);
-    return font
+    return font;
   }
 
   _isExternalBitmapFont(font: BitmapFont) {
@@ -605,8 +600,8 @@ export default class SkinParser {
     }
   }
 
-  async button(node: XmlElement, parent: any) {
-    return this.newGui(Button, node, parent);
+  async button(node: XmlElement, parent: any): Promise<Button> {
+    return await this.newGui(Button, node, parent);
   }
 
   async wasabiButton(node: XmlElement, parent: any) {
@@ -634,7 +629,7 @@ export default class SkinParser {
     this._res.bitmaps["studio.button.pressed.bottom"] = false;
     this._res.bitmaps["studio.button.pressed.lowerRight"] = false;
 
-    // await this.buildWasabiButtonFace();
+    await this.buildWasabiButtonFace();
 
     return this.newGui(WasabiButton, node, parent);
   }
@@ -872,7 +867,7 @@ export default class SkinParser {
     await this.traverseChildren(node, parent);
   }
 
-  async container(node: XmlElement):Promise<Container> {
+  async container(node: XmlElement): Promise<Container> {
     const container = new Container();
     container.setXmlAttributes(node.attributes);
     this._uiRoot.addContainers(container);

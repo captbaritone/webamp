@@ -100,6 +100,7 @@ export default class Text extends GuiObj {
         this._fontSize = num(value);
         this.ensureFontSize();
         this._invalidateFullWidth();
+        this._prepareCss();
         break;
       case "color":
         // (int[sic?]) The comma delimited RGB color of the text.

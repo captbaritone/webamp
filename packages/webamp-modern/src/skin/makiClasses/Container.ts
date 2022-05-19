@@ -16,6 +16,7 @@ export default class Container extends XmlObj {
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
   _id: string;
+  _originalId: string; // non lowercase'd
   _name: string;
   _x: number = 0;
   _y: number = 0;
@@ -36,6 +37,7 @@ export default class Container extends XmlObj {
         this._name = value;
         break;
       case "id":
+        this._originalId = value;
         this._id = value.toLowerCase();
         break;
       case "component":
@@ -116,6 +118,9 @@ export default class Container extends XmlObj {
   }
   getId() {
     return this._id;
+  }
+  getOriginalId(): string {
+    return this._originalId;
   }
 
   getDiv(): HTMLElement {

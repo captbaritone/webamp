@@ -222,7 +222,6 @@ export default class Group extends Movable {
     const bitmap = child._backgroundBitmap;
     if (bitmap) {
       const img = bitmap.getImg();
-      try{
       ctx2.drawImage(
         img,
         bitmap._x,
@@ -235,11 +234,6 @@ export default class Group extends Movable {
         r.width,
         r.height
       );
-      }
-      catch(e) {
-        console.log('failed to draw bitmap:', bitmap, 'img:',img)
-        throw(e)
-      }
     }
   }
 
