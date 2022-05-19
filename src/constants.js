@@ -28,7 +28,7 @@ export const REVIEW_PAGE = "REVIEW_PAGE";
 // export const CDN = "https://s3.amazonaws.com/webamp-uploaded-skins";
 // export const CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
 export const S3_SCREENSHOT_CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
-export const SCREENSHOT_CDN = "https://mirror.webampskins.org";
+export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 // mirror. is having some issue with CORs headers that I need to resolve.
 export const SKIN_CDN = params.vps
   ? "https://mirror.webampskins.org"
