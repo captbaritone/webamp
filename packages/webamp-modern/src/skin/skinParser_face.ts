@@ -305,6 +305,7 @@ export default class AudionFaceSkinParser extends SkinParser {
       if (abitmap !== bitmap) {
         abitmap.setImage(null);
         abitmap.setXmlAttr("file", null);
+        this._uiRoot.removeBitmap(abitmap.getId())
       }
     }
 

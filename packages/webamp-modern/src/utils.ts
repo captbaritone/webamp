@@ -141,6 +141,20 @@ export const throttle = (fn: Function, wait: number = 300) => {
 };
 
 /**
+ * parse color string into byte values.
+ * @param hex only a valid html : '#XXXXXX'
+ * @returns an object with respected keys of: r,g,b.
+ */
+export function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+}
+
+/**
  * Purpuse: to hold eventListeners
  */
 export class Emitter {

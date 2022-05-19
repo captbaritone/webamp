@@ -1,9 +1,10 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
 import { V } from "../../maki/v";
+import AudioEventedGui from "../AudioEventedGui";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
-export default class Button extends GuiObj {
+export default class Button extends AudioEventedGui {
   static GUID = "698eddcd4fec8f1e44f9129b45ff09f9";
   _image: string;
   _downimage: string;

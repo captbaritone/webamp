@@ -137,7 +137,6 @@ export class UIRoot {
     this._bitmaps[id] = bitmap;
   }
 
-  // TODO: Maybe return a default bitmap?
   getBitmap(id: string): Bitmap {
     let lowercaseId = id.toLowerCase();
     if (!this.hasBitmap(lowercaseId)) {
@@ -147,6 +146,9 @@ export class UIRoot {
 
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
+  }
+  removeBitmap(id:string) {
+    delete this._bitmaps[id.toLowerCase()];
   }
   getBitmaps(): { [id: string]: Bitmap } {
     return this._bitmaps;

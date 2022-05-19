@@ -26,6 +26,7 @@ export default class GuiObj extends XmlObj {
   _parent: Group;
   _children: GuiObj[] = [];
   // _id: string; moved to BaseObject
+  _originalId: string; // non lowercase'd
   _name: string;
   _width: number = 0;
   _height: number = 0;
@@ -79,6 +80,7 @@ export default class GuiObj extends XmlObj {
     const key = _key.toLowerCase();
     switch (key) {
       case "id":
+        this._originalId = value;
         this._id = value.toLowerCase();
         break;
       case "name":
@@ -274,6 +276,9 @@ export default class GuiObj extends XmlObj {
   getId(): string {
     return this._id || "";
   }
+  getOriginalId(): string {
+    return this._originalId;
+  }
 
   /**
    * Trigger the show event.
@@ -292,6 +297,18 @@ export default class GuiObj extends XmlObj {
   }
   isvisible(): boolean {
     return this._visible;
+  }
+
+  /** getter setter */
+  get visible(): boolean {
+    return this._visible;
+  }
+  set visible(showing: boolean) {
+    if (showing) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   /**
@@ -327,6 +344,13 @@ export default class GuiObj extends XmlObj {
     }
     return this._height;
   }
+  get height():number {
+    return this.getheight()
+  }
+  set height(value:number){
+    this._height = value;
+    this._renderDimensions()
+  }
 
   /**
    * Get the width of the object, in pixels.
@@ -342,6 +366,13 @@ export default class GuiObj extends XmlObj {
       return w;
     }
     return this._width;
+  }
+  get width():number {
+    return this.getwidth()
+  }
+  set width(value:number){
+    this._width = value;
+    this._renderDimensions()
   }
 
   /**
