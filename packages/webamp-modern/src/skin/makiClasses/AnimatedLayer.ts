@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { ensureVmInt, num, px } from "../../utils";
+import { ensureVmInt, num, px, toBool } from "../../utils";
 import Layer from "./Layer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
@@ -8,9 +8,11 @@ export default class AnimatedLayer extends Layer {
   _currentFrame: number = 0;
   _startFrame: number = 0;
   _endFrame: number = 0;
-  _speed: number = 0;
+  _speed: number = 200;
   _frameWidth: number;
   _frameHeight: number;
+  _autoReplay: boolean = true;
+  _autoPlay: boolean = false;
   _animationInterval: NodeJS.Timeout | null = null;
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -19,9 +21,18 @@ export default class AnimatedLayer extends Layer {
       return true;
     }
     switch (key) {
+      case "speed":
+        this._speed = num(value);
+        break;
       case "frameheight":
         this._frameHeight = num(value);
         this._renderHeight();
+        break;
+      case "autoplay":
+        this._autoPlay = toBool(value);
+        break;
+      case "autoreplay":
+        this._autoReplay = toBool(value);
         break;
       default:
         return false;
@@ -74,23 +85,27 @@ export default class AnimatedLayer extends Layer {
     }
     const end = this._endFrame;
     const start = this._startFrame;
-
     const change = end > start ? 1 : -1;
 
     let frame = this._startFrame;
     this.gotoframe(frame);
+
     UI_ROOT.vm.dispatch(this, "onplay");
-    if (frame === end) {
+
+    if (frame === end && !this._autoReplay) {
       this.stop();
       return;
     }
     this._animationInterval = setInterval(() => {
       frame += change;
       this.gotoframe(frame);
+
       if (frame === end) {
-        clearInterval(this._animationInterval);
-        this._animationInterval = null;
-        this.stop();
+        if (!this._autoReplay) {
+          clearInterval(this._animationInterval);
+          this._animationInterval = null;
+          this.stop();
+        }
       }
     }, this._speed);
   }
@@ -113,9 +128,19 @@ export default class AnimatedLayer extends Layer {
     return this._height || this._div.getBoundingClientRect().height;
   }
 
+  init() {
+    super.init();
+    if(!this._frameHeight){
+      this._frameHeight = this.getheight()
+    }
+    if(this._endFrame==0 && this.getlength()>0){
+      this._endFrame= this.getlength()
+    }
+    if (this._autoPlay) this.play();
+  }
   _renderFrame() {
     this._div.style.backgroundPositionY = px(
-      -(this._currentFrame * this._getActualHeight())
+      -(this._currentFrame * this._frameHeight)
     );
   }
 

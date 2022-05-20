@@ -30,8 +30,13 @@ export default class AudionFaceSkinParser extends SkinParser {
     // console.log("GROUP_PHASE #################");
     // this._phase = GROUP_PHASE;
     const root = await this.getRootGroup();
+    // animation
+    await this.laodConnectingAnimation(root);
+
+
     await this.loadButtons(root);
     await this.loadTime(root);
+
 
     return this._uiRoot;
   }
@@ -268,7 +273,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     // await this.loadText(4, parent);
     for (var i = 1; i <= 4; i++) {
       const start = this._config[`timeDigit${i}FirstPICTID`];
-      const bitmap = await this.mergeBitmaps(start, 10, false, 0, 1);
+      await this.mergeBitmaps(start, 10, false, 0, 1);
       await this.loadText(i, parent);
     }
   }
@@ -279,7 +284,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     vertical: boolean,
     skipX: number = 0,
     skipY: number = 0
-  ) {
+  ): Promise<{width:number, height:number}> {
     const filesPath = [];
     for (var i = start; i < start + count; i++) {
       filesPath.push(`${i}.png`);
@@ -295,8 +300,8 @@ export default class AudionFaceSkinParser extends SkinParser {
     //? get dimension
     const countX = vertical ? 1 + skipX : count + skipX;
     const countY = vertical ? count + skipY : 1 + skipY;
-    const incX = vertical? 0 : 1;
-    const incY = vertical? 1 : 0;
+    const incX = vertical ? 0 : 1;
+    const incY = vertical ? 1 : 0;
     const bitmap = this._uiRoot.getBitmap(filesPath[0]);
     const w = bitmap.getWidth();
     const h = bitmap.getHeight();
@@ -327,7 +332,7 @@ export default class AudionFaceSkinParser extends SkinParser {
       }
     }
 
-    return bitmap;
+    return {width:w, height:h};
   }
 
   async loadText(digit: number, parent: Group) {
@@ -370,11 +375,26 @@ export default class AudionFaceSkinParser extends SkinParser {
   }
   //#endregion
 
-  async laodAnimation1() {
+  async laodConnectingAnimation(parent: Group) {
     //connecting
     const start = this._config[`connectingFirstPICTID`];
     const count = this._config[`connectingNumPICTs`];
-    const bitmap = await this.mergeBitmaps(start, count, true);
+    const rect = this._config[`connectingAnimRect`];
+    const delay = this._config[`connectingFrameDelay`];
+    const frame = await this.mergeBitmaps(start, count, true);
+    const node = new XmlElement("button", {
+      id: "connectingAnim",
+      image: `${start}.png`,
+      x: `${rect.left}`,
+      y: `${rect.top}`,
+      w: `${rect.right - rect.left + 1}`,
+      h: `${rect.bottom - rect.top + 1}`,
+      // frameheight: `${rect.bottom - rect.top + 1}`,
+      frameheight: `${frame.height}`,
+      speed: `${delay*100}`,
+      autoPlay: `1`,
+    });
+    const connectingAnim = await this.animatedLayer(node, parent);
   }
 
   async getRootGroup(): Promise<Group> {
