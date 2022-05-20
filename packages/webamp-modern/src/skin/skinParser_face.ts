@@ -276,7 +276,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     const filesPath = [];
     for (var i = start; i < start + count; i++) {
       filesPath.push(`${i}.png`);
-      console.log("loading merging bitmap:", i);
+      // console.log("loading merging bitmap:", i);
     }
     //? load bitmaps
     const bitmaps = await Promise.all(
