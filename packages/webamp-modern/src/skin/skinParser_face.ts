@@ -183,10 +183,16 @@ export default class AudionFaceSkinParser extends SkinParser {
     const bitmap = await this.loadPlainBitmap(fileName, name);
     // sometime the Audion Face has no hover.png
     if (bitmap.getImg() != null) {
-      this.applyTransparency(bitmap, dx, dy);
+      this.applyBaseTransparency(bitmap, dx, dy);
     }
   }
-  applyTransparency(bitmap: Bitmap, dx: number, dy: number) {
+  /**
+   * Copy transparency channel from base.png 
+   * @param bitmap the target bitmap
+   * @param dx taken from target rect.left related to base
+   * @param dy rect.top
+   */
+  applyBaseTransparency(bitmap: Bitmap, dx: number, dy: number) {
     let anyPixelChanged: boolean = false;
     const canvasb = bitmap.getCanvas();
     const ctxb = canvasb.getContext("2d");
@@ -339,11 +345,11 @@ export default class AudionFaceSkinParser extends SkinParser {
       charwidth: `${w}`,
       charheight: `${h}`,
       // fontsize: `${h}`,
-      display: "time", // should be the last
+      // display: "time", // should be the last
       digit: `${digit}`,
     });
     const text = await this.textFace(node, parent) as TimeFace;
-    // text.setXmlAttr('display', 'time')
+    text.setXmlAttr('display', 'time')
     text.setXmlAttr('fontsize', `${h}`)
   }
 

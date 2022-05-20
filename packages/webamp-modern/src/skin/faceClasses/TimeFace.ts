@@ -50,25 +50,31 @@ export default class TimeFace extends Text {
   setDisplayValue(newValue: string) {
     if (newValue !== this._displayValue) {
       const font = this._font_obj;
-      this._displayValue = newValue;
       if (this._digit != null && font instanceof BitmapFont) {
+        newValue = newValue.replace(":", "");
+        if (newValue.length < 4) {
+          newValue = "0" + newValue;
+        }
+        const char = newValue[this._digit - 1];
+        this._displayValue = char;
+  
         this._renderDigit(font);
         return;
       }
-      // super.setDisplayValue(newValue)
-      this._renderText();
+      super.setDisplayValue(newValue)
+      // this._renderText();
     }
   }
 
   _renderDigit(font: BitmapFont) {
     let text = this.gettext();
     if (text != null) {
-      text = text.replace(":", "");
-      if (text.length < 4) {
-        text = "0" + text;
-      }
-      const char = text[this._digit - 1];
-      const charNode = font.renderLetter(char);
+      // text = text.replace(":", "");
+      // if (text.length < 4) {
+      //   text = "0" + text;
+      // }
+      // const char = text[this._digit - 1];
+      const charNode = font.renderLetter(text);
       this._textWrapper.replaceChildren(charNode);
     }
   }
