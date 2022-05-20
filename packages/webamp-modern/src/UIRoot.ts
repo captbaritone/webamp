@@ -79,9 +79,6 @@ export class UIRoot {
     this._eventListener.off(event, callback);
   }
 
-  getFileAsString: (filePath: string) => Promise<string>;
-  getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
-  getFileAsBlob: (filePath: string) => Promise<Blob>;
 
   reset() {
     this.deinitSkin();
@@ -360,7 +357,7 @@ export class UIRoot {
     return aliases;
   }
 
-  _setCssVars() {
+  async _setCssVars() {
     const cssRules = [];
 
     // bitmap aliases; support multiple names (<elementalias/>)
@@ -380,22 +377,18 @@ export class UIRoot {
     ) as BitmapFont[];
     // css of bitmaps
     for (const bitmap of [...Object.values(this._bitmaps), ...bitmapFonts]) {
-      const img = bitmap.getImg();
-      if (!img) {
-        console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
-        continue;
-      }
+      // const img = bitmap.getImg();
+      // if (!img) {
+      //   console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
+      //   continue;
+      // }
 
-      const groupId = bitmap.getGammaGroup();
-      const gammaGroup = this._getGammaGroup(groupId);
-      const url = gammaGroup.transformImage(
-        img,
-        bitmap._x,
-        bitmap._y,
-        bitmap._width,
-        bitmap._height
-      );
-      cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+      // const groupId = bitmap.getGammaGroup();
+      // const gammaGroup = this._getGammaGroup(groupId);
+      // const url = await gammaGroup.transformBitmap(bitmap);
+      // cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+      // cssRules.push(await bitmap.getGammaTransformedUrl());
+      cssRules.push(await bitmap.getGammaTransformedUrl());
       //support multiple names
       maybeBitmapAliases(bitmap);
     }
@@ -575,19 +568,11 @@ export class UIRoot {
 
   setZip(zip: JSZip) {
     this._zip = zip;
-    if (zip != null) {
-      this.getFileAsString = this.getFileAsStringZip;
-      this.getFileAsBytes = this.getFileAsBytesZip;
-      this.getFileAsBlob = this.getFileAsBlobZip;
-    } else {
-      this.getFileAsString = this.getFileAsStringPath;
-      this.getFileAsBytes = this.getFileAsBytesPath;
-      this.getFileAsBlob = this.getFileAsBlobPath;
-    }
   }
   getZip(): JSZip {
     return this._zip;
   }
+
 
   //? Path things ========================
   /* needed to avoid direct fetch to root path */
@@ -600,6 +585,29 @@ export class UIRoot {
   getSkinDir(): string {
     return this._skinPath;
   }
+
+  async getFileAsString (filePath: string): Promise<string> {
+    if(this._zip==null){
+      return await this.getFileAsStringPath(filePath)
+    } else {
+      return await this.getFileAsStringZip(filePath)
+    }
+  }
+  async getFileAsBytes (filePath: string): Promise<ArrayBuffer> {
+    if(this._zip==null){
+      return await this.getFileAsBytesPath(filePath)
+    } else {
+      return await this.getFileAsBytesZip(filePath)
+    }
+  }
+  async getFileAsBlob (filePath: string): Promise<Blob> {
+    if(this._zip==null){
+      return await this.getFileAsBlobPath(filePath)
+    } else {
+      return await this.getFileAsBlobZip(filePath)
+    }
+  }
+
 
   async getFileAsStringZip(filePath: string): Promise<string> {
     if (!filePath) return null;

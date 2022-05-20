@@ -130,7 +130,6 @@ export default class SkinParser {
    */
   async _loadBitmaps() {
     await this._solveMissingBitmaps();
-    // await this._imageManager.loadUniquePaths();
     await this._imageManager.ensureBitmapsLoaded();
   }
 
@@ -226,7 +225,7 @@ export default class SkinParser {
       case "layer":
         return this.layer(node, parent);
       case "container":
-        return this.container(node, parent);
+        return this.container(node);
       case "layoutstatus":
         return this.layoutStatus(node, parent);
       case "grid":
@@ -470,7 +469,7 @@ export default class SkinParser {
 
     // if (this._phase == GROUP_PHASE) {
     // this._imageManager.setBimapImg(bitmap);
-    bitmap.ensureImageLoaded(this._imageManager);
+    await bitmap.ensureImageLoaded(this._imageManager);
     // }
     return bitmap;
   }

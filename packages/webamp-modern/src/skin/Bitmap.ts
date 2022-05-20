@@ -1,3 +1,4 @@
+import UI_ROOT from "../UIRoot";
 import { assert, getId, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
@@ -98,7 +99,7 @@ export default class Bitmap {
   }
 
   loaded(): boolean {
-    return this._img !=null;
+    return this._img != null;
   }
 
   // Ensure we've loaded the image into our image loader.
@@ -110,11 +111,9 @@ export default class Bitmap {
 
     //force. also possibly set null:
     this._img = await imageManager.getImage(this._file);
-    if (this._img) {
-      if (this._width == null && this._height == null) {
-        this.setXmlAttr("w", String(this._img.width));
-        this.setXmlAttr("h", String(this._img.height));
-      }
+    if (this._img && this._width == null && this._height == null) {
+      this.setXmlAttr("w", String(this._img.width));
+      this.setXmlAttr("h", String(this._img.height));
     }
   }
 
@@ -164,16 +163,75 @@ export default class Bitmap {
     this._setAsBackground(div, "disabled-");
   }
 
-  getCanvas(): HTMLCanvasElement {
-    if (this._canvas == null) {
-      assert(this._img != null, "Expected bitmap image to be loaded: "+ this.getId() );
-      this._canvas = document.createElement("canvas");
-      this._canvas.width = this.getWidth() || this._img.width;
-      this._canvas.height = this.getHeight() || this._img.height;
-      const ctx = this._canvas.getContext("2d");
-      // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      ctx.drawImage(this._img, -this._x, -this._y);
+  async getGammaTransformedUrl(): Promise<string> {
+    const buildCssProp = (url:string) => `  ${this.getCSSVar()}: url(${url});`;
+    const img = this.getImg();
+      if (!img) {
+        console.warn(`Bitmap/font ${this.getId()} has no img. skipped.`);
+        return '';
+      }
+
+      const groupId = this.getGammaGroup();
+      const gammaGroup = UI_ROOT._getGammaGroup(groupId);
+      if(gammaGroup._value=='0,0,0'){
+        // triple zero meaning no gamma should be applied.
+        // return bitmap.getCanvas().toDataURL();
+        const url = await this.toDataURL();
+        return buildCssProp(url)
+      }
+      const url = gammaGroup.transformImage(
+        img as HTMLImageElement,
+        this._x,
+        this._y,
+        this._width,
+        this._height
+      );
+      return buildCssProp(url)
+  }
+  /**
+   * Final function that uses Bitmap;
+   * Afther call this, bitmap maybe destroyed.
+   * @returns url string used as embedded in <head><style>
+   */
+  async toDataURL(): Promise<string> {
+    if (this._file.endsWith(".gif") /* && !this._transparentColor */) {
+      // don't draw _img into canvas, if it is animated gif
+      return await UI_ROOT.getImageManager().getUrl(this._file);
+    } else {
+      return this.getCanvas().toDataURL();
     }
-    return this._canvas;
+  }
+
+  /**
+   * Useful for calculating clip-path
+   * @param store whether the generated canvas should be
+   *              kept by this bitmap instance
+   * @returns <canvas/>
+   */
+  getCanvas(store: boolean = false): HTMLCanvasElement {
+    let workingCanvas: HTMLCanvasElement;
+    if (this._canvas == null || !store) {
+      assert(
+        this._img != null,
+        `Expected bitmap image to be loaded: ${this.getId()}`
+      );
+      if(this._img instanceof HTMLCanvasElement){
+        workingCanvas = this._img
+      } else {
+        workingCanvas = document.createElement("canvas");
+        workingCanvas.width = this.getWidth() /* || this._img.width */;
+        workingCanvas.height = this.getHeight() /* || this._img.height */;
+        const ctx = workingCanvas.getContext("2d");
+        // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+        ctx.drawImage(this._img, -this._x, -this._y);
+      }
+      if (store) {
+        this._canvas = workingCanvas;
+      }
+    }
+    if (store) {
+      workingCanvas = this._canvas;
+    }
+    return workingCanvas;
   }
 }
