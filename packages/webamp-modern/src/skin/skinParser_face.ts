@@ -165,7 +165,9 @@ export default class AudionFaceSkinParser extends SkinParser {
       name = fileName;
     }
     //* const rect = this._config[`${name}Rect`];
-    const bitmap = await this.bitmap(new XmlElement('bitmap',{ id: name, file: fileName }));
+    const bitmap = await this.bitmap(
+      new XmlElement("bitmap", { id: name, file: fileName })
+    );
     await bitmap.ensureImageLoaded(this._imageManager);
     return bitmap;
   }
@@ -187,7 +189,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     }
   }
   /**
-   * Copy transparency channel from base.png 
+   * Copy transparency channel from base.png
    * @param bitmap the target bitmap
    * @param dx taken from target rect.left related to base
    * @param dy rect.top
@@ -264,15 +266,20 @@ export default class AudionFaceSkinParser extends SkinParser {
     // const start4 = this._config["timeDigit4FirstPICTID"];
     // const bitmap = await this.mergeBitmaps(start4, 10);
     // await this.loadText(4, parent);
-    for(var i = 1; i <=4; i++){
+    for (var i = 1; i <= 4; i++) {
       const start = this._config[`timeDigit${i}FirstPICTID`];
-      const bitmap = await this.mergeBitmaps(start, 10);
+      const bitmap = await this.mergeBitmaps(start, 10, false, 0, 1);
       await this.loadText(i, parent);
-  
     }
   }
 
-  async mergeBitmaps(start: number, count: number) {
+  async mergeBitmaps(
+    start: number,
+    count: number,
+    vertical: boolean,
+    skipX: number = 0,
+    skipY: number = 0
+  ) {
     const filesPath = [];
     for (var i = start; i < start + count; i++) {
       filesPath.push(`${i}.png`);
@@ -286,24 +293,29 @@ export default class AudionFaceSkinParser extends SkinParser {
     );
 
     //? get dimension
+    const countX = vertical ? 1 + skipX : count + skipX;
+    const countY = vertical ? count + skipY : 1 + skipY;
+    const incX = vertical? 0 : 1;
+    const incY = vertical? 1 : 0;
     const bitmap = this._uiRoot.getBitmap(filesPath[0]);
     const w = bitmap.getWidth();
     const h = bitmap.getHeight();
-    //? do not reorder lines below
     const canvas = bitmap.getCanvas();
-    canvas.width = w * count;
-    canvas.height = h * 2;
+    canvas.width = w * countX;
+    canvas.height = h * countY;
     const ctx = canvas.getContext("2d");
 
     //? merging process
-    let l = 0;
+    let x = w * skipX;
+    let y = h * skipY;
     for (const abitmap of bitmaps) {
-      ctx.drawImage(abitmap.getImg(), l, h);
-      l += w;
+      ctx.drawImage(abitmap.getImg(), x, y);
+      x += incX * w;
+      y += incY * h;
     }
     //?update
-    bitmap.setXmlAttr("w", `${w * count}`);
-    bitmap.setXmlAttr("h", `${h * 2}`);
+    bitmap.setXmlAttr("w", `${canvas.width}`);
+    bitmap.setXmlAttr("h", `${canvas.height}`);
     bitmap.setImage(canvas);
 
     //? delete unused
@@ -311,7 +323,7 @@ export default class AudionFaceSkinParser extends SkinParser {
       if (abitmap !== bitmap) {
         abitmap.setImage(null);
         abitmap.setXmlAttr("file", null);
-        this._uiRoot.removeBitmap(abitmap.getId())
+        this._uiRoot.removeBitmap(abitmap.getId());
       }
     }
 
@@ -348,15 +360,22 @@ export default class AudionFaceSkinParser extends SkinParser {
       // display: "time", // should be the last
       digit: `${digit}`,
     });
-    const text = await this.textFace(node, parent) as TimeFace;
-    text.setXmlAttr('display', 'time')
-    text.setXmlAttr('fontsize', `${h}`)
+    const text = (await this.textFace(node, parent)) as TimeFace;
+    text.setXmlAttr("display", "time");
+    text.setXmlAttr("fontsize", `${h}`);
   }
 
   async textFace(node: XmlElement, parent: any): Promise<TimeFace> {
     return this.newGui(TimeFace, node, parent);
   }
   //#endregion
+
+  async laodAnimation1() {
+    //connecting
+    const start = this._config[`connectingFirstPICTID`];
+    const count = this._config[`connectingNumPICTs`];
+    const bitmap = await this.mergeBitmaps(start, count, true);
+  }
 
   async getRootGroup(): Promise<Group> {
     let node: XmlElement = new XmlElement("container", { id: "root" });
