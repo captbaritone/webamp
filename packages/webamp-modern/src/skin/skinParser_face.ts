@@ -32,8 +32,9 @@ export default class AudionFaceSkinParser extends SkinParser {
     const root = await this.getRootGroup();
 
     // animation
-    await this.laodConnectingAnimation(root);
+    // await this.laodConnectingAnimation(root);
     await this.laodStreamingAnimation(root);
+    // await this.laodNetLagAnimation(root);
 
     await this.loadButtons(root);
     await this.loadTime(root);
