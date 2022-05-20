@@ -30,13 +30,13 @@ export default class AudionFaceSkinParser extends SkinParser {
     // console.log("GROUP_PHASE #################");
     // this._phase = GROUP_PHASE;
     const root = await this.getRootGroup();
+
     // animation
     await this.laodConnectingAnimation(root);
-
+    await this.laodStreamingAnimation(root);
 
     await this.loadButtons(root);
     await this.loadTime(root);
-
 
     return this._uiRoot;
   }
@@ -284,7 +284,7 @@ export default class AudionFaceSkinParser extends SkinParser {
     vertical: boolean,
     skipX: number = 0,
     skipY: number = 0
-  ): Promise<{width:number, height:number}> {
+  ): Promise<{ width: number; height: number }> {
     const filesPath = [];
     for (var i = start; i < start + count; i++) {
       filesPath.push(`${i}.png`);
@@ -332,7 +332,7 @@ export default class AudionFaceSkinParser extends SkinParser {
       }
     }
 
-    return {width:w, height:h};
+    return { width: w, height: h };
   }
 
   async loadText(digit: number, parent: Group) {
@@ -376,14 +376,24 @@ export default class AudionFaceSkinParser extends SkinParser {
   //#endregion
 
   async laodConnectingAnimation(parent: Group) {
-    //connecting
-    const start = this._config[`connectingFirstPICTID`];
-    const count = this._config[`connectingNumPICTs`];
-    const rect = this._config[`connectingAnimRect`];
-    const delay = this._config[`connectingFrameDelay`];
+    await this.laodAnimation("connecting", parent);
+  }
+
+  async laodStreamingAnimation(parent: Group) {
+    await this.laodAnimation("streaming", parent);
+  }
+  async laodNetLagAnimation(parent: Group) {
+    await this.laodAnimation("netLag", parent);
+  }
+
+  async laodAnimation(prefix: string, parent: Group) {
+    const start = this._config[`${prefix}FirstPICTID`];
+    const count = this._config[`${prefix}NumPICTs`];
+    const rect = this._config[`${prefix}AnimRect`];
+    const delay = this._config[`${prefix}FrameDelay`];
     const frame = await this.mergeBitmaps(start, count, true);
     const node = new XmlElement("button", {
-      id: "connectingAnim",
+      id: "${prefix}Anim",
       image: `${start}.png`,
       x: `${rect.left}`,
       y: `${rect.top}`,
@@ -391,10 +401,10 @@ export default class AudionFaceSkinParser extends SkinParser {
       h: `${rect.bottom - rect.top + 1}`,
       // frameheight: `${rect.bottom - rect.top + 1}`,
       frameheight: `${frame.height}`,
-      speed: `${delay*100}`,
+      speed: `${delay * 100}`,
       autoPlay: `1`,
     });
-    const connectingAnim = await this.animatedLayer(node, parent);
+    await this.animatedLayer(node, parent);
   }
 
   async getRootGroup(): Promise<Group> {
