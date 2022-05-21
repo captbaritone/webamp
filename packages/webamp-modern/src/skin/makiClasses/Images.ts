@@ -5,6 +5,7 @@ import Layer from "./Layer";
 //? Images is used by classic skin to change background of Volume & Balance only.
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cimages.2F.3E
 export default class Images extends Layer {
+  static GUID = "OFFICIALLY-NO-GUID";
   _currentFrame: number = 0;
   _frameCount: number;
   _frameHeight: number;
@@ -53,12 +54,12 @@ export default class Images extends Layer {
 
   updateVolume = () => {
     const vol = UI_ROOT.audio.getVolume(); //0..1
-    this.gotoframe(vol * this._frameCount);
+    this.gotoFrame(vol * this._frameCount);
   };
 
   updateBalance = () => {
     const balance = UI_ROOT.audio.getBalance(); //0..1
-    this.gotoframe(balance * this._frameCount);
+    this.gotoFrame(balance * this._frameCount);
   };
 
   _getImageHeight(): number {
@@ -66,7 +67,7 @@ export default class Images extends Layer {
     return bitmap.getHeight();
   }
 
-  gotoframe(framenum: number) {
+  gotoFrame(framenum: number) {
     this._currentFrame = Math.ceil(framenum);
     this._renderFrame();
   }

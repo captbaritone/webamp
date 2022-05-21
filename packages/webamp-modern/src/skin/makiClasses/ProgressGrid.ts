@@ -2,9 +2,8 @@ import Grid from "./Grid";
 import UI_ROOT from "../../UIRoot";
 import { px } from "../../utils";
 
-// http://wiki.winamp.com/wiki/XML_GUI_Objects
 export default class ProgressGrid extends Grid {
-  //   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
+  static GUID = "OFFICIALLY-NO-GUID";
   _disposeDisplaySubscription: () => void | null = null;
 
   constructor() {

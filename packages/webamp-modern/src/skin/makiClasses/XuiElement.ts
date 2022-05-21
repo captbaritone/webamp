@@ -1,7 +1,7 @@
 import Group from "./Group";
 import UI_ROOT from "../../UIRoot";
 
-export default class XuiElement extends Group {
+export default abstract class XuiElement extends Group {
   __inited: boolean = false;
 
   _unhandledXuiParams: { key: string; value: string }[] = []; //https://github.com/captbaritone/webamp/pull/1161#discussion_r830527754

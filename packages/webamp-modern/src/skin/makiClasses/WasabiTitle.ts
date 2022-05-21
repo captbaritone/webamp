@@ -3,7 +3,7 @@ import { num, px, relative } from "../../utils";
 import Group from "./Group";
 
 export default class WasabiTitleBar extends Group {
-  static GUID = "7DFD324437514e7cBF4082AE5F3ADC33";
+  static GUID = "7DFD32444e7c3751AE8240BF33DC3A5F";
   _padtitleleft: number = 0;
   _padtitleright: number = 0;
 

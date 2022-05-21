@@ -6,6 +6,7 @@ import GuiObj from "./GuiObj";
 import SkinParser from "../parse";
 
 export default class GroupXFade extends Group {
+  static GUID = "OFFICIALLY-NO-GUID";
   _speed: number = null;
   _activeChild: GuiObj = null;
 

@@ -1139,7 +1139,7 @@ export default class SystemObject extends BaseObject {
    * @param  separator   The separator to use.
    * @param  tokennum    The token to retreive.
    */
-  gettoken(str: string, separator: string, tokennum: number) {
+  gettoken(str: string, separator: string, tokennum: number):string {
     // getToken("28,39,-56,-84,0,0,1,1", ",", 3) will return "-84"
     const commas = str.split(separator);
     return commas[tokennum] || "";

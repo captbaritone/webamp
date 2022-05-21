@@ -34,6 +34,8 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
           });
           firstProblem = false
         }
+      } else if(guid=='OFFICIALLY-NO-GUID') {
+        //? Okay, it seem that the class is never touched by maki script
       } else {
         const objectInfo = getClass(guid);
         if (objectInfo == null) {

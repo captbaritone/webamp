@@ -4,8 +4,8 @@ import Group from "./Group";
 import Slider, { ActionHandler } from "./Slider";
 
 export default class PlayListGui extends Group {
-  static GUID = "pl";
-  static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
+  static GUID = "45F3F7C14ee6A6F35E125EA18D3FFC92";
+  // static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
   _selectedIndex: number = -1;
   _contentPanel: HTMLDivElement = document.createElement("div");
   _slider: Slider = new Slider();

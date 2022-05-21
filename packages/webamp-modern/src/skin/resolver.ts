@@ -16,6 +16,7 @@ import MakiMap from "./makiClasses/MakiMap";
 import Timer from "./makiClasses/Timer";
 import Slider from "./makiClasses/Slider";
 import Vis from "./makiClasses/Vis";
+import EqVis from "./makiClasses/EqVis";
 import GuiObj from "./makiClasses/GuiObj";
 import Config from "./makiClasses/Config";
 import ConfigItem from "./makiClasses/ConfigItem";
@@ -25,6 +26,8 @@ import ComponentBucket from "./makiClasses/ComponentBucket";
 import AlbumArt from "./makiClasses/AlbumArt";
 import Region from "./makiClasses/Region";
 import { PlEdit, PlDir } from "./makiClasses/PlayList";
+import PlayListGui from "./makiClasses/PlayListGui";
+import WasabiTitleBar from "./makiClasses/WasabiTitle";
 
 const CLASSES = [
   BaseObject,
@@ -52,9 +55,12 @@ const CLASSES = [
   Timer,
   Slider,
   Vis,
+  EqVis,
   PlEdit,
   PlDir,
+  PlayListGui,
   GuiObj,
+  WasabiTitleBar,
 ];
 
 const GUID_MAP = {};

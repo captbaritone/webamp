@@ -3,8 +3,9 @@ import UI_ROOT from "../../UIRoot";
 import { px } from "../../utils";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects
+// @ts-ignore In fact Grid has no GUID
 export default class Grid extends GuiObj {
-  //   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
+  static GUID = "OFFICIALLY-NO-GUID";
   _image: string; // link to Bitmap._id
   _left: HTMLElement;
   _middle: HTMLElement;
