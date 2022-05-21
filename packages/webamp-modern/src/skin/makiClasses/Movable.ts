@@ -8,7 +8,7 @@ import GuiObj from "./GuiObj";
 import Layout from "./Layout";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 
-export default class Movable extends GuiObj {
+export default abstract class Movable extends GuiObj {
   _movable: boolean = false;
   _resizable: number = 0;
   _resize: string;

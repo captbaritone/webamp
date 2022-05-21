@@ -91,8 +91,8 @@ export default class Button extends AudioEventedGui {
   getactivated(): boolean {
     return this._active ? true : false;
   }
-  setactivated(_onoff: boolean | number) {
-    const onoff = Boolean(_onoff);
+  setactivated(onoff: boolean): void {
+    onoff = Boolean(onoff); // may receive int as bool
 
     if (onoff !== this._active) {
       this._active = onoff;

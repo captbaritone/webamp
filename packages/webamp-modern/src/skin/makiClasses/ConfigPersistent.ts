@@ -2,7 +2,7 @@ import { debounce } from "../../utils";
 import BaseObject from "./BaseObject";
 
 export type SectionValues = { [key: string]: string };
-export default class ConfigPersistent extends BaseObject {
+export default abstract class ConfigPersistent extends BaseObject {
   _configTree: { [section: string]: SectionValues };
 
   getStorageName(): string {

@@ -7,7 +7,7 @@ type ColorTriplet = string;
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ceqvis.2F.3E
 export default class EqVis extends GuiObj {
-  static GUID = "8d1eba38489e483eb9608d1f43c5c405";
+  static GUID = "8d1eba38483e489e1f8d60b905c4c543";
   _canvas: HTMLCanvasElement = document.createElement("canvas");
   _preampImg: HTMLCanvasElement = document.createElement("canvas");
   _colorTop: ColorTriplet = "255,255,255";
