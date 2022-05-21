@@ -1,5 +1,5 @@
 import { XmlElement } from "@rgrove/parse-xml";
-import { UIRoot } from "../UIRoot";
+import UI_ROOT, { UIRoot } from "../UIRoot";
 import Bitmap from "./Bitmap";
 import ButtonFace from "./faceClasses/ButtonFace";
 import TimeFace from "./faceClasses/TimeFace";
@@ -33,16 +33,21 @@ export default class AudionFaceSkinParser extends SkinParser {
 
     // animation
     // await this.laodConnectingAnimation(root);
-    await this.laodStreamingAnimation(root);
+    // await this.laodStreamingAnimation(root);
     // await this.laodNetLagAnimation(root);
+    await this.laodAnimations(root);
+
+    await this.laodIndicators(root);
 
     await this.loadButtons(root);
     await this.loadTime(root);
 
+    await this.laodTexts(root);
+
     return this._uiRoot;
   }
 
-  //#region (collapsed) load-bitmap
+  // #region (collapsed) load-bitmap
 
   async loadKnowBitmaps() {
     await this.loadBase();
@@ -61,7 +66,7 @@ export default class AudionFaceSkinParser extends SkinParser {
 
   //#endregion
 
-  //#region (collapsed) load-button ==============================
+  // #region (collapsed) load-button ==============================
   async loadButtons(parent: Group) {
     await this.loadButton("pause", parent, { rectName: "play" });
     await this.loadButton("play", parent, {
@@ -187,12 +192,13 @@ export default class AudionFaceSkinParser extends SkinParser {
     name: string = null,
     dx: number = 0,
     dy: number = 0
-  ) {
+  ): Promise<Bitmap> {
     const bitmap = await this.loadPlainBitmap(fileName, name);
     // sometime the Audion Face has no hover.png
     if (bitmap.getImg() != null) {
-      this.applyBaseTransparency(bitmap, dx, dy);
+      await this.applyBaseTransparency(bitmap, dx, dy);
     }
+    return bitmap;
   }
   /**
    * Copy transparency channel from base.png
@@ -200,7 +206,7 @@ export default class AudionFaceSkinParser extends SkinParser {
    * @param dx taken from target rect.left related to base
    * @param dy rect.top
    */
-  applyBaseTransparency(bitmap: Bitmap, dx: number, dy: number) {
+  async applyBaseTransparency(bitmap: Bitmap, dx: number, dy: number) {
     let anyPixelChanged: boolean = false;
     const canvasb = bitmap.getCanvas();
     const ctxb = canvasb.getContext("2d");
@@ -233,6 +239,41 @@ export default class AudionFaceSkinParser extends SkinParser {
       bitmap.setImage(canvasb);
     }
   }
+  makeHoleInBase(rect: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  }) {
+    const bitmap = UI_ROOT.getBitmap("base.png");
+    const canvas = bitmap.getCanvas();
+    const ctx = canvas.getContext("2d");
+    const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = img.data;
+    const bw = bitmap.getWidth();
+    // const bh = bitmap.getHeight();
+    let anyPixelChanged = false;
+
+    for (var y = rect.top; y <= rect.bottom; y++) {
+      for (var x = rect.left; x <= rect.right; x++) {
+        const b = y * bw + x;
+        //? ignore transparent
+        if (data[b * 4 + 3] != 0) {
+          data[b * 4 + 3] = 0;
+          anyPixelChanged = true;
+        }
+      }
+    }
+
+    // to reduce resource in RAM and avoid polution,
+    // we do not add new resource if the bitmap is completely opaque
+    if (anyPixelChanged) {
+      ctx.putImageData(img, 0, 0);
+
+      // update img
+      bitmap.setImage(canvas);
+    }
+  }
   //#endregion
 
   // #region (collapsed) SongTime & it's Bitmaps
@@ -255,26 +296,9 @@ export default class AudionFaceSkinParser extends SkinParser {
   */
 
   async loadTime(parent: Group) {
-    const rect = this._config["timeDigit4Rect"];
-    // let node = new XmlElement("text", {
-    //   id: "song-timer",
-    //   x: `${rect.left}`,
-    //   y: `${rect.top}`,
-    //   w: `${rect.right - rect.left}`,
-    //   h: `${rect.bottom - rect.top}`,
-    // });
-    // const time = this.newGui(TimeFace, node, parent);
-
-    //real text
-    // const start1 = this._config["timeDigit1FirstPICTID"];
-    // const start2 = this._config["timeDigit2FirstPICTID"];
-    // const start3 = this._config["timeDigit3FirstPICTID"];
-    // const start4 = this._config["timeDigit4FirstPICTID"];
-    // const bitmap = await this.mergeBitmaps(start4, 10);
-    // await this.loadText(4, parent);
     for (var i = 1; i <= 4; i++) {
       const start = this._config[`timeDigit${i}FirstPICTID`];
-      await this.mergeBitmaps(start, 10, false, 0, 1);
+      await this.mergeBitmaps(start, 10, false, false, 0, 0, 0, 1);
       await this.loadText(i, parent);
     }
   }
@@ -283,6 +307,9 @@ export default class AudionFaceSkinParser extends SkinParser {
     start: number,
     count: number,
     vertical: boolean,
+    applyBaseTransparency: boolean,
+    dx: number = 0,
+    dy: number = 0,
     skipX: number = 0,
     skipY: number = 0
   ): Promise<{ width: number; height: number }> {
@@ -292,9 +319,13 @@ export default class AudionFaceSkinParser extends SkinParser {
       // console.log("loading merging bitmap:", i);
     }
     //? load bitmaps
-    const bitmaps = await Promise.all(
+    const bitmaps: Bitmap[] = await Promise.all(
       filesPath.map(async (filePath) => {
-        return this.loadPlainBitmap(filePath, filePath);
+        return await this.loadBitmap(filePath, filePath, dx, dy);
+        // return this.loadPlainBitmap(filePath, filePath);
+        // return await applyBaseTransparency
+        //   ? this.loadBitmap(filePath, filePath)
+        //   : this.loadPlainBitmap(filePath, filePath);
       })
     );
 
@@ -303,10 +334,13 @@ export default class AudionFaceSkinParser extends SkinParser {
     const countY = vertical ? count + skipY : 1 + skipY;
     const incX = vertical ? 0 : 1;
     const incY = vertical ? 1 : 0;
-    const bitmap = this._uiRoot.getBitmap(filesPath[0]);
+    // const bitmap = this._uiRoot.getBitmap(filesPath[0]);
+    const bitmap = bitmaps[0];
+    console.log("merge getBitmap:", filesPath[0]);
     const w = bitmap.getWidth();
     const h = bitmap.getHeight();
-    const canvas = bitmap.getCanvas();
+    // const canvas = bitmap.getCanvas();
+    const canvas = document.createElement("canvas");
     canvas.width = w * countX;
     canvas.height = h * countY;
     const ctx = canvas.getContext("2d");
@@ -376,37 +410,123 @@ export default class AudionFaceSkinParser extends SkinParser {
   }
   //#endregion
 
-  async laodConnectingAnimation(parent: Group) {
-    await this.laodAnimation("connecting", parent);
+  // #region (collapsed) Animation
+  async laodAnimations(parent: Group) {
+    await Promise.all([
+      // this.laodConnectingAnimation(parent),
+      // this.laodStreamingAnimation(parent),
+      // this.laodNetLagAnimation(parent),
+      // this.laodAnimation("connecting", parent, true),
+      this.laodAnimation("streaming", parent),
+      // this.laodAnimation("netLag", parent),
+    ]);
   }
+  // async laodConnectingAnimation(parent: Group) {
+  //   await this.laodAnimation("connecting", parent);
+  // }
 
-  async laodStreamingAnimation(parent: Group) {
-    await this.laodAnimation("streaming", parent);
-  }
-  async laodNetLagAnimation(parent: Group) {
-    await this.laodAnimation("netLag", parent);
-  }
+  // async laodStreamingAnimation(parent: Group) {
+  //   await this.laodAnimation("streaming", parent);
+  // }
+  // async laodNetLagAnimation(parent: Group) {
+  //   await this.laodAnimation("netLag", parent);
+  // }
 
-  async laodAnimation(prefix: string, parent: Group) {
+  async laodAnimation(
+    prefix: string,
+    parent: Group,
+    makeHole: boolean = false
+  ) {
     const start = this._config[`${prefix}FirstPICTID`];
     const count = this._config[`${prefix}NumPICTs`];
     const rect = this._config[`${prefix}AnimRect`];
     const delay = this._config[`${prefix}FrameDelay`];
-    const frame = await this.mergeBitmaps(start, count, true);
-    const node = new XmlElement("button", {
+    const frame = await this.mergeBitmaps(
+      start,
+      count,
+      true,
+      true,
+      rect.left,
+      rect.top
+    );
+    const node = new XmlElement("animatedLayer", {
       id: "${prefix}Anim",
       image: `${start}.png`,
       x: `${rect.left}`,
       y: `${rect.top}`,
-      w: `${rect.right - rect.left + 1}`,
-      h: `${rect.bottom - rect.top + 1}`,
+      w: `${rect.right - rect.left}`,
+      h: `${rect.bottom - rect.top}`,
       // frameheight: `${rect.bottom - rect.top + 1}`,
       frameheight: `${frame.height}`,
       speed: `${delay * 100}`,
       autoPlay: `1`,
+      start: `0`,
+      end: `${count - 1}`,
     });
     await this.animatedLayer(node, parent);
+    if (makeHole) {
+      this.makeHoleInBase(rect);
+    }
   }
+  // #endregion
+
+  // #region (collapsed) Indicator
+  async laodIndicators(parent: Group) {
+    return await Promise.all([
+      this.laodIndicator("MP3", parent),
+      this.laodIndicator("CD", parent),
+      this.laodIndicator("CDDB", parent),
+      this.laodIndicator("net", parent),
+    ]);
+  }
+  async laodIndicator(prefix: string, parent: Group) {
+    const rect = this._config[`${prefix}IndicatorRect`];
+    await this.loadBitmap(`${prefix}.png`, `${prefix}`, rect.left, rect.top);
+    await this.loadBitmap(
+      `${prefix}-on.png`,
+      `${prefix}-on`,
+      rect.left,
+      rect.top
+    );
+
+    const node = new XmlElement("layer", {
+      id: `${prefix}Indicator`,
+      image: `${prefix}`,
+      x: `${rect.left}`,
+      y: `${rect.top}`,
+      w: `${rect.right - rect.left}`,
+      h: `${rect.bottom - rect.top}`,
+      // frameheight: `${rect.bottom - rect.top + 1}`,
+    });
+    await this.layer(node, parent);
+  }
+  //#endregion
+
+  // #region (collapsed) Text
+  async laodTexts(parent: Group) {
+    this.laodText("artist", "songtitle", parent);
+    this.laodText("album", "songinfo", parent);
+  }
+  async laodText(prefix: string, action: string, parent: Group) {
+    const rect = this._config[`${prefix}DisplayRect`];
+    // const color = this._config[`${prefix}DisplayTextFaceColorFromTxtr`];
+    const textMode = this._config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
+    const color = this._config[`${prefix}DisplayTextFaceColorFrom${textMode}`];
+
+    const node = new XmlElement("text", {
+      id: `${prefix}-text`,
+      text: `${action}`,
+      display: `${action}`,
+      ticker: `${1}`,
+      color: `${color.red},${color.green},${color.blue}`,
+      x: `${rect.left}`,
+      y: `${rect.top}`,
+      w: `${rect.right - rect.left}`,
+      h: `${rect.bottom - rect.top}`,
+    });
+    await this.text(node, parent);
+  }
+  //#endregion
 
   async getRootGroup(): Promise<Group> {
     let node: XmlElement = new XmlElement("container", { id: "root" });
