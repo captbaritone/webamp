@@ -75,7 +75,7 @@ colorthemeslist > select {
   content: none;
 }
 
-.pl > slider::before /* button.wasabi */ {
+.pl > slider::after /* button.wasabi */ {
   box-sizing: border-box;
   background-image: none;
   border: 4px solid transparent;
@@ -84,11 +84,11 @@ colorthemeslist > select {
   border-image-slice: 4 fill;
   vertical-align: middle;
 }
-.pl > slider:active:before /* button.wasabi:active  */ {
+.pl > slider:active:after /* button.wasabi:active  */ {
   border-image-source: var(--bitmap-studio-button-pressed);
 }
 
-.pl > slider::after {
+.pl > slider::before {
   content: "";
   position: absolute;
   /* TODO: do centering it by calc the real grip's bitmap height/width. */
