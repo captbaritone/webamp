@@ -8,6 +8,7 @@ export class Edges {
   _right: number[][] = [];
   _bottom: number[][] = [];
   _left: number[][] = [];
+  simplify: boolean = true;
 
   /**
    * Replacable function
@@ -69,10 +70,12 @@ export class Edges {
     const ctx = canvas.getContext("2d");
     this._data = ctx.getImageData(0, 0, w, h);
     let points: number[][] = [];
-    var x: number, y: number;
+    var x: number, y: number, lastX: number, lastY: number;
 
     function post(x: number, y: number, ax: number, ay: number) {
-      points.push([x, y, ax, ay]);
+      points.push([ax, ay]);
+      lastX = x;
+      lastY = y;
     }
 
     //? top -------------------------------------------------
@@ -89,8 +92,8 @@ export class Edges {
       }
     }
     this._top = points;
-    const lastTop: number =
-      points.length == 0 ? 0 : points[points.length - 1][1]; // get y
+    const lastTop: number = lastY;
+    const firstTop: number = points[0][1]
 
     //? Right -------------------------------------------------
     points = [];
@@ -106,8 +109,7 @@ export class Edges {
       }
     }
     this._right = points;
-    const lastRight: number =
-      points.length == 0 ? w - 1 : points[points.length - 1][0]; // get x
+    const lastRight: number = lastX;
 
     //? bottom -------------------------------------------------
     points = [];
@@ -124,12 +126,11 @@ export class Edges {
       }
     }
     this._bottom = points;
-    const lastBottom: number =
-      points.length == 0 ? h - 1 : points[points.length - 1][1]; // get y
+    const lastBottom: number = lastY;
 
     //? Left -------------------------------------------------
     points = [];
-    for (y = lastBottom; y >= 0; y--) {
+    for (y = lastBottom; y >= firstTop; y--) {
       //? scan left, bottom->top
       for (x = 0; x < w; x++) {
         //? find most right of non-transparent
@@ -143,23 +144,24 @@ export class Edges {
     this._left = points;
   }
 
-  _buildPoint(points: number[][]):string {
-    return points.map((point):string=>`${point[2]}px ${point[3]}px`).join(', ')
+  _buildPoint(points: number[][]): string {
+    const result = this.simplify ? simplifyPoints(points) : points;
+    return result
+      .map((point): string => `${point[0]}px ${point[1]}px`)
+      .join(", ");
   }
 
   gettop(): string {
-    return this._top.join(", ");
+    return this._buildPoint(this._top);
   }
   getright(): string {
-    return this._right.join(", ");
+    return this._buildPoint(this._right);
   }
-
   getbottom(): string {
-    return this._bottom.join(", ");
+    return this._buildPoint(this._bottom);
   }
-
   getleft(): string {
-    return this._left.join(", ");
+    return this._buildPoint(this._left);
   }
 
   isSimpleRect(): boolean {
@@ -174,17 +176,65 @@ export class Edges {
       ...this._bottom,
       ...this._left,
     ];
-    const result: string[] = [];
-    let lastPoint = [-1,-1,-1,-1];
-    for (var point of points) {
-      //skip same value as previous
-      if (point[2] != lastPoint[2] || point[3] != lastPoint[3]) {
-        const [x, y, ax, ay] = point;
-        result.push(`${ax}px ${ay}px`);
-      }
-      lastPoint = point;
-    }
-    return `polygon(${result.join(", ")})`;
+
+    // const result: string[] = [];
+    // let lastPoint = [-1, -1];
+    // for (var point of points) {
+    //   //skip same value as previous
+    //   if (point[0] != lastPoint[0] || point[1] != lastPoint[1]) {
+    //     const [ax, ay] = point;
+    //     result.push(`${ax}px ${ay}px`);
+    //   }
+    //   lastPoint = point;
+    // }
+
+    return `polygon(${this._buildPoint(points)})`;
     // TODO: detect if first points in bottom has ben detected by right.
   }
+}
+
+function simplifyPoints(points: number[][]) {
+  const result: number[][] = [];
+  let i = 0;
+  let [lx, ly] = [-1, -1];
+  let [llx, lly] = [-2, -2];
+  while (i < points.length) {
+    const next = () => {
+      llx = lx;
+      lly = ly;
+      lx = x;
+      ly = y;
+      i++;
+    };
+    const [x, y] = points[i];
+
+    //? duplicate
+    if (x == lx && y == ly) {
+      next();
+      continue;
+    }
+
+    if (result.length >= 2) {
+      const [px,py] = result[result.length-1]
+      const [ppx,ppy] = result[result.length-2]
+      //? vertically, same direction
+      if (x == px && (py != ppy || px == ppx)) {
+        const [xx, yy] = result.pop();
+        result.push([xx, y]); //? set new Y
+        next();
+        continue;
+      }
+      //? horizontally, same direction
+      if (y == py && (px != ppx || py == ppy)) {
+        const [xx, xy] = result.pop();
+        result.push([x, xy]); //? set new X
+        next();
+        continue;
+      }
+    }
+
+    result.push([x, y]);
+    next();
+  }
+  return result;
 }

@@ -14,6 +14,8 @@ const SCALE = 30; //px
 
 function prepareGrid() {
   const grid = document.getElementById("grid");
+  const polygon = document.getElementById("polygon");
+  
   grid.style.width = `${GRIDSIZE * SCALE}px`;
   grid.style.height = `${GRIDSIZE * SCALE}px`;
   grid.style.setProperty("--cell-size", `${SCALE + 1}px`);
@@ -44,7 +46,7 @@ function prepareGrid() {
   const dot = document.getElementById("dot") as HTMLElement;
   const coordinateHover = (e: MouseEvent) => {
     const el = e.target as HTMLDivElement;
-    const [x, y, ax, ay] = el.textContent.split(",").map((v) => parseInt(v));
+    const [ax, ay] = el.textContent.split(",").map((v) => parseInt(v));
     dot.style.left = `${ax * SCALE}px`;
     dot.style.top = `${ay * SCALE}px`;
   };
@@ -99,6 +101,7 @@ function prepareGrid() {
     showCoordinates("right", edge.getright());
     showCoordinates("bottom", edge.getbottom());
     showCoordinates("left", edge.getleft());
+    showCoordinates("polygon", edge.getPolygon());
 
     // document.getElementById("top").textContent = edge
     //   .gettop()
@@ -156,7 +159,7 @@ function prepareGrid() {
     }
   }
 
-  toggleCell({ target: document.getElementById("1") } as unknown as MouseEvent);
+  toggleCell({ target: document.getElementById("4") } as unknown as MouseEvent);
   // img.setAttribute("src", canvas.toDataURL());
 
   //debug
@@ -170,6 +173,7 @@ function prepareGrid() {
 function prepareDrop() {
   const dropBox = document.getElementById("drop-box");
   const cropped = document.getElementById("cropped");
+  const polygon = document.getElementById("polygon");
   const canvas: HTMLCanvasElement = document.getElementById(
     "tracing"
   ) as HTMLCanvasElement;
@@ -239,13 +243,14 @@ function prepareDrop() {
     showCoordinates("right", edge.getright());
     showCoordinates("bottom", edge.getbottom());
     showCoordinates("left", edge.getleft());
+    showCoordinates("polygon", edge.getPolygon());
   }
 
   //? blue dot
   const dot = document.getElementById("dot2") as HTMLElement;
   const coordinateHover = (e: MouseEvent) => {
     const el = e.target as HTMLDivElement;
-    const [x, y, ax, ay] = el.textContent.split(",").map((v) => parseInt(v));
+    const [ax, ay] = el.textContent.split(",").map((v) => parseInt(v));
     dot.style.left = `${ax }px`;
     dot.style.top = `${ay }px`;
   };
