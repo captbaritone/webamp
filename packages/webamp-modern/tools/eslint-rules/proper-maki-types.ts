@@ -19,7 +19,8 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
   }
   return {
     ClassDeclaration(node) {
-      if(node['abstract']==true) return; // any intermediate class such be marked as abstract class
+      if(node['abstract']==true) return; // any intermediate class must be marked as abstract class
+      if(node.id.name.endsWith('Handler')) return; // any action/vis-painter must be ended with Handler
       const guid = guidFromClassDeclaration(node);
       if (guid == null) {
         context.report({

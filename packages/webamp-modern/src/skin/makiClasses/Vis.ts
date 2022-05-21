@@ -6,7 +6,7 @@ import GuiObj from "./GuiObj";
 
 type ColorTriplet = string;
 
-class VisPainter {
+class VisPaintHandler {
   _vis: Vis;
 
   constructor(vis: Vis) {
@@ -25,7 +25,7 @@ class VisPainter {
 export default class Vis extends GuiObj {
   static GUID = "ce4f97be4e1977b098d45699276cc933";
   _canvas: HTMLCanvasElement = document.createElement("canvas");
-  _painter: VisPainter;
+  _painter: VisPaintHandler;
   _animationRequest: number = null;
   // (int) One of three values for which mode to display:
   // "0" is no display,
@@ -46,7 +46,7 @@ export default class Vis extends GuiObj {
     while (this._colorBands.length < 16) {
       this._colorBands.push("255,255,255");
     }
-    this._painter = new NoVisualizer(this);
+    this._painter = new NoVisualizerHandler(this);
     UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
     UI_ROOT.on("colorthemechanged", this._colorThemeChanged);
   }
@@ -169,20 +169,20 @@ export default class Vis extends GuiObj {
     switch (mode) {
       case 1:
         // "1" is spectrum,
-        this._setPainter(BarPainter);
+        this._setPainter(BarPaintHandler);
         break;
       case 2:
         // "2" is oscilloscope.
-        this._setPainter(WavePainter);
+        this._setPainter(WavePaintHandler);
         break;
       default:
         // "0" is no display,
-        this._setPainter(NoVisualizer);
+        this._setPainter(NoVisualizerHandler);
         break;
     }
   }
 
-  _setPainter(PainterType: typeof VisPainter) {
+  _setPainter(PainterType: typeof VisPaintHandler) {
     // uninteruptable painting requires _painter to be always available
     const oldPainter = this._painter;
     this._painter = new PainterType(this);
@@ -252,7 +252,7 @@ extern Vis.nextMode();*/
 
 //========= visualizer implementations ==========
 
-class NoVisualizer extends VisPainter {
+class NoVisualizerHandler extends VisPaintHandler {
   _cleared: boolean = false;
 
   paintFrame(ctx: CanvasRenderingContext2D) {
@@ -289,7 +289,7 @@ function octaveBucketsForBufferLength(bufferLength: number): number[] {
   return octaveBuckets;
 }
 
-class BarPainter extends VisPainter {
+class BarPaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
   _barWidth: number;
   _color: string = "rgb(255,255,255)";
@@ -424,7 +424,7 @@ class BarPainter extends VisPainter {
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
 
-class WavePainter extends VisPainter {
+class WavePaintHandler extends VisPaintHandler {
   prepare() {}
 
   paintFrame(ctx: CanvasRenderingContext2D) {
