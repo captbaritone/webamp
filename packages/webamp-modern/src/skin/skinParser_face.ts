@@ -321,11 +321,11 @@ export default class AudionFaceSkinParser extends SkinParser {
     //? load bitmaps
     const bitmaps: Bitmap[] = await Promise.all(
       filesPath.map(async (filePath) => {
-        return await this.loadBitmap(filePath, filePath, dx, dy);
+        // return await this.loadBitmap(filePath, filePath, dx, dy);
         // return this.loadPlainBitmap(filePath, filePath);
-        // return await applyBaseTransparency
-        //   ? this.loadBitmap(filePath, filePath)
-        //   : this.loadPlainBitmap(filePath, filePath);
+        return applyBaseTransparency
+          ? this.loadBitmap(filePath, filePath, dx, dy)
+          : this.loadPlainBitmap(filePath, filePath);
       })
     );
 
@@ -413,24 +413,11 @@ export default class AudionFaceSkinParser extends SkinParser {
   // #region (collapsed) Animation
   async laodAnimations(parent: Group) {
     await Promise.all([
-      // this.laodConnectingAnimation(parent),
-      // this.laodStreamingAnimation(parent),
-      // this.laodNetLagAnimation(parent),
-      // this.laodAnimation("connecting", parent, true),
-      this.laodAnimation("streaming", parent),
+      this.laodAnimation("connecting", parent, true),
+      // this.laodAnimation("streaming", parent),
       // this.laodAnimation("netLag", parent),
     ]);
   }
-  // async laodConnectingAnimation(parent: Group) {
-  //   await this.laodAnimation("connecting", parent);
-  // }
-
-  // async laodStreamingAnimation(parent: Group) {
-  //   await this.laodAnimation("streaming", parent);
-  // }
-  // async laodNetLagAnimation(parent: Group) {
-  //   await this.laodAnimation("netLag", parent);
-  // }
 
   async laodAnimation(
     prefix: string,
