@@ -254,8 +254,8 @@ export default class AudionFaceSkinParser extends SkinParser {
     // const bh = bitmap.getHeight();
     let anyPixelChanged = false;
 
-    for (var y = rect.top; y <= rect.bottom; y++) {
-      for (var x = rect.left; x <= rect.right; x++) {
+    for (var y = rect.top; y < rect.bottom; y++) {
+      for (var x = rect.left; x < rect.right; x++) {
         const b = y * bw + x;
         //? ignore transparent
         if (data[b * 4 + 3] != 0) {

@@ -207,7 +207,9 @@ group.x-fade > .fading-out {
 vis > canvas {
   display: block;
 }
-
+animatedlayer {
+  background-repeat: no-repeat;
+}
 .autowidthsource {
   width: auto;
 }

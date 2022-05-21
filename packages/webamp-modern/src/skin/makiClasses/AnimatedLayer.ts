@@ -52,15 +52,15 @@ export default class AnimatedLayer extends Layer {
     return true;
   }
 
-  _renderHeight() {
-    super._renderHeight();
-    if (this._frameHeight) {
-      const height = parseInt(this._div.style.height);
-      this._div.style.height = px(this._frameHeight);
-      this._div.style.transform = `scaleY(${height / this._frameHeight})`;
-      this._div.style.transformOrigin = "top left";
-    }
-  }
+  // _renderHeight() {
+  //   super._renderHeight();
+  //   if (this._frameHeight) {
+  //     const height = parseInt(this._div.style.height);
+  //     this._div.style.height = px(this._frameHeight);
+  //     this._div.style.transform = `scaleY(${height / this._frameHeight})`;
+  //     this._div.style.transformOrigin = "top left";
+  //   }
+  // }
 
   _getImageHeight(): number {
     const bitmap = UI_ROOT.getBitmap(this._image);
