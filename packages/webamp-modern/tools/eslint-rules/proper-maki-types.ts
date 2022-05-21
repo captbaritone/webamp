@@ -101,7 +101,7 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
         return;
       }
 
-      for (const [i, arg] of args.entries()) {
+      for (const [i, arg] of Object.entries(args)) {
         const [defType, defName] = argDefinitions[i];
         const tsDefType = makiTypeToTsType(defType);
         const tsType = getHumanReadableTSType(
