@@ -24,6 +24,8 @@ colorthemeslist {
 }
 colorthemeslist > select {
   border: none;
+  background-color: transparent;
+  color: inherit;
 }
 
 /* == PLAYLIST == */

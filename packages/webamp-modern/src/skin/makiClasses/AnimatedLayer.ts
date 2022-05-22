@@ -1,4 +1,3 @@
-// import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px, toBool } from "../../utils";
 import Layer from "./Layer";
 

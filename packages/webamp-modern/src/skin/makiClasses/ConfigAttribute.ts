@@ -1,4 +1,3 @@
-// import UI_ROOT from "../../UIRoot";
 import { Emitter } from "../../utils";
 import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";
@@ -40,6 +39,6 @@ export default class ConfigAttribute extends BaseObject {
     this.trigger("datachanged");
   }
   ondatachanged() {
-    UI_ROOT.vm.dispatch(this, "ondatachanged");
+    this._configItem._uiRoot.vm.dispatch(this, "ondatachanged");
   }
 }
