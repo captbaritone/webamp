@@ -50,7 +50,7 @@ export class Webamp5 extends WebAmpModern {
     if (SkinEngineClass == null) {
       await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
       skinFetched = true;
-      SkinEngineClass = getSkinEngineClassByContent(skinPath, this._uiRoot);
+      SkinEngineClass = await getSkinEngineClassByContent(skinPath, this._uiRoot);
     }
     if (SkinEngineClass == null) {
       throw new Error(`Skin not supported`);

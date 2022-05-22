@@ -80,10 +80,10 @@ export function getSkinEngineClass(filePath: string): SkinEngineClass {
  * @param uiRoot The instance used for check if the a file is available or not
  * @returns A class (not instance) that able to parse & load the skin
  */
-export function getSkinEngineClassByContent(
+export async function getSkinEngineClassByContent(
   filePath: string,
   uiRoot: UIRoot
-): SkinEngineClass {
+): Promise<SkinEngineClass> {
   // const process = (Engine: SkinEngineClass) => {
   //   const engine = new Engine();
   // }
@@ -95,7 +95,9 @@ export function getSkinEngineClassByContent(
   //? #2 ask by file is exists
   for (const Engine of SKIN_ENGINES) {
     const aFileName = Engine.identifyByFile(filePath);
-    if (uiRoot.getFileAsString(aFileName) != null) {
+    // if (uiRoot.getFileAsString(aFileName) != null) {
+    const aFile = await uiRoot.getFileAsString(aFileName);
+    if (aFile != null) {
       return Engine;
     }
   }
