@@ -93,7 +93,7 @@ export class Edges {
     }
     this._top = points;
     const lastTop: number = lastY;
-    const firstTop: number = points[0][1]
+    const firstTop: number = points.length>0? points[0][1] : 0;
 
     //? Right -------------------------------------------------
     points = [];
