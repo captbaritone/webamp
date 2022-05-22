@@ -4,7 +4,7 @@ import { getClass } from "../../src/maki/objects";
 import path from "path";
 // debug stuff
 // https://stackoverflow.com/questions/11616630/how-can-i-print-a-circular-structure-in-a-json-like-format
-import * as util from 'util' // has no default export
+import * as util from "util"; // has no default export
 let firstProblem = true; //to throw first only
 
 function isMakiModule(context: Rule.RuleContext): boolean {
@@ -19,22 +19,23 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
   }
   return {
     ClassDeclaration(node) {
-      if(node['abstract']==true) return; // any intermediate class must be marked as abstract class
-      if(node.id.name.endsWith('Handler')) return; // any action/vis-painter must be ended with Handler
+      if (node["abstract"] == true) return; // any intermediate class must be marked as abstract class
+      if (node.id.name.endsWith("Handler")) return; // any action/vis-painter must be ended with Handler
       const guid = guidFromClassDeclaration(node);
       if (guid == null) {
         context.report({
           node,
           message: `Expected Maki class to declare a static property "GUID".`,
         });
-        if(firstProblem){
+        if (firstProblem) {
           context.report({
             node,
-            message: 'noguid'+ /* JSON.stringify */util.inspect(node, {depth:3}),
+            message:
+              "noguid" + /* JSON.stringify */ util.inspect(node, { depth: 3 }),
           });
-          firstProblem = false
+          firstProblem = false;
         }
-      } else if(guid=='OFFICIALLY-NO-GUID') {
+      } else if (guid == "OFFICIALLY-NO-GUID") {
         //? Okay, it seem that the class is never touched by maki script
       } else {
         const objectInfo = getClass(guid);
