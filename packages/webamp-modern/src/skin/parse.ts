@@ -22,7 +22,7 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import UI_ROOT, { UIRoot } from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
 import Grid from "./makiClasses/Grid";
@@ -343,19 +343,19 @@ export default class SkinParser {
     }
     console.log("handling _predefinedXuiNode", tag);
     // push
-    const oldZip = UI_ROOT.getZip();
-    const oldSkinDir = UI_ROOT.getSkinDir();
+    const oldZip = this._uiRoot.getZip();
+    const oldSkinDir = this._uiRoot.getSkinDir();
 
     // set
-    UI_ROOT.setZip(null);
-    UI_ROOT.setSkinDir(xmlRootPath);
+    this._uiRoot.setZip(null);
+    this._uiRoot.setSkinDir(xmlRootPath);
 
     const node = new XmlElement("include", { file: xmlFilePath });
     await this.include(node, null);
 
     // pop
-    UI_ROOT.setSkinDir(oldSkinDir);
-    UI_ROOT.setZip(oldZip);
+    this._uiRoot.setSkinDir(oldSkinDir);
+    this._uiRoot.setZip(oldZip);
     return true;
   }
 

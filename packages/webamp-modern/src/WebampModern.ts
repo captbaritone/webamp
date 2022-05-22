@@ -48,6 +48,7 @@ export class Webamp5 extends WebAmpModern {
     let SkinEngineClass = getSkinEngineClass(skinPath);
     if (SkinEngineClass == null) {
       await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
+      skinFetched = true;
       SkinEngineClass = getSkinEngineClassByContent(skinPath, this._uiRoot);
     }
     if (SkinEngineClass == null) {
@@ -55,16 +56,18 @@ export class Webamp5 extends WebAmpModern {
     }
 
     //? success found a skin-engine
-    const parser: SkinEngine = new SkinEngineClass();
+    if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
+    const parser: SkinEngine = new SkinEngineClass(this._uiRoot);
+    await parser.parseSkin();
 
     // loadSkin(this._parent, skinPath);
   }
 
   private async _loadSkinPathToUiroot(skinPath: string, uiRoot: UIRoot) {
     const response = await fetch(skinPath);
-    // if(response.status != 200){
-    //   throw new Error(`Skin not supported`);
-    // }
+    if (response.status == 404) {
+      throw new Error(`Skin does not exist`);
+    }
     if (response.headers.get("content-type") == "application/octet-stream") {
       // const response = await fetch(skinPath);
       const skinZipBlob = await response.blob();

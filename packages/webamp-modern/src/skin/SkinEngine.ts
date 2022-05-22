@@ -5,6 +5,13 @@ import { UIRoot } from "../UIRoot";
  * we support multiple skin-formats
  */
 export class SkinEngine {
+  _uiRoot: UIRoot;
+
+  constructor(uiRoot: UIRoot) {
+    /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
+    this._uiRoot = uiRoot;
+  }
+
   /**
    * Useful for quick detect by file extension
    * @param filePath full file address or URL
@@ -29,6 +36,11 @@ export class SkinEngine {
    * In case of several skinEngines support same skin file
    */
   static priority: number = 100;
+
+  /**
+   * The main method
+   */
+  async parseSkin() {}
 }
 
 type SkinEngineClass = typeof SkinEngine;
