@@ -25,7 +25,7 @@ export interface IWebampModern {
  * Temporary patch due failed of using inteface above
  */
 export class WebAmpModern implements IWebampModern {
-  constructor(container: HTMLElement, options: Options = {}) {}
+  constructor(parent: HTMLElement, options: Options = {}) {}
 
   switchSkin(skinPath: string): void {}
 

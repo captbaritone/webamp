@@ -17,11 +17,11 @@ const DEFAULT_OPTIONS: Options = {
 
 export class Webamp5 extends WebAmpModern {
   _options: Options;
-  _container: HTMLElement;
+  _parent: HTMLElement;
 
-  constructor(container: HTMLElement, options: Options = {}) {
-    super(container, options);
-    this._container = container || document.body;
+  constructor(parent: HTMLElement, options: Options = {}) {
+    super(parent, options);
+    this._parent = parent || document.body;
     this._options = { ...DEFAULT_OPTIONS, ...options };
     this.switchSkin(this._options.skin);
     for (const song of this._options.tracks) {
@@ -30,7 +30,7 @@ export class Webamp5 extends WebAmpModern {
   }
 
   switchSkin(skinPath: string): void {
-    loadSkin(this._container, skinPath);
+    loadSkin(this._parent, skinPath);
   }
 
   playSong(songurl: string /* or track */): void {}
