@@ -40,7 +40,7 @@ export class Webamp5 extends WebAmpModern {
 
   async switchSkin(skinPath: string) {
     //* getting skin engine is complicated:
-    //* SkinEngine is not instanciate during getting skinEngine.
+    //* SkinEngine is not yet instanciated during looking for a skinEngine.
     //* If file extension is know then we loop for registered Engines
     //* But sometime (if its a `.zip` or a path `/`), we need to detect by
     //* if a file exist, with a name is expected by skinEngine
