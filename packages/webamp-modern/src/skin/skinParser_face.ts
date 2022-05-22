@@ -447,6 +447,7 @@ export default class AudionFaceSkinParser extends SkinParser {
       frameheight: `${frame.height}`,
       speed: `${delay * 100}`,
       autoPlay: `1`,
+      move: `1`,
       start: `0`,
       end: `${count - 1}`,
     });
