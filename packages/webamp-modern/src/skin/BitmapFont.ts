@@ -1,4 +1,3 @@
-import UI_ROOT from "../UIRoot";
 import { num, px } from "../utils";
 import Bitmap from "./Bitmap";
 import ImageManager from "./ImageManager";
@@ -53,8 +52,8 @@ export default class BitmapFont extends Bitmap {
 
   _setAsBackground(div: HTMLElement, prefix: string) {
     if (this._externalBitmap) {
-      if (!this._bitmap) {
-        this._bitmap = UI_ROOT.getBitmap(this._file);
+      if (!this._bitmap && this._uiRoot != null) {
+        this._bitmap = this._uiRoot.getBitmap(this._file);
       }
       if (this._bitmap != null) {
         this._bitmap._setAsBackground(div, prefix);

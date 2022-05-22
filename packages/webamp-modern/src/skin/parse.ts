@@ -372,7 +372,7 @@ export default class SkinParser {
     node: XmlElement,
     parent: any
   ): Promise<Awaited<Type>> {
-    const gui = new Type();
+    const gui = new Type(this._uiRoot);
     gui.setXmlAttributes(node.attributes);
     this.addToGroup(gui, parent);
     return gui;
@@ -383,7 +383,7 @@ export default class SkinParser {
     node: XmlElement,
     parent: any
   ): Promise<Awaited<Type>> {
-    const group = new Type();
+    const group = new Type(this._uiRoot);
     await this.maybeApplyGroupDef(group, node);
     group.setXmlAttributes(node.attributes);
     await this.traverseChildren(node, group);
@@ -479,7 +479,7 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <bitmapFont> XML node."
     );
-    const font = new BitmapFont();
+    const font = new BitmapFont(this._uiRoot);
     font.setXmlAttributes(node.attributes);
 
     const externalBitmap = this._isExternalBitmapFont(font);
@@ -570,7 +570,7 @@ export default class SkinParser {
     console.log("parsing.maki:", file);
     const parsedScript = parseMaki(maki);
 
-    const systemObj = new SystemObject(parsedScript, param, id);
+    const systemObj = new SystemObject(this._uiRoot, parsedScript, param, id);
 
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8
@@ -867,7 +867,7 @@ export default class SkinParser {
   }
 
   async container(node: XmlElement): Promise<Container> {
-    const container = new Container();
+    const container = new Container(this._uiRoot);
     container.setXmlAttributes(node.attributes);
     this._uiRoot.addContainers(container);
     await this.traverseChildren(node, container);

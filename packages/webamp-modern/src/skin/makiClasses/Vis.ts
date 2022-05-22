@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { debounce, num, toBool } from "../../utils";
 import { AUDIO_PLAYING } from "../AudioPlayer";
 import GammaGroup from "../GammaGroup";
@@ -41,14 +41,14 @@ export default class Vis extends GuiObj {
   _bandwidth: string;
   _gammagroup: string;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     while (this._colorBands.length < 16) {
       this._colorBands.push("255,255,255");
     }
     this._painter = new NoVisualizerHandler(this);
-    UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
-    UI_ROOT.on("colorthemechanged", this._colorThemeChanged);
+    this._uiRoot.audio.on("statchanged", this.audioStatusChanged);
+    this._uiRoot.on("colorthemechanged", this._colorThemeChanged);
   }
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -198,7 +198,7 @@ export default class Vis extends GuiObj {
     this._stopVisualizer();
 
     // start the new loop
-    const playing = UI_ROOT.audio.getState() == AUDIO_PLAYING;
+    const playing = this._uiRoot.audio.getState() == AUDIO_PLAYING;
     if (playing) {
       this._startVisualizer();
     }
@@ -304,7 +304,7 @@ class BarPaintHandler extends VisPaintHandler {
 
   constructor(vis: Vis) {
     super(vis);
-    this._analyser = UI_ROOT.audio.getAnalyser();
+    this._analyser = this._vis._uiRoot.audio.getAnalyser();
     this._bufferLength = this._analyser.frequencyBinCount;
     this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     this._dataArray = new Uint8Array(this._bufferLength);
@@ -313,7 +313,7 @@ class BarPaintHandler extends VisPaintHandler {
   prepare() {
     const vis = this._vis;
     const groupId = vis._gammagroup;
-    const gammaGroup = UI_ROOT._getGammaGroup(groupId);
+    const gammaGroup = this._vis._uiRoot._getGammaGroup(groupId);
     this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
 
     //? paint peak

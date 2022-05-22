@@ -1,5 +1,5 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import Group from "./Group";
 import { px, toBool, clamp } from "../../utils";
 import Button from "./Button";
@@ -12,8 +12,8 @@ export default class ComponentBucket extends Group {
   _wrapper: HTMLElement;
   _page: number = 0;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this._wrapper = document.createElement("wrapper");
   }
 
@@ -89,7 +89,7 @@ export default class ComponentBucket extends Group {
   init() {
     this.resolveButtonsAction();
     super.init();
-    UI_ROOT.vm.dispatch(this, "onstartup", []);
+    this._uiRoot.vm.dispatch(this, "onstartup", []);
   }
   resolveButtonsAction() {
     for (const obj of this.getparent()._children) {

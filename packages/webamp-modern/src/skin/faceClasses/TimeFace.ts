@@ -57,11 +57,11 @@ export default class TimeFace extends Text {
         }
         const char = newValue[this._digit - 1];
         this._displayValue = char;
-  
+
         this._renderDigit(font);
         return;
       }
-      super.setDisplayValue(newValue)
+      super.setDisplayValue(newValue);
       // this._renderText();
     }
   }

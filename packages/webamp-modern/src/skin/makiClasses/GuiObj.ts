@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import {
   assert,
   num,
@@ -13,7 +13,6 @@ import Group from "./Group";
 import XmlObj from "../XmlObj";
 import Layout from "./Layout";
 import Region from "./Region";
-import { CONFIG } from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
 import { XmlElement } from "@rgrove/parse-xml";
 
@@ -23,6 +22,7 @@ let BRING_MOST_TOP: number = 1;
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {
   static GUID = "4ee3e1994becc636bc78cd97b028869c";
+  _uiRoot: UIRoot;
   _parent: Group;
   _children: GuiObj[] = [];
   // _id: string; moved to BaseObject
@@ -60,8 +60,9 @@ export default class GuiObj extends XmlObj {
 
   _metaCommands: XmlElement[] = [];
 
-  constructor() {
+  constructor(uiRoot: UIRoot) {
     super();
+    this._uiRoot = uiRoot;
 
     this._div = document.createElement(
       this.getElTag().toLowerCase().replace("_", "")
@@ -179,7 +180,7 @@ export default class GuiObj extends XmlObj {
 
   _setConfigAttrib(cfgattrib: string) {
     const [guid, attrib] = cfgattrib.split(";");
-    const configItem = CONFIG.getitem(guid);
+    const configItem = this._uiRoot.CONFIG.getitem(guid);
     //TODO: check if old exist: dispose.
     this._configAttrib = configItem.getattribute(attrib);
     //TODO: dispose it
@@ -344,12 +345,12 @@ export default class GuiObj extends XmlObj {
     }
     return this._height;
   }
-  get height():number {
-    return this.getheight()
+  get height(): number {
+    return this.getheight();
   }
-  set height(value:number){
+  set height(value: number) {
     this._height = value;
-    this._renderDimensions()
+    this._renderDimensions();
   }
 
   /**
@@ -367,12 +368,12 @@ export default class GuiObj extends XmlObj {
     }
     return this._width;
   }
-  get width():number {
-    return this.getwidth()
+  get width(): number {
+    return this.getwidth();
   }
-  set width(value:number){
+  set width(value: number) {
     this._width = value;
-    this._renderDimensions()
+    this._renderDimensions();
   }
 
   /**
@@ -500,7 +501,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onLeftButtonUp(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -523,7 +524,7 @@ export default class GuiObj extends XmlObj {
       "Expected click to be below the component's top"
     );
     this.getparentlayout().bringtofront();
-    UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -537,7 +538,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonUp(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onrightbuttonup", [
+    this._uiRoot.vm.dispatch(this, "onrightbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -551,7 +552,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonDown(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onrightbuttondown", [
+    this._uiRoot.vm.dispatch(this, "onrightbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -562,7 +563,7 @@ export default class GuiObj extends XmlObj {
    * enters the objects area.
    */
   onEnterArea() {
-    UI_ROOT.vm.dispatch(this, "onenterarea");
+    this._uiRoot.vm.dispatch(this, "onenterarea");
   }
 
   /**
@@ -570,7 +571,7 @@ export default class GuiObj extends XmlObj {
    * leaves the objects area.
    */
   onLeaveArea() {
-    UI_ROOT.vm.dispatch(this, "onleavearea");
+    this._uiRoot.vm.dispatch(this, "onleavearea");
   }
 
   /**
@@ -691,7 +692,7 @@ export default class GuiObj extends XmlObj {
       } else {
         this._goingToTarget = false;
         // TODO: Clear targets?
-        UI_ROOT.vm.dispatch(this, "ontargetreached");
+        this._uiRoot.vm.dispatch(this, "ontargetreached");
       }
     };
 
@@ -737,7 +738,7 @@ export default class GuiObj extends XmlObj {
       this._alpha = this._targetAlpha ?? this._alpha;
       this._renderDimensions();
       this._renderAlpha();
-      UI_ROOT.vm.dispatch(this, "ontargetreached");
+      this._uiRoot.vm.dispatch(this, "ontargetreached");
     });
   }
   /**
@@ -856,7 +857,7 @@ export default class GuiObj extends XmlObj {
     p1: number,
     p2: number
   ): number {
-    return UI_ROOT.vm.dispatch(this, "onaction", [
+    return this._uiRoot.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },
       { type: "STRING", value: param },
       { type: "INT", value: x },
@@ -923,7 +924,7 @@ export default class GuiObj extends XmlObj {
   }
 
   doResize() {
-    UI_ROOT.vm.dispatch(this, "onresize", [
+    this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
       { type: "INT", value: this.getwidth() },

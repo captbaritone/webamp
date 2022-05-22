@@ -1,5 +1,5 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import TrueTypeFont from "../TrueTypeFont";
 import BitmapFont from "../BitmapFont";
 import {
@@ -43,8 +43,9 @@ export default class Text extends GuiObj {
   _shadowY: number = 0;
   _drawn: boolean = false; // needed to check has parents
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
+    this._uiRoot = uiRoot;
     this._textWrapper = document.createElement("wrap");
     this._div.appendChild(this._textWrapper);
   }
@@ -158,11 +159,11 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _autoDetectFontType() {
     if (this._font_id) {
-      this._font_obj = UI_ROOT.getFont(this._font_id);
+      this._font_obj = this._uiRoot.getFont(this._font_id);
       if (!this._font_obj) {
         const newFont = new TrueTypeFont();
         newFont._inlineFamily = this._font_id;
-        UI_ROOT.addFont(newFont);
+        this._uiRoot.addFont(newFont);
         this._font_obj = newFont;
       }
     }
@@ -175,7 +176,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.style.color = `rgb(${this._color})`;
         return;
       }
-      const color = UI_ROOT.getColor(this._color);
+      const color = this._uiRoot.getColor(this._color);
       if (color) {
         this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb()})`;
       }
@@ -208,8 +209,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _onClick = () => {
     if (this._display.toLowerCase() == "time") {
-      UI_ROOT.audio.toggleRemainingTime();
-      this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+      this._uiRoot.audio.toggleRemainingTime();
+      this.setDisplayValue(integerToTime(this._uiRoot.audio.getCurrentTime()));
     }
   };
 
@@ -235,23 +236,26 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._displayValue = "vid_info";
         break;
       case "time":
-        this._disposeDisplaySubscription = UI_ROOT.audio.onCurrentTimeChange(
-          () => {
-            this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
-          }
+        this._disposeDisplaySubscription =
+          this._uiRoot.audio.onCurrentTimeChange(() => {
+            this.setDisplayValue(
+              integerToTime(this._uiRoot.audio.getCurrentTime())
+            );
+          });
+        this.setDisplayValue(
+          integerToTime(this._uiRoot.audio.getCurrentTime())
         );
-        this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
         break;
       case "songlength":
         this._displayValue = "5:58";
         break;
       case "songname":
       case "songtitle":
-        this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
-        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on(
+        this._displayValue = this._uiRoot.playlist.getCurrentTrackTitle();
+        this._disposeTrackChangedSubscription = this._uiRoot.playlist.on(
           "trackchange",
           () => {
-            this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
+            this._displayValue = this._uiRoot.playlist.getCurrentTrackTitle();
             this._renderText();
           }
         );
@@ -274,13 +278,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (newValue !== this._displayValue) {
       this._displayValue = newValue;
       this._renderText();
-      UI_ROOT.vm.dispatch(this, "ontextchanged", [
+      this._uiRoot.vm.dispatch(this, "ontextchanged", [
         { type: "STRING", value: this.gettext() },
       ]);
     }
   }
 
-  gettext():string {
+  gettext(): string {
     if ((this._text || "").startsWith(":") && this._drawn) {
       const layout = this.getparentlayout();
       if (layout) {
@@ -309,7 +313,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   //This function is only rendering static styles
   _prepareCss() {
     if (!this._font_obj && this._font_id) {
-      this._font_obj = UI_ROOT.getFont(this._font_id);
+      this._font_obj = this._uiRoot.getFont(this._font_id);
     }
     const font = this._font_obj;
     if (font instanceof BitmapFont) {
@@ -482,7 +486,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _prepareScrolling() {
     this._scrollDirection = -1;
-    const timer = (this._scrollTimer = new Timer());
+    const timer = (this._scrollTimer = new Timer(this._uiRoot));
     timer.setdelay(50);
     timer.setOnTimer(() => {
       this.doScrollText();

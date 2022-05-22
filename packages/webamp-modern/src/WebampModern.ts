@@ -7,7 +7,7 @@ import {
   SkinEngine,
 } from "./skin/SkinEngine";
 import { loadSkin } from "./skin/skinLoader";
-import UI_ROOT, { UIRoot } from "./UIRoot";
+import { UIRoot } from "./UIRoot";
 import { IWebampModern, Options, WebAmpModern } from "./WebampModernInteface";
 
 function hack() {
@@ -31,9 +31,10 @@ export class Webamp5 extends WebAmpModern {
     this._parent = parent || document.body;
     this._options = { ...DEFAULT_OPTIONS, ...options };
     this._uiRoot = new UIRoot();
+    parent.appendChild(this._uiRoot.getRootDiv());
     this.switchSkin(this._options.skin);
     for (const song of this._options.tracks) {
-      UI_ROOT.playlist.enqueuefile(song);
+      this._uiRoot.playlist.enqueuefile(song);
     }
   }
 
@@ -56,6 +57,7 @@ export class Webamp5 extends WebAmpModern {
     }
 
     //? success found a skin-engine
+    this._uiRoot.SkinEngineClass = SkinEngineClass;
     if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
     const parser: SkinEngine = new SkinEngineClass(this._uiRoot);
     await parser.parseSkin();
@@ -84,7 +86,7 @@ export class Webamp5 extends WebAmpModern {
   playSong(songurl: string /* or track */): void {}
 
   onLogMessage(callback: (message: string) => void) {
-    UI_ROOT.on("onlogmessage", callback);
+    this._uiRoot.on("onlogmessage", callback);
   }
 }
 

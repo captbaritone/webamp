@@ -1,4 +1,3 @@
-import UI_ROOT from "../../UIRoot";
 import { num } from "../../utils";
 import ToggleButton from "./ToggleButton";
 
@@ -84,7 +83,7 @@ export default class NStateButton extends ToggleButton {
     ["image", "downimage", "hoverimage", "activeimage"].forEach((att) => {
       //this button has xml attribute?
       if (this._plainImages[att]) {
-        if (UI_ROOT.hasBitmap(this._plainImages[att] + bitmapSuffix)) {
+        if (this._uiRoot.hasBitmap(this._plainImages[att] + bitmapSuffix)) {
           super.setXmlAttr(att, this._plainImages[att] + bitmapSuffix);
         } else {
           super.setXmlAttr(att, this._plainImages[att]);

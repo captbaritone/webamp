@@ -1,5 +1,4 @@
 import * as Utils from "../../utils";
-import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 import Movable from "./Movable";
@@ -124,7 +123,7 @@ export default class Group extends Movable {
   getheight(): number {
     const h = super.getheight();
     if (!h && this._background != null) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+      const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
     }
     return h ?? 0;
@@ -140,7 +139,7 @@ export default class Group extends Movable {
     }
     const w = super.getwidth();
     if (!w && this._background != null) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+      const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
     return w || this._div.getBoundingClientRect().width;
@@ -148,7 +147,7 @@ export default class Group extends Movable {
 
   _renderBackground() {
     if (this._background != null && this._drawBackground) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+      const bitmap = this._uiRoot.getBitmap(this._background);
       this.setBackgroundImage(bitmap);
     } else {
       this.setBackgroundImage(null);
@@ -156,7 +155,7 @@ export default class Group extends Movable {
   }
 
   async doResize() {
-    UI_ROOT.vm.dispatch(this, "onresize", [
+    this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
       { type: "INT", value: this.getwidth() },

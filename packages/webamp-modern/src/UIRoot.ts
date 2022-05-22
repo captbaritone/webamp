@@ -23,8 +23,13 @@ import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit, Track } from "./skin/makiClasses/PlayList";
 import PRIVATE_CONFIG from "./skin/PrivateConfig";
 import ImageManager from "./skin/ImageManager";
+import Config from "./skin/makiClasses/Config";
+import WinampConfig from "./skin/makiClasses/WinampConfig";
+import { SkinEngineClass } from "./skin/SkinEngine";
 
 export class UIRoot {
+  _config: Config;
+  _winampConfig: WinampConfig;
   _div: HTMLDivElement = document.createElement("div");
   _imageManager: ImageManager;
   // Just a temporary place to stash things
@@ -47,13 +52,14 @@ export class UIRoot {
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
   _skinInfo: { [key: string]: string } = {};
+  _skinEngineClass: SkinEngineClass;
   _eventListener: Emitter = new Emitter();
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
 
   //published
-  vm: Vm = new Vm();
+  vm: Vm;
   audio: AudioPlayer = AUDIO_PLAYER;
   playlist: PlEdit = new PlEdit();
 
@@ -65,7 +71,10 @@ export class UIRoot {
     // TODO: dispose
     this._input.onchange = this._inputChanged;
 
-    this._imageManager = new ImageManager();
+    this._imageManager = new ImageManager(this);
+    this._config = new Config(this);
+    this._winampConfig = new WinampConfig(this);
+    this.vm = new Vm(this);
   }
 
   // shortcut of this.Emitter
@@ -79,13 +88,12 @@ export class UIRoot {
     this._eventListener.off(event, callback);
   }
 
-
   reset() {
     this.deinitSkin();
     this.dispose();
     this._bitmaps = {};
     this._imageManager.dispose();
-    this._imageManager = new ImageManager(); //TODO: dispose first
+    this._imageManager = new ImageManager(this); //TODO: dispose first
     this._fonts = [];
     this._colors = [];
     this._groupDefs = {};
@@ -121,7 +129,7 @@ export class UIRoot {
   getImageManager(): ImageManager {
     return this._imageManager;
   }
-  setImageManager(imageManager:ImageManager) {
+  setImageManager(imageManager: ImageManager) {
     this._imageManager = imageManager;
   }
 
@@ -144,19 +152,19 @@ export class UIRoot {
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
-  removeBitmap(id:string) {
+  removeBitmap(id: string) {
     delete this._bitmaps[id.toLowerCase()];
   }
   getBitmaps(): { [id: string]: Bitmap } {
     return this._bitmaps;
   }
-  hasBitmapFilepath(filePath:string): boolean {
-    for(const bitmap of Object.values(this._bitmaps)) {
-      if(bitmap.getFile()==filePath) {
-        return true
+  hasBitmapFilepath(filePath: string): boolean {
+    for (const bitmap of Object.values(this._bitmaps)) {
+      if (bitmap.getFile() == filePath) {
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   /**
@@ -185,9 +193,8 @@ export class UIRoot {
     return found ?? null;
   }
   getFonts(): (TrueTypeFont | BitmapFont)[] {
-    return this._fonts
+    return this._fonts;
   }
-
 
   addColor(color: Color) {
     this._colors.push(color);
@@ -388,7 +395,7 @@ export class UIRoot {
       // const url = await gammaGroup.transformBitmap(bitmap);
       // cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
       // cssRules.push(await bitmap.getGammaTransformedUrl());
-      cssRules.push(await bitmap.getGammaTransformedUrl());
+      cssRules.push(await bitmap.getGammaTransformedUrl(this));
       //support multiple names
       maybeBitmapAliases(bitmap);
     }
@@ -573,7 +580,6 @@ export class UIRoot {
     return this._zip;
   }
 
-
   //? Path things ========================
   /* needed to avoid direct fetch to root path */
   _skinPath: string;
@@ -586,28 +592,27 @@ export class UIRoot {
     return this._skinPath;
   }
 
-  async getFileAsString (filePath: string): Promise<string> {
-    if(this._zip==null){
-      return await this.getFileAsStringPath(filePath)
+  async getFileAsString(filePath: string): Promise<string> {
+    if (this._zip == null) {
+      return await this.getFileAsStringPath(filePath);
     } else {
-      return await this.getFileAsStringZip(filePath)
+      return await this.getFileAsStringZip(filePath);
     }
   }
-  async getFileAsBytes (filePath: string): Promise<ArrayBuffer> {
-    if(this._zip==null){
-      return await this.getFileAsBytesPath(filePath)
+  async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
+    if (this._zip == null) {
+      return await this.getFileAsBytesPath(filePath);
     } else {
-      return await this.getFileAsBytesZip(filePath)
+      return await this.getFileAsBytesZip(filePath);
     }
   }
-  async getFileAsBlob (filePath: string): Promise<Blob> {
-    if(this._zip==null){
-      return await this.getFileAsBlobPath(filePath)
+  async getFileAsBlob(filePath: string): Promise<Blob> {
+    if (this._zip == null) {
+      return await this.getFileAsBlobPath(filePath);
     } else {
-      return await this.getFileAsBlobZip(filePath)
+      return await this.getFileAsBlobZip(filePath);
     }
   }
-
 
   async getFileAsStringZip(filePath: string): Promise<string> {
     if (!filePath) return null;
@@ -674,6 +679,22 @@ export class UIRoot {
     return this.getSkinInfo()["name"];
   }
 
+  set SkinEngineClass(Engine: SkinEngineClass) {
+    this._skinEngineClass = Engine;
+  }
+
+  get SkinEngineClass(): SkinEngineClass {
+    return this._skinEngineClass;
+  }
+
+  get CONFIG(): Config {
+    return this._config;
+  }
+
+  get WINAMP_CONFIG(): WinampConfig {
+    return this._winampConfig;
+  }
+
   //? Logging things ========================
   /**
    * This is a replacement of setStatus('Parsing XML and initializing images...')
@@ -683,7 +704,3 @@ export class UIRoot {
     this.trigger("onlogmessage", message);
   }
 }
-
-// Global Singleton for now
-let UI_ROOT = new UIRoot();
-export default UI_ROOT;

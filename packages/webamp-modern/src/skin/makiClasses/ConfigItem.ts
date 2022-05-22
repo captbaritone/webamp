@@ -1,5 +1,6 @@
+import { UIRoot } from "../../UIRoot";
 import BaseObject from "./BaseObject";
-import { CONFIG } from "./Config";
+// import { CONFIG } from "./Config";
 // import Config from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
 // import { SectionValues } from "./ConfigPersistent";
@@ -7,11 +8,13 @@ import ConfigAttribute from "./ConfigAttribute";
 
 export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
+  _uiRoot: UIRoot;
   _guid: string;
   _attributes: { [key: string]: ConfigAttribute } = {};
 
-  constructor(name: string, guid: string) {
+  constructor(uiRoot: UIRoot, name: string, guid: string) {
     super();
+    this._uiRoot = uiRoot;
     this._id = name;
     this._guid = guid;
   }
@@ -25,10 +28,10 @@ export default class ConfigItem extends BaseObject {
   }
 
   getValue(key: string): string {
-    return CONFIG.getValue(this._guid, key);
+    return this._uiRoot.CONFIG.getValue(this._guid, key);
   }
   setValue(key: string, value: string) {
-    return CONFIG.setValue(this._guid, key, value);
+    return this._uiRoot.CONFIG.setValue(this._guid, key, value);
   }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {

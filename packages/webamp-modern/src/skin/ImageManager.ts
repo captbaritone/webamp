@@ -1,4 +1,4 @@
-import UI_ROOT from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import { getCaseInsensitiveFile } from "../utils";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
@@ -8,6 +8,7 @@ const DEFAULT_IMAGE_URL =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==";
 
 export default class ImageManager {
+  _uiRoot: UIRoot;
   _imagePlaceholder: boolean = false; // fallback to DEFAULT_IMAGE if file inaccessible?
   // _imagePlaceholder: boolean = true; // fallback to DEFAULT_IMAGE if file inaccessible?
   // _urlCache: Map<string, string> = new Map();
@@ -18,6 +19,9 @@ export default class ImageManager {
   //_bitmaps: { [key: string]: Bitmap } = {}; //? Bitmap:file
   // _bitmapAlias = {}; //? file|id : true|false|null //for BitmapFont
 
+  constructor(uiRoot: UIRoot) {
+    this._uiRoot = uiRoot;
+  }
   /**
    * cleanup resources
    */
@@ -25,7 +29,7 @@ export default class ImageManager {
 
   async getUrl(filePath: string): Promise<string | null> {
     if (!this._urlCache.hasOwnProperty(filePath)) {
-      // const imgBlob = await UI_ROOT.getFileAsBlob(filePath);
+      // const imgBlob = await this._uiRoot.getFileAsBlob(filePath);
       const imgBlob = await this.getBlob(filePath);
       if (imgBlob == null) {
         this._urlCache[filePath] = null;
@@ -44,8 +48,8 @@ export default class ImageManager {
   async getBlob(filePath: string): Promise<Blob> {
     // kjofol need special thread to remove gAMA,CHRM
     // (Gamma & Chroma png chunk)
-// it maybe changed by ancestor
-    return await UI_ROOT.getFileAsBlob(filePath);
+    // it maybe changed by ancestor
+    return await this._uiRoot.getFileAsBlob(filePath);
   }
 
   /*isFilePathAdded(filePath: string) {
@@ -58,7 +62,7 @@ export default class ImageManager {
 
     //? Collect unique filepath
     const filesPath: string[] = [];
-    for (const bitmap of Object.values(UI_ROOT.getBitmaps())) {
+    for (const bitmap of Object.values(this._uiRoot.getBitmaps())) {
       //? ignore bitmap that already has _img
       if (!bitmap.loaded()) {
         if (!filesPath.includes(bitmap.getFile())) {
@@ -68,7 +72,7 @@ export default class ImageManager {
       }
     }
     //? union with font
-    const fonts = UI_ROOT.getFonts();
+    const fonts = this._uiRoot.getFonts();
     for (let i = fonts.length - 1; i >= 0; i--) {
       const font = fonts[i];
       //? ignore bitmap that already has _img
@@ -85,7 +89,7 @@ export default class ImageManager {
     }
 
     await Promise.all(
-      filesPath.map(async(filePath) => {
+      filesPath.map(async (filePath) => {
         return await this.getImage(filePath);
       })
     );
@@ -96,7 +100,7 @@ export default class ImageManager {
     const bitmaps = await this.loadUniquePaths();
 
     return await Promise.all(
-      bitmaps.map(async(bitmap) => {
+      bitmaps.map(async (bitmap) => {
         // console.log("IM.ensure:", bitmap.getId());
         // await this.setBimapImg(bitmap);
         // bitmap._img = await this.getImage(bitmap.getFile());

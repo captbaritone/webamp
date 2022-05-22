@@ -43,15 +43,15 @@ export class SkinEngine {
   async parseSkin() {}
 }
 
-type SkinEngineClass = typeof SkinEngine;
+export type SkinEngineClass = typeof SkinEngine;
 const SKIN_ENGINES: SkinEngineClass[] = [];
 
 export const registerSkinEngine = (Engine: SkinEngineClass) => {
   // if(SKIN_ENGINES.includes(Engine)){
   //   delete SKIN_ENGINES[Engine]
   // }
-  SKIN_ENGINES.push(Engine)
-}
+  SKIN_ENGINES.push(Engine);
+};
 
 /**
  * Pick a correct skinEngine clas that able to load skin by url
@@ -80,7 +80,10 @@ export function getSkinEngineClass(filePath: string): SkinEngineClass {
  * @param uiRoot The instance used for check if the a file is available or not
  * @returns A class (not instance) that able to parse & load the skin
  */
-export function getSkinEngineClassByContent(filePath: string, uiRoot: UIRoot): SkinEngineClass {
+export function getSkinEngineClassByContent(
+  filePath: string,
+  uiRoot: UIRoot
+): SkinEngineClass {
   // const process = (Engine: SkinEngineClass) => {
   //   const engine = new Engine();
   // }
@@ -92,7 +95,7 @@ export function getSkinEngineClassByContent(filePath: string, uiRoot: UIRoot): S
   //? #2 ask by file is exists
   for (const Engine of SKIN_ENGINES) {
     const aFileName = Engine.identifyByFile(filePath);
-    if(uiRoot.getFileAsString(aFileName)!=null){
+    if (uiRoot.getFileAsString(aFileName) != null) {
       return Engine;
     }
   }

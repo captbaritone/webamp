@@ -1,5 +1,4 @@
 import Group from "./Group";
-import UI_ROOT from "../../UIRoot";
 
 export default abstract class XuiElement extends Group {
   __inited: boolean = false;
@@ -27,7 +26,7 @@ export default abstract class XuiElement extends Group {
 
     for (const systemObject of this._systemObjects) {
       this._unhandledXuiParams.forEach(({ key, value }) => {
-        UI_ROOT.vm.dispatch(systemObject, "onsetxuiparam", [
+        this._uiRoot.vm.dispatch(systemObject, "onsetxuiparam", [
           { type: "STRING", value: key },
           { type: "STRING", value: value },
         ]);

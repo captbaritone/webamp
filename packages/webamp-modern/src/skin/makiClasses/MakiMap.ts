@@ -1,14 +1,20 @@
-import UI_ROOT from "../../UIRoot";
 import { assert, assume } from "../../utils";
 import BaseObject from "./BaseObject";
 import Bitmap from "../Bitmap";
+import { UIRoot } from "../../UIRoot";
 
 export default class MakiMap extends BaseObject {
   static GUID = "3860366542a7461b3fd875aa73bf6766";
+  _uiRoot: UIRoot;
   _bitmap: Bitmap;
 
+  constructor(uiRoot: UIRoot) {
+    super();
+    this._uiRoot = uiRoot;
+  }
+
   loadmap(bitmapId: string) {
-    this._bitmap = UI_ROOT.getBitmap(bitmapId);
+    this._bitmap = this._uiRoot.getBitmap(bitmapId);
   }
   inregion(x: number, y: number): boolean {
     // Maybe this checks if the pixel is transparent?

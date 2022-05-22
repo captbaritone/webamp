@@ -1,4 +1,3 @@
-import UI_ROOT from "../../UIRoot";
 import { num, px, relative } from "../../utils";
 import Group from "./Group";
 
@@ -45,7 +44,7 @@ export default class WasabiTitleBar extends Group {
 
   init() {
     super.init();
-    UI_ROOT.vm.dispatch(this, "onresize", [
+    this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
       { type: "INT", value: this.getwidth() },

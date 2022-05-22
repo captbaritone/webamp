@@ -15,7 +15,7 @@ const SCALE = 30; //px
 function prepareGrid() {
   const grid = document.getElementById("grid");
   const polygon = document.getElementById("polygon");
-  
+
   grid.style.width = `${GRIDSIZE * SCALE}px`;
   grid.style.height = `${GRIDSIZE * SCALE}px`;
   grid.style.setProperty("--cell-size", `${SCALE + 1}px`);
@@ -215,7 +215,7 @@ function prepareDrop() {
     canvas.setAttribute("width", image.width.toString());
     canvas.setAttribute("height", image.height.toString());
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(image, 0, 0)
+    ctx.drawImage(image, 0, 0);
 
     //? Coordinates
     const showCoordinates = (el: string, data: string) => {
@@ -251,8 +251,8 @@ function prepareDrop() {
   const coordinateHover = (e: MouseEvent) => {
     const el = e.target as HTMLDivElement;
     const [ax, ay] = el.textContent.split(",").map((v) => parseInt(v));
-    dot.style.left = `${ax }px`;
-    dot.style.top = `${ay }px`;
+    dot.style.left = `${ax}px`;
+    dot.style.top = `${ay}px`;
   };
 }
 

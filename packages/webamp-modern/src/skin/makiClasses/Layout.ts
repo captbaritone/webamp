@@ -3,7 +3,7 @@ import * as Utils from "../../utils";
 import Container from "./Container";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 import { px } from "../../utils";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 
 // > A layout is a special kind of group, which shown inside a container. Each
 // > layout represents an appearance for that window. Layouts give you the ability
@@ -23,8 +23,8 @@ export default class Layout extends Group {
   _moving: boolean = false;
   _snap = { left: 0, top: 0, right: 0, bottom: 0 };
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this._isLayout = true;
   }
 
@@ -45,7 +45,7 @@ export default class Layout extends Group {
   _renderBackground() {
     super._renderBackground(); //set css
     if (this._background != null && this._width == 0 && this._height == 0) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+      const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap != null) {
         this._width = bitmap.getWidth();
         this._height = bitmap.getHeight();
@@ -145,7 +145,7 @@ export default class Layout extends Group {
   init() {
     super.init();
     this._invalidateSize();
-    UI_ROOT.vm.dispatch(this, "onstartup");
+    this._uiRoot.vm.dispatch(this, "onstartup");
   }
 
   setResizing(cmd: string, dx: number, dy: number) {
@@ -204,12 +204,12 @@ export default class Layout extends Group {
       const container = this._parent;
       container.setXmlAttr(
         "x",
-        this._resizingDiv/* container._x + */ .offsetLeft
+        this._resizingDiv /* container._x + */.offsetLeft
           .toString()
       );
       container.setXmlAttr(
         "y",
-        this._resizingDiv/* container._y + */ .offsetTop
+        this._resizingDiv /* container._y + */.offsetTop
           .toString()
       );
       this._resizingDiv.remove();

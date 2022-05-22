@@ -1,4 +1,3 @@
-import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px } from "../../utils";
 import Layer from "./Layer";
 
@@ -43,27 +42,27 @@ export default class Images extends Layer {
       Math.ceil(this._getImageHeight() / this._frameHeight) - 1;
     if (this._source == "volume") {
       //TODO: make disposable:
-      UI_ROOT.audio.onVolumeChanged(this.updateVolume);
+      this._uiRoot.audio.onVolumeChanged(this.updateVolume);
       this.updateVolume();
     } else if (this._source == "balance") {
       //TODO: make disposable:
-      UI_ROOT.audio.onBalanceChanged(this.updateBalance);
+      this._uiRoot.audio.onBalanceChanged(this.updateBalance);
       this.updateBalance();
     }
   }
 
   updateVolume = () => {
-    const vol = UI_ROOT.audio.getVolume(); //0..1
+    const vol = this._uiRoot.audio.getVolume(); //0..1
     this.gotoFrame(vol * this._frameCount);
   };
 
   updateBalance = () => {
-    const balance = UI_ROOT.audio.getBalance(); //0..1
+    const balance = this._uiRoot.audio.getBalance(); //0..1
     this.gotoFrame(balance * this._frameCount);
   };
 
   _getImageHeight(): number {
-    const bitmap = UI_ROOT.getBitmap(this._image);
+    const bitmap = this._uiRoot.getBitmap(this._image);
     return bitmap.getHeight();
   }
 

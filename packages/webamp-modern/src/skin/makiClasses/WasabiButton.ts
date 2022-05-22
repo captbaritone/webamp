@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import Button from "./Button";
 
 export default class WasabiButton extends Button {
@@ -8,8 +8,8 @@ export default class WasabiButton extends Button {
     return "button";
   }
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this.registerDimensions();
   }
 
@@ -28,10 +28,10 @@ export default class WasabiButton extends Button {
   }
 
   registerDimensions() {
-    UI_ROOT.addHeight("button-border-top", "wasabi.button.top");
-    UI_ROOT.addHeight("button-border-bottom", "wasabi.button.bottom");
-    UI_ROOT.addWidth("button-border-left", "wasabi.button.left");
-    UI_ROOT.addWidth("button-border-right", "wasabi.button.right");
+    this._uiRoot.addHeight("button-border-top", "wasabi.button.top");
+    this._uiRoot.addHeight("button-border-bottom", "wasabi.button.bottom");
+    this._uiRoot.addWidth("button-border-left", "wasabi.button.left");
+    this._uiRoot.addWidth("button-border-right", "wasabi.button.right");
   }
 
   draw() {

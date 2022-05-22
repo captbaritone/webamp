@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { assert, num, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
 import XmlObj from "../XmlObj";
@@ -12,6 +12,7 @@ import Group from "./Group";
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Container extends XmlObj {
   static GUID = "e90dc47b4ae7840d0b042cb0fcf775d2";
+  _uiRoot: UIRoot;
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
@@ -23,8 +24,10 @@ export default class Container extends XmlObj {
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
   _componentAlias: string; // eg. "guid:pl"
   _div: HTMLElement = document.createElement("container");
-  constructor() {
+
+  constructor(uiRoot: UIRoot) {
     super();
+    this._uiRoot = uiRoot;
   }
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -70,7 +73,7 @@ export default class Container extends XmlObj {
     }
     // maki need 'onSwitchToLayout':
     // this.switchToLayout(this.getCurLayout().getId())
-    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
+    this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
       { type: "OBJECT", value: this.getCurLayout() },
     ]);
   }
@@ -228,7 +231,7 @@ export default class Container extends XmlObj {
   switchToLayout(layout_id: string) {
     const layout = this.getlayout(layout_id);
     assert(layout != null, `Could not find layout with id "${layout_id}".`);
-    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
+    this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
       { type: "OBJECT", value: layout },
     ]);
     this._clearCurrentLayout();
@@ -246,7 +249,7 @@ export default class Container extends XmlObj {
         this.switchToLayout(param);
         break;
       default:
-        UI_ROOT.dispatch(action, param, actionTarget);
+        this._uiRoot.dispatch(action, param, actionTarget);
     }
   }
 

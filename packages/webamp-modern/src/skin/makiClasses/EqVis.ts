@@ -1,5 +1,5 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { clamp, px } from "../../utils";
 // import Bitmap from "../Bitmap";
 
@@ -18,17 +18,17 @@ export default class EqVis extends GuiObj {
   _preampBitmapName: string;
   _fillStyle: CanvasPattern | CanvasGradient;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this.registerEqChanges();
     this._preampImg.width = 0;
   }
 
   registerEqChanges() {
     for (let i = 1; i <= 10; i++) {
-      UI_ROOT.audio.onEqChange(String(i), this.update);
+      this._uiRoot.audio.onEqChange(String(i), this.update);
     }
-    UI_ROOT.audio.onEqChange("preamp", this.update);
+    this._uiRoot.audio.onEqChange("preamp", this.update);
   }
 
   update = () => {
@@ -38,9 +38,13 @@ export default class EqVis extends GuiObj {
     ctx.clearRect(0, 0, w, h);
     const amplitudes = [];
     for (let i = 1; i <= 10; i++) {
-      amplitudes.push(UI_ROOT.audio.getEq(String(i)));
+      amplitudes.push(this._uiRoot.audio.getEq(String(i)));
     }
-    const preampValue = percentToRange(UI_ROOT.audio.getEq("preamp"), 0, h - 1);
+    const preampValue = percentToRange(
+      this._uiRoot.audio.getEq("preamp"),
+      0,
+      h - 1
+    );
     ctx.drawImage(this._getPreampImg(), 0, preampValue);
 
     // Create gradient
@@ -118,7 +122,7 @@ export default class EqVis extends GuiObj {
       const ctx = this._canvas.getContext("2d");
       if (this._colorBitmapName) {
         //from bitmap. used by classic skin
-        const bitmap = UI_ROOT.getBitmap(this._colorBitmapName);
+        const bitmap = this._uiRoot.getBitmap(this._colorBitmapName);
         this._fillStyle = ctx.createPattern(bitmap.getCanvas(), "repeat-x");
       } else {
         const grd = ctx.createLinearGradient(0, 0, 0, this._canvas.height);
@@ -140,7 +144,7 @@ export default class EqVis extends GuiObj {
       ctx.fillRect(0, 0, this.getwidth(), 1);
       if (this._preampBitmapName) {
         //from bitmap. used by classic skin
-        const bitmap = UI_ROOT.getBitmap(this._preampBitmapName);
+        const bitmap = this._uiRoot.getBitmap(this._preampBitmapName);
         this._preampImg.height = bitmap.getHeight(); //debug
         ctx.drawImage(bitmap.getImg(), -bitmap.getLeft(), -bitmap.getTop());
       }

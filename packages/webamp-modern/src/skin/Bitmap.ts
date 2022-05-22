@@ -1,4 +1,4 @@
-import UI_ROOT from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import { assert, getId, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
@@ -9,6 +9,7 @@ export function genCssVar(bitmapId: string): string {
 // http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmap.2F.3E
 export default class Bitmap {
   _id: string;
+  _uiRoot: UIRoot; // lazy set
   _cssVar: string;
   _url: string;
   _img: CanvasImageSource;
@@ -19,6 +20,14 @@ export default class Bitmap {
   _height: number;
   _file: string;
   _gammagroup: string;
+
+  // I am not sure, is bitmap need UiRoot?
+  constructor(uiRoot: UIRoot = null) {
+    this._uiRoot = uiRoot;
+  }
+  setUiRoot(uiRoot: UIRoot) {
+    this._uiRoot = uiRoot;
+  }
 
   setXmlAttributes(attributes: { [attrName: string]: string }) {
     for (const [key, value] of Object.entries(attributes)) {
@@ -163,40 +172,40 @@ export default class Bitmap {
     this._setAsBackground(div, "disabled-");
   }
 
-  async getGammaTransformedUrl(): Promise<string> {
-    const buildCssProp = (url:string) => `  ${this.getCSSVar()}: url(${url});`;
+  async getGammaTransformedUrl(uiRoot: UIRoot): Promise<string> {
+    const buildCssProp = (url: string) => `  ${this.getCSSVar()}: url(${url});`;
     const img = this.getImg();
-      if (!img) {
-        console.warn(`Bitmap/font ${this.getId()} has no img. skipped.`);
-        return '';
-      }
+    if (!img) {
+      console.warn(`Bitmap/font ${this.getId()} has no img. skipped.`);
+      return "";
+    }
 
-      const groupId = this.getGammaGroup();
-      const gammaGroup = UI_ROOT._getGammaGroup(groupId);
-      if(gammaGroup._value=='0,0,0'){
-        // triple zero meaning no gamma should be applied.
-        // return bitmap.getCanvas().toDataURL();
-        const url = await this.toDataURL();
-        return buildCssProp(url)
-      }
-      const url = gammaGroup.transformImage(
-        img as HTMLImageElement,
-        this._x,
-        this._y,
-        this._width,
-        this._height
-      );
-      return buildCssProp(url)
+    const groupId = this.getGammaGroup();
+    const gammaGroup = uiRoot._getGammaGroup(groupId);
+    if (gammaGroup._value == "0,0,0") {
+      // triple zero meaning no gamma should be applied.
+      // return bitmap.getCanvas().toDataURL();
+      const url = await this.toDataURL(uiRoot);
+      return buildCssProp(url);
+    }
+    const url = gammaGroup.transformImage(
+      img as HTMLImageElement,
+      this._x,
+      this._y,
+      this._width,
+      this._height
+    );
+    return buildCssProp(url);
   }
   /**
    * Final function that uses Bitmap;
    * Afther call this, bitmap maybe destroyed.
    * @returns url string used as embedded in <head><style>
    */
-  async toDataURL(): Promise<string> {
+  async toDataURL(uiRoot: UIRoot): Promise<string> {
     if (this._file.endsWith(".gif") /* && !this._transparentColor */) {
       // don't draw _img into canvas, if it is animated gif
-      return await UI_ROOT.getImageManager().getUrl(this._file);
+      return await uiRoot.getImageManager().getUrl(this._file);
     } else {
       return this.getCanvas().toDataURL();
     }
@@ -215,8 +224,8 @@ export default class Bitmap {
         this._img != null,
         `Expected bitmap image to be loaded: ${this.getId()}`
       );
-      if(this._img instanceof HTMLCanvasElement){
-        workingCanvas = this._img
+      if (this._img instanceof HTMLCanvasElement) {
+        workingCanvas = this._img;
       } else {
         workingCanvas = document.createElement("canvas");
         workingCanvas.width = this.getWidth() /* || this._img.width */;

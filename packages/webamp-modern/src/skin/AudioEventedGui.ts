@@ -1,4 +1,3 @@
-import UI_ROOT from "../UIRoot";
 import { AUDIO_PAUSED, AUDIO_PLAYING, AUDIO_STOPPED } from "./AudioPlayer";
 
 import GuiObj from "./makiClasses/GuiObj";
@@ -43,7 +42,7 @@ export default class AudioEventedGui extends GuiObj {
       if (this._audioEventListeners != null) {
         this._audioEventListeners();
       }
-      this._audioEventListeners = UI_ROOT.audio.on("statchanged", () =>
+      this._audioEventListeners = this._uiRoot.audio.on("statchanged", () =>
         this._updatePropsByAudioState()
       );
       this._updatePropsByAudioState();
@@ -52,7 +51,7 @@ export default class AudioEventedGui extends GuiObj {
 
   _updatePropsByAudioState() {
     // console.log("audio-state-changed:", this.getId(), this._audioEvent);
-    const pl = UI_ROOT.playlist;
+    const pl = this._uiRoot.playlist;
     const plCount = pl.getnumtracks();
     const plIndex = pl.getcurrentindex();
     const canNext = plIndex < plCount - 1;
@@ -86,7 +85,7 @@ export default class AudioEventedGui extends GuiObj {
       [AUDIO_STOPPED]: "stop",
     };
 
-    const state = UI_ROOT.audio.getState(); // playing
+    const state = this._uiRoot.audio.getState(); // playing
     if (!buttonStates[state]) {
       console.warn("unknown audio state:", state);
       return;

@@ -1,12 +1,19 @@
 import { interpret } from "../maki/interpreter";
 import { ParsedMaki } from "../maki/parser";
 import { Variable } from "../maki/v";
+import { UIRoot } from "../UIRoot";
 import BaseObject from "./makiClasses/BaseObject";
 
 import { classResolver } from "./resolver";
 
 export default class Vm {
+  _uiRoot: UIRoot; // actually only new Klass(uiRoot)
   _scripts: ParsedMaki[] = [];
+
+  constructor(uiRoot: UIRoot) {
+    this._uiRoot = uiRoot;
+  }
+
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
   dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
@@ -32,6 +39,6 @@ export default class Vm {
   }
 
   interpret(script: ParsedMaki, commandOffset: number, args: Variable[]) {
-    interpret(commandOffset, script, args, classResolver);
+    interpret(commandOffset, script, args, classResolver, this._uiRoot);
   }
 }

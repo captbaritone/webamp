@@ -5,10 +5,10 @@ import Container from "./Container";
 import { clamp, integerToTime } from "../../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "../PrivateConfig";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import GuiObj from "./GuiObj";
-import Config, { CONFIG } from "./Config";
-import WinampConfig, { WINAMP_CONFIG } from "./WinampConfig";
+import Config from "./Config";
+import WinampConfig from "./WinampConfig";
 
 import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
 
@@ -23,50 +23,69 @@ document.addEventListener("mousemove", (e: MouseEvent) => {
 
 export default class SystemObject extends BaseObject {
   static GUID = "d6f50f6449b793fa66baf193983eaeef";
+  _uiRoot: UIRoot;
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
   _param: string;
   _id: string;
 
-  constructor(parsedScript: ParsedMaki, param: string, id: string) {
+  constructor(
+    uiRoot: UIRoot,
+    parsedScript: ParsedMaki,
+    param: string,
+    id: string
+  ) {
     super();
+    this._uiRoot = uiRoot;
     this._parsedScript = parsedScript;
     this._param = param;
     this._id = id; // useful while debuggin
-    UI_ROOT.audio.onSeek(() => {
-      UI_ROOT.vm.dispatch(this, "onseek", [
-        { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
+    this._uiRoot.audio.onSeek(() => {
+      this._uiRoot.vm.dispatch(this, "onseek", [
+        {
+          type: "INT",
+          value: this._uiRoot.audio.getCurrentTimePercent() * 255,
+        },
       ]);
     });
-    UI_ROOT.audio.on("play", () => UI_ROOT.vm.dispatch(this, "onplay", []));
-    UI_ROOT.audio.on("pause", () => UI_ROOT.vm.dispatch(this, "onpause", []));
-    UI_ROOT.audio.on("stop", () => UI_ROOT.vm.dispatch(this, "onstop", []));
-    // UI_ROOT.audio.onPlay(() => UI_ROOT.vm.dispatch(this, "onplay", []));
-    UI_ROOT.audio.onVolumeChanged(() => {
-      UI_ROOT.vm.dispatch(this, "onvolumechanged", [
-        { type: "INT", value: UI_ROOT.audio.getVolume() * 255 },
+    this._uiRoot.audio.on("play", () =>
+      this._uiRoot.vm.dispatch(this, "onplay", [])
+    );
+    this._uiRoot.audio.on("pause", () =>
+      this._uiRoot.vm.dispatch(this, "onpause", [])
+    );
+    this._uiRoot.audio.on("stop", () =>
+      this._uiRoot.vm.dispatch(this, "onstop", [])
+    );
+    // this._uiRoot.audio.onPlay(() => this._uiRoot.vm.dispatch(this, "onplay", []));
+    this._uiRoot.audio.onVolumeChanged(() => {
+      this._uiRoot.vm.dispatch(this, "onvolumechanged", [
+        { type: "INT", value: this._uiRoot.audio.getVolume() * 255 },
       ]);
     });
     const EqBandHandle = (band: number) => {
-      // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
-      UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
+      // console.log('eq.changed:',band, this._uiRoot.audio.getEq(String(band)))
+      this._uiRoot.vm.dispatch(this, "oneqbandchanged", [
         { type: "INT", value: band - 1 },
-        { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
+        {
+          type: "INT",
+          value: this._uiRoot.audio.getEq(String(band)) * 255 - 127,
+        },
       ]);
     };
-    UI_ROOT.audio.onEqChange("1", () => EqBandHandle(1));
-    UI_ROOT.audio.onEqChange("2", () => EqBandHandle(2));
-    UI_ROOT.audio.onEqChange("3", () => EqBandHandle(3));
-    UI_ROOT.audio.onEqChange("4", () => EqBandHandle(4));
-    UI_ROOT.audio.onEqChange("5", () => EqBandHandle(5));
-    UI_ROOT.audio.onEqChange("6", () => EqBandHandle(6));
-    UI_ROOT.audio.onEqChange("7", () => EqBandHandle(7));
-    UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
-    UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
-    UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
-    UI_ROOT.audio.onEqChange("preamp", () => {
-      UI_ROOT.vm.dispatch(this, "oneqpreampchanged", [
-        { type: "INT", value: UI_ROOT.audio.getEq("preamp") * 255 - 127 },
+    this._uiRoot.audio.onEqChange("1", () => EqBandHandle(1));
+    this._uiRoot.audio.onEqChange("2", () => EqBandHandle(2));
+    this._uiRoot.audio.onEqChange("3", () => EqBandHandle(3));
+    this._uiRoot.audio.onEqChange("4", () => EqBandHandle(4));
+    this._uiRoot.audio.onEqChange("5", () => EqBandHandle(5));
+    this._uiRoot.audio.onEqChange("6", () => EqBandHandle(6));
+    this._uiRoot.audio.onEqChange("7", () => EqBandHandle(7));
+    this._uiRoot.audio.onEqChange("8", () => EqBandHandle(8));
+    this._uiRoot.audio.onEqChange("9", () => EqBandHandle(9));
+    this._uiRoot.audio.onEqChange("10", () => EqBandHandle(10));
+    this._uiRoot.audio.onEqChange("preamp", () => {
+      this._uiRoot.vm.dispatch(this, "oneqpreampchanged", [
+        { type: "INT", value: this._uiRoot.audio.getEq("preamp") * 255 - 127 },
       ]);
     });
   }
@@ -82,19 +101,19 @@ export default class SystemObject extends BaseObject {
     for (const vari of this._parsedScript.variables) {
       if (vari.type == "OBJECT") {
         if (vari.guid == Config.GUID) {
-          vari.value = CONFIG;
+          vari.value = this._uiRoot.CONFIG;
         } else if (vari.guid == WinampConfig.GUID) {
-          vari.value = WINAMP_CONFIG;
+          vari.value = this._uiRoot.WINAMP_CONFIG;
         }
       }
     }
 
-    UI_ROOT.vm.addScript(this._parsedScript);
-    UI_ROOT.vm.dispatch(this, "onscriptloaded");
+    this._uiRoot.vm.addScript(this._parsedScript);
+    this._uiRoot.vm.dispatch(this, "onscriptloaded");
   }
 
   deinit() {
-    UI_ROOT.vm.dispatch(this, "onscriptunloading");
+    this._uiRoot.vm.dispatch(this, "onscriptunloading");
   }
 
   setParentGroup(group: Group) {
@@ -107,7 +126,7 @@ export default class SystemObject extends BaseObject {
   }
 
   getskinname(): string {
-    return UI_ROOT.getSkinName();
+    return this._uiRoot.getSkinName();
   }
 
   /**
@@ -570,7 +589,7 @@ export default class SystemObject extends BaseObject {
    **/
   getcontainer(containerId: string): Container {
     const lower = containerId.toLowerCase();
-    for (const container of UI_ROOT.getContainers()) {
+    for (const container of this._uiRoot.getContainers()) {
       if (container.getId() === lower) {
         return container;
       }
@@ -616,7 +635,7 @@ export default class SystemObject extends BaseObject {
    * @ret The number of containers.
    */
   getnumcontainers(): number {
-    return UI_ROOT.getContainers().length;
+    return this._uiRoot.getContainers().length;
   }
 
   /**
@@ -662,7 +681,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the left vu meter.
    */
   getleftvumeter(): number {
-    return UI_ROOT.audio._vuMeter * 255;
+    return this._uiRoot.audio._vuMeter * 255;
   }
 
   /**
@@ -672,7 +691,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the right vu meter.
    */
   getrightvumeter(): number {
-    return UI_ROOT.audio._vuMeter * 255;
+    return this._uiRoot.audio._vuMeter * 255;
   }
 
   /**
@@ -681,7 +700,7 @@ export default class SystemObject extends BaseObject {
    * @ret The current volume.
    **/
   getvolume(): number {
-    return UI_ROOT.audio.getVolume() * 255;
+    return this._uiRoot.audio.getVolume() * 255;
   }
 
   /**
@@ -693,7 +712,7 @@ export default class SystemObject extends BaseObject {
   setvolume(_vol: number) {
     const vol = clamp(_vol, 0, 255);
 
-    UI_ROOT.audio.setVolume(vol / 255);
+    this._uiRoot.audio.setVolume(vol / 255);
   }
 
   /**
@@ -792,11 +811,11 @@ export default class SystemObject extends BaseObject {
   }
 
   getplaylistlength(): number {
-    return UI_ROOT.playlist.getnumtracks();
+    return this._uiRoot.playlist.getnumtracks();
   }
 
   getplaylistindex(): number {
-    return UI_ROOT.playlist.getcurrentindex();
+    return this._uiRoot.playlist.getcurrentindex();
   }
 
   /**
@@ -1024,7 +1043,7 @@ export default class SystemObject extends BaseObject {
    * @ret Length of the track, in seconds.
    */
   getplayitemlength(): number {
-    return UI_ROOT.audio.getLength();
+    return this._uiRoot.audio.getLength();
     //
   }
 
@@ -1034,7 +1053,7 @@ export default class SystemObject extends BaseObject {
    */
   seekto(pos: number) {
     // Note: For some reason I seem to be getting passed seconds here not MS
-    UI_ROOT.audio.seekTo(pos);
+    this._uiRoot.audio.seekTo(pos);
   }
 
   /**
@@ -1139,7 +1158,7 @@ export default class SystemObject extends BaseObject {
    * @param  separator   The separator to use.
    * @param  tokennum    The token to retreive.
    */
-  gettoken(str: string, separator: string, tokennum: number):string {
+  gettoken(str: string, separator: string, tokennum: number): string {
     // getToken("28,39,-56,-84,0,0,1,1", ",", 3) will return "-84"
     const commas = str.split(separator);
     return commas[tokennum] || "";
@@ -1193,7 +1212,7 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    const audioState = UI_ROOT.audio.getState();
+    const audioState = this._uiRoot.audio.getState();
     switch (audioState) {
       case AUDIO_PLAYING:
         return 1;
@@ -1470,7 +1489,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the pre-amp.
    */
   seteqpreamp(value: number) {
-    UI_ROOT.audio.setEq("preamp", (value + 127) / 255);
+    this._uiRoot.audio.setEq("preamp", (value + 127) / 255);
   }
 
   /**
@@ -1482,7 +1501,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the specified band.
    */
   seteqband(band: number, value: number) {
-    UI_ROOT.audio.setEq(String(band + 1), (value + 127) / 255);
+    this._uiRoot.audio.setEq(String(band + 1), (value + 127) / 255);
   }
 
   /**
@@ -1496,13 +1515,13 @@ export default class SystemObject extends BaseObject {
   @param  band  The eq band number you want to get.
   */
   geteqband(band: number): number {
-    // console.log('getEqBand',band, UI_ROOT.audio.getEq(String(band + 1)) * 255 - 127);
-    return UI_ROOT.audio.getEq(String(band + 1)) * 255 - 127;
+    // console.log('getEqBand',band, this._uiRoot.audio.getEq(String(band + 1)) * 255 - 127);
+    return this._uiRoot.audio.getEq(String(band + 1)) * 255 - 127;
   }
 
   //maki need it
   oneqbandchanged(band: number, value: number) {
-    UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
+    this._uiRoot.vm.dispatch(this, "oneqbandchanged", [
       { type: "INT", value: band },
       { type: "INT", value: value },
     ]);

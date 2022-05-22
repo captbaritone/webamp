@@ -102,9 +102,18 @@ async function initializeSkinListMenu() {
     { filename: "MMD3", download_url: "assets/MMD3.wal" },
     { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
     { filename: "[Classic]", download_url: "assets/base-2.91.wsz" },
-    { filename: "[Audion Face] Smoothface 2", download_url: "assets/Smoothface2.face" },
-    { filename: "[Audion Face] Gizmo 2.0", download_url: "assets/Gizmo2.0.face" },
-    { filename: "[Audion Face] Tokyo Bay", download_url: "assets/TokyoBay.face" },
+    {
+      filename: "[Audion Face] Smoothface 2",
+      download_url: "assets/Smoothface2.face",
+    },
+    {
+      filename: "[Audion Face] Gizmo 2.0",
+      download_url: "assets/Gizmo2.0.face",
+    },
+    {
+      filename: "[Audion Face] Tokyo Bay",
+      download_url: "assets/TokyoBay.face",
+    },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 

@@ -1,5 +1,4 @@
 import { V } from "../../maki/v";
-import UI_ROOT from "../../UIRoot";
 import Button from "./Button";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
@@ -33,11 +32,11 @@ export default class ToggleButton extends Button {
   }
 
   ontoggle(onoff: boolean) {
-    UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
+    this._uiRoot.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
   onactivate(activated: number) {
-    UI_ROOT.vm.dispatch(this, "onactivate", [
+    this._uiRoot.vm.dispatch(this, "onactivate", [
       { type: "INT", value: activated },
     ]);
   }

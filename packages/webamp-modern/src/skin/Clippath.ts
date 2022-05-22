@@ -93,7 +93,7 @@ export class Edges {
     }
     this._top = points;
     const lastTop: number = lastY;
-    const firstTop: number = points.length>0? points[0][1] : 0;
+    const firstTop: number = points.length > 0 ? points[0][1] : 0;
 
     //? Right -------------------------------------------------
     points = [];
@@ -215,8 +215,8 @@ function simplifyPoints(points: number[][]) {
     }
 
     if (result.length >= 2) {
-      const [px,py] = result[result.length-1]
-      const [ppx,ppy] = result[result.length-2]
+      const [px, py] = result[result.length - 1];
+      const [ppx, ppy] = result[result.length - 2];
       //? vertically, same direction
       if (x == px && (py != ppy || px == ppx)) {
         const [xx, yy] = result.pop();

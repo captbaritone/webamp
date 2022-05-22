@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+// import UI_ROOT from "../../UIRoot";
 import { Emitter } from "../../utils";
 import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";

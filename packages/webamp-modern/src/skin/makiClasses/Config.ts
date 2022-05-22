@@ -1,3 +1,4 @@
+import { UIRoot } from "../../UIRoot";
 import XmlObj from "../XmlObj";
 import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";
@@ -6,6 +7,7 @@ import ConfigPersistent, { SectionValues } from "./ConfigPersistent";
 export default class Config extends ConfigPersistent {
   static GUID = "593dba224976d07771f452b90b405536";
   _id: string = "CONFIG";
+  _uiRoot: UIRoot;
   _aliases: SectionValues;
   _items: { [key: string]: ConfigItem } = {};
 
@@ -13,8 +15,9 @@ export default class Config extends ConfigPersistent {
     return "_CONFIG_";
   }
 
-  constructor() {
+  constructor(uiRoot: UIRoot) {
     super();
+    this._uiRoot = uiRoot;
     this._aliases = this.getSectionValues("_alias_");
   }
 
@@ -28,7 +31,7 @@ export default class Config extends ConfigPersistent {
    */
   newitem(itemName: string, itemGuid: string): ConfigItem {
     // line below wouldn't replace the _configTree. ^_^v
-    const cfg = new ConfigItem(itemName, itemGuid);
+    const cfg = new ConfigItem(this._uiRoot, itemName, itemGuid);
 
     this._items[itemGuid] = cfg;
     this._aliases[itemName] = itemGuid;
@@ -59,4 +62,4 @@ export default class Config extends ConfigPersistent {
 }
 
 // Global Singleton
-export const CONFIG: Config = new Config();
+// export const CONFIG: Config = new Config();

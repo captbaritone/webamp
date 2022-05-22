@@ -4,6 +4,7 @@ import { ParsedMaki, Command, Method } from "./parser";
 import { getClass, getMethod } from "./objects";
 import GuiObj from "../skin/makiClasses/GuiObj";
 import BaseObject from "../skin/makiClasses/BaseObject";
+import { UIRoot } from "../UIRoot";
 // import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
@@ -36,10 +37,11 @@ export function interpret(
   start: number,
   program: ParsedMaki,
   stack: Variable[],
-  classResolver: (guid: string) => any
+  classResolver: (guid: string) => any,
+  uiRoot: UIRoot
 ) {
   validateMaki(program);
-  const interpreter = new Interpreter(program, classResolver);
+  const interpreter = new Interpreter(program, classResolver, uiRoot);
   interpreter.stack = stack;
   return interpreter.interpret(start);
 }
@@ -51,6 +53,7 @@ function validateVariable(v: Variable) {
 }
 
 class Interpreter {
+  _uiRoot: UIRoot; // actually only new Klass(uiRoot)
   stack: Variable[];
   callStack: number[];
   classes: string[];
@@ -59,13 +62,19 @@ class Interpreter {
   commands: Command[];
   debug: boolean = false;
   classResolver: (guid: string) => any;
-  constructor(program: ParsedMaki, classResolver: (guid: string) => any) {
+
+  constructor(
+    program: ParsedMaki,
+    classResolver: (guid: string) => any,
+    uiRoot: UIRoot
+  ) {
     const { commands, methods, variables, classes } = program;
     this.classResolver = classResolver;
     this.commands = commands;
     this.methods = methods;
     this.variables = variables;
     this.classes = classes;
+    this._uiRoot = uiRoot;
 
     this.stack = [];
     this.callStack = [];
@@ -689,7 +698,7 @@ class Interpreter {
           const classesOffset = command.arg;
           const guid = this.classes[classesOffset];
           const Klass = this.classResolver(guid);
-          const klassInst = new Klass();
+          const klassInst = new Klass(this._uiRoot);
           this.push({ type: "OBJECT", value: klassInst });
           break;
         }

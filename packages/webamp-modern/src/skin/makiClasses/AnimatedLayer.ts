@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+// import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px, toBool } from "../../utils";
 import Layer from "./Layer";
 
@@ -14,14 +14,14 @@ export default class AnimatedLayer extends Layer {
   _autoReplay: boolean = true;
   _autoPlay: boolean = false;
   _animationInterval: NodeJS.Timeout | null = null;
-  _imageFormat:string;
-  _elementFrames:number;
+  _imageFormat: string;
+  _elementFrames: number;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
-    if(key=='image' && /\%[0-9]*d/.test(value)){
+    if (key == "image" && /\%[0-9]*d/.test(value)) {
       this._imageFormat = value;
-      return true
+      return true;
     }
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -63,7 +63,7 @@ export default class AnimatedLayer extends Layer {
   // }
 
   _getImageHeight(): number {
-    const bitmap = UI_ROOT.getBitmap(this._image);
+    const bitmap = this._uiRoot.getBitmap(this._image);
     return bitmap.getHeight();
   }
 
@@ -74,7 +74,7 @@ export default class AnimatedLayer extends Layer {
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
     this._renderFrame();
-    UI_ROOT.vm.dispatch(this, "onframe", [
+    this._uiRoot.vm.dispatch(this, "onframe", [
       { type: "INT", value: this._currentFrame },
     ]);
   }
@@ -102,7 +102,7 @@ export default class AnimatedLayer extends Layer {
     let frame = this._startFrame;
     // this.gotoframe(frame);
 
-    UI_ROOT.vm.dispatch(this, "onplay");
+    this._uiRoot.vm.dispatch(this, "onplay");
 
     if (frame === end && !this._autoReplay) {
       this.stop();
@@ -110,7 +110,7 @@ export default class AnimatedLayer extends Layer {
     }
     this._animationInterval = setInterval(() => {
       this.gotoframe(frame);
-      
+
       if (frame === end) {
         if (!this._autoReplay) {
           // clearInterval(this._animationInterval);
@@ -119,15 +119,15 @@ export default class AnimatedLayer extends Layer {
         }
       }
       frame += change;
-      if(frame< start) {
-        frame = end
-      } else if(frame>end) {
-        frame = start
+      if (frame < start) {
+        frame = end;
+      } else if (frame > end) {
+        frame = start;
       }
     }, this._speed);
   }
   pause() {
-    UI_ROOT.vm.dispatch(this, "onpause");
+    this._uiRoot.vm.dispatch(this, "onpause");
     // TODO
   }
   stop() {
@@ -135,7 +135,7 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
-    UI_ROOT.vm.dispatch(this, "onstop");
+    this._uiRoot.vm.dispatch(this, "onstop");
   }
   isplaying(): boolean {
     return this._animationInterval != null;
@@ -147,11 +147,11 @@ export default class AnimatedLayer extends Layer {
 
   init() {
     super.init();
-    if(!this._frameHeight){
-      this._frameHeight = this.getheight()
+    if (!this._frameHeight) {
+      this._frameHeight = this.getheight();
     }
-    if(this._endFrame==0 && this.getlength()>0){
-      this._endFrame= this.getlength() -1
+    if (this._endFrame == 0 && this.getlength() > 0) {
+      this._endFrame = this.getlength() - 1;
     }
     if (this._autoPlay) this.play();
   }

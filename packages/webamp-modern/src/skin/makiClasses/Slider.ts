@@ -1,12 +1,16 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { assume, clamp, num, px, throttle } from "../../utils";
 import GuiObj from "./GuiObj";
 
 export class ActionHandler {
   _slider: Slider;
+  _uiRoot: UIRoot;
+
   constructor(slider: Slider) {
     this._slider = slider;
+    this._uiRoot = slider._uiRoot;
   }
+
   _subscription: Function = () => {};
   // 0-255
   onsetposition(position: number): void {}
@@ -161,7 +165,7 @@ export default class Slider extends GuiObj {
       case "thumb":
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
-        const bitmap = UI_ROOT.getBitmap(this._thumb);
+        const bitmap = this._uiRoot.getBitmap(this._thumb);
         if (bitmap) {
           this._thumbWidth = bitmap.getWidth();
           this._thumbHeight = bitmap.getHeight();
@@ -305,10 +309,14 @@ export default class Slider extends GuiObj {
   }
 
   onsetposition(newPos: number) {
-    this._onSetPositionEvenEaten = UI_ROOT.vm.dispatch(this, "onsetposition", [
-      //needed by seekerGhost
-      { type: "INT", value: newPos },
-    ]);
+    this._onSetPositionEvenEaten = this._uiRoot.vm.dispatch(
+      this,
+      "onsetposition",
+      [
+        //needed by seekerGhost
+        { type: "INT", value: newPos },
+      ]
+    );
   }
   doSetPosition(newPos: number) {
     this.onsetposition(newPos);
@@ -320,7 +328,7 @@ export default class Slider extends GuiObj {
 
   doLeftMouseDown(x: number, y: number) {
     this._setPositionXY(x, y);
-    UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -334,14 +342,14 @@ export default class Slider extends GuiObj {
     }
   }
   doLeftMouseUp(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
-    UI_ROOT.vm.dispatch(this, "onsetfinalposition", [
+    this._uiRoot.vm.dispatch(this, "onsetfinalposition", [
       { type: "INT", value: this.getposition() },
     ]);
-    UI_ROOT.vm.dispatch(this, "onpostedposition", [
+    this._uiRoot.vm.dispatch(this, "onpostedposition", [
       { type: "INT", value: this.getposition() },
     ]);
     if (this._actionHandler != null) {
@@ -357,19 +365,19 @@ export default class Slider extends GuiObj {
 
   _prepareThumbBitmaps() {
     if (this._thumb != null) {
-      const bitmap = UI_ROOT.getBitmap(this._thumb);
+      const bitmap = this._uiRoot.getBitmap(this._thumb);
       bitmap._setAsBackground(this._div, "thumb-");
     }
     this._div.style.setProperty("--thumb-width", px(this._thumbWidth));
     this._div.style.setProperty("--thumb-height", px(this._thumbHeight));
 
     if (this._downThumb != null) {
-      const bitmap = UI_ROOT.getBitmap(this._downThumb);
+      const bitmap = this._uiRoot.getBitmap(this._downThumb);
       bitmap._setAsBackground(this._div, "thumb-down-");
     }
 
     if (this._hoverThumb != null) {
-      const bitmap = UI_ROOT.getBitmap(this._hoverThumb);
+      const bitmap = this._uiRoot.getBitmap(this._hoverThumb);
       bitmap._setAsBackground(this._div, "thumb-hover-");
     }
   }
@@ -443,14 +451,14 @@ class SeekActionHandler extends ActionHandler {
   }
 
   _registerOnAudioProgress() {
-    this._subscription = UI_ROOT.audio.onCurrentTimeChange(
+    this._subscription = this._uiRoot.audio.onCurrentTimeChange(
       this._onAudioProgres
     );
   }
 
   _onAudioProgres = () => {
     if (!this._pendingChange) {
-      this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
+      this._slider._position = this._uiRoot.audio.getCurrentTimePercent();
       this._slider._renderThumbPosition();
     }
   };
@@ -458,14 +466,14 @@ class SeekActionHandler extends ActionHandler {
   onsetposition(position: number): void {
     this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
     if (!this._pendingChange) {
-      UI_ROOT.audio.seekToPercent(position / this._slider._high);
+      this._uiRoot.audio.seekToPercent(position / this._slider._high);
     }
   }
 
   onLeftMouseUp(x: number, y: number) {
     if (this._pendingChange) {
       this._pendingChange = false;
-      UI_ROOT.audio.seekToPercent(
+      this._uiRoot.audio.seekToPercent(
         this._slider.getposition() / this._slider._high
       );
     }
@@ -481,11 +489,11 @@ class EqActionHandler extends ActionHandler {
     super(slider);
     this._kind = kind;
     const update = () => {
-      slider._position = UI_ROOT.audio.getEq(kind);
+      slider._position = this._uiRoot.audio.getEq(kind);
       slider._renderThumbPosition();
     };
     update();
-    this._subscription = UI_ROOT.audio.onEqChange(kind, update);
+    this._subscription = this._uiRoot.audio.onEqChange(kind, update);
   }
 
   onLeftMouseDown(x: number, y: number): void {
@@ -510,7 +518,7 @@ class EqActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
+    this._uiRoot.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -521,15 +529,15 @@ class PreampActionHandler extends ActionHandler {
     super(slider);
     this._kind = kind;
     const update = () => {
-      slider._position = UI_ROOT.audio.getEq(kind);
+      slider._position = this._uiRoot.audio.getEq(kind);
       slider._renderThumbPosition();
     };
     update();
-    this._subscription = UI_ROOT.audio.onEqChange(kind, update);
+    this._subscription = this._uiRoot.audio.onEqChange(kind, update);
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
+    this._uiRoot.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -537,7 +545,7 @@ class PreampActionHandler extends ActionHandler {
 class PanActionHandler extends ActionHandler {
   onsetposition(position: number): void {
     // TODO
-    UI_ROOT.audio.setBalance(position / this._slider._high);
+    this._uiRoot.audio.setBalance(position / this._slider._high);
   }
 }
 
@@ -547,19 +555,19 @@ class VolumeActionHandler extends ActionHandler {
 
   constructor(slider: Slider) {
     super(slider);
-    slider._position = UI_ROOT.audio.getVolume();
+    slider._position = this._uiRoot.audio.getVolume();
     slider._renderThumbPosition();
 
-    this._subscription = UI_ROOT.audio.onVolumeChanged(() => {
+    this._subscription = this._uiRoot.audio.onVolumeChanged(() => {
       if (!this._changing) {
-        slider._position = UI_ROOT.audio.getVolume();
+        slider._position = this._uiRoot.audio.getVolume();
         slider._renderThumbPosition();
       }
     });
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setVolume(position / this._slider._high);
+    this._uiRoot.audio.setVolume(position / this._slider._high);
   }
   onLeftMouseDown(x: number, y: number) {
     this._changing = true;
