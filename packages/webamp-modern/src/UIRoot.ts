@@ -28,6 +28,7 @@ import WinampConfig from "./skin/makiClasses/WinampConfig";
 import { SkinEngineClass } from "./skin/SkinEngine";
 
 export class UIRoot {
+  _id: string;
   _config: Config;
   _winampConfig: WinampConfig;
   _div: HTMLDivElement = document.createElement("div");
@@ -63,7 +64,8 @@ export class UIRoot {
   audio: AudioPlayer = AUDIO_PLAYER;
   playlist: PlEdit = new PlEdit();
 
-  constructor() {
+  constructor(id: string = "ui-root") {
+    this._id = id;
     //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
     this._input.type = "file";
     this._input.setAttribute("multiple", "true");
@@ -75,6 +77,10 @@ export class UIRoot {
     this._config = new Config(this);
     this._winampConfig = new WinampConfig(this);
     this.vm = new Vm(this);
+  }
+
+  getId():string {
+    return this._id;
   }
 
   // shortcut of this.Emitter
@@ -410,8 +416,19 @@ export class UIRoot {
     for (const [dimension, size] of Object.entries(this._dimensions)) {
       cssRules.push(`  --dim-${dimension}: ${size}px;`);
     }
-    const cssEl = document.getElementById("bitmap-css");
-    cssEl.textContent = `:root{${cssRules.join("\n")}}`;
+    const cssId = `${this._id}-bitmap-css`;
+    const head = document.getElementsByTagName('head')[0];
+    // debugger;
+    // const cssEl = document.getElementById();
+    let cssEl = document.querySelector(`style#${cssId}`);
+    if(!cssEl){
+      cssEl = document.createElement('style');
+      cssEl.setAttribute('type', 'text/css');
+      cssEl.setAttribute('id', cssId);
+      document.head.appendChild(cssEl)
+    }
+    cssEl.textContent = `#${this._id} {${cssRules.join("\n")}}`;
+    // cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
 
   getXuiElement(xuitag: string): XmlElement | null {
@@ -554,7 +571,7 @@ export class UIRoot {
   }
 
   draw() {
-    this._div.setAttribute("id", "ui-root");
+    this._div.setAttribute("id", this._id);
     this._div.style.imageRendering = "pixelated";
     for (const container of this.getContainers()) {
       container.draw();
@@ -664,9 +681,6 @@ export class UIRoot {
     for (const systemObject of this._systemObjects) {
       systemObject.init();
     }
-  }
-  getId() {
-    return "UIROOT";
   }
 
   setSkinInfo(skinInfo: { [key: string]: string }) {

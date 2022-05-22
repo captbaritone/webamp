@@ -21,6 +21,8 @@ const DEFAULT_OPTIONS: Options = {
   tracks: [],
 };
 
+let DIV_UNIQUER = 0; // for CSS unique, avoid interferer with other webamp instance
+
 export class Webamp5 extends WebAmpModern {
   _options: Options;
   _parent: HTMLElement;
@@ -30,7 +32,8 @@ export class Webamp5 extends WebAmpModern {
     super(parent, options);
     this._parent = parent || document.body;
     this._options = { ...DEFAULT_OPTIONS, ...options };
-    this._uiRoot = new UIRoot();
+    DIV_UNIQUER++;
+    this._uiRoot = new UIRoot(`ui-root-${DIV_UNIQUER}`);
     parent.appendChild(this._uiRoot.getRootDiv());
     this.switchSkin(this._options.skin);
     for (const song of this._options.tracks) {

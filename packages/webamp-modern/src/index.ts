@@ -44,7 +44,8 @@ async function main() {
   setStatus("Downloading MP3...");
   webamp = new window.WebampModern(document.getElementById("web-amp"), option);
   webamp.onLogMessage(setStatus);
-
+  
+  var webamp2 = new window.WebampModern(document.getElementById("web-amp"), {...option, skin:"assets/MMD3.wal"});
   setStatus("");
 }
 
