@@ -48,6 +48,9 @@ export class Webamp5 extends WebAmpModern {
     //* But sometime (if its a `.zip` or a path `/`), we need to detect by
     //* if a file exist, with a name is expected by skinEngine
 
+    this._uiRoot.reset()
+    this._parent.appendChild(this._uiRoot.getRootDiv());
+
     let skinFetched = false;
     let SkinEngineClass = getSkinEngineClass(skinPath);
     if (SkinEngineClass == null) {
