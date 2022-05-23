@@ -127,6 +127,7 @@ export class SkinEngine {
     font.setXmlAttributes(node.attributes);
 
     this._uiRoot.addFont(font);
+    await font.ensureImageLoaded(this._imageManager);
     return font;
   }
 

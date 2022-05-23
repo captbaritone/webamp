@@ -174,28 +174,28 @@ export default class Button extends AudioEventedGui {
   }
 
   _renderBackground() {
-    if (this._image != null) {
+    if (this._image != null && this._uiRoot.hasBitmap(this._image)) {
       const bitmap = this._uiRoot.getBitmap(this._image);
       this.setBackgroundImage(bitmap);
     } else {
       this.setBackgroundImage(null);
     }
 
-    if (this._downimage != null) {
+    if (this._downimage != null && this._uiRoot.hasBitmap(this._downimage)) {
       const downBitmap = this._uiRoot.getBitmap(this._downimage);
       this.setDownBackgroundImage(downBitmap);
     } else {
       this.setDownBackgroundImage(null);
     }
 
-    if (this._hoverimage != null) {
+    if (this._hoverimage != null && this._uiRoot.hasBitmap(this._hoverimage)) {
       const hoverimage = this._uiRoot.getBitmap(this._hoverimage);
       this.setHoverBackgroundImage(hoverimage);
     } else {
       this.setHoverBackgroundImage(null);
     }
 
-    if (this._activeimage != null) {
+    if (this._activeimage != null && this._uiRoot.hasBitmap(this._activeimage)) {
       const activeimage = this._uiRoot.getBitmap(this._activeimage);
       this.setActiveBackgroundImage(activeimage);
     } else {

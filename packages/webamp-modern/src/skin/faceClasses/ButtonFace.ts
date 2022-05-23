@@ -48,7 +48,7 @@ export default class ButtonFace extends Button {
   _renderBackground() {
     super._renderBackground();
 
-    if (this._disabledImage != null) {
+    if (this._disabledImage != null && this._uiRoot.hasBitmap(this._disabledImage)) {
       const disabledImage = this._uiRoot.getBitmap(this._disabledImage);
       this.setDisabledBackgroundImage(disabledImage);
     } else {

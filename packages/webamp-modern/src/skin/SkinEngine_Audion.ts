@@ -8,7 +8,7 @@ import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 export class SkinEngineAudion extends SkinEngine {
   _config: {}; // whole index.json
   _alphaData: Uint8ClampedArray = null; // canvas.contex2d.data.data
-  
+
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".face") || filePath.endsWith(".zip");
   };
@@ -115,6 +115,7 @@ export class SkinEngineAudion extends SkinEngine {
 
     //? bitmaps for the button
     await this.loadBitmap(`${fileName}.png`, `${name}`, rect.left, rect.top);
+
     await this.loadBitmap(
       `${fileName}-hover.png`,
       `${name}-hover`,
@@ -191,7 +192,7 @@ export class SkinEngineAudion extends SkinEngine {
   }
 
   /**
-   * Load bitmap and applyTransparency
+   * Load bitmap and applyTransparency, auto remove if file is not exists
    * @param name filename eg play-button.png
    */
   async loadBitmap(
@@ -200,10 +201,15 @@ export class SkinEngineAudion extends SkinEngine {
     dx: number = 0,
     dy: number = 0
   ): Promise<Bitmap> {
+    if (name == null) name = fileName;
     const bitmap = await this.loadPlainBitmap(fileName, name);
     // sometime the Audion Face has no hover.png
-    if (bitmap.getImg() != null) {
+    if (bitmap.loaded()) {
       await this.applyBaseTransparency(bitmap, dx, dy);
+    } else {
+      //no image? the bitmap isn't exists. destroy!
+      this._uiRoot.removeBitmap(name);
+      return null
     }
     return bitmap;
   }
@@ -476,7 +482,18 @@ export class SkinEngineAudion extends SkinEngine {
   }
   async laodIndicator(prefix: string, parent: Group) {
     const rect = this._config[`${prefix}IndicatorRect`];
-    await this.loadBitmap(`${prefix}.png`, `${prefix}`, rect.left, rect.top);
+    const bitmap = await this.loadBitmap(
+      `${prefix}.png`,
+      `${prefix}`,
+      rect.left,
+      rect.top
+    );
+    //test if this skin has bitmap
+    if (!bitmap || !bitmap.loaded()) {
+      this._uiRoot.removeBitmap(prefix);
+      return;
+    }
+
     await this.loadBitmap(
       `${prefix}-on.png`,
       `${prefix}-on`,
