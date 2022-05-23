@@ -38,12 +38,6 @@ import NStateButton from "./makiClasses/NStateButton";
 import EqVis from "./makiClasses/EqVis";
 import Images from "./makiClasses/Images";
 
-function hack() {
-  // Without this Snowpack will try to treeshake out resolver causing a circular
-  // dependency.
-  classResolver("A funny joke about why this is needed.");
-}
-
 export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
   // below are some resource that immediatelly popped (removed) from xml structure.
