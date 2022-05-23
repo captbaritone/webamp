@@ -37,6 +37,7 @@ import XuiElement from "./makiClasses/XuiElement";
 import NStateButton from "./makiClasses/NStateButton";
 import EqVis from "./makiClasses/EqVis";
 import Images from "./makiClasses/Images";
+import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 
 export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
@@ -54,7 +55,7 @@ const ResourcesTag = [
 
 export const GROUP_PHASE = 2; //full sync mode, because of inheritance
 
-export default class SkinParser {
+export default class SkinEngineWAL extends SkinEngine {
   _imageManager: ImageManager;
   _path: string[] = [];
   _includedXml = {}; // {file:xmlelement}
@@ -78,11 +79,15 @@ export default class SkinParser {
     colors: {},
   }; //requested by skin, later compared with UiRoot._bitmaps
 
-  constructor(uiRoot: UIRoot) {
-    /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
-    this._uiRoot = uiRoot;
-    this._imageManager = uiRoot.getImageManager();
-  }
+  static canProcess = (filePath: string): boolean => {
+    return filePath.endsWith(".wal") || filePath.endsWith(".zip");
+  };
+
+  static identifyByFile = (filePath: string): string => {
+    return "skin.xml";
+  };
+
+  static priority: number = 1;
 
   // bad name, okay I know
   async prepareArial() {
@@ -93,11 +98,16 @@ export default class SkinParser {
     await this.trueTypeFont(node, null);
   }
 
-  async parse(): Promise<UIRoot> {
+  /**
+   * Process
+   */
+  async parseSkin() {
+    // async parse(): Promise<UIRoot> {
     console.log("RESOURCE_PHASE #################");
     this._phase = RESOURCE_PHASE;
 
     await this.prepareArial();
+    this.prepareXuiTags();
 
     const includedXml = await this._uiRoot.getFileAsString("skin.xml");
 
@@ -116,7 +126,42 @@ export default class SkinParser {
     console.log("BUCKET_PHASE #################");
     await this.rebuildBuckets();
 
-    return this._uiRoot;
+    // return this._uiRoot;
+  }
+
+  prepareXuiTags() {
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:mainframe:nostatus",
+      "wasabi.mainframe.nostatusbar"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:medialibraryframe:nostatus",
+      "wasabi.medialibraryframe.nostatusbar"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:playlistframe:nostatus",
+      "wasabi.playlistframe.nostatusbar"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:standardframe:modal",
+      "wasabi.standardframe.modal"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:standardframe:nostatus",
+      "wasabi.standardframe.nostatusbar"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:standardframe:static",
+      "wasabi.standardframe.static"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:standardframe:status",
+      "wasabi.standardframe.statusbar"
+    );
+    this._uiRoot.addXuitagGroupDefId(
+      "wasabi:visframe:nostatus",
+      "wasabi.visframe.nostatusbar"
+    );
   }
 
   /**
@@ -1068,3 +1113,5 @@ export default class SkinParser {
     return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
   }
 }
+
+registerSkinEngine(SkinEngineWAL);

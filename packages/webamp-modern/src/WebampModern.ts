@@ -6,7 +6,6 @@ import {
   getSkinEngineClassByContent,
   SkinEngine,
 } from "./skin/SkinEngine";
-import { loadSkin } from "./skin/skinLoader";
 import { UIRoot } from "./UIRoot";
 import { IWebampModern, Options, WebAmpModern } from "./WebampModernInteface";
 
