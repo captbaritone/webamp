@@ -2,7 +2,7 @@ import Group from "./Group";
 import { findLast, num, px, removeAllChildNodes, toBool } from "../../utils";
 import { XmlElement } from "@rgrove/parse-xml";
 import GuiObj from "./GuiObj";
-import SkinParser from "../parse";
+import SkinParser from "../SkinEngine_WAL";
 
 export default class GroupXFade extends Group {
   static GUID = "OFFICIALLY-NO-GUID";

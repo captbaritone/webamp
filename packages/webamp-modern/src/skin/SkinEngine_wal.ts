@@ -1,4 +1,4 @@
-import SkinParser from "./parse";
+import SkinParser from "./SkinEngine_WAL";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 
 export class SkinEngineWAL extends SkinEngine {

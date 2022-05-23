@@ -5,7 +5,7 @@ import ButtonFace from "./faceClasses/ButtonFace";
 import TimeFace from "./faceClasses/TimeFace";
 import Button from "./makiClasses/Button";
 import Group from "./makiClasses/Group";
-import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./parse";
+import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./SkinEngine_WAL";
 
 export default class AudionFaceSkinParser extends SkinParser {
   _config: {}; // whole index.json

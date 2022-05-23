@@ -1,6 +1,6 @@
 import JSZip from "jszip";
 import UI_ROOT from "../UIRoot";
-import SkinParser from "./parse";
+import SkinParser from "./SkinEngine_WAL";
 import AudionFaceSkinParser from "./skinParser_face";
 import ClassicSkinParser from "./skinParser_wsz";
 

@@ -4,7 +4,7 @@ import UI_ROOT, { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
-import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./parse";
+import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./SkinEngine_WAL";
 
 type StreamSource = {
   zip: JSZip;

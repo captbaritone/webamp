@@ -30,7 +30,7 @@ import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import GroupXFade from "./makiClasses/GroupXFade";
-import { classResolver } from "./resolver";
+// import { classResolver } from "./resolver";
 import WasabiButton from "./makiClasses/WasabiButton";
 import PlayListGui from "./makiClasses/PlayListGui";
 import XuiElement from "./makiClasses/XuiElement";
