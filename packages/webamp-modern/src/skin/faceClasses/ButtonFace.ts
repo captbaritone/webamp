@@ -1,4 +1,3 @@
-import UI_ROOT from "../../UIRoot";
 import { toBool } from "../../utils";
 import AudioEventedGui from "../AudioEventedGui";
 import Button from "../makiClasses/Button";
@@ -50,7 +49,7 @@ export default class ButtonFace extends Button {
     super._renderBackground();
 
     if (this._disabledImage != null) {
-      const disabledImage = UI_ROOT.getBitmap(this._disabledImage);
+      const disabledImage = this._uiRoot.getBitmap(this._disabledImage);
       this.setDisabledBackgroundImage(disabledImage);
     } else {
       this.setDisabledBackgroundImage(null);

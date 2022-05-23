@@ -283,8 +283,9 @@ export class UIRoot {
     return this._groupDefs[groupdef_id];
   }
 
-  addContainers(container: Container) {
+  addContainers(container: Container):Container {
     this._containers.push(container);
+    return container;
   }
 
   getContainers(): Container[] {
@@ -321,16 +322,19 @@ export class UIRoot {
   }
 
   enableDefaultGammaSet() {
-    // TODO: restore the latest gammaSet picked by user for this skin
+    const start = performance.now();
+
     const gammaSetNames = Array.from(this._gammaSets.keys());
     const firstName = gammaSetNames[0] || "";
-    const antiBoring = gammaSetNames[1];
     const lastGamma = PRIVATE_CONFIG.getPrivateString(
       this.getSkinName(),
       "_gammagroup_",
       firstName
     );
     this.enableGammaSet(lastGamma);
+
+    const end = performance.now();
+    console.log(`Loading initial gamma took: ${(end - start) / 1000}s`);
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
@@ -687,6 +691,11 @@ export class UIRoot {
   init() {
     for (const systemObject of this._systemObjects) {
       systemObject.init();
+    }
+
+    this.logMessage("Initializing Maki...");
+    for (const container of this.getContainers()) {
+      container.init();
     }
   }
 

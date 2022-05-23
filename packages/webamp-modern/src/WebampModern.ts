@@ -63,7 +63,8 @@ export class Webamp5 extends WebAmpModern {
     this._uiRoot.SkinEngineClass = SkinEngineClass;
     if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
     const parser: SkinEngine = new SkinEngineClass(this._uiRoot);
-    await parser.parseSkin();
+    // await parser.parseSkin();
+    await parser.buildUI();
 
     // loadSkin(this._parent, skinPath);
   }

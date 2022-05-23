@@ -1,4 +1,16 @@
+import { XmlElement } from "@rgrove/parse-xml";
 import { UIRoot } from "../UIRoot";
+import Bitmap from "./Bitmap";
+import BitmapFont from "./BitmapFont";
+import ImageManager from "./ImageManager";
+import AnimatedLayer from "./makiClasses/AnimatedLayer";
+import Button from "./makiClasses/Button";
+import Container from "./makiClasses/Container";
+import Group from "./makiClasses/Group";
+import GuiObj from "./makiClasses/GuiObj";
+import Layer from "./makiClasses/Layer";
+import Layout from "./makiClasses/Layout";
+import Text from "./makiClasses/Text";
 
 /**
  * In the world that multiple MP3 player are loaded in webpage,
@@ -6,10 +18,11 @@ import { UIRoot } from "../UIRoot";
  */
 export class SkinEngine {
   _uiRoot: UIRoot;
+  _imageManager: ImageManager;
 
   constructor(uiRoot: UIRoot) {
-    /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
     this._uiRoot = uiRoot;
+    this._imageManager = uiRoot.getImageManager();
   }
 
   /**
@@ -40,8 +53,118 @@ export class SkinEngine {
   /**
    * The main method
    */
+  async buildUI() {
+    const uiRoot = this._uiRoot;
+    this._uiRoot.logMessage("Parsing XML and initializing images...");
+    // const parser = new SkinParser(this._uiRoot);
+
+    // This is always the same as the global singleton.
+    // const uiRoot = await parser.parse();
+    await this.parseSkin();
+
+    uiRoot.loadTrueTypeFonts();
+
+    uiRoot.enableDefaultGammaSet();
+
+    uiRoot.logMessage("Rendering skin for the first time...");
+    uiRoot.draw();
+    uiRoot.init();
+
+    uiRoot.logMessage("");
+  }
+
+  /**
+   * It is according to specific skin engine,
+   * how to parse the skin file.
+   */
   async parseSkin() {}
-}
+
+  // --- Some basic elements are: --------------------------------------------
+  // bitmap, font, text, button, layer, animatedlayer, vis, slider,
+  // group, layout, container
+
+  addToGroup(obj: GuiObj, parent: Group) {
+    try {
+      parent.addChild(obj);
+    } catch (err) {
+      console.warn("addToGroup failed. child:", obj, "pareng:", parent);
+    }
+  }
+
+  async newGui<Type>(
+    Type,
+    node: XmlElement,
+    parent: any
+  ): Promise<Awaited<Type>> {
+    const gui = new Type(this._uiRoot);
+    gui.setXmlAttributes(node.attributes);
+    if (parent != null) this.addToGroup(gui, parent);
+    return gui;
+  }
+
+  async newGroup<Type>(
+    Type,
+    node: XmlElement,
+    parent: any
+  ): Promise<Awaited<Type>> {
+    return await this.newGui(Type, node, parent);
+  }
+
+  async bitmap(node: XmlElement): Promise<Bitmap> {
+    const bitmap = new Bitmap();
+    bitmap.setXmlAttributes(node.attributes);
+
+    this._uiRoot.addBitmap(bitmap);
+
+    // if (this._phase == GROUP_PHASE) {
+    await bitmap.ensureImageLoaded(this._imageManager);
+    // }
+    return bitmap;
+  }
+
+  async bitmapFont(node: XmlElement): Promise<BitmapFont> {
+    const font = new BitmapFont(this._uiRoot);
+    font.setXmlAttributes(node.attributes);
+
+    this._uiRoot.addFont(font);
+    return font;
+  }
+
+  async text(node: XmlElement, parent: any): Promise<Text> {
+    return this.newGui(Text, node, parent);
+  }
+
+  async button(node: XmlElement, parent: any): Promise<Button> {
+    return await this.newGui(Button, node, parent);
+  }
+
+  async animatedLayer(node: XmlElement, parent: any) {
+    return this.newGui(AnimatedLayer, node, parent);
+  }
+
+  async layer(node: XmlElement, parent: any) {
+    return this.newGui(Layer, node, parent);
+  }
+
+  async group(node: XmlElement, parent: any): Promise<Group> {
+    return await this.newGroup(Group, node, parent);
+  }
+
+  async layout(node: XmlElement, parent: any) {
+    return this.newGroup(Layout, node, parent);
+  }
+
+  async container(node: XmlElement) {
+    // const container = await this.newGroup(Container, node, null);
+    // this._uiRoot.addContainers(container);
+    // return container;
+    const container = new Container(this._uiRoot);
+    container.setXmlAttributes(node.attributes);
+    this._uiRoot.addContainers(container);
+    // await this.traverseChildren(node, container);
+    return container;
+  }
+} // === eof SkinEngine class ================================================
 
 export type SkinEngineClass = typeof SkinEngine;
 const SKIN_ENGINES: SkinEngineClass[] = [];
