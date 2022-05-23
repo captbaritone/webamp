@@ -79,7 +79,7 @@ export class UIRoot {
     this.vm = new Vm(this);
   }
 
-  getId():string {
+  getId(): string {
     return this._id;
   }
 
@@ -405,6 +405,13 @@ export class UIRoot {
       //support multiple names
       maybeBitmapAliases(bitmap);
     }
+    // await Promise.all(
+    //   [...Object.values(this._bitmaps), ...bitmapFonts].map(async (bitmap) => {
+    //     cssRules.push(await bitmap.getGammaTransformedUrl(this));
+    //     //support multiple names
+    //     maybeBitmapAliases(bitmap);
+    //   })
+    // );
     // css of colors
     for (const color of this._colors) {
       const groupId = color.getGammaGroup();
@@ -417,15 +424,15 @@ export class UIRoot {
       cssRules.push(`  --dim-${dimension}: ${size}px;`);
     }
     const cssId = `${this._id}-bitmap-css`;
-    const head = document.getElementsByTagName('head')[0];
+    const head = document.getElementsByTagName("head")[0];
     // debugger;
     // const cssEl = document.getElementById();
     let cssEl = document.querySelector(`style#${cssId}`);
-    if(!cssEl){
-      cssEl = document.createElement('style');
-      cssEl.setAttribute('type', 'text/css');
-      cssEl.setAttribute('id', cssId);
-      document.head.appendChild(cssEl)
+    if (!cssEl) {
+      cssEl = document.createElement("style");
+      cssEl.setAttribute("type", "text/css");
+      cssEl.setAttribute("id", cssId);
+      document.head.appendChild(cssEl);
     }
     cssEl.textContent = `#${this._id} {${cssRules.join("\n")}}`;
     // cssEl.textContent = `:root{${cssRules.join("\n")}}`;
