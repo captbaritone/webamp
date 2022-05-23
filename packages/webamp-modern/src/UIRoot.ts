@@ -424,7 +424,7 @@ export class UIRoot {
       cssRules.push(`  --dim-${dimension}: ${size}px;`);
     }
     const cssId = `${this._id}-bitmap-css`;
-    const head = document.getElementsByTagName("head")[0];
+    // const head = document.getElementsByTagName("head")[0];
     // debugger;
     // const cssEl = document.getElementById();
     let cssEl = document.querySelector(`style#${cssId}`);
