@@ -115,6 +115,9 @@ async function initializeSkinListMenu() {
       filename: "[Audion Face] Tokyo Bay",
       download_url: "assets/TokyoBay.face",
     },
+    { filename: "[K-Jofol] Default", download_url: "assets/Default.kjofol" },
+    { filename: "[K-Jofol] Illusion 1.0", download_url: "assets/Illusion1-0.kjofol" },
+    { filename: "[K-Jofol] K-Nine 05r", download_url: "assets/K-Nine05r.kjofol" },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 

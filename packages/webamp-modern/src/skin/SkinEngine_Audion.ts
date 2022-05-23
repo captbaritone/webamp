@@ -14,7 +14,7 @@ export class SkinEngineAudion extends SkinEngine {
   };
 
   static identifyByFile = (filePath: string): string => {
-    return ".rc";
+    return "index.json";
   };
 
   static priority: number = 3;
