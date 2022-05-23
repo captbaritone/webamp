@@ -293,6 +293,7 @@ class BarPaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
   _barWidth: number;
   _color: string = "rgb(255,255,255)";
+  _colorPeak: string = "rgb(255,255,255)";
   // Off-screen canvas for pre-rendering a single bar gradient
   _bar: HTMLCanvasElement = document.createElement("canvas");
   _peak: HTMLCanvasElement = document.createElement("canvas");
@@ -320,7 +321,7 @@ class BarPaintHandler extends VisPaintHandler {
     this._peak.height = 1;
     this._peak.width = 1;
     var ctx = this._peak.getContext("2d");
-    ctx.fillStyle = this._color;
+    ctx.fillStyle = `rgb(${this._vis._colorBandPeak})`;
     ctx.fillRect(0, 0, 1, 1);
 
     //? paint bar

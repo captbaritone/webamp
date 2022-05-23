@@ -40,6 +40,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const main = await this.loadMain();
     await this.loadMainNormal(main);
     // await this._loadBitmaps();
+    
 
     // console.log("GROUP_PHASE #################");
     // this._phase = GROUP_PHASE;
@@ -109,6 +110,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadButton("PreviousSong", group);
     await this.loadButton("NextSong", group);
     await this.loadButton("OpenFile", group);
+
+    await this.loadTexts(group)
+    await this.loadVis(group)
   }
 
   /**
@@ -145,16 +149,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     return button;
   }
 
-  /**
-   * Special case, base*.png should be loaded first,
-   * because it's dimension (width & height) are required immediately by
-   * Container / Layout.
-   */
-  // async loadBase() {
-  //   // await this.loadPlainBitmap("base-alpha.png");
-  // }
-
-  //#endregion
+    //#endregion
 
   // #region (collapsed) Bitmap manipulation
 
@@ -223,6 +218,66 @@ export default class KJofol_SkinEngine extends SkinEngine {
     }
   }
   //#endregion
+
+  // #region (collapsed) Text
+  async loadTexts(parent: Group) {
+    this.loadText("Filename", "songtitle", parent);
+    this.loadText("MP3Kbps", "songinfo", parent);
+  }
+  async loadText(prefix: string, action: string, parent: Group) {
+    const rect = this._config[`${prefix}Window`];
+    const [left, top, right, bottom] = rect;
+    // const color = this._config[`${prefix}DisplayTextFaceColorFromTxtr`];
+    // const textMode = this._config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
+    // const color = this._config[`${prefix}DisplayTextFaceColorFrom${textMode}`];
+
+    const node = new XmlElement("text", {
+      id: `${prefix}-text`,
+      text: `${action}`,
+      display: `${action}`,
+      ticker: `${1}`,
+      // color: `${color.red},${color.green},${color.blue}`,
+      x: `${left-1}`,
+      y: `${top-2}`,
+      w: `${right - left+2}`,
+      h: `${bottom - top+4}`,
+    });
+    await this.text(node, parent);
+  }
+  //#endregion
+
+  async loadVis(parent: Group) {
+    const [left, top, right, bottom] = this._config[`AnalyzerWindow`];
+    const [r,g,b] = this._config[`AnalyzerColor`];
+    const color =`${r},${g},${b}`
+
+    const node = new XmlElement("vis", {
+      id: `normal-vis`,
+      ColorBand1: color,
+      ColorBand2: color,
+      ColorBand3: color,
+      ColorBand4: color,
+      ColorBand5: color,
+      ColorBand6: color,
+      ColorBand7: color,
+      ColorBand8: color,
+      ColorBand9: color,
+      ColorBand10: color,
+      ColorBand11: color,
+      ColorBand12: color,
+      ColorBand13: color,
+      ColorBand14: color,
+      ColorBand15: color,
+      ColorBand16: color,
+      ColorBandPeak: color,
+
+      x: `${left}`,
+      y: `${top-1}`,
+      w: `${right - left}`,
+      h: `${bottom - top+2}`,
+    });
+    await this.newGui(Vis, node, parent);
+  }
 }
 
 function parserRC(content: string): { [key: string]: string | string[] } {
