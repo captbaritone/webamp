@@ -43,9 +43,10 @@ export default class KJofol_SkinEngine extends SkinEngine {
     this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
 
     // await this.traverseChildren(parsed);
-    await this.loadKnowBitmaps(this._rc);
+    // await this.loadKnowBitmaps(this._rc);
     const main = await this.loadMain(); // player Container
     await this.loadMainNormal(main); // normal layout
+    await this.loadMainDock(main); // normal layout
     // await this._loadBitmaps();
 
     // console.log("GROUP_PHASE #################");
@@ -83,6 +84,8 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadMainNormal(parent: Container) {
+    await this.loadKnowBitmaps(this._rc);
+
     const prefix = this._rc["prefix"];
     // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
     const bg = this._uiRoot.getBitmap(`${prefix}-base`);
@@ -119,9 +122,55 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadButton("NextSong", "nextsong", group, this._rc);
     await this.loadButton("OpenFile", "openfile", group, this._rc);
 
-    await this.loadTexts(group);
-    await this.loadVis(group);
+    await this.loadTexts(group, this._rc);
+    await this.loadVis(group, this._rc);
     await this.loadVolume(this._rc, group);
+
+    await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
+  }
+
+  async loadMainDock(parent: Container) {
+    await this.loadKnowBitmaps(this._dock);
+
+    const prefix = this._dock["prefix"];
+    // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
+    const bg = this._uiRoot.getBitmap(`${prefix}-base`);
+    let node = new XmlElement("container", {
+      id: "dock",
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const normal = await this.layout(node, parent);
+
+    node = new XmlElement("group", {
+      id: "dock-root",
+      background: bg.getId(),
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const group = await this.group(node, normal);
+
+    node = new XmlElement("layer", {
+      id: "mover",
+      w: `0`,
+      h: `0`,
+      relatw: `1`,
+      relath: `1`,
+      // background: "base.png",
+      move: "1",
+    });
+    const mover = await this.layer(node, group);
+
+    await this.loadButton("Play", "play", group, this._dock);
+    await this.loadButton("Pause", "pause", group, this._dock);
+    await this.loadButton("Stop", "stop", group, this._dock);
+    await this.loadButton("PreviousSong", "previoussong", group, this._dock);
+    await this.loadButton("NextSong", "nextsong", group, this._dock);
+    await this.loadButton("OpenFile", "openfile", group, this._dock);
+
+    await this.loadTexts(group, this._dock);
+    await this.loadVis(group, this._dock);
+    await this.loadVolume(this._dock, group);
   }
 
   /**
@@ -131,8 +180,15 @@ export default class KJofol_SkinEngine extends SkinEngine {
    */
   async loadButton(nick: string, action: string, parent: Group, config: {}) {
     const prefix = config["prefix"];
-    const rect = this._rc[`${nick}Button`];
+    const rect = config[`${nick}Button`];
+    if(!rect) return;
+    console.log('rect:',rect)
     const [left, top, right, bottom, tooltip, downimage] = rect;
+
+    let param = "";
+    if (action.includes(";")) {
+      [action, param] = action.split(";");
+    }
     // let action: string;
     // switch (_action.toLowerCase()) {
     //   case "stop!":
@@ -149,12 +205,13 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const node = new XmlElement("button", {
       id: nick,
       action,
+      param,
       tooltip,
       x: `${left}`,
       y: `${top}`,
       w: `${right - left}`,
       h: `${bottom - top}`,
-      downimage: `${prefix}-${downimage}`
+      downimage: `${prefix}-${downimage}`,
     });
     // const button = await this.button(node, parent);
     const button = await this.newGui(ButtonKjofol, node, parent);
@@ -235,16 +292,16 @@ export default class KJofol_SkinEngine extends SkinEngine {
   //#endregion
 
   // #region (collapsed) Text
-  async loadTexts(parent: Group) {
-    this.loadText("Filename", "songtitle", parent);
-    this.loadText("MP3Kbps", "songinfo", parent);
+  async loadTexts(parent: Group, config:{}) {
+    this.loadText("Filename", "songtitle", parent, config);
+    this.loadText("MP3Kbps", "songinfo", parent, config);
   }
-  async loadText(prefix: string, action: string, parent: Group) {
-    const rect = this._rc[`${prefix}Window`];
+  async loadText(prefix: string, action: string, parent: Group, config:{}) {
+    const rect = config[`${prefix}Window`];
     const [left, top, right, bottom] = rect;
-    // const color = this._rc[`${prefix}DisplayTextFaceColorFromTxtr`];
-    // const textMode = this._rc[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
-    // const color = this._rc[`${prefix}DisplayTextFaceColorFrom${textMode}`];
+    // const color = config[`${prefix}DisplayTextFaceColorFromTxtr`];
+    // const textMode = config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
+    // const color = config[`${prefix}DisplayTextFaceColorFrom${textMode}`];
 
     const node = new XmlElement("text", {
       id: `${prefix}-text`,
@@ -261,9 +318,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
   //#endregion
 
-  async loadVis(parent: Group) {
-    const [left, top, right, bottom] = this._rc[`AnalyzerWindow`];
-    const [r, g, b] = this._rc[`AnalyzerColor`];
+  async loadVis(parent: Group, config:{}) {
+    const [left, top, right, bottom] = config[`AnalyzerWindow`];
+    const [r, g, b] = config[`AnalyzerColor`];
     const color = `${r},${g},${b}`;
 
     const node = new XmlElement("vis", {
