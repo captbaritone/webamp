@@ -120,7 +120,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
    * @param nick "Play" for "PlayButton"
    * @param parent
    */
-  async loadButton(nick: string, parent: Group): Promise<Button> {
+  async loadButton(nick: string, parent: Group) {
     const rect = this._config[`${nick}Button`];
     const [left, top, right, bottom, _action, downimage] = rect;
     let action: string;

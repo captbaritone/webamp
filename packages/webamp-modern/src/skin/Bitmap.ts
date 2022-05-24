@@ -168,6 +168,10 @@ export default class Bitmap {
     this._setAsBackground(div, "hover-");
   }
 
+  setAsHoverDownBackground(div: HTMLElement) {
+    this._setAsBackground(div, "hover-down-");
+  }
+
   setAsDisabledBackground(div: HTMLElement) {
     this._setAsBackground(div, "disabled-");
   }

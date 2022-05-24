@@ -135,7 +135,7 @@ export class SkinEngine {
     return this.newGui(Text, node, parent);
   }
 
-  async button(node: XmlElement, parent: any): Promise<Button> {
+  async button(node: XmlElement, parent: any)  {
     return await this.newGui(Button, node, parent);
   }
 

@@ -1,0 +1,83 @@
+subview,
+buttongroup,
+buttonelement {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+buttongroup {
+  background: none;
+}
+buttongroup > buttonelement {
+  width: inherit !important;
+  height: inherit !important;
+  background-position: top left;
+  cursor: pointer;
+}
+buttongroup.webamp--img:active,
+buttongroup.webamp--img:hover:active,
+buttongroup.webamp--img:hover {
+  background-image: var(--background-image);
+}
+subview.webamp--img::before,
+buttongroup.has-image::before{
+  content: '';
+  position: absolute;
+  background-image: var(--background-image);
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  z-index: 0;
+}
+buttongroup > buttonelement.down {
+  background-image: var(--down-background-image, var(--background-image));
+}
+buttongroup > buttonelement:hover {
+  background-image: var(--hover-background-image, var(--background-image));
+}
+buttongroup > buttonelement.down:hover {
+  background-image: var(
+    --hover-down-background-image,
+    var(--hover-background-image, var(--background-image))
+  );
+}
+buttongroup > buttonelement:active,
+buttongroup > buttonelement:hover:active {
+  background-image: var(--down-background-image, var(--background-image));
+}
+button.disabled,
+buttongroup > buttonelement.disabled {
+  pointer-events: none !important;
+  background-image: var(
+    --disabled-background-image,
+    var(--background-image)
+  ) !important;
+}
+
+text.textz wrap {
+  width: auto;
+}
+
+subview > * {
+  background-color: var(--background-color);
+} 
+
+/** SLIDER **/
+slider.background-stretched::before {
+  content: "";
+  box-sizing: border-box;
+  border: 7px solid transparent;
+  border-top-width: var(--border-height-px);
+  border-bottom-width: var(--border-height-px);
+  border-left-width: var(--border-width-px);
+  border-right-width: var(--border-width-px);
+  border-image-source: var(--background-image);
+  border-image-slice: var(--border-height) var(--border-width) fill;
+  position: absolute;
+  inset: 0;
+}

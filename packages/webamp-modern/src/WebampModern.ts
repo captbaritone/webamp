@@ -76,7 +76,8 @@ export class Webamp5 extends WebAmpModern {
     if (response.status == 404) {
       throw new Error(`Skin does not exist`);
     }
-    if (response.headers.get("content-type") == "application/octet-stream") {
+    // if (response.headers.get("content-type") == "application/octet-stream") {
+    if (response.headers.get("content-type").startsWith("application/")) {
       // const response = await fetch(skinPath);
       const skinZipBlob = await response.blob();
 
