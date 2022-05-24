@@ -70,6 +70,8 @@ export default class View extends Container {
       }, this._timerInterval);
     }
 
+    this.loadJsScripts()
+
   }
 
   //? WindowsMediaPlayer ========================
@@ -90,6 +92,7 @@ export default class View extends Container {
       script.textContent = scriptText;
       script.textContent += ";debugger;";
       script.type = "text/javascript";
+      // TODO: register script loaded, to be unloadable.
       document.head.appendChild(script);
     }
   }
