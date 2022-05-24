@@ -43,7 +43,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
 
     // await this.traverseChildren(parsed);
-    await this.loadKnowBitmaps();
+    await this.loadKnowBitmaps(this._rc);
     const main = await this.loadMain(); // player Container
     await this.loadMainNormal(main); // normal layout
     // await this._loadBitmaps();
@@ -57,15 +57,16 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   //#region (collapsed) load-bitmap
-  async loadKnowBitmaps() {
+  async loadKnowBitmaps(config: {}) {
+    const prefix = config["prefix"];
     //? BG
-    await this.loadBitmap(this._rc["BackgroundImage"], "base");
-    await this.loadBitmap(this._rc["BackgroundImage"], "base-inactive");
+    await this.loadBitmap(config["BackgroundImage"], `${prefix}-base`);
+    await this.loadBitmap(config["BackgroundImage"], `${prefix}-base-inactive`);
     //? Pressed
     for (var i = 1; i <= 3; i++) {
-      const pressed = this._rc[`BackgroundImagePressed${i}`];
+      const pressed = config[`BackgroundImagePressed${i}`];
       if (pressed != null) {
-        await this.loadBitmap(pressed, `BMP${i}`);
+        await this.loadBitmap(pressed, `${prefix}-BMP${i}`);
       }
     }
     // await this._loadBitmap("playButton");
@@ -82,8 +83,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadMainNormal(parent: Container) {
+    const prefix = this._rc["prefix"];
     // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
-    const bg = this._uiRoot.getBitmap("base");
+    const bg = this._uiRoot.getBitmap(`${prefix}-base`);
     let node = new XmlElement("container", {
       id: "normal",
       w: `${bg.getWidth()}`,
@@ -110,12 +112,12 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     const mover = await this.layer(node, group);
 
-    await this.loadButton("Play", "play", group);
-    await this.loadButton("Pause", "pause", group);
-    await this.loadButton("Stop", "stop", group);
-    await this.loadButton("PreviousSong", "previoussong", group);
-    await this.loadButton("NextSong", "nextsong", group);
-    await this.loadButton("OpenFile", "openfile", group);
+    await this.loadButton("Play", "play", group, this._rc);
+    await this.loadButton("Pause", "pause", group, this._rc);
+    await this.loadButton("Stop", "stop", group, this._rc);
+    await this.loadButton("PreviousSong", "previoussong", group, this._rc);
+    await this.loadButton("NextSong", "nextsong", group, this._rc);
+    await this.loadButton("OpenFile", "openfile", group, this._rc);
 
     await this.loadTexts(group);
     await this.loadVis(group);
@@ -127,7 +129,8 @@ export default class KJofol_SkinEngine extends SkinEngine {
    * @param nick "Play" for "PlayButton"
    * @param parent
    */
-  async loadButton(nick: string, action: string, parent: Group) {
+  async loadButton(nick: string, action: string, parent: Group, config: {}) {
+    const prefix = config["prefix"];
     const rect = this._rc[`${nick}Button`];
     const [left, top, right, bottom, tooltip, downimage] = rect;
     // let action: string;
@@ -151,7 +154,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
       y: `${top}`,
       w: `${right - left}`,
       h: `${bottom - top}`,
-      downimage,
+      downimage: `${prefix}-${downimage}`
     });
     // const button = await this.button(node, parent);
     const button = await this.newGui(ButtonKjofol, node, parent);
