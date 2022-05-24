@@ -2,6 +2,7 @@ import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import JSZip from "jszip";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
+import DialKnob from "./kjofolClasses/DialKnob";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
 import Button from "./makiClasses/Button";
 import Container from "./makiClasses/Container";
@@ -12,7 +13,8 @@ import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 // import SkinParser, { Attributes, GROUP_PHASE, RESOURCE_PHASE } from "./parse";
 
 export default class KJofol_SkinEngine extends SkinEngine {
-  _config: {}; // whole kjofol.rc
+  _rc: {}; // whole kjofol.rc
+  _dock: {}; // whole *.dck
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".kjofol") || filePath.endsWith(".zip");
@@ -23,41 +25,43 @@ export default class KJofol_SkinEngine extends SkinEngine {
   };
 
   static priority: number = 3;
-  
+
   /**
    * Process
    */
   async parseSkin() {
-     this._uiRoot.setImageManager(new ImageManagerKjofol(this._uiRoot));
-     this._imageManager = this._uiRoot._imageManager;
+    this._uiRoot.setImageManager(new ImageManagerKjofol(this._uiRoot));
+    this._imageManager = this._uiRoot._imageManager;
 
-    const configContent = await this._uiRoot.getFileAsString(".rc");
+    const rcContent = await this._uiRoot.getFileAsString(".rc");
+    const dockContent = await this._uiRoot.getFileAsString(".dck");
 
-    this._config = parserRC(configContent);
+    this._rc = parserRC(rcContent);
+    this._dock = parserRC(dockContent);
+    this._rc["prefix"] = "normal"; // to make distinct on loading same name eg volume
+    this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
 
     // await this.traverseChildren(parsed);
     await this.loadKnowBitmaps();
-    const main = await this.loadMain();
-    await this.loadMainNormal(main);
+    const main = await this.loadMain(); // player Container
+    await this.loadMainNormal(main); // normal layout
     // await this._loadBitmaps();
-    
 
     // console.log("GROUP_PHASE #################");
     // this._phase = GROUP_PHASE;
     // const root = await this.getRootGroup();
     // await this.loadButtons(root);
     // await this.loadTime(root);
-
   }
 
   //#region (collapsed) load-bitmap
   async loadKnowBitmaps() {
     //? BG
-    await this.loadBitmap(this._config["BackgroundImage"], "base");
-    await this.loadBitmap(this._config["BackgroundImage"], "base-inactive");
+    await this.loadBitmap(this._rc["BackgroundImage"], "base");
+    await this.loadBitmap(this._rc["BackgroundImage"], "base-inactive");
     //? Pressed
     for (var i = 1; i <= 3; i++) {
-      const pressed = this._config[`BackgroundImagePressed${i}`];
+      const pressed = this._rc[`BackgroundImagePressed${i}`];
       if (pressed != null) {
         await this.loadBitmap(pressed, `BMP${i}`);
       }
@@ -76,7 +80,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadMainNormal(parent: Container) {
-    // const bg = await this.loadBitmap(this._config["BackgroundImage"]);
+    // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
     const bg = this._uiRoot.getBitmap("base");
     let node = new XmlElement("container", {
       id: "normal",
@@ -103,7 +107,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
       move: "1",
     });
     const mover = await this.layer(node, group);
-    
+
     await this.loadButton("Play", group);
     await this.loadButton("Pause", group);
     await this.loadButton("Stop", group);
@@ -111,8 +115,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadButton("NextSong", group);
     await this.loadButton("OpenFile", group);
 
-    await this.loadTexts(group)
-    await this.loadVis(group)
+    await this.loadTexts(group);
+    await this.loadVis(group);
+    await this.loadVolume(this._rc, group);
   }
 
   /**
@@ -121,7 +126,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
    * @param parent
    */
   async loadButton(nick: string, parent: Group) {
-    const rect = this._config[`${nick}Button`];
+    const rect = this._rc[`${nick}Button`];
     const [left, top, right, bottom, _action, downimage] = rect;
     let action: string;
     switch (_action.toLowerCase()) {
@@ -149,7 +154,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     return button;
   }
 
-    //#endregion
+  //#endregion
 
   // #region (collapsed) Bitmap manipulation
 
@@ -160,12 +165,15 @@ export default class KJofol_SkinEngine extends SkinEngine {
    */
   async loadPlainBitmap(
     fileName: string,
-    name: string = null
+    name: string = null,
+    option: { [key: string]: string } = {}
   ): Promise<Bitmap> {
     if (name == null) {
       name = fileName;
     }
-    const bitmap = await this.bitmap( new XmlElement("bitmap",{ id: name, file: fileName }));
+    const bitmap = await this.bitmap(
+      new XmlElement("bitmap", { id: name, file: fileName, ...option })
+    );
     // await bitmap.ensureImageLoaded(this._imageManager, true);
     return bitmap;
   }
@@ -225,11 +233,11 @@ export default class KJofol_SkinEngine extends SkinEngine {
     this.loadText("MP3Kbps", "songinfo", parent);
   }
   async loadText(prefix: string, action: string, parent: Group) {
-    const rect = this._config[`${prefix}Window`];
+    const rect = this._rc[`${prefix}Window`];
     const [left, top, right, bottom] = rect;
-    // const color = this._config[`${prefix}DisplayTextFaceColorFromTxtr`];
-    // const textMode = this._config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
-    // const color = this._config[`${prefix}DisplayTextFaceColorFrom${textMode}`];
+    // const color = this._rc[`${prefix}DisplayTextFaceColorFromTxtr`];
+    // const textMode = this._rc[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
+    // const color = this._rc[`${prefix}DisplayTextFaceColorFrom${textMode}`];
 
     const node = new XmlElement("text", {
       id: `${prefix}-text`,
@@ -237,19 +245,19 @@ export default class KJofol_SkinEngine extends SkinEngine {
       display: `${action}`,
       ticker: `${1}`,
       // color: `${color.red},${color.green},${color.blue}`,
-      x: `${left-1}`,
-      y: `${top-2}`,
-      w: `${right - left+2}`,
-      h: `${bottom - top+4}`,
+      x: `${left - 1}`,
+      y: `${top - 2}`,
+      w: `${right - left + 2}`,
+      h: `${bottom - top + 4}`,
     });
     await this.text(node, parent);
   }
   //#endregion
 
   async loadVis(parent: Group) {
-    const [left, top, right, bottom] = this._config[`AnalyzerWindow`];
-    const [r,g,b] = this._config[`AnalyzerColor`];
-    const color =`${r},${g},${b}`
+    const [left, top, right, bottom] = this._rc[`AnalyzerWindow`];
+    const [r, g, b] = this._rc[`AnalyzerColor`];
+    const color = `${r},${g},${b}`;
 
     const node = new XmlElement("vis", {
       id: `normal-vis`,
@@ -272,11 +280,61 @@ export default class KJofol_SkinEngine extends SkinEngine {
       ColorBandPeak: color,
 
       x: `${left}`,
-      y: `${top-1}`,
+      y: `${top - 1}`,
       w: `${right - left}`,
-      h: `${bottom - top+2}`,
+      h: `${bottom - top + 2}`,
     });
     await this.newGui(Vis, node, parent);
+  }
+
+  async loadVolume(config: {}, parent: Group) {
+    if (config["VolumeControlType"] == "BMP") {
+      return await this.loadVolumeBmp(config, parent);
+    }
+  }
+  async loadVolumeBmp(config: {}, parent: Group) {
+    const prefix = config["prefix"];
+    const [left, top, right, bottom] = config[`VolumeControlButton`];
+    await this.loadBitmap(
+      config["VolumeControlImage"],
+      `volume-${prefix}-sprite`
+      );
+    await this.loadPlainBitmap(
+      config["VolumeControlImagePosition"],
+      `volume-${prefix}-map`,
+      {
+        x: `${left}`,
+        y: `${top}`,
+        w: `${right - left}`,
+        h: `${bottom - top}`,
+      }
+    );
+    
+    // const [left, top, right, bottom] = this._rc[`AnalyzerWindow`];
+    // const [r, g, b] = this._rc[`AnalyzerColor`];
+    // const color = `${r},${g},${b}`;
+    
+    const xsize = config["VolumeControlImageXSize"];
+    const node = new XmlElement("animatedLayer", {
+      id: `${prefix}-volume-knob`,
+      image: `volume-${prefix}-sprite`,
+      mapimage: `volume-${prefix}-map`,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      framewidth: `${xsize}`,
+      // frameheight: `${bottom - top + 1}`,
+      // frameheight: `${frame.height}`,
+      // speed: `${delay * 100}`,
+      // autoPlay: `1`,
+      // move: `1`,
+      // start: `0`,
+      start: `40`,
+      // end: `${count - 1}`,
+    });
+    // await this.animatedLayer(node, parent);
+    await this.newGui(DialKnob, node, parent);
   }
 }
 
@@ -313,6 +371,5 @@ function parserRC(content: string): { [key: string]: string | string[] } {
 
   return cfg;
 }
-
 
 registerSkinEngine(KJofol_SkinEngine);

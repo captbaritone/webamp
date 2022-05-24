@@ -25,7 +25,7 @@ export default class MakiMap extends BaseObject {
   getvalue(x: number, y: number): number {
     assume(x >= 0, `Expected x to be positive but it was ${x}`);
     assume(y >= 0, `Expected y to be positive but it was ${y}`);
-    const canvas = this._bitmap.getCanvas();
+    const canvas = this._bitmap.getCanvas(true); // since it used manytime, let bitmap remember (keep)
     const context = canvas.getContext("2d");
     const { data } = context.getImageData(x, y, 1, 1);
     assert(
@@ -33,6 +33,19 @@ export default class MakiMap extends BaseObject {
       "Expected map image to be grey scale"
     );
     assume(data[3] === 255, "Expected map image not have transparency");
+    return data[0];
+  }
+  // 0-255
+  getUnsafeValue(x: number, y: number): number | null {
+    const canvas = this._bitmap.getCanvas(true); // since it used manytime, let bitmap remember (keep)
+    if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
+      return null;
+    }
+    const context = canvas.getContext("2d");
+    const { data } = context.getImageData(x, y, 1, 1);
+    if (!(data[0] === data[1] && data[0] === data[2]) || data[3] != 255) {
+      return null;
+    }
     return data[0];
   }
   getwidth(): number {

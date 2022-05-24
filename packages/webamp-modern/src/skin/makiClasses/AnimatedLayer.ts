@@ -4,6 +4,7 @@ import Layer from "./Layer";
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
 export default class AnimatedLayer extends Layer {
   static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
+  _vertical: boolean = true;
   _currentFrame: number = 0;
   _startFrame: number = 0;
   _endFrame: number = 0;
@@ -13,7 +14,7 @@ export default class AnimatedLayer extends Layer {
   _autoReplay: boolean = true;
   _autoPlay: boolean = false;
   _animationInterval: NodeJS.Timeout | null = null;
-  _imageFormat: string;
+  _imageFormat: string; // api helper, together with elementFrames.
   _elementFrames: number;
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -36,8 +37,18 @@ export default class AnimatedLayer extends Layer {
         this._endFrame = num(value);
         break;
       case "frameheight":
+        // (int) The height in pixels of each cell of animation.
+        // If frameheight is set, the animation will be assumed to be a vertical
+        // strip of cells in the given bitmap.
         this._frameHeight = num(value);
-        this._renderHeight();
+        this._vertical = true;
+        break;
+      case "framewidth":
+        // (int) The height in pixels of each cell of animation.
+        // If frameheight is set, the animation will be assumed to be a vertical
+        // strip of cells in the given bitmap.
+        this._frameWidth = num(value);
+        this._vertical = false;
         break;
       case "autoplay":
         this._autoPlay = toBool(value);
@@ -66,9 +77,19 @@ export default class AnimatedLayer extends Layer {
     return bitmap.getHeight();
   }
 
+  // api
   getlength(): number {
-    // TODO: What about other orientations?
-    return this._getImageHeight() / (this._frameHeight || this.getheight());
+    const bitmap = this._uiRoot.getBitmap(this._image);
+    // return bitmap.getHeight();
+    if (!bitmap || !bitmap.getImg()) {
+      return 0;
+    }
+
+    if (this._vertical) {
+      return bitmap.getHeight() / (this._frameHeight || this.getheight());
+    } else {
+      return bitmap.getWidth() / (this._frameWidth || this.getwidth());
+    }
   }
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
@@ -97,9 +118,10 @@ export default class AnimatedLayer extends Layer {
     const end = this._endFrame;
     const start = this._startFrame;
     const change = end > start ? 1 : -1;
+    const backward:boolean = end < start;
 
     let frame = this._startFrame;
-    // this.gotoframe(frame);
+    this.gotoframe(frame); // initially, jump to start
 
     this._uiRoot.vm.dispatch(this, "onplay");
 
@@ -108,7 +130,7 @@ export default class AnimatedLayer extends Layer {
       return;
     }
     this._animationInterval = setInterval(() => {
-      this.gotoframe(frame);
+      this.gotoframe(frame); // visual update 
 
       if (frame === end) {
         if (!this._autoReplay) {
@@ -117,12 +139,25 @@ export default class AnimatedLayer extends Layer {
           this.stop();
         }
       }
-      frame += change;
-      if (frame < start) {
-        frame = end;
-      } else if (frame > end) {
-        frame = start;
+      if(backward){
+        // warning: should able to animate! through every single frame. dont jump!
+        frame -= 1;
+        if (frame < end) {
+          frame = start;
+        } else if (frame > start) {
+          frame = end;
+        }
       }
+      else {
+        // normal, go forward
+        frame += change;
+        if (frame < start) {
+          frame = end;
+        } else if (frame > end) {
+          frame = start;
+        }
+      }
+
     }, this._speed);
   }
   pause() {
@@ -152,12 +187,21 @@ export default class AnimatedLayer extends Layer {
     if (this._endFrame == 0 && this.getlength() > 0) {
       this._endFrame = this.getlength() - 1;
     }
+    if (this._startFrame != 0) {
+      this.gotoframe(this._startFrame);
+    }
     if (this._autoPlay) this.play();
   }
   _renderFrame() {
-    this._div.style.backgroundPositionY = px(
-      -(this._currentFrame * this._frameHeight)
-    );
+    if (this._vertical) {
+      this._div.style.backgroundPositionY = px(
+        -(this._currentFrame * this._frameHeight)
+      );
+    } else {
+      this._div.style.backgroundPositionX = px(
+        -(this._currentFrame * this._frameWidth)
+      );
+    }
   }
 
   /*
