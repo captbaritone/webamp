@@ -1,0 +1,4 @@
+.K-Jofol button {
+  background-position-x: var(--left, 0);
+  background-position-y: var(--top, 0);
+}

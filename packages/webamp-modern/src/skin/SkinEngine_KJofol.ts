@@ -2,6 +2,7 @@ import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import JSZip from "jszip";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
+import ButtonKjofol from "./kjofolClasses/ButtonKjofol";
 import DialKnob from "./kjofolClasses/DialKnob";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
 import Button from "./makiClasses/Button";
@@ -52,6 +53,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // const root = await this.getRootGroup();
     // await this.loadButtons(root);
     // await this.loadTime(root);
+    this._uiRoot.getRootDiv().classList.add("K-Jofol"); // required by css instrument
   }
 
   //#region (collapsed) load-bitmap
@@ -108,12 +110,12 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     const mover = await this.layer(node, group);
 
-    await this.loadButton("Play", group);
-    await this.loadButton("Pause", group);
-    await this.loadButton("Stop", group);
-    await this.loadButton("PreviousSong", group);
-    await this.loadButton("NextSong", group);
-    await this.loadButton("OpenFile", group);
+    await this.loadButton("Play", "play", group);
+    await this.loadButton("Pause", "pause", group);
+    await this.loadButton("Stop", "stop", group);
+    await this.loadButton("PreviousSong", "previoussong", group);
+    await this.loadButton("NextSong", "nextsong", group);
+    await this.loadButton("OpenFile", "openfile", group);
 
     await this.loadTexts(group);
     await this.loadVis(group);
@@ -125,32 +127,34 @@ export default class KJofol_SkinEngine extends SkinEngine {
    * @param nick "Play" for "PlayButton"
    * @param parent
    */
-  async loadButton(nick: string, parent: Group) {
+  async loadButton(nick: string, action: string, parent: Group) {
     const rect = this._rc[`${nick}Button`];
-    const [left, top, right, bottom, _action, downimage] = rect;
-    let action: string;
-    switch (_action.toLowerCase()) {
-      case "stop!":
-        action = "stop";
-      case "previoussong":
-        action = "prev";
-      case "nextsong":
-        action = "next";
-      case "open":
-        action = "eject";
-      default:
-        action = _action;
-    }
+    const [left, top, right, bottom, tooltip, downimage] = rect;
+    // let action: string;
+    // switch (_action.toLowerCase()) {
+    //   case "stop!":
+    //     action = "stop";
+    //   case "previoussong":
+    //     action = "prev";
+    //   case "nextsong":
+    //     action = "next";
+    //   case "open":
+    //     action = "eject";
+    //   default:
+    //     action = _action;
+    // }
     const node = new XmlElement("button", {
       id: nick,
       action,
+      tooltip,
       x: `${left}`,
       y: `${top}`,
       w: `${right - left}`,
       h: `${bottom - top}`,
       downimage,
     });
-    const button = await this.button(node, parent);
+    // const button = await this.button(node, parent);
+    const button = await this.newGui(ButtonKjofol, node, parent);
     return button;
   }
 
@@ -298,7 +302,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadBitmap(
       config["VolumeControlImage"],
       `volume-${prefix}-sprite`
-      );
+    );
     await this.loadPlainBitmap(
       config["VolumeControlImagePosition"],
       `volume-${prefix}-map`,
@@ -309,12 +313,13 @@ export default class KJofol_SkinEngine extends SkinEngine {
         h: `${bottom - top}`,
       }
     );
-    
+
     // const [left, top, right, bottom] = this._rc[`AnalyzerWindow`];
     // const [r, g, b] = this._rc[`AnalyzerColor`];
     // const color = `${r},${g},${b}`;
-    
+
     const xsize = config["VolumeControlImageXSize"];
+    const count = config["VolumeControlImageNb"];
     const node = new XmlElement("animatedLayer", {
       id: `${prefix}-volume-knob`,
       image: `volume-${prefix}-sprite`,
@@ -326,11 +331,11 @@ export default class KJofol_SkinEngine extends SkinEngine {
       framewidth: `${xsize}`,
       // frameheight: `${bottom - top + 1}`,
       // frameheight: `${frame.height}`,
-      // speed: `${delay * 100}`,
+      speed: `${1400 / count}`,
       // autoPlay: `1`,
       // move: `1`,
       // start: `0`,
-      start: `40`,
+      start: `0`,
       // end: `${count - 1}`,
     });
     // await this.animatedLayer(node, parent);
