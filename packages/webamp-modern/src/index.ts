@@ -122,6 +122,7 @@ async function initializeSkinListMenu() {
     { filename: "[K-Jofol] Default", download_url: "assets/Default.kjofol" },
     { filename: "[K-Jofol] Illusion 1.0", download_url: "assets/Illusion1-0.kjofol" },
     { filename: "[K-Jofol] K-Nine 05r", download_url: "assets/K-Nine05r.kjofol" },
+    { filename: "[K-Jofol] Limus 2.0", download_url: "assets/Limus2-0.zip" },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 
