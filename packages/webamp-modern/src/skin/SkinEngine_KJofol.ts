@@ -1,13 +1,11 @@
 import parseXml, { XmlElement } from "@rgrove/parse-xml";
-import JSZip from "jszip";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
 import ButtonKjofol from "./kjofolClasses/ButtonKjofol";
 import DialKnob from "./kjofolClasses/DialKnob";
+import FloodLevel from "./kjofolClasses/FloodLevel";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
-import Button from "./makiClasses/Button";
 import Container from "./makiClasses/Container";
-import EqVis from "./makiClasses/EqVis";
 import Group from "./makiClasses/Group";
 import Vis from "./makiClasses/Vis";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
@@ -125,6 +123,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadTexts(group, this._rc);
     await this.loadVis(group, this._rc);
     await this.loadVolume(this._rc, group);
+    await this.loadSeek(this._rc, group);
 
     await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
   }
@@ -171,6 +170,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadTexts(group, this._dock);
     await this.loadVis(group, this._dock);
     await this.loadVolume(this._dock, group);
+    await this.loadSeek(this._dock, group);
 
     await this.loadButton("About", "about", group, this._dock);
     await this.loadButton("UnDockMode", "SWITCH;normal", group, this._dock);
@@ -404,6 +404,49 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     // await this.animatedLayer(node, parent);
     await this.newGui(DialKnob, node, parent);
+  }
+
+  async loadSeek(config: {}, parent: Group) {
+    const prefix = config["prefix"];
+    const [left, top, right, bottom] = config[`SeekRegion`];
+    // await this.loadBitmap(
+    //   config["SeekImage"],
+    //   `volume-${prefix}-sprite`
+    // );
+    await this.loadPlainBitmap(
+      config["SeekImage"],
+      `seek-${prefix}-map`,
+      {
+        x: `${left}`,
+        y: `${top}`,
+        w: `${right - left}`,
+        h: `${bottom - top}`,
+      }
+    );
+
+    // const xsize = config["VolumeControlImageXSize"];
+    // const count = config["VolumeControlImageNb"];
+    const node = new XmlElement("layer", {
+      id: `${prefix}-seek`,
+      // image: `volume-${prefix}-sprite`,
+      mapimage: `seek-${prefix}-map`,
+      frontimage: `${prefix}-BMP1`,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      // framewidth: `${xsize}`,
+      // frameheight: `${bottom - top + 1}`,
+      // frameheight: `${frame.height}`,
+      // speed: `${1400 / count}`,
+      // autoPlay: `1`,
+      // move: `1`,
+      // start: `0`,
+      // start: `0`,
+      // end: `${count - 1}`,
+    });
+    // await this.animatedLayer(node, parent);
+    await this.newGui(FloodLevel, node, parent);
   }
 }
 
