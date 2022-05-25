@@ -6,24 +6,16 @@ import MakiMap from "../makiClasses/MakiMap";
 export class ActionHandler {
   _slider: FloodLevel;
   _uiRoot: UIRoot;
+  _subscription: Function;
 
   constructor(slider: FloodLevel) {
     this._slider = slider;
     this._uiRoot = slider._uiRoot;
+    this._subscription = () => {}; // deFault empty
   }
-
-  _subscription: Function = () => {};
 
   onChange(percent: number): void {}
 
-  // 0-255
-  // onsetposition(position: number): void {}
-  // onLeftMouseDown(x: number, y: number): void {}
-  // onLeftMouseUp(x: number, y: number): void {}
-  // onMouseMove(x: number, y: number): void {
-  //   this._slider._setPositionXY(x, y);
-  // }
-  // onFreeMouseMove(x: number, y: number): void {}
   dispose(): void {
     this._subscription();
   }
@@ -60,22 +52,12 @@ export default class FloodLevel extends GuiObj {
         this._frontImage = value;
         break;
       case "action":
-        this._setAction(value);
+        this._action = value.toLowerCase();
         break;
       default:
         return false;
     }
     return true;
-  }
-
-  _setAction(value: string) {
-    // If we've already initialized we might have an action handler already. In
-    // that case, we want to reinitialize.
-    if (this._actionHandler != null) {
-      this._actionHandler.dispose();
-      this._actionHandler = null;
-    }
-    this._action = value.toLowerCase();
   }
 
   init() {
@@ -255,6 +237,11 @@ export default class FloodLevel extends GuiObj {
     super.draw();
     this._div.appendChild(this._canvas);
     // this.update();
+  }
+
+  dispose(): void {
+    this._actionHandler.dispose()
+    super.dispose()
   }
 }
 

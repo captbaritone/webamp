@@ -401,6 +401,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
       // start: `0`,
       start: `0`,
       // end: `${count - 1}`,
+      action: "volume",
     });
     // await this.animatedLayer(node, parent);
     await this.newGui(DialKnob, node, parent);
@@ -418,7 +419,6 @@ export default class KJofol_SkinEngine extends SkinEngine {
       y: `${top}`,
       w: `${right - left}`,
       h: `${bottom - top}`,
-      
     });
 
     // const xsize = config["VolumeControlImageXSize"];

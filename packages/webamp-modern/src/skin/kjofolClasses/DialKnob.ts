@@ -1,13 +1,34 @@
 import { UIRoot } from "../../UIRoot";
-import { throttle } from "../../utils";
+import { assume, throttle } from "../../utils";
 import AnimatedLayer from "../makiClasses/AnimatedLayer";
 import MakiMap from "../makiClasses/MakiMap";
 
+export class ActionHandler {
+  _slider: DialKnob;
+  _uiRoot: UIRoot;
+  _subscription: Function;
+
+  constructor(slider: DialKnob) {
+    this._slider = slider;
+    this._uiRoot = slider._uiRoot;
+    this._subscription = () => {}; // deFault empty
+  }
+
+  init(): void {}
+  onChange(percent: number): void {}
+
+  dispose(): void {
+    this._subscription();
+  }
+}
 export default class DialKnob extends AnimatedLayer {
   _mapImage: string;
   _map: MakiMap;
   _frameCount: number;
   _mouseIsDown: boolean = false;
+  _value: number; //0..255
+  _action: string;
+  _actionHandler: ActionHandler;
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
@@ -29,6 +50,9 @@ export default class DialKnob extends AnimatedLayer {
       case "mapimage":
         this._mapImage = value;
         break;
+      case "action":
+        this._action = value.toLowerCase();
+        break;
       default:
         return false;
     }
@@ -40,6 +64,42 @@ export default class DialKnob extends AnimatedLayer {
     this._frameCount = this.getlength(); // because getLength seem as expensive
     this._registerDragEvents();
     this._map.loadmap(this._mapImage);
+    this._actionHandler = new ActionHandler(this); // to be always has an handler
+    this._initializeActionHandler();
+    this._actionHandler.init()
+  }
+
+  _initializeActionHandler() {
+    const oldActionHandler = this._actionHandler;
+    switch (this._action) {
+      case "seek":
+        this._actionHandler = new SeekActionHandler(this);
+        break;
+      // case "eq_band":
+      //   if (this._param == "preamp")
+      //     this._actionHandler = new PreampActionHandler(this, this._param);
+      //   else this._actionHandler = new EqActionHandler(this, this._param);
+      //   break;
+      // case "eq_preamp":
+      //   break;
+      // case "pan":
+      //   this._actionHandler = new PanActionHandler(this);
+      //   break;
+      case "volume":
+        this._actionHandler = new VolumeActionHandler(this);
+        break;
+      case null:
+        // CrossFadeSlider doesn't has action. should be supported.
+        if (!this._actionHandler) {
+          this._actionHandler = new ActionHandler(this);
+        }
+        break;
+      default:
+        assume(false, `Unhandled slider action: ${this._action}`);
+    }
+    if (oldActionHandler != null && oldActionHandler != this._actionHandler) {
+      oldActionHandler.dispose();
+    }
   }
 
   _registerDragEvents() {
@@ -80,15 +140,28 @@ export default class DialKnob extends AnimatedLayer {
     });
   }
 
+  // 0..1 call by action handler
+  setPercentValue(percent: number) {
+    if (!this._mouseIsDown) {
+      const value = Math.round(percent * 255);
+      if (value != this._value) {
+        this._value = value;
+        this._renderKnob();
+      }
+    }
+  }
+
   doLeftMouseDown(x: number, y: number) {
     this._mouseIsDown = true;
     const val = this._map.getUnsafeValue(x, y);
-    if (val != null && !isNaN(val)) {
+    if (val != null && !isNaN(val) && val != this._value) {
       console.log("knob:", val);
-      this.stop();
-      this.setstartframe(this.getcurframe());
-      this.setendframe(Math.round((val / 255) * (this._frameCount-1)));
-      this.play();
+      // this.stop();
+      // this.setstartframe(this.getcurframe());
+      // this.setendframe(Math.round((val / 255) * (this._frameCount-1)));
+      // this.play();
+      this._renderKnob();
+      this._actionHandler.onChange(this._value / 255);
     }
   }
   doMouseMove(x: number, y: number) {
@@ -99,4 +172,89 @@ export default class DialKnob extends AnimatedLayer {
   doLeftMouseUp(x: number, y: number) {
     this._mouseIsDown = false;
   }
+
+  _renderKnob() {
+    this.stop();
+    this.setstartframe(this.getcurframe());
+    this.setendframe(Math.round((this._value / 255) * (this._frameCount - 1)));
+    this.play();
+  }
+}
+
+class SeekActionHandler extends ActionHandler {
+  // _pendingChange: boolean;
+
+  isPendingChange(): boolean {
+    return true; // this._pendingChange || this._dragging;
+  }
+
+  constructor(slider: DialKnob) {
+    super(slider);
+    this._registerOnAudioProgress();
+  }
+
+  _registerOnAudioProgress() {
+    this._subscription = this._uiRoot.audio.onCurrentTimeChange(
+      this._onAudioProgres
+    );
+  }
+
+  _onAudioProgres = () => {
+    // if (!this._pendingChange) {
+    this._slider.setPercentValue(this._uiRoot.audio.getCurrentTimePercent());
+    // }
+  };
+
+  // onsetposition(position: number): void {
+  //   this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
+  //   if (!this._pendingChange) {
+  //     this._uiRoot.audio.seekToPercent(position / this._slider._high);
+  //   }
+  // }
+
+  // 0..1 called by slider
+  onChange(percent: number): void {
+    this._uiRoot.audio.seekToPercent(percent);
+  }
+
+  // onLeftMouseUp(x: number, y: number) {
+  //   if (this._pendingChange) {
+  //     this._pendingChange = false;
+  //     this._uiRoot.audio.seekToPercent(
+  //       this._slider.getposition() / this._slider._high
+  //     );
+  //   }
+  // }
+}
+
+class VolumeActionHandler extends ActionHandler {
+  _changing: boolean = false;
+
+  constructor(slider: DialKnob) {
+    super(slider);
+
+    this._subscription = this._uiRoot.audio.onVolumeChanged(() => {
+      // if (!this._changing) {
+      slider.setPercentValue(this._uiRoot.audio.getVolume());
+      // slider._position = this._uiRoot.audio.getVolume();
+      // slider._renderThumbPosition();
+      // }
+    });
+  }
+
+  init(): void {
+    this._slider.setPercentValue(this._uiRoot.audio.getVolume());
+  }
+
+  // 0..1 called by slider
+  onChange(percent: number): void {
+    this._uiRoot.audio.setVolume(percent);
+  }
+
+  // onLeftMouseDown(x: number, y: number) {
+  //   this._changing = true;
+  // }
+  // onLeftMouseUp(x: number, y: number) {
+  //   this._changing = false;
+  // }
 }
