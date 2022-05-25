@@ -38,6 +38,7 @@ export class SkinEngineAudion extends SkinEngine {
     // this._phase = GROUP_PHASE;
     const root = await this.getRootGroup();
 
+    await this.loadTime(root);
     // animation
     // await this.laodConnectingAnimation(root);
     // await this.laodStreamingAnimation(root);
@@ -47,7 +48,6 @@ export class SkinEngineAudion extends SkinEngine {
     await this.laodIndicators(root);
 
     await this.loadButtons(root);
-    await this.loadTime(root);
 
     await this.loadTexts(root);
 
@@ -209,7 +209,7 @@ export class SkinEngineAudion extends SkinEngine {
     } else {
       //no image? the bitmap isn't exists. destroy!
       this._uiRoot.removeBitmap(name);
-      return null
+      return null;
     }
     return bitmap;
   }
@@ -398,6 +398,7 @@ export class SkinEngineAudion extends SkinEngine {
       charheight: `${h}`,
     });
     const font = await this.bitmapFont(node);
+    font.setImage(bitmap.getImg()); // external bitmap
 
     //? text
     node = new XmlElement("text", {

@@ -1,7 +1,5 @@
-import UI_ROOT from "../../UIRoot";
 import { integerToTime, num } from "../../utils";
 import BitmapFont from "../BitmapFont";
-import GuiObj from "../makiClasses/GuiObj";
 import Text from "../makiClasses/Text";
 
 export default class TimeFace extends Text {
@@ -27,10 +25,10 @@ export default class TimeFace extends Text {
 
   // init(): void {
   //   super.init();
-  //   this._disposeDisplaySubscription = UI_ROOT.audio.onCurrentTimeChange(() => {
-  //     this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+  //   this._disposeDisplaySubscription = this._uiRoot.audio.onCurrentTimeChange(() => {
+  //     this.setDisplayValue(integerToTime(this._uiRoot.audio.getCurrentTime()));
   //   });
-  //   this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+  //   this.setDisplayValue(integerToTime(this._uiRoot.audio.getCurrentTime()));
   // }
 
   // _invalidateFullWidth() {
