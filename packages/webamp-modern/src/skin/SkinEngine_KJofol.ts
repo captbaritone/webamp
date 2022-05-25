@@ -171,6 +171,10 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadTexts(group, this._dock);
     await this.loadVis(group, this._dock);
     await this.loadVolume(this._dock, group);
+
+    await this.loadButton("About", "about", group, this._dock);
+    await this.loadButton("UnDockMode", "SWITCH;normal", group, this._dock);
+
   }
 
   /**
