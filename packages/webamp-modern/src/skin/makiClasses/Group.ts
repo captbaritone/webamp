@@ -56,12 +56,12 @@ export default class Group extends Movable {
     }
   }
 
-  deinit() {
+  dispose() {
     for (const systemObject of this._systemObjects) {
-      systemObject.deinit();
+      systemObject.dispose();
     }
     for (const child of this._children) {
-      child.deinit();
+      child.dispose();
     }
   }
 

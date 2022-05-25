@@ -112,7 +112,7 @@ export default class SystemObject extends BaseObject {
     this._uiRoot.vm.dispatch(this, "onscriptloaded");
   }
 
-  deinit() {
+  dispose() {
     this._uiRoot.vm.dispatch(this, "onscriptunloading");
   }
 

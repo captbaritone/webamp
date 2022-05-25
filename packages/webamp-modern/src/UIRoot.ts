@@ -121,10 +121,10 @@ export class UIRoot {
   deinitSkin() {
     // skin is being switched to another skin
     for (const container of this._containers) {
-      container.deinit();
+      container.dispose();
     }
     for (const systemObj of this._systemObjects) {
-      systemObj.deinit();
+      systemObj.dispose();
     }
   }
 

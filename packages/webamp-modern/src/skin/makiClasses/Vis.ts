@@ -144,8 +144,8 @@ export default class Vis extends GuiObj {
     this.audioStatusChanged();
   }
 
-  deinit() {
-    super.deinit();
+  dispose() {
+    super.dispose();
     this._stopVisualizer();
   }
 

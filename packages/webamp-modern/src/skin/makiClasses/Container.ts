@@ -78,9 +78,9 @@ export default class Container extends XmlObj {
     ]);
   }
 
-  deinit() {
+  dispose() {
     for (const layout of this._layouts) {
-      layout.deinit();
+      layout.dispose();
     }
   }
 
