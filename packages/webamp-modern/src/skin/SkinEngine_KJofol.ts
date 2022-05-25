@@ -174,7 +174,6 @@ export default class KJofol_SkinEngine extends SkinEngine {
 
     await this.loadButton("About", "about", group, this._dock);
     await this.loadButton("UnDockMode", "SWITCH;normal", group, this._dock);
-
   }
 
   /**
@@ -185,8 +184,8 @@ export default class KJofol_SkinEngine extends SkinEngine {
   async loadButton(nick: string, action: string, parent: Group, config: {}) {
     const prefix = config["prefix"];
     const rect = config[`${nick}Button`];
-    if(!rect) return;
-    console.log('rect:',rect)
+    if (!rect) return;
+    console.log("rect:", rect);
     const [left, top, right, bottom, tooltip, downimage] = rect;
 
     let param = "";
@@ -296,13 +295,13 @@ export default class KJofol_SkinEngine extends SkinEngine {
   //#endregion
 
   // #region (collapsed) Text
-  async loadTexts(parent: Group, config:{}) {
+  async loadTexts(parent: Group, config: {}) {
     this.loadText("Filename", "songtitle", parent, config);
     this.loadText("MP3Kbps", "songinfo", parent, config);
   }
-  async loadText(prefix: string, action: string, parent: Group, config:{}) {
+  async loadText(prefix: string, action: string, parent: Group, config: {}) {
     const rect = config[`${prefix}Window`];
-    if(!rect) return; // requested key not found.
+    if (!rect) return; // requested key not found.
     const [left, top, right, bottom] = rect;
     // const color = config[`${prefix}DisplayTextFaceColorFromTxtr`];
     // const textMode = config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
@@ -323,7 +322,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
   //#endregion
 
-  async loadVis(parent: Group, config:{}) {
+  async loadVis(parent: Group, config: {}) {
     const [left, top, right, bottom] = config[`AnalyzerWindow`];
     const [r, g, b] = config[`AnalyzerColor`];
     const color = `${r},${g},${b}`;
@@ -414,16 +413,13 @@ export default class KJofol_SkinEngine extends SkinEngine {
     //   config["SeekImage"],
     //   `volume-${prefix}-sprite`
     // );
-    await this.loadPlainBitmap(
-      config["SeekImage"],
-      `seek-${prefix}-map`,
-      {
-        x: `${left}`,
-        y: `${top}`,
-        w: `${right - left}`,
-        h: `${bottom - top}`,
-      }
-    );
+    await this.loadPlainBitmap(config["SeekImage"], `seek-${prefix}-map`, {
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      
+    });
 
     // const xsize = config["VolumeControlImageXSize"];
     // const count = config["VolumeControlImageNb"];
@@ -445,6 +441,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
       // start: `0`,
       // start: `0`,
       // end: `${count - 1}`,
+      action: "seek",
     });
     // await this.animatedLayer(node, parent);
     await this.newGui(FloodLevel, node, parent);

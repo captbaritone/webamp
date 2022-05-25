@@ -3,6 +3,31 @@ import { assume, throttle } from "../../utils";
 import GuiObj from "../makiClasses/GuiObj";
 import MakiMap from "../makiClasses/MakiMap";
 
+export class ActionHandler {
+  _slider: FloodLevel;
+  _uiRoot: UIRoot;
+
+  constructor(slider: FloodLevel) {
+    this._slider = slider;
+    this._uiRoot = slider._uiRoot;
+  }
+
+  _subscription: Function = () => {};
+
+  onChange(percent: number): void {}
+
+  // 0-255
+  // onsetposition(position: number): void {}
+  // onLeftMouseDown(x: number, y: number): void {}
+  // onLeftMouseUp(x: number, y: number): void {}
+  // onMouseMove(x: number, y: number): void {
+  //   this._slider._setPositionXY(x, y);
+  // }
+  // onFreeMouseMove(x: number, y: number): void {}
+  dispose(): void {
+    this._subscription();
+  }
+}
 export default class FloodLevel extends GuiObj {
   _canvas: HTMLCanvasElement = document.createElement("canvas");
   _mapImage: string;
@@ -10,6 +35,8 @@ export default class FloodLevel extends GuiObj {
   _map: MakiMap;
   _mouseIsDown: boolean;
   _value: number; //0..255
+  _action: string;
+  _actionHandler: ActionHandler;
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
@@ -32,17 +59,65 @@ export default class FloodLevel extends GuiObj {
       case "frontimage":
         this._frontImage = value;
         break;
+      case "action":
+        this._setAction(value);
+        break;
       default:
         return false;
     }
     return true;
   }
 
+  _setAction(value: string) {
+    // If we've already initialized we might have an action handler already. In
+    // that case, we want to reinitialize.
+    if (this._actionHandler != null) {
+      this._actionHandler.dispose();
+      this._actionHandler = null;
+    }
+    this._action = value.toLowerCase();
+  }
+
   init() {
     super.init();
     this._map = new MakiMap(this._uiRoot);
     this._map.loadmap(this._mapImage);
+    this._actionHandler = new ActionHandler(this); // to be always has an handler
+    this._initializeActionHandler();
     this._registerDragEvents();
+  }
+
+  _initializeActionHandler() {
+    const oldActionHandler = this._actionHandler;
+    switch (this._action) {
+      case "seek":
+        this._actionHandler = new SeekActionHandler(this);
+        break;
+      // case "eq_band":
+      //   if (this._param == "preamp")
+      //     this._actionHandler = new PreampActionHandler(this, this._param);
+      //   else this._actionHandler = new EqActionHandler(this, this._param);
+      //   break;
+      // case "eq_preamp":
+      //   break;
+      // case "pan":
+      //   this._actionHandler = new PanActionHandler(this);
+      //   break;
+      case "volume":
+        this._actionHandler = new VolumeActionHandler(this);
+        break;
+      case null:
+        // CrossFadeSlider doesn't has action. should be supported.
+        if (!this._actionHandler) {
+          this._actionHandler = new ActionHandler(this);
+        }
+        break;
+      default:
+        assume(false, `Unhandled slider action: ${this._action}`);
+    }
+    if (oldActionHandler != null && oldActionHandler != this._actionHandler) {
+      oldActionHandler.dispose();
+    }
   }
 
   _registerDragEvents() {
@@ -83,13 +158,25 @@ export default class FloodLevel extends GuiObj {
     });
   }
 
+  // 0..1 call by action handler
+  setPercentValue(percent: number) {
+    if (!this._mouseIsDown) {
+      const value = Math.round(percent * 255);
+      if (value != this._value) {
+        this._value = value;
+        this._renderFlood();
+      }
+    }
+  }
+
   doLeftMouseDown(x: number, y: number) {
     this._mouseIsDown = true;
     const val = this._map.getUnsafeValue(x, y);
-    if (val != null && !isNaN(val)) {
+    if (val != null && val != this._value) {
       console.log("flood:", val);
       this._value = val;
       this._renderFlood();
+      this._actionHandler.onChange(this._value / 255);
       // this.stop();
       // this.setstartframe(this.getcurframe());
       // this.setendframe(Math.round((val / 255) * (this._frameCount - 1)));
@@ -121,7 +208,10 @@ export default class FloodLevel extends GuiObj {
     const imgb = ctxb.getImageData(this.getleft(), this.gettop(), w, h);
     const datab = imgb.data;
 
-    assume(img.width==imgb.width && img.height==imgb.height, 'mismatch size of source vs dest')
+    assume(
+      img.width == imgb.width && img.height == imgb.height,
+      "mismatch size of source vs dest"
+    );
 
     // const dataa = this.alphaData;
     // const bw = bitmap.getWidth();
@@ -166,4 +256,83 @@ export default class FloodLevel extends GuiObj {
     this._div.appendChild(this._canvas);
     // this.update();
   }
+}
+
+class SeekActionHandler extends ActionHandler {
+  // _pendingChange: boolean;
+
+  isPendingChange(): boolean {
+    return true; // this._pendingChange || this._dragging;
+  }
+
+  constructor(slider: FloodLevel) {
+    super(slider);
+    this._registerOnAudioProgress();
+  }
+
+  _registerOnAudioProgress() {
+    this._subscription = this._uiRoot.audio.onCurrentTimeChange(
+      this._onAudioProgres
+    );
+  }
+
+  _onAudioProgres = () => {
+    // if (!this._pendingChange) {
+    this._slider.setPercentValue(this._uiRoot.audio.getCurrentTimePercent());
+    // }
+  };
+
+  // onsetposition(position: number): void {
+  //   this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
+  //   if (!this._pendingChange) {
+  //     this._uiRoot.audio.seekToPercent(position / this._slider._high);
+  //   }
+  // }
+
+  // 0..1 called by slider
+  onChange(percent: number): void {
+    this._uiRoot.audio.seekToPercent(percent);
+  }
+
+  // onLeftMouseUp(x: number, y: number) {
+  //   if (this._pendingChange) {
+  //     this._pendingChange = false;
+  //     this._uiRoot.audio.seekToPercent(
+  //       this._slider.getposition() / this._slider._high
+  //     );
+  //   }
+  // }
+}
+
+class VolumeActionHandler extends ActionHandler {
+  _changing: boolean = false;
+
+  constructor(slider: FloodLevel) {
+    super(slider);
+    slider.setPercentValue(this._uiRoot.audio.getVolume());
+
+    this._subscription = this._uiRoot.audio.onVolumeChanged(() => {
+      // if (!this._changing) {
+      slider.setPercentValue(this._uiRoot.audio.getVolume());
+      // slider._position = this._uiRoot.audio.getVolume();
+      // slider._renderThumbPosition();
+      // }
+    });
+  }
+
+  onsetposition(position: number): void {
+    this._uiRoot.audio.setVolume(position / this._slider._high);
+  }
+
+  // 0..1 called by slider
+  onChange(percent: number): void {
+    this._uiRoot.audio.setVolume(percent);
+  }
+
+  // onLeftMouseDown(x: number, y: number) {
+  //   this._changing = true;
+  // }
+  // onLeftMouseUp(x: number, y: number) {
+  //   this._changing = false;
+  // }
 }
