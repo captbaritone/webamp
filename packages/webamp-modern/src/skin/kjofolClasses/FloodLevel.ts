@@ -320,9 +320,9 @@ class VolumeActionHandler extends ActionHandler {
     });
   }
 
-  onsetposition(position: number): void {
-    this._uiRoot.audio.setVolume(position / this._slider._high);
-  }
+  // onsetposition(position: number): void {
+  //   this._uiRoot.audio.setVolume(position / this._slider._high);
+  // }
 
   // 0..1 called by slider
   onChange(percent: number): void {
