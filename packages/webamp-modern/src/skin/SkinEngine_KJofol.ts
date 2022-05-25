@@ -302,6 +302,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
   async loadText(prefix: string, action: string, parent: Group, config:{}) {
     const rect = config[`${prefix}Window`];
+    if(!rect) return; // requested key not found.
     const [left, top, right, bottom] = rect;
     // const color = config[`${prefix}DisplayTextFaceColorFromTxtr`];
     // const textMode = config[`${prefix}TextMode`] == 0 ? "Face" : "Txtr";
