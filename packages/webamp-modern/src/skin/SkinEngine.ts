@@ -135,7 +135,7 @@ export class SkinEngine {
     return this.newGui(Text, node, parent);
   }
 
-  async button(node: XmlElement, parent: any)  {
+  async button(node: XmlElement, parent: any) {
     return await this.newGui(Button, node, parent);
   }
 
@@ -183,10 +183,11 @@ export const registerSkinEngine = (Engine: SkinEngineClass) => {
  * @param uiRoot The instance used for check if the a file is available or not
  * @returns A class (not instance) that able to parse & load the skin
  */
-export function getSkinEngineClass(filePath: string): SkinEngineClass {
+export function getSkinEngineClass(filePath: string): SkinEngineClass[] {
   // const process = (Engine: SkinEngineClass) => {
   //   const engine = new Engine();
   // }
+  const result: SkinEngineClass[] = [];
 
   SKIN_ENGINES.sort((a: SkinEngineClass, b: SkinEngineClass): number => {
     return a.priority - b.priority;
@@ -194,8 +195,12 @@ export function getSkinEngineClass(filePath: string): SkinEngineClass {
 
   //? #1 ask by filename
   for (const Engine of SKIN_ENGINES) {
-    if (Engine.canProcess(filePath)) return Engine;
+    if (Engine.canProcess(filePath)) {
+      //return Engine;
+      result.push(Engine);
+    }
   }
+  return result;
 }
 
 /**
@@ -205,6 +210,7 @@ export function getSkinEngineClass(filePath: string): SkinEngineClass {
  * @returns A class (not instance) that able to parse & load the skin
  */
 export async function getSkinEngineClassByContent(
+  classes: SkinEngineClass[],
   filePath: string,
   uiRoot: UIRoot
 ): Promise<SkinEngineClass> {
@@ -212,12 +218,12 @@ export async function getSkinEngineClassByContent(
   //   const engine = new Engine();
   // }
 
-  SKIN_ENGINES.sort((a: SkinEngineClass, b: SkinEngineClass): number => {
-    return a.priority - b.priority;
-  });
+  // SKIN_ENGINES.sort((a: SkinEngineClass, b: SkinEngineClass): number => {
+  //   return a.priority - b.priority;
+  // });
 
   //? #2 ask by file is exists
-  for (const Engine of SKIN_ENGINES) {
+  for (const Engine of classes) {
     const aFileName = Engine.identifyByFile(filePath);
     // if (uiRoot.getFileAsString(aFileName) != null) {
     const aFile = await uiRoot.getFileAsString(aFileName);

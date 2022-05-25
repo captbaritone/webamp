@@ -51,11 +51,14 @@ export class Webamp5 extends WebAmpModern {
     this._parent.appendChild(this._uiRoot.getRootDiv());
 
     let skinFetched = false;
-    let SkinEngineClass = getSkinEngineClass(skinPath);
-    if (SkinEngineClass == null) {
+    let SkinEngineClass=null;
+    let SkinEngineClasses = getSkinEngineClass(skinPath);
+    if (SkinEngineClasses.length>1) {
       await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
       skinFetched = true;
-      SkinEngineClass = await getSkinEngineClassByContent(skinPath, this._uiRoot);
+      SkinEngineClass = await getSkinEngineClassByContent(SkinEngineClasses, skinPath, this._uiRoot);
+    } else {
+      SkinEngineClass = SkinEngineClasses[0]
     }
     if (SkinEngineClass == null) {
       throw new Error(`Skin not supported`);

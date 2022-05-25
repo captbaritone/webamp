@@ -163,8 +163,8 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadButton("Play", "play", group, this._dock);
     await this.loadButton("Pause", "pause", group, this._dock);
     await this.loadButton("Stop", "stop", group, this._dock);
-    await this.loadButton("PreviousSong", "previoussong", group, this._dock);
-    await this.loadButton("NextSong", "nextsong", group, this._dock);
+    await this.loadButton("PreviousSong", "prev", group, this._dock);
+    await this.loadButton("NextSong", "next", group, this._dock);
     await this.loadButton("OpenFile", "openfile", group, this._dock);
 
     await this.loadTexts(group, this._dock);
@@ -185,7 +185,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const prefix = config["prefix"];
     const rect = config[`${nick}Button`];
     if (!rect) return;
-    console.log("rect:", rect);
+    // console.log("rect:", rect);
     const [left, top, right, bottom, tooltip, downimage] = rect;
 
     let param = "";
@@ -477,7 +477,7 @@ function parserRC(content: string): { [key: string]: string | string[] } {
     }
   }
 
-  console.log(cfg);
+  // console.log(cfg);
 
   return cfg;
 }

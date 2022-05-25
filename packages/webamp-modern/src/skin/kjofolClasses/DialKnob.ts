@@ -156,6 +156,7 @@ export default class DialKnob extends AnimatedLayer {
     const val = this._map.getUnsafeValue(x, y);
     if (val != null && !isNaN(val) && val != this._value) {
       console.log("knob:", val);
+      this._value = val;
       // this.stop();
       // this.setstartframe(this.getcurframe());
       // this.setendframe(Math.round((val / 255) * (this._frameCount-1)));
