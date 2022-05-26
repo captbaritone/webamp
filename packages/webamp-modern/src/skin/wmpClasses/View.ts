@@ -14,7 +14,7 @@ export default class View extends Container {
   _scriptFile: string;
   _onLoad: string;
   _timerInterval: number;
-  _onTimer:string;
+  _onTimer: string;
   _jsScript: { [key: string]: string } = {}; //wmp
 
   getElTag(): string {
@@ -55,23 +55,22 @@ export default class View extends Container {
 
     // if (this._scriptFile) {
     //   this.prepareScriptGlobalObjects();
-      //? temporary disabling due incomplete methods
-      if (this._onLoad!=null) {
+    //? temporary disabling due incomplete methods
+    if (this._onLoad != null) {
       //   setTimeout(() => {
-          runInlineScript(this._onLoad);
+      runInlineScript(this._onLoad);
       //   }, 1000);
-      }
+    }
     // }
     // pending onLoad
-    if(this._onTimer && this._timerInterval!=null){
+    if (this._onTimer && this._timerInterval != null) {
       setTimeout(() => {
-        console.log('Blendshutter!?',this._onTimer)
-        runInlineScript(this._onTimer)
+        console.log("Blendshutter!?", this._onTimer);
+        runInlineScript(this._onTimer);
       }, this._timerInterval);
     }
 
-    this.loadJsScripts()
-
+    this.loadJsScripts();
   }
 
   //? WindowsMediaPlayer ========================
@@ -115,7 +114,7 @@ export default class View extends Container {
       }
     };
 
-    const layout = this.getCurLayout()
+    const layout = this.getCurLayout();
     recursiveSetGlobal(layout);
   }
 
@@ -130,13 +129,12 @@ export default class View extends Container {
 
     if (this._scriptFile) {
       this.prepareScriptGlobalObjects();
-    //   //? temporary disabling due incomplete methods
-    //   if (this._onLoad) {
-    //     setTimeout(() => {
-    //       runInlineScript(this._onLoad);
-    //     }, 1000);
-    //   }
+      //   //? temporary disabling due incomplete methods
+      //   if (this._onLoad) {
+      //     setTimeout(() => {
+      //       runInlineScript(this._onLoad);
+      //     }, 1000);
+      //   }
     }
-
   }
 }

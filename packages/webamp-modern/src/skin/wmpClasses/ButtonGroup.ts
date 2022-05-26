@@ -79,11 +79,11 @@ export default class ButtonGroup extends Group {
 
   draw() {
     super.draw();
-    if (!this._background/* &&!this._image */) {
+    if (!this._background /* &&!this._image */) {
       this._div.classList.remove("webamp--img");
     }
-    if (this._image!=null) {
-      this._div.classList.add('has-image')
+    if (this._image != null) {
+      this._div.classList.add("has-image");
     }
   }
 }

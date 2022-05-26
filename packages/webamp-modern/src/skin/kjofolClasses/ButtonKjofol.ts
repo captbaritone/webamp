@@ -10,11 +10,11 @@ export default class ButtonKjofol extends Button {
 
   _renderX() {
     super._renderX();
-    this._div.style.setProperty('--left', px(-this._x ?? 0));
+    this._div.style.setProperty("--left", px(-this._x ?? 0));
   }
 
   _renderY() {
     super._renderY();
-    this._div.style.setProperty('--top', px(-this._y ?? 0));
+    this._div.style.setProperty("--top", px(-this._y ?? 0));
   }
 }

@@ -7,12 +7,17 @@ export function runInlineScript(script: string) {
     console.log(`/${expression}/`);
     if (expression.endsWith("()")) {
       expression = expression.replace(/\(\)/, "");
-      try{
+      try {
         window[expression]();
-      } catch(error) {
-        console.log('failed to run expression:',`|${expression}|`,'@', script)
-        
-        console.warn(error)
+      } catch (error) {
+        console.log(
+          "failed to run expression:",
+          `|${expression}|`,
+          "@",
+          script
+        );
+
+        console.warn(error);
         // throw error
       }
     }

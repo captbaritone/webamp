@@ -44,7 +44,7 @@ async function main() {
   setStatus("Downloading MP3...");
   webamp = new window.WebampModern(document.getElementById("web-amp"), option);
   webamp.onLogMessage(setStatus);
-  
+
   // var webamp2 = new window.WebampModern(document.getElementById("web-amp"), {...option, skin:"assets/MMD3.wal"});
   setStatus("");
 }
@@ -103,9 +103,15 @@ async function initializeSkinListMenu() {
     { filename: "[Winamp] MMD3", download_url: "assets/MMD3.wal" },
     // { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
     { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
-    { filename: "[wmp] Quicksilver WindowsMediaPlayer!", download_url: "assets/Quicksilver.wmz" },
+    {
+      filename: "[wmp] Quicksilver WindowsMediaPlayer!",
+      download_url: "assets/Quicksilver.wmz",
+    },
     { filename: "[wmp] Windows XP", download_url: "assets/Windows-XP.wmz" },
-    { filename: "[wmp] Famous Headspace", download_url: "assets/Headspace.wmz" },
+    {
+      filename: "[wmp] Famous Headspace",
+      download_url: "assets/Headspace.wmz",
+    },
 
     {
       filename: "[Audion Face] Smoothface 2",
@@ -120,8 +126,14 @@ async function initializeSkinListMenu() {
       download_url: "assets/TokyoBay.face",
     },
     { filename: "[K-Jofol] Default", download_url: "assets/Default.kjofol" },
-    { filename: "[K-Jofol] Illusion 1.0", download_url: "assets/Illusion1-0.kjofol" },
-    { filename: "[K-Jofol] K-Nine 05r", download_url: "assets/K-Nine05r.kjofol" },
+    {
+      filename: "[K-Jofol] Illusion 1.0",
+      download_url: "assets/Illusion1-0.kjofol",
+    },
+    {
+      filename: "[K-Jofol] K-Nine 05r",
+      download_url: "assets/K-Nine05r.kjofol",
+    },
     { filename: "[K-Jofol] Limus 2.0", download_url: "assets/Limus2-0.zip" },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];

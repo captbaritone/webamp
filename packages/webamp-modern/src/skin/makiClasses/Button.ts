@@ -195,7 +195,10 @@ export default class Button extends AudioEventedGui {
       this.setHoverBackgroundImage(null);
     }
 
-    if (this._activeimage != null && this._uiRoot.hasBitmap(this._activeimage)) {
+    if (
+      this._activeimage != null &&
+      this._uiRoot.hasBitmap(this._activeimage)
+    ) {
       const activeimage = this._uiRoot.getBitmap(this._activeimage);
       this.setActiveBackgroundImage(activeimage);
     } else {

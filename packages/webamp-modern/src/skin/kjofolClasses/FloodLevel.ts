@@ -240,8 +240,8 @@ export default class FloodLevel extends GuiObj {
   }
 
   dispose(): void {
-    this._actionHandler.dispose()
-    super.dispose()
+    this._actionHandler.dispose();
+    super.dispose();
   }
 }
 

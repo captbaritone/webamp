@@ -18,15 +18,15 @@ export default class Theme extends Container {
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
-      this._mediaCenter = new MediaCenter()
-      this._player = new Player(this._uiRoot)
+    this._mediaCenter = new MediaCenter();
+    this._player = new Player(this._uiRoot);
   }
 
   get mediaCenter(): MediaCenter {
-      return this._mediaCenter;
+    return this._mediaCenter;
   }
 
-  getPlayer():Player {
+  getPlayer(): Player {
     return this._player;
   }
 
@@ -38,26 +38,25 @@ export default class Theme extends Container {
     return PRIVATE_CONFIG.getPrivateString(WINDOWS_MEDIA_PLAYER, name, "--");
   }
   loadpreference(name: string): string {
-      return this.loadPreference(name)
+    return this.loadPreference(name);
   }
 
-  openView(containerId: string){
-      const container= this._uiRoot.findContainer(containerId);
-      container.show()
+  openView(containerId: string) {
+    const container = this._uiRoot.findContainer(containerId);
+    container.show();
   }
-  closeView(containerId: string){
-      const container= this._uiRoot.findContainer(containerId);
-      container.hide()
+  closeView(containerId: string) {
+    const container = this._uiRoot.findContainer(containerId);
+    container.hide();
   }
 
-
-  _setGlobalVar(){
+  _setGlobalVar() {
     window["theme"] = this;
     window["mediacenter"] = this._mediaCenter;
     window["player"] = this._player;
   }
   draw(): void {
-    super.draw()
-    this._setGlobalVar()
+    super.draw();
+    this._setGlobalVar();
   }
 }

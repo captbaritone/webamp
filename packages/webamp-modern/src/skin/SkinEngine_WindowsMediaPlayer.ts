@@ -22,8 +22,8 @@ import View from "./wmpClasses/View";
 import VisZ from "./wmpClasses/Vis";
 
 export type Attributes = {
-  [key:string]: string
-}
+  [key: string]: string;
+};
 
 export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
   _phase: number = 0;
@@ -37,7 +37,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
   };
 
   static priority: number = 4;
-  
+
   /**
    * Process
    */
@@ -73,7 +73,6 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     // for (const bmpId of Object.keys(UI_ROOT.getBitmaps())) {
     //   console.log("bitmap loaded:", bmpId);
     // }
-
   }
 
   async newGroup<Type>(
@@ -326,7 +325,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
       "downimage",
       "hoverdownimage",
       "disabledimage",
-    ]
+    ];
     const recursiveScanChildren = (mother: XmlElement) => {
       for (const element of mother.children) {
         if (element instanceof XmlElement) {
@@ -344,15 +343,15 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
           ])
             if (element.attributes[att]) {
               const bitmapId = element.attributes[att];
-              const bitmap: Attributes =  {
+              const bitmap: Attributes = {
                 id: bitmapId,
                 file: bitmapId,
               };
               //set transparentColor if any
               if (element.attributes.transparencycolor != null) {
-                if(transparentImages.includes(att)){
+                if (transparentImages.includes(att)) {
                   bitmap.transparentcolor =
-                  element.attributes.transparencycolor;
+                    element.attributes.transparencycolor;
                 }
               }
               // if (att == "background") {
@@ -361,7 +360,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
               //       element.attributes.transparencycolor;
               //   }
               // }
-              this.bitmap(new XmlElement('bitmap', bitmap));
+              this.bitmap(new XmlElement("bitmap", bitmap));
             }
           recursiveScanChildren(element);
         }
@@ -528,7 +527,6 @@ function utf8Encode(unicodeString) {
   return utf8String;
 }
 
-
 class Parser2 extends Parser {
   error(message) {
     if (message.startsWith("Duplicate attribute:")) {
@@ -547,7 +545,7 @@ function parseXml2(xml: string, options: any = undefined): XmlDocument {
  * @param binaryStr filecontent
  * @returns utf8 content
  */
- export function decodeWideChars(binaryStr: string) {
+export function decodeWideChars(binaryStr: string) {
   if (binaryStr.charCodeAt(0) < 255) {
     return binaryStr;
   }

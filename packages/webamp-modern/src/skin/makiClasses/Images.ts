@@ -63,7 +63,10 @@ export default class Images extends Layer {
 
   _getImageHeight(): number {
     const bitmap = this._uiRoot.getBitmap(this._image);
-    return bitmap.getHeight();
+    if (bitmap) {
+      return bitmap.getHeight();
+    }
+    return null;
   }
 
   gotoFrame(framenum: number) {

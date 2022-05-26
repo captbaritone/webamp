@@ -453,7 +453,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const rect = config[`EqualizerWindow`];
     if (!rect) return;
     const [left, top, right, bottom, tootip, bandCount, xSpace] = rect;
-    //? grup    
+    //? grup
     let node = new XmlElement("group", {
       id: `Equalizer`,
       x: `${left}`,
@@ -461,31 +461,33 @@ export default class KJofol_SkinEngine extends SkinEngine {
       w: `${right - left}`,
       h: `${bottom - top}`,
     });
-    const group: Group = await this.group(node, parent)
+    const group: Group = await this.group(node, parent);
 
     //bitmap
     const [xSize, frameCount, bg] = config[`EqualizerBmp`];
-    this.loadPlainBitmap(bg, 'equalizer-sprite')
-    
-    //sliders
-    const [width,height] = [Math.round((right - left +1)/bandCount), bottom - top+1]
-    // const [width,height] = [xSize+xSpace, bottom - top]
-    for(var i = 1; i<=bandCount; i++){
+    this.loadPlainBitmap(bg, "equalizer-sprite");
 
+    //sliders
+    const [width, height] = [
+      Math.round((right - left + 1) / bandCount),
+      bottom - top + 1,
+    ];
+    // const [width,height] = [xSize+xSpace, bottom - top]
+    for (var i = 1; i <= bandCount; i++) {
       node = new XmlElement("bitmap", {
         id: `eq${i}`,
-        image: 'equalizer-sprite',
-        x: `${(i-1)*width}`,
+        image: "equalizer-sprite",
+        x: `${(i - 1) * width}`,
         y: `${0}`,
         w: `${xSize}`,
         h: `${height}`,
         frameWidth: `${xSize}`,
         frameCount: `${frameCount}`,
-        orientation: 'vertical',
+        orientation: "vertical",
         action: `eq_band`,
-        param: `${Math.min(i,9)}`,
+        param: `${Math.min(i, 9)}`,
       });
-      const slider = await this.newGui(FlatSlider, node, group) as FlatSlider
+      const slider = (await this.newGui(FlatSlider, node, group)) as FlatSlider;
       // slider.setThumbSize(xSize, xSize)
     }
   }

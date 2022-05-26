@@ -128,18 +128,17 @@ export default class ButtonElement extends GuiObj {
     } else {
       this._div.classList.remove("down");
     }
-    this._renderTooltip()
+    this._renderTooltip();
   }
-  
+
   _renderTooltip() {
     if (this._down && (this._downTooltip || this._upTooltip)) {
       this._div.setAttribute("title", this._downTooltip || this._upTooltip);
-    } else if(!this._down && this._upTooltip) {
+    } else if (!this._down && this._upTooltip) {
       this._div.setAttribute("title", this._upTooltip);
     } else {
-      this._div.removeAttribute("title");      
+      this._div.removeAttribute("title");
     }
-
   }
 
   _renderDisabled() {
@@ -152,7 +151,9 @@ export default class ButtonElement extends GuiObj {
 
   _renderRegion() {
     if (this._mappingColor && this._parent instanceof ButtonGroup) {
-      const canvas = this._uiRoot.getBitmap(this._parent._mappingImage).getCanvas();
+      const canvas = this._uiRoot
+        .getBitmap(this._parent._mappingImage)
+        .getCanvas();
       const edge = new Edges();
       edge.parseCanvasTransparencyByNonColor(canvas, this._mappingColor);
       if (edge.isSimpleRect()) {
@@ -166,7 +167,9 @@ export default class ButtonElement extends GuiObj {
   init() {
     super.init();
     if (Object.keys(this._audioEvent).length > 0) {
-      this._uiRoot.audio.on("statchanged", () => this._updatePropsByAudioState());
+      this._uiRoot.audio.on("statchanged", () =>
+        this._updatePropsByAudioState()
+      );
       this._updatePropsByAudioState();
     }
   }

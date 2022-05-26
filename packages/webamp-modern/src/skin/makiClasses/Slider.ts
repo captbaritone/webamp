@@ -366,19 +366,25 @@ export default class Slider extends GuiObj {
   _prepareThumbBitmaps() {
     if (this._thumb != null) {
       const bitmap = this._uiRoot.getBitmap(this._thumb);
-      bitmap._setAsBackground(this._div, "thumb-");
+      if (bitmap && bitmap.loaded()) {
+        bitmap._setAsBackground(this._div, "thumb-");
+      }
     }
     this._div.style.setProperty("--thumb-width", px(this._thumbWidth));
     this._div.style.setProperty("--thumb-height", px(this._thumbHeight));
 
     if (this._downThumb != null) {
       const bitmap = this._uiRoot.getBitmap(this._downThumb);
-      bitmap._setAsBackground(this._div, "thumb-down-");
+      if (bitmap && bitmap.loaded()) {
+        bitmap._setAsBackground(this._div, "thumb-down-");
+      }
     }
 
     if (this._hoverThumb != null) {
       const bitmap = this._uiRoot.getBitmap(this._hoverThumb);
-      bitmap._setAsBackground(this._div, "thumb-hover-");
+      if (bitmap && bitmap.loaded()) {
+        bitmap._setAsBackground(this._div, "thumb-hover-");
+      }
     }
   }
 

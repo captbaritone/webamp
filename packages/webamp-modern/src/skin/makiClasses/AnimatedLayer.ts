@@ -118,7 +118,7 @@ export default class AnimatedLayer extends Layer {
     const end = this._endFrame;
     const start = this._startFrame;
     const change = end > start ? 1 : -1;
-    const backward:boolean = end < start;
+    const backward: boolean = end < start;
 
     let frame = this._startFrame;
     this.gotoframe(frame); // initially, jump to start
@@ -130,7 +130,7 @@ export default class AnimatedLayer extends Layer {
       return;
     }
     this._animationInterval = setInterval(() => {
-      this.gotoframe(frame); // visual update 
+      this.gotoframe(frame); // visual update
 
       if (frame === end) {
         if (!this._autoReplay) {
@@ -139,7 +139,7 @@ export default class AnimatedLayer extends Layer {
           this.stop();
         }
       }
-      if(backward){
+      if (backward) {
         // warning: should able to animate! through every single frame. dont jump!
         frame -= 1;
         if (frame < end) {
@@ -147,8 +147,7 @@ export default class AnimatedLayer extends Layer {
         } else if (frame > start) {
           frame = end;
         }
-      }
-      else {
+      } else {
         // normal, go forward
         frame += change;
         if (frame < start) {
@@ -157,7 +156,6 @@ export default class AnimatedLayer extends Layer {
           frame = start;
         }
       }
-
     }, this._speed);
   }
   pause() {

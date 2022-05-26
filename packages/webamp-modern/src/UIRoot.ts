@@ -283,7 +283,7 @@ export class UIRoot {
     return this._groupDefs[groupdef_id];
   }
 
-  addContainers(container: Container):Container {
+  addContainers(container: Container): Container {
     this._containers.push(container);
     return container;
   }
@@ -602,7 +602,7 @@ export class UIRoot {
   _zip: JSZip;
   // in rare case, we load from both zip & path.
   // so `_preferZip` is used to decide which file-loader is used by default.
-  _preferZip: boolean; 
+  _preferZip: boolean;
 
   setZip(zip: JSZip) {
     this._zip = zip;
@@ -611,8 +611,8 @@ export class UIRoot {
   getZip(): JSZip {
     return this._zip;
   }
-  setPreferZip(prefer:boolean){
-    this._preferZip = prefer
+  setPreferZip(prefer: boolean) {
+    this._preferZip = prefer;
   }
 
   //? Path things ========================

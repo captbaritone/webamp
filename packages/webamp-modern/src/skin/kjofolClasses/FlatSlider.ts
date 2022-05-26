@@ -67,7 +67,7 @@ export default class FlatSlider extends Slider {
       // }
     } else {
       const left =
-        Math.floor(this._position * (this._frameCount-1)) * this._frameWidth;
+        Math.floor(this._position * (this._frameCount - 1)) * this._frameWidth;
       if (this._thumbLeft != left) {
         this._thumbLeft = left;
         this._div.style.backgroundPositionX = px(-left);

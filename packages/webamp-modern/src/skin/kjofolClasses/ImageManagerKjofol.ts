@@ -8,7 +8,7 @@ export class ImageManagerKjofol extends ImageManager {
     // kjofol need special thread to remove gAMA,CHRM
     // (Gamma chunk & Chroma chunk of PNG file)
 
-    if(!filePath.toLowerCase().endsWith('.png')) {
+    if (!filePath.toLowerCase().endsWith(".png")) {
       return await super.getBlob(filePath);
     }
 
@@ -43,19 +43,19 @@ export class ImageManagerKjofol extends ImageManager {
     };
 
     //========= REAL SCANNING ============
-    const allowedChunks = ['IHDR', 'IDAT', 'IEND', 'PLTE']
-    let start = 0
+    const allowedChunks = ["IHDR", "IDAT", "IEND", "PLTE"];
+    let start = 0;
     i = 8; // png signature
-    blobPart.push(arr.slice(start,i))
+    blobPart.push(arr.slice(start, i));
     while (i < arr.length) {
       start = i;
       const data_size = readInt32BE();
       const chunk_sign = readChunk();
       i += data_size; // content of data
-      i += 4 // content of CRC32
-      
-      if(allowedChunks.includes(chunk_sign)){
-        blobPart.push(arr.slice(start,i))
+      i += 4; // content of CRC32
+
+      if (allowedChunks.includes(chunk_sign)) {
+        blobPart.push(arr.slice(start, i));
       }
     }
 

@@ -66,7 +66,7 @@ export default class DialKnob extends AnimatedLayer {
     this._map.loadmap(this._mapImage);
     this._actionHandler = new ActionHandler(this); // to be always has an handler
     this._initializeActionHandler();
-    this._actionHandler.init()
+    this._actionHandler.init();
   }
 
   _initializeActionHandler() {
