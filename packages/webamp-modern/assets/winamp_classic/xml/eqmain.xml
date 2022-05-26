@@ -48,7 +48,7 @@
 
         <script file="scripts/eq_layers.maki"/>
 
-    <script file="scripts/eq_iso_mode.maki"/>
+    <!-- <script file="scripts/eq_iso_mode.maki"/> -->
 
     </groupdef>
 

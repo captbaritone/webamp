@@ -4,7 +4,7 @@
       in "system-element-aliases.xml" which allows us all to be backwards compatible.
 -->
 
-<include file="system-element-aliases.xml" />
+<!-- <include file="system-element-aliases.xml" /> -->
 
 <elements>
 
@@ -123,4 +123,4 @@
 
 </elements>
 
-<include file="system-element-aliases.xml"/>
+<!-- <include file="system-element-aliases.xml"/> -->
