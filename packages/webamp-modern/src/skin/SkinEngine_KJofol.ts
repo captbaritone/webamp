@@ -3,6 +3,7 @@ import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
 import ButtonKjofol from "./kjofolClasses/ButtonKjofol";
 import DialKnob from "./kjofolClasses/DialKnob";
+import FlatSlider from "./kjofolClasses/FlatSlider";
 import FloodLevel from "./kjofolClasses/FloodLevel";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
 import Container from "./makiClasses/Container";
@@ -124,6 +125,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadVis(group, this._rc);
     await this.loadVolume(this._rc, group);
     await this.loadSeek(this._rc, group);
+    await this.loadEqualizer(this._rc, group);
 
     await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
   }
@@ -445,6 +447,47 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     // await this.animatedLayer(node, parent);
     await this.newGui(FloodLevel, node, parent);
+  }
+
+  async loadEqualizer(config: {}, parent: Group) {
+    const rect = config[`EqualizerWindow`];
+    if (!rect) return;
+    const [left, top, right, bottom, tootip, bandCount, xSpace] = rect;
+    //? grup    
+    let node = new XmlElement("group", {
+      id: `Equalizer`,
+      x: `${left}`,
+      y: `${top - 1}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+    });
+    const group: Group = await this.group(node, parent)
+
+    //bitmap
+    const [xSize, frameCount, bg] = config[`EqualizerBmp`];
+    this.loadPlainBitmap(bg, 'equalizer-sprite')
+    
+    //sliders
+    const [width,height] = [Math.round((right - left +1)/bandCount), bottom - top+1]
+    // const [width,height] = [xSize+xSpace, bottom - top]
+    for(var i = 1; i<=bandCount; i++){
+
+      node = new XmlElement("bitmap", {
+        id: `eq${i}`,
+        image: 'equalizer-sprite',
+        x: `${(i-1)*width}`,
+        y: `${0}`,
+        w: `${xSize}`,
+        h: `${height}`,
+        frameWidth: `${xSize}`,
+        frameCount: `${frameCount}`,
+        orientation: 'vertical',
+        action: `eq_band`,
+        param: `${Math.min(i,9)}`,
+      });
+      const slider = await this.newGui(FlatSlider, node, group) as FlatSlider
+      // slider.setThumbSize(xSize, xSize)
+    }
   }
 }
 
