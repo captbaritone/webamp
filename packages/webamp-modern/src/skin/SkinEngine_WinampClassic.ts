@@ -57,7 +57,7 @@ export default class ClassicSkinEngine extends SkinEngine {
    * inherit: we allow /wsz_root/ to be / (root)
    */
   parseXmlFragment(xml: string): XmlElement {
-    xml = xml.replace(/skin\//gi, "");
+    xml = xml.replace(/"skin\//gi, "\"");
     return super.parseXmlFragment(xml);
   }
 
