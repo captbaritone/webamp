@@ -1,10 +1,9 @@
-<container id="EQ" name="Equalizer" default_y="116">
     <groupdef id="eq">
 
         <layer id="blah" dblClickAction="SWITCH;shadeeq" x="0" y="0" h="14" w="275" move="1"/>
-        <layer id="eq.bg" image="wa.eq" ghost="1"/>
+        <!-- <layer id="eq.bg" image="wa.eq" ghost="1"/> -->
 
-        <layer id="waeq.titlebar" x="0" y="0" image="waeq.titlebar.on" inactiveimage="waeq.titlebar.off" ghost="1"/>
+        <layer id="waeq.titlebar" x="0" y="0" image="eq.titlebar" inactiveimage="eq.titlebar.inactive" move="1"/>
         <layer id="waeq.eqvis" x="86" y="17" image="wa.eqvis.bg" ghost="1"/>
 
         <button id="eq.switch" x="254" y="3" action="SWITCH" param="shadeeq" image="eq.switch" downimage="eq.switchp" activealpha="255" inactivealpha="0"/>
@@ -34,17 +33,17 @@
 
             <script file="scripts/eqmain_dbs.maki"/>
 
-			<slider id="preamp" action="EQ_PREAMP" x="22" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq1" action="EQ_BAND" param="1" x="79" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq2" action="EQ_BAND" param="2" x="97" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq3" action="EQ_BAND" param="3" x="115" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq4" action="EQ_BAND" param="4" x="133" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq5" action="EQ_BAND" param="5" x="151" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq6" action="EQ_BAND" param="6" x="169" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq7" action="EQ_BAND" param="7" x="187" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq8" action="EQ_BAND" param="8" x="205" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq9" action="EQ_BAND" param="9" x="223" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
-			<slider id="eq10" action="EQ_BAND" param="10" x="241" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.sliderp"/>
+			<slider id="preamp" action="EQ_PREAMP" x="22" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq1" action="EQ_BAND" param="1" x="79" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq2" action="EQ_BAND" param="2" x="97" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq3" action="EQ_BAND" param="3" x="115" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq4" action="EQ_BAND" param="4" x="133" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq5" action="EQ_BAND" param="5" x="151" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq6" action="EQ_BAND" param="6" x="169" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq7" action="EQ_BAND" param="7" x="187" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq8" action="EQ_BAND" param="8" x="205" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq9" action="EQ_BAND" param="9" x="223" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq10" action="EQ_BAND" param="10" x="241" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
 
         <script file="scripts/eq_layers.maki"/>
 
@@ -64,7 +63,10 @@
 
     </groupdef>
 
-    <layout id="EQ" background="wasabi.frame.basetexture" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
+<container id="EQ" name="Equalizer" default_y="116">
+
+
+    <layout id="EQ" background="eq.bg" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
         <group id="eq"/>
     </layout>
     <layout id="shadeeq" background="eq.shade.on" minimum_h="14" minimum_w="275">
