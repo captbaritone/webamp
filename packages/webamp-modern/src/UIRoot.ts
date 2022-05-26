@@ -600,12 +600,19 @@ export class UIRoot {
   //? Zip things ========================
   /* because maki need to load a groupdef outside init() */
   _zip: JSZip;
+  // in rare case, we load from both zip & path.
+  // so `_preferZip` is used to decide which file-loader is used by default.
+  _preferZip: boolean; 
 
   setZip(zip: JSZip) {
     this._zip = zip;
+    this._preferZip = zip != null;
   }
   getZip(): JSZip {
     return this._zip;
+  }
+  setPreferZip(prefer:boolean){
+    this._preferZip = prefer
   }
 
   //? Path things ========================
@@ -621,24 +628,24 @@ export class UIRoot {
   }
 
   async getFileAsString(filePath: string): Promise<string> {
-    if (this._zip == null) {
-      return await this.getFileAsStringPath(filePath);
-    } else {
+    if (this._preferZip) {
       return await this.getFileAsStringZip(filePath);
+    } else {
+      return await this.getFileAsStringPath(filePath);
     }
   }
   async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
-    if (this._zip == null) {
-      return await this.getFileAsBytesPath(filePath);
-    } else {
+    if (this._preferZip) {
       return await this.getFileAsBytesZip(filePath);
+    } else {
+      return await this.getFileAsBytesPath(filePath);
     }
   }
   async getFileAsBlob(filePath: string): Promise<Blob> {
-    if (this._zip == null) {
-      return await this.getFileAsBlobPath(filePath);
-    } else {
+    if (this._preferZip) {
       return await this.getFileAsBlobZip(filePath);
+    } else {
+      return await this.getFileAsBlobPath(filePath);
     }
   }
 

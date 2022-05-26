@@ -1,7 +1,10 @@
 import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import JSZip from "jszip";
 import { UIRoot } from "../UIRoot";
+import { assume } from "../utils";
+import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
+import { WmzImageManager } from "./classicClasses/wmzImageManager";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
 import { registerSkinEngine } from "./SkinEngine";
@@ -23,60 +26,32 @@ export default class ClassicSkinEngine extends SkinEngine {
     return "main.bmp";
   };
 
-  _pushCurrentStreamSource() {
-    // save current setting
-    const sources: StreamSource = {
-      zip: this._uiRoot.getZip(),
-      skinDir: this._uiRoot.getSkinDir(),
-    };
-    this._streamSources.push(sources);
-  }
-
-  _popStreamSource(): StreamSource {
-    const current: StreamSource = {
-      zip: this._uiRoot.getZip(),
-      skinDir: this._uiRoot.getSkinDir(),
-    };
-
-    // load last setting
-    const sources: StreamSource = this._streamSources.pop();
-    this._uiRoot.setZip(sources.zip);
-    this._uiRoot.setSkinDir(sources.skinDir);
-    return current;
-  }
-
-  _setStreamSource(skinDir: string, zip: JSZip) {
-    // push & set new
-    // const sources: StreamSource = this._streamSources.pop();
-    this._uiRoot.setSkinDir(skinDir);
-    this._uiRoot.setZip(zip);
-  }
-
-  _pushStreamSource(skinDir: string, zip: JSZip) {
-    // push & set new
-    this._pushCurrentStreamSource();
-    this._setStreamSource(skinDir, zip);
-  }
-
-  _pushAStreamSource(sources: StreamSource) {
-    // push & set new
-    this._pushStreamSource(sources.skinDir, sources.zip);
-  }
+  // _pushCurrent
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
+  }
+
+  /**
+   * Process
+   */
+  async parseSkin() {
     // load internal wsz prototype from:
-    this._pushStreamSource("assets/winamp_classic/", null);
+    this._uiRoot.setSkinDir("assets/winamp_classic/");
+    this._uiRoot.setPreferZip(false);
+    this._uiRoot.setImageManager(new WmzImageManager(this._uiRoot));
+    this._imageManager = this._uiRoot.getImageManager();
+    return await super.parseSkin();
   }
 
   /**
    * Inherit: Actual bitmap loading from wsz
    */
-  async _loadBitmaps() {
-    const sources = this._popStreamSource();
-    await super._loadBitmaps();
-    this._pushAStreamSource(sources);
-  }
+  // async _loadBitmaps() {
+  //   const sources = this._popStreamSource();
+  //   await super._loadBitmaps();
+  //   this._pushAStreamSource(sources);
+  // }
 
   /**
    * inherit: we allow /wsz_root/ to be / (root)
@@ -95,7 +70,7 @@ export default class ClassicSkinEngine extends SkinEngine {
     const eqv = await super.eqvis(node, parent);
 
     if (this._uiRoot.hasBitmapFilepath("eqmain.bmp")) {
-      const sources = this._popStreamSource();
+      // const sources = this._popStreamSource();
       //gradient lines
       let node: XmlElement = new XmlElement("bitmap", {
         id: "eq_gradient_line_",
@@ -119,8 +94,6 @@ export default class ClassicSkinEngine extends SkinEngine {
       });
       await this.bitmap(node);
       eqv.setXmlAttr("preamp", "eq_preamp_line_");
-
-      this._pushAStreamSource(sources);
     }
     return eqv;
   }
@@ -128,16 +101,13 @@ export default class ClassicSkinEngine extends SkinEngine {
   async vis(node: XmlElement, parent: any): Promise<Vis> {
     const vis = await super.vis(node, parent);
 
-    const sources = this._popStreamSource();
-
-    const content = await this._uiRoot.getFileAsString("viscolor.txt");
+    const content = await this._uiRoot.getFileAsStringZip("viscolor.txt");
     if (content) {
       const colors = parseViscolors(content);
       for (let i = 1; i < 16; i++) {
         vis.setxmlparam(`colorband${i}`, colors[i]);
       }
     }
-    this._pushAStreamSource(sources);
     return vis;
   }
 }
