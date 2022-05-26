@@ -219,7 +219,7 @@ export default class Group extends Movable {
     const ctx2 = this._regionCanvas.getContext("2d");
     const r = child._div.getBoundingClientRect();
     const bitmap = child._backgroundBitmap;
-    if (bitmap) {
+    if (bitmap && bitmap.loaded()) {
       const img = bitmap.getImg();
       ctx2.drawImage(
         img,
