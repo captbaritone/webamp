@@ -1,18 +1,27 @@
 import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import JSZip from "jszip";
-import UI_ROOT, { UIRoot } from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
-import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./SkinEngine_WAL";
+import { registerSkinEngine } from "./SkinEngine";
+import SkinEngine, { GROUP_PHASE, RESOURCE_PHASE } from "./SkinEngine_WAL";
 
 type StreamSource = {
   zip: JSZip;
   skinDir: string;
 };
-export default class ClassicSkinParser extends SkinParser {
+export default class ClassicSkinEngine extends SkinEngine {
   _wszRoot: string = "/assets/winamp_classic/";
   _streamSources: StreamSource[] = []; // for pop & push
+
+  static canProcess = (filePath: string): boolean => {
+    return filePath.endsWith(".wsz") || filePath.endsWith(".zip");
+  };
+
+  static identifyByFile = (filePath: string): string => {
+    return "main.bmp";
+  };
 
   _pushCurrentStreamSource() {
     // save current setting
@@ -85,7 +94,7 @@ export default class ClassicSkinParser extends SkinParser {
   async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
     const eqv = await super.eqvis(node, parent);
 
-    if (this._imageManager.isFilePathAdded("eqmain.bmp")) {
+    if (this._uiRoot.hasBitmapFilepath("eqmain.bmp")) {
       const sources = this._popStreamSource();
       //gradient lines
       let node: XmlElement = new XmlElement("bitmap", {
@@ -132,6 +141,8 @@ export default class ClassicSkinParser extends SkinParser {
     return vis;
   }
 }
+
+registerSkinEngine(ClassicSkinEngine);
 
 const parseViscolors = (text: string): string[] => {
   const entries = text.split("\n");
