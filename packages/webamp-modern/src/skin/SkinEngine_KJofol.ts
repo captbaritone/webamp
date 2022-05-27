@@ -415,8 +415,11 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadPitch(config: {}, parent: Group) {
+    const rect = config[`PitchControlButton`];
+    if(!rect) return
+
     const prefix = config["prefix"];
-    let [left, top, right, bottom] = config[`PitchControlButton`];
+    let [left, top, right, bottom] = rect;
     await this.loadBitmap(
       config["PitchControlImage"],
       `pitch-${prefix}-sprite`
@@ -436,6 +439,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // const [r, g, b] = this._rc[`AnalyzerColor`];
     // const color = `${r},${g},${b}`;
 
+    //? DialKnob
     const xsize = config["PitchControlImageXSize"];
     const count = config["PitchControlImageNb"];
     const node = new XmlElement("animatedLayer", {
@@ -449,7 +453,8 @@ export default class KJofol_SkinEngine extends SkinEngine {
       framewidth: `${xsize}`,
       // frameheight: `${bottom - top + 1}`,
       // frameheight: `${frame.height}`,
-      speed: `${1400 / count}`,
+      // speed: `${1400 / count}`,
+      speed: `${2000 / count}`,
       // autoPlay: `1`,
       // move: `1`,
       // start: `0`,

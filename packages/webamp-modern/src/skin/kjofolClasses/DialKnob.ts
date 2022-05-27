@@ -16,6 +16,7 @@ export class ActionHandler {
 
   init(): void {}
   onChange(percent: number): void {}
+  onFrame(percent: number): void {} // during animation
 
   dispose(): void {
     this._subscription();
@@ -144,14 +145,26 @@ export default class DialKnob extends AnimatedLayer {
   }
 
   // 0..1 call by action handler
-  setPercentValue(percent: number) {
+  setPercentValue(percent: number, animate: boolean = true) {
     if (!this._mouseIsDown) {
       const value = Math.round(percent * 255);
       if (value != this._value) {
         this._value = value;
-        this._renderKnob();
+        if (animate) {
+          this._animateDial();
+        } else {
+          this.gotoframe(
+            Math.round((this._value / 255) * (this._frameCount - 1))
+          );
+        }
       }
     }
+  }
+
+  // called by animation loop
+  gotoframe(framenum: number) {
+    super.gotoframe(framenum);
+    this._actionHandler.onFrame(framenum / this._frameCount);
   }
 
   doLeftMouseDown(x: number, y: number) {
@@ -164,7 +177,7 @@ export default class DialKnob extends AnimatedLayer {
       // this.setstartframe(this.getcurframe());
       // this.setendframe(Math.round((val / 255) * (this._frameCount-1)));
       // this.play();
-      this._renderKnob();
+      this._animateDial();
       this._actionHandler.onChange(this._value / 255);
     }
   }
@@ -177,7 +190,7 @@ export default class DialKnob extends AnimatedLayer {
     this._mouseIsDown = false;
   }
 
-  _renderKnob() {
+  _animateDial() {
     this.stop();
     this.setstartframe(this.getcurframe());
     this.setendframe(Math.round((this._value / 255) * (this._frameCount - 1)));
@@ -257,33 +270,38 @@ class PitchActionHandler extends ActionHandler {
 
   constructor(slider: DialKnob) {
     super(slider);
-
-    this._subscription = this._uiRoot.audio.on("playbackratechange", () => {
-      // this._slider.setPercentValue(this._uiRoot.audio.getPlaybackRate());
-      this.setSliderValue();
-    });
   }
 
-  setSliderValue() {
+  // called by audio
+  _setSliderValue(force: boolean = false) {
+    if (this._slider.isplaying && !force) return;
+
     const pitch = this._uiRoot.audio.getPlaybackRate();
     //* audio pitch :    0   0.5    1           2         3
     //* slider %    :         0                 1
     const percent = (pitch - 0.5) / (2 - 0.5);
-    this._slider.setPercentValue(percent);
+    this._slider.setPercentValue(percent, !force);
   }
-  setAudioValue(percent: number) {
+  _setAudioValue(percent: number) {
     const pitch = percent * (2 - 0.5) + 0.5;
     this._uiRoot.audio.setPlaybackRate(pitch);
   }
 
   init(): void {
-    // this._slider.setPercentValue(this._uiRoot.audio.getPlaybackRate());
-    this.setSliderValue();
+    this._subscription = this._uiRoot.audio.on("playbackratechange", () => {
+      // this._slider.setPercentValue(this._uiRoot.audio.getPlaybackRate());
+      this._setSliderValue();
+    });
+    this._setSliderValue(true);
   }
 
-  // 0..1 called by slider
+  // called by audio animation loop during goto target
+  onFrame(percent: number): void {
+    this._setAudioValue(percent);
+  }
+
+  // 0..1 called by slider ciick
   onChange(percent: number): void {
-    this.setAudioValue(percent)
-    // this._uiRoot.audio.setVolume(percent);
+    // this._setAudioValue(percent)
   }
 }
