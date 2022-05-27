@@ -164,7 +164,7 @@ export default class DialKnob extends AnimatedLayer {
   // called by animation loop
   gotoframe(framenum: number) {
     super.gotoframe(framenum);
-    this._actionHandler.onFrame(framenum / this._frameCount);
+    this._actionHandler.onFrame(framenum / (this._frameCount - 1));
   }
 
   doLeftMouseDown(x: number, y: number) {

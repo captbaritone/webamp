@@ -522,9 +522,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadEqualizer(config: {}, parent: Group) {
-    const rect = config[`EqualizerWindow`];
+    let rect = config[`EqualizerWindow`];
     if (!rect) return;
-    const [left, top, right, bottom, tootip, bandCount, xSpace] = rect;
+    let [left, top, right, bottom, tootip, bandCount, xSpace] = rect;
     //? grup
     let node = new XmlElement("group", {
       id: `Equalizer`,
@@ -562,6 +562,25 @@ export default class KJofol_SkinEngine extends SkinEngine {
       const slider = (await this.newGui(FlatSlider, node, group)) as FlatSlider;
       // slider.setThumbSize(xSize, xSize)
     }
+
+    //? buttons
+    const prefix = config["prefix"];
+    // let BMPN;
+    // [left, top, right, bottom, tootip, BMPN] = config[`EqualizerButton`];
+    const loadButton = async(nick:string, action:string, invert:boolean=false) => {
+      const button = await this.loadButton(nick, action, parent, config) as ButtonKjofol;
+      button.setXmlAttr('activeImage', button._downimage)
+      button.setXmlAttr('downImage', '')
+      if(invert){
+        const base = `${prefix}-base`;
+        const temp = button._activeimage || base
+        button.setXmlAttr('activeImage', button._image || base)
+        button.setXmlAttr('image', temp)
+      }
+    }
+    await this.loadButton("Equalizer", "EQ_TOGGLE", parent, config);
+    await loadButton("EqualizerOn", "EQ_TOGGLE");
+    await loadButton("EqualizerOff", "EQ_TOGGLE", true);
   }
 }
 
