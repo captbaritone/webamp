@@ -504,14 +504,20 @@ class EqActionHandler extends ActionHandler {
 
   onLeftMouseDown(x: number, y: number): void {
     EqGlobalVar.eqMouseDown = true;
+    this._slider.getparent().getDiv().classList.add('eq-surf')
+    this._slider.getDiv().tabIndex = -1;
+    this._slider.getDiv().focus()
   }
   onLeftMouseUp(x: number, y: number): void {
     EqGlobalVar.eqMouseDown = false;
+    this._slider.getparent().getDiv().classList.remove('eq-surf')
   }
 
   onFreeMouseMove(x: number, y: number): void {
     if (EqGlobalVar.eqMouseDown) {
       EqGlobalVar.targetSlider = this._slider;
+      this._slider.getDiv().tabIndex = -1;
+      this._slider.getDiv().focus()
       this._slider._setPositionXY(x, y);
     }
   }

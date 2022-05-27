@@ -61,6 +61,7 @@ slider {
   overflow: hidden;
   --thumb-left: 0px;
   --thumb-top: 0px;
+  outline: none;
 }
 slider > div {
   display: none;
@@ -81,7 +82,8 @@ slider:hover:after {
     var(--thumb-background-image)
   );
 }
-slider:active:after {
+/* slider:active:after { */
+.eq-surf slider:focus:after {
   background-image: var(
     --thumb-down-background-image,
     var(--thumb-background-image)
