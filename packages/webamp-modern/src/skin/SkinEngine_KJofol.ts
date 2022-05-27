@@ -115,6 +115,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     const mover = await this.layer(node, group);
 
+    // seek on kjofol default skin looked like cover the pitch. load it first
+    await this.loadSeek(this._dock, group);
+
     await this.loadButton("Play", "play", group, this._rc);
     await this.loadButton("Pause", "pause", group, this._rc);
     await this.loadButton("Stop", "stop", group, this._rc);
@@ -126,7 +129,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadVis(group, this._rc);
     await this.loadVolume(this._rc, group);
     await this.loadPitch(this._rc, group);
-    await this.loadSeek(this._rc, group);
+    // await this.loadSeek(this._rc, group);
     await this.loadEqualizer(this._rc, group);
 
     await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
