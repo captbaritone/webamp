@@ -16,6 +16,7 @@ import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 export default class KJofol_SkinEngine extends SkinEngine {
   _rc: {}; // whole kjofol.rc
   _dock: {}; // whole *.dck
+  _shade: {}; // whole *.wsh
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".kjofol") || filePath.endsWith(".zip");
@@ -35,25 +36,32 @@ export default class KJofol_SkinEngine extends SkinEngine {
     this._imageManager = this._uiRoot._imageManager;
 
     const rcContent = await this._uiRoot.getFileAsString(".rc");
-    const dockContent = await this._uiRoot.getFileAsString(".dck");
-
     this._rc = parserRC(rcContent);
-    this._dock = parserRC(dockContent);
     this._rc["prefix"] = "normal"; // to make distinct on loading same name eg volume
-    this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
 
-    // await this.traverseChildren(parsed);
-    // await this.loadKnowBitmaps(this._rc);
+    
     const main = await this.loadMain(); // player Container
     await this.loadMainNormal(main); // normal layout
-    await this.loadMainDock(main); // normal layout
-    // await this._loadBitmaps();
 
-    // console.log("GROUP_PHASE #################");
-    // this._phase = GROUP_PHASE;
-    // const root = await this.getRootGroup();
-    // await this.loadButtons(root);
-    // await this.loadTime(root);
+
+    //? Dock Mode
+    const dockFileName = this._rc['DockModeRCFile']
+    if(dockFileName){
+      const dockContent = await this._uiRoot.getFileAsString(dockFileName);
+      this._dock = parserRC(dockContent);
+      this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
+      await this.loadMainDock(main); // normal layout
+    }
+
+    //? Window Shade Mode
+    const shadeFileName = this._rc['WinshadeModeRCFile']
+    if(shadeFileName){
+      const shadeContent = await this._uiRoot.getFileAsString(shadeFileName);
+      this._shade = parserRC(shadeContent);
+      this._shade["prefix"] = "shade"; // to make distinct on loading same name eg volume
+      await this.loadPlayerShade(main); 
+    }
+
     this._uiRoot.getRootDiv().classList.add("K-Jofol"); // required by css instrument
   }
 
@@ -116,7 +124,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const mover = await this.layer(node, group);
 
     // seek on kjofol default skin looked like cover the pitch. load it first
-    await this.loadSeek(this._dock, group);
+    await this.loadSeek(this._rc, group);
 
     await this.loadButton("Play", "play", group, this._rc);
     await this.loadButton("Pause", "pause", group, this._rc);
@@ -132,22 +140,23 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // await this.loadSeek(this._rc, group);
     await this.loadEqualizer(this._rc, group);
 
-    await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
+    await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
   }
 
   async loadMainDock(parent: Container) {
     await this.loadKnowBitmaps(this._dock);
-
     const prefix = this._dock["prefix"];
-    // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
+
+    //? layout
     const bg = this._uiRoot.getBitmap(`${prefix}-base`);
-    let node = new XmlElement("container", {
+    let node = new XmlElement("layout", {
       id: "dock",
       w: `${bg.getWidth()}`,
       h: `${bg.getHeight()}`,
     });
     const normal = await this.layout(node, parent);
 
+    //? root group
     node = new XmlElement("group", {
       id: "dock-root",
       background: bg.getId(),
@@ -156,13 +165,13 @@ export default class KJofol_SkinEngine extends SkinEngine {
     });
     const group = await this.group(node, normal);
 
+    //? drag-mover
     node = new XmlElement("layer", {
       id: "mover",
       w: `0`,
       h: `0`,
       relatw: `1`,
       relath: `1`,
-      // background: "base.png",
       move: "1",
     });
     const mover = await this.layer(node, group);
@@ -181,6 +190,56 @@ export default class KJofol_SkinEngine extends SkinEngine {
 
     await this.loadButton("About", "about", group, this._dock);
     await this.loadButton("UnDockMode", "SWITCH;normal", group, this._dock);
+  }
+
+  async loadPlayerShade(parent: Container) {
+    const config = this._shade
+    await this.loadKnowBitmaps(config);
+    const prefix = config["prefix"];
+
+    //? layout
+    const bg = this._uiRoot.getBitmap(`${prefix}-base`);
+    let node = new XmlElement("layout", {
+      id: `${prefix}`,
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const normal = await this.layout(node, parent);
+
+    //? root group
+    node = new XmlElement("group", {
+      id: `${prefix}-root`,
+      background: bg.getId(),
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const group = await this.group(node, normal);
+
+    //? drag-mover
+    node = new XmlElement("layer", {
+      id: `${prefix}-mover`,
+      w: `0`,
+      h: `0`,
+      relatw: `1`,
+      relath: `1`,
+      move: "1",
+    });
+    const mover = await this.layer(node, group);
+
+    await this.loadButton("Play", "play", group, config);
+    await this.loadButton("Pause", "pause", group, config);
+    await this.loadButton("Stop", "stop", group, config);
+    await this.loadButton("PreviousSong", "prev", group, config);
+    await this.loadButton("NextSong", "next", group, config);
+    await this.loadButton("OpenFile", "openfile", group, config);
+
+    await this.loadTexts(group, config);
+    await this.loadVis(group, config);
+    await this.loadVolume(config, group);
+    await this.loadSeek(config, group);
+
+    await this.loadButton("About", "about", group, config);
+    await this.loadButton("UnDockMode", "SWITCH;normal", group, config);
   }
 
   /**
@@ -591,7 +650,7 @@ function parserRC(content: string): { [key: string]: string | string[] } {
   for (var line of lines) {
     if (line.startsWith("#")) continue;
 
-    var words = line.split(" ");
+    var words = line.replace(/  /,' ').split(" ");
     var first = words.shift(); // pop the first
 
     if (line.startsWith("About ")) {
