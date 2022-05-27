@@ -208,6 +208,15 @@ export class AudioPlayer {
     this._balance = balance;
     this.trigger("balancechange");
   }
+  
+  // 0.5 .. 4
+  getPlaybackRate(): number {
+    return this._audio.playbackRate
+  }
+  setPlaybackRate(value: number) {
+    this._audio.playbackRate = clamp(value, 0.5, 4.0)
+    this.trigger("playbackratechange");
+  }
 
   play() {
     this._isStop = false;

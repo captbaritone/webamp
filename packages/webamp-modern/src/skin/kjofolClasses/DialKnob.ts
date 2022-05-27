@@ -88,6 +88,9 @@ export default class DialKnob extends AnimatedLayer {
       case "volume":
         this._actionHandler = new VolumeActionHandler(this);
         break;
+      case "pitch":
+        this._actionHandler = new PitchActionHandler(this);
+        break;
       case null:
         // CrossFadeSlider doesn't has action. should be supported.
         if (!this._actionHandler) {
@@ -235,11 +238,7 @@ class VolumeActionHandler extends ActionHandler {
     super(slider);
 
     this._subscription = this._uiRoot.audio.onVolumeChanged(() => {
-      // if (!this._changing) {
       slider.setPercentValue(this._uiRoot.audio.getVolume());
-      // slider._position = this._uiRoot.audio.getVolume();
-      // slider._renderThumbPosition();
-      // }
     });
   }
 
@@ -251,11 +250,40 @@ class VolumeActionHandler extends ActionHandler {
   onChange(percent: number): void {
     this._uiRoot.audio.setVolume(percent);
   }
+}
 
-  // onLeftMouseDown(x: number, y: number) {
-  //   this._changing = true;
-  // }
-  // onLeftMouseUp(x: number, y: number) {
-  //   this._changing = false;
-  // }
+class PitchActionHandler extends ActionHandler {
+  _changing: boolean = false;
+
+  constructor(slider: DialKnob) {
+    super(slider);
+
+    this._subscription = this._uiRoot.audio.on("playbackratechange", () => {
+      // this._slider.setPercentValue(this._uiRoot.audio.getPlaybackRate());
+      this.setSliderValue();
+    });
+  }
+
+  setSliderValue() {
+    const pitch = this._uiRoot.audio.getPlaybackRate();
+    //* audio pitch :    0   0.5    1           2         3
+    //* slider %    :         0                 1
+    const percent = (pitch - 0.5) / (2 - 0.5);
+    this._slider.setPercentValue(percent);
+  }
+  setAudioValue(percent: number) {
+    const pitch = percent * (2 - 0.5) + 0.5;
+    this._uiRoot.audio.setPlaybackRate(pitch);
+  }
+
+  init(): void {
+    // this._slider.setPercentValue(this._uiRoot.audio.getPlaybackRate());
+    this.setSliderValue();
+  }
+
+  // 0..1 called by slider
+  onChange(percent: number): void {
+    this.setAudioValue(percent)
+    // this._uiRoot.audio.setVolume(percent);
+  }
 }

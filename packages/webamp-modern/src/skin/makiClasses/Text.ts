@@ -17,6 +17,7 @@ export default class Text extends GuiObj {
   static GUID = "efaa867241fa310ea985dcb74bcb5b52";
   _display: string;
   _displayValue: string = "";
+  _displayHandler: DisplayHandler; //pasive handler
   _disposeDisplaySubscription: Function;
   _disposeTrackChangedSubscription: Function;
   _text: string;
@@ -205,6 +206,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._prepareScrolling();
     }
     this._div.addEventListener("click", this._onClick);
+    if(this._displayHandler!=null){
+      this._displayHandler.init()
+    } 
   }
 
   _onClick = () => {
@@ -267,6 +271,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         break;
       case "componentbucket":
         this._displayValue = "componentbucket";
+        break;
+      case "custom": // not winamp api
+        // needed by a custom DisplayHandler
         break;
       default:
         throw new Error(`Unknown text display name: "${this._display}".`);
@@ -520,6 +527,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (this._disposeDisplaySubscription != null) {
       this._disposeDisplaySubscription();
     }
+    if(this._displayHandler!=null){
+      this._displayHandler.dispose()
+    } 
   }
 
   /*
@@ -528,4 +538,40 @@ extern String Text.getText();
 extern int Text.getTextWidth();
 extern Text.onTextChanged(String newtxt);
   */
+
+  /**
+   * 
+   * @param Handler a class inherited from DisplayHandler
+   */
+  setDisplayHandler(Handler: DisplayHandlerClass){
+    
+    if(this._displayHandler!=null){
+      this._displayHandler.dispose()
+    } 
+    this._displayHandler = new Handler(this); 
+  }
+}
+
+type DisplayHandlerClass = typeof DisplayHandler;
+
+export class DisplayHandler {
+  _text: Text;
+  _uiRoot: UIRoot;
+  _subscription: Function;
+
+  constructor(text: Text) {
+    this._text = text;
+    this._uiRoot = text._uiRoot;
+    this._subscription = () => {}; // deFault empty
+  }
+
+  init(): void {
+    //* possible add a hook to uiRoot
+    //* to update text, call: 
+    //*   `this._text.setDisplayValue(newTextValue)`
+  }
+
+  dispose(): void {
+    this._subscription();
+  }
 }

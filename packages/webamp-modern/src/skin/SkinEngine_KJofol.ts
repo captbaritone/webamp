@@ -8,6 +8,7 @@ import FloodLevel from "./kjofolClasses/FloodLevel";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
+import { DisplayHandler } from "./makiClasses/Text";
 import Vis from "./makiClasses/Vis";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 // import SkinParser, { Attributes, GROUP_PHASE, RESOURCE_PHASE } from "./parse";
@@ -124,6 +125,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.loadTexts(group, this._rc);
     await this.loadVis(group, this._rc);
     await this.loadVolume(this._rc, group);
+    await this.loadPitch(this._rc, group);
     await this.loadSeek(this._rc, group);
     await this.loadEqualizer(this._rc, group);
 
@@ -409,6 +411,68 @@ export default class KJofol_SkinEngine extends SkinEngine {
     await this.newGui(DialKnob, node, parent);
   }
 
+  async loadPitch(config: {}, parent: Group) {
+    const prefix = config["prefix"];
+    let [left, top, right, bottom] = config[`PitchControlButton`];
+    await this.loadBitmap(
+      config["PitchControlImage"],
+      `pitch-${prefix}-sprite`
+    );
+    await this.loadPlainBitmap(
+      config["PitchControlImagePosition"],
+      `pitch-${prefix}-map`,
+      {
+        x: `${left}`,
+        y: `${top}`,
+        w: `${right - left}`,
+        h: `${bottom - top}`,
+      }
+    );
+
+    // const [left, top, right, bottom] = this._rc[`AnalyzerWindow`];
+    // const [r, g, b] = this._rc[`AnalyzerColor`];
+    // const color = `${r},${g},${b}`;
+
+    const xsize = config["PitchControlImageXSize"];
+    const count = config["PitchControlImageNb"];
+    const node = new XmlElement("animatedLayer", {
+      id: `${prefix}-Pitch-knob`,
+      image: `pitch-${prefix}-sprite`,
+      mapimage: `pitch-${prefix}-map`,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      framewidth: `${xsize}`,
+      // frameheight: `${bottom - top + 1}`,
+      // frameheight: `${frame.height}`,
+      speed: `${1400 / count}`,
+      // autoPlay: `1`,
+      // move: `1`,
+      // start: `0`,
+      start: `0`,
+      // end: `${count - 1}`,
+      action: "Pitch",
+    });
+    // await this.animatedLayer(node, parent);
+    await this.newGui(DialKnob, node, parent);
+
+    //? text
+    [left, top, right, bottom] = config[`PitchText`];
+    const tnode = new XmlElement("text", {
+      id: `${prefix}-Pitch-text`,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      display: "custom",
+      align: "left",
+      color: "255,255,255",
+    });
+    const text = await this.text(tnode, parent);
+    text.setDisplayHandler(PitchTextHandler);
+  }
+
   async loadSeek(config: {}, parent: Group) {
     const prefix = config["prefix"];
     const [left, top, right, bottom] = config[`SeekRegion`];
@@ -525,6 +589,24 @@ function parserRC(content: string): { [key: string]: string | string[] } {
   // console.log(cfg);
 
   return cfg;
+}
+
+class PitchTextHandler extends DisplayHandler {
+  //
+
+  init(): void {
+    // this._slider.setPercentValue(this._uiRoot.audio.getVolume());
+    this._subscription = this._uiRoot.audio.on(
+      "playbackratechange",
+      this.setDisplayText
+    );
+    this.setDisplayText();
+  }
+
+  setDisplayText = () => {
+    const pitch = this._uiRoot.audio.getPlaybackRate();
+    this._text.setDisplayValue(`${Math.round(pitch * 100)}`);
+  };
 }
 
 registerSkinEngine(KJofol_SkinEngine);
