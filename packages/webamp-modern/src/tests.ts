@@ -351,12 +351,14 @@ async function main() {
 
   const decompiled = decompiler.decompile();
 
-  const textarea = document.createElement("textarea");
-  textarea.style.display = "flex";
-  textarea.style.width = "100%";
-  textarea.style.height = "100vh";
-  textarea.innerHTML = decompiled;
-  document.body.appendChild(textarea);
+  // const textarea = document.createElement("pre");
+  // textarea.style.display = "flex";
+  // textarea.style.width = "100%";
+  // textarea.style.height = "100vh";
+  // textarea.innerHTML = decompiled;
+  // document.body.appendChild(textarea);
+  document.getElementById('editor').innerHTML = decompiled;
+  window.loaded()
 }
 
 main();
