@@ -6,6 +6,7 @@ import DialKnob from "./kjofolClasses/DialKnob";
 import FlatSlider from "./kjofolClasses/FlatSlider";
 import FloodLevel from "./kjofolClasses/FloodLevel";
 import { ImageManagerKjofol } from "./kjofolClasses/ImageManagerKjofol";
+import ToggleButtonKjofol from "./kjofolClasses/ToggleButtonKjofol";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
 import { DisplayHandler } from "./makiClasses/Text";
@@ -38,28 +39,25 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const rcContent = await this._uiRoot.getFileAsString(".rc");
     this._rc = parserRC(rcContent);
     this._rc["prefix"] = "normal"; // to make distinct on loading same name eg volume
-
-    
     const main = await this.loadMain(); // player Container
     await this.loadMainNormal(main); // normal layout
 
-
     //? Dock Mode
-    const dockFileName = this._rc['DockModeRCFile']
-    if(dockFileName){
+    const dockFileName = this._rc["DockModeRCFile"];
+    if (dockFileName) {
       const dockContent = await this._uiRoot.getFileAsString(dockFileName);
       this._dock = parserRC(dockContent);
       this._dock["prefix"] = "dock"; // to make distinct on loading same name eg volume
-      await this.loadMainDock(main); // normal layout
+      await this.loadMainDock(main); // dock layout
     }
 
     //? Window Shade Mode
-    const shadeFileName = this._rc['WinshadeModeRCFile']
-    if(shadeFileName){
+    const shadeFileName = this._rc["WinshadeModeRCFile"];
+    if (shadeFileName) {
       const shadeContent = await this._uiRoot.getFileAsString(shadeFileName);
       this._shade = parserRC(shadeContent);
       this._shade["prefix"] = "shade"; // to make distinct on loading same name eg volume
-      await this.loadPlayerShade(main); 
+      await this.loadPlayerShade(main);
     }
 
     this._uiRoot.getRootDiv().classList.add("K-Jofol"); // required by css instrument
@@ -140,6 +138,9 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // await this.loadSeek(this._rc, group);
     await this.loadEqualizer(this._rc, group);
 
+    await this.loadToggleButton("Repeat", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat", group, this._rc);
+    await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, this._rc);
+    await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
   }
 
@@ -193,7 +194,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
   }
 
   async loadPlayerShade(parent: Container) {
-    const config = this._shade
+    const config = this._shade;
     await this.loadKnowBitmaps(config);
     const prefix = config["prefix"];
 
@@ -258,19 +259,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
     if (action.includes(";")) {
       [action, param] = action.split(";");
     }
-    // let action: string;
-    // switch (_action.toLowerCase()) {
-    //   case "stop!":
-    //     action = "stop";
-    //   case "previoussong":
-    //     action = "prev";
-    //   case "nextsong":
-    //     action = "next";
-    //   case "open":
-    //     action = "eject";
-    //   default:
-    //     action = _action;
-    // }
+
     const node = new XmlElement("button", {
       id: nick,
       action,
@@ -282,8 +271,35 @@ export default class KJofol_SkinEngine extends SkinEngine {
       h: `${bottom - top}`,
       downimage: `${prefix}-${downimage}`,
     });
-    // const button = await this.button(node, parent);
     const button = await this.newGui(ButtonKjofol, node, parent);
+    return button;
+  }
+
+  async loadToggleButton(
+    nick: string,
+    cfgattrib: string,
+    parent: Group,
+    config: {}
+  ) {
+    const prefix = config["prefix"];
+    const rect = config[`${nick}Button`];
+    if (!rect) return;
+    // console.log("rect:", rect);
+    const [left, top, right, bottom, tooltip, downimage] = rect;
+
+    
+    const node = new XmlElement("button", {
+      id: nick,
+      cfgattrib,
+      cfgval:"2",
+      tooltip,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${right - left}`,
+      h: `${bottom - top}`,
+      activeImage: `${prefix}-${downimage}`,
+    });
+    const button = await this.newGui(ToggleButtonKjofol, node, parent);
     return button;
   }
 
@@ -475,7 +491,7 @@ export default class KJofol_SkinEngine extends SkinEngine {
 
   async loadPitch(config: {}, parent: Group) {
     const rect = config[`PitchControlButton`];
-    if(!rect) return
+    if (!rect) return;
 
     const prefix = config["prefix"];
     let [left, top, right, bottom] = rect;
@@ -626,17 +642,26 @@ export default class KJofol_SkinEngine extends SkinEngine {
     const prefix = config["prefix"];
     // let BMPN;
     // [left, top, right, bottom, tootip, BMPN] = config[`EqualizerButton`];
-    const loadButton = async(nick:string, action:string, invert:boolean=false) => {
-      const button = await this.loadButton(nick, action, parent, config) as ButtonKjofol;
-      button.setXmlAttr('activeImage', button._downimage)
-      button.setXmlAttr('downImage', '')
-      if(invert){
+    const loadButton = async (
+      nick: string,
+      action: string,
+      invert: boolean = false
+    ) => {
+      const button = (await this.loadButton(
+        nick,
+        action,
+        parent,
+        config
+      )) as ButtonKjofol;
+      button.setXmlAttr("activeImage", button._downimage);
+      button.setXmlAttr("downImage", "");
+      if (invert) {
         const base = `${prefix}-base`;
-        const temp = button._activeimage || base
-        button.setXmlAttr('activeImage', button._image || base)
-        button.setXmlAttr('image', temp)
+        const temp = button._activeimage || base;
+        button.setXmlAttr("activeImage", button._image || base);
+        button.setXmlAttr("image", temp);
       }
-    }
+    };
     await this.loadButton("Equalizer", "EQ_TOGGLE", parent, config);
     await loadButton("EqualizerOn", "EQ_TOGGLE");
     await loadButton("EqualizerOff", "EQ_TOGGLE", true);
@@ -650,7 +675,7 @@ function parserRC(content: string): { [key: string]: string | string[] } {
   for (var line of lines) {
     if (line.startsWith("#")) continue;
 
-    var words = line.replace(/  /,' ').split(" ");
+    var words = line.replace(/  /, " ").split(" ");
     var first = words.shift(); // pop the first
 
     if (line.startsWith("About ")) {
