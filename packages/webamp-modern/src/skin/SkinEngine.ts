@@ -2,6 +2,7 @@ import { XmlElement } from "@rgrove/parse-xml";
 import { UIRoot } from "../UIRoot";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
+import { FileExtractor } from "./FileExtractor";
 import ImageManager from "./ImageManager";
 import AnimatedLayer from "./makiClasses/AnimatedLayer";
 import Button from "./makiClasses/Button";
@@ -49,6 +50,15 @@ export class SkinEngine {
    * In case of several skinEngines support same skin file
    */
   static priority: number = 100;
+
+  /**
+   * Provide your custom (binary-file) skin format extractor.
+   * * keep it to return null if your skin is zip-like file.
+   * @returns An instance of custom FileExtractor
+   */
+  getFileExtractor(): FileExtractor {
+    return null;
+  }
 
   /**
    * The main method

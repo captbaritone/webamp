@@ -26,6 +26,7 @@ import ImageManager from "./skin/ImageManager";
 import Config from "./skin/makiClasses/Config";
 import WinampConfig from "./skin/makiClasses/WinampConfig";
 import { SkinEngineClass } from "./skin/SkinEngine";
+import { FileExtractor } from "./skin/FileExtractor";
 
 export class UIRoot {
   _id: string;
@@ -627,27 +628,46 @@ export class UIRoot {
     return this._skinPath;
   }
 
+  //? FileExtractor ========================
+  /* needed to avoid direct fetch to root path */
+  _fileExtractor: FileExtractor;
+
+  setFileExtractor(fe: FileExtractor) {
+    // required to end with slash/
+    this._fileExtractor = fe;
+  }
+
   async getFileAsString(filePath: string): Promise<string> {
-    if (this._preferZip) {
-      return await this.getFileAsStringZip(filePath);
-    } else {
-      return await this.getFileAsStringPath(filePath);
-    }
+    return await this._fileExtractor.getFileAsString(filePath);
   }
   async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
-    if (this._preferZip) {
-      return await this.getFileAsBytesZip(filePath);
-    } else {
-      return await this.getFileAsBytesPath(filePath);
-    }
+    return await this._fileExtractor.getFileAsBytes(filePath);
   }
   async getFileAsBlob(filePath: string): Promise<Blob> {
-    if (this._preferZip) {
-      return await this.getFileAsBlobZip(filePath);
-    } else {
-      return await this.getFileAsBlobPath(filePath);
-    }
+    return await this._fileExtractor.getFileAsBlob(filePath);
   }
+
+  // async getFileAsString(filePath: string): Promise<string> {
+  //   if (this._preferZip) {
+  //     return await this.getFileAsStringZip(filePath);
+  //   } else {
+  //     return await this.getFileAsStringPath(filePath);
+  //   }
+  // }
+  // async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
+  //   if (this._preferZip) {
+  //     return await this.getFileAsBytesZip(filePath);
+  //   } else {
+  //     return await this.getFileAsBytesPath(filePath);
+  //   }
+  // }
+  // async getFileAsBlob(filePath: string): Promise<Blob> {
+  //   if (this._preferZip) {
+  //     return await this.getFileAsBlobZip(filePath);
+  //   } else {
+  //     return await this.getFileAsBlobPath(filePath);
+  //   }
+  // }
 
   async getFileAsStringZip(filePath: string): Promise<string> {
     if (!filePath) return null;
@@ -685,10 +705,10 @@ export class UIRoot {
     return await response.blob();
   }
 
-  getFileIsExist(filePath: string): boolean {
-    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    return !!zipObj;
-  }
+  // getFileIsExist(filePath: string): boolean {
+  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+  //   return !!zipObj;
+  // }
 
   //? System things ========================
   /* because maki need to be run if not inside any Group @init() */

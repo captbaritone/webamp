@@ -1,5 +1,6 @@
 // This module is imported early here in order to avoid a circular dependency.
 import JSZip from "jszip";
+import { FileExtractor, PathFileExtractor, ZipFileExtractor } from "./skin/FileExtractor";
 import { classResolver } from "./skin/resolver";
 import {
   getSkinEngineClass,
@@ -52,9 +53,15 @@ export class Webamp5 extends WebAmpModern {
 
     let skinFetched = false;
     let SkinEngineClass = null;
+
+    //? usually the file extension is explicitly for SkinEngine. eg: `.wal`
     let SkinEngineClasses = getSkinEngineClass(skinPath);
+
+    //? when file extension is ambiguous eg. `.zip`, several
+    //? skinEngines are supporting, but only one is actually working with.
+    //? lets detect:
     if (SkinEngineClasses.length > 1) {
-      await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
+      await this._loadSkinPathToUiroot(skinPath, this._uiRoot, null);
       skinFetched = true;
       SkinEngineClass = await getSkinEngineClassByContent(
         SkinEngineClasses,
@@ -70,31 +77,54 @@ export class Webamp5 extends WebAmpModern {
 
     //? success found a skin-engine
     this._uiRoot.SkinEngineClass = SkinEngineClass;
-    if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot);
     const parser: SkinEngine = new SkinEngineClass(this._uiRoot);
+    if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot, parser);
     // await parser.parseSkin();
     await parser.buildUI();
 
     // loadSkin(this._parent, skinPath);
   }
 
-  private async _loadSkinPathToUiroot(skinPath: string, uiRoot: UIRoot) {
+  /**
+   * Time to load the skin file
+   * @param skinPath url string
+   * @param uiRoot 
+   * @param skinEngine An instance of SkinEngine
+   */
+  private async _loadSkinPathToUiroot(
+    skinPath: string,
+    uiRoot: UIRoot,
+    skinEngine: SkinEngine
+  ) {
     const response = await fetch(skinPath);
     if (response.status == 404) {
       throw new Error(`Skin does not exist`);
     }
-    // if (response.headers.get("content-type") == "application/octet-stream") {
-    if (response.headers.get("content-type").startsWith("application/")) {
-      // const response = await fetch(skinPath);
-      const skinZipBlob = await response.blob();
 
-      const zip = await JSZip.loadAsync(skinZipBlob);
-      uiRoot.setZip(zip);
-    } else {
-      uiRoot.setZip(null);
-      const slash = skinPath.endsWith("/") ? "" : "/";
-      uiRoot.setSkinDir(skinPath + slash);
+    //? pick one of correct fileExtractor
+    let fileExtractor: FileExtractor;
+    if(skinEngine!=null){
+      fileExtractor = skinEngine.getFileExtractor()
     }
+    if(fileExtractor==null) {
+      if (response.headers.get("content-type").startsWith("application/")) {
+        fileExtractor = new ZipFileExtractor()
+      } else {
+        fileExtractor = new PathFileExtractor()
+      }
+    }
+
+    await fileExtractor.prepare(skinPath, response)
+      // const skinZipBlob = await response.blob();
+
+    //   const zip = await JSZip.loadAsync(skinZipBlob);
+    //   uiRoot.setZip(zip);
+    // } else {
+    //   uiRoot.setZip(null);
+    //   const slash = skinPath.endsWith("/") ? "" : "/";
+    //   uiRoot.setSkinDir(skinPath + slash);
+    // }
+    uiRoot.setFileExtractor(fileExtractor);
   }
 
   playSong(songurl: string /* or track */): void {}
