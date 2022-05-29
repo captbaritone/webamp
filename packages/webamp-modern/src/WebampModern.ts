@@ -1,6 +1,10 @@
 // This module is imported early here in order to avoid a circular dependency.
 import JSZip from "jszip";
-import { FileExtractor, PathFileExtractor, ZipFileExtractor } from "./skin/FileExtractor";
+import {
+  FileExtractor,
+  PathFileExtractor,
+  ZipFileExtractor,
+} from "./skin/FileExtractor";
 import { classResolver } from "./skin/resolver";
 import {
   getSkinEngineClass,
@@ -78,7 +82,8 @@ export class Webamp5 extends WebAmpModern {
     //? success found a skin-engine
     this._uiRoot.SkinEngineClass = SkinEngineClass;
     const parser: SkinEngine = new SkinEngineClass(this._uiRoot);
-    if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, this._uiRoot, parser);
+    if (!skinFetched)
+      await this._loadSkinPathToUiroot(skinPath, this._uiRoot, parser);
     // await parser.parseSkin();
     await parser.buildUI();
 
@@ -88,7 +93,7 @@ export class Webamp5 extends WebAmpModern {
   /**
    * Time to load the skin file
    * @param skinPath url string
-   * @param uiRoot 
+   * @param uiRoot
    * @param skinEngine An instance of SkinEngine
    */
   private async _loadSkinPathToUiroot(
@@ -103,19 +108,19 @@ export class Webamp5 extends WebAmpModern {
 
     //? pick one of correct fileExtractor
     let fileExtractor: FileExtractor;
-    if(skinEngine!=null){
-      fileExtractor = skinEngine.getFileExtractor()
+    if (skinEngine != null) {
+      fileExtractor = skinEngine.getFileExtractor();
     }
-    if(fileExtractor==null) {
+    if (fileExtractor == null) {
       if (response.headers.get("content-type").startsWith("application/")) {
-        fileExtractor = new ZipFileExtractor()
+        fileExtractor = new ZipFileExtractor();
       } else {
-        fileExtractor = new PathFileExtractor()
+        fileExtractor = new PathFileExtractor();
       }
     }
 
-    await fileExtractor.prepare(skinPath, response)
-      // const skinZipBlob = await response.blob();
+    await fileExtractor.prepare(skinPath, response);
+    // const skinZipBlob = await response.blob();
 
     //   const zip = await JSZip.loadAsync(skinZipBlob);
     //   uiRoot.setZip(zip);
