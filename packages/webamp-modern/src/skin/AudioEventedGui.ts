@@ -94,7 +94,7 @@ export default class AudioEventedGui extends GuiObj {
       const [enabled, requestedState] = audioEvent.split(":");
       if (enabled == "allowed-to") {
         this[prop] = buttonStates[state][requestedState];
-      } else if (enabled == "equal") {
+      } else if (enabled == "audio") {
         this[prop] = requestedState == nickState[state];
       }
     }

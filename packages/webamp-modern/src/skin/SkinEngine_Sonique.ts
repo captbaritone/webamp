@@ -1,8 +1,6 @@
 import { XmlElement } from "@rgrove/parse-xml";
 import Bitmap from "./Bitmap";
 import { Edges } from "./Clippath";
-import ButtonFace from "./faceClasses/ButtonFace";
-import TimeFace from "./faceClasses/TimeFace";
 import { FileExtractor } from "./FileExtractor";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
@@ -10,12 +8,12 @@ import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 import SgfFileExtractor from "./soniqueClasses/SgfFileExtractor";
 
 type Rgn = {
-  l: number;
-  t: number;
-  r: number;
-  b: number;
-  w?: number;
-  h?: number;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
 };
 export class SoniqueSkinEngine extends SkinEngine {
   _config: {}; // whole index.json
@@ -51,7 +49,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     const container = await this.loadContainer(); // player Container
     // which one declared first will become the default visible
     await this.loadMid(container);
-    console.log(await this.getRegions("/rgn/nav/next"))
+    console.log(await this.getRegions("/rgn/nav/next"));
   }
 
   // #region (collapsed) load-bitmap
@@ -83,26 +81,31 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
 
-  async getRegions(rgnId: string): Promise<Rgn[]> {
+  async getRegions(rgnId: string, skipFirst: boolean = true): Promise<Rgn[]> {
     const buffer = await this._uiRoot.getFileAsBytes(rgnId);
     const words = new Int16Array(buffer);
-    const count = words[0];
+    // const count = words[0];
     const regions: Rgn[] = [];
-    //? we skip the first rect
-    for (var i = 5; i < words.length; i += 4) {
+    const start = skipFirst ? 5 : 1;
+    for (var i = start; i < words.length; i += 4) {
       const rect = words.slice(i, i + 4);
       const [l, t, r, b] = [rect[0], rect[1], rect[2], rect[3]];
       regions.push({
-        l,
-        t,
-        r,
-        b,
-        w: r - l,
-        h: b - t,
+        left: l,
+        top: t,
+        right: r,
+        bottom: b,
+        width: r - l,
+        height: b - t,
       });
     }
     return regions;
   }
+  async getRect(rgnId: string): Promise<Rgn> {
+    const rects = await this.getRegions(rgnId, false);
+    return rects[0];
+  }
+
   // #endregion
 
   async loadContainer(): Promise<Container> {
@@ -116,7 +119,7 @@ export class SoniqueSkinEngine extends SkinEngine {
   }
 
   async loadMid(parent: Container) {
-    // const prefix = this._rc["prefix"];
+    const prefix = "mid";
     // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
     const bg = this._uiRoot.getBitmap(`midsonique`);
     let node = new XmlElement("layout", {
@@ -133,7 +136,7 @@ export class SoniqueSkinEngine extends SkinEngine {
       h: `${bg.getHeight()}`,
     });
     const group = await this.group(node, normal);
-    await this.applyRegion(group, '/rgn/mid/frame')
+    await this.applyRegion(group, "/rgn/mid/frame");
 
     node = new XmlElement("layer", {
       id: "mover",
@@ -149,9 +152,12 @@ export class SoniqueSkinEngine extends SkinEngine {
     // seek on kjofol default skin looked like cover the pitch. load it first
     // await this.loadSeek(this._rc, group);
 
-    // await this.loadButton("Play", "play", group, this._rc);
-    // await this.loadButton("Pause", "pause", group, this._rc);
-    // await this.loadButton("Stop", "stop", group, this._rc);
+    await this.loadButton("play", "play", group);
+    await this.loadButton("pause", "pause", group);
+    await this.loadButton("stop", "stop", group, {
+      rectName: "play",
+      attributes:{visible: "audio:play", image: 'splash'},
+    });
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
     // await this.loadButton("OpenFile", "openfile", group, this._rc);
@@ -170,15 +176,21 @@ export class SoniqueSkinEngine extends SkinEngine {
   }
 
   async applyRegion(group: Group, rgnId: string) {
-    const regions = await this.getRegions(rgnId)
+    const regions = await this.getRegions(rgnId);
     const canvas = document.createElement("canvas");
-    canvas.width = group.getwidth()
-    canvas.height = group.getheight()
+    canvas.width = group.getwidth();
+    canvas.height = group.getheight();
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
 
-    for(const region of regions){
-      ctx.fillRect(region.l, region.t, region.w, region.h);
+    //? skip the first
+    // let first = true;
+    for (const region of regions) {
+      // if(first){
+      //   first = false;
+      //   continue
+      // }
+      ctx.fillRect(region.left, region.top, region.width, region.height);
     }
 
     const edge = new Edges();
@@ -189,6 +201,46 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
 
+  async loadButton(
+    nick: string,
+    action: string,
+    parent: Group,
+    options: {
+      fileName?: string;
+      rectName?: string;
+      action?: string;
+      attributes?: { [key: string]: string };
+    } = {}
+  ) {
+    // /rgn/mid/frame
+    // "/rgn/mid/play"
+    const rectName = options.rectName || nick;
+    const section = parent.getparentlayout().getId();
+    const regId = `/rgn/${section}/${rectName}`;
+    const { left, top, width, height } = await this.getRect(regId);
+    let param = "";
+    if (action.includes(";")) {
+      [action, param] = action.split(";");
+    }
+
+    //? button
+    const attributes = options.attributes || {};
+    const node = new XmlElement("button", {
+      id: nick,
+      action,
+      param,
+      // tooltip,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${width}`,
+      h: `${height}`,
+      // downimage: `${prefix}-${downimage}`,
+      ...attributes
+    });
+    // const button = await this.newGui(ButtonKjofol, node, parent);
+    const button = await this.button(node, parent);
+    return button;
+  }
   async getRootGroup(): Promise<Group> {
     let node: XmlElement = new XmlElement("container", { id: "root" });
     const container = await this.container(node);
