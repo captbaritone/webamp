@@ -48,18 +48,19 @@ export default class SgfFileExtractor extends FileExtractor {
   async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
     const blob = await this.getFileAsBlob(filePath);
     if (!blob) return null;
-    return new Promise((resolve, reject) => {
-      var reader = new FileReader();
+    return await blob.arrayBuffer()
+    // return new Promise((resolve, reject) => {
+    //   var reader = new FileReader();
 
-      reader.onload = function () {
-        resolve(reader.result as ArrayBuffer);
-      };
-      reader.onerror = function (e) {
-        reject(e);
-      };
+    //   reader.onload = function () {
+    //     resolve(reader.result as ArrayBuffer);
+    //   };
+    //   reader.onerror = function (e) {
+    //     reject(e);
+    //   };
 
-      reader.readAsBinaryString(blob);
-    });
+    //   reader.readAsBinaryString(blob);
+    // });
   }
 
   async getFileAsBlob(filePath: string): Promise<Blob> {
@@ -88,44 +89,7 @@ export default class SgfFileExtractor extends FileExtractor {
         size: chunkSize,
         end: chunkStart + chunkSize,
       };
-      // print(s, chunkStart, chunkSize)
       this.seek(8, true); // I don't know why empty space
-      // const nextChunk = this.tell()
-
-      // break
-      // if (s == '/skin.ini'){
-      //     continue
-      //     this.seek(chunkStart)
-      //     ini = this.read(chunkSize)
-      //     ini = ini.decode('utf-8')
-      //     print(ini)
-      // }
-
-      // const paths = s.strip('/').split('/')
-      // const ext = paths[0]
-      // filename = '-'.join(paths[1:]) + '.'+ext
-      // print(filename)
-
-      // res = open('output/'+filename, 'wb')
-      // this.seek(chunkStart)
-      // blob = this.read(chunkSize)
-      // res.write(blob)
-      // res.close()
-
-      // if (filename=='nav-next.rgn'){
-      //     half = ''.join(['H']* (len(blob)//2))
-      //     print('half:',half, len(half))
-      //     n = unpack('<'+half, blob)
-      //     print(n)
-
-      //     // half = ''.join(['H']* (len(blob)//2))
-      //     // print('half:',half, len(half))
-      //     // n = unpack('>'+half, blob)
-      //     // print(n)
-      //     // break
-      // }
-
-      // this.seek(nextChunk)
     }
   }
 

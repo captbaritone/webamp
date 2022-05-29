@@ -22,8 +22,8 @@ export class Edges {
 
   parseCanvasTransparency(
     canvas: HTMLCanvasElement,
-    preferedWidth: number,
-    preferedHeight: number
+    preferedWidth: number=null,
+    preferedHeight: number=null
   ) {
     //set:
     this.opaque = this.opaqueByTransparent;
@@ -61,8 +61,8 @@ export class Edges {
 
   _parseCanvasTransparency(
     canvas: HTMLCanvasElement,
-    preferedWidth: number,
-    preferedHeight: number
+    preferedWidth: number=null,
+    preferedHeight: number=null
   ) {
     const w = preferedWidth || canvas.width;
     const h = preferedHeight || canvas.height;
