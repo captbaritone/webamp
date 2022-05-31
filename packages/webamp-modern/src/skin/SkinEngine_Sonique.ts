@@ -5,6 +5,8 @@ import { FileExtractor } from "./FileExtractor";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
+import IniFile, { IniSection } from "./soniqueClasses/IniFile";
+import { MISC } from "./soniqueClasses/misc_ini";
 import SgfFileExtractor from "./soniqueClasses/SgfFileExtractor";
 
 type Rgn = {
@@ -18,6 +20,7 @@ type Rgn = {
 export class SoniqueSkinEngine extends SkinEngine {
   _config: {}; // whole index.json
   _alphaData: Uint8ClampedArray = null; // canvas.contex2d.data.data
+  _ini: IniFile;
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".sgf");
@@ -41,6 +44,10 @@ export class SoniqueSkinEngine extends SkinEngine {
    * Process
    */
   async parseSkin() {
+    this._ini = new IniFile();
+    this._ini.readString(MISC);
+    console.log(JSON.stringify(this._ini._tree));
+
     console.log("RESOURCE_PHASE #################");
     // this._phase = RESOURCE_PHASE;
 
@@ -156,7 +163,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     await this.loadButton("pause", "pause", group);
     await this.loadButton("stop", "stop", group, {
       rectName: "play",
-      attributes:{visible: "audio:play", image: 'splash'},
+      attributes: { visible: "audio:play", image: "splash" },
     });
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
@@ -215,16 +222,49 @@ export class SoniqueSkinEngine extends SkinEngine {
     // /rgn/mid/frame
     // "/rgn/mid/play"
     const rectName = options.rectName || nick;
-    const section = parent.getparentlayout().getId();
-    const regId = `/rgn/${section}/${rectName}`;
+    const layout = parent.getparentlayout().getId();
+    const regId = `/rgn/${layout}/${rectName}`;
     const { left, top, width, height } = await this.getRect(regId);
     let param = "";
     if (action.includes(";")) {
       [action, param] = action.split(";");
     }
+    const attributes = options.attributes || {};
+
+    const misc: IniSection = this._ini.section("misc locations");
+    //? imageDown
+    var x: string, y: string;
+    if ((x = misc.getString(`${nick.toLowerCase()}on_x`))) {
+      y = misc.getString(`${nick.toLowerCase()}on_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-on`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`
+        })
+      );
+      attributes["downImage"] = `${nick}-on`;
+    }
+    //? image
+    if ((x = misc.getString(`${nick.toLowerCase()}off_x`))) {
+      y = misc.getString(`${nick.toLowerCase()}off_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-off`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`
+        })
+      );
+      attributes["image"] = `${nick}-off`;
+    }
 
     //? button
-    const attributes = options.attributes || {};
     const node = new XmlElement("button", {
       id: nick,
       action,
@@ -235,12 +275,13 @@ export class SoniqueSkinEngine extends SkinEngine {
       w: `${width}`,
       h: `${height}`,
       // downimage: `${prefix}-${downimage}`,
-      ...attributes
+      ...attributes,
     });
     // const button = await this.newGui(ButtonKjofol, node, parent);
     const button = await this.button(node, parent);
     return button;
   }
+
   async getRootGroup(): Promise<Group> {
     let node: XmlElement = new XmlElement("container", { id: "root" });
     const container = await this.container(node);
