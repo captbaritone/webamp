@@ -46,7 +46,8 @@ export class SoniqueSkinEngine extends SkinEngine {
   async parseSkin() {
     this._ini = new IniFile();
     this._ini.readString(MISC);
-    console.log(JSON.stringify(this._ini._tree));
+    // console.log(JSON.stringify(this._ini._tree));
+    console.log(this._ini._tree);
 
     console.log("RESOURCE_PHASE #################");
     // this._phase = RESOURCE_PHASE;
@@ -165,6 +166,8 @@ export class SoniqueSkinEngine extends SkinEngine {
       rectName: "play",
       attributes: { visible: "audio:play", image: "splash" },
     });
+    await this.loadButton("next", "next", group);
+    await this.loadButton("prev", "prev", group);
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
     // await this.loadButton("OpenFile", "openfile", group, this._rc);
@@ -248,6 +251,20 @@ export class SoniqueSkinEngine extends SkinEngine {
       );
       attributes["downImage"] = `${nick}-on`;
     }
+    if ((x = misc.getString(`${nick.toLowerCase()}_x`))) {
+      y = misc.getString(`${nick.toLowerCase()}_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-on`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`
+        })
+      );
+      attributes["downImage"] = `${nick}-on`;
+    }
     //? image
     if ((x = misc.getString(`${nick.toLowerCase()}off_x`))) {
       y = misc.getString(`${nick.toLowerCase()}off_y`);
@@ -277,7 +294,6 @@ export class SoniqueSkinEngine extends SkinEngine {
       // downimage: `${prefix}-${downimage}`,
       ...attributes,
     });
-    // const button = await this.newGui(ButtonKjofol, node, parent);
     const button = await this.button(node, parent);
     return button;
   }

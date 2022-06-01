@@ -1,6 +1,10 @@
 import { assume, Emitter, integerToTime } from "../../utils";
 import AUDIO_PLAYER from "../AudioPlayer";
-// import BaseObject from "./BaseObject";
+import * as musicMetadata from 'music-metadata-browser';
+import { parse } from "id3-parser";
+import { convertFileToBuffer, fetchFileAsBuffer } from 'id3-parser/lib/universal/helpers';
+
+// import * as jsmediatags from 'jsmediatags';
 
 export type Track = {
   filename: string; // full url, or just File.name
@@ -155,13 +159,27 @@ export class PlEdit {
     // return unimplementedWarning("onpleditmodified");
   }
 
-  async fetchMediaDuration(track: Track, callback: Function) {
+  async fetchMediaDuration(track: Track, callback: Function):Promise<void> {
     try {
-      const url = track.file ? URL.createObjectURL(track.file) : track.filename;
-      track.duration = await genMediaDuration(url);
+      const audioTrackUrl = track.file ? URL.createObjectURL(track.file) : track.filename;
+      track.duration = await genMediaDuration(audioTrackUrl);
+
+      const options = {
+        duration: true,
+        skipPostHeaders: true, // avoid unnecessary data to be read
+      };
+      // const metadata = await musicMetadata.fetchFromUrl(audioTrackUrl, options);
+      // console.log('mm-meta:', metadata)
+      musicMetadata.fetchFromUrl(audioTrackUrl, options).then((metadata)=>{
+        console.log('mm-meta:', metadata)
+      });
+      fetchFileAsBuffer(audioTrackUrl).then(parse).then(tag => {
+        console.log('id3:',tag);
+      });
       callback()
     } catch (e) {
       // TODO: Should we update the state to indicate that we don't know the length?
+      console.warn('ERROR:',e)
     }
   }
 }
@@ -174,11 +192,12 @@ export function genMediaDuration(url: string): Promise<number> {
   return new Promise((resolve, reject) => {
     // TODO: Does this actually stop downloading the file once it's
     // got the duration?
-    const audio = document.createElement("audio");
+    const audio = document.createElement("audio") as HTMLAudioElement;
     audio.crossOrigin = "anonymous";
     const durationChange = () => {
       resolve(audio.duration);
       audio.removeEventListener("durationchange", durationChange);
+      
       audio.src = "";
       // TODO: Not sure if this really gets cleaned up.
     };
