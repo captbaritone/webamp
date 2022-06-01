@@ -72,7 +72,8 @@ export default class PlayListGui extends Group {
         this._uiRoot.audio.play();
         this.refresh();
       });
-      line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
+      // line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
+      line.innerHTML = `<span>${i + 1}. ${pl.gettitle(i)}</span><span>${pl.getlength(i)}</span>`;
       this._contentPanel.appendChild(line);
     }
   };

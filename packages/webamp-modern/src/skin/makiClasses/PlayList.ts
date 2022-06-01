@@ -1,4 +1,4 @@
-import { Emitter } from "../../utils";
+import { assume, Emitter, integerToTime } from "../../utils";
 import AUDIO_PLAYER from "../AudioPlayer";
 // import BaseObject from "./BaseObject";
 
@@ -8,6 +8,7 @@ export type Track = {
   metadata?: string; // http://forums.winamp.com/showthread.php?t=345521
   title?: string;
   rating?: number; // 0..5
+  duration?: number | null;
 };
 
 /**
@@ -74,6 +75,9 @@ export class PlEdit {
     }
 
     this.trigger("trackchange");
+    this.fetchMediaDuration(track, ()=>{
+      this.trigger("trackchange")
+    })
   }
 
   enqueuefile(file: string): void {
@@ -133,10 +137,11 @@ export class PlEdit {
   gettitle(item: number): string {
     return this._tracks[item].filename.split("/").pop();
   }
-
-  // getlength(item: number): string {
-  //   // return unimplementedWarning("getlength");
-  // }
+  
+  getlength(item: number): string {
+    return integerToTime(this._tracks[item].duration || 0);
+    // return unimplementedWarning("getlength");
+  }
 
   // getmetadata(item: number, metadatastring: string): string {
   //   // return unimplementedWarning("getmetadata");
@@ -149,6 +154,40 @@ export class PlEdit {
   onpleditmodified(): void {
     // return unimplementedWarning("onpleditmodified");
   }
+
+  async fetchMediaDuration(track: Track, callback: Function) {
+    try {
+      const url = track.file ? URL.createObjectURL(track.file) : track.filename;
+      track.duration = await genMediaDuration(url);
+      callback()
+    } catch (e) {
+      // TODO: Should we update the state to indicate that we don't know the length?
+    }
+  }
+}
+
+export function genMediaDuration(url: string): Promise<number> {
+  assume(
+    typeof url === "string",
+    "Attempted to get the duration of media file without passing a url"
+  );
+  return new Promise((resolve, reject) => {
+    // TODO: Does this actually stop downloading the file once it's
+    // got the duration?
+    const audio = document.createElement("audio");
+    audio.crossOrigin = "anonymous";
+    const durationChange = () => {
+      resolve(audio.duration);
+      audio.removeEventListener("durationchange", durationChange);
+      audio.src = "";
+      // TODO: Not sure if this really gets cleaned up.
+    };
+    audio.addEventListener("durationchange", durationChange);
+    audio.addEventListener("error", (e) => {
+      reject(e);
+    });
+    audio.src = url;
+  });
 }
 
 export class PlDir {
