@@ -1,0 +1,88 @@
+{
+  "B2AD3F2B31ED4e31BC6DE9951CD555BB": {
+    "parent": "Object",
+    "name": "WinampConfig",
+    "functions": [
+      {
+        "name": "getGroup",
+        "parameters": [
+          [
+            "String",
+            "config_group_guid"
+          ]
+        ],
+        "result": "WinampConfigGroup"
+      }
+    ]
+  },
+  "FC17844EC72B4518A068A8F930A5BA80": {
+    "parent": "Object",
+    "name": "WinampConfigGroup",
+    "functions": [
+      {
+        "name": "getBool",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ]
+        ],
+        "result": "Boolean"
+      },
+      {
+        "name": "setBool",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ],
+          [
+            "Boolean",
+            "itemvalue"
+          ]
+        ],
+        "result": ""
+      },
+      {
+        "name": "getInt",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ]
+        ],
+        "result": "Int"
+      },
+      {
+        "name": "setInt",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ]
+        ],
+        "result": ""
+      },
+      {
+        "name": "getString",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ]
+        ],
+        "result": "String"
+      },
+      {
+        "name": "setString",
+        "parameters": [
+          [
+            "String",
+            "itemname"
+          ]
+        ],
+        "result": ""
+      }
+    ]
+  }
+}

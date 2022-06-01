@@ -1,0 +1,116 @@
+{
+  "836F8B2EE0D14db4937F0D0A04C8DCD1": {
+    "parent": "Object",
+    "name": "File",
+    "functions": [
+      {
+        "name": "load",
+        "parameters": [
+          [
+            "String",
+            "path"
+          ]
+        ],
+        "result": ""
+      },
+      {
+        "name": "exists",
+        "parameters": [],
+        "result": "boolean"
+      },
+      {
+        "name": "getSize",
+        "parameters": [],
+        "result": "int"
+      }
+    ]
+  },
+  "417FFB69987F4be88D87D9965EEEC868": {
+    "parent": "File",
+    "name": "XmlDoc",
+    "functions": [
+      {
+        "name": "parser_addCallback",
+        "parameters": [
+          [
+            "String",
+            "section"
+          ]
+        ],
+        "result": ""
+      },
+      {
+        "name": "parser_start",
+        "parameters": [],
+        "result": ""
+      },
+      {
+        "name": "parser_onCallback",
+        "parameters": [
+          [
+            "String",
+            "xmlpath"
+          ],
+          [
+            "String",
+            "xmltag"
+          ],
+          [
+            "list",
+            "paramname"
+          ],
+          [
+            "list",
+            "paramvalue"
+          ]
+        ],
+        "result": "String"
+      },
+      {
+        "name": "parser_onCloseCallback",
+        "parameters": [
+          [
+            "String",
+            "xmlpath"
+          ],
+          [
+            "String",
+            "xmltag"
+          ]
+        ],
+        "result": "String"
+      },
+      {
+        "name": "parser_onError",
+        "parameters": [
+          [
+            "String",
+            "filename"
+          ],
+          [
+            "int",
+            "linenum"
+          ],
+          [
+            "String",
+            "incpath"
+          ],
+          [
+            "int",
+            "errcode"
+          ],
+          [
+            "String",
+            "errstr"
+          ]
+        ],
+        "result": "String"
+      },
+      {
+        "name": "parser_destroy",
+        "parameters": [],
+        "result": "String"
+      }
+    ]
+  }
+}

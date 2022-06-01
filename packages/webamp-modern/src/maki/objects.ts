@@ -1,7 +1,7 @@
 import stdPatched from "./objectData/stdPatched";
-import pldir from "./objectData/pldir";
-import config from "./objectData/config";
-import winampconfig from "./objectData/winampconfig";
+import pldir from "./objectData/pldir.json";
+import config from "./objectData/config.json";
+import winampconfig from "./objectData/winampconfig.json";
 // import application from "./objectData/application";
 // import fileio from "./objectData/fileio";
 import { DataType } from "./v";

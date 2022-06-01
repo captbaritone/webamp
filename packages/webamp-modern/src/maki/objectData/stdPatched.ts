@@ -1,4 +1,4 @@
-import std from "./std";
+import std from "./std.json";
 
 const NAME_TO_DEF = {};
 

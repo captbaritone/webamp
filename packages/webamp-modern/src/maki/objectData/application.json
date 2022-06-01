@@ -1,0 +1,78 @@
+{
+  "B8E867B027154da7A5BA53DBA1FCFEAC": {
+    "parent": "Object",
+    "name": "Application",
+    "functions": [
+      {
+        "name": "GetApplicationName",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetVersionString",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetVersionNumberString",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetBuildNumber",
+        "parameters": [],
+        "result": "int"
+      },
+      {
+        "name": "GetGUID",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetCommandLine",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "Shutdown",
+        "parameters": [],
+        "result": ""
+      },
+      {
+        "name": "CancelShutdown",
+        "parameters": [],
+        "result": ""
+      },
+      {
+        "name": "IsShuttingDown",
+        "parameters": [],
+        "result": "boolean"
+      },
+      {
+        "name": "GetApplicationPath",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetSettingsPath",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "GetWorkingPath",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "SetWorkingPath",
+        "parameters": [
+          [
+            "String",
+            "working_path"
+          ]
+        ],
+        "result": ""
+      }
+    ]
+  }
+}

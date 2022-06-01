@@ -51,14 +51,14 @@ function parseFile(filePath) {
           )}`
         );
       }
-      objects[className].functions.push({ result, name, parameters });
+      objects[className].functions.push({ name, parameters, result });
     }
   });
 
   const objectIds = {};
   Object.keys(objects).forEach((normalizedName) => {
     const { id, parent, functions, name } = objects[normalizedName];
-    objectIds[id] = { parent, functions, name };
+    objectIds[id] = { parent, name, functions };
   });
 
   return objectIds;

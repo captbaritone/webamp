@@ -1,0 +1,123 @@
+{
+  "593DBA22D0774976B952F4713655400B": {
+    "parent": "Object",
+    "name": "Config",
+    "functions": [
+      {
+        "name": "getItem",
+        "parameters": [
+          [
+            "String",
+            "item_name"
+          ]
+        ],
+        "result": "ConfigItem"
+      },
+      {
+        "name": "getItemByGuid",
+        "parameters": [
+          [
+            "String",
+            "item_guid"
+          ]
+        ],
+        "result": "ConfigItem"
+      },
+      {
+        "name": "newItem",
+        "parameters": [
+          [
+            "String",
+            "item_name"
+          ],
+          [
+            "String",
+            "item_guid"
+          ]
+        ],
+        "result": "ConfigItem"
+      }
+    ]
+  },
+  "D40302823AAB4d87878D12326FADFCD5": {
+    "parent": "Object",
+    "name": "ConfigItem",
+    "functions": [
+      {
+        "name": "getAttribute",
+        "parameters": [
+          [
+            "String",
+            "attr_name"
+          ]
+        ],
+        "result": "ConfigAttribute"
+      },
+      {
+        "name": "newAttribute",
+        "parameters": [
+          [
+            "String",
+            "attr_name"
+          ],
+          [
+            "String",
+            "default_value"
+          ]
+        ],
+        "result": "ConfigAttribute"
+      },
+      {
+        "name": "getGuid",
+        "parameters": [
+          [
+            "String",
+            "attr_name"
+          ]
+        ],
+        "result": "String"
+      },
+      {
+        "name": "getName",
+        "parameters": [],
+        "result": "String"
+      }
+    ]
+  },
+  "24DEC283B76E4a368CCC9E24C46B6C73": {
+    "parent": "Object",
+    "name": "ConfigAttribute",
+    "functions": [
+      {
+        "name": "setData",
+        "parameters": [
+          [
+            "String",
+            "value"
+          ]
+        ],
+        "result": ""
+      },
+      {
+        "name": "getData",
+        "parameters": [],
+        "result": "String"
+      },
+      {
+        "name": "onDataChanged",
+        "parameters": [],
+        "result": ""
+      },
+      {
+        "name": "getParentItem",
+        "parameters": [],
+        "result": "ConfigItem"
+      },
+      {
+        "name": "getAttributeName",
+        "parameters": [],
+        "result": "String"
+      }
+    ]
+  }
+}
