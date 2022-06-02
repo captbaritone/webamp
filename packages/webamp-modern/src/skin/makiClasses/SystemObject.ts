@@ -10,7 +10,7 @@ import GuiObj from "./GuiObj";
 import Config from "./Config";
 import WinampConfig from "./WinampConfig";
 
-import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
+import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING, Track } from "../AudioPlayer";
 
 const MOUSE_POS = { x: 0, y: 0 };
 
@@ -801,6 +801,10 @@ export default class SystemObject extends BaseObject {
     // TODO
   }
 
+  // #region //? Track method =========================================
+  _currentTrack():Track {
+    return this._uiRoot.playlist.currentTrack()
+  }
   /**
    * getPlayItemString()
    *
@@ -1665,6 +1669,11 @@ export default class SystemObject extends BaseObject {
   oneqfreqchanged(isiso: number) {}
 
   getsonginfotext(): string {
+    const track = this._currentTrack();
+    if(track){
+      const m = track.metadata;
+      return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+    }
     return "123kbps stereo 79khz";
   }
 

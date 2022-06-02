@@ -117,6 +117,13 @@ export class PlEdit {
     // return unimplementedWarning("moveto");
   }
 
+  currentTrack():Track | null {
+    if (this._currentIndex < 0) {
+      return null;
+    }
+    return this._tracks[this._currentIndex];
+  }
+
   playtrack(item: number): void {
     this._currentIndex = item;
     const track = this._tracks[item];
