@@ -9,7 +9,7 @@ export const AUDIO_PLAYING = "playing";
 
 // moved here because used by several files eg Playlist,AudioMetadata
 export type Track = {
-  id:number; //used for identification while refreshing playlist
+  id?:number; //used for identification while refreshing playlist
   filename: string; // full url, or just File.name
   file?: File; // Blob
   metadata?: ITags; // http://forums.winamp.com/showthread.php?t=345521
