@@ -1,3 +1,4 @@
+import { ITags } from "id3-parser/lib/interface";
 import { clamp, Emitter } from "../utils";
 
 const BANDS = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
@@ -5,6 +6,17 @@ const BANDS = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
 export const AUDIO_PAUSED = "paused";
 export const AUDIO_STOPPED = "stopped";
 export const AUDIO_PLAYING = "playing";
+
+// moved here because used by several files eg Playlist,AudioMetadata
+export type Track = {
+  id:number; //used for identification while refreshing playlist
+  filename: string; // full url, or just File.name
+  file?: File; // Blob
+  metadata?: ITags; // http://forums.winamp.com/showthread.php?t=345521
+  title?: string;
+  rating?: number; // 0..5
+  duration?: number | null;
+};
 
 export class AudioPlayer {
   _audio: HTMLAudioElement = document.createElement("audio");
