@@ -141,6 +141,10 @@ export class PlEdit {
   }
 
   gettitle(item: number): string {
+    const track = this._tracks[item];
+    if(track.metadata){
+      return `${track.metadata.artist} - ${track.metadata.title}`
+    }
     return this._tracks[item].filename.split("/").pop();
   }
   
