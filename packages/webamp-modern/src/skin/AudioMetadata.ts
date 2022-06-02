@@ -1,4 +1,4 @@
-import { parseV1Tag, parseV2Tag } from "id3-parser";
+import { parse, parseV1Tag, parseV2Tag } from "id3-parser";
 import { ITags } from "id3-parser/lib/interface";
 import { calcTagSize } from "id3-parser/lib/parsers/v2parser";
 import { fetchFileAsBuffer } from "id3-parser/lib/universal/helpers";
@@ -169,6 +169,9 @@ export async function parseMetaData(
     track.metadata = id3;
     console.log("Final ID3:", id3);
     callback();
+
+    //debug
+    console.log('original Parse:', parse(bytes))
   } catch (e) {
     // TODO: Should we update the state to indicate that we don't know the length?
     console.warn("ERROR:", e);

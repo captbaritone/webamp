@@ -139,22 +139,24 @@ container {
 }
 
 /* Lets register all supported tag's default property here: */
-layout,
+albumart,
+animatedlayer,
+button,
+colorthemeslist,
+componentbucket,
+eqvis,
 grid,
-progressgrid,
 group,
 layer,
-animatedlayer,
-vis,
-eqvis,
-button,
+layout,
+progressgrid,
 slider,
 status,
 text,
+vis,
 wasabiframe,
-wasabititlebar,
-componentbucket,
-colorthemeslist {
+wasabititlebar
+{
   position: absolute;
   left: 0;
   top: 0;
@@ -163,6 +165,12 @@ colorthemeslist {
 }
 group {
   overflow: visible;
+}
+albumart {
+  /* background-size: cover; */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center!important;
 }
 wasabititlebar {
   text-align: center;
