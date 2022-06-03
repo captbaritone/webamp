@@ -32,10 +32,12 @@ export default abstract class ConfigPersistent extends BaseObject {
   }
 
   getValue(section: string, key: string): string {
+    key = key.toLowerCase()
     return this.getSectionValues(section)[key];
   }
 
   setValue(section: string, key: string, value: string): string {
+    key = key.toLowerCase()
     if (this.getValue(section, key) != value) {
       const values = this.getSectionValues(section);
       values[key] = value;
