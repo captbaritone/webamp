@@ -9,7 +9,7 @@ export const AUDIO_PLAYING = "playing";
 
 // moved here because used by several files eg Playlist,AudioMetadata
 export type Track = {
-  id?:number; //used for identification while refreshing playlist
+  id?: number; //used for identification while refreshing playlist
   filename: string; // full url, or just File.name
   file?: File; // Blob
   metadata?: ITags; // http://forums.winamp.com/showthread.php?t=345521
@@ -207,7 +207,10 @@ export class AudioPlayer {
   // 0-1
   setVolume(volume: number) {
     // this._audio.volume = volume;
-    this._volumeNode.gain.value = volume;
+    if (volume != this._volumeNode.gain.value) {
+      this._volumeNode.gain.value = volume;
+      this.trigger("volumechanged");
+    }
   }
 
   getBalance(): number {
@@ -220,13 +223,13 @@ export class AudioPlayer {
     this._balance = balance;
     this.trigger("balancechange");
   }
-  
+
   // 0.5 .. 4
   getPlaybackRate(): number {
-    return this._audio.playbackRate
+    return this._audio.playbackRate;
   }
   setPlaybackRate(value: number) {
-    this._audio.playbackRate = clamp(value, 0.5, 4.0)
+    this._audio.playbackRate = clamp(value, 0.5, 4.0);
     this.trigger("playbackratechange");
   }
 
@@ -392,13 +395,8 @@ export class AudioPlayer {
     return dispose;
   }
 
-  onVolumeChanged(cb: () => void): () => void {
-    const handler = () => cb();
-    this._audio.addEventListener("volumechange", handler);
-    const dispose = () => {
-      this._audio.removeEventListener("volumechange", handler);
-    };
-    return dispose;
+  onVolumeChanged(cb: Function): Function {
+    return this.on("volumechanged", cb);
   }
 
   onBalanceChanged(cb: () => void): Function {
