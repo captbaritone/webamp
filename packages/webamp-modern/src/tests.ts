@@ -6,6 +6,7 @@ import JSZip from "jszip";
 // This module is imported early here in order to avoid a circular dependency.
 import { classResolver } from "./skin/resolver";
 import { Variable } from "./maki/v";
+import { getCaseInsensitiveFile } from "./utils";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -24,7 +25,7 @@ type Ast =
       body: Ast[];
       variableName: string;
       hookName: string;
-      binding?: Binding,
+      binding?: Binding;
       // TODO: make this Ast[]
       args: string;
     }
@@ -43,7 +44,7 @@ type Ast =
       a?: Ast;
       b?: Ast;
     }
-  | { kind: "IDENTIFIER"; value: string, variable?: Variable }
+  | { kind: "IDENTIFIER"; value: string; variable?: Variable }
   | {
       kind: "BINARY_EXPRESSION";
       left: Ast;
@@ -76,7 +77,9 @@ function prettyPrint(ast: Ast, indent: number = 0): string {
         return indented(prettyPrint(statement, indent + 1), indent + 1);
       });
       const name = `${ast.variableName}.${ast.hookName}`;
-      return `${name}(${ast.args}){//${JSON.stringify(ast.binding)}\n${body.join("\n")}\n}`;
+      return `${name}(${ast.args}){//${JSON.stringify(
+        ast.binding
+      )}\n${body.join("\n")}\n}`;
     case "CALL":
       return `${ast.objectName}.${ast.methodName}(${ast.args.map(
         prettyPrint
@@ -120,9 +123,12 @@ class Decompiler {
       case "INT":
         return "int";
       case "DOUBLE":
+      case "FLOAT":
         return "double";
       case "STRING":
         return "string";
+      case "BOOLEAN":
+        return "boolean";
       default:
         throw new Error(`Unexpected type: ${type}`);
     }
@@ -306,51 +312,51 @@ class Decompiler {
           nodes.push({
             kind: "CALL",
             objectName: obj24.value,
-            methodName:methodName24,
+            methodName: methodName24,
             args: args24,
             body: [],
-            comment: 'call'
+            comment: "call",
           });
           stack.push({
             kind: "CALL",
             objectName: obj24.value,
-            methodName:methodName24,
+            methodName: methodName24,
             args: args24,
             body: [],
-            comment: 'call'
-          })
+            comment: "call",
+          });
           break;
         // case 25: // call Global
-          // const methodOffset25 = command.arg;
-          // const method25 = this._program.methods[methodOffset25];
-          // let methodName25 = method25.name;
-          // methodName25 = methodName25.toLowerCase();
-          // const guid25 = this._program.classes[method25.typeOffset];
-          // const methodDefinition25 = getMethod(guid25, method25.name);
-          // const obj25 = stack.pop();
-          // if (obj25.kind !== "IDENTIFIER") {
-          //   throw new Error("Expectd ident");
-          // }
-          // const args25 = methodDefinition25.parameters.map((param) => {
-          //   return stack.pop();
-          // });
-          // nodes.push({
-          //   kind: "CALL",
-          //   objectName: obj25.value,
-          //   methodName:methodName25,
-          //   args: args25,
-          //   body: [],
-          //   comment: 'call-Global'
-          // });
-          // stack.push({
-          //   kind: "CALL",
-          //   objectName: obj25.value,
-          //   methodName:methodName25,
-          //   args: args25,
-          //   body: [],
-          //   comment: 'call-GollBall'
-          // })
-          // break;
+        // const methodOffset25 = command.arg;
+        // const method25 = this._program.methods[methodOffset25];
+        // let methodName25 = method25.name;
+        // methodName25 = methodName25.toLowerCase();
+        // const guid25 = this._program.classes[method25.typeOffset];
+        // const methodDefinition25 = getMethod(guid25, method25.name);
+        // const obj25 = stack.pop();
+        // if (obj25.kind !== "IDENTIFIER") {
+        //   throw new Error("Expectd ident");
+        // }
+        // const args25 = methodDefinition25.parameters.map((param) => {
+        //   return stack.pop();
+        // });
+        // nodes.push({
+        //   kind: "CALL",
+        //   objectName: obj25.value,
+        //   methodName:methodName25,
+        //   args: args25,
+        //   body: [],
+        //   comment: 'call-Global'
+        // });
+        // stack.push({
+        //   kind: "CALL",
+        //   objectName: obj25.value,
+        //   methodName:methodName25,
+        //   args: args25,
+        //   body: [],
+        //   comment: 'call-GollBall'
+        // })
+        // break;
         case 112: // strangeCall
           const methodOffset = command.arg;
           const method = this._program.methods[methodOffset];
@@ -371,16 +377,17 @@ class Decompiler {
             methodName,
             args,
             body: [],
-            comment: 'STRANGECALL:'+JSON.stringify({methodOffset,method,obj})
+            comment:
+              "STRANGECALL:" + JSON.stringify({ methodOffset, method, obj }),
           });
           stack.push({
             kind: "CALL",
             objectName: obj.value,
-            methodName:methodName,
+            methodName: methodName,
             args: args,
             body: [],
-            comment: 'stack-call'
-          })
+            comment: "stack-call",
+          });
           break;
         case 33: {
           ip = callStack.pop();
@@ -405,7 +412,7 @@ class Decompiler {
             variableName: JSON.stringify(a),
             expression: b,
             a,
-            b
+            b,
           });
           break;
         case 25:
@@ -423,11 +430,18 @@ class Decompiler {
 }
 
 async function main() {
-  const response = await fetch("assets/CornerAmp_Redux.wal");
+  // const skin = "assets/CornerAmp_Redux.wal";
+  // const script = "scripts/corner.maki";
+
+  const skin = "assets/WinampModern566.wal";
+  const script = "scripts/eq.maki";
+
+  const response = await fetch(skin);
   const data = await response.blob();
   const zip = await JSZip.loadAsync(data);
 
-  const makiFile = zip.file("scripts/corner.maki");
+  // const makiFile = zip.file(script);
+  const makiFile = getCaseInsensitiveFile(zip, script);
   const scriptContents = await makiFile.async("arraybuffer");
   // TODO: Try catch?
   const parsedScript = parseMaki(scriptContents);
@@ -442,8 +456,8 @@ async function main() {
   // textarea.style.height = "100vh";
   // textarea.innerHTML = decompiled;
   // document.body.appendChild(textarea);
-  document.getElementById('editor').innerHTML = decompiled;
-  window.loaded()
+  document.getElementById("editor").innerHTML = decompiled;
+  window.loaded();
 }
 
 main();
