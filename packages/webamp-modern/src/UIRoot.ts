@@ -63,7 +63,7 @@ export class UIRoot {
   //published
   vm: Vm;
   audio: AudioPlayer = AUDIO_PLAYER;
-  playlist: PlEdit = new PlEdit();
+  playlist: PlEdit;
 
   constructor(id: string = "ui-root") {
     this._id = id;
@@ -77,6 +77,7 @@ export class UIRoot {
     this._imageManager = new ImageManager(this);
     this._config = new Config(this);
     this._winampConfig = new WinampConfig(this);
+    this.playlist = new PlEdit(this); // must be after _config.
     this.vm = new Vm(this);
   }
 
@@ -629,11 +630,9 @@ export class UIRoot {
   }
 
   //? FileExtractor ========================
-  /* needed to avoid direct fetch to root path */
   _fileExtractor: FileExtractor;
 
   setFileExtractor(fe: FileExtractor) {
-    // required to end with slash/
     this._fileExtractor = fe;
   }
 
@@ -669,41 +668,41 @@ export class UIRoot {
   //   }
   // }
 
-  async getFileAsStringZip(filePath: string): Promise<string> {
-    if (!filePath) return null;
-    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if (!zipObj) return null;
-    return await zipObj.async("text");
-  }
+  // async getFileAsStringZip(filePath: string): Promise<string> {
+  //   if (!filePath) return null;
+  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+  //   if (!zipObj) return null;
+  //   return await zipObj.async("text");
+  // }
 
-  async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
-    if (!filePath) return null;
-    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if (!zipObj) return null;
-    return await zipObj.async("arraybuffer");
-  }
+  // async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
+  //   if (!filePath) return null;
+  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+  //   if (!zipObj) return null;
+  //   return await zipObj.async("arraybuffer");
+  // }
 
-  async getFileAsBlobZip(filePath: string): Promise<Blob> {
-    if (!filePath) return null;
-    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if (!zipObj) return null;
-    return await zipObj.async("blob");
-  }
+  // async getFileAsBlobZip(filePath: string): Promise<Blob> {
+  //   if (!filePath) return null;
+  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+  //   if (!zipObj) return null;
+  //   return await zipObj.async("blob");
+  // }
 
-  async getFileAsStringPath(filePath: string): Promise<string> {
-    const response = await fetch(this._skinPath + filePath);
-    return await response.text();
-  }
+  // async getFileAsStringPath(filePath: string): Promise<string> {
+  //   const response = await fetch(this._skinPath + filePath);
+  //   return await response.text();
+  // }
 
-  async getFileAsBytesPath(filePath: string): Promise<ArrayBuffer> {
-    const response = await fetch(this._skinPath + filePath);
-    return await response.arrayBuffer();
-  }
+  // async getFileAsBytesPath(filePath: string): Promise<ArrayBuffer> {
+  //   const response = await fetch(this._skinPath + filePath);
+  //   return await response.arrayBuffer();
+  // }
 
-  async getFileAsBlobPath(filePath: string): Promise<Blob> {
-    const response = await fetch(this._skinPath + filePath);
-    return await response.blob();
-  }
+  // async getFileAsBlobPath(filePath: string): Promise<Blob> {
+  //   const response = await fetch(this._skinPath + filePath);
+  //   return await response.blob();
+  // }
 
   // getFileIsExist(filePath: string): boolean {
   //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
@@ -724,6 +723,8 @@ export class UIRoot {
     for (const container of this.getContainers()) {
       container.init();
     }
+
+    this.playlist.init();
   }
 
   setSkinInfo(skinInfo: { [key: string]: string }) {
