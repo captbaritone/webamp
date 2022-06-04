@@ -1,5 +1,6 @@
 import { UIRoot } from "../../UIRoot";
 import BaseObject from "./BaseObject";
+import Config from "./Config";
 // import { CONFIG } from "./Config";
 // import Config from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
@@ -9,12 +10,14 @@ import ConfigAttribute from "./ConfigAttribute";
 export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
   _uiRoot: UIRoot;
+  _config: Config;
   _guid: string;
   _attributes: { [key: string]: ConfigAttribute } = {};
 
-  constructor(uiRoot: UIRoot, name: string, guid: string) {
+  constructor(uiRoot: UIRoot, config: Config, name: string, guid: string) {
     super();
     this._uiRoot = uiRoot;
+    this._config = config;
     this._id = name;
     this._guid = guid;
   }
@@ -28,14 +31,14 @@ export default class ConfigItem extends BaseObject {
   }
 
   getValue(key: string): string {
-    return this._uiRoot.CONFIG.getValue(this._guid, key);
+    return this._config.getValue(this._guid, key);
   }
   setValue(key: string, value: string) {
-    return this._uiRoot.CONFIG.setValue(this._guid, key, value);
+    return this._config.setValue(this._guid, key, value);
   }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {
-    name = name.toLocaleLowerCase()
+    name = name.toLocaleLowerCase();
     let oldValue = this.getValue(name);
     if (oldValue == null) {
       this.setValue(name, defaultValue);
@@ -46,7 +49,7 @@ export default class ConfigItem extends BaseObject {
   }
 
   getattribute(att_name: string): ConfigAttribute {
-    att_name = att_name.toLowerCase()
+    att_name = att_name.toLowerCase();
     // sample:
     // ConfigItem ciMisc;
     // ciMisc = Config.getItem("Options");

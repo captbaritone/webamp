@@ -31,7 +31,7 @@ export default class Config extends ConfigPersistent {
    */
   newitem(itemName: string, itemGuid: string): ConfigItem {
     // line below wouldn't replace the _configTree. ^_^v
-    const cfg = new ConfigItem(this._uiRoot, itemName, itemGuid);
+    const cfg = new ConfigItem(this._uiRoot, this, itemName, itemGuid);
 
     this._items[itemGuid] = cfg;
     this._aliases[itemName] = itemGuid;
