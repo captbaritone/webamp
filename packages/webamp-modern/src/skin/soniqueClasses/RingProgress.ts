@@ -6,8 +6,8 @@ export default class RingProgress extends GuiObj {
   _colors: string[] = [];
   _bgColor: string;
   _bgImageId: string;
+  _maskId: string;
   _progress: number = 0.7; //temporary
-
 
   getElTag(): string {
     return "layer";
@@ -20,11 +20,14 @@ export default class RingProgress extends GuiObj {
     }
 
     switch (key) {
-      case "region":
-        this._rgnId = value;
-        break;
-      case "background":
-        this._bgImageId = value;
+      //   case "region":
+      //     this._rgnId = value;
+      //     break;
+      //   case "background":
+      //     this._bgImageId = value;
+      //     break;
+      case "mask":
+        this._maskId = value;
         break;
       case "colors":
         this._buildColors(value);
@@ -55,8 +58,18 @@ export default class RingProgress extends GuiObj {
     }
   }
 
+  drawMask() {
+    if (!this._maskId) return;
+    const bitmap = this._uiRoot.getBitmap(this._maskId);
+    bitmap._setAsBackground(this.getDiv(), "mask");
+    // bitmap.setAsBackground(this.getDiv());
+    // this.getDiv().classList.add('webamp--img')
+    this.getDiv().style.setProperty('-webkit-mask-image', `var(${bitmap.getCSSVar()})`)
+  }
+
   draw(): void {
     super.draw();
+    this.drawMask();
     this.getDiv().style.backgroundImage = `conic-gradient(${this._colors.join(
       ", "
     )})`;
