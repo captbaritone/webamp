@@ -1,0 +1,21 @@
+.text-shaped {
+  color: silver;
+  font-size: 9px;
+  text-align: center;
+  color: aqua;
+  font-weight: bold;
+}
+.text-shaped::before {
+  content: "";
+  width: 50%;
+  height: 100%;
+  float: left;
+  shape-outside: var(--shape-outline);
+  shape-margin: 3px;
+}
+.text-shaped.right {
+  position: initial;
+}
+.text-shaped.right::before {
+  float: right;
+}

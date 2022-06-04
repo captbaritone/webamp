@@ -89,6 +89,14 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
 
+  moveRegions(regions: Rgn[], dx: number, dy: number) {
+    for (var i = 0; i < regions.length; i++) {
+      regions[i].left += dx;
+      regions[i].right += dx;
+      regions[i].top += dy;
+      regions[i].bottom += dy;
+    }
+  }
   async getRegions(rgnId: string, skipFirst: boolean = true): Promise<Rgn[]> {
     const buffer = await this._uiRoot.getFileAsBytes(rgnId);
     const words = new Int16Array(buffer);
@@ -183,8 +191,79 @@ export class SoniqueSkinEngine extends SkinEngine {
     // await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, this._rc);
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
+    await this.loadMidBottom(group);
   }
 
+  async loadMidBottom(parent: Group) {
+    //? show current song
+    const outer = await this.getRect("/rgn/mid/bottom");
+    let regions = await this.getRegions("/rgn/mid/bottom");
+    const halfWidth = outer.width / 2;
+    regions = [{ ...outer }, ...regions];
+    this.moveRegions(regions, -outer.left, -outer.top);
+    let first: boolean = true;
+    const p1: string[] = [];
+    const p2: string[] = [];
+    for (const region of regions) {
+      let { left, top, right, bottom } = region;
+      right--;
+      bottom--;
+      if (first) {
+        first = false;
+        // outer = region;
+        //? left
+        p1.push(`${left}px ${bottom}px`);
+        p1.push(`${left}px ${top}px`);
+        //? right
+        p2.push(`${right - halfWidth}px ${bottom}px`);
+        p2.push(`${right - halfWidth}px ${top}px`);
+        continue;
+      }
+      //? left
+      p1.push(`${left}px ${top}px`);
+      p1.push(`${left}px ${bottom}px`);
+      //? right
+      p2.push(`${right - halfWidth}px ${top}px`);
+      p2.push(`${right - halfWidth}px ${bottom}px`);
+    }
+
+    const circle = await this.group(
+      new XmlElement("dummy", {
+        id: `bottom-circle`,
+        // file: `/jpeg/misc`,
+        x: `${outer.left}`,
+        y: `${outer.top}`,
+        w: `${outer.width}`,
+        h: `${outer.height}`,
+      }),
+      parent
+    );
+    circle.getDiv().classList.add("text-shaped");
+    circle
+      .getDiv()
+      .style.setProperty("--shape-outline", `polygon(${p1.join(", ")})`);
+
+    const circle2 = await this.group(
+      new XmlElement("dummy", {
+        id: `bottom-inner-circle`,
+        // file: `/jpeg/misc`,
+        x: `0`,
+        y: `0`,
+        relatw: `1`,
+        relath: `1`,
+      }),
+      circle
+    );
+
+    circle2.getDiv().classList.add("text-shaped");
+    circle2.getDiv().classList.add("right");
+    circle2
+      .getDiv()
+      .style.setProperty("--shape-outline", `polygon(${p2.join(", ")})`);
+
+    circle2.getDiv().innerText = `Experience design is the design of medium, or across media, with human experience as an
+    explicit outcome, and human engagement as an explicit goal. more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.`;
+  }
   async applyRegion(group: Group, rgnId: string) {
     const regions = await this.getRegions(rgnId);
     const canvas = document.createElement("canvas");
@@ -246,7 +325,7 @@ export class SoniqueSkinEngine extends SkinEngine {
           x,
           y,
           w: `${width}`,
-          h: `${height}`
+          h: `${height}`,
         })
       );
       attributes["downImage"] = `${nick}-on`;
@@ -260,7 +339,7 @@ export class SoniqueSkinEngine extends SkinEngine {
           x,
           y,
           w: `${width}`,
-          h: `${height}`
+          h: `${height}`,
         })
       );
       attributes["downImage"] = `${nick}-on`;
@@ -275,7 +354,7 @@ export class SoniqueSkinEngine extends SkinEngine {
           x,
           y,
           w: `${width}`,
-          h: `${height}`
+          h: `${height}`,
         })
       );
       attributes["image"] = `${nick}-off`;
