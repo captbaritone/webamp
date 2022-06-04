@@ -226,6 +226,8 @@ export class SoniqueSkinEngine extends SkinEngine {
       p2.push(`${right - halfWidth}px ${top}px`);
       p2.push(`${right - halfWidth}px ${bottom}px`);
     }
+    this._uiRoot.addAdditionalCss(`--bottom-arc1: polygon(${p1.join(", ")});`);
+    this._uiRoot.addAdditionalCss(`--bottom-arc2: polygon(${p2.join(", ")});`);
 
     const circle = await this.group(
       new XmlElement("dummy", {
@@ -239,9 +241,9 @@ export class SoniqueSkinEngine extends SkinEngine {
       parent
     );
     circle.getDiv().classList.add("text-shaped");
-    circle
-      .getDiv()
-      .style.setProperty("--shape-outline", `polygon(${p1.join(", ")})`);
+    // circle
+    //   .getDiv()
+    //   .style.setProperty("--shape-outline", `polygon(${p1.join(", ")})`);
 
     const circle2 = await this.group(
       new XmlElement("dummy", {
@@ -257,9 +259,9 @@ export class SoniqueSkinEngine extends SkinEngine {
 
     circle2.getDiv().classList.add("text-shaped");
     circle2.getDiv().classList.add("right");
-    circle2
-      .getDiv()
-      .style.setProperty("--shape-outline", `polygon(${p2.join(", ")})`);
+    // circle2
+    //   .getDiv()
+    //   .style.setProperty("--shape-outline", `polygon(${p2.join(", ")})`);
 
     circle2.getDiv().innerText = `Experience design is the design of medium, or across media, with human experience as an
     explicit outcome, and human engagement as an explicit goal. more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.`;

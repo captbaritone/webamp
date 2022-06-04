@@ -10,7 +10,7 @@
   width: 50%;
   height: 100%;
   float: left;
-  shape-outside: var(--shape-outline);
+  shape-outside: var(--bottom-arc1);
   shape-margin: 3px;
 }
 .text-shaped.right {
@@ -18,4 +18,5 @@
 }
 .text-shaped.right::before {
   float: right;
+  shape-outside: var(--bottom-arc2);
 }

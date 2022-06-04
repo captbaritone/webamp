@@ -56,6 +56,7 @@ export class UIRoot {
   _skinInfo: { [key: string]: string } = {};
   _skinEngineClass: SkinEngineClass;
   _eventListener: Emitter = new Emitter();
+  _additionalCss: string[] = [];
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -114,6 +115,7 @@ export class UIRoot {
     this._buckets = {};
     this._bucketEntries = {};
     this._xFades = [];
+    this._additionalCss = []
     removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
@@ -429,6 +431,9 @@ export class UIRoot {
     for (const [dimension, size] of Object.entries(this._dimensions)) {
       cssRules.push(`  --dim-${dimension}: ${size}px;`);
     }
+    for (const additionalRule of this._additionalCss) {
+      cssRules.push(additionalRule);
+    }
     const cssId = `${this._id}-bitmap-css`;
     // const head = document.getElementsByTagName("head")[0];
     // debugger;
@@ -442,6 +447,9 @@ export class UIRoot {
     }
     cssEl.textContent = `#${this._id} {${cssRules.join("\n")}}`;
     // cssEl.textContent = `:root{${cssRules.join("\n")}}`;
+  }
+  addAdditionalCss(css:string) {
+    this._additionalCss.push(css)
   }
 
   getXuiElement(xuitag: string): XmlElement | null {
