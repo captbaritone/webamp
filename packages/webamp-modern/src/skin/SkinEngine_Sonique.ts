@@ -7,6 +7,7 @@ import Group from "./makiClasses/Group";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 import IniFile, { IniSection } from "./soniqueClasses/IniFile";
 import { MISC } from "./soniqueClasses/misc_ini";
+import RingProgress from "./soniqueClasses/RingProgress";
 import SgfFileExtractor from "./soniqueClasses/SgfFileExtractor";
 
 type Rgn = {
@@ -46,6 +47,10 @@ export class SoniqueSkinEngine extends SkinEngine {
   async parseSkin() {
     this._ini = new IniFile();
     this._ini.readString(MISC);
+    const skinIni = await this._uiRoot.getFileAsString("/skin.ini");
+    if (skinIni) {
+      this._ini.readString(skinIni);
+    }
     // console.log(JSON.stringify(this._ini._tree));
     console.log(this._ini._tree);
 
@@ -122,6 +127,39 @@ export class SoniqueSkinEngine extends SkinEngine {
     return rects[0];
   }
 
+  /**
+   * Create a new bitmap used as mask by RingProgress
+   * @param id bitmapMask's id
+   * @param regionId filename of region path
+   * @param ImageId backgound bitmap id used for creating mask
+   * @returns same as param `id`
+   */
+  async mask(id: string, regionId: string, ImageId: string):Promise<string> {
+    let regions = await this.getRegions("/rgn/mid/listposring", false);
+    // just quick pop the first
+    regions.reverse();
+    let rect = regions.pop();
+    regions.reverse();
+    const bitmap = await this.bitmap(
+      new XmlElement("bitmap", {
+        id,
+        file: ImageId,
+        x: `${rect.left}`,
+        y: `${rect.top}`,
+        w: `${rect.width}`,
+        h: `${rect.height}`,
+      })
+    );
+
+    //? from now we are working in local. (top=0,left=0)
+    this.moveRegions(regions, -rect.left, -rect.top);
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    return id;
+  }
+
   // #endregion
 
   async loadContainer(): Promise<Container> {
@@ -191,10 +229,62 @@ export class SoniqueSkinEngine extends SkinEngine {
     // await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, this._rc);
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
+    await this.loadMidTop(group);
     await this.loadMidBottom(group);
   }
 
+  async loadMidTop(parent: Group) {
+    //? playList progres
+    const iColors = this._ini.section("sonique colors");
+    const playListColors: string[] = [];
+    for (var i = 1; i <= 2; i++) {
+      playListColors.push(iColors.getString(`PlayListColor_${i}`));
+    }
+    let rect = await this.getRect("/rgn/mid/listposring");
+    let regions = await this.getRegions("/rgn/mid/listposring");
+    this.moveRegions(regions, -rect.left, -rect.top);
+
+    await this.newGui(
+      RingProgress,
+      new XmlElement("dummy", {
+        id: `playlist-progress`,
+        // region: `/rgn/mid/songposring`,
+        regions: JSON.stringify(regions),
+        background: "midsonique",
+        colors: `${playListColors.join(",")}`,
+        x: `${rect.left}`,
+        y: `${rect.top}`,
+        w: `${rect.width}`,
+        h: `${rect.height}`,
+      }),
+      parent
+    );
+  }
+
   async loadMidBottom(parent: Group) {
+    //? song progres
+    const iColors = this._ini.section("sonique colors");
+    const progressColors: string[] = [];
+    for (var i = 1; i <= 3; i++) {
+      progressColors.push(iColors.getString(`ProgressColor_${i}`));
+    }
+
+    let rect = await this.getRect("/rgn/mid/songposring");
+    await this.newGui(
+      RingProgress,
+      new XmlElement("dummy", {
+        id: `song-progress`,
+        region: `/rgn/mid/songposring`,
+        background: "midsonique",
+        colors: `${progressColors.join(",")}`,
+        x: `${rect.left}`,
+        y: `${rect.top}`,
+        w: `${rect.width}`,
+        h: `${rect.height}`,
+      }),
+      parent
+    );
+
     //? show current song
     const outer = await this.getRect("/rgn/mid/bottom");
     let regions = await this.getRegions("/rgn/mid/bottom");

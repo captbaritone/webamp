@@ -18,14 +18,14 @@ export class IniSection {
   
 }
 export default class IniFile {
-  _tree: IniTree = {};
+  _tree: IniTree;
 
   section(name:string): IniSection {
       return new IniSection(this._tree[name.toLowerCase()])
   }
 
   readString(content: string) {
-    const ini: IniTree = {};
+    const ini: IniTree = this._tree || {};
     let section = 'root'
     content = content.replace(/\r/g, "");
     const lines = content.split("\n");
