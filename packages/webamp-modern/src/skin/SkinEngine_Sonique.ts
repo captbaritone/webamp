@@ -276,7 +276,7 @@ export class SoniqueSkinEngine extends SkinEngine {
         id: `playlist-progress`,
         // region: `/rgn/mid/songposring`,
         // regions: JSON.stringify(regions),
-        background: "midsonique",
+        // background: "midsonique",
         colors: `${playListColors.join(",")}`,
         mask: await this.mask('pl-mask', '/rgn/mid/listposring', 'midsonique'), // id
         x: `${rect.left}`,
@@ -301,9 +301,10 @@ export class SoniqueSkinEngine extends SkinEngine {
       RingProgress,
       new XmlElement("dummy", {
         id: `song-progress`,
-        region: `/rgn/mid/songposring`,
-        background: "midsonique",
+        // region: `/rgn/mid/songposring`,
+        // background: "midsonique",
         colors: `${progressColors.join(",")}`,
+        mask: await this.mask('pl-mask', '/rgn/mid/songposring', 'midsonique'), // id
         x: `${rect.left}`,
         y: `${rect.top}`,
         w: `${rect.width}`,
