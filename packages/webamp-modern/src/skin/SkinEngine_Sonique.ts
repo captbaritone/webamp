@@ -65,6 +65,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     // which one declared first will become the default visible
     await this.loadMid(container);
     await this.loadNav(container);
+    await this.loadSmall(container);
     // console.log(await this.getRegions("/rgn/nav/next"));
   }
 
@@ -335,6 +336,7 @@ export class SoniqueSkinEngine extends SkinEngine {
       parent
     );
     await this.loadCircleButton("SingleUp", "SWITCH;nav", room);
+    await this.loadCircleButton("SingleDown", "SWITCH;small", room);
   }
 
   async loadMidBottom(parent: Group) {
@@ -447,20 +449,20 @@ export class SoniqueSkinEngine extends SkinEngine {
     // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
     const bg = this._uiRoot.getBitmap(`navigator`);
     let node = new XmlElement("layout", {
-      id: "nav",
+      id: prefix,
       w: `${bg.getWidth()}`,
       h: `${bg.getHeight()}`,
     });
     const normal = await this.layout(node, parent);
 
     node = new XmlElement("group", {
-      id: "nav-root",
+      id: `${prefix}-root`,
       background: bg.getId(),
       w: `${bg.getWidth()}`,
       h: `${bg.getHeight()}`,
     });
     const group = await this.group(node, normal);
-    await this.applyRegion(group, "/rgn/nav/frame");
+    await this.applyRegion(group, `/rgn/${prefix}/frame`);
 
     node = new XmlElement("layer", {
       id: "mover",
@@ -509,6 +511,68 @@ export class SoniqueSkinEngine extends SkinEngine {
       group,
       { position: "GREEN" }
     );
+    // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
+    // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
+  }
+  //#endregion
+
+  // #region (collapsed) layout: NAV
+  async loadSmall(parent: Container) {
+    const prefix = "small";
+    // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
+    const bg = this._uiRoot.getBitmap(`smallstate`);
+    let node = new XmlElement("layout", {
+      id: prefix,
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const normal = await this.layout(node, parent);
+
+    node = new XmlElement("group", {
+      id: `${prefix}-root`,
+      background: bg.getId(),
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const group = await this.group(node, normal);
+    await this.applyRegion(group, `/rgn/${prefix}/frame`);
+
+    node = new XmlElement("layer", {
+      id: "mover",
+      w: `0`,
+      h: `0`,
+      relatw: `1`,
+      relath: `1`,
+      // background: "base.png",
+      move: "1",
+    });
+    const mover = await this.layer(node, group);
+
+    // seek on kjofol default skin looked like cover the pitch. load it first
+    // await this.loadSeek(this._rc, group);
+
+    // await this.loadButton("play", "play", group);
+    // await this.loadButton("pause", "pause", group);
+    // await this.loadButton("stop", "stop", group, {
+    //   rectName: "play",
+    //   attributes: { visible: "audio:play", image: "splash" },
+    // });
+    // await this.loadButton("next", "next", group);
+    // await this.loadButton("prev", "prev", group);
+    // await this.loadButton("eject", "eject", group, { position: "ORANGE" });
+
+    // await this.loadToggleButton(
+    //   "Repeat",
+    //   "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat",
+    //   group,
+    //   { position: "CYAN" }
+    // );
+    // await this.loadToggleButton(
+    //   "Shuffle",
+    //   "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle",
+    //   group,
+    //   { position: "GREEN" }
+    // );
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
   }
