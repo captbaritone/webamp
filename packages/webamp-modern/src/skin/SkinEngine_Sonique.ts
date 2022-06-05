@@ -6,6 +6,7 @@ import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
 import ToggleButton from "./makiClasses/ToggleButton";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
+import CircleButton from "./soniqueClasses/CircleButton";
 import IniFile, { IniSection } from "./soniqueClasses/IniFile";
 import { MISC } from "./soniqueClasses/misc_ini";
 import RingProgress from "./soniqueClasses/RingProgress";
@@ -63,7 +64,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     const container = await this.loadContainer(); // player Container
     // which one declared first will become the default visible
     await this.loadMid(container);
-    console.log(await this.getRegions("/rgn/nav/next"));
+    await this.loadNav(container);
+    // console.log(await this.getRegions("/rgn/nav/next"));
   }
 
   // #region (collapsed) load-bitmap
@@ -104,7 +106,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
   async getRegions(rgnId: string, skipFirst: boolean = true): Promise<Rgn[]> {
-    rgnId = rgnId.toLowerCase()
+    rgnId = rgnId.toLowerCase();
     const buffer = await this._uiRoot.getFileAsBytes(rgnId);
     const words = new Int16Array(buffer);
     // const count = words[0];
@@ -200,6 +202,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     return main;
   }
 
+  // #region (collapsed) layout: MID
   async loadMid(parent: Container) {
     const prefix = "mid";
     // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
@@ -234,6 +237,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     // seek on kjofol default skin looked like cover the pitch. load it first
     // await this.loadSeek(this._rc, group);
 
+    await this.loadButton("eject", "switch;nav", group, { position: "RED" });
+
     await this.loadButton("play", "play", group);
     await this.loadButton("pause", "pause", group);
     await this.loadButton("stop", "stop", group, {
@@ -242,7 +247,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     });
     await this.loadButton("next", "next", group);
     await this.loadButton("prev", "prev", group);
-    await this.loadButton("eject", "eject", group, {position:'ORANGE'});
+    await this.loadButton("eject", "eject", group, { position: "ORANGE" });
     // await this.loadButton("shuffle", "eject", group);
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
@@ -255,10 +260,21 @@ export class SoniqueSkinEngine extends SkinEngine {
     // // await this.loadSeek(this._rc, group);
     // await this.loadEqualizer(this._rc, group);
 
-    await this.loadToggleButton("Repeat", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat", group, {position:'CYAN'});
-    await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, {position:'GREEN'});
+    await this.loadToggleButton(
+      "Repeat",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat",
+      group,
+      { position: "CYAN" }
+    );
+    await this.loadToggleButton(
+      "Shuffle",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle",
+      group,
+      { position: "GREEN" }
+    );
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
+    
     await this.loadMidTop(group);
     await this.loadMidBottom(group);
   }
@@ -296,6 +312,29 @@ export class SoniqueSkinEngine extends SkinEngine {
       }),
       parent
     );
+
+    rect = await this.getRect("/rgn/mid/top");
+    const room = await this.group(
+      // RingProgress,
+      new XmlElement("dummy", {
+        id: `top-room`,
+        // region: `/rgn/mid/songposring`,
+        // regions: JSON.stringify(regions),
+        // background: "midsonique",
+        // colors: `${playListColors.join(",")}`,
+        // bgcolor: iColors.getString("ProgressBkColor") || "grey",
+        // mask: await this.mask("pl-mask", "/rgn/mid/listposring", "midsonique"), // id
+        // degree: this._ini.getInt("misc values", "mid_playlistmode")
+        //   ? "270"
+        //   : "360",
+        x: `${rect.left}`,
+        y: `${rect.top}`,
+        w: `${rect.width}`,
+        h: `${rect.height}`,
+      }),
+      parent
+    );
+    await this.loadCircleButton("SingleUp", "SWITCH;nav", room);
   }
 
   async loadMidBottom(parent: Group) {
@@ -400,6 +439,81 @@ export class SoniqueSkinEngine extends SkinEngine {
     circle2.getDiv().innerText = `Experience design is the design of medium, or across media, with human experience as an
     explicit outcome, and human engagement as an explicit goal. more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.more text test.`;
   }
+  //#endregion
+
+  // #region (collapsed) layout: NAV
+  async loadNav(parent: Container) {
+    const prefix = "nav";
+    // const bg = await this.loadBitmap(this._rc["BackgroundImage"]);
+    const bg = this._uiRoot.getBitmap(`navigator`);
+    let node = new XmlElement("layout", {
+      id: "nav",
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const normal = await this.layout(node, parent);
+
+    node = new XmlElement("group", {
+      id: "nav-root",
+      background: bg.getId(),
+      w: `${bg.getWidth()}`,
+      h: `${bg.getHeight()}`,
+    });
+    const group = await this.group(node, normal);
+    await this.applyRegion(group, "/rgn/nav/frame");
+
+    node = new XmlElement("layer", {
+      id: "mover",
+      w: `0`,
+      h: `0`,
+      relatw: `1`,
+      relath: `1`,
+      // background: "base.png",
+      move: "1",
+    });
+    const mover = await this.layer(node, group);
+
+    // seek on kjofol default skin looked like cover the pitch. load it first
+    // await this.loadSeek(this._rc, group);
+
+    await this.loadButton("play", "play", group);
+    await this.loadButton("pause", "pause", group);
+    await this.loadButton("stop", "stop", group, {
+      rectName: "play",
+      attributes: { visible: "audio:play", image: "splash" },
+    });
+    await this.loadButton("next", "next", group);
+    await this.loadButton("prev", "prev", group);
+    await this.loadButton("eject", "eject", group, { position: "ORANGE" });
+    // await this.loadButton("shuffle", "eject", group);
+    // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
+    // await this.loadButton("NextSong", "nextsong", group, this._rc);
+    // await this.loadButton("OpenFile", "openfile", group, this._rc);
+
+    // await this.loadTexts(group, this._rc);
+    // await this.loadVis(group, this._rc);
+    // await this.loadVolume(this._rc, group);
+    // await this.loadPitch(this._rc, group);
+    // // await this.loadSeek(this._rc, group);
+    // await this.loadEqualizer(this._rc, group);
+
+    await this.loadToggleButton(
+      "Repeat",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat",
+      group,
+      { position: "CYAN" }
+    );
+    await this.loadToggleButton(
+      "Shuffle",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle",
+      group,
+      { position: "GREEN" }
+    );
+    // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
+    // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
+  }
+  //#endregion
+
   async applyRegion(group: Group, rgnId: string) {
     const regions = await this.getRegions(rgnId);
     const canvas = document.createElement("canvas");
@@ -527,7 +641,7 @@ export class SoniqueSkinEngine extends SkinEngine {
       attributes?: { [key: string]: string };
     } = {}
   ) {
-    // const prefix = config["prefix"];    
+    // const prefix = config["prefix"];
     // const rect = config[`${nick}Button`];
     // if (!rect) return;
     // // console.log("rect:", rect);
@@ -589,20 +703,70 @@ export class SoniqueSkinEngine extends SkinEngine {
       );
       attributes["image"] = `${nick}-off`;
     }
-    
+
     const node = new XmlElement("button", {
       id: nick,
       cfgattrib,
-      cfgval:"2",
+      cfgval: "2",
       // tooltip,
       x: `${left}`,
       y: `${top}`,
       w: `${width}`,
       h: `${height}`,
       // activeImage: `${prefix}-${downimage}`,
-      ...attributes
+      ...attributes,
     });
     const button = await this.newGui(ToggleButton, node, parent);
+    return button;
+  }
+
+  async loadCircleButton(
+    nick: string,
+    action: string,
+    parent: Group,
+    options: {
+      fileName?: string;
+      rectName?: string;
+      action?: string;
+      // msm?: string;
+      attributes?: { [key: string]: string };
+    } = {}
+  ) {
+    // const prefix = config["prefix"];
+    // const rect = config[`${nick}Button`];
+    // if (!rect) return;
+    // // console.log("rect:", rect);
+    // const [left, top, right, bottom, tooltip, downimage] = rect;
+    // const rectName = options.rectName || nick;
+    // const layout = parent.getparentlayout().getId();
+    // const regId = `/rgn/${layout}/${rectName}`;
+    // const { left, top, width, height } = await this.getRect(regId);
+
+    // const attributes = options.attributes || {};
+    // const position = options.position || nick;
+
+    let param = "";
+    if (action.includes(";")) {
+      [action, param] = action.split(";");
+    }
+
+    const msm: IniSection = this._ini.section("msm locations");
+
+    const x = msm.getString(`msm_${nick}_x`);
+    const y = msm.getString(`msm_${nick}_y`);
+    const w = "10";
+    const h = "10";
+
+    const node = new XmlElement("button", {
+      id: nick,
+      action,
+      param,
+      x,
+      y,
+      w,
+      h,
+    });
+    const button = await this.newGui(CircleButton, node, parent);
     return button;
   }
 

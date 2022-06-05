@@ -20,3 +20,8 @@
   float: right;
   shape-outside: var(--bottom-arc2);
 }
+
+button.circle {
+  background-color: aqua;
+  border-radius: 50%;
+}
