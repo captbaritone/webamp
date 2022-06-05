@@ -134,7 +134,7 @@ export class SoniqueSkinEngine extends SkinEngine {
    * @param ImageId backgound bitmap id used for creating mask
    * @returns same as param `id`
    */
-  async mask(id: string, regionId: string, ImageId: string):Promise<string> {
+  async mask(id: string, regionId: string, ImageId: string): Promise<string> {
     let regions = await this.getRegions(regionId, false);
     // just quick pop the first
     regions.reverse();
@@ -143,7 +143,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     const bitmap = await this.bitmap(
       new XmlElement("bitmap", {
         id,
-        file: '',
+        file: "",
         // x: `${rect.left}`,
         // y: `${rect.top}`,
         w: `${rect.width}`,
@@ -152,36 +152,36 @@ export class SoniqueSkinEngine extends SkinEngine {
     );
     // bitmap.ensureImageLoaded(this._imageManager)
 
-    const bg = this._uiRoot.getBitmap(ImageId)
-    const bgCanvas = bg.getCanvas()
+    const bg = this._uiRoot.getBitmap(ImageId);
+    const bgCanvas = bg.getCanvas();
 
     //? from now we are working in local. (top=0,left=0)
     this.moveRegions(regions, -rect.left, -rect.top);
-    const canvas = document.createElement('canvas') as HTMLCanvasElement;
-    const w = canvas.width = rect.width;
-    const h = canvas.height = rect.height;
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const w = (canvas.width = rect.width);
+    const h = (canvas.height = rect.height);
     // const canvas = bitmap.getCanvas()
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(bgCanvas, rect.left, rect.top, w,h, 0,0, w,h)
+    ctx.drawImage(bgCanvas, rect.left, rect.top, w, h, 0, 0, w, h);
 
-    const idata = ctx.getImageData(0,0,w, h);
+    const idata = ctx.getImageData(0, 0, w, h);
     const data = idata.data;
     //? set alpha = zero
     for (var i = 0; i < data.length; i += 4) {
-      data[i+3] = 0;
+      data[i + 3] = 0;
     }
     //? set alpha > zero if any
-    for(var region of regions){
+    for (var region of regions) {
       for (var y = region.top; y < region.bottom; y++) {
         for (var x = region.left; x < region.right; x++) {
           var i = (y * w + x) * 4;
-          var a = Math.floor((data[i+0]+data[i+1]+data[i+2])/3);
-          data[i+3] = a;
+          var a = Math.floor((data[i + 0] + data[i + 1] + data[i + 2]) / 3);
+          data[i + 3] = a;
         }
       }
     }
     ctx.putImageData(idata, 0, 0);
-    bitmap.setImage(canvas)
+    bitmap.setImage(canvas);
 
     return id;
   }
@@ -270,6 +270,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     // let regions = await this.getRegions("/rgn/mid/listposring");
     // this.moveRegions(regions, -rect.left, -rect.top);
 
+    // ProgressBkColor
     await this.newGui(
       RingProgress,
       new XmlElement("dummy", {
@@ -278,7 +279,10 @@ export class SoniqueSkinEngine extends SkinEngine {
         // regions: JSON.stringify(regions),
         // background: "midsonique",
         colors: `${playListColors.join(",")}`,
-        mask: await this.mask('pl-mask', '/rgn/mid/listposring', 'midsonique'), // id
+        mask: await this.mask("pl-mask", "/rgn/mid/listposring", "midsonique"), // id
+        degree: this._ini.getInt("misc values", "mid_playlistmode")
+          ? "270"
+          : "360",
         x: `${rect.left}`,
         y: `${rect.top}`,
         w: `${rect.width}`,
@@ -304,7 +308,7 @@ export class SoniqueSkinEngine extends SkinEngine {
         // region: `/rgn/mid/songposring`,
         // background: "midsonique",
         colors: `${progressColors.join(",")}`,
-        mask: await this.mask('pl-mask', '/rgn/mid/songposring', 'midsonique'), // id
+        mask: await this.mask("pl-mask", "/rgn/mid/songposring", "midsonique"), // id
         x: `${rect.left}`,
         y: `${rect.top}`,
         w: `${rect.width}`,
