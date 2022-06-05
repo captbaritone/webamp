@@ -266,6 +266,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     for (var i = 1; i <= 2; i++) {
       playListColors.push(iColors.getString(`PlayListColor_${i}`));
     }
+    // console.log('plTop:', playListColors)
     let rect = await this.getRect("/rgn/mid/listposring");
     // let regions = await this.getRegions("/rgn/mid/listposring");
     // this.moveRegions(regions, -rect.left, -rect.top);
@@ -279,6 +280,7 @@ export class SoniqueSkinEngine extends SkinEngine {
         // regions: JSON.stringify(regions),
         // background: "midsonique",
         colors: `${playListColors.join(",")}`,
+        bgcolor: iColors.getString("ProgressBkColor") || "grey",
         mask: await this.mask("pl-mask", "/rgn/mid/listposring", "midsonique"), // id
         degree: this._ini.getInt("misc values", "mid_playlistmode")
           ? "270"
@@ -308,6 +310,7 @@ export class SoniqueSkinEngine extends SkinEngine {
         // region: `/rgn/mid/songposring`,
         // background: "midsonique",
         colors: `${progressColors.join(",")}`,
+        bgcolor: iColors.getString("ProgressBkColor") || "grey",
         mask: await this.mask("pl-mask", "/rgn/mid/songposring", "midsonique"), // id
         x: `${rect.left}`,
         y: `${rect.top}`,

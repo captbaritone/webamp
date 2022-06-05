@@ -5,12 +5,12 @@ export default class RingProgress extends GuiObj {
   _rgnId: string;
   _action: string;
   _colors: string[] = [];
-  _degree: number = 360; // 0..360
+  _maxDegree: number = 360; // 0..360
   _bgColor: string = "red";
   _bgImageId: string;
   _maskId: string;
   _staticGradient: string; // css for never changed gradient
-  _progress: number = 0.7; //temporary
+  _progress: number = .7; //temporary
 
   getElTag(): string {
     return "layer";
@@ -30,13 +30,16 @@ export default class RingProgress extends GuiObj {
       //     this._bgImageId = value;
       //     break;
       case "degree":
-        this._degree = num(value);
+        this._maxDegree = num(value);
         break;
       case "mask":
         this._maskId = value;
         break;
       case "colors":
         this._buildColors(value);
+        break;
+      case "bgcolor":
+        this._bgColor = parseColor(value);
         break;
       default:
         return false;
@@ -52,15 +55,16 @@ export default class RingProgress extends GuiObj {
    */
   _buildColors(colors: string) {
     for (var color of colors.split(",")) {
-      if (!color.startsWith("0x")) {
-        throw new Error("color is expected in 0xFF999999 format.");
-      }
-      if (color.length == 10) {
-        color = color.substring(4);
-      } else {
-        color = color.substring(2);
-      }
-      this._colors.push(`#${color}`);
+      // if (!color.startsWith("0x")) {
+      //   throw new Error("color is expected in 0xFF999999 format.");
+      // }
+      // if (color.length == 10) {
+      //   color = color.substring(4);
+      // } else {
+      //   color = color.substring(2);
+      // }
+      // this._colors.push(`#${color}`);
+      this._colors.push(parseColor(color));
     }
   }
 
@@ -94,7 +98,9 @@ export default class RingProgress extends GuiObj {
     //     //? -179..-91 == 270..259
     //   }
     // }
-    console.log("deg:", deg, "=#", deg + 90);
+    // console.log("deg:", deg, "=#", deg + 90);
+    this._progress = deg / this._maxDegree;
+    this.drawProgress()
   }
 
   drawMask() {
@@ -114,14 +120,18 @@ export default class RingProgress extends GuiObj {
   }
 
   prepareGradient() {
-    const fullColors = this._colors.map(
-      (color, i, arr) => `${color} ${((i + 1) * this._degree) / arr.length}deg`
-    );
-    if (this._degree < 360) {
-      fullColors.push(
-        `${this._colors[this._colors.length - 1]} ${this._degree}deg`
-      );
-      fullColors.push(`transparent ${this._degree}deg`);
+    // const fullColors = this._colors.map(
+    //   (color, i, arr) => `${color} ${((i + 1) * this._degree) / arr.length}deg`
+    //   );
+    const fullColors = [...this._colors]; //clone
+    if (this._maxDegree < 360) {
+      let lastColor = fullColors.pop();
+      lastColor = `${lastColor} ${this._maxDegree}deg`
+      fullColors.push(lastColor)
+      // fullColors.push(
+      //   `${this._colors[this._colors.length - 1]} ${this._degree}deg`
+      // );
+      fullColors.push(`transparent ${this._maxDegree}deg`);
     }
     this._staticGradient = `conic-gradient(${fullColors.join(", ")})`;
     // this.getDiv().style.backgroundImage = "";
@@ -129,9 +139,9 @@ export default class RingProgress extends GuiObj {
   
   drawProgress() {
     const progressColors = [
-      `transparent ${this._progress * this._degree}deg`,
-      `${this._bgColor} ${this._progress * this._degree}deg ${this._degree}deg`,
-      `transparent ${this._degree}deg`
+      `transparent ${this._progress * this._maxDegree}deg`,
+      `${this._bgColor} ${this._progress * this._maxDegree}deg ${this._maxDegree}deg`,
+      `transparent ${this._maxDegree}deg`
     ];
     const dynamicGradient = `conic-gradient(${progressColors.join(", ")})`;
 
@@ -144,4 +154,17 @@ export default class RingProgress extends GuiObj {
     this.drawMask();
     this.drawProgress();
   }
+}
+
+function parseColor(soniqueColor:string):string {
+  let color = soniqueColor
+  if (!color.startsWith("0x")) {
+    throw new Error("color is expected in 0xFF999999 format.");
+  }
+  if (color.length == 10) {
+    color = color.substring(4);
+  } else {
+    color = color.substring(2);
+  }
+  return`#${color}`;
 }
