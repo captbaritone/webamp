@@ -137,6 +137,7 @@ async function initializeSkinListMenu() {
     { filename: "[K-Jofol] Limus 2.0", download_url: "assets/Limus2-0.zip" },
     { filename: "[Sonique] Default", download_url: "assets/sonique.sgf" },
     { filename: "[Sonique] Scifi-Stories", download_url: "assets/scifi-stories.sgf" },
+    { filename: "[JetAudio] Small Bar", download_url: "assets/DefaultBar_s.jsk" },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 
