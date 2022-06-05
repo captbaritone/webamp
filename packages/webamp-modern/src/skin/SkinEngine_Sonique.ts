@@ -242,8 +242,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     });
     await this.loadButton("next", "next", group);
     await this.loadButton("prev", "prev", group);
-    await this.loadButton("eject", "eject", group);
-    await this.loadButton("shuffle", "eject", group);
+    await this.loadButton("eject", "eject", group, {position:'ORANGE'});
+    // await this.loadButton("shuffle", "eject", group);
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
     // await this.loadButton("OpenFile", "openfile", group, this._rc);
@@ -434,6 +434,7 @@ export class SoniqueSkinEngine extends SkinEngine {
       fileName?: string;
       rectName?: string;
       action?: string;
+      position?: string;
       attributes?: { [key: string]: string };
     } = {}
   ) {
@@ -448,12 +449,13 @@ export class SoniqueSkinEngine extends SkinEngine {
       [action, param] = action.split(";");
     }
     const attributes = options.attributes || {};
+    const position = options.position || nick;
 
     const misc: IniSection = this._ini.section("misc locations");
     //? imageDown
     var x: string, y: string;
-    if ((x = misc.getString(`${nick.toLowerCase()}on_x`))) {
-      y = misc.getString(`${nick.toLowerCase()}on_y`);
+    if ((x = misc.getString(`${position.toLowerCase()}on_x`))) {
+      y = misc.getString(`${position.toLowerCase()}on_y`);
       await this.bitmap(
         new XmlElement("bitmap", {
           id: `${nick}-on`,
@@ -466,8 +468,8 @@ export class SoniqueSkinEngine extends SkinEngine {
       );
       attributes["downImage"] = `${nick}-on`;
     }
-    if ((x = misc.getString(`${nick.toLowerCase()}_x`))) {
-      y = misc.getString(`${nick.toLowerCase()}_y`);
+    if ((x = misc.getString(`${position.toLowerCase()}_x`))) {
+      y = misc.getString(`${position.toLowerCase()}_y`);
       await this.bitmap(
         new XmlElement("bitmap", {
           id: `${nick}-on`,
@@ -481,8 +483,8 @@ export class SoniqueSkinEngine extends SkinEngine {
       attributes["downImage"] = `${nick}-on`;
     }
     //? image
-    if ((x = misc.getString(`${nick.toLowerCase()}off_x`))) {
-      y = misc.getString(`${nick.toLowerCase()}off_y`);
+    if ((x = misc.getString(`${position.toLowerCase()}off_x`))) {
+      y = misc.getString(`${position.toLowerCase()}off_y`);
       await this.bitmap(
         new XmlElement("bitmap", {
           id: `${nick}-off`,
