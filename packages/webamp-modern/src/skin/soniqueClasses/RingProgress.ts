@@ -6,9 +6,10 @@ export default class RingProgress extends GuiObj {
   _action: string;
   _colors: string[] = [];
   _degree: number = 360; // 0..360
-  _bgColor: string;
+  _bgColor: string = "red";
   _bgImageId: string;
   _maskId: string;
+  _staticGradient: string; // css for never changed gradient
   _progress: number = 0.7; //temporary
 
   getElTag(): string {
@@ -63,27 +64,83 @@ export default class RingProgress extends GuiObj {
     }
   }
 
+  /**
+   * User click on ring
+   *
+   * @param  x   The X position in the screen where the cursor was when the event was triggered.
+   * @param  y   The Y position in the screen where the cursor was when the event was triggered.
+   */
+  onLeftButtonDown(x: number, y: number) {
+    this.getparentlayout().bringtofront();
+    x -= this.getleft();
+    y -= this.gettop();
+    const bound = this.getDiv().getBoundingClientRect();
+    const cx = bound.width / 2;
+    const cy = bound.height / 2;
+    const deltaX = x - cx;
+    const deltaY = y - cy;
+    // const rad = Math.atan2(deltaY, deltaX); // In radians
+    const rad = Math.atan2(deltaY, deltaX); // In radians
+    const pi = Math.PI;
+    let deg = rad * (180 / pi); // got: 0..180,-179..-1
+    deg = (deg + 450) % 360; // modulus. got: 0..~360
+    // if(deg>=0){
+    //   deg += 90;
+    // } else {
+    //   //?negative
+    //   if(deg>=-90){
+    //     deg += 90
+    //   } else {
+    //     //? -179..-91 == 270..259
+    //   }
+    // }
+    console.log("deg:", deg, "=#", deg + 90);
+  }
+
   drawMask() {
     if (!this._maskId) return;
     const bitmap = this._uiRoot.getBitmap(this._maskId);
     bitmap._setAsBackground(this.getDiv(), "mask");
     // bitmap.setAsBackground(this.getDiv());
     // this.getDiv().classList.add('webamp--img')
-    this.getDiv().style.setProperty('-webkit-mask-image', `var(${bitmap.getCSSVar()})`)
-    this.getDiv().style.setProperty('webkit-mask-image', `var(${bitmap.getCSSVar()})`)
+    this.getDiv().style.setProperty(
+      "-webkit-mask-image",
+      `var(${bitmap.getCSSVar()})`
+    );
+    this.getDiv().style.setProperty(
+      "webkit-mask-image",
+      `var(${bitmap.getCSSVar()})`
+    );
   }
 
-  drawProgress() {
-    const fullColors = this._colors.map((color,i, arr)=>`${color} ${(i+1) * this._degree / arr.length}deg`)
-    if(this._degree<360){
-      fullColors.push(`${this._colors[this._colors.length-1]} ${this._degree}deg`)
-      fullColors.push(`transparent ${this._degree}deg`)
+  prepareGradient() {
+    const fullColors = this._colors.map(
+      (color, i, arr) => `${color} ${((i + 1) * this._degree) / arr.length}deg`
+    );
+    if (this._degree < 360) {
+      fullColors.push(
+        `${this._colors[this._colors.length - 1]} ${this._degree}deg`
+      );
+      fullColors.push(`transparent ${this._degree}deg`);
     }
-    this.getDiv().style.backgroundImage = `conic-gradient(${fullColors.join(', ')})`;
+    this._staticGradient = `conic-gradient(${fullColors.join(", ")})`;
+    // this.getDiv().style.backgroundImage = "";
+  }
+  
+  drawProgress() {
+    const progressColors = [
+      `transparent ${this._progress * this._degree}deg`,
+      `${this._bgColor} ${this._progress * this._degree}deg ${this._degree}deg`,
+      `transparent ${this._degree}deg`
+    ];
+    const dynamicGradient = `conic-gradient(${progressColors.join(", ")})`;
+
+    this.getDiv().style.backgroundImage = `${dynamicGradient}, ${this._staticGradient}`;
   }
 
   draw(): void {
     super.draw();
+    this.prepareGradient();
     this.drawMask();
     this.drawProgress();
   }
