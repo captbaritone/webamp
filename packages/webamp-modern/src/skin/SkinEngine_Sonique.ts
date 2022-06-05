@@ -4,6 +4,7 @@ import { Edges } from "./Clippath";
 import { FileExtractor } from "./FileExtractor";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
+import ToggleButton from "./makiClasses/ToggleButton";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 import IniFile, { IniSection } from "./soniqueClasses/IniFile";
 import { MISC } from "./soniqueClasses/misc_ini";
@@ -103,6 +104,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
   async getRegions(rgnId: string, skipFirst: boolean = true): Promise<Rgn[]> {
+    rgnId = rgnId.toLowerCase()
     const buffer = await this._uiRoot.getFileAsBytes(rgnId);
     const words = new Int16Array(buffer);
     // const count = words[0];
@@ -240,6 +242,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     });
     await this.loadButton("next", "next", group);
     await this.loadButton("prev", "prev", group);
+    await this.loadButton("eject", "eject", group);
+    await this.loadButton("shuffle", "eject", group);
     // await this.loadButton("PreviousSong", "previoussong", group, this._rc);
     // await this.loadButton("NextSong", "nextsong", group, this._rc);
     // await this.loadButton("OpenFile", "openfile", group, this._rc);
@@ -251,8 +255,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     // // await this.loadSeek(this._rc, group);
     // await this.loadEqualizer(this._rc, group);
 
-    // await this.loadToggleButton("Repeat", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat", group, this._rc);
-    // await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, this._rc);
+    await this.loadToggleButton("Repeat", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat", group, {position:'CYAN'});
+    await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, {position:'GREEN'});
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
     await this.loadMidTop(group);
@@ -506,6 +510,97 @@ export class SoniqueSkinEngine extends SkinEngine {
       ...attributes,
     });
     const button = await this.button(node, parent);
+    return button;
+  }
+
+  async loadToggleButton(
+    nick: string,
+    cfgattrib: string,
+    parent: Group,
+    options: {
+      fileName?: string;
+      rectName?: string;
+      action?: string;
+      position?: string;
+      attributes?: { [key: string]: string };
+    } = {}
+  ) {
+    // const prefix = config["prefix"];    
+    // const rect = config[`${nick}Button`];
+    // if (!rect) return;
+    // // console.log("rect:", rect);
+    // const [left, top, right, bottom, tooltip, downimage] = rect;
+    const rectName = options.rectName || nick;
+    const layout = parent.getparentlayout().getId();
+    const regId = `/rgn/${layout}/${rectName}`;
+    const { left, top, width, height } = await this.getRect(regId);
+
+    const attributes = options.attributes || {};
+    const position = options.position || nick;
+
+    const misc: IniSection = this._ini.section("misc locations");
+
+    //? imageDown
+    var x: string, y: string;
+    if ((x = misc.getString(`${position.toLowerCase()}on_x`))) {
+      y = misc.getString(`${position.toLowerCase()}on_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-on`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`,
+        })
+      );
+      attributes["downImage"] = `${nick}-on`;
+      attributes["activeImage"] = `${nick}-on`;
+    }
+    if ((x = misc.getString(`${position.toLowerCase()}_x`))) {
+      y = misc.getString(`${position.toLowerCase()}_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-on`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`,
+        })
+      );
+      attributes["downImage"] = `${nick}-on`;
+      attributes["activeImage"] = `${nick}-on`;
+    }
+    //? image
+    if ((x = misc.getString(`${nick.toLowerCase()}off_x`))) {
+      y = misc.getString(`${nick.toLowerCase()}off_y`);
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          id: `${nick}-off`,
+          file: `/jpeg/misc`,
+          x,
+          y,
+          w: `${width}`,
+          h: `${height}`,
+        })
+      );
+      attributes["image"] = `${nick}-off`;
+    }
+    
+    const node = new XmlElement("button", {
+      id: nick,
+      cfgattrib,
+      cfgval:"2",
+      // tooltip,
+      x: `${left}`,
+      y: `${top}`,
+      w: `${width}`,
+      h: `${height}`,
+      // activeImage: `${prefix}-${downimage}`,
+      ...attributes
+    });
+    const button = await this.newGui(ToggleButton, node, parent);
     return button;
   }
 

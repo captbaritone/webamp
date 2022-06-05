@@ -15,8 +15,6 @@ export class ActionHandler {
 
   init(): void {}
   onChange(percent: number): void {}
-  // onFrame(percent: number): void {} // during animation
-
   dispose(): void {
     this._subscription();
   }
@@ -29,7 +27,7 @@ export default class RingProgress extends GuiObj {
   _bgColor: string = "red";
   _bgImageId: string;
   _maskId: string;
-  _progress: number = 0.7;
+  _progress: number = 0;
   _actionHandler: null | ActionHandler;
   _staticGradient: string; // css for never changed gradient
   _mouseIsDown: boolean = false;
@@ -146,31 +144,6 @@ export default class RingProgress extends GuiObj {
     });
   }
 
-  // _setAction(value: string) {
-  //   if (this._actionHandler != null) {
-  //     this._actionHandler.dispose();
-  //     this._actionHandler = null;
-  //   }
-  //   this._action = value.toLowerCase();
-
-  //   // If we've already initialized we might have an action handler already. In
-  //   // that case, we want to reinitialize.
-  //   if (this._actionHandler != null) {
-  //     this._actionHandler.dispose();
-  //     this._initializeActionHandler();
-  //   }
-  // }
-
-  // /**
-  //  *
-  //  * @param newpos 0..MAX
-  //  */
-  // setProgress(newpos: number) {
-  //   this._position = newpos / this._high;
-  //   this._renderThumbPosition();
-  //   this.doSetPosition(this.getposition());
-  // }
-
   // 0..1 call by action handler
   setPercentValue(percent: number, animate: boolean = true) {
     if (!this._mouseIsDown) {
@@ -179,45 +152,25 @@ export default class RingProgress extends GuiObj {
     }
   }
 
-  // onsetposition(newPos: number) {
-  //   this._onSetPositionEvenEaten = this._uiRoot.vm.dispatch(
-  //     this,
-  //     "onsetposition",
-  //     [
-  //       //needed by seekerGhost
-  //       { type: "INT", value: newPos },
-  //     ]
-  //   );
-  // }
-  // doSetPosition(newPos: number) {
-  //   this.onsetposition(newPos);
-  //   if (this._actionHandler != null) {
-  //     this._actionHandler.onsetposition(newPos);
-  //   }
-  //   this.updateCfgAttib(String(this.getposition()));
-  // }
-
   /**
-   * 
+   * * User click on ring
    * @param x mouse location relative to this client
-   * @param y 
+   * @param y
    */
   doLeftMouseDown(x: number, y: number) {
     this._mouseIsDown = true;
-    // const val = this._map.getUnsafeValue(x, y);
     const bound = this.getDiv().getBoundingClientRect();
     const cx = bound.width / 2;
     const cy = bound.height / 2;
     const deltaX = x - cx;
     const deltaY = y - cy;
-    // const rad = Math.atan2(deltaY, deltaX); // In radians
     const rad = Math.atan2(deltaY, deltaX); // In radians
     const pi = Math.PI;
     let deg = rad * (180 / pi); // got: 0..180,-179..-1
     deg = (deg + 450) % 360; // modulus. got: 0..~360
     const progress = deg / this._maxDegree;
     if (progress != this._progress) {
-      console.log("ring:", progress);
+      // console.log("ring:", progress);
       this._progress = progress;
       this.drawProgress();
       this._actionHandler.onChange(this._progress);
@@ -231,40 +184,6 @@ export default class RingProgress extends GuiObj {
   doLeftMouseUp(x: number, y: number) {
     this._mouseIsDown = false;
   }
-  // /**
-  //  * User click on ring
-  //  *
-  //  * @param  x   The X position in the screen where the cursor was when the event was triggered.
-  //  * @param  y   The Y position in the screen where the cursor was when the event was triggered.
-  //  */
-  // onLeftButtonDown(x: number, y: number) {
-  //   this.getparentlayout().bringtofront();
-  //   x -= this.getleft();
-  //   y -= this.gettop();
-  //   const bound = this.getDiv().getBoundingClientRect();
-  //   const cx = bound.width / 2;
-  //   const cy = bound.height / 2;
-  //   const deltaX = x - cx;
-  //   const deltaY = y - cy;
-  //   // const rad = Math.atan2(deltaY, deltaX); // In radians
-  //   const rad = Math.atan2(deltaY, deltaX); // In radians
-  //   const pi = Math.PI;
-  //   let deg = rad * (180 / pi); // got: 0..180,-179..-1
-  //   deg = (deg + 450) % 360; // modulus. got: 0..~360
-  //   // if(deg>=0){
-  //   //   deg += 90;
-  //   // } else {
-  //   //   //?negative
-  //   //   if(deg>=-90){
-  //   //     deg += 90
-  //   //   } else {
-  //   //     //? -179..-91 == 270..259
-  //   //   }
-  //   // }
-  //   // console.log("deg:", deg, "=#", deg + 90);
-  //   this._progress = deg / this._maxDegree;
-  //   this.drawProgress();
-  // }
 
   drawMask() {
     if (!this._maskId) return;
@@ -283,21 +202,14 @@ export default class RingProgress extends GuiObj {
   }
 
   prepareGradient() {
-    // const fullColors = this._colors.map(
-    //   (color, i, arr) => `${color} ${((i + 1) * this._degree) / arr.length}deg`
-    //   );
     const fullColors = [...this._colors]; //clone
     if (this._maxDegree < 360) {
       let lastColor = fullColors.pop();
       lastColor = `${lastColor} ${this._maxDegree}deg`;
       fullColors.push(lastColor);
-      // fullColors.push(
-      //   `${this._colors[this._colors.length - 1]} ${this._degree}deg`
-      // );
       fullColors.push(`transparent ${this._maxDegree}deg`);
     }
     this._staticGradient = `conic-gradient(${fullColors.join(", ")})`;
-    // this.getDiv().style.backgroundImage = "";
   }
 
   drawProgress() {
@@ -335,13 +247,9 @@ function parseColor(soniqueColor: string): string {
 }
 
 class SeekActionHandler extends ActionHandler {
-  // _pendingChange: boolean;
+  //
 
-  isPendingChange(): boolean {
-    return true; // this._pendingChange || this._dragging;
-  }
-
-  init(){
+  init() {
     this._registerOnAudioProgress();
   }
 
@@ -352,29 +260,11 @@ class SeekActionHandler extends ActionHandler {
   }
 
   _onAudioProgres = () => {
-    // if (!this._pendingChange) {
     this._slider.setPercentValue(this._uiRoot.audio.getCurrentTimePercent());
-    // }
   };
-
-  // onsetposition(position: number): void {
-  //   this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
-  //   if (!this._pendingChange) {
-  //     this._uiRoot.audio.seekToPercent(position / this._slider._high);
-  //   }
-  // }
 
   // 0..1 called by slider
   onChange(percent: number): void {
     this._uiRoot.audio.seekToPercent(percent);
   }
-
-  // onLeftMouseUp(x: number, y: number) {
-  //   if (this._pendingChange) {
-  //     this._pendingChange = false;
-  //     this._uiRoot.audio.seekToPercent(
-  //       this._slider.getposition() / this._slider._high
-  //     );
-  //   }
-  // }
 }
