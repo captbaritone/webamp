@@ -275,7 +275,7 @@ export default class Container extends XmlObj {
   }
 
   draw() {
-    this._div.setAttribute("id", this.getId());
+    this.getId() && this._div.setAttribute("id", this.getId());
     this._div.setAttribute("tabindex", "1");
     this._renderDimensions();
     this._renderLayouts();
