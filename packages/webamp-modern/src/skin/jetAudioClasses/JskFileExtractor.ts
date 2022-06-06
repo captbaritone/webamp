@@ -2,13 +2,13 @@ import { FileExtractor } from "../FileExtractor";
 
 type Chunk = {
   fileName?: string;
-  written: number;
+  // written: number;
   size: number;
   start?: number;
-  end?: number;
+  // end?: number;
   at?: number; // chunk address location
-  address?: number;
-  saddress?: string; // in hex to crosscheck
+  // address?: number;
+  // saddress?: string; // in hex to crosscheck
   saddress2?: string; // in hex to crosscheck
 };
 
@@ -77,7 +77,7 @@ export default class JskFileExtractor extends FileExtractor {
   async getFileAsBlob(filePath: string): Promise<Blob> {
     const chunk = this._toc[filePath];
     if (!chunk) return null;
-    const part = this._arr.slice(chunk.start, chunk.end);
+    const part = this._arr.slice(chunk.start, chunk.size + chunk.start - 1);
     const blob = new Blob([part]);
     return blob;
   }
@@ -110,9 +110,9 @@ export default class JskFileExtractor extends FileExtractor {
 
     // return;
     //? fill chunks with names
-    let prevWritten = 0;
-    let prevAddress = 0;
-    let prevSize = 0;
+    // let prevWritten = 0;
+    // let prevAddress = 0;
+    // let prevSize = 0;
     let first = true;
     this.seek(firstBmp);
     while (this.tell() < fileSize) {
@@ -123,28 +123,26 @@ export default class JskFileExtractor extends FileExtractor {
         break;
       }
       const fileName = this.readString(0x100);
-      const address = first
-        ? at + written - 4
-        : prevAddress + (written - prevWritten);
-      prevWritten = written;
-      prevAddress = address;
-      prevSize = size;
+      const start = first ? at + written - 4 : 0;
+      // prevWritten = written;
+      // prevAddress = address;
+      // prevSize = size;
 
       this._toc[fileName] = {
         at,
         fileName,
-        written,
         size,
         // end: chunkStart + chunkSize,
-        address,
-        saddress: address.toString(16),
+        // address,
+        start,
+        // saddress: address.toString(16),
       };
       // this.seek(8, true); // I don't know why empty space
     }
 
     //?assure address
     const chunks = Object.values(this._toc);
-    this.seek(chunks[0].address);
+    this.seek(chunks[0].start);
     for (const chunk of chunks) {
       while (true) {
         const i = this._i;
@@ -157,12 +155,34 @@ export default class JskFileExtractor extends FileExtractor {
           // BM
           chunk.start = i;
           chunk.saddress2 = i.toString(16);
-          this.seek(chunk.size-8, true);
+          this.seek(chunk.size - 8, true);
           break;
         }
         if (this.tell() >= fileSize) break;
       }
     }
+
+    //?detect jsc====================
+    let start = 0;
+    while (this._i < fileSize && this.read() != 0x3c) {
+      /* "<" */
+    }
+    start = this.tell() - 1;
+    while (this._i < fileSize && this.readInt32LE() != 0) {
+      this._i += 16 * 8;
+    }
+    const size = this.tell() - start;
+    const fileName = 'main.jsc'
+    this._toc[fileName] = {
+      // at,
+      fileName,
+      // written,
+      size,
+      // end: chunkStart + chunkSize,
+      // address,
+      start,
+      // saddress: address.toString(16),
+    };
   }
 
   //? simulate python seek
