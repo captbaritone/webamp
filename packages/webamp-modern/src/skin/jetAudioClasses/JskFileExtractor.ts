@@ -1,10 +1,15 @@
 import { FileExtractor } from "../FileExtractor";
 
 type Chunk = {
+  fileName?: string;
   written: number;
   size: number;
   start?: number;
   end?: number;
+  at?: number; // chunk address location
+  address?: number;
+  saddress?: string; // in hex to crosscheck
+  saddress2?: string; // in hex to crosscheck
 };
 
 export default class JskFileExtractor extends FileExtractor {
@@ -17,7 +22,12 @@ export default class JskFileExtractor extends FileExtractor {
     const buffer = await response.arrayBuffer();
     this._arr = new Uint8Array(buffer);
     this.buildTOC();
-    console.log("JetAudio!:", Object.keys(this._toc));
+    // const info = Object.values(this._toc).map((toc) => [
+    //   toc.at.toString(16),
+    //   toc.fileName,
+    // ]);
+    const info = Object.values(this._toc);
+    console.log("JetAudio!:", info);
   }
 
   async getFileAsString(filePath: string): Promise<string> {
@@ -74,6 +84,7 @@ export default class JskFileExtractor extends FileExtractor {
 
   buildTOC() {
     const block = this._arr;
+    const fileSize = block.length;
     //? find first .bmp
     this.seek(0x400); //? Root Entry
     while (true) {
@@ -88,44 +99,69 @@ export default class JskFileExtractor extends FileExtractor {
           break;
         }
       }
-      if (i >= block.length) return;
+      if (i >= fileSize) return;
     }
     let i = this._i; // i= @.bmp
-    while (block[i - 1] >= 32) {
+    while (i > 0 && block[i - 1] >= 32) {
       i--;
     }
     const firstBmp = i - 8; // i= @default/path-to/az.bmp
     console.log("firstBmp:", firstBmp.toString(16));
 
-    return;
-
-    for (const [i, n] of this._arr.entries()) {
-      console.log("jsk:", i, n.toString(16));
-      if (i > 10) break;
-    }
-    // for(const [i,n] of this._arr.entries()){
-    //   console.log('jsk:',i,n.toString(16))
-    //   if(i>10) break
-    // }
-    return;
-
-    const dataAddress = this.readInt32LE();
-    this.seek(16 * 6, true); // I don't know why empty space
-    while (this.tell() < dataAddress) {
-      // s, = unpack('%ss' % (16*5), this.read(16*5))
-      const fileName = this.readString(16 * 5);
-      // s = s.decode('utf-8').strip('\x00')
-
-      this.seek(4, true);
-      const chunkStart = this.readInt32LE();
-      const chunkSize = this.readInt32LE();
+    // return;
+    //? fill chunks with names
+    let prevWritten = 0;
+    let prevAddress = 0;
+    let prevSize = 0;
+    let first = true;
+    this.seek(firstBmp);
+    while (this.tell() < fileSize) {
+      const at = this.tell();
+      const written = this.readInt32LE();
+      const size = this.readInt32LE();
+      if (size == 0) {
+        break;
+      }
+      const fileName = this.readString(0x100);
+      const address = first
+        ? at + written - 4
+        : prevAddress + (written - prevWritten);
+      prevWritten = written;
+      prevAddress = address;
+      prevSize = size;
 
       this._toc[fileName] = {
-        start: chunkStart,
-        size: chunkSize,
-        end: chunkStart + chunkSize,
+        at,
+        fileName,
+        written,
+        size,
+        // end: chunkStart + chunkSize,
+        address,
+        saddress: address.toString(16),
       };
-      this.seek(8, true); // I don't know why empty space
+      // this.seek(8, true); // I don't know why empty space
+    }
+
+    //?assure address
+    const chunks = Object.values(this._toc);
+    this.seek(chunks[0].address);
+    for (const chunk of chunks) {
+      while (true) {
+        const i = this._i;
+        let n = this.read();
+        if (
+          n == 0x42 &&
+          this.read() == 0x4d &&
+          this.readInt32LE(false) == chunk.size
+        ) {
+          // BM
+          chunk.start = i;
+          chunk.saddress2 = i.toString(16);
+          this.seek(chunk.size-8, true);
+          break;
+        }
+        if (this.tell() >= fileSize) break;
+      }
     }
   }
 
@@ -155,9 +191,11 @@ export default class JskFileExtractor extends FileExtractor {
     return result;
   }
 
-  readInt32LE(): number {
+  readInt32LE(increment: boolean = true): number {
     const offset = this._i >>> 0;
-    this._i += 4;
+    if (increment) {
+      this._i += 4;
+    }
 
     return (
       this._arr[offset] |
@@ -175,6 +213,8 @@ export default class JskFileExtractor extends FileExtractor {
       const byte = this._arr[i];
       if (byte != 0) {
         ret += String.fromCharCode(byte);
+      } else {
+        break;
       }
     }
     this._i += length;

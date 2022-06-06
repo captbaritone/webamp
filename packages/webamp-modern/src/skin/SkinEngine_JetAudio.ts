@@ -24,6 +24,7 @@ export class JetAudioSkinEngine extends SkinEngine {
   _config: {}; // whole index.json
   _alphaData: Uint8ClampedArray = null; // canvas.contex2d.data.data
   _ini: IniFile;
+  _fe: JskFileExtractor;
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".jsk");
@@ -40,13 +41,23 @@ export class JetAudioSkinEngine extends SkinEngine {
    * @returns An instance of custom FileExtractor
    */
   getFileExtractor(): FileExtractor {
-    return new JskFileExtractor();
+    // return new JskFileExtractor();
+    this._fe = new JskFileExtractor();
+    return this._fe;
   }
 
   /**
    * Process
    */
   async parseSkin() {
+      for(const name of Object.keys(this._fe._toc)){
+          await this.bitmap(new XmlElement('bmp', {
+              file: name,
+              id: name
+          }))
+      }
+  }
+  async parseSkin0() {
     this._ini = new IniFile();
     this._ini.readString(MISC);
     const skinIni = await this._uiRoot.getFileAsString("/skin.ini");
