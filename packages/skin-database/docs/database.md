@@ -1,6 +1,6 @@
 # Database
 
-The Winamp Skin Museum, and related projects, are powered by an SQLite database which is not included in this repository, but a copy can be obtained by reaching out directly.
+The Winamp Skin Museum, and related projects (Twitter bot, Discord bot), are powered by an SQLite database which is not included in this repository, but a copy can be obtained by reaching out directly.
 
 For reference, the tables/colums are as follows:
 
@@ -75,18 +75,73 @@ Metadata about files extracted from zip files. Because many skins contain the sa
 - `size_in_bytes` The size of the file, afterbeing decompressed
 - `text_content` If the file is a text file, this column contains that text
 
-## knex_migrations
-
 ## skin_uploads
+
+When a user attempts to upload a file at the Museum, they first request an upload URL so that they can upload the file directly to S3. Then, once they have uploaded it, they notify our server, and we kick off a job to download the skin from S3 and screenshot/scrape it as we have capacity. This approach lets us scale to an unlimited number of uploads during a spike in traffic, and we will process them at our leisure.
+
+The status of an in-progress upload is tracked in this table, and it is used by the server as a task queue to track skins that need to be processed.
+
+First a user requests a URL for a skin (based on its md5) (`URL_REQUESTED`) once they've uploaded to S3, they notify us (`UPLOAD_REPORTED`), finally the file is processed and it ends up as either `ERRORED` or `ARCHIVED` (success!)
+
+- `id` A unique ID for this upload attempt. This is used in the S3 filename that the user is given permission to create.
+- `skin_md5` The md5 of this uploaded file. Note that not all skins here will end up in the `skins` table. Either due to uploads not completing, or processing error, or the file is not actually a skin.
+- `status` Where in the pipeline is this upload: `ERRORED`, `UPLOAD_REPORTED`, `URL_REQUESTED`, `ARCHIVED`.
+- `filename` The filename that the user had for the file when they uploaded it (files on S3 file name is based on `id`, so we need the filename here.
 
 ## files
 
-## knex_migrations_lock
+Information about skin files that we have injested. Since `skins` are indexed by their `md5` content, we may have encounted the same skin file under multiple filenames. This table shows all the filenames we've encountered for each skin, and (in some cases) where we got the file.
+
+- `id` A unique ID for this file
+- `file_path` The file path (directory and name) of the skin file
+- `skin_md5` The md5 hash of the file (see the `skins` table)
+- `source_attribution` Where we found this file (if known)
 
 ## skins
 
+Information about a given Winamp skin. Each item in the Winamp Skin Museum corresponds to a row in this table with a `skin_type` of `1` (classic).
+
+- `id` A unique ID for the skin (not really used, though it should be. Instead every other table references skins by `md5`)
+- `md5` The md5 hash of the skin file. Most other tables reference skins by this value. Usually with a column named `skin_md5` We should probably fix that and use `id`
+- `skin_type` One of `1` (classic), `2` (modern), `3` (pack), `4` (invalid)
+- `emails` A space-separated list of emails extracted from the skin's text files
+- `readme_text` Using a herusitic, we identify files in the skin archive that are likely to be readme or readme-like files and index them here. This should probably be done dynamically at query time and we should find this value in the `file_info` table.
+
 ## ia_items
+
+Each skin in the Museum should be persisted to the [Internet Archive](https://archive.org) for preservation. This is done daily and we keep a local cache of what information the Internet Archive has about each skin.
+
+- `id` A unique ID for this internet archive item (local to this database)
+- `skin_md5` The md5 hash of the skin (see the `skins` table)
+- `identifier` The unique identifier used by the archive for this item (this is used in the URL of the item and for API queries)
+- `metadata` A JSON blob contanining the Internet Archive's metdata about the item
+- `metadata_timestamp` The last time we scraped the metadata from their API (I _think_)
 
 ## refreshes
 
+Much of the data in the database is derived from the skin archives themselves. However, we don't have all the skin files locally, they are in S3. So, we only periodically download them and re-extract all the data/screenshots. This table records each time we do this. This way we can know which skins need to be refreshed.
+
+- `id` A unique ID for this refresh
+- `skin_md5` The md5 hash of the skin (see the `skins` table)
+- `error` Any error we encountered during the refresh
+- `timestamp` When we performed the refresh
+
 ## tweets
+
+The Twitter bot [@winampskins](https://twitter.com/winampskins) tweets. Likes and retweets are scraped nightly, but can only read the most recent tweets. Like/retweets on older tweets are not seen by us, so the numbers represent a lower bound. Additionally, the Twitter API only lets you go back so far, so we may be missing some Tweets, since we didn't index these from the very begininig.
+
+Finally, not all tweets that the bot tweets are scritly skins. Some are manual tweets or retweets. So, not every tweet will have a `skin_md5`.
+
+- `id` A unique ID for this tweet (local to this database)
+- `likes` The number of likes the tweet got
+- `retweets` The number of retweets the tweet got
+- `skin_md5` The md5 hash of the skin that was tweeted (see the `skins` table) **Note** Not all tweets reference a skin
+- `tweet_id` The ID for this tweet, as assigned by Twitter. This can be used to construct the tweet URL
+
+## knex_migrations
+
+Metadata about migrations that have been run on the database. Used for making database changes
+
+## knex_migrations_lock
+
+Used to ensure migrations are applied correctly.
