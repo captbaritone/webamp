@@ -145,3 +145,12 @@ Metadata about migrations that have been run on the database. Used for making da
 ## knex_migrations_lock
 
 Used to ensure migrations are applied correctly.
+
+## museum_sort_overrides
+
+Used for making editorial decisions about how individual skins show up in the main scroll of the Winamp Skin Museum. Used for boosting the default skins and hiding aparent duplicates. In reality there are many many near or actual dupes, but we manually cull duplicates that appear in the first few pages.
+
+- `id` A unique ID for this override (local to this database)
+- `skin_md5` The md5 hash of the skin that is being overridden
+- `score` A score for how highly rated this skin should be. Negative numbers mean the skin should be hidden.
+- `comment` Explains why the skin was ranked this way

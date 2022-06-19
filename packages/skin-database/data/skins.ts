@@ -215,6 +215,10 @@ export async function updateSearchIndex(
   return updateSearchIndexs(ctx, [md5]);
 }
 
+export async function hideSkin(md5: string): Promise<void> {
+  await knex("museum_sort_overrides").insert({ skin_md5: md5, score: -1 });
+}
+
 // Note: This might leave behind some files in file_info.
 export async function deleteSkin(md5: string): Promise<void> {
   await deleteLocalSkin(md5);
@@ -587,51 +591,62 @@ export async function getMuseumPage({
 }): Promise<MuseumPage> {
   const skins = await knex.raw(
     `
-SELECT skins.md5, 
-  skin_reviews.review = 'NSFW'     AS nsfw, 
-  skin_reviews.review = 'APPROVED' AS approved, 
-  skin_reviews.review = 'REJECTED' AS rejected, 
-  (IFNULL(tweets.likes, 0) + (IFNULL(tweets.retweets,0) * 1.5)) AS tweet_score,
-	files.file_path,
-  CASE skins.md5 
-    WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
-    WHEN "cd251187a5e6ff54ce938d26f1f2de02" THEN 1 -- Winamp3 Classified
-    WHEN "b0fb83cc20af3abe264291bb17fb2a13" THEN 2 -- Winamp5 Classified
-    WHEN "d6010aa35bed659bc1311820daa4b341" THEN 3 -- Bento Classified
-    ELSE 1000
-    END
-  priority
-FROM skins 
-  LEFT JOIN (
-    SELECT 
-      skin_md5,
-      MAX(likes) as likes,
-      MAX(retweets) as retweets
-    FROM tweets
-    GROUP BY skin_md5
-    ) as tweets ON tweets.skin_md5 = skins.md5 
-  LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
-	LEFT JOIN files ON files.skin_md5 = skins.md5
-  LEFT JOIN refreshes ON refreshes.skin_md5 = skins.md5
-WHERE  skin_type = 1 AND refreshes.error IS NULL
---
--- WHERE 
---  skin_type = 1
---  AND refreshes.error IS NULL
---  AND skins.md5 != "d7541f8c5be768cf23b9aeee1d6e70c7" -- Duplicate Garfield
---  AND skins.md5 != "25a932542e307416ca86da4e16be1b32" -- Duplicate Vault-tec
---  AND skins.md5 != "89643da06361e4bcc269fe811f07c4a3" -- Another duplicate Vault-tec
---  AND skins.md5 != "db1f2e128f6dd6c702b7a448751fbe84" -- Duplicate Fallout
---  AND skins.md5 != "be2de111c4710af306fea0813440f275" -- Duplicate Microchip
---  AND skins.md5 != "66cf0af3593d79fc8a5080dd17f8b07d" -- Another duplicate Microchip
-GROUP BY skins.md5
-ORDER BY 
-  priority ASC,
-  tweet_score DESC, 
-  nsfw ASC, 
-  approved DESC, 
-  rejected ASC
-LIMIT ? offset ?`,
+    -- A tweet score for each skin based on its tweets.
+    WITH skin_tweets as (
+       SELECT
+           skin_md5,
+           MAX(likes) as likes,
+           MAX(retweets) as retweets,
+           (IFNULL(likes, 0) + (IFNULL(retweets, 0) * 1.5)) AS tweet_score
+       FROM
+           tweets
+       GROUP BY
+           skin_md5
+   )
+   
+   SELECT
+       skins.md5,
+       files.file_path,
+       skin_reviews.review = 'NSFW' AS nsfw
+   FROM
+       skins
+       LEFT JOIN museum_sort_overrides ON museum_sort_overrides.skin_md5 = skins.md5
+       LEFT JOIN skin_tweets ON skin_tweets.skin_md5 = skins.md5
+       LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
+       LEFT JOIN files ON files.skin_md5 = skins.md5
+       LEFT JOIN refreshes ON refreshes.skin_md5 = skins.md5
+   WHERE
+       -- Only show classic skins
+       skin_type = 1
+       -- Hide skins that are dupes or we otherwise want to hide
+       AND (museum_sort_overrides.score IS NULL OR museum_sort_overrides.score > 0)
+       -- Hides skins that might not have a valid screenshot
+       AND refreshes.error IS NULL
+   GROUP BY
+       skins.md5
+   ORDER BY
+       -- The secret sauce of the Winamp Skin Museum.
+       -- We try to rank skins based on how interesting they are to a modern
+       -- audience by leveraging data accumulated by the @winampskins Twitter bot.
+       
+       -- 1. Manaully currated skins (the default skin and classic ports of the default modern skins)
+       -- 2. All tweeted skins ranked by (likes + retweets * 1.5)
+       -- 3. All approved skins that have not yet been tweeted
+       -- 4. All unreviewed skins
+       -- 5. All rejected skins
+       -- 6. All NSFW skins
+   
+       -- Show manually currated skins (default skins) first
+       museum_sort_overrides.score DESC,
+       -- Sort skins by their popularity on Twitter
+       tweet_score DESC,
+       -- Push NSFW skins to the bottom
+       skin_reviews.review = 'NSFW' ASC,
+       -- Skins that have been approved are better than others
+       skin_reviews.review = 'APPROVED' DESC,
+       -- Skins that have been rejected are worse than those that have not been reviewed
+       skin_reviews.review = 'REJECTED' ASC
+    LIMIT ? offset ?`,
     [first, offset]
   );
 
