@@ -328,12 +328,28 @@ program
     "--refresh-archive-files",
     "Refresh the data we keep about files within skin archives"
   )
+  .option(
+    "--refresh-content-hash",
+    "Refresh content hash"
+  )
   .action(
     async ({
       uploadIaScreenshot,
       uploadMissingScreenshots,
       refreshArchiveFiles,
+      refreshContentHash
     }) => {
+      if (refreshContentHash) {
+        const ctx = new UserContext();
+        const skinRows = await knex("skins").select();
+        console.log(`Found ${skinRows.length} skins to update`);
+        const skins = skinRows.map((row) => new SkinModel(ctx, row));
+        for (const skin of skins) {
+          await Skins.setContentHash(skin.getMd5());
+          process.stdout.write(".");
+        }
+
+      }
       if (uploadIaScreenshot) {
         const md5 = uploadIaScreenshot;
         if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
