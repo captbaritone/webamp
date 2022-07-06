@@ -1,8 +1,7 @@
 import * as Knex from "knex";
 
-
 export async function up(knex: Knex): Promise<void> {
-    await knex.raw(`
+  await knex.raw(`
     CREATE TABLE museum_sort_overrides (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
         skin_md5 TEXT NOT NULL UNIQUE,
@@ -11,7 +10,7 @@ export async function up(knex: Knex): Promise<void> {
         FOREIGN KEY (skin_md5) REFERENCES skins (md5) ON DELETE CASCADE ON UPDATE NO ACTION
     );`);
 
-    await knex.raw(`INSERT INTO
+  await knex.raw(`INSERT INTO
         museum_sort_overrides (skin_md5, comment, score)
     VALUES
         ("5e4f10275dcb1fb211d4a8b4f1bda236", "Base", 5),
@@ -27,12 +26,9 @@ export async function up(knex: Knex): Promise<void> {
         ("66cf0af3593d79fc8a5080dd17f8b07d", "Duplicate Microchip", -1),
         ("4269b10d8d27bd201f8608c59295680c", "Duplicate Doom", -1),
         ("44c8f2bf4889f7ea5565e82f332f4a20", "Duplicate Mtn Dew", -1);
-    `)
+    `);
 }
-
-
 
 export async function down(knex: Knex): Promise<void> {
-    await knex.raw(`DROP TABLE museum_sort_overrides;`);
+  await knex.raw(`DROP TABLE museum_sort_overrides;`);
 }
-
