@@ -219,10 +219,6 @@ export async function syncToArchive(handler: DiscordEventHandler) {
   await Parallel.map(
     unarchived,
     async ({ md5 }) => {
-      // The internet archive claims this one is corrupt for some reason.
-      if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
-        return;
-      }
       const skin = await SkinModel.fromMd5Assert(ctx, md5);
       try {
         console.log(`Attempting to upload ${md5}`);
@@ -232,6 +228,10 @@ export async function syncToArchive(handler: DiscordEventHandler) {
       } catch (e) {
         console.log("Archive failed...");
         errorCount++;
+        // The internet archive claims this one is corrupt for some reason.
+        if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
+          console.warn(`This skin is known to not upload correctly.`)
+        }
         if (/error checking archive/.test(e.message)) {
           console.log(`Corrupt archvie: ${skin.getMd5()}`);
         } else if (
