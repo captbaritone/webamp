@@ -85,6 +85,11 @@ describe("/skins/", () => {
         "skinCount": 6,
         "skins": Array [
           Object {
+            "fileName": "tweeted.wsz",
+            "md5": "a_tweeted_md5",
+            "nsfw": false,
+          },
+          Object {
             "fileName": "Zelda_Amp_3.wsz",
             "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
             "nsfw": false,
@@ -92,11 +97,6 @@ describe("/skins/", () => {
           Object {
             "fileName": "path.wsz",
             "md5": "a_fake_md5",
-            "nsfw": false,
-          },
-          Object {
-            "fileName": "tweeted.wsz",
-            "md5": "a_tweeted_md5",
             "nsfw": false,
           },
           Object {
@@ -127,13 +127,13 @@ describe("/skins/", () => {
         "skinCount": 6,
         "skins": Array [
           Object {
-            "fileName": "path.wsz",
-            "md5": "a_fake_md5",
+            "fileName": "Zelda_Amp_3.wsz",
+            "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
             "nsfw": false,
           },
           Object {
-            "fileName": "tweeted.wsz",
-            "md5": "a_tweeted_md5",
+            "fileName": "path.wsz",
+            "md5": "a_fake_md5",
             "nsfw": false,
           },
         ],
