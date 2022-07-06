@@ -176,11 +176,16 @@ router.get(
       res.status(404).json();
       return;
     }
+    const [nsfw, fileName, readme] = await Promise.all([
+      skin.getIsNsfw(),
+      skin.getFileName(),
+      skin.getReadme(),
+    ]);
     res.json({
       md5: skin.getMd5(),
-      nsfw: await skin.getIsNsfw(),
-      fileName: await skin.getFileName(),
-      readme: skin.getReadme(),
+      nsfw,
+      fileName,
+      readme,
     });
   })
 );
