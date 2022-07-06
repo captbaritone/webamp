@@ -232,6 +232,7 @@ export async function deleteSkin(md5: string): Promise<void> {
   console.log(`... purging screenshot and skin from CloudFlare`);
   await CloudFlare.purgeFiles([getScreenshotUrl(md5), getSkinUrl(md5)]);
   console.log(`Done deleting skin ${md5} from external sources.`);
+  // TODO: Delete from Internet Archive
 }
 
 export async function deleteLocalSkin(md5: string): Promise<void> {

@@ -8,7 +8,7 @@ export type FileInfoDebugData = {
 };
 
 export default class FileInfoModel {
-  constructor(readonly ctx: UserContext, readonly row: FileInfoRow) {}
+  constructor(readonly ctx: UserContext, readonly row: FileInfoRow) { }
 
   static async fromFileMd5(
     ctx: UserContext,
@@ -27,6 +27,7 @@ export default class FileInfoModel {
   }
 
   getTextContent(): string | null {
+    console.log("row", this.row)
     return this.row.text_content;
   }
 
