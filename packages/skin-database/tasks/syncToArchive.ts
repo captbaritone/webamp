@@ -169,7 +169,8 @@ export async function identifierExists(identifier: string): Promise<boolean> {
 }
 
 async function getNewIdentifier(filename: string): Promise<string> {
-  const identifierBase = `winampskins_${sanitize(path.parse(filename).name)}`;
+  // The internet archvie has a max identifier length of 80 chars.
+  const identifierBase = `winampskins_${sanitize(path.parse(filename).name)}`.slice(0, 76);
   let counter = 0;
   function getIdentifier() {
     return identifierBase + (counter === 0 ? "" : `_${counter}`);
