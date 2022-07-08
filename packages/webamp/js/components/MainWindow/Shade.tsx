@@ -9,7 +9,7 @@ const Shade = memo(() => {
   return (
     <ClickedDiv
       id="shade"
-      onMouseDown={handleClick}
+      onPointerDown={handleClick}
       onDoubleClick={(e) => e.stopPropagation()}
       title="Toggle Windowshade Mode"
     />

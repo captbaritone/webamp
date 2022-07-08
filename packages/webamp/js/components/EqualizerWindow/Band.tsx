@@ -42,7 +42,7 @@ export default function Band({ id, onChange, band }: Props) {
     return `-${xOffset}px -${yOffset}px`;
   }, [value]);
   const focusBand = useActionCreator(Actions.focusBand);
-  const usetFocus = useActionCreator(Actions.unsetFocus);
+  const unsetFocus = useActionCreator(Actions.unsetFocus);
 
   // Note: The band background is actually one pixel taller (63) than the slider
   // it contains (62).
@@ -51,6 +51,7 @@ export default function Band({ id, onChange, band }: Props) {
       id={id}
       className="band"
       style={{ backgroundPosition, height: 63 }}
+      requireClicksOriginateLocally={false}
     >
       <VerticalSlider
         height={62}
@@ -59,7 +60,8 @@ export default function Band({ id, onChange, band }: Props) {
         value={1 - value / MAX_VALUE}
         onBeforeChange={() => focusBand(band)}
         onChange={(val) => onChange((1 - val) * MAX_VALUE)}
-        onAfterChange={usetFocus}
+        onAfterChange={unsetFocus}
+        requireClicksOriginateLocally={false}
         handle={<Handle />}
       />
     </WinampButton>

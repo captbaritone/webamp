@@ -4,7 +4,7 @@ import WinampButton from "./WinampButton";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onPointerDown?: (e: React.PointerEvent<HTMLDivElement>) => void;
 }
 
 // Winamp has a strange behavior for the buttons at the top of the main window.
@@ -15,17 +15,17 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 // for examples of this functionality in use.
 function ClickedDiv(props: Props) {
   const [clicked, setClicked] = useState(false);
-  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
     setClicked(true);
-    if (props.onMouseDown) {
-      props.onMouseDown(e);
+    if (props.onPointerDown) {
+      props.onPointerDown(e);
     }
   }
   return (
     <WinampButton
       {...props}
       className={classnames(props.className, { clicked })}
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
     />
   );
 }
