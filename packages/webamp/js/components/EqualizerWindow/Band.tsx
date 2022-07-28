@@ -10,6 +10,7 @@ interface Props {
   id: string;
   band: SliderType;
   onChange(value: number): void;
+  clickOriginatedInEq?: boolean;
 }
 
 const MAX_VALUE = 100;
@@ -32,7 +33,7 @@ const Handle = () => {
   return <div style={style} className="slider-handle" />;
 };
 
-export default function Band({ id, onChange, band }: Props) {
+export default function Band({ id, onChange, band, clickOriginatedInEq }: Props) {
   const sliders = useTypedSelector(Selectors.getSliders);
   const value = sliders[band];
   const backgroundPosition = useMemo(() => {
@@ -51,7 +52,7 @@ export default function Band({ id, onChange, band }: Props) {
       id={id}
       className="band"
       style={{ backgroundPosition, height: 63 }}
-      requireClicksOriginateLocally={false}
+      requireClicksOriginateLocally={!(band !== 'preamp' && clickOriginatedInEq)}
     >
       <VerticalSlider
         height={62}
@@ -61,7 +62,7 @@ export default function Band({ id, onChange, band }: Props) {
         onBeforeChange={() => focusBand(band)}
         onChange={(val) => onChange((1 - val) * MAX_VALUE)}
         onAfterChange={unsetFocus}
-        requireClicksOriginateLocally={false}
+        requireClicksOriginateLocally={!(band !== 'preamp' && clickOriginatedInEq)}
         handle={<Handle />}
       />
     </WinampButton>
