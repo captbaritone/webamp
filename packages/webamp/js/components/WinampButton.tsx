@@ -32,8 +32,7 @@ type Props = DetailedHTMLPropsAndMore;
  */
 export default function WinampButton(props: Props): JSX.Element {
   const [active, setActive] = useState(false);
-  const originalOnPointerDown = props.onPointerDown;
-  const { requireClicksOriginateLocally } = props;
+  const { requireClicksOriginateLocally, onPointerDown: originalOnPointerDown } = props;
 
   const onPointerDown = useCallback(
     (e) => {

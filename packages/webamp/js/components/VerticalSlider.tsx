@@ -31,7 +31,7 @@ export default function VerticalSlider({
   onBeforeChange,
   onChange,
   onAfterChange,
-  requireClicksOriginateLocally,
+  requireClicksOriginateLocally = true,
   disabled,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -123,7 +123,3 @@ export default function VerticalSlider({
     </div>
   );
 }
-
-VerticalSlider.defaultProps = {
-  requireClicksOriginateLocally: true
-};
