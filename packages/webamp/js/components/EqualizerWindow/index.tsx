@@ -46,7 +46,7 @@ const EqualizerWindow = () => {
 
   // Track whether the click originated in the "hertz" area of the EQ
   // We only want to allow drag across the EQ when the click originated in that area
-  const [clickOriginatedInEq, setClickOriginatedInEq] = useState(false);
+  const [clickOriginatedInEq, setClickOriginatedInEq] = useState(true);
 
   const onPointerDownEq = (e: React.PointerEvent<HTMLDivElement>) => {
     e.stopPropagation();
