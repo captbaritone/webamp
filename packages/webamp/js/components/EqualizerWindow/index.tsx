@@ -46,20 +46,32 @@ const EqualizerWindow = () => {
 
   // Track whether the click originated in the "hertz" area of the EQ
   // We only want to allow drag across the EQ when the click originated in that area
-  const [clickOriginatedInEq, setClickOriginatedInEq] = useState(true);
-
-  const onPointerDownEq = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    setClickOriginatedInEq(false);
-  };
+  const [clickOriginatedInEq, setClickOriginatedInEq] = useState(false);
 
   const onPointerDownHz = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.stopPropagation(); // To prevent onPointerDownEq from firing
+    e.stopPropagation();   
+    // Release the pointer capture
+    // https://w3c.github.io/pointerevents/#implicit-pointer-capture
+    // https://w3c.github.io/pointerevents/#pointer-capture
+    const target = e.target as HTMLDivElement;
+    target.releasePointerCapture(e.pointerId);
+
     setClickOriginatedInEq(true);
+
+    function onReleaseHz(ee: PointerEvent) {
+      // Release only if it is the actual pointer release, not the simulated one coming from WinampButton
+      // Simulated pointer release coming from WinampButton has ee.detail == -42
+      // Actual pointer release here will come in as ee.detail === 0
+      if (ee.detail === 0) {
+        setClickOriginatedInEq(false);
+        document.removeEventListener("pointerup", onReleaseHz);
+      }
+    }
+    document.addEventListener("pointerup", onReleaseHz);
   };
 
   return (
-    <div id="equalizer-window" className={className} onPointerDown={onPointerDownEq}>
+    <div id="equalizer-window" className={className}>
       <FocusTarget windowId={WINDOWS.EQUALIZER}>
         {shade ? (
           <EqualizerShade />

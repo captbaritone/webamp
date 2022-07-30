@@ -65,8 +65,11 @@ export default function WinampButton(props: Props): JSX.Element {
   // If the pointer enters the WinampButton area, and the pointer button is already down, trigger a PointerDown
   const onPointerEnter = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.buttons === 1) {
-      // Emit a pointerup to get the other buttons to release
-      document.dispatchEvent(new Event('pointerup', e));
+      // Emit a CustomEvent pointerup to get the other buttons to release.
+      // Add a special -42 detail value so we can identify this event elsewhere and ignore if needed.
+      document.dispatchEvent(new CustomEvent('pointerup', {
+        detail: -42
+      }));
       // Simulate a pointerdown on the current button
       onPointerDown(e);
     }
