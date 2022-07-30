@@ -47,17 +47,19 @@ const EqualizerWindow = () => {
   // Track whether the click originated in the "hertz" area of the EQ
   // We only want to allow drag across the EQ when the click originated in that area
   const [clickOriginatedInEq, setClickOriginatedInEq] = useState(false);
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+
+  const onPointerDownEq = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setClickOriginatedInEq(false);
+  };
+
+  const onPointerDownHz = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.stopPropagation(); // To prevent onPointerDownEq from firing
     setClickOriginatedInEq(true);
-    function onRelease(ee: PointerEvent) {
-      setClickOriginatedInEq(false);
-      document.getElementById('hertzarea')?.removeEventListener("pointerup", onRelease);
-    }
-    document.getElementById('hertzarea')?.addEventListener("pointerup", onRelease);
   };
 
   return (
-    <div id="equalizer-window" className={className}>
+    <div id="equalizer-window" className={className} onPointerDown={onPointerDownEq}>
       <FocusTarget windowId={WINDOWS.EQUALIZER}>
         {shade ? (
           <EqualizerShade />
@@ -77,7 +79,7 @@ const EqualizerWindow = () => {
             <div id="plus12db" onClick={setEqToMax} />
             <div id="zerodb" onClick={setEqToMid} />
             <div id="minus12db" onClick={setEqToMin} />
-            <div id="hertzarea" onPointerDown={onPointerDown}>
+            <div onPointerDown={onPointerDownHz}>
               {BANDS.map((hertz) => (
                 <Band
                   key={hertz}

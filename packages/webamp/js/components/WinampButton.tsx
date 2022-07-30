@@ -32,7 +32,7 @@ type Props = DetailedHTMLPropsAndMore;
  */
 export default function WinampButton(props: Props): JSX.Element {
   const [active, setActive] = useState(false);
-  const { requireClicksOriginateLocally, onPointerDown: originalOnPointerDown } = props;
+  const { requireClicksOriginateLocally, onPointerDown: originalOnPointerDown, ...htmlProps } = props;
 
   const onPointerDown = useCallback(
     (e) => {
@@ -72,10 +72,6 @@ export default function WinampButton(props: Props): JSX.Element {
     }
   };
 
-  // Remove the custom prop "requireClicksOriginateLocally" before passing the HTML props to the child div
-  const htmlProps = {...props};
-  delete htmlProps.requireClicksOriginateLocally;
-  
   const className = classnames(props.className, { [ACTIVE_CLASSNAME]: active });
   return (
     <div
