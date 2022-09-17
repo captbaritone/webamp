@@ -34,6 +34,7 @@ type Props = DetailedHTMLPropsAndMore;
 export default function WinampButton({
   requireClicksOriginateLocally = true,
   onPointerDown: originalOnPointerDown,
+  className,
   ...htmlProps
 }: Props): JSX.Element {
   const [active, setActive] = useState(false);
@@ -84,11 +85,10 @@ export default function WinampButton({
     }
   };
 
-  const className = classnames(props.className, { [ACTIVE_CLASSNAME]: active });
   return (
     <div
       {...htmlProps}
-      className={className}
+      className={classnames(className, { [ACTIVE_CLASSNAME]: active })}
       onPointerDown={onPointerDown}
       onPointerEnter={
         requireClicksOriginateLocally ? undefined : onPointerEnter
