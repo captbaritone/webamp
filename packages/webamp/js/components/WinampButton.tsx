@@ -31,13 +31,12 @@ type Props = DetailedHTMLPropsAndMore;
  * > and the time it is depressed; for a finger in a multitouch environment, while
  * > the finger is touching the display surface).
  */
-export default function WinampButton(props: Props): JSX.Element {
+export default function WinampButton({
+  requireClicksOriginateLocally = true,
+  onPointerDown: originalOnPointerDown,
+  ...htmlProps
+}: Props): JSX.Element {
   const [active, setActive] = useState(false);
-  const {
-    requireClicksOriginateLocally,
-    onPointerDown: originalOnPointerDown,
-    ...htmlProps
-  } = props;
 
   const onPointerDown = useCallback(
     (e) => {
@@ -66,7 +65,7 @@ export default function WinampButton(props: Props): JSX.Element {
       }
       document.addEventListener("pointerup", onRelease);
     },
-    [originalOnPointerDown]
+    [originalOnPointerDown, requireClicksOriginateLocally]
   );
 
   // We watch for events onPointerEnter only when requireClicksOriginateLocally === false
@@ -97,7 +96,3 @@ export default function WinampButton(props: Props): JSX.Element {
     />
   );
 }
-
-WinampButton.defaultProps = {
-  requireClicksOriginateLocally: true,
-};
