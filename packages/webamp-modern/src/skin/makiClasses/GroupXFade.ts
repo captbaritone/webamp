@@ -40,17 +40,17 @@ export default class GroupXFade extends Group {
     actionTarget: string | null = null,
     source: GuiObj = null
   ): boolean {
-    if(action.toLowerCase().startsWith('switchto;')){
-        UI_ROOT.vm.dispatch(this, 'onaction', [
-          { type: "STRING", value: action },
-          { type: "STRING", value: param },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "OBJECT", value: source },
-        ])
-        return true
+    if (action.toLowerCase().startsWith("switchto;")) {
+      UI_ROOT.vm.dispatch(this, "onaction", [
+        { type: "STRING", value: action },
+        { type: "STRING", value: param },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "OBJECT", value: source },
+      ]);
+      return true;
     }
     switch (action.toLowerCase()) {
       case "groupid":

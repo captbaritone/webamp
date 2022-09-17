@@ -11,7 +11,7 @@ import XmlObj from "../XmlObj";
 // -- http://wiki.winamp.com/wiki/Modern_Skin
 export default class MapObj extends XmlObj {
   static GUID = "38603665461B42a7AA75D83F6667BF73";
-  
+
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
@@ -41,5 +41,4 @@ export default class MapObj extends XmlObj {
     }
     return true;
   }
-
 }

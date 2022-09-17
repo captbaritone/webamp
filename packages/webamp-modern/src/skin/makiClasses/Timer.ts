@@ -9,9 +9,9 @@ export default class Timer extends BaseObject {
   _delay: number = 5000; //x2nie
   _timeout: NodeJS.Timeout | null = null;
   _nid: number;
-  _onTimer: ()=>void = null;
+  _onTimer: () => void = null;
 
-  constructor(){
+  constructor() {
     super();
     TIMER_IDS += 1;
     this._nid = TIMER_IDS;
@@ -23,9 +23,9 @@ export default class Timer extends BaseObject {
     //   "Tried to change the delay on a running timer"
     // );
     const running = this.isrunning();
-    if(running) this.stop();
+    if (running) this.stop();
     this._delay = millisec;
-    if(running) this.start()
+    if (running) this.start();
   }
   stop() {
     if (this._timeout != null) {
@@ -35,14 +35,14 @@ export default class Timer extends BaseObject {
   }
   async start(): Promise<boolean> {
     // console.log('timer.start()', this._nid)
-    if(!this._delay){
+    if (!this._delay) {
       return false;
     }
-    const self=this;
+    const self = this;
 
-    try{
+    try {
       assume(this._delay != null, "Tried to start a timer without a delay");
-      if(this.isrunning()){
+      if (this.isrunning()) {
         this.stop();
       }
       this._timeout = setInterval(() => {
@@ -50,27 +50,26 @@ export default class Timer extends BaseObject {
         // UI_ROOT.vm.dispatch(self, "ontimer");
         self.doTimer();
       }, this._delay);
-      return true
-    } 
-    catch(err){
-      return false
+      return true;
+    } catch (err) {
+      return false;
     }
-    return false
+    return false;
   }
 
-  doTimer(){
+  doTimer() {
     // console.log('timer.ontimer()', this._nid)
-    if(this._onTimer!=null){
-      this._onTimer()
+    if (this._onTimer != null) {
+      this._onTimer();
     } else {
-      UI_ROOT.vm.dispatch(this, "ontimer");   
+      UI_ROOT.vm.dispatch(this, "ontimer");
     }
   }
 
-  setOnTimer(callback:()=>void){
-    const handler = ()=>{
+  setOnTimer(callback: () => void) {
+    const handler = () => {
       callback();
-    }
+    };
     this._onTimer = handler;
     // this._onTimer = callback;
   }

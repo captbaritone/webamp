@@ -170,7 +170,9 @@ export async function identifierExists(identifier: string): Promise<boolean> {
 
 async function getNewIdentifier(filename: string): Promise<string> {
   // The internet archvie has a max identifier length of 80 chars.
-  const identifierBase = `winampskins_${sanitize(path.parse(filename).name)}`.slice(0, 76);
+  const identifierBase = `winampskins_${sanitize(
+    path.parse(filename).name
+  )}`.slice(0, 76);
   let counter = 0;
   function getIdentifier() {
     return identifierBase + (counter === 0 ? "" : `_${counter}`);
@@ -230,7 +232,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
         errorCount++;
         // The internet archive claims this one is corrupt for some reason.
         if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
-          console.warn(`This skin is known to not upload correctly.`)
+          console.warn(`This skin is known to not upload correctly.`);
         }
         if (/error checking archive/.test(e.message)) {
           console.log(`Corrupt archvie: ${skin.getMd5()}`);

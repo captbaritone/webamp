@@ -68,7 +68,7 @@ export default class AnimatedLayer extends Layer {
     this.gotoframe(frame);
     UI_ROOT.vm.dispatch(this, "onplay");
     if (frame === end) {
-      this.stop()
+      this.stop();
       return;
     }
     this._animationInterval = setInterval(() => {
@@ -77,7 +77,7 @@ export default class AnimatedLayer extends Layer {
       if (frame === end) {
         clearInterval(this._animationInterval);
         this._animationInterval = null;
-        this.stop()
+        this.stop();
       }
     }, this._speed);
   }

@@ -322,7 +322,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.style.removeProperty("--align");
       }
       //? margin
-      this._div.style.setProperty("--hspacing", px(font.getHorizontalSpacing()));
+      this._div.style.setProperty(
+        "--hspacing",
+        px(font.getHorizontalSpacing())
+      );
 
       this.setBackgroundImage(font);
       this._div.style.backgroundSize = "0"; //disable parent background, because only children will use it

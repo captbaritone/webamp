@@ -229,7 +229,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getId(): string {
-    return this._id || '';
+    return this._id || "";
   }
 
   /**
@@ -412,7 +412,7 @@ export default class GuiObj extends XmlObj {
     return this._div.matches(":focus");
   }
 
-  setregion(reg: Region){
+  setregion(reg: Region) {
     //TODO:
   }
 
@@ -446,7 +446,7 @@ export default class GuiObj extends XmlObj {
       y >= this.gettop(),
       "Expected click to be below the component's top"
     );
-    this.getparentlayout().bringtofront()
+    this.getparentlayout().bringtofront();
     UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
@@ -746,7 +746,7 @@ export default class GuiObj extends XmlObj {
     this._div.style.zIndex = String(BRING_LEAST);
   }
 
-  setenabled(onoff:boolean|number){
+  setenabled(onoff: boolean | number) {
     //TODO:
   }
 
@@ -778,7 +778,7 @@ export default class GuiObj extends XmlObj {
     x: number,
     y: number,
     p1: number,
-    p2: number,
+    p2: number
   ): number {
     return UI_ROOT.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },

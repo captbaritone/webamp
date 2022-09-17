@@ -1,11 +1,11 @@
-@import './base-skin.css';
-@import './context-menu.css';
-@import './equalizer-window.css';
-@import './gen-window.css';
-@import './main-window.css';
-@import './milkdrop-window.css';
-@import './mini-time.css';
-@import './playlist-window.css';
+@import "./base-skin.css";
+@import "./context-menu.css";
+@import "./equalizer-window.css";
+@import "./gen-window.css";
+@import "./main-window.css";
+@import "./milkdrop-window.css";
+@import "./mini-time.css";
+@import "./playlist-window.css";
 /* Rules used by all windows */
 
 #webamp {

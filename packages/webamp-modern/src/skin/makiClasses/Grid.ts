@@ -4,22 +4,22 @@ import { px } from "../../utils";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects
 export default class Grid extends GuiObj {
-//   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
+  //   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
   _image: string; // link to Bitmap._id
-  _left  : HTMLElement; 
+  _left: HTMLElement;
   _middle: HTMLElement;
-  _right : HTMLElement;
+  _right: HTMLElement;
 
-  constructor(){
-      super();
-      this._left = document.createElement('left');
-      this._middle = document.createElement('middle');
-      this._right = document.createElement('right');
-      this._div.appendChild(this._left)
-      this._div.appendChild(this._middle)
-      this._div.appendChild(this._right)
+  constructor() {
+    super();
+    this._left = document.createElement("left");
+    this._middle = document.createElement("middle");
+    this._right = document.createElement("right");
+    this._div.appendChild(this._left);
+    this._div.appendChild(this._middle);
+    this._div.appendChild(this._right);
   }
-  
+
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -49,7 +49,7 @@ export default class Grid extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
   }
@@ -61,7 +61,7 @@ export default class Grid extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
   }
@@ -74,9 +74,9 @@ export default class Grid extends GuiObj {
   _setBitmap(element: HTMLElement, bitmap_id: string) {
     const bitmap = UI_ROOT.getBitmap(bitmap_id);
     // this.setBackgroundImage(bitmap);
-    if(bitmap){
-        bitmap.setAsBackground(element);
-        element.style.width = px(bitmap.getWidth());
+    if (bitmap) {
+      bitmap.setAsBackground(element);
+      element.style.width = px(bitmap.getWidth());
     }
   }
 
@@ -84,7 +84,7 @@ export default class Grid extends GuiObj {
     super.draw();
     // this._div.setAttribute("data-obj-name", "Layer");
     // this._div.style.pointerEvents = this._sysregion==-2 || this._ghost? 'none' : 'auto';
-    this._div.style.pointerEvents = 'none';
+    this._div.style.pointerEvents = "none";
     // this._div.style.overflow = "hidden";
     this._div.style.removeProperty("display");
     this._div.classList.add("webamp--img");
@@ -92,7 +92,7 @@ export default class Grid extends GuiObj {
   }
   //setRegionFromMap(regionMap:Map, threshold:number)
 
-  isinvalid():boolean {
+  isinvalid(): boolean {
     return false;
   }
 }

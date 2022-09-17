@@ -264,11 +264,11 @@ export default class Slider extends GuiObj {
   }
 
   /**
-   * 
+   *
    * @param newpos 0..MAX
    */
   setposition(newpos: number) {
-    this._position= newpos / MAX;
+    this._position = newpos / MAX;
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
     // console.log("Slider.setPosition:", newpos);
@@ -358,7 +358,7 @@ export default class Slider extends GuiObj {
       this._div.style.setProperty("--thumb-left", px(left));
     }
   }
-  
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");

@@ -30,21 +30,28 @@ export default class WasabiTitleBar extends Group {
   }
 
   _renderX() {
-    this._div.style.left = this._relatx=='1' ? relative(this._padtitleleft + this._x ?? 0) : px(this._padtitleleft + this._x ?? 0);
+    this._div.style.left =
+      this._relatx == "1"
+        ? relative(this._padtitleleft + this._x ?? 0)
+        : px(this._padtitleleft + this._x ?? 0);
     // this._div.setAttribute('pad-left', this._padtitleleft.toString())
   }
-  
+
   _renderWidth() {
     // this._div.setAttribute('pad-right', this._padtitleright.toString())
     // this._div.setAttribute('_width', this._width.toString())
     // this._div.setAttribute('_width_', this.getwidth().toString())
     // if(this._autowidthsource) return;
-    this._div.style.width = this._relatw=='1' ? relative(-this._padtitleleft + -this._padtitleright + this._width??0) : px(-this._padtitleright + this.getwidth());
+    this._div.style.width =
+      this._relatw == "1"
+        ? relative(
+            -this._padtitleleft + -this._padtitleright + this._width ?? 0
+          )
+        : px(-this._padtitleright + this.getwidth());
   }
 
-
   init() {
-    super.init()
+    super.init();
     UI_ROOT.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
@@ -52,5 +59,4 @@ export default class WasabiTitleBar extends Group {
       { type: "INT", value: this.getheight() },
     ]);
   }
-  
 }

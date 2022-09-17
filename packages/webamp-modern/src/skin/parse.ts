@@ -277,7 +277,7 @@ export default class SkinParser {
       case "fadetogglebutton":
       case "configcheckbox":
         //temporary, to localize error
-        return this.dynamicXuiElement(node, parent)
+        return this.dynamicXuiElement(node, parent);
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
@@ -377,7 +377,11 @@ export default class SkinParser {
     const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
     if (xuiEl) {
       const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-      const Element:XuiElement =  await this.newGroup(XuiElement, xuiFrame, parent);
+      const Element: XuiElement = await this.newGroup(
+        XuiElement,
+        xuiFrame,
+        parent
+      );
       Element.setXmlAttributes(node.attributes);
       // await this.maybeApplyGroupDef(frame, xuiFrame);
     }
@@ -838,21 +842,41 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
-    this.buildWasabiScrollbarDimension()
+    this.buildWasabiScrollbarDimension();
     return this.newGui(ColorThemesList, node, parent);
   }
 
   buildWasabiScrollbarDimension() {
     this._uiRoot.addWidth("vscrollbar-width", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-btn-height", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-thumb-height", "wasabi.scrollbar.vertical.button");
-    this._uiRoot.addHeight("vscrollbar-thumb-height2", "studio.scrollbar.vertical.button");
+    this._uiRoot.addHeight(
+      "vscrollbar-btn-height",
+      "wasabi.scrollbar.vertical.left"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height",
+      "wasabi.scrollbar.vertical.button"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height2",
+      "studio.scrollbar.vertical.button"
+    );
 
-    this._uiRoot.addHeight("hscrollbar-height", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-btn-width", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-thumb-width", "wasabi.scrollbar.horizontal.button");
-    this._uiRoot.addWidth("hscrollbar-thumb-width2", "studio.scrollbar.horizontal.button");
-
+    this._uiRoot.addHeight(
+      "hscrollbar-height",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-btn-width",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width",
+      "wasabi.scrollbar.horizontal.button"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width2",
+      "studio.scrollbar.horizontal.button"
+    );
   }
 
   async layoutStatus(node: XmlElement, parent: any) {

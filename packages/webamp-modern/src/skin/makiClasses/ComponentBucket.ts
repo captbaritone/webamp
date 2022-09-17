@@ -90,10 +90,11 @@ export default class ComponentBucket extends Group {
     for (const obj of this.getparent()._children) {
       if (
         obj instanceof Button &&
-        (obj._actionTarget == null || obj._actionTarget == "bucket") && 
-        (obj._action && obj._action.startsWith('cb_'))
+        (obj._actionTarget == null || obj._actionTarget == "bucket") &&
+        obj._action &&
+        obj._action.startsWith("cb_")
       ) {
-        obj._actionTarget = this.getId()
+        obj._actionTarget = this.getId();
       }
     }
   }
@@ -103,7 +104,9 @@ export default class ComponentBucket extends Group {
     const oneChild = this._children[0];
     const oneStep = this._vertical ? oneChild.getheight() : oneChild.getwidth();
     const anchor = this._vertical ? "top" : "left";
-    const currentStep = this._vertical? this._wrapper.offsetTop : this._wrapper.offsetLeft;
+    const currentStep = this._vertical
+      ? this._wrapper.offsetTop
+      : this._wrapper.offsetLeft;
     //TODO: Clamp to not over top nor over left (showing empty space bug)
     this._wrapper.style.setProperty(anchor, px(currentStep + oneStep * step));
   }

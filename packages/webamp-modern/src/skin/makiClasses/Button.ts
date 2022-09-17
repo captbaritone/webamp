@@ -107,7 +107,7 @@ export default class Button extends GuiObj {
     }
   }
 
-  setactivatednocallback(onoff: boolean){
+  setactivatednocallback(onoff: boolean) {
     if (onoff !== this._active) {
       this._active = onoff;
       if (this._active) {

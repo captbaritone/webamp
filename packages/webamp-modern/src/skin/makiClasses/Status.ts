@@ -70,7 +70,7 @@ export default class Status extends GuiObj {
   }
 
   _renderBackground() {
-    let bitmap_id:string;
+    let bitmap_id: string;
     switch (this._state) {
       case AUDIO_PLAYING:
         bitmap_id = this._playbitmap;

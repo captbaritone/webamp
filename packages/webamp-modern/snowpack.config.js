@@ -8,9 +8,7 @@ module.exports = {
     src: "/",
     assets: "/assets",
   },
-  exclude: [
-    '*.tmp'
-  ],
+  exclude: ["*.tmp"],
   plugins: [
     /* ... */
   ],
@@ -22,6 +20,6 @@ module.exports = {
   },
   buildOptions: {
     /* ... */
-    out: './build'
+    out: "./build",
   },
 };

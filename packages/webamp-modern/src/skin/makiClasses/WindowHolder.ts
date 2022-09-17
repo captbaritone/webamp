@@ -10,31 +10,30 @@ import Group from "./Group";
 //
 // -- http://wiki.winamp.com/wiki/Modern_Skin
 export default class WindowHolder extends Group {
-//   static GUID = "38603665461B42a7AA75D83F6667BF73";
-  
+  //   static GUID = "38603665461B42a7AA75D83F6667BF73";
+
   constructor() {
     super();
   }
 
-//   setXmlAttr(_key: string, value: string): boolean {
-//     const key = _key.toLowerCase();
-//     if (super.setXmlAttr(key, value)) {
-//       return true;
-//     }
-//     switch (key) {
-//       case "name":
-//         this._name = value;
-//         break;
-//       case "id":
-//         this._id = value.toLowerCase();
-//         break;
-//       case "default_visible":
-//         this._visible = toBool(value);
-//         break;
-//       default:
-//         return false;
-//     }
-//     return true;
-//   }
-
+  //   setXmlAttr(_key: string, value: string): boolean {
+  //     const key = _key.toLowerCase();
+  //     if (super.setXmlAttr(key, value)) {
+  //       return true;
+  //     }
+  //     switch (key) {
+  //       case "name":
+  //         this._name = value;
+  //         break;
+  //       case "id":
+  //         this._id = value.toLowerCase();
+  //         break;
+  //       case "default_visible":
+  //         this._visible = toBool(value);
+  //         break;
+  //       default:
+  //         return false;
+  //     }
+  //     return true;
+  //   }
 }

@@ -155,9 +155,9 @@ function makiTypeToTsType(makiType: string): string {
     case "configitem":
       return "ConfigItem";
     case "configattribute":
-      return "ConfigAttribute"
+      return "ConfigAttribute";
     case "winampconfiggroup":
-      return "WinampConfigGroup"
+      return "WinampConfigGroup";
     default:
       throw new Error(`Missing maki type: ${makiType}`);
   }
