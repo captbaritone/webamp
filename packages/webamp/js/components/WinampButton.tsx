@@ -9,7 +9,8 @@ import {
 const ACTIVE_CLASSNAME = "winamp-active";
 const LEFT_MOUSE_NUMBER = 0;
 
-interface DetailedHTMLPropsAndMore extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface DetailedHTMLPropsAndMore
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   requireClicksOriginateLocally?: boolean;
 }
 
@@ -32,7 +33,11 @@ type Props = DetailedHTMLPropsAndMore;
  */
 export default function WinampButton(props: Props): JSX.Element {
   const [active, setActive] = useState(false);
-  const { requireClicksOriginateLocally, onPointerDown: originalOnPointerDown, ...htmlProps } = props;
+  const {
+    requireClicksOriginateLocally,
+    onPointerDown: originalOnPointerDown,
+    ...htmlProps
+  } = props;
 
   const onPointerDown = useCallback(
     (e) => {
@@ -47,7 +52,10 @@ export default function WinampButton(props: Props): JSX.Element {
       }
       // We only care about left mouse.
       // -1 button comes on onPointerEnter so we allow that.
-      if (e.nativeEvent.button !== -1 && e.nativeEvent.button !== LEFT_MOUSE_NUMBER) {
+      if (
+        e.nativeEvent.button !== -1 &&
+        e.nativeEvent.button !== LEFT_MOUSE_NUMBER
+      ) {
         return;
       }
       setActive(true);
@@ -67,9 +75,11 @@ export default function WinampButton(props: Props): JSX.Element {
     if (e.buttons === 1) {
       // Emit a CustomEvent pointerup to get the other buttons to release.
       // Add a special -42 detail value so we can identify this event elsewhere and ignore if needed.
-      document.dispatchEvent(new CustomEvent('pointerup', {
-        detail: -42
-      }));
+      document.dispatchEvent(
+        new CustomEvent("pointerup", {
+          detail: -42,
+        })
+      );
       // Simulate a pointerdown on the current button
       onPointerDown(e);
     }
@@ -81,11 +91,13 @@ export default function WinampButton(props: Props): JSX.Element {
       {...htmlProps}
       className={className}
       onPointerDown={onPointerDown}
-      onPointerEnter={requireClicksOriginateLocally ? undefined : onPointerEnter}
+      onPointerEnter={
+        requireClicksOriginateLocally ? undefined : onPointerEnter
+      }
     />
   );
 }
 
 WinampButton.defaultProps = {
-  requireClicksOriginateLocally: true
+  requireClicksOriginateLocally: true,
 };

@@ -108,13 +108,17 @@ export default function VerticalSlider({
       handlePointerDown(e);
     }
   }
-  
+
   const offset = Math.floor((height - handleHeight) * value);
   return (
     <div
       style={{ height, width }}
       onPointerDown={disabled ? undefined : handlePointerDown}
-      onPointerEnter={disabled || requireClicksOriginateLocally ? undefined : handlePointerEnter}
+      onPointerEnter={
+        disabled || requireClicksOriginateLocally
+          ? undefined
+          : handlePointerEnter
+      }
       ref={ref}
     >
       <div style={{ transform: `translateY(${offset}px)` }} ref={handleRef}>

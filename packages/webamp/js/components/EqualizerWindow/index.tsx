@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import classnames from "classnames";
 
 import { BANDS, WINDOWS } from "../../constants";
@@ -49,7 +49,7 @@ const EqualizerWindow = () => {
   const [clickOriginatedInEq, setClickOriginatedInEq] = useState(false);
 
   const onPointerDownHz = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.stopPropagation();   
+    e.stopPropagation();
     // Release the pointer capture
     // https://w3c.github.io/pointerevents/#implicit-pointer-capture
     // https://w3c.github.io/pointerevents/#pointer-capture
