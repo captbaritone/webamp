@@ -10,12 +10,12 @@ type Props = {
   onBeforeChange?: () => void;
   onChange: (value: number) => void;
   onAfterChange?: () => void;
+  requireClicksOriginateLocally?: boolean;
   disabled?: boolean;
 };
 
 type RegOptions = {
   target: HTMLElement;
-  touch: boolean;
   clientY: number;
 };
 
@@ -31,12 +31,13 @@ export default function VerticalSlider({
   onBeforeChange,
   onChange,
   onAfterChange,
+  requireClicksOriginateLocally = true,
   disabled,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
 
-  function registerMoveListener({ target, clientY, touch }: RegOptions) {
+  function registerMoveListener({ target, clientY }: RegOptions) {
     const sliderNode = ref.current;
     const handleNode = handleRef.current;
     if (sliderNode == null || handleNode == null) {
@@ -70,39 +71,19 @@ export default function VerticalSlider({
       onChange(Utils.clamp(startOffset / spanSize, 0, 1));
     }
 
-    if (touch) {
-      const handleTouchMove = (event: TouchEvent) => {
-        if (event.cancelable) {
-          event.preventDefault();
-        }
-        moveToPosition(event.touches[0].clientY);
-      };
-      const handleTouchEnd = () => {
-        if (onAfterChange != null) {
-          onAfterChange();
-        }
-        document.removeEventListener("touchmove", handleTouchMove);
-        document.removeEventListener("touchend", handleTouchEnd);
-      };
-      document.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
-      document.addEventListener("touchend", handleTouchEnd);
-    } else {
-      const handleMouseMove = (event: MouseEvent) => {
-        event.preventDefault();
-        moveToPosition(event.clientY);
-      };
-      const handleMouseUp = () => {
-        if (onAfterChange != null) {
-          onAfterChange();
-        }
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
-      };
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    }
+    const handlePointerMove = (event: PointerEvent) => {
+      event.preventDefault();
+      moveToPosition(event.clientY);
+    };
+    const handleRelease = () => {
+      if (onAfterChange != null) {
+        onAfterChange();
+      }
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handleRelease);
+    };
+    document.addEventListener("pointermove", handlePointerMove);
+    document.addEventListener("pointerup", handleRelease);
 
     if (onBeforeChange != null) {
       onBeforeChange();
@@ -112,29 +93,28 @@ export default function VerticalSlider({
     moveToPosition(clientY);
   }
 
-  function handleMouseDown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
     e.preventDefault();
     registerMoveListener({
       target: e.target as HTMLElement,
       clientY: e.clientY,
-      touch: false,
     });
   }
 
-  function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
-    registerMoveListener({
-      target: e.target as HTMLElement,
-      clientY: e.touches[0].clientY,
-      touch: true,
-    });
+  // We watch for events onPointerEnter only when requireClicksOriginateLocally === false
+  // If the mouse/touch enters the Slider area, and the button/touch is already down, trigger a PointerDown
+  function handlePointerEnter(e: React.PointerEvent<HTMLDivElement>) {
+    if (e.buttons === 1) {
+      handlePointerDown(e);
+    }
   }
-
+  
   const offset = Math.floor((height - handleHeight) * value);
   return (
     <div
       style={{ height, width }}
-      onMouseDown={disabled ? undefined : handleMouseDown}
-      onTouchStart={disabled ? undefined : handleTouchStart}
+      onPointerDown={disabled ? undefined : handlePointerDown}
+      onPointerEnter={disabled || requireClicksOriginateLocally ? undefined : handlePointerEnter}
       ref={ref}
     >
       <div style={{ transform: `translateY(${offset}px)` }} ref={handleRef}>
