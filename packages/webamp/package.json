@@ -17,7 +17,7 @@
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "webpack --config=demo/config/webpack.prod.js",
-    "build-library": "webpack --config=config/webpack.library.js",
+    "build-library": "NODE_OPTIONS=--openssl-legacy-provider webpack --config=config/webpack.library.js",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
