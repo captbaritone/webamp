@@ -1,0 +1,217 @@
+/* Coolors Exported Palette - https://coolors.co/ed4b6c-f7b54c-06d6a0-4c84b2-684b3a
+
+HSL
+$color1: hsla(348%, 82%, 61%, 1);
+$color2: hsla(37%, 91%, 63%, 1);
+$color3: hsla(164%, 95%, 43%, 1);
+$color4: hsla(207%, 40%, 50%, 1);
+$color5: hsla(22%, 28%, 32%, 1);
+
+RGB
+$color1: rgba(237, 75, 108, 1);
+$color2: rgba(247, 181, 76, 1);
+$color3: rgba(6, 214, 160, 1);
+$color4: rgba(76, 132, 178, 1);
+$color5: rgba(104, 75, 58, 1);
+*/
+
+body {
+  margin: 0;
+  background-color: rgb(0, 0, 0);
+}
+
+body,
+input,
+button {
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+}
+h2 {
+  font-size: 17px;
+}
+h1 a {
+  text-decoration: none;
+  color: rgba(255, 2550, 2550, 0.9);
+}
+
+/* https://stackoverflow.com/a/16255670/1263117 */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
+
+#search h1 #logo {
+  margin: 0 10px 0 15px;
+}
+
+#search h1 .name {
+  margin: 0 15px 0 0px;
+}
+
+button {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgb(176, 195, 205);
+  margin-right: 12px;
+  border: none;
+  font-size: 12px;
+  box-sizing: border-box;
+  border-width: 0.125rem;
+  line-height: 1.15;
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  outline: none;
+  color: rgb(35, 41, 60);
+  cursor: pointer;
+  border-left: 1px solid rgb(235, 255, 255);
+  border-top: 1px solid rgb(235, 255, 255);
+  border-bottom: 1px solid rgb(58, 71, 88);
+  border-right: 1px solid rgb(58, 71, 88);
+}
+
+button:active {
+  border-right: 1px solid rgb(235, 255, 255);
+  border-bottom: 1px solid rgb(235, 255, 255);
+  border-top: 1px solid rgb(58, 71, 88);
+  border-left: 1px solid rgb(58, 71, 88);
+}
+
+/*
+We need to move the text before we can enable this.
+button:active {
+  border-right: 2px solid rgb(235, 255, 255);
+  border-bottom: 2px solid rgb(235, 255, 255);
+  border-top: 2px solid rgb(58, 71, 88);
+  border-left: 2px solid rgb(58, 71, 88);
+}
+*/
+
+#search {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background: rgb(17, 17, 25);
+  background: linear-gradient(
+    90deg,
+    rgba(17, 17, 25, 1) 0%,
+    rgba(40, 39, 66, 1) 66%,
+    rgba(25, 25, 39, 1) 100%
+  );
+  text-align: left;
+  height: 30px; /* This matches the margin-top for #infinite-skins */
+  z-index: 5;
+  padding: 7px 0;
+  /* A little shadow below the search bar */
+  -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
+  -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid rgb(32, 31, 51);
+  color: rgba(255, 2550, 2550, 0.9);
+}
+
+#search input {
+  margin-right: 15px;
+  max-width: 250px;
+  min-width: 100px;
+  border: none;
+  font-size: 16px;
+  box-sizing: border-box;
+  line-height: 1.15;
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  outline: none;
+  flex-grow: 1;
+  background-color: rgb(0, 0, 0);
+  color: rgb(29, 226, 5);
+  border-top: 1px solid rgb(32, 31, 51);
+  border-left: 1px solid rgb(32, 31, 51);
+  border-bottom: 1px solid rgb(87, 86, 102);
+  border-right: 1px solid rgb(87, 86, 102);
+}
+
+#search input::placeholder {
+  color: rgb(73, 83, 112);
+}
+
+#webamp {
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+body.webamp-loaded #webamp {
+  opacity: 1;
+}
+
+.metadata {
+  position: absolute;
+  margin: 10px;
+  color: #a7a394;
+  line-height: 25px;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.metadata a,
+.metadata button {
+  color: #a7a394;
+  font-size: 16px;
+}
+
+#focused-skin {
+  visibility: visible;
+}
+
+@media (max-width: 870px) {
+  #search h1 .name {
+    display: none;
+  }
+}
+
+.static-content {
+  max-width: 450px;
+  background-color: white;
+  padding: 30px;
+  margin: 80px auto;
+  line-height: 1.4em;
+}
+
+.readme pre {
+  white-space: pre-wrap;
+  margin: 0;
+  font-size: 12px;
+}
+
+.tinder-card {
+  position: absolute;
+  width: 100%;
+}
+
+#zoom button {
+  color: rgba(255, 2550, 2550, 0.9);
+}
+#zoom button:active, #zoom button:disabled {
+  color: grey;
+}
+
+@media (hover: hover) {
+  #zoom {
+    opacity: 0.7;
+    transition: opacity 200ms ease-in-out;
+  }
+  #zoom:hover {
+    opacity: 1;
+  }
+}
