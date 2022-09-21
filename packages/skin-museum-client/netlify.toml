@@ -13,6 +13,7 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
   # Default build command.
   command = "cd ../webamp && yarn build && cd skin-museum-client && yarn build"
 [build.environment]
+  NODE_OPTIONS="--openssl-legacy-provider"
   NODE_VERSION = "17.3.0"
   SKIP_PREFLIGHT_CHECK = "true"
   NETLIFY_USE_YARN = "true"
