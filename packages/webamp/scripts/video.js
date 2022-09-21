@@ -4,7 +4,8 @@
 
 const puppeteer = require("puppeteer");
 const { spawn } = require("child_process");
-const fs = require("fs-extra");
+// TODO: Should be fs-extra
+const fs = require("fs");
 
 console.log(process.argv);
 
