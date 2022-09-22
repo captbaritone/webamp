@@ -35,6 +35,7 @@ Webamp uses a [monorepo](https://en.wikipedia.org/wiki/Monorepo) approach, so in
 * [`packages/webamp/demo`](https://github.com/captbaritone/webamp/tree/master/packages/webamp/demo): The demo site which lives at [webamp.org](https://webamp.org)
 * [`packages/ani-cursor`](https://github.com/captbaritone/webamp/tree/master/packages/ani-cursor): An NPM module for rendering animiated `.ani` cursors as CSS animations
 * [`packages/skin-database`](https://github.com/captbaritone/webamp/tree/master/packages/skin-database): The server component of https://skins.webamp.org which also runs our [Twitter bot](https://twitter.com/winampskins), and a Discord bot for our community chat
+* [`packages/skin-museum-client`](https://github.com/captbaritone/webamp/tree/master/packages/skin-museum-client): The front-end component of https://skins.webamp.org.
 * [`packages/winamp-eqf`](https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf): An NPM module for parsing and constructing Winamp equalizer preset files (`.eqf`)
 * [`packages/archive-org-webamp-integration-tests`](https://github.com/captbaritone/webamp/tree/master/packages/archive-org-webamp-integration-tests): An integration that confirms that archive.org's Webamp integration is working as expected
 * [`packages/webamp-modern`](https://github.com/captbaritone/webamp/tree/master/packages/webamp-modern): A prototype exploring rendering "modern" Winamp skins in the browser

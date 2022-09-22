@@ -30,8 +30,9 @@
     "spark-md5": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts  --openssl-legacy-provider build",
+    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts --openssl-legacy-provider start",
+    "build-webamp": "cd ../webamp && yarn build-library",
+    "build": "yarn build-webamp && SKIP_PREFLIGHT_CHECK=true react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "find-skins": "node ./scripts/findSkins.js",
@@ -52,13 +53,19 @@
     "extends": "react-app",
     "overrides": [
       {
-             "files": ["*.js"],
-             "processor": "@graphql-eslint/graphql"
-           },
+        "files": [
+          "*.js"
+        ],
+        "processor": "@graphql-eslint/graphql"
+      },
       {
-        "files": ["*.graphql"],
+        "files": [
+          "*.graphql"
+        ],
         "parser": "@graphql-eslint/eslint-plugin",
-        "plugins": ["@graphql-eslint"],
+        "plugins": [
+          "@graphql-eslint"
+        ],
         "rules": {
           "@graphql-eslint/known-type-names": "error"
         }
