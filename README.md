@@ -39,7 +39,6 @@ Webamp uses a [monorepo](https://en.wikipedia.org/wiki/Monorepo) approach, so in
 * [`packages/winamp-eqf`](https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf): An NPM module for parsing and constructing Winamp equalizer preset files (`.eqf`)
 * [`packages/archive-org-webamp-integration-tests`](https://github.com/captbaritone/webamp/tree/master/packages/archive-org-webamp-integration-tests): An integration that confirms that archive.org's Webamp integration is working as expected
 * [`packages/webamp-modern`](https://github.com/captbaritone/webamp/tree/master/packages/webamp-modern): A prototype exploring rendering "modern" Winamp skins in the browser
-* [`packages/webamp-modern-2`](https://github.com/captbaritone/webamp/tree/master/packages/webamp-modern-2): A second attempt at exploring rendering "modern" Winamp skins in the browser
 * [`examples`](https://github.com/captbaritone/webamp/tree/master/examples): A few examples showing how to use the NPM module
 
 ## Community
