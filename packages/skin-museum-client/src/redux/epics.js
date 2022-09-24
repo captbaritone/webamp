@@ -75,7 +75,7 @@ const selectedSkinEpic = (actions) =>
         switchMap((response) => response.blob()),
         switchMap(async (blob) => {
           const JSZip = await import("jszip");
-          return JSZip.loadAsync(blob);
+          return JSZip.default.loadAsync(blob);
         }),
         switchMap((zip) => {
           return of(Actions.loadedSkinZip(zip), {
