@@ -30,9 +30,9 @@
     "spark-md5": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build-webamp": "cd ../webamp && yarn build-library",
-    "build": "yarn build-webamp && react-scripts --openssl-legacy-provider build",
+    "build": "yarn build-webamp && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "find-skins": "node ./scripts/findSkins.js",
