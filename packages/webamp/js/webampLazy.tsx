@@ -436,14 +436,14 @@ class Webamp {
       throw new Error("Cannot render a Webamp instance twice");
     }
     this._node = node;
+    const root = ReactDOM.createRoot(node);
     this._disposable.add(() => {
+      root.unmount();
       if (this._node != null) {
-        ReactDOM.unmountComponentAtNode(this._node);
         this._node = null;
       }
     });
 
-    const root = ReactDOM.createRoot(node);
     root.render(
       <Provider store={this.store}>
         <App media={this.media} filePickers={this.options.filePickers || []} />
