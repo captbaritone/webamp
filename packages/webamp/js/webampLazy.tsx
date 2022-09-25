@@ -153,7 +153,7 @@ const storeHas = (
 class Webamp {
   static VERSION = "1.5.0";
   _actionEmitter: Emitter;
-  _node: HTMLElement | null;
+  _root: ReactDOM.Root | null;
   _disposable: Disposable;
   options: Options & PrivateOptions; // TODO: Make this _private
   media: Media; // TODO: Make this _private
@@ -170,7 +170,7 @@ class Webamp {
   }
 
   constructor(options: Options & PrivateOptions) {
-    this._node = null;
+    this._root = null;
     this._disposable = new Disposable();
     this._actionEmitter = new Emitter();
     this.options = options;
@@ -431,20 +431,21 @@ class Webamp {
   async renderWhenReady(node: HTMLElement): Promise<void> {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
-    // TODO #race We may have been destroyed
-    if (this._node != null) {
+    if (this._disposable.disposed) {
+      return;
+    }
+    if (this._root != null) {
       throw new Error("Cannot render a Webamp instance twice");
     }
-    this._node = node;
-    const root = ReactDOM.createRoot(node);
+    this._root = ReactDOM.createRoot(node);
     this._disposable.add(() => {
-      root.unmount();
-      if (this._node != null) {
-        this._node = null;
+      if (this._root != null) {
+        this._root.unmount();
+        this._root = null;
       }
     });
 
-    root.render(
+    this._root.render(
       <Provider store={this.store}>
         <App media={this.media} filePickers={this.options.filePickers || []} />
       </Provider>
