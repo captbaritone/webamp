@@ -3,6 +3,7 @@
 ### Internal Improvements:
 
 - Upgrade to React 18, React Redux, 8 and Redux 4.1
+- Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
 
 ## 1.5.0 [CURRENT]
 
