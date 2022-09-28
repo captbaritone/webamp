@@ -15,20 +15,10 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://webamp.org" />
-    <meta
-      property="og:image"
-      content="https://webamp.org<%= require('./images/preview.png') %>"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/page.css') %>"
-    />
-    <link
-      rel="shortcut icon"
-      sizes="16x16 32x32"
-      href="<%= require('./images/favicon.ico') %>"
-    />
+
+    <meta property="og:image" content="./images/preview.png" />
+    <link rel="stylesheet" type="text/css" href="./css/page.css" />
+    <link rel="shortcut icon" sizes="16x16 32x32" href="./images/favicon.ico" />
 
     <!-- See https://goo.gl/qRE0vM -->
     <meta name="theme-color" content="#4b4b4b" />
@@ -37,17 +27,7 @@
       name="google-site-verification"
       content="ycocEnfUpYf8u_UmzpqSe0gNooPs0PBjbD7HKw-qa5I"
     />
-
-    <!-- Load and register service worker that deletes the service worker we used to have -->
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/service-worker.js");
-        });
-      }
-    </script>
   </head>
-
   <body>
     <div id="app">
       <div id="loading" style="display: none">
@@ -124,6 +104,7 @@
     <!-- https://github.com/captbaritone/webamp/issues/750
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="7py29249dpeddu8" async></script>
     -->
+    <script type="module" src="./js/index.tsx"></script>
     <!-- Scripts get injected by html-webpack-plugin -->
   </body>
 </html>

@@ -1,6 +1,6 @@
 import { Track, URLTrack, PartialState } from "./Webamp";
 // @ts-ignore
-import llamaAudio from "../mp3/llama-2.91.mp3";
+import llamaAudio from "url:../mp3/llama-2.91.mp3";
 
 interface Config {
   initialTracks?: Track[];
