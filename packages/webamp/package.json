@@ -2,7 +2,10 @@
   "name": "webamp",
   "version": "1.5.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
+  "main": "dist/webamp/webamp.js",
   "files": [
+    "dist/webamp/webamp.js",
+    "dist/webamp/webamp-lazy.js",
     "built/webamp.bundle.js",
     "built/webamp.bundle.min.js",
     "built/webamp.bundle.min.js.map",
@@ -11,12 +14,23 @@
     "built/webamp.lazy-bundle.min.js.map",
     "index.d.ts"
   ],
+  "targets": {
+    "webamp": {
+      "source": "js/webamp.js"
+    },
+    "webamp-lazy": {
+      "source": "js/webampLazy.tsx"
+    },
+    "demo-site": {
+      "source": "demo/index.html"
+    }
+  },
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
-    "build": "parcel build demo/index.html",
-    "build-library": "parcel build js/webamp.js js/webampLazy.tsx",
+    "build": "parcel build --target demo-site",
+    "build-library": "parcel build --target webamp --target webamp-lazy",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",
     "start": "parcel demo/index.html",
