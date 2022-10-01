@@ -64,7 +64,6 @@ export default class ArchiveFileModel {
     if (info == null) {
       return null;
     }
-    console.log("info", info);
     return info.getTextContent();
   }
 

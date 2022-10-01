@@ -1,0 +1,22 @@
+// Built in windows
+filter:equalizer // includes eqmain.bmp
+filter:playlist // includes pledit.bmp
+filter:browser // includes mb.bmp
+filter:general // Includes gen.bmp and genex.bmp (you need both right?)
+filter:library // Alias of filter:general (Should there be other aliases of general?)
+filter:video // Includes video.bmp
+
+
+// Cursors
+filter:cur // Includes at least one .cur file
+filter:ani // Includes at least one .ani file (we could try to get fancy here and try to check for .ani files named .cur)
+
+// Other attributes
+filter:transparency // Includes region.txt (we could get fancy and ensure it has actual points)
+
+// Plugins
+filter:milkdrop // Alias of filter:general
+filter:mikro // Includes mikro.bmp (Should this also require winampmb.txt? Or maybe either?)
+filter:vidamp // Incldues vidamp.bmp
+filter:avs // Includes avs.bmp
+

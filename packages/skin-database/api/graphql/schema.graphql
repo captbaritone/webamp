@@ -207,6 +207,11 @@ type ClassicSkin implements Skin & Node {
   archive_files: [ArchiveFile]
 
   """
+  Does the skin include sprite sheets for the media library?
+  """
+  has_media_library: Boolean
+
+  """
   The skin's "item" at archive.org
   """
   internet_archive_item: InternetArchiveItem

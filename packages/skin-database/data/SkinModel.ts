@@ -267,6 +267,87 @@ export default class SkinModel {
     return withUrlAsTempFile(this.getSkinUrl(), filename, cb);
   }
 
+  async _hasSpriteSheet(base: string): Promise<boolean> {
+    const ext = "(bmp)|(png)";
+    return this._hasFile(base, ext);
+  }
+
+  async _hasFile(base: string, ext: string): Promise<boolean> {
+    // TODO: Pre-compile regexp
+    const matcher = new RegExp(`^(.*[/\\\\])?${base}.(${ext})$`, "i");
+    const archiveFiles = await this.getArchiveFiles();
+    return archiveFiles.some((file) => {
+      return matcher.test(file.getFileName());
+    });
+  }
+
+  /**
+   *
+   * @returns
+   */
+  async hasMediaLibrary(): Promise<boolean> {
+    return this.hasGeneral();
+  }
+
+  async hasMiniBrowser(): Promise<boolean> {
+    return this._hasSpriteSheet("MB");
+  }
+
+  async hasAVS(): Promise<boolean> {
+    return this._hasSpriteSheet("AVS");
+  }
+
+  async hasVideo(): Promise<boolean> {
+    return this._hasSpriteSheet("VIDEO");
+  }
+
+  // Has built-in support for the MikroAMP plugin.
+  async hasMikro(): Promise<boolean> {
+    // Could also check for `WINAMPMB.TXT`.
+    return this._hasSpriteSheet("MIKRO");
+  }
+
+  // Has built-in support of the Amarok plugin.
+  async hasAmarok(): Promise<boolean> {
+    return this._hasSpriteSheet("AMAROK");
+  }
+
+  // Has built-in support of the vidamp
+  async hasVidamp(): Promise<boolean> {
+    return this._hasSpriteSheet("VIDAMP");
+  }
+
+  // Includes custom cursors
+  async hasCur(): Promise<boolean> {
+    const matcher = new RegExp(`^.(cur)$`, "i");
+    const archiveFiles = await this.getArchiveFiles();
+    return archiveFiles.some((file) => {
+      return matcher.test(file.getFileName());
+    });
+  }
+
+  // Has transparency
+  async hasTransparency(): Promise<boolean> {
+    return this._hasFile("region", "txt");
+  }
+
+  async hasAni(): Promise<boolean> {
+    // Note: This should be expanded to check for animated cursors that use the
+    // .cur extension (but are actually .ani under the hood).
+    const matcher = new RegExp(`^.(ani)$`, "i");
+    const archiveFiles = await this.getArchiveFiles();
+    return archiveFiles.some((file) => {
+      return matcher.test(file.getFileName());
+    });
+  }
+
+  async hasGeneral(): Promise<boolean> {
+    return (
+      (await this._hasSpriteSheet("GEN")) &&
+      (await this._hasSpriteSheet("GENEX"))
+    );
+  }
+
   async withScreenshotTempFile(
     cb: (file: string) => Promise<void>
   ): Promise<void> {
