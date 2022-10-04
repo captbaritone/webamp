@@ -19,6 +19,7 @@ import fetch from "node-fetch";
 import JSZip from "jszip";
 import fs from "fs/promises";
 import path from "path";
+import regionParser from "../regionParser";
 
 export const IS_README = /(file_id\.diz)|(\.txt)$/i;
 // Skinning Updates.txt ?
@@ -280,6 +281,16 @@ export default class SkinModel {
     });
   }
 
+  async _getFile(base: string, ext: string): Promise<ArchiveFileModel | null> {
+    // TODO: Pre-compile regexp
+    const matcher = new RegExp(`^(.*[/\\\\])?${base}.(${ext})$`, "i");
+    const archiveFiles = await this.getArchiveFiles();
+    const row = archiveFiles.find((file) => {
+      return matcher.test(file.getFileName());
+    });
+    return row || null;
+  }
+
   async hasEqualizer(): Promise<boolean> {
     return this._hasSpriteSheet("EQMAIN");
   }
@@ -329,7 +340,18 @@ export default class SkinModel {
 
   // Has transparency
   async hasTransparency(): Promise<boolean> {
-    return this._hasFile("region", "txt");
+    const region = await this._getFile("region", "txt");
+    if (region == null) {
+      return false;
+    }
+    const text = await region.getTextContent();
+    if (text == null) {
+      return false;
+    }
+
+    const regions = regionParser(text);
+
+    return Object.values(regions).some((region) => region.length > 0);
   }
 
   async hasAni(): Promise<boolean> {
