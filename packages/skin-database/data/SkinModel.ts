@@ -331,7 +331,7 @@ export default class SkinModel {
 
   // Includes custom cursors
   async hasCur(): Promise<boolean> {
-    const matcher = new RegExp(`^.(cur)$`, "i");
+    const matcher = new RegExp(`.(cur)$`, "i");
     const archiveFiles = await this.getArchiveFiles();
     return archiveFiles.some((file) => {
       return matcher.test(file.getFileName());
@@ -357,7 +357,7 @@ export default class SkinModel {
   async hasAni(): Promise<boolean> {
     // Note: This should be expanded to check for animated cursors that use the
     // .cur extension (but are actually .ani under the hood).
-    const matcher = new RegExp(`^.(ani)$`, "i");
+    const matcher = new RegExp(`.(ani)$`, "i");
     const archiveFiles = await this.getArchiveFiles();
     return archiveFiles.some((file) => {
       return matcher.test(file.getFileName());
