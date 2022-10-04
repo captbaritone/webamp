@@ -219,6 +219,8 @@ export async function updateSearchIndexs(
   md5s: string[]
 ): Promise<any> {
   const skinIndexes = await getSearchIndexes(ctx, md5s);
+  console.log(skinIndexes);
+  return;
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
     createIfNotExists: true,
