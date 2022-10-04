@@ -211,6 +211,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
   const unarchived = await knex("skins")
     .leftJoin("ia_items", "ia_items.skin_md5", "=", "skins.md5")
     .where({ "ia_items.id": null, skin_type: 1 })
+    .limit(100)
     .select("skins.md5");
 
   handler.handle({ type: "STARTED_SYNC_TO_ARCHIVE", count: unarchived.length });
