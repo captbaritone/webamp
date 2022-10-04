@@ -112,7 +112,7 @@ export function isValidSkinFilename(filename) {
 }
 
 export async function getSkinType(file) {
-  const JSZip = await import("jszip");
+  const JSZip = (await import("jszip")).default;
   try {
     const zip = await JSZip.loadAsync(file);
     if (zip.file(/main\.bmp$/i).length > 0) {
