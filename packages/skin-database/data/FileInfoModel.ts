@@ -27,7 +27,6 @@ export default class FileInfoModel {
   }
 
   getTextContent(): string | null {
-    console.log("row", this.row);
     return this.row.text_content;
   }
 

@@ -329,13 +329,24 @@ program
     "Refresh the data we keep about files within skin archives"
   )
   .option("--refresh-content-hash", "Refresh content hash")
+  .option("--update-search-index", "Refresh content hash")
   .action(
     async ({
       uploadIaScreenshot,
       uploadMissingScreenshots,
       refreshArchiveFiles,
       refreshContentHash,
+      updateSearchIndex,
     }) => {
+      if (updateSearchIndex) {
+        const ctx = new UserContext();
+        const rows = await knex.raw(
+          `SELECT md5, update_timestamp from skins LEFT JOIN algolia_field_updates ON skins.md5 = algolia_field_updates.skin_md5 GROUP BY md5 ORDER BY update_timestamp LIMIT ?;`,
+          [100]
+        );
+        const md5s = rows.map((row) => row.md5);
+        console.log(await Skins.updateSearchIndexs(ctx, md5s));
+      }
       if (refreshContentHash) {
         const ctx = new UserContext();
         const skinRows = await knex("skins").select();

@@ -195,7 +195,6 @@ export default class SkinModel {
     if (readme == null) {
       return null;
     }
-    console.log("readme", readme);
     return readme.getTextContent();
   }
 
@@ -281,15 +280,17 @@ export default class SkinModel {
     });
   }
 
-  /**
-   *
-   * @returns
-   */
+  async hasEqualizer(): Promise<boolean> {
+    return this._hasSpriteSheet("EQMAIN");
+  }
+  async hasPlaylist(): Promise<boolean> {
+    return this._hasSpriteSheet("PLEDIT");
+  }
   async hasMediaLibrary(): Promise<boolean> {
     return this.hasGeneral();
   }
 
-  async hasMiniBrowser(): Promise<boolean> {
+  async hasBrowser(): Promise<boolean> {
     return this._hasSpriteSheet("MB");
   }
 

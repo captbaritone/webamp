@@ -161,6 +161,17 @@ type SearchIndex = {
   nsfw: boolean;
   fileName: string;
   twitterLikes: number;
+  equalizer: boolean;
+  playlist: boolean;
+  browser: boolean;
+  general: boolean;
+  video: boolean;
+  cur: boolean;
+  ani: boolean;
+  transparency: boolean;
+  mikro: boolean;
+  vidamp: boolean;
+  avs: boolean;
 };
 
 async function getSearchIndexes(
@@ -187,6 +198,17 @@ async function getSearchIndexes(
         readmeText: readmeText ? truncate(readmeText, 4800) : null,
         fileName: await skin.getFileName(),
         twitterLikes: likes,
+        equalizer: await skin.hasEqualizer(),
+        playlist: await skin.hasPlaylist(),
+        browser: await skin.hasBrowser(),
+        general: await skin.hasGeneral(),
+        video: await skin.hasVideo(),
+        cur: await skin.hasCur(),
+        ani: await skin.hasAni(),
+        transparency: await skin.hasTransparency(),
+        mikro: await skin.hasMikro(),
+        vidamp: await skin.hasVidamp(),
+        avs: await skin.hasAVS(),
       };
     })
   );
