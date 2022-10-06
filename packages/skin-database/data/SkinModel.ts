@@ -19,7 +19,7 @@ import fetch from "node-fetch";
 import JSZip from "jszip";
 import fs from "fs/promises";
 import path from "path";
-import regionParser from "../regionParser";
+import { getTransparentAreaSize } from "../transparency";
 
 export const IS_README = /(file_id\.diz)|(\.txt)$/i;
 // Skinning Updates.txt ?
@@ -340,18 +340,17 @@ export default class SkinModel {
 
   // Has transparency
   async hasTransparency(): Promise<boolean> {
+    const size = await this.transparentAreaSize();
+    return size > 0;
+  }
+
+  async transparentPixels(): Promise<number> {
     const region = await this._getFile("region", "txt");
     if (region == null) {
-      return false;
+      return 0;
     }
     const text = await region.getTextContent();
-    if (text == null) {
-      return false;
-    }
-
-    const regions = regionParser(text);
-
-    return Object.values(regions).some((region) => region.length > 0);
+    return getTransparentAreaSize(text);
   }
 
   async hasAni(): Promise<boolean> {

@@ -34,6 +34,7 @@
     "lru-cache": "^6.0.0",
     "md5": "^2.2.1",
     "node-fetch": "^2.6.7",
+    "polygon-clipping": "^0.15.3",
     "puppeteer": "^13.3.2",
     "sharp": "^0.28.3",
     "sqlite3": "^5.0.2",

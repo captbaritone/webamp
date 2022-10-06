@@ -9,6 +9,7 @@ import * as CloudFlare from "../CloudFlare";
 import SkinModel from "./SkinModel";
 import UserContext from "./UserContext";
 import TweetModel from "./TweetModel";
+import { TweetStatus } from "../types";
 
 export const SKIN_TYPE = {
   CLASSIC: 1,
@@ -158,17 +159,20 @@ export async function getUploadStatuses(
 type SearchIndex = {
   objectID: string;
   md5: string;
+  // TODO: Can be deprecated in favor of tweetStatus
   nsfw: boolean;
+  tweetStatus: TweetStatus;
   fileName: string;
   twitterLikes: number;
   equalizer: boolean;
   playlist: boolean;
   browser: boolean;
+  media: boolean;
   general: boolean;
   video: boolean;
   cur: boolean;
   ani: boolean;
-  transparency: boolean;
+  transparentPixels: number;
   mikro: boolean;
   vidamp: boolean;
   avs: boolean;
@@ -186,6 +190,9 @@ async function getSearchIndexes(
 
   return Promise.all(
     skins.map(async (skin) => {
+      if (skin.getSkinType() !== "CLASSIC") {
+        throw new Error("Only classic skins are supported");
+      }
       const readmeText = await skin.getReadme();
       const tweets = await skin.getTweets();
       const likes = tweets.reduce((acc: number, tweet: TweetModel) => {
@@ -195,17 +202,19 @@ async function getSearchIndexes(
         objectID: skin.getMd5(),
         md5: skin.getMd5(),
         nsfw: await skin.getIsNsfw(),
+        tweetStatus: await skin.getTweetStatus(),
         readmeText: readmeText ? truncate(readmeText, 4800) : null,
         fileName: await skin.getFileName(),
         twitterLikes: likes,
         equalizer: await skin.hasEqualizer(),
+        media: await skin.hasMediaLibrary(),
         playlist: await skin.hasPlaylist(),
         browser: await skin.hasBrowser(),
         general: await skin.hasGeneral(),
         video: await skin.hasVideo(),
         cur: await skin.hasCur(),
         ani: await skin.hasAni(),
-        transparency: await skin.hasTransparency(),
+        transparentPixels: await skin.transparentPixels(),
         mikro: await skin.hasMikro(),
         vidamp: await skin.hasVidamp(),
         avs: await skin.hasAVS(),
@@ -219,8 +228,6 @@ export async function updateSearchIndexs(
   md5s: string[]
 ): Promise<any> {
   const skinIndexes = await getSearchIndexes(ctx, md5s);
-  console.log(skinIndexes);
-  return;
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
     createIfNotExists: true,
