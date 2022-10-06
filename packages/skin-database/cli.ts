@@ -341,8 +341,16 @@ program
       if (updateSearchIndex) {
         const ctx = new UserContext();
         const rows = await knex.raw(
-          `SELECT md5, update_timestamp from skins LEFT JOIN algolia_field_updates ON skins.md5 = algolia_field_updates.skin_md5 GROUP BY md5 ORDER BY update_timestamp LIMIT ?;`,
-          [100]
+          `
+          SELECT md5, update_timestamp
+          FROM skins
+          LEFT JOIN algolia_field_updates ON skins.md5 = algolia_field_updates.skin_md5
+          WHERE skin_type = 1
+            AND md5 != "5470d71673a88254d3c197ba10bae16c"
+          GROUP BY md5
+          ORDER BY update_timestamp
+          LIMIT ?;`,
+          [5000]
         );
         const md5s = rows.map((row) => row.md5);
         console.log(await Skins.updateSearchIndexs(ctx, md5s));
