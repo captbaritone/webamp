@@ -62,6 +62,8 @@ function Header() {
   const requestedAboutPage = useActionCreator(Actions.requestedAboutPage);
   const setInput = useFocusOnSlash();
 
+  const enableSearch = false;
+
   return (
     <div id="search">
       <h1>
@@ -109,14 +111,16 @@ function Header() {
           -
         </button>
         */}
-          <input
-            type="search"
-            style={{ marginLeft: 10 }}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            value={searchQuery || ""}
-            placeholder={"Search..."}
-            ref={setInput}
-          />
+          {enableSearch && (
+            <input
+              type="search"
+              style={{ marginLeft: 10 }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery || ""}
+              placeholder={"Search..."}
+              ref={setInput}
+            />
+          )}
           <button
             onClick={() => {
               requestRandomSkin();
