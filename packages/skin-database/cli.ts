@@ -31,6 +31,7 @@ import Shooter from "./shooter";
 import { program } from "commander";
 import * as config from "./config";
 import { setHashesForSkin } from "./skinHash";
+import * as S3 from "./s3";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -330,18 +331,24 @@ program
   )
   .option("--refresh-content-hash", "Refresh content hash")
   .option("--update-search-index", "Refresh content hash")
-  .action(
-    async ({
+  .option("--configure-r2-cors", "Configure CORS for r2")
+  .action(async (arg) => {
+    const {
       uploadIaScreenshot,
       uploadMissingScreenshots,
       refreshArchiveFiles,
       refreshContentHash,
       updateSearchIndex,
-    }) => {
-      if (updateSearchIndex) {
-        const ctx = new UserContext();
-        const rows = await knex.raw(
-          `
+      configureR2Cors,
+    } = arg;
+    console.log(arg);
+    if (configureR2Cors) {
+      await S3.configureCors();
+    }
+    if (updateSearchIndex) {
+      const ctx = new UserContext();
+      const rows = await knex.raw(
+        `
           SELECT md5, update_timestamp
           FROM skins
           LEFT JOIN algolia_field_updates ON skins.md5 = algolia_field_updates.skin_md5
@@ -350,59 +357,58 @@ program
           GROUP BY md5
           ORDER BY update_timestamp
           LIMIT ?;`,
-          [5000]
-        );
-        const md5s = rows.map((row) => row.md5);
-        console.log(await Skins.updateSearchIndexs(ctx, md5s));
+        [5000]
+      );
+      const md5s = rows.map((row) => row.md5);
+      console.log(await Skins.updateSearchIndexs(ctx, md5s));
+    }
+    if (refreshContentHash) {
+      const ctx = new UserContext();
+      const skinRows = await knex("skins").select();
+      console.log(`Found ${skinRows.length} skins to update`);
+      const skins = skinRows.map((row) => new SkinModel(ctx, row));
+      for (const skin of skins) {
+        await Skins.setContentHash(skin.getMd5());
+        process.stdout.write(".");
       }
-      if (refreshContentHash) {
-        const ctx = new UserContext();
-        const skinRows = await knex("skins").select();
-        console.log(`Found ${skinRows.length} skins to update`);
-        const skins = skinRows.map((row) => new SkinModel(ctx, row));
-        for (const skin of skins) {
-          await Skins.setContentHash(skin.getMd5());
-          process.stdout.write(".");
-        }
+    }
+    if (uploadIaScreenshot) {
+      const md5 = uploadIaScreenshot;
+      if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
+        console.log("Did not upload screenshot");
       }
-      if (uploadIaScreenshot) {
-        const md5 = uploadIaScreenshot;
-        if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
-          console.log("Did not upload screenshot");
-        }
+    }
+    if (refreshArchiveFiles) {
+      const ctx = new UserContext();
+      const skinRows = await knex("skins")
+        .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
+        .leftJoin("file_info", "file_info.file_md5", "archive_files.file_md5")
+        .where("skin_type", 1)
+        .where((builder) => {
+          return builder.where("file_info.file_md5", null);
+        })
+        .limit(90000)
+        .groupBy("skins.md5")
+        .select();
+      console.log(`Found ${skinRows.length} skins to update`);
+      const skins = skinRows.map((row) => new SkinModel(ctx, row));
+      for (const skin of skins) {
+        await setHashesForSkin(skin);
+        // await Skins.setContentHash(skin.getMd5());
+        process.stdout.write(".");
       }
-      if (refreshArchiveFiles) {
-        const ctx = new UserContext();
-        const skinRows = await knex("skins")
-          .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
-          .leftJoin("file_info", "file_info.file_md5", "archive_files.file_md5")
-          .where("skin_type", 1)
-          .where((builder) => {
-            return builder.where("file_info.file_md5", null);
-          })
-          .limit(90000)
-          .groupBy("skins.md5")
-          .select();
-        console.log(`Found ${skinRows.length} skins to update`);
-        const skins = skinRows.map((row) => new SkinModel(ctx, row));
-        for (const skin of skins) {
-          await setHashesForSkin(skin);
-          // await Skins.setContentHash(skin.getMd5());
-          process.stdout.write(".");
-        }
-      }
-      if (uploadMissingScreenshots) {
-        const md5s = await SyncToArchive.findItemsMissingImages();
-        for (const md5 of md5s) {
-          if (await SyncToArchive.uploadScreenshotIfSafe(md5)) {
-            console.log("Upladed screenshot for ", md5);
-          } else {
-            console.log("Did not upload screenshot for ", md5);
-          }
+    }
+    if (uploadMissingScreenshots) {
+      const md5s = await SyncToArchive.findItemsMissingImages();
+      for (const md5 of md5s) {
+        if (await SyncToArchive.uploadScreenshotIfSafe(md5)) {
+          console.log("Upladed screenshot for ", md5);
+        } else {
+          console.log("Did not upload screenshot for ", md5);
         }
       }
     }
-  );
+  });
 
 async function main() {
   try {
