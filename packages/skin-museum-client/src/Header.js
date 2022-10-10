@@ -62,7 +62,7 @@ function Header() {
   const requestedAboutPage = useActionCreator(Actions.requestedAboutPage);
   const setInput = useFocusOnSlash();
 
-  const enableSearch = false;
+  const enableSearch = true;
 
   return (
     <div id="search">
