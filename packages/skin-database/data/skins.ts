@@ -132,8 +132,10 @@ export async function markAsPostedToInstagram(
 export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
   // TODO: Await here, but for some reason this never completes
-  await searchIndex.partialUpdateObjects([index]);
-  await recordSearchIndexUpdates(md5, Object.keys(index));
+
+  // Avoid indexing while we wait for our account to get back in good standing.
+  // await searchIndex.partialUpdateObjects([index]);
+  // await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert(
     { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
     []
@@ -227,6 +229,8 @@ export async function updateSearchIndexs(
   ctx: UserContext,
   md5s: string[]
 ): Promise<any> {
+  // Avoid indexing while we wait for our account to get back in good standing.
+  return;
   const skinIndexes = await getSearchIndexes(ctx, md5s);
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
