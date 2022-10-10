@@ -11,6 +11,9 @@ import UserContext from "./UserContext";
 import TweetModel from "./TweetModel";
 import { TweetStatus } from "../types";
 
+// const CDN_URL = "https://cdn.webampskins.org";
+const CDN_URL = "https://r2.webampskins.org";
+
 export const SKIN_TYPE = {
   CLASSIC: 1,
   MODERN: 2,
@@ -19,15 +22,15 @@ export const SKIN_TYPE = {
 };
 
 export function getSkinUrl(md5: string): string {
-  return `https://cdn.webampskins.org/skins/${md5}.wsz`;
+  return `${CDN_URL}/skins/${md5}.wsz`;
 }
 
 export function getModernSkinUrl(md5: string): string {
-  return `https://cdn.webampskins.org/skins/${md5}.wal`;
+  return `${CDN_URL}/skins/${md5}.wal`;
 }
 
 export function getScreenshotUrl(md5: string): string {
-  return `https://cdn.webampskins.org/screenshots/${md5}.png`;
+  return `${CDN_URL}/screenshots/${md5}.png`;
 }
 
 export async function addSkin({

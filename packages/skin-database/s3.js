@@ -12,6 +12,9 @@ const s3 = new AWS.S3({
 });
 
 const bucketName = "winamp-skins";
+// Needed for S3 but not R2
+// const acl = { ACL: "public-read" };
+const acl = {};
 
 async function configureCors() {
   console.log("Going to configure cors");
@@ -46,14 +49,13 @@ const s3 = new AWS.S3({
 
 function putSkin(md5, buffer, ext = "wsz") {
   return new Promise((resolve, rejectPromise) => {
-    const bucketName = "cdn.webampskins.org";
     const key = `skins/${md5}.${ext}`;
     s3.putObject(
       {
         Bucket: bucketName,
         Key: key,
         Body: buffer,
-        ACL: "public-read",
+        ...acl,
       },
       (err) => {
         if (err) {
@@ -146,7 +148,7 @@ function putScreenshot(md5, buffer) {
         Bucket: bucketName,
         Key: key,
         Body: buffer,
-        ACL: "public-read",
+        ...acl,
       },
       (err) => {
         if (err) {
@@ -167,7 +169,7 @@ function putTemp(fileName, buffer) {
         Bucket: bucketName,
         Key: key,
         Body: buffer,
-        ACL: "public-read",
+        ...acl,
       },
       (err) => {
         console.log("Hello...");
