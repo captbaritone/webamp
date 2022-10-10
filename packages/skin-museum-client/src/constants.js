@@ -1,6 +1,3 @@
-const urlSearchParams = new URLSearchParams(window.location.search);
-const params = Object.fromEntries(urlSearchParams.entries());
-
 export const SCREENSHOT_WIDTH = 275;
 export const SCREENSHOT_HEIGHT = 348;
 export const SKIN_RATIO = SCREENSHOT_HEIGHT / SCREENSHOT_WIDTH;
@@ -25,14 +22,12 @@ export const REVIEW_PAGE = "REVIEW_PAGE";
  *
  */
 
+const R2_CDN = "https://r2.webampskins.org";
 // export const CDN = "https://s3.amazonaws.com/webamp-uploaded-skins";
 // export const CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
-export const S3_SCREENSHOT_CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
-export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
-// mirror. is having some issue with CORs headers that I need to resolve.
-export const SKIN_CDN = params.vps
-  ? "https://mirror.webampskins.org"
-  : "https://cdn.webampskins.org";
+// export const S3_SCREENSHOT_CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
+export const SCREENSHOT_CDN = R2_CDN;
+export const SKIN_CDN = R2_CDN;
 // Uncomment these if something goes wrong
 // export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 // export const SKIN_CDN = "https://cdn.webampskins.org";
