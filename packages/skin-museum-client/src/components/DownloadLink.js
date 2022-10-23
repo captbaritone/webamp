@@ -24,11 +24,11 @@ export default class DownloadLink extends React.Component {
       this._hrefs
         .pipe(
           distinctUntilChanged(),
-          switchMap(href => fetch(href)),
-          switchMap(response => response.blob()),
-          map(blob => URL.createObjectURL(blob))
+          switchMap((href) => fetch(href)),
+          switchMap((response) => response.blob()),
+          map((blob) => URL.createObjectURL(blob))
         )
-        .subscribe(url => {
+        .subscribe((url) => {
           this.setState({ href: url });
         })
     );

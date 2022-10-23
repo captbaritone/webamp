@@ -74,9 +74,8 @@ const mapStateToProps = (state, ownProps) => {
     rowIndex,
     columnIndex,
   });
-  const getPermalinkUrlFromHash = Selectors.getPermalinkUrlFromHashGetter(
-    state
-  );
+  const getPermalinkUrlFromHash =
+    Selectors.getPermalinkUrlFromHashGetter(state);
   return {
     requestToken,
     skin,

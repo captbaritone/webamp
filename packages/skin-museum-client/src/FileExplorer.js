@@ -20,7 +20,7 @@ class Readme extends React.Component {
             className={"readme"}
             style={{
               width: "100%",
-              height: "300px"
+              height: "300px",
             }}
           >
             <pre>{content}</pre>
@@ -45,7 +45,7 @@ class Readme extends React.Component {
           position: "fixed",
           backgroundColor: "white",
           overflow: "scroll",
-          ...this.props.style
+          ...this.props.style,
         }}
       >
         {this.props.focusedFile ? (
@@ -81,7 +81,7 @@ class Readme extends React.Component {
 function mapStateToProps(state) {
   return {
     zip: state.skinZip,
-    focusedFile: state.focusedSkinFile
+    focusedFile: state.focusedSkinFile,
   };
 }
 
@@ -89,10 +89,7 @@ function mapDispatchToProps(dispatch) {
   return {
     selectSkinFile(fileName) {
       dispatch(Actions.selectSkinFile(fileName));
-    }
+    },
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Readme);
+export default connect(mapStateToProps, mapDispatchToProps)(Readme);

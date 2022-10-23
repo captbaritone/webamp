@@ -7,9 +7,9 @@ function LinkInput({ permalink, hide }) {
         style={{
           padding: "5px",
           width: "300px",
-          marginBottom: "10px"
+          marginBottom: "10px",
         }}
-        onFocus={e => e.target.setSelectionRange(0, e.target.value.length)}
+        onFocus={(e) => e.target.setSelectionRange(0, e.target.value.length)}
         className="permalink-input"
         value={permalink}
         readOnly
@@ -19,7 +19,7 @@ function LinkInput({ permalink, hide }) {
         style={{
           fontSize: "18px",
           marginLeft: "5px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         onClick={hide}
       >

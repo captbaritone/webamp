@@ -82,7 +82,7 @@ function Button({ ...props }) {
         border: "none",
         cursor: props.disabled ? "default" : "pointer",
         font: "inherit",
-        fontWeight: 'bold',
+        fontWeight: "bold",
         outline: "inherit",
         background: "none",
         paddingLeft: 14,

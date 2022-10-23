@@ -10,7 +10,7 @@ export default class Disposable {
         "Cannot dispose an observable that has already been dispsoed"
       );
     }
-    this._teardowns.forEach(teardown => {
+    this._teardowns.forEach((teardown) => {
       if (typeof teardown === "function") {
         teardown();
       } else if (typeof teardown.unsubscribe === "function") {
