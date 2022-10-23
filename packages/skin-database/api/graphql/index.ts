@@ -49,12 +49,15 @@ router.use(
     graphiql: {
       defaultQuery: DEFAULT_QUERY,
     },
-    customFormatErrorFn: (error) => ({
-      message: error.message,
-      locations: error.locations,
-      stack: error.stack ? error.stack.split("\n") : [],
-      path: error.path,
-    }),
+    customFormatErrorFn: (error) => {
+      console.error(error);
+      return {
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack ? error.stack.split("\n") : [],
+        path: error.path,
+      };
+    },
     extensions,
   })
 );
