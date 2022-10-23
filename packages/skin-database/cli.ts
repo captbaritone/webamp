@@ -332,6 +332,10 @@ program
   .option("--refresh-content-hash", "Refresh content hash")
   .option("--update-search-index", "Refresh content hash")
   .option("--configure-r2-cors", "Configure CORS for r2")
+  .option(
+    "--compute-museum-order",
+    "Compute the order in which skins should be displayed in the museum"
+  )
   .action(async (arg) => {
     const {
       uploadIaScreenshot,
@@ -340,8 +344,13 @@ program
       refreshContentHash,
       updateSearchIndex,
       configureR2Cors,
+      computeMuseumOrder,
     } = arg;
-    console.log(arg);
+    if (computeMuseumOrder) {
+      const sql = fs.readFileSync("./museumOrder.sql", { encoding: "utf8" });
+      await knex.raw(sql);
+      console.log("Museum order updated.");
+    }
     if (configureR2Cors) {
       await S3.configureCors();
     }
