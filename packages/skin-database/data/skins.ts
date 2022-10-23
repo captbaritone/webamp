@@ -219,7 +219,7 @@ async function getSearchIndexes(
         md5: skin.getMd5(),
         nsfw: await skin.getIsNsfw(),
         tweetStatus: await skin.getTweetStatus(),
-        readmeText: readmeText ? truncate(readmeText, 4800) : null,
+        readmeText: readmeText ? truncate(readmeText, 4000) : null,
         fileName: await skin.getFileName(),
         twitterLikes: likes,
         equalizer: await skin.hasEqualizer(),
@@ -391,6 +391,8 @@ export async function getErroredUpload(): Promise<{
 } | null> {
   const found = await knex("skin_uploads")
     .where("status", "ERRORED")
+    .where("skin_md5", "!=", "c7df44bde6eb3671bde5a03e6d03ce1e")
+    .where("skin_md5", "!=", "fedc564eb2ce0a4ec5518b93983240ef")
     .first(["skin_md5", "id", "filename"]);
   return found || null;
 }
