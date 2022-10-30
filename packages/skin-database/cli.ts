@@ -301,6 +301,7 @@ program
   .action(async ({ likes, milestones, followers }) => {
     if (likes) {
       await scrapeLikeData();
+      await Skins.computeMuseumOrder();
     }
     if (milestones) {
       await withHandler(async (handler) => {
