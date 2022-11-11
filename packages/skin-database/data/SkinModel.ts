@@ -27,7 +27,7 @@ export const IS_NOT_README =
   /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
 
 export default class SkinModel {
-  constructor(readonly ctx: UserContext, readonly row: SkinRow) { }
+  constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
 
   static async fromMd5(
     ctx: UserContext,
