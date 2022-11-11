@@ -53,20 +53,29 @@ export function throwAfter(message, ms) {
   });
 }
 
-export async function withUrlAsTempFile(
+export async function withUrlAsTempFile<T>(
   url: string,
   filename: string,
-  cb: (file: string) => Promise<void>
-): Promise<void> {
+  cb: (file: string) => Promise<T>
+): Promise<T> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to download ${url}.`);
   }
   const result = await response.buffer();
+  return withBufferAsTempFile(result, filename, cb);
+}
+
+export async function withBufferAsTempFile<T>(
+  buffer: Buffer,
+  filename: string,
+  cb: (file: string) => Promise<T>
+): Promise<T> {
   const tempDir = temp.mkdirSync();
   const tempFile = path.join(tempDir, filename);
-  fs.writeFileSync(tempFile, result);
-  await cb(tempFile);
+  fs.writeFileSync(tempFile, buffer);
+  const r = await cb(tempFile);
   fs.unlinkSync(tempFile);
   fs.rmdirSync(tempDir);
+  return r;
 }

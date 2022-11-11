@@ -131,6 +131,17 @@ export async function markAsPostedToInstagram(
   );
 }
 
+export async function markAsPostedToMastodon(
+  md5: string,
+  postId: string,
+  url: string
+): Promise<void> {
+  await knex("mastodon_posts").insert(
+    { skin_md5: md5, post_id: postId, url },
+    []
+  );
+}
+
 // TODO: Also path actor
 export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
@@ -475,6 +486,28 @@ export async function getSkinToPostToInstagram(): Promise<string | null> {
     .leftJoin("refreshes", "refreshes.skin_md5", "=", "skins.md5")
     .where({
       "instagram_posts.id": null,
+      skin_type: 1,
+      "skin_reviews.review": "APPROVED",
+      "refreshes.error": null,
+    })
+    .groupBy("skins.md5")
+    .orderByRaw("random()")
+    .limit(1);
+  const skin = tweetables[0];
+  if (skin == null) {
+    return null;
+  }
+  return skin.md5;
+}
+
+export async function getSkinToPostToMastodon(): Promise<string | null> {
+  // TODO: This does not account for skins that have been both approved and rejected
+  const tweetables = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("mastodon_posts", "mastodon_posts.skin_md5", "=", "skins.md5")
+    .leftJoin("refreshes", "refreshes.skin_md5", "=", "skins.md5")
+    .where({
+      "mastodon_posts.id": null,
       skin_type: 1,
       "skin_reviews.review": "APPROVED",
       "refreshes.error": null,

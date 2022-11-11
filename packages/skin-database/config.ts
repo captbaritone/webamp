@@ -23,6 +23,7 @@ export const TWITTER_CREDS = {
   accessToken: env("TWITTER_ACCESS_TOKEN"),
   accessTokenSecret: env("TWITTER_ACCESS_TOKEN_SECRET"),
 };
+export const MASTODON_ACCESS_TOKEN = env("MASTODON_ACCESS_TOKEN");
 export const INSTAGRAM_ACCESS_TOKEN = env("INSTAGRAM_ACCESS_TOKEN");
 export const INSTAGRAM_ACCOUNT_ID = env("INSTAGRAM_ACCOUNT_ID");
 // Used for session encryption

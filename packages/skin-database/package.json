@@ -32,6 +32,7 @@
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
     "lru-cache": "^6.0.0",
+    "mastodon-api": "^1.3.0",
     "md5": "^2.2.1",
     "node-fetch": "^2.6.7",
     "polygon-clipping": "^0.15.3",
