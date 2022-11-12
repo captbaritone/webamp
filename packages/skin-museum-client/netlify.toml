@@ -24,6 +24,12 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
   status = 200
 
 [[redirects]]
+ from = "/"
+ query = {query = ":query"}
+ to = "https://winamp-skin-museum.jordan1320.workers.dev//"
+ status = 200
+
+[[redirects]]
  from = "/skin/*"
  to = "https://winamp-skin-museum.jordan1320.workers.dev//skin/:splat"
  status = 200
