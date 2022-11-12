@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import * as Utils from "../utils";
+// import * as Utils from "../utils";
 import { ABOUT_PAGE, UPLOAD_PAGE, REVIEW_PAGE } from "../constants";
 
 export function getSelectedSkinHash(state) {

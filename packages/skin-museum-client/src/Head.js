@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { connect, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as Selectors from "./redux/selectors";
-import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
+// import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
 
 const DESCRIPTION =
   "Infinite scroll through 80k Winamp skins with interactive preview";
