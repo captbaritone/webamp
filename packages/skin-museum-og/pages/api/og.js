@@ -66,7 +66,7 @@ async function searchImage(query) {
             style={{
               position: "absolute",
               top: "-150px",
-              left: "-60px",
+              left: "-30px",
               width: "1400px",
               display: "flex",
               flexWrap: "wrap",
@@ -77,7 +77,7 @@ async function searchImage(query) {
               return (
                 <img
                   style={{
-                    margin: "20px",
+                    margin: "15px",
                   }}
                   key={skin.id}
                   src={skin.screenshot_url}
@@ -97,6 +97,7 @@ async function searchImage(query) {
             alignItems: "center",
             justifyContent: "center",
             textShadow: "0px 0px 10px black",
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
           }}
         >
           {query}
@@ -122,6 +123,7 @@ export default async function (req) {
   }
   const data = await fetchGraphql(QUERY, { md5: skinMd5 });
   const aspectRatio = SCREENSHOT_WIDTH / SCREENSHOT_HEIGHT;
+  const FOO = 900;
   return new ImageResponse(
     (
       <Frame>
@@ -130,12 +132,33 @@ export default async function (req) {
             fontSize: 50,
             flexGrow: 1,
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
           }}
         >
-          {stripExt(data.skin.filename)}
+          <div style={{ display: "flex", marginTop: "40" }}>
+            <div
+              style={{ display: "flex", height: FOO / 3, overflow: "hidden" }}
+            >
+              <img
+                src={data.skin.screenshot_url}
+                height={String(FOO)}
+                width={String(FOO * aspectRatio)}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            {stripExt(data.skin.filename)}
+          </div>
         </div>
         <div
           style={{
@@ -148,8 +171,8 @@ export default async function (req) {
         >
           <img
             src={data.skin.screenshot_url}
-            height={String(440)}
-            width={String(440 * aspectRatio)}
+            height={String(FOO / 2)}
+            width={String((FOO / 2) * aspectRatio)}
           />
         </div>
       </Frame>
@@ -175,6 +198,7 @@ function Frame({ children }) {
         alignItems: "center",
         justifyContent: "center",
         justifyContent: "space-between",
+        background: "linear-gradient(45deg,#000,#191927 66%,#000)",
       }}
     >
       <div
