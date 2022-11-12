@@ -4,8 +4,6 @@ export async function fetchGraphql(query, variables) {
       accept: "application/json",
       "content-type": "application/json",
     },
-    referrer: "https://skins.webamp.org/",
-    referrerPolicy: "strict-origin-when-cross-origin",
     body: JSON.stringify({ query, variables }),
     method: "POST",
   });
