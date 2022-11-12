@@ -204,10 +204,16 @@ export function getPageTitle(state) {
 
 export const getPreviewImageUrl = createSelector(
   getSelectedSkinHash,
-  (hash) => {
-    return hash == null
-      ? null
-      : `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?md5=${hash}`;
+  getSearchQuery,
+  (hash, searchQuery) => {
+    if (hash) {
+      return `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?md5=${hash}`;
+    } else if (searchQuery) {
+      return `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?query=${encodeURIComponent(
+        searchQuery
+      )}`;
+    }
+    return null;
   }
 );
 
