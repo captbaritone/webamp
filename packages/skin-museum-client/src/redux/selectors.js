@@ -205,7 +205,9 @@ export function getPageTitle(state) {
 export const getPreviewImageUrl = createSelector(
   getSelectedSkinHash,
   (hash) => {
-    return hash == null ? null : Utils.screenshotUrlFromHash(hash);
+    return hash == null
+      ? null
+      : `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?md5=${hash}`;
   }
 );
 

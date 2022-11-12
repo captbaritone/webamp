@@ -41,8 +41,10 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
       ? {
           alt: "Screenshot of many Winamp skins in a grid.",
           url: previewImageUrl,
-          width: SCREENSHOT_WIDTH,
-          height: SCREENSHOT_HEIGHT,
+          //width: SCREENSHOT_WIDTH,
+          //height: SCREENSHOT_HEIGHT,
+          width: 1200,
+          height: 600,
         }
       : {
           alt: "Screenshot of many Winamp skins in a grid.",
