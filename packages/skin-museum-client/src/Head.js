@@ -71,6 +71,7 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
       <meta property="og:site-name" content="Winamp Skin Museum" />
 
       <meta name="twitter:site" content="@winampskins" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content="@captbaritone" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={description} />
