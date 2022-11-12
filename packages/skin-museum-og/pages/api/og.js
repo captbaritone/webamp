@@ -21,7 +21,33 @@ export default async function (req) {
   if (skinMd5) {
     return permalinkImage(skinMd5);
   }
-  throw new Error("Expected skin md5 or query");
+  return homeImage();
+}
+
+async function homeImage() {
+  const data = await fetchGraphql(
+    `
+    query HomeSkins {
+        skins(first:20, sort: MUSEUM){
+          nodes {
+            ... on ClassicSkin {
+              id
+              nsfw
+              filename
+              screenshot_url
+            }
+          }
+        }
+    }`,
+    {}
+  );
+  return new ImageResponse(
+    <ImageGrid skins={data.skins.nodes} title={"Winamp Skin Museum"} />,
+    {
+      width: 1200,
+      height: 600,
+    }
+  );
 }
 
 async function searchImage(query) {
@@ -30,7 +56,8 @@ async function searchImage(query) {
     query SkinSearch($query: String!) {
         skins: search_skins(query: $query, first:20){
             ... on ClassicSkin {
-                id
+              id
+              nsfw
               filename
               screenshot_url
             }
@@ -38,27 +65,37 @@ async function searchImage(query) {
     }`,
     { query }
   );
-  return new ImageResponse(
-    (
-      <Frame>
+  return new ImageResponse(<ImageGrid skins={data.skins} title={query} />, {
+    width: 1200,
+    height: 600,
+  });
+}
+
+function ImageGrid({ skins, title }) {
+  return (
+    <Frame>
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+        }}
+      >
         <div
           style={{
+            position: "absolute",
+            top: "-150px",
+            left: "-30px",
+            width: "1400px",
             display: "flex",
-            position: "relative",
+            flexWrap: "wrap",
+            transform: "rotate(-15deg)",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "-150px",
-              left: "-30px",
-              width: "1400px",
-              display: "flex",
-              flexWrap: "wrap",
-              transform: "rotate(-15deg)",
-            }}
-          >
-            {data.skins.map((skin) => {
+          {skins
+            .filter((skin) => {
+              return !skin.nsfw;
+            })
+            .map((skin) => {
               return (
                 <img
                   style={{
@@ -71,28 +108,23 @@ async function searchImage(query) {
                 />
               );
             })}
-          </div>
         </div>
-        <div
-          style={{
-            fontSize: 100,
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            textShadow: "0px 0px 10px black",
-            backgroundColor: "rgba(0, 0, 0, 0.2)",
-          }}
-        >
-          {query}
-        </div>
-      </Frame>
-    ),
-    {
-      width: 1200,
-      height: 600,
-    }
+      </div>
+      <div
+        style={{
+          fontSize: 100,
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          textShadow: "0px 0px 10px black",
+          backgroundColor: "rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        {title}
+      </div>
+    </Frame>
   );
 }
 
