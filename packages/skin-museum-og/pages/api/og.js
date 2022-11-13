@@ -15,6 +15,10 @@ export default async function (req) {
   const { searchParams } = req.nextUrl;
   const skinMd5 = searchParams.get("md5");
   const query = searchParams.get("query");
+  const header = searchParams.get("header");
+  if (header) {
+    return headerImage(query);
+  }
   if (query) {
     return searchImage(query);
   }
@@ -22,6 +26,29 @@ export default async function (req) {
     return permalinkImage(skinMd5);
   }
   return homeImage();
+}
+
+async function headerImage() {
+  const data = await fetchGraphql(
+    `
+    query HomeSkins {
+        skins(first:20, sort: MUSEUM){
+          nodes {
+            ... on ClassicSkin {
+              id
+              nsfw
+              filename
+              screenshot_url
+            }
+          }
+        }
+    }`,
+    {}
+  );
+  return new ImageResponse(<HeaderGrid skins={data.skins.nodes} />, {
+    width: 1500,
+    height: 500,
+  });
 }
 
 async function homeImage() {
@@ -69,6 +96,75 @@ async function searchImage(query) {
     width: 1200,
     height: 600,
   });
+}
+
+function HeaderGrid({ skins, title }) {
+  return (
+    <div
+      style={{
+        background: "black",
+        color: "white",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        justifyContent: "space-between",
+        background: "linear-gradient(45deg,#000,#191927 66%,#000)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          justifyItems: "center",
+          width: "100%",
+          flexGrow: 10,
+          alignItems: "stretch",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "-250px",
+              left: "-30px",
+              width: "2000px",
+              display: "flex",
+              flexWrap: "wrap",
+              transform: "rotate(-15deg)",
+            }}
+          >
+            {skins
+              .filter((skin) => {
+                return !skin.nsfw;
+              })
+              .map((skin) => {
+                return (
+                  <img
+                    style={{
+                      margin: "15px",
+                    }}
+                    key={skin.id}
+                    src={skin.screenshot_url}
+                    height={String(300)}
+                    width={String(300 * aspectRatio)}
+                  />
+                );
+              })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function ImageGrid({ skins, title }) {
