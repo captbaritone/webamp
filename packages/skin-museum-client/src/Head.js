@@ -48,7 +48,7 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
         }
       : {
           alt: "Screenshot of many Winamp skins in a grid.",
-          url: "https://skins.webamp.org/preview_small.png",
+          url: "https://skin-museum-og-captbaritone-webamp.vercel.app/api/og",
           width: "1844",
           height: "1297",
         }
