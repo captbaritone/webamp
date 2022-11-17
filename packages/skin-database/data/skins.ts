@@ -502,9 +502,10 @@ export async function getSkinToPostToInstagram(): Promise<string | null> {
 
 export async function getSkinToPostToMastodon(): Promise<string | null> {
   // TODO: This does not account for skins that have been both approved and rejected
-  const tweetables = await knex("skins")
+  const postables = await knex("skins")
     .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
     .leftJoin("mastodon_posts", "mastodon_posts.skin_md5", "=", "skins.md5")
+    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
     .leftJoin("refreshes", "refreshes.skin_md5", "=", "skins.md5")
     .where({
       "mastodon_posts.id": null,
@@ -512,10 +513,12 @@ export async function getSkinToPostToMastodon(): Promise<string | null> {
       "skin_reviews.review": "APPROVED",
       "refreshes.error": null,
     })
+    .where("likes", ">", 20)
     .groupBy("skins.md5")
     .orderByRaw("random()")
     .limit(1);
-  const skin = tweetables[0];
+
+  const skin = postables[0];
   if (skin == null) {
     return null;
   }
