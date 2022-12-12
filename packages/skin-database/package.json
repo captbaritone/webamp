@@ -22,7 +22,7 @@
     "dataloader": "^2.0.0",
     "discord.js": "^12.5.3",
     "dotenv": "^16.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-async-handler": "^1.1.4",
     "express-fileupload": "^1.1.7-alpha.3",
     "express-graphql": "^0.12.0",
