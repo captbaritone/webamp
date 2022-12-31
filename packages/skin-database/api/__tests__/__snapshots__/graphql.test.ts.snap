@@ -18,7 +18,7 @@ Object {
       },
     ],
     "average_color": null,
-    "download_url": "https://cdn.webampskins.org/skins/a_fake_md5.wsz",
+    "download_url": "https://r2.webampskins.org/skins/a_fake_md5.wsz",
     "filename": "path.wsz",
     "id": "Q2xhc3NpY1NraW5fX2FfZmFrZV9tZDU=",
     "internet_archive_item": Object {
@@ -35,10 +35,10 @@ Object {
     "nsfw": false,
     "readme_text": null,
     "reviews": Array [],
-    "screenshot_url": "https://cdn.webampskins.org/screenshots/a_fake_md5.png",
+    "screenshot_url": "https://r2.webampskins.org/screenshots/a_fake_md5.png",
     "tweeted": false,
     "tweets": Array [],
-    "webamp_url": "https://webamp.org?skinUrl=https://cdn.webampskins.org/skins/a_fake_md5.wsz",
+    "webamp_url": "https://webamp.org?skinUrl=https://r2.webampskins.org/skins/a_fake_md5.wsz",
   },
 }
 `;

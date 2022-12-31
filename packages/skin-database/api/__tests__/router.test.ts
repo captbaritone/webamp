@@ -344,37 +344,37 @@ test("/stylegan.json", async () => {
         "fileName": "Zelda_Amp_3.wsz",
         "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
         "nsfw": false,
-        "url": "https://cdn.webampskins.org/screenshots/48bbdbbeb03d347e59b1eebda4d352d0.png",
+        "url": "https://r2.webampskins.org/screenshots/48bbdbbeb03d347e59b1eebda4d352d0.png",
       },
       Object {
         "fileName": "path.wsz",
         "md5": "a_fake_md5",
         "nsfw": false,
-        "url": "https://cdn.webampskins.org/screenshots/a_fake_md5.png",
+        "url": "https://r2.webampskins.org/screenshots/a_fake_md5.png",
       },
       Object {
         "fileName": "nsfw.wsz",
         "md5": "a_nsfw_md5",
         "nsfw": true,
-        "url": "https://cdn.webampskins.org/screenshots/a_nsfw_md5.png",
+        "url": "https://r2.webampskins.org/screenshots/a_nsfw_md5.png",
       },
       Object {
         "fileName": "rejected.wsz",
         "md5": "a_rejected_md5",
         "nsfw": false,
-        "url": "https://cdn.webampskins.org/screenshots/a_rejected_md5.png",
+        "url": "https://r2.webampskins.org/screenshots/a_rejected_md5.png",
       },
       Object {
         "fileName": "tweeted.wsz",
         "md5": "a_tweeted_md5",
         "nsfw": false,
-        "url": "https://cdn.webampskins.org/screenshots/a_tweeted_md5.png",
+        "url": "https://r2.webampskins.org/screenshots/a_tweeted_md5.png",
       },
       Object {
         "fileName": "approved.wsz",
         "md5": "an_approved_md5",
         "nsfw": false,
-        "url": "https://cdn.webampskins.org/screenshots/an_approved_md5.png",
+        "url": "https://r2.webampskins.org/screenshots/an_approved_md5.png",
       },
     ]
   `);
