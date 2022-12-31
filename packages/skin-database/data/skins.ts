@@ -147,9 +147,8 @@ export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
   // TODO: Await here, but for some reason this never completes
 
-  // Avoid indexing while we wait for our account to get back in good standing.
-  // await searchIndex.partialUpdateObjects([index]);
-  // await recordSearchIndexUpdates(md5, Object.keys(index));
+  await searchIndex.partialUpdateObjects([index]);
+  await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert(
     { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
     []
