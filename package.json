@@ -5,6 +5,9 @@
     "packages/*",
     "examples/*"
   ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext ts,tsx,js,jsx --rulesdir=packages/webamp-modern/tools/eslint-rules",
