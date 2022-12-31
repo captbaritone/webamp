@@ -1,9 +1,10 @@
-name: "Internet Archvie Integration Tests"
+name: "Internet Archive Integration Tests"
 
 on:
-  push:
-  schedule:
-    - cron: "0 8 * * *"
+    workflow_dispatch:
+#   push:
+#   schedule:
+#     - cron: "0 8 * * *"
 
 jobs:
   ia-tests:
