@@ -24,4 +24,5 @@ process.env.TWITTER_ACCESS_TOKEN = "";
 process.env.TWITTER_ACCESS_TOKEN_SECRET = "";
 process.env.INSTAGRAM_ACCESS_TOKEN = "";
 process.env.INSTAGRAM_ACCOUNT_ID = "";
+process.env.MASTODON_ACCESS_TOKEN = "";
 process.env.SECRET = "";
