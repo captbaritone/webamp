@@ -1,11 +1,11 @@
 import * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<any> {
-  knex.raw(
+  await knex.raw(
     `CREATE TABLE IF NOT EXISTS museum_sort_order (skin_md5 TEXT references skins(md5));`
   );
 }
 
 export async function down(knex: Knex): Promise<any> {
-  knex.raw(`DROP TABLE museum_sort_order;`);
+  await knex.raw(`DROP TABLE museum_sort_order;`);
 }
