@@ -352,8 +352,7 @@ program
       computeMuseumOrder,
     } = arg;
     if (computeMuseumOrder) {
-      const sql = fs.readFileSync("./museumOrder.sql", { encoding: "utf8" });
-      await knex.raw(sql);
+      await Skins.computeMuseumOrder();
       console.log("Museum order updated.");
     }
     if (configureR2Cors) {

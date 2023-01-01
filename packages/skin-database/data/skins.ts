@@ -10,6 +10,7 @@ import SkinModel from "./SkinModel";
 import UserContext from "./UserContext";
 import TweetModel from "./TweetModel";
 import { TweetStatus } from "../types";
+import fs from "fs";
 
 // const CDN_URL = "https://cdn.webampskins.org";
 const CDN_URL = "https://r2.webampskins.org";
@@ -682,6 +683,16 @@ LIMIT ? OFFSET ?`,
       md5,
       nsfw: Boolean(nsfw),
     };
+  });
+}
+
+export async function computeMuseumOrder() {
+  await knex.transaction(async (trx) => {
+    await trx("museum_sort_order").del();
+    const sql = fs.readFileSync(path.join(__dirname, "../museumOrder.sql"), {
+      encoding: "utf8",
+    });
+    await trx.raw(sql);
   });
 }
 

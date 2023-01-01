@@ -157,6 +157,8 @@ describe("seeded", () => {
       skin_md5: "48bbdbbeb03d347e59b1eebda4d352d0",
       error: "Whoops",
     });
+
+    await Skins.computeMuseumOrder();
     const page = await Skins.getMuseumPage({ offset: 0, first: 10 });
     const hasZelda = page.some(
       (skin) => skin.md5 === "48bbdbbeb03d347e59b1eebda4d352d0"

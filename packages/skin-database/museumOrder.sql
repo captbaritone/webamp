@@ -1,10 +1,4 @@
 -- Precompute the sort order for the skin musuem.
-BEGIN IMMEDIATE TRANSACTION;
-
-CREATE TABLE IF NOT EXISTS museum_sort_order (skin_md5 TEXT references skins(md5));
-
-DELETE FROM museum_sort_order;
-
 INSERT INTO museum_sort_order (skin_md5) 
 
     -- A tweet score for each skin based on its tweets.
@@ -62,5 +56,3 @@ INSERT INTO museum_sort_order (skin_md5)
         skin_reviews.review = 'APPROVED' DESC,
         -- Skins that have been rejected are worse than those that have not been reviewed
         skin_reviews.review = 'REJECTED' ASC;
-
-COMMIT;
