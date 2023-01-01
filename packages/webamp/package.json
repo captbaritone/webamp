@@ -130,6 +130,8 @@
     "trailingComma": "es5"
   },
   "dependencies": {
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
     "ani-cursor": "^0.0.4",
     "butterchurn": "^3.0.0-beta.3",
     "butterchurn-presets": "3.0.0-beta.4",

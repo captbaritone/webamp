@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 // @ts-ignore
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { getWebampConfig } from "./webampConfig";

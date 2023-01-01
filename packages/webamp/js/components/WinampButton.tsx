@@ -4,6 +4,7 @@ import {
   DetailedHTMLProps,
   HTMLAttributes,
   useState,
+  PointerEvent as ReactPointerEvent,
 } from "react";
 
 const ACTIVE_CLASSNAME = "winamp-active";
@@ -40,7 +41,7 @@ export default function WinampButton({
   const [active, setActive] = useState(false);
 
   const onPointerDown = useCallback(
-    (e) => {
+    (e: ReactPointerEvent<HTMLDivElement>) => {
       if (originalOnPointerDown != null) {
         originalOnPointerDown(e);
       }
@@ -48,6 +49,7 @@ export default function WinampButton({
       // https://w3c.github.io/pointerevents/#implicit-pointer-capture
       // https://w3c.github.io/pointerevents/#pointer-capture
       if (!requireClicksOriginateLocally) {
+        // @ts-ignore
         e.target.releasePointerCapture(e.pointerId);
       }
       // We only care about left mouse.

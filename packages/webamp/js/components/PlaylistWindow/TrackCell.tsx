@@ -1,4 +1,4 @@
-import { useCallback, ReactNode } from "react";
+import { useCallback, ReactNode, TouchEvent } from "react";
 import classnames from "classnames";
 import {
   CLICKED_TRACK,
@@ -54,7 +54,7 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
   );
 
   const handleTouchStart = useCallback(
-    (e) => {
+    (e: TouchEvent<HTMLDivElement>) => {
       if (!selected) {
         dispatch({ type: CLICKED_TRACK, index });
       }

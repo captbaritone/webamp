@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { FormEvent, memo, useCallback } from "react";
 
 import {
   SEEK_TO_PERCENT_COMPLETE,
@@ -27,7 +27,7 @@ const Position = memo(() => {
   const dispatch = useTypedDispatch();
 
   const seekToPercentComplete = useCallback(
-    (e) => {
+    (e: FormEvent) => {
       dispatch({
         type: SEEK_TO_PERCENT_COMPLETE,
         percent: Number((e.target as HTMLInputElement).value),
@@ -38,7 +38,7 @@ const Position = memo(() => {
   );
 
   const setPosition = useCallback(
-    (e) => {
+    (e: FormEvent) => {
       dispatch({ type: SET_FOCUS, input: "position" });
       dispatch({
         type: SET_SCRUB_POSITION,
