@@ -73,8 +73,8 @@
     "@types/jszip": "^3.1.5",
     "@types/lodash": "^4.14.116",
     "@types/lodash-es": "^4.17.1",
-    "@types/react": "^17.0.35",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
     "@types/react-redux": "^7.1.1",
     "@types/webaudioapi": "^0.0.27",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
@@ -130,8 +130,6 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.10",
     "ani-cursor": "^0.0.4",
     "butterchurn": "^3.0.0-beta.3",
     "butterchurn-presets": "3.0.0-beta.4",
