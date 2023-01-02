@@ -1,69 +1,106 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Webamp &middot; Winamp 2 in your browser</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Winamp 2.9 reimplemented in HTML5 and JavaScript" />
+    <meta
+      name="description"
+      content="Winamp 2.9 reimplemented in HTML5 and JavaScript"
+    />
     <meta property="og:title" content="Webamp &bull; Winamp in your browser" />
-    <meta property="og:description" content="Winamp 2.9 reimplemented in HTML5 and JavaScript" />
+    <meta
+      property="og:description"
+      content="Winamp 2.9 reimplemented in HTML5 and JavaScript"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://webamp.org" />
-    <meta property="og:image" content="https://webamp.org<%= require('./images/preview.png') %>" />
-    <link rel='stylesheet' type='text/css' href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/page.css') %>" />
-    <link rel="shortcut icon" sizes="16x16 32x32" href="<%= require('./images/favicon.ico') %>">
+    <meta
+      property="og:image"
+      content="https://webamp.org<%= require('./images/preview.png') %>"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/page.css') %>"
+    />
+    <link
+      rel="shortcut icon"
+      sizes="16x16 32x32"
+      href="<%= require('./images/favicon.ico') %>"
+    />
 
     <!-- See https://goo.gl/qRE0vM -->
-    <meta name="theme-color" content="#4b4b4b">
+    <meta name="theme-color" content="#4b4b4b" />
 
-    <meta name="google-site-verification" content="ycocEnfUpYf8u_UmzpqSe0gNooPs0PBjbD7HKw-qa5I" />
+    <meta
+      name="google-site-verification"
+      content="ycocEnfUpYf8u_UmzpqSe0gNooPs0PBjbD7HKw-qa5I"
+    />
 
     <!-- Load and register service worker that deletes the service worker we used to have -->
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js');
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/service-worker.js");
         });
       }
     </script>
-</head>
+  </head>
 
-<body>
-    <div id='app'>
-        <div id="loading" style="display: none">
-            Loading<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span></span>
-        </div>
+  <body>
+    <div id="app">
+      <div id="loading" style="display: none">
+        Loading<span class="ellipsis-anim"
+          ><span>.</span><span>.</span><span>.</span></span
+        >
+      </div>
     </div>
-    <div id='browser-compatibility'>
-        <p>Your browser does not support the features we need.</p>
-        <p>Try using the most recent version of Chrome, Firefox, Safari or Edge.</p>
+    <div id="browser-compatibility">
+      <p>Your browser does not support the features we need.</p>
+      <p>
+        Try using the most recent version of Chrome, Firefox, Safari or Edge.
+      </p>
     </div>
     <div id="demo-desktop"></div>
-    <p class='about'>
-        <a target="_blank" href='https://github.com/jberg/butterchurn' id='butterchurn-share' style="background-image: url(<%= require('./images/share/butterchurn-bg.png') %>)">
-            <img inline src="demo/images/share/eye.svg" />
-        </a>
-        <a target="_blank" href='https://github.com/captbaritone/webamp/blob/master/packages/webamp/docs/music-credits.md' id='music-credits'>
-            <img inline src="demo/images/share/music.svg" />
-        </a>
-        <a target="_blank" href='https://github.com/captbaritone/webamp' id='github-share'>
-            <img inline src="demo/images/share/github.svg" />
-        </a>
+    <p class="about">
+      <a
+        target="_blank"
+        href="https://github.com/jberg/butterchurn"
+        id="butterchurn-share"
+        style="
+          background-image: url(<%=require('./images/share/butterchurn-bg.png')%>);
+        "
+      >
+        <img inline src="demo/images/share/eye.svg" />
+      </a>
+      <a
+        target="_blank"
+        href="https://github.com/captbaritone/webamp/blob/master/packages/webamp/docs/music-credits.md"
+        id="music-credits"
+      >
+        <img inline src="demo/images/share/music.svg" />
+      </a>
+      <a
+        target="_blank"
+        href="https://github.com/captbaritone/webamp"
+        id="github-share"
+      >
+        <img inline src="demo/images/share/github.svg" />
+      </a>
     </p>
     <script type="text/javascript">
-        // If we can load faster than half a second, don't bother showing the loading indicator.
-        setTimeout(function() {
-            var loading = document.getElementById('loading');
-            if (loading != null) {
-                loading.style.display = 'block';
-            }
-        }, 500)
+      // If we can load faster than half a second, don't bother showing the loading indicator.
+      setTimeout(function () {
+        var loading = document.getElementById("loading");
+        if (loading != null) {
+          loading.style.display = "block";
+        }
+      }, 500);
     </script>
     <!-- https://github.com/captbaritone/webamp/issues/750
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="7py29249dpeddu8" async></script>
     -->
     <!-- Scripts get injected by html-webpack-plugin -->
-</body>
-
+  </body>
 </html>
