@@ -17,13 +17,16 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@parcel/optimizer-data-url": "2.7.0",
-    "@parcel/transformer-inline-string": "2.7.0",
+    "@parcel/transformer-inline-string": "^2.8.2",
     "@typescript-eslint/parser": "^5.13.0",
+    "assert": "^2.0.0",
     "eslint": "^8.14.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^4.0.0",
+    "events": "^3.3.0",
     "jest": "^27.5.1",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "stream-browserify": "^3.0.0"
   },
   "prettier": {
     "trailingComma": "es5"
