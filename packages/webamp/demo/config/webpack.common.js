@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
@@ -56,7 +55,6 @@ module.exports = {
       template: "./index.html",
       chunks: ["webamp"],
     }),
-    new HtmlWebpackInlineSVGPlugin({ runPreEmit: true }),
     new CopyWebpackPlugin([
       {
         from: "./js/delete-service-worker.js",
