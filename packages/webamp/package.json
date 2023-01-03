@@ -10,6 +10,7 @@
     "dist/webamp/webamp-lazy.js.map",
     "index.d.ts"
   ],
+  "browser": "dist/webamp-browser/webampBrowser.js",
   "targets": {
     "webamp": {
       "source": "js/webamp.js",
