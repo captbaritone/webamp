@@ -13,4 +13,7 @@ module.exports = {
   ],
   testEnvironment: "jsdom",
   setupFiles: ["<rootDir>/packages/skin-database/jest-setup.js"],
+  transform: {
+    "^.+\\.(t|j)sx?$": ["@swc/jest"],
+  },
 };
