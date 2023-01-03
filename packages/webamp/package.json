@@ -13,11 +13,17 @@
   "targets": {
     "webamp": {
       "source": "js/webamp.js",
+      "outputFormat": "esmodule",
+      "isLibrary": true
+    },
+    "webamp-browser": {
+      "source": "js/webampBrowser.js",
       "outputFormat": "global"
     },
     "webamp-lazy": {
       "source": "js/webampLazy.tsx",
-      "outputFormat": "esmodule"
+      "outputFormat": "esmodule",
+      "isLibrary": true
     },
     "demo-site": {
       "source": "demo/index.html"
@@ -28,7 +34,7 @@
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "parcel build --target demo-site",
-    "build-library": "parcel build --target webamp --target webamp-lazy",
+    "build-library": "parcel build --target webamp --target webamp-lazy --target webamp-browser",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",
     "start": "parcel demo/index.html",
@@ -117,7 +123,7 @@
     "music-metadata-browser": "^0.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.0-beta.1",
+    "react-redux": "^8.0.5",
     "redux": "^5.0.0-alpha.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-sentry-middleware": "^0.1.3",
