@@ -20,9 +20,16 @@ import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
-import "../../css/webamp.css";
+import css from "../../css/webamp.css";
 import Media from "../media";
 import { useTypedSelector, useActionCreator } from "../hooks";
+
+let l = 0;
+for (const c of css) {
+  l += c[1].length;
+}
+
+console.log(l);
 
 interface Props {
   filePickers: FilePicker[];
