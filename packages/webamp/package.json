@@ -15,7 +15,8 @@
     "webamp": {
       "source": "js/webamp.js",
       "outputFormat": "esmodule",
-      "isLibrary": true
+      "isLibrary": true,
+      "optimize": true
     },
     "webamp-browser": {
       "source": "js/webampBrowser.js",
@@ -24,7 +25,8 @@
     "webamp-lazy": {
       "source": "js/webampLazy.tsx",
       "outputFormat": "esmodule",
-      "isLibrary": true
+      "isLibrary": true,
+      "optimize": true
     },
     "demo-site": {
       "source": "demo/index.html"
