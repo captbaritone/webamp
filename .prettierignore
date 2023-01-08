@@ -2,5 +2,6 @@
 
 packages/webamp/demo/built/
 packages/webamp/built/
+packages/webamp/dist/
 packages/webamp-modern/build/
 packages/webamp-modern/tools/eslint-rules/dist/
