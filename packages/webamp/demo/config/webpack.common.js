@@ -19,7 +19,7 @@ module.exports = {
             options: {
               plugins: [
                 require("cssnano"),
-                require("../../scripts/postcss-optimize-data-uri-pngs"),
+                // require("../../scripts/postcss-optimize-data-uri-pngs"),
               ],
             },
           },
