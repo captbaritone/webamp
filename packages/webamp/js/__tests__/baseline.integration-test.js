@@ -1,3 +1,5 @@
+// See jest.integration.js for the config for this test file.
+
 /* global page */
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 const path = require("path");
