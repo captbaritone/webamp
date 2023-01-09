@@ -23,6 +23,7 @@ jobs:
           yarn workspace ani-cursor build
           yarn workspace webamp build
           yarn workspace webamp build-library
+          yarn workspace webamp move-library
       - name: Lint
         run: |
           yarn lint

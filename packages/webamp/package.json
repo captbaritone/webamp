@@ -11,21 +11,32 @@
     "index.d.ts"
   ],
   "browser": "dist/webamp-browser/webampBrowser.js",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "targets": {
-    "webamp": {
-      "source": "js/webamp.js",
-      "outputFormat": "esmodule",
-      "isLibrary": true,
-      "optimize": true
-    },
     "webamp-browser": {
       "source": "js/webampBrowser.js",
-      "outputFormat": "global"
+      "outputFormat": "global",
+      "optimize": false
     },
-    "webamp-lazy": {
-      "source": "js/webampLazy.tsx",
-      "outputFormat": "esmodule",
-      "isLibrary": true,
+    "webamp-browser-min": {
+      "source": "js/webampBrowser.js",
+      "outputFormat": "global",
+      "optimize": true
+    },
+    "webamp-lazy-browser": {
+      "source": "js/webampLazyBrowser.js",
+      "outputFormat": "global",
+      "optimize": false
+    },
+    "webamp-lazy-browser-min": {
+      "source": "js/webampLazyBrowser.js",
+      "outputFormat": "global",
       "optimize": true
     },
     "demo-site": {
@@ -37,8 +48,8 @@
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "parcel build --target demo-site",
-    "build-library": "parcel build --target webamp --target webamp-lazy --target webamp-browser --reporter @parcel/reporter-bundle-analyzer",
-    "move-library": "mkdir built; cp dist/webamp-browser/webampBrowser.js built/webamp.bundle.min.js && cp dist/webamp-lazy/webampLazy.js built/webamp.lazy-bundle.min.js",
+    "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --reporter @parcel/reporter-bundle-analyzer",
+    "move-library": "node scripts/moveLibrary.js",
     "prepublishOnly": "npm run build-library && npm run move-library",
     "serve": "http-server ./dist/demo-site",
     "start": "parcel demo/index.html",
