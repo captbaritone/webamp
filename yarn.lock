@@ -4486,6 +4486,15 @@
   dependencies:
     "@parcel/types" "2.8.2"
 
+"@parcel/reporter-bundle-analyzer@^2.8.2":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@parcel/reporter-bundle-analyzer/-/reporter-bundle-analyzer-2.8.2.tgz#996986c477911cde5bdb8a4a2fe44ffcdd11e571"
+  integrity sha512-naUFCTNO0WmSyDkpC9T9QiAEfyqVA6ToDm42rTKZ8MXUP0b88yGxMRfWZ4FY4eK0nJIyWGdalj5a5vzTE55nWA==
+  dependencies:
+    "@parcel/plugin" "2.8.2"
+    "@parcel/utils" "2.8.2"
+    nullthrows "^1.1.1"
+
 "@parcel/reporter-cli@2.8.2":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@parcel/reporter-cli/-/reporter-cli-2.8.2.tgz#bfd63b8bfb0bd72e483f4de496af6dc8e819a97e"
@@ -20678,6 +20687,15 @@ postcss@^8.3.5:
   integrity sha512-lg6eITwYe9v6Hr5CncVbK70SoioNQIq81nsaG86ev5hAidQvmOeETBqs7jm43K2F5/Ley3ytDtriImV6TpNiSg==
   dependencies:
     nanoid "^3.3.1"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.4.21:
+  version "8.4.21"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
+  integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
+  dependencies:
+    nanoid "^3.3.4"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
