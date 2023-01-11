@@ -30,7 +30,7 @@
     "graphql": "14.7.0",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
-    "knex": "^0.21.1",
+    "knex": "^2.4.0",
     "lru-cache": "^6.0.0",
     "mastodon-api": "^1.3.0",
     "md5": "^2.2.1",
