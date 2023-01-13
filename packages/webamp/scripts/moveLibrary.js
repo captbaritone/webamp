@@ -4,8 +4,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const BUILD_DIR = "../built";
-const DIST_DIR = "../dist";
+const BUILD_DIR = path.join(__dirname, "../built");
+const DIST_DIR = path.join(__dirname, "../dist");
 
 const TARGETS = [
   {
@@ -32,10 +32,10 @@ console.log("Copying build artifacts to their old Webpack locations:");
 for (const target of TARGETS) {
   const from = path.join(DIST_DIR, target.parcelPath);
   const to = path.join(BUILD_DIR, target.webpackName);
-  fs.copyFileSync(path.join(__dirname, from), path.join(__dirname, to));
+  fs.copyFileSync(from, to);
   console.log(`Copied "${from}" to "${to}".`);
   const fromMap = `${from}.map`;
   const toMap = `${to}.map`;
   console.log(`Copied "${fromMap}" to "${toMap}".`);
-  fs.copyFileSync(path.join(__dirname, fromMap), path.join(__dirname, toMap));
+  fs.copyFileSync(fromMap, toMap);
 }
