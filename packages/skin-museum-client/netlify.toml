@@ -12,6 +12,7 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
 
   # Default build command.
   command = "yarn build"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . ../webamp/"
 [build.environment]
   NODE_VERSION = "16.17.1"
   NETLIFY_USE_YARN = "true"
