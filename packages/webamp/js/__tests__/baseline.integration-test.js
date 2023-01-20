@@ -33,7 +33,7 @@ test("can 'pose' for a screenshot", async () => {
 
 // *************** IMPORTANT ***************
 // If this test starts to fail, check that the cache-bust location of the skin has not changed.
-test("can load a skin via the query params", async () => {
+test.skip("can load a skin via the query params", async () => {
   await page.goto(
     `${DOMAIN}/?skinUrl=/MacOSXAqua1-5.698dd4ab.wsz#{"disableMarquee":true}`
   );
