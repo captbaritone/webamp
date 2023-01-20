@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom/client";
 // @ts-ignore
-import isButterchurnSupported from "butterchurn/lib/isSupported.min";
+import isButterchurnSupported from "butterchurn/dist/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
@@ -20,8 +20,6 @@ import enableMediaSession from "./mediaSession";
 // import { choreograph } from "./choreography";
 
 declare global {
-  const SENTRY_DSN: string;
-  const COMMITHASH: string | undefined;
   interface Window {
     __webamp: WebampLazy;
   }
@@ -55,8 +53,10 @@ window.addEventListener("dragover", supressDragAndDrop);
 window.addEventListener("drop", supressDragAndDrop);
 
 try {
+  // TODO: Get this working in Parcel.
+  const COMMITHASH = undefined;
   Sentry.init({
-    dsn: SENTRY_DSN,
+    dsn: "https://12b6be8ef7c44f28ac37ab5ed98fd294@sentry.io/146021",
     release: typeof COMMITHASH === "undefined" ? "DEV" : COMMITHASH,
   });
 } catch (e) {

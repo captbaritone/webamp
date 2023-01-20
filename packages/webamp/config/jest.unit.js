@@ -12,7 +12,7 @@ module.exports = {
     "\\.mp3$": "<rootDir>/js/__mocks__/fileMock.js",
   },
   transform: {
-    "^.+\\.(js|ts|tsx)$": "babel-jest",
+    "^.+\\.(t|j)sx?$": ["@swc/jest"],
   },
   testPathIgnorePatterns: ["/node_modules/"],
   testEnvironment: "jsdom",
