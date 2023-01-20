@@ -31,10 +31,11 @@ test("can 'pose' for a screenshot", async () => {
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
 });
 
+// *************** IMPORTANT ***************
+// If this test starts to fail, check that the cache-bust location of the skin has not changed.
 test("can load a skin via the query params", async () => {
   await page.goto(
-    // If this test starts to fail, check that the cache-bust location of the skin has not changed.
-    `${DOMAIN}/?skinUrl=/skins/MacOSXAqua1-5-88dbd4e043795c98625462a908a2d965.wsz#{"disableMarquee":true}`
+    `${DOMAIN}/?skinUrl=/MacOSXAqua1-5.698dd4ab.wsz#{"disableMarquee":true}`
   );
   await page.evaluate(
     () => document.getElementsByClassName("loaded-icon").length > 0
