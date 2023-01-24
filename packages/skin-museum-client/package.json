@@ -27,7 +27,8 @@
     "redux-observable": "^1.0.0",
     "reselect": "^4.0.0",
     "rxjs": "^6.3.3",
-    "spark-md5": "^3.0.1"
+    "spark-md5": "^3.0.1",
+    "webamp": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
