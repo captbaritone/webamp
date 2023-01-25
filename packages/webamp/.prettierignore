@@ -1,7 +1,6 @@
 package.json
 **/*.min.css
 **/base-skin.css
-demo/js/googleAnalytics.min.js
 built/*
 demo/built/*
 coverage/*
