@@ -113,7 +113,6 @@
     "puppeteer": "^1.15.0",
     "react-test-renderer": "^17.0.1",
     "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^1.4.3",
     "typescript": "^3.7.2",
     "url-loader": "^1.1.2"
   },
