@@ -221,6 +221,12 @@ type ClassicSkin implements Skin & Node {
   reivew page, or via the Discord bot.
   """
   reviews: [Review]
+
+  """
+  The date on which this skin was last updated in the Algolia search index.
+  Given in simplified extended ISO format (ISO 8601).
+  """
+  last_algolia_index_update_date: String
 }
 
 """

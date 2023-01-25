@@ -370,6 +370,10 @@ export default class SkinModel {
     );
   }
 
+  async getAlgoliaIndexUpdates(limit?: number): Promise<any[]> {
+    return Skins.searchIndexUpdatesForSkin(this.getMd5(), limit);
+  }
+
   async withScreenshotTempFile<T>(
     cb: (file: string) => Promise<T>
   ): Promise<T> {

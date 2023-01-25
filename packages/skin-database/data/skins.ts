@@ -342,6 +342,22 @@ export async function getSkinsToShoot(limit: number): Promise<string[]> {
   return results.map((row) => row.md5);
 }
 
+export async function searchIndexUpdatesForSkin(
+  md5: string,
+  limit?: number
+): Promise<
+  Array<{ skin_md5: string; update_timestamp: number; field: string }>
+> {
+  let query = knex("algolia_field_updates")
+    .where({ skin_md5: md5 })
+    .orderBy("update_timestamp", "desc");
+
+  if (limit != null) {
+    query = query.limit(limit);
+  }
+  return query.select();
+}
+
 export async function recordSearchIndexUpdates(
   md5: string,
   fields: string[]

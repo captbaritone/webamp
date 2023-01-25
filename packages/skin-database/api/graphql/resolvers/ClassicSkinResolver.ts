@@ -35,4 +35,12 @@ export default class ClassicSkinResolver
     const reviews = await this._model.getReviews();
     return reviews.map((row) => new ReviewResolver(row));
   }
+  async last_algolia_index_update_date() {
+    const updates = await this._model.getAlgoliaIndexUpdates(1);
+    if (updates.length < 1) {
+      return null;
+    }
+    const update = updates[0];
+    return new Date(update.update_timestamp * 1000).toISOString();
+  }
 }
