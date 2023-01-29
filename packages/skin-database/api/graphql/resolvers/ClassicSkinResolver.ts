@@ -43,4 +43,7 @@ export default class ClassicSkinResolver
     const update = updates[0];
     return new Date(update.update_timestamp * 1000).toISOString();
   }
+  transparent_pixels(): Promise<number> {
+    return this._model.transparentPixels();
+  }
 }

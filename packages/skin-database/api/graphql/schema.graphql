@@ -227,6 +227,11 @@ type ClassicSkin implements Skin & Node {
   Given in simplified extended ISO format (ISO 8601).
   """
   last_algolia_index_update_date: String
+
+  """
+  The number of transparent pixels rendered by the skin.
+  """
+  transparent_pixels: Int
 }
 
 """
