@@ -122,7 +122,7 @@ button:active {
 
 #search input {
   margin-right: 15px;
-  max-width: 250px;
+  max-width: 550px;
   min-width: 100px;
   border: none;
   font-size: 16px;
@@ -202,7 +202,8 @@ body.webamp-loaded #webamp {
 #zoom button {
   color: rgba(255, 2550, 2550, 0.9);
 }
-#zoom button:active, #zoom button:disabled {
+#zoom button:active,
+#zoom button:disabled {
   color: grey;
 }
 
