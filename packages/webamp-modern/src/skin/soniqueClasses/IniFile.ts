@@ -31,9 +31,10 @@ export default class IniFile {
     const lines = content.split("\n");
     for (var line of lines) {
       if (!line || line.startsWith(";")) continue;
-
+      
       //?section
       if(line.startsWith('[')){
+        console.log(line)
           line = line.replace(/\[/,'').replace(/\]/,'')
           section = line.toLowerCase()
           if(!ini[section]){
@@ -46,6 +47,7 @@ export default class IniFile {
           let [key,value] = line.split('=')
           key = strip(key).toLowerCase()
           value = strip(value)
+          console.log(' -', line)
         ini[section][key] = value
       }
 
