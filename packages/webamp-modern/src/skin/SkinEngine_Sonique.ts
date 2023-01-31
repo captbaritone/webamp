@@ -337,6 +337,9 @@ export class SoniqueSkinEngine extends SkinEngine {
     );
     await this.loadCircleButton("SingleUp", "SWITCH;nav", room);
     await this.loadCircleButton("SingleDown", "SWITCH;small", room);
+    await this.loadCircleButton("Help", "", room);
+    await this.loadCircleButton("Minimize", "", room);
+    await this.loadCircleButton("Close", "", room);
   }
 
   async loadMidBottom(parent: Group) {
