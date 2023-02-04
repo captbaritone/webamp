@@ -2,6 +2,7 @@ import { XmlElement } from "@rgrove/parse-xml";
 import Bitmap from "./Bitmap";
 import { Edges } from "./Clippath";
 import { FileExtractor } from "./FileExtractor";
+import Button from "./makiClasses/Button";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
 import ToggleButton from "./makiClasses/ToggleButton";
@@ -60,6 +61,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     // this._phase = RESOURCE_PHASE;
 
     await this.loadKnowBitmaps();
+    await this.loadColorizedBitmaps();
 
     const container = await this.loadContainer(); // player Container
     // which one declared first will become the default visible
@@ -93,6 +95,24 @@ export class SoniqueSkinEngine extends SkinEngine {
         new XmlElement("bitmap", {
           id: bitmapName,
           file: `/jpeg/${bitmapName}`,
+        })
+      );
+    }
+  }
+
+  async loadColorizedBitmaps() {
+    const knownBitmaps = [
+      "down",
+    ];
+    for (const bitmapName of knownBitmaps) {
+      await this.bitmap(
+        new XmlElement("bitmap", {
+          file: '/jpeg/navitem1',
+          id: `nav.${bitmapName}`,
+          x: '0',
+          y: '0',
+          w: '15',
+          h: '15',
         })
       );
     }
@@ -339,7 +359,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     await this.loadCircleButton("SingleDown", "SWITCH;small", room);
     await this.loadCircleButton("Help", "", room);
     await this.loadCircleButton("Minimize", "", room);
-    await this.loadCircleButton("Close", "", room);
+    // await this.loadCircleButton("Close", "", room);
+    await this.loadCircleButton2("Close", "", room, {image:'nav.down'});
   }
 
   async loadMidBottom(parent: Group) {
@@ -834,6 +855,58 @@ export class SoniqueSkinEngine extends SkinEngine {
       h,
     });
     const button = await this.newGui(CircleButton, node, parent);
+    return button;
+  }
+
+  async loadCircleButton2(
+    nick: string,
+    action: string,
+    parent: Group,
+    options: {
+      fileName?: string;
+      rectName?: string;
+      action?: string;
+      image?: string;
+      // msm?: string;
+      attributes?: { [key: string]: string };
+    } = {}
+  ) {
+    // const prefix = config["prefix"];
+    // const rect = config[`${nick}Button`];
+    // if (!rect) return;
+    // // console.log("rect:", rect);
+    // const [left, top, right, bottom, tooltip, downimage] = rect;
+    // const rectName = options.rectName || nick;
+    // const layout = parent.getparentlayout().getId();
+    // const regId = `/rgn/${layout}/${rectName}`;
+    // const { left, top, width, height } = await this.getRect(regId);
+
+    // const attributes = options.attributes || {};
+    // const position = options.position || nick;
+
+    let param = "";
+    if (action.includes(";")) {
+      [action, param] = action.split(";");
+    }
+
+    const msm: IniSection = this._ini.section("msm locations");
+
+    const x = msm.getString(`msm_${nick}_x`);
+    const y = msm.getString(`msm_${nick}_y`);
+    const w = "10";
+    const h = "10";
+
+    const node = new XmlElement("button", {
+      id: nick,
+      action,
+      param,
+      image: options.image,
+      x,
+      y,
+      w,
+      h,
+    });
+    const button = await this.newGui(Button, node, parent);
     return button;
   }
 
