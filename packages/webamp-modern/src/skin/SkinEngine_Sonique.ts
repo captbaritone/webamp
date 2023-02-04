@@ -2,6 +2,7 @@ import { XmlElement } from "@rgrove/parse-xml";
 import Bitmap from "./Bitmap";
 import { Edges } from "./Clippath";
 import { FileExtractor } from "./FileExtractor";
+import GammaGroup from "./GammaGroup";
 import Button from "./makiClasses/Button";
 import Container from "./makiClasses/Container";
 import Group from "./makiClasses/Group";
@@ -61,6 +62,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     // this._phase = RESOURCE_PHASE;
 
     await this.loadKnowBitmaps();
+    await this.buildGammaSet();
     await this.loadColorizedBitmaps();
 
     const container = await this.loadContainer(); // player Container
@@ -100,6 +102,20 @@ export class SoniqueSkinEngine extends SkinEngine {
     }
   }
 
+  async buildGammaSet() {
+    const gammaSet = [];
+    const gammaGroups = [
+      {id:"MidTop", value:"-3897,0,2394", gray:"0", boost:"0"}
+    ];
+    for (const gamma of gammaGroups){
+      const gammaGroup = new GammaGroup();
+      gammaGroup.setXmlAttributes(gamma);
+      gammaSet.push(gammaGroup)
+    }
+
+    this._uiRoot.addGammaSet('default', gammaSet);
+  }
+
   async loadColorizedBitmaps() {
     const knownBitmaps = [
       "down",
@@ -113,6 +129,7 @@ export class SoniqueSkinEngine extends SkinEngine {
           y: '0',
           w: '15',
           h: '15',
+          gammagroup: 'MidTop',
         })
       );
     }
