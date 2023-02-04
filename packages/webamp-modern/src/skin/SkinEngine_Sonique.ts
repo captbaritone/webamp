@@ -103,13 +103,40 @@ export class SoniqueSkinEngine extends SkinEngine {
   }
 
   async buildGammaSet() {
+    const iColors = this._ini.section("sonique colors");
     const gammaSet = [];
+
+    //? dummy
     const gammaGroups = [
-      {id:"MidTop", value:"-3897,0,2394", gray:"0", boost:"0"}
+      {id:"MidTop", value:"-3897,0,2394", gray:"0", boost:"0"},
+      {id:"SystemColor_1", value:"-4096,0,0", gray:"0", boost:"0"},
+      // {id:"SystemColor_3", value:"-4096,0,0", gray:"0", boost:"0"},
     ];
     for (const gamma of gammaGroups){
+      console.log('gamma:', gamma.id, gamma.value, iColors.getString(gamma.id));
       const gammaGroup = new GammaGroup();
       gammaGroup.setXmlAttributes(gamma);
+      gammaSet.push(gammaGroup)
+    }
+
+    //? real from .INI
+    const knownColorsIni = [
+      'BlueBallsColor',
+      // 'SystemColor_1',
+      'SystemColor_3',
+    ]
+    function gamma(i:number):number {
+      return (i - 128) / 128 * 4096;
+    }
+    for (const colorName of knownColorsIni){
+      const {r,g,b,a} = iColors.getRGBA(colorName);
+      const value= `${gamma(r)},${gamma(g)},${gamma(b)}`;
+      console.log('gamma:', colorName, value, [r,g,b,a], iColors.getString(colorName));
+      const gammaGroup = new GammaGroup();
+      gammaGroup.setXmlAttributes({
+        id:colorName, 
+        value,
+      });
       gammaSet.push(gammaGroup)
     }
 
@@ -129,7 +156,8 @@ export class SoniqueSkinEngine extends SkinEngine {
           y: '0',
           w: '15',
           h: '15',
-          gammagroup: 'MidTop',
+          // gammagroup: 'BlueBallsColor',
+          gammagroup: 'SystemColor_3',
         })
       );
     }

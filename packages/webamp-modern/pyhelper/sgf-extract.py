@@ -52,7 +52,7 @@ class SgfFileExtractor:
         return buf.decode().strip('\0')
   
     
-target_dir = '../assets/sgf-extracted'
+target_dir = '../assets/extracted-sgf'
 
 filepath = '../assets/sonique.sgf'
 filepath = 'sys-sonique.sgf'
@@ -60,6 +60,7 @@ filepath = 'lycossearch.sgf'
 filepath = 'hotbotsearch.sgf'
 filepath = '../assets/ChainZ-and.sgf'
 filepath = '../assets/scifi-stories.sgf'
+filepath = '../assets/phantom.sgf'
 
 _, fname = os.path.split(filepath)
 print('fname=',fname)

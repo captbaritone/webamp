@@ -13,7 +13,21 @@ export class IniSection {
   
   
     getInt(key:string):number {
-      return parseInt(this.getString(key))
+      const v = this.getString(key).toLowerCase();
+      let i = parseInt(v);
+      if (isNaN(i) && !!this._tree[v] ){
+        i = this.getInt(v)
+      }
+      return i;
+    }
+
+    getRGBA(key:string):{r:number, g:number,b:number,a:number} {
+      const i = this.getInt(key);
+      const r = (i & 0xff);
+      const g = (i & 0xff00) >> 8;
+      const b = (i & 0xff0000) >> 16;
+      const a = (i & 0xff0000) >> 24;
+      return {r,g,b,a}
     }
   
 }
