@@ -12,9 +12,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "chrome > 76",
     "not dead",
-    "not ie <= 11",
+    "not ie all",
     "not op_mini all"
   ],
   "targets": {
