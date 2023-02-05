@@ -79,7 +79,7 @@ interface Edges {
   right?: WindowId;
 }
 
-interface Graph {
+export interface Graph {
   // TODO: Ensure this is a WindowId
   [id: string]: Edges;
 }
