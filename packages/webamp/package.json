@@ -10,22 +10,22 @@
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "targets": {
     "webamp-browser": {
-      "source": "js/webampBrowser.js",
+      "source": "js/webamp.ts",
       "outputFormat": "global",
       "optimize": false
     },
     "webamp-browser-min": {
-      "source": "js/webampBrowser.js",
+      "source": "js/webamp.ts",
       "outputFormat": "global",
       "optimize": true
     },
     "webamp-lazy-browser": {
-      "source": "js/webampLazyBrowser.js",
+      "source": "js/webampLazy.tsx",
       "outputFormat": "global",
       "optimize": false
     },
     "webamp-lazy-browser-min": {
-      "source": "js/webampLazyBrowser.js",
+      "source": "js/webampLazy.tsx",
       "outputFormat": "global",
       "optimize": true
     },

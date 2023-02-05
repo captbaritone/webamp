@@ -483,4 +483,7 @@ const storeHas = (
     });
   });
 
+// @ts-ignore
+window.Webamp = Webamp;
+
 export default Webamp;
