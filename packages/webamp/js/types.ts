@@ -631,6 +631,86 @@ export interface LoadedURLTrack {
   };
 }
 
+export interface Options {
+  /**
+   * An object representing the initial skin to use.
+   *
+   * If omitted, the default skin, included in the bundle, will be used.
+   * Note: This URL must be served the with correct CORs headers.
+   *
+   * Example: `{ url: './path/to/skin.wsz' }`
+   */
+  initialSkin?: {
+    url: string;
+  };
+
+  /**
+   * An array of `Track`s to prepopulate the playlist with.
+   */
+  initialTracks?: Track[];
+
+  /**
+   * An array of objects representing available skins.
+   *
+   * These will appear in the "Options" menu under "Skins".
+   * Note: These URLs must be served with the correct CORs headers.
+   *
+   * Example: `[ { url: "./green.wsz", name: "Green Dimension V2" } ]`
+   */
+  availableSkins?: { url: string; name: string }[];
+
+  /**
+   * Should global hotkeys be enabled?
+   *
+   * Default: `false`
+   */
+  enableHotkeys?: boolean;
+
+  /**
+   * An array of additional file pickers.
+   *
+   * These will appear in the "Options" menu under "Play".
+   *
+   * In the offical version, this option is used to provide a "Dropbox" file picker.
+   */
+  filePickers?: [
+    {
+      /**
+       * The name that will appear in the context menu.
+       *
+       * Example: `"My File Picker..."`
+       */
+      contextMenuName: string;
+
+      /**
+       * A function which returns a Promise that resolves to an array of `Track`s
+       *
+       * Example: `() => Promise.resolve([{ url: './rick_roll.mp3' }])`
+       */
+      filePicker: () => Promise<Track[]>;
+
+      /**
+       * Indicates if this options should be made available when the user is offline.
+       */
+      requiresNetwork: boolean;
+    }
+  ];
+  zIndex?: number;
+  handleTrackDropEvent?: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | null | Promise<Track[] | null>;
+  handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
+}
+
+export type WindowLayout = {
+  [windowId: string]: {
+    size?: null | [number, number];
+    position: WindowPosition;
+  };
+};
+
 /**
  * Many methods on the webamp instance deal with track.
  *

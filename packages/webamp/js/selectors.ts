@@ -330,7 +330,7 @@ export const getCurrentTrackDisplayName = createSelector(
   }
 );
 
-export const getMediaStatus = (state: AppState): MediaStatus | null => {
+export const getMediaStatus = (state: AppState): MediaStatus => {
   return state.media.status;
 };
 
