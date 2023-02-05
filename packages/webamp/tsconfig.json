@@ -11,10 +11,10 @@
     "jsx": "preserve",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "./types",
+    "declarationDir": "./dist/types",
     "pretty": true,
     "types": ["react/experimental", "react-dom/experimental", "jest"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "demo/built", "types"]
+  "exclude": ["node_modules", "demo/built", "dist"]
 }

@@ -4,13 +4,9 @@
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "dist/webamp-lazy/webampLazy.js",
   "files": [
-    "dist/webamp/webamp.js",
-    "dist/webamp/webamp.js.map",
-    "dist/webamp/webamp-lazy.js",
-    "dist/webamp/webamp-lazy.js.map",
-    "index.d.ts"
+    "dist/"
   ],
-  "types": "./types/js/webamp.d.ts",
+  "types": "./dist/types/js/webamp.d.ts",
   "browser": "dist/webamp-browser/webampBrowser.js",
   "browserslist": [
     "> 1%",
