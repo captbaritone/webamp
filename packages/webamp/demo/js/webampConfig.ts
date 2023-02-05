@@ -23,7 +23,7 @@ import {
 
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
-import availableSkins from "./avaliableSkins";
+import availableSkins from "./availableSkins";
 
 import { initialTracks, initialState } from "./config";
 import screenshotInitialState from "./screenshotInitialState";

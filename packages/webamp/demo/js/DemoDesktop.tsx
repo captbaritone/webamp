@@ -5,7 +5,7 @@ import WebampIcon from "./WebampIcon";
 import SkinIcon from "./SkinIcon";
 import { /* defaultInitialTracks, */ SHOW_DESKTOP_ICONS } from "./config";
 import { useWindowSize } from "../../js/hooks";
-import avaliableSkins from "./avaliableSkins";
+import availableSkins from "./availableSkins";
 import DesktopLinkIcon from "./DesktopLinkIcon";
 import museumIcon from "../images/icons/internet-folder-32x32.png";
 import soundcloudIcon from "../images/icons/soundcloud-32x32.png";
@@ -37,7 +37,7 @@ const DemoDesktop = ({ webamp, soundCloudPlaylist }: Props) => {
         return <Mp3Icon webamp={webamp} track={track} />;
       }),
       */
-      ...avaliableSkins.map((skin) => {
+      ...availableSkins.map((skin) => {
         return <SkinIcon webamp={webamp} skin={skin} />;
       }),
       /*
