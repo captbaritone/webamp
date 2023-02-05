@@ -2,13 +2,13 @@
   "name": "webamp",
   "version": "0.0.0-next-e7a85e59",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "dist/webamp-lazy/webampLazy.js",
+  "main": "dist/webamp-lazy-browser/webampLazy.js",
   "files": [
     "dist/webamp-*",
     "dist/types"
   ],
   "types": "dist/types/js/webamp.d.ts",
-  "browser": "dist/webamp-browser/webampBrowser.js",
+  "browser": "dist/webamp-lazy-browser-min/webampBrowser.js",
   "browserslist": [
     "> 1%",
     "last 2 versions",
