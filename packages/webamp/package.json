@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "0.0.0-next-63a4fd74",
+  "version": "1.5.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "dist/webamp-lazy-browser/webampLazyBrowser.js",
   "files": [
@@ -9,6 +9,7 @@
   ],
   "types": "dist/types/js/webamp.d.ts",
   "browser": "dist/webamp-lazy-browser-min/webampLazyBrowser.js",
+  "unpkg": "dist/webamp-browser-min/webampBrowser.js",
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -45,7 +46,7 @@
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "parcel build --target demo-site",
-    "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --reporter @parcel/reporter-bundle-analyzer",
+    "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --target types --reporter @parcel/reporter-bundle-analyzer",
     "move-library": "node scripts/moveLibrary.js",
     "prepublishOnly": "npm run build-library && npm run move-library && npm run type-check",
     "publish-next": "yarn publish --new-version=\"0.0.0-next-$(git rev-parse --short HEAD)\" --tag next",
