@@ -5,6 +5,7 @@
   "main": "dist/webamp-lazy-browser/webampLazyBrowser.js",
   "files": [
     "dist/webamp-*",
+    "built",
     "dist/types"
   ],
   "types": "dist/types/js/webamp.d.ts",
@@ -41,14 +42,17 @@
       "source": "demo/index.html"
     }
   },
+  "webamp-browser": "built/webamp.bundle.js",
+  "webamp-browser-min": "built/webamp.bundle.min.js",
+  "webamp-lazy-browser": "built/webamp.lazy-bundle.js",
+  "webamp-lazy-browser-min": "built/webamp.lazy-bundle.min.js",
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "parcel build --target demo-site",
     "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --target types --reporter @parcel/reporter-bundle-analyzer",
-    "move-library": "node scripts/moveLibrary.js",
-    "prepublishOnly": "npm run build-library && npm run move-library && npm run type-check",
+    "prepublishOnly": "npm run build-library && npm run type-check",
     "publish-next": "yarn publish --new-version=\"0.0.0-next-$(git rev-parse --short HEAD)\" --tag next",
     "serve": "http-server ./dist/demo-site",
     "start": "parcel demo/index.html",
