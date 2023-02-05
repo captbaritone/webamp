@@ -4,9 +4,10 @@
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "dist/webamp-lazy/webampLazy.js",
   "files": [
-    "dist/"
+    "dist/webamp-*",
+    "dist/types"
   ],
-  "types": "./dist/types/js/webamp.d.ts",
+  "types": "dist/types/js/webamp.d.ts",
   "browser": "dist/webamp-browser/webampBrowser.js",
   "browserslist": [
     "> 1%",
@@ -49,6 +50,7 @@
     "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --reporter @parcel/reporter-bundle-analyzer",
     "move-library": "node scripts/moveLibrary.js",
     "prepublishOnly": "npm run build-library && npm run move-library && npm run type-check",
+    "publish-next": "yarn publish --new-version='0.0.0-next-$(git rev-parse --short HEAD)' --tag next",
     "serve": "http-server ./dist/demo-site",
     "start": "parcel demo/index.html",
     "test": "jest --config=config/jest.unit.js",
