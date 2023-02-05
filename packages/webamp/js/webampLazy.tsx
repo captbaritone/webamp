@@ -120,7 +120,6 @@ export type WindowLayout = {
 };
 
 export interface PrivateOptions {
-  avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<any>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   __initialState?: PartialState;
@@ -130,25 +129,6 @@ export interface PrivateOptions {
   // This is used by https://winampify.io/ to proxy through to Spotify's API.
   __customMediaClass?: typeof Media; // This should have the same interface as Media
 }
-
-// Return a promise that resolves when the store matches a predicate.
-// TODO #leak
-const storeHas = (
-  store: Store,
-  predicate: (state: AppState) => boolean
-): Promise<void> =>
-  new Promise((resolve) => {
-    if (predicate(store.getState())) {
-      resolve();
-      return;
-    }
-    const unsubscribe = store.subscribe(() => {
-      if (predicate(store.getState())) {
-        resolve();
-        unsubscribe();
-      }
-    });
-  });
 
 class Webamp {
   static VERSION = "1.5.0";
@@ -177,7 +157,6 @@ class Webamp {
     const {
       initialTracks,
       initialSkin,
-      avaliableSkins, // Old misspelled name
       availableSkins,
       enableHotkeys = false,
       zIndex,
@@ -271,7 +250,8 @@ class Webamp {
       this._bufferTracks(initialTracks);
     }
 
-    if (avaliableSkins != null) {
+    // @ts-ignore
+    if (options.avaliableSkins != null) {
       console.warn(
         "The misspelled option `avaliableSkins` is deprecated. Please use `availableSkins` instead."
       );
@@ -460,5 +440,24 @@ class Webamp {
     this._disposable.dispose();
   }
 }
+
+// Return a promise that resolves when the store matches a predicate.
+// TODO #leak
+const storeHas = (
+  store: Store,
+  predicate: (state: AppState) => boolean
+): Promise<void> =>
+  new Promise((resolve) => {
+    if (predicate(store.getState())) {
+      resolve();
+      return;
+    }
+    const unsubscribe = store.subscribe(() => {
+      if (predicate(store.getState())) {
+        resolve();
+        unsubscribe();
+      }
+    });
+  });
 
 export default Webamp;
