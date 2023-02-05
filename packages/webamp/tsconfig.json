@@ -9,10 +9,12 @@
     "resolveJsonModule": true,
     "strict": true,
     "jsx": "preserve",
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./types",
     "pretty": true,
     "types": ["react/experimental", "react-dom/experimental", "jest"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "demo/built"]
+  "exclude": ["node_modules", "demo/built", "types"]
 }

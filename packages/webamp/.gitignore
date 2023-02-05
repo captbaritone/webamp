@@ -5,3 +5,4 @@
 /coverage
 /examples/webpack/bundle.js
 **/__diff_output__/
+/types
