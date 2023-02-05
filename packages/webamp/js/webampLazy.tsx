@@ -267,13 +267,6 @@ class Webamp {
     this.store.dispatch(Actions.previous());
   }
 
-  _bufferTracks(tracks: Track[]): void {
-    const nextIndex = Selectors.getTrackCount(this.store.getState());
-    this.store.dispatch(
-      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
-    );
-  }
-
   /**
    * Add an array of `Track`s to the end of the playlist.
    */
@@ -400,19 +393,6 @@ class Webamp {
     return;
   }
 
-  __loadSerializedState(serializedState: SerializedStateV1): void {
-    this.store.dispatch(Actions.loadSerializedState(serializedState));
-  }
-
-  __getSerializedState() {
-    return Selectors.getSerlializedState(this.store.getState());
-  }
-
-  __onStateChange(cb: () => void): () => void {
-    // TODO #leak
-    return this.store.subscribe(cb);
-  }
-
   /**
    * Webamp will wait until it has fetched the skin and fully parsed it and then render itself.
    *
@@ -461,6 +441,26 @@ class Webamp {
     this.media.dispose();
     this._actionEmitter.dispose();
     this._disposable.dispose();
+  }
+
+  __loadSerializedState(serializedState: SerializedStateV1): void {
+    this.store.dispatch(Actions.loadSerializedState(serializedState));
+  }
+
+  __getSerializedState() {
+    return Selectors.getSerlializedState(this.store.getState());
+  }
+
+  __onStateChange(cb: () => void): () => void {
+    // TODO #leak
+    return this.store.subscribe(cb);
+  }
+
+  _bufferTracks(tracks: Track[]): void {
+    const nextIndex = Selectors.getTrackCount(this.store.getState());
+    this.store.dispatch(
+      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
+    );
   }
 }
 
