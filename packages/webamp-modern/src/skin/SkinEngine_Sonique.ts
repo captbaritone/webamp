@@ -110,6 +110,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     const gammaGroups = [
       {id:"MidTop", value:"-3897,0,2394", gray:"0", boost:"0"},
       {id:"SystemColor_1", value:"-4096,0,0", gray:"0", boost:"0"},
+      {id:"IconColor", value:"-4096,-4096,-4096", gray:"0", boost:"0"},
+      {id:"BlueBallsColorHover", value:"-144,-144,-144", gray:"0", boost:"0"},
       // {id:"SystemColor_3", value:"-4096,0,0", gray:"0", boost:"0"},
     ];
     for (const gamma of gammaGroups){
@@ -122,7 +124,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     //? real from .INI
     const knownColorsIni = [
       'BlueBallsColor',
-      // 'SystemColor_1',
+      'SystemColor_1',
+      'SystemColor_2',
       'SystemColor_3',
     ]
     function gamma(i:number):number {
@@ -145,23 +148,53 @@ export class SoniqueSkinEngine extends SkinEngine {
 
   async loadColorizedBitmaps() {
     const knownBitmaps = [
-      "down",
+      "down", 'up', 'minus', 'close', 'down2', 'up2', 'infinity','right',
+      'first', 'prev', 'play', 'pause', 'next', 'last', 'stop', 'eject', 'help'
     ];
+    let i = 0;
     for (const bitmapName of knownBitmaps) {
       await this.bitmap(
         new XmlElement("bitmap", {
           // file: '/jpeg/navitem1',
           file: '/png/navitem',
           id: `nav.${bitmapName}`,
-          x: '0',
+          x: `${i*10}`,
           y: '0',
-          w: '15',
-          h: '15',
+          w: '10',
+          h: '10',
+          gammagroup: 'IconColor',
           // gammagroup: 'BlueBallsColor',
-          gammagroup: 'SystemColor_3',
+          // gammagroup: 'SystemColor_3',
         })
       );
+      i++;
     }
+
+    //? button circle
+    await this.bitmap(
+      new XmlElement("bitmap", {
+        file: '/png/navitem',
+        id: `nav.item.normal`,
+        x: `181`,
+        y: '0',
+        w: '10',
+        h: '10',
+        gammagroup: 'BlueBallsColor',
+        // gammagroup: 'SystemColor_3',
+      })
+    );
+    await this.bitmap(
+      new XmlElement("bitmap", {
+        file: '/png/navitem',
+        id: `nav.item.hover`,
+        x: `181`,
+        y: '0',
+        w: '10',
+        h: '10',
+        // gammagroup: 'BlueBallsColor',
+        gammagroup: 'BlueBallsColorHover',
+      })
+    );
   }
 
   moveRegions(regions: Rgn[], dx: number, dy: number) {
@@ -401,12 +434,12 @@ export class SoniqueSkinEngine extends SkinEngine {
       }),
       parent
     );
-    await this.loadCircleButton("SingleUp", "SWITCH;nav", room);
-    await this.loadCircleButton("SingleDown", "SWITCH;small", room);
-    await this.loadCircleButton("Help", "", room);
-    await this.loadCircleButton("Minimize", "", room);
-    // await this.loadCircleButton("Close", "", room);
-    await this.loadCircleButton2("Close", "", room, {image:'nav.down'});
+
+    await this.loadCircleButton("SingleUp", "SWITCH;nav", room, {image:'nav.up'});
+    await this.loadCircleButton("SingleDown", "SWITCH;small", room, {image:'nav.down'});
+    await this.loadCircleButton("Help", "", room, {image:'nav.help'});
+    await this.loadCircleButton("Minimize", "", room, {image:'nav.minus'});
+    await this.loadCircleButton("Close", "", room, {image:'nav.close'});
   }
 
   async loadMidBottom(parent: Group) {
@@ -854,57 +887,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     return button;
   }
 
-  async loadCircleButton(
-    nick: string,
-    action: string,
-    parent: Group,
-    options: {
-      fileName?: string;
-      rectName?: string;
-      action?: string;
-      // msm?: string;
-      attributes?: { [key: string]: string };
-    } = {}
-  ) {
-    // const prefix = config["prefix"];
-    // const rect = config[`${nick}Button`];
-    // if (!rect) return;
-    // // console.log("rect:", rect);
-    // const [left, top, right, bottom, tooltip, downimage] = rect;
-    // const rectName = options.rectName || nick;
-    // const layout = parent.getparentlayout().getId();
-    // const regId = `/rgn/${layout}/${rectName}`;
-    // const { left, top, width, height } = await this.getRect(regId);
-
-    // const attributes = options.attributes || {};
-    // const position = options.position || nick;
-
-    let param = "";
-    if (action.includes(";")) {
-      [action, param] = action.split(";");
-    }
-
-    const msm: IniSection = this._ini.section("msm locations");
-
-    const x = msm.getString(`msm_${nick}_x`);
-    const y = msm.getString(`msm_${nick}_y`);
-    const w = "10";
-    const h = "10";
-
-    const node = new XmlElement("button", {
-      id: nick,
-      action,
-      param,
-      x,
-      y,
-      w,
-      h,
-    });
-    const button = await this.newGui(CircleButton, node, parent);
-    return button;
-  }
-
-  async loadCircleButton2(
+  async loadCircleButton(    
     nick: string,
     action: string,
     parent: Group,
@@ -946,13 +929,16 @@ export class SoniqueSkinEngine extends SkinEngine {
       id: nick,
       action,
       param,
-      image: options.image,
+      // image: options.image,
+      image: 'nav.item.normal',
+      hoverImage: 'nav.item.hover',
+      iconImage: options.image,
       x,
       y,
       w,
       h,
     });
-    const button = await this.newGui(Button, node, parent);
+    const button = await this.newGui(CircleButton, node, parent);
     return button;
   }
 

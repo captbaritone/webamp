@@ -21,7 +21,11 @@
   shape-outside: var(--bottom-arc2);
 }
 
-button.circle {
-  background-color: aqua;
-  border-radius: 50%;
+button.circle::before {
+  /* background-color: aqua; */
+  /* border-radius: 50%; */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--icon-background-image);
 }
