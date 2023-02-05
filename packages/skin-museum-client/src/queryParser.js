@@ -44,6 +44,7 @@ const boolAttributeMap = {
   playlist: { name: "playlist", category: "windows" },
   media: { name: "media", category: "windows" },
   browser: { name: "browser", category: "windows" },
+  equalizer: { name: "equalizer", category: "windows" },
   general: { name: "general", category: "windows" },
   video: { name: "video", category: "windows" },
   mikro: { name: "mikro", category: "plugin" },
