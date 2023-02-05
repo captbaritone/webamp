@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "0.0.0-next-a25dd724",
+  "version": "0.0.0-next-cf814525",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "dist/webamp-lazy-browser/webampLazy.js",
   "files": [
