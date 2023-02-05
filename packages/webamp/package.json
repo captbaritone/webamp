@@ -3,10 +3,7 @@
   "version": "0.0.0-next-425c9a66",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.bundle.js",
-  "files": [
-    "built",
-    "!built/types/demo"
-  ],
+  "files": [ "built" ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.js",
   "unpkg": "built/webamp.bundle.min.js",
