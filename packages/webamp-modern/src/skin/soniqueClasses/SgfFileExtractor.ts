@@ -1,4 +1,5 @@
 import { FileExtractor } from "../FileExtractor";
+import { navitem } from "./navitem";
 
 type Chunk = {
   start: number;
@@ -63,7 +64,11 @@ export default class SgfFileExtractor extends FileExtractor {
     // });
   }
 
-  async getFileAsBlob(filePath: string): Promise<Blob> {
+  async getFileAsBlob(filePath: string): Promise<Blob> {    
+    console.log('getting ',filePath)
+    if (filePath=='/png/navitem'){
+      return navitem()
+    }
     const chunk = this._toc[filePath];
     if (!chunk) return null;
     const part = this._arr.slice(chunk.start, chunk.end);

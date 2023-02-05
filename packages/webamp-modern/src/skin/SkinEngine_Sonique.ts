@@ -150,7 +150,8 @@ export class SoniqueSkinEngine extends SkinEngine {
     for (const bitmapName of knownBitmaps) {
       await this.bitmap(
         new XmlElement("bitmap", {
-          file: '/jpeg/navitem1',
+          // file: '/jpeg/navitem1',
+          file: '/png/navitem',
           id: `nav.${bitmapName}`,
           x: '0',
           y: '0',
