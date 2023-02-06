@@ -16,13 +16,20 @@ import {
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
-import { Action, Thunk, WindowId, WindowPositions, Dispatch } from "../types";
+import {
+  Action,
+  Thunk,
+  WindowId,
+  WindowPositions,
+  Dispatch,
+  WindowLayout,
+} from "../types";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
 // the existing edge relationship.
 //
 // Works by checking the edges before the action is dispatched. Then,
-// after disatching, calculating what position change would be required
+// after dispatching, calculating what position change would be required
 // to restore those relationships.
 function withWindowGraphIntegrity(action: Action): Thunk {
   return (dispatch, getState) => {
@@ -193,6 +200,45 @@ export function stackWindows(): Thunk {
   return (dispatch, getState) => {
     dispatch(
       updateWindowPositions(Selectors.getStackedLayoutPositions(getState()))
+    );
+  };
+}
+
+export function setWindowLayout(layout?: WindowLayout): Thunk {
+  return (dispatch) => {
+    if (layout == null) {
+      dispatch(stackWindows());
+      return;
+    }
+    for (const id of ["playlist", "milkdrop"] as const) {
+      const w = layout[id];
+      if (w != null && w.size != null) {
+        const { extraHeight: plusHeight, extraWidth: plusWidth } = w.size;
+        dispatch(setWindowSize(id, [plusWidth, plusHeight]));
+      }
+    }
+    for (const id of ["main", "playlist", "equalizer", "milkdrop"] as const) {
+      const w = layout[id];
+      if (w == null || w.closed) {
+        dispatch(closeWindow(id));
+      }
+    }
+    for (const id of ["main", "playlist", "equalizer"] as const) {
+      if (layout[id]?.shadeMode) {
+        dispatch({
+          type: TOGGLE_WINDOW_SHADE_MODE,
+          windowId: id,
+        });
+      }
+    }
+    dispatch(
+      updateWindowPositions(
+        Utils.objectMap(layout, (w) => ({
+          x: w.position.left,
+          y: w.position.top,
+        })),
+        false
+      )
     );
   };
 }

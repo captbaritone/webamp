@@ -2,6 +2,8 @@
  * NOTE: This file must not import any other types
  */
 
+import { WindowId } from "../types";
+
 export interface WindowsSerializedStateV1 {
   positionsAreRelative: boolean;
   genWindows: {
@@ -13,7 +15,7 @@ export interface WindowsSerializedStateV1 {
       position: { x: number; y: number };
     };
   };
-  focused: string | null;
+  focused: WindowId | null;
 }
 
 export interface DisplaySerializedStateV1 {

@@ -9,7 +9,6 @@ import {
   WindowPositions as _WindowPositions,
   WebampWindow as _WebampWindow,
   WindowInfo as _WindowInfo,
-  WindowPosition as _WindowPosition,
 } from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
@@ -22,7 +21,6 @@ import { Store as ReduxStore } from "redux";
 // Avoid warnings from Webpack: https://github.com/webpack/webpack/issues/7378
 export type WebampWindow = _WebampWindow;
 export type WindowInfo = _WindowInfo;
-export type WindowPosition = _WindowPosition;
 export type WindowPositions = _WindowPositions;
 
 export interface Point {
@@ -149,7 +147,7 @@ export interface SkinGenExColors {
   listTextSelectedBackground: string;
 }
 
-export type WindowId = string;
+export type WindowId = "main" | "playlist" | "equalizer" | "milkdrop";
 
 // TODO: Fill these out once we actually use them.
 export type SkinData = {
@@ -659,6 +657,8 @@ export interface Options {
    */
   availableSkins?: { url: string; name: string }[];
 
+  windowLayout?: WindowLayout;
+
   /**
    * Should global hotkeys be enabled?
    *
@@ -671,7 +671,7 @@ export interface Options {
    *
    * These will appear in the "Options" menu under "Play".
    *
-   * In the offical version, this option is used to provide a "Dropbox" file picker.
+   * For example, this option can be used to provide a "Dropbox" file picker.
    */
   filePickers?: [
     {
@@ -704,11 +704,63 @@ export interface Options {
   handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
 }
 
+/**
+ * Specifies the initial position and size of a the Winamp windows.
+ *
+ * Positions are specified in pixels from the top left corner of an imaginary
+ * box. On initial render, the collection of visible windows will be centered
+ * within the HTML element passed to `Webamp.renderWhenReady(element)`. In other
+ * words, the positions given here will determine the _relative_ position of the
+ * windows. The absolute position will be determined by the HTML element in
+ * which Webamp is centered.
+ *
+ * Enabling "shade mode" for a window that supports it, will cause it to be
+ * rendered minimized. Be default windows are not in shade mode.
+ *
+ * Windows which support resizing can have their size specified. If omitted,
+ * they default to their small base size.
+ *
+ * Windows that are omitted will start closed. Enabling "closed" for a window
+ * that supports it, will cause it to start closed.
+ */
 export type WindowLayout = {
-  [windowId: string]: {
-    size?: null | [number, number];
+  main?: {
     position: WindowPosition;
+    shadeMode?: boolean;
+    closed?: boolean;
   };
+  equalizer?: {
+    position: WindowPosition;
+    shadeMode?: boolean;
+    closed?: boolean;
+  };
+  playlist?: {
+    position: WindowPosition;
+    shadeMode?: boolean;
+    size?: WindowSize | null;
+    closed?: boolean;
+  };
+  milkdrop?: {
+    position: WindowPosition;
+    size?: WindowSize | null;
+    closed?: boolean;
+  };
+};
+
+export type WindowPosition = { top: number; left: number };
+
+/**
+ * Resizable windows in Winamp have a base size and can be expanded in
+ * increments based on the size of the skin sprite.
+ *
+ * To specify a window being larger than its base size, use `extraHeight` to
+ * specify how many sprite increments to expand the window's height by, and
+ * `extraWidth` to specify how many sprite increments to expand the window's
+ * width by.
+ */
+export type WindowSize = {
+  extraHeight: number;
+  extraWidth: number;
 };
 
 /**

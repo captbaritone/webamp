@@ -15,10 +15,8 @@ import {
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
-export type WindowPosition = Point;
-
 export type WindowPositions = {
-  [windowId: string]: WindowPosition;
+  [windowId: string]: Point;
 };
 
 export interface WebampWindow {
@@ -30,7 +28,7 @@ export interface WebampWindow {
   canShade: boolean;
   canDouble: boolean;
   hotkey?: string;
-  position: WindowPosition;
+  position: Point;
 }
 
 export interface WindowInfo extends Box {
@@ -48,7 +46,7 @@ const defaultWindowsState: WindowsState = {
   focused: WINDOWS.MAIN,
   positionsAreRelative: true,
   genWindows: {
-    // TODO: Remove static capabilites and derive them from ids/generic
+    // TODO: Remove static capabilities and derive them from ids/generic
     [WINDOWS.MAIN]: {
       title: "Main Window",
       size: [0, 0],

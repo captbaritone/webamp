@@ -62,7 +62,7 @@ export async function getWebampConfig(
   soundCloudPlaylist: SoundCloud.SoundCloudPlaylist | null
 ): Promise<Options & PrivateOptions> {
   let __butterchurnOptions;
-  let __initialWindowLayout: WindowLayout | undefined;
+  let windowLayout: WindowLayout | undefined;
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden = skinUrl != null || screenshot;
 
@@ -72,18 +72,30 @@ export async function getWebampConfig(
       startWithMilkdropHidden ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH
     ) {
-      __initialWindowLayout = {
-        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
-        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] },
+      windowLayout = {
+        main: { position: { left: 0, top: 0 } },
+        equalizer: { position: { left: 0, top: 116 } },
+        playlist: {
+          position: { left: 0, top: 232 },
+          size: { extraHeight: 0, extraWidth: 0 },
+        },
+        milkdrop: {
+          position: { left: 0, top: 348 },
+          size: { extraHeight: 0, extraWidth: 0 },
+        },
       };
     } else {
-      __initialWindowLayout = {
-        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] },
+      windowLayout = {
+        main: { position: { left: 0, top: 0 } },
+        equalizer: { position: { left: 0, top: 116 } },
+        playlist: {
+          position: { left: 0, top: 232 },
+          size: { extraHeight: 4, extraWidth: 0 },
+        },
+        milkdrop: {
+          position: { left: 275, top: 0 },
+          size: { extraHeight: 12, extraWidth: 7 },
+        },
       };
     }
   }
@@ -99,6 +111,7 @@ export async function getWebampConfig(
       ? SoundCloud.tracksFromPlaylist(soundCloudPlaylist)
       : initialTracks,
     availableSkins,
+    windowLayout,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
     handleTrackDropEvent: (e) => {
@@ -120,7 +133,6 @@ export async function getWebampConfig(
       import(
         /* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"
       ),
-    __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __butterchurnOptions,
     __customMiddlewares: [sentryMiddleware, loggerMiddleware],

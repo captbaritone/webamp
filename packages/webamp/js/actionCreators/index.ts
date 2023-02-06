@@ -38,6 +38,7 @@ export {
   stackWindows,
   toggleLlamaMode,
   setFocusedWindow,
+  setWindowLayout,
 } from "./windows";
 export {
   play,

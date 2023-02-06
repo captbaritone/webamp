@@ -10,7 +10,6 @@ import {
   Middleware,
   ButterchurnOptions,
   PartialState,
-  WindowLayout,
   Options,
   MediaStatus,
 } from "./types";
@@ -22,7 +21,6 @@ import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 
 import { LOAD_STYLE } from "./constants";
-import * as Utils from "./utils";
 import * as FileUtils from "./fileUtils";
 
 import {
@@ -46,7 +44,6 @@ export interface PrivateOptions {
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   __initialState?: PartialState;
   __customMiddlewares?: Middleware[];
-  __initialWindowLayout?: WindowLayout;
   __butterchurnOptions?: ButterchurnOptions;
   // This is used by https://winampify.io/ to proxy through to Spotify's API.
   __customMediaClass?: typeof Media; // This should have the same interface as Media
@@ -189,22 +186,7 @@ class Webamp {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
-    const layout = options.__initialWindowLayout;
-    if (layout == null) {
-      this.store.dispatch(Actions.stackWindows());
-    } else {
-      Utils.objectForEach(layout, (w, windowId) => {
-        if (w.size != null) {
-          this.store.dispatch(Actions.setWindowSize(windowId, w.size));
-        }
-      });
-      this.store.dispatch(
-        Actions.updateWindowPositions(
-          Utils.objectMap(layout, (w) => w.position),
-          false
-        )
-      );
-    }
+    this.store.dispatch(Actions.setWindowLayout(options.windowLayout));
 
     if (enableHotkeys) {
       this._disposable.add(bindHotkeys(this.store.dispatch));
