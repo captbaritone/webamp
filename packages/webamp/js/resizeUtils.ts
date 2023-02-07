@@ -43,7 +43,7 @@ export function getPositionDiff(
     }
   }
 
-  function walkRight(key: WindowId) {
+  function walkRight(key: string) {
     const node = newGraph[key];
     const nodeSizeDiff = sizeDiff[key];
     node.left.forEach((left) => {
@@ -52,7 +52,7 @@ export function getPositionDiff(
     });
   }
 
-  function walkDown(key: WindowId) {
+  function walkDown(key: string) {
     const node = newGraph[key];
     const nodeSizeDiff = sizeDiff[key];
     node.above.forEach((above) => {
@@ -75,8 +75,8 @@ export function getPositionDiff(
 }
 
 interface Edges {
-  below?: WindowId;
-  right?: WindowId;
+  below?: string;
+  right?: string;
 }
 
 export interface Graph {

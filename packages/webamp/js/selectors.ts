@@ -203,7 +203,9 @@ export const getNextTrackId = (state: AppState, n = 1) => {
   return trackOrder[nextIndex];
 };
 
-export const getGenWindows = (state: AppState) => {
+export const getGenWindows = (
+  state: AppState
+): { [name: string]: WebampWindow } => {
   return state.windows.genWindows;
 };
 

@@ -244,9 +244,9 @@ describe("resizeUtils", () => {
 describe("generateGraph", () => {
   it("of stacked windows", () => {
     const actual = generateGraph([
-      { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 0, y: 100, width: 100, height: 100 },
-      { key: "c", x: 0, y: 200, width: 100, height: 100 },
+      { key: "main", x: 0, y: 0, width: 100, height: 100 },
+      { key: "equalizer", x: 0, y: 100, width: 100, height: 100 },
+      { key: "playlist", x: 0, y: 200, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
@@ -256,8 +256,8 @@ describe("generateGraph", () => {
   });
   it("of disconnected windows", () => {
     const actual = generateGraph([
-      { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 0, y: 110, width: 100, height: 100 },
+      { key: "main", x: 0, y: 0, width: 100, height: 100 },
+      { key: "equalizer", x: 0, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
@@ -266,8 +266,8 @@ describe("generateGraph", () => {
   });
   it("of windows that touch in y, but the lower one is to the right", () => {
     const actual = generateGraph([
-      { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 110, y: 100, width: 100, height: 100 },
+      { key: "main", x: 0, y: 0, width: 100, height: 100 },
+      { key: "equalizer", x: 110, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
@@ -276,8 +276,8 @@ describe("generateGraph", () => {
   });
   it("of windows that touch in y, but the lower one is to the left", () => {
     const actual = generateGraph([
-      { key: "a", x: 110, y: 0, width: 100, height: 100 },
-      { key: "b", x: 0, y: 100, width: 100, height: 100 },
+      { key: "main", x: 110, y: 0, width: 100, height: 100 },
+      { key: "equalizer", x: 0, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
@@ -286,8 +286,8 @@ describe("generateGraph", () => {
   });
   it("of windows that touch in x, but the right one is below", () => {
     const actual = generateGraph([
-      { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 100, y: 110, width: 100, height: 100 },
+      { key: "main", x: 0, y: 0, width: 100, height: 100 },
+      { key: "equalizer", x: 100, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
@@ -296,8 +296,8 @@ describe("generateGraph", () => {
   });
   it("of windows that touch in x, but the right one is above", () => {
     const actual = generateGraph([
-      { key: "a", x: 0, y: 110, width: 100, height: 100 },
-      { key: "b", x: 100, y: 0, width: 100, height: 100 },
+      { key: "main", x: 0, y: 110, width: 100, height: 100 },
+      { key: "equalizer", x: 100, y: 0, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},

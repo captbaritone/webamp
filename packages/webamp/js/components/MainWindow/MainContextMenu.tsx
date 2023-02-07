@@ -6,7 +6,7 @@ import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 import PlaybackContextMenu from "../PlaybackContextMenu";
 import OptionsContextMenu from "../OptionsContextMenu";
 import SkinsContextMenu from "../SkinsContextMenu";
-import { FilePicker } from "../../types";
+import { FilePicker, WindowId } from "../../types";
 import { useTypedSelector, useActionCreator } from "../../hooks";
 
 interface Props {
@@ -64,7 +64,7 @@ const MainContextMenu = memo(({ filePickers }: Props) => {
           key={i}
           label={genWindows[i].title}
           checked={genWindows[i].open}
-          onClick={() => toggleWindow(i)}
+          onClick={() => toggleWindow(i as WindowId)}
           hotkey={genWindows[i].hotkey}
         />
       ))}
