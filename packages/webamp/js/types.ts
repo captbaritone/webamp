@@ -660,6 +660,14 @@ export interface Options {
   windowLayout?: WindowLayout;
 
   /**
+   * Controls if "double size mode", where the fixed sized windows are rendered
+   * at 2x, should be enabled
+   *
+   * Default: `false`
+   */
+  enableDoubleSizeMode?: boolean;
+
+  /**
    * Should global hotkeys be enabled?
    *
    * Default: `false`

@@ -1,7 +1,9 @@
-## Upcoming [UNRELEASED]
+## Upcoming [UNRELEASED] (`webamp@next`)
 
 ### Features
 - Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
+- Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance.
+- Configure if "double size mode" should be enabled when constructing a Webamp instance.
 
 ### Internal Improvements:
 

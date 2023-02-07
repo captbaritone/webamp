@@ -142,6 +142,9 @@ const options = {
       { url: "./osx.wsz", name: "Mac OSX v1.5 (Aqua)" }
     ],
 
+    // Optional. (Default: `false`) Should double size mode be enabled?
+    enableDoubleSizeMode: true,
+
     // Optional. (Default: `false`) Should global hotkeys be enabled?
     enableHotkeys: true,
 
@@ -150,7 +153,8 @@ const options = {
 
     // Optional. An array of additional file pickers.
     // These will appear in the "Options" menu under "Play".
-    // In the offical version. This option is used to provide a "Dropbox" file picker.
+    // In the demo site, This option is used to provide a "Dropbox" file
+    // picker.
     filePickers: [{
         // The name that will appear in the context menu.
         contextMenuName: "My File Picker...",

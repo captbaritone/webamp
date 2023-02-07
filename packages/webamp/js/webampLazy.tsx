@@ -91,6 +91,7 @@ class Webamp {
       handleAddUrlEvent,
       handleLoadListEvent,
       handleSaveListEvent,
+      enableDoubleSizeMode,
       __butterchurnOptions,
       __customMediaClass,
     } = this.options;
@@ -131,6 +132,10 @@ class Webamp {
         handleSaveListEvent,
       }
     ) as Store;
+
+    if (enableDoubleSizeMode) {
+      this.store.dispatch(Actions.toggleDoubleSizeMode());
+    }
 
     if (navigator.onLine) {
       this.store.dispatch({ type: NETWORK_CONNECTED });
