@@ -1,9 +1,11 @@
 {
   "name": "webamp",
-  "version": "1.5.0",
+  "version": "0.0.0-next-12f8e36b",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.bundle.js",
-  "files": [ "built" ],
+  "files": [
+    "built"
+  ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.js",
   "unpkg": "built/webamp.bundle.min.js",
