@@ -488,7 +488,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     super.draw();
     this._renderText();
 
-    this._div.style.removeProperty("line-height");
+    // this._div.style.removeProperty("line-height");
     this._div.classList.add("webamp--img");
   }
 

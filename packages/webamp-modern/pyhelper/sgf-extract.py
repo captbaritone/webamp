@@ -65,7 +65,7 @@ filepath = 'lycossearch.sgf'
 filepath = 'hotbotsearch.sgf'
 filepath = '../assets/ChainZ-and.sgf'
 # filepath = '../assets/scifi-stories.sgf'
-# filepath = '../assets/phantom.sgf'
+filepath = '../assets/phantom.sgf'
 
 _, fname = os.path.split(filepath)
 print('fname=',fname)
@@ -81,25 +81,25 @@ for k,cfg in sgf._toc.items():
         rgns[parts[1]].append(parts[-1])
         ext = 'bmp'
     filename = os.path.join(target_dir, fname,  k + '.' + ext)
-    # print('saving ',filename)
+    print('saving ',filename)
     sgf.f.seek(cfg['start'])
-    # buf = sgf.f.read(cfg['size'])
-    # save(filename, buf)
+    buf = sgf.f.read(cfg['size'])
+    save(filename, buf)
 
 import pprint
 pprint.pprint(rgns)
 
-for siz, bitmaps in rgns.items():    
-    #?pop frame
-    # n = bitmaps.index('frame')
-    bitmaps.remove('frame')
-    print('frame of ', siz)
-    cfg = sgf._toc['/rgn/' + siz + '/frame']
-    sgf.f.seek(cfg['start'])
-    while sgf.f.tell() < cfg['end']:
-        for i in range(4):
-            print(sgf.readInt16(), end=', ')
-        print()
-    print('\n')
-    # frame_rgn = 
+# for siz, bitmaps in rgns.items():    
+#     #?pop frame
+#     # n = bitmaps.index('frame')
+#     bitmaps.remove('frame')
+#     print('frame of ', siz)
+#     cfg = sgf._toc['/rgn/' + siz + '/frame']
+#     sgf.f.seek(cfg['start'])
+#     while sgf.f.tell() < cfg['end']:
+#         for i in range(4):
+#             print(sgf.readInt16(), end=', ')
+#         print()
+#     print('\n')
+#     # frame_rgn = 
     
