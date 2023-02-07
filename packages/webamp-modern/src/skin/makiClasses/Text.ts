@@ -191,7 +191,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       context.font = `${this._fontSize}px ${
         this._font_obj.getFontFamily() || "Arial"
       }`;
-      const metrics = context.measureText("IWH");
+      const metrics = context.measureText("IWjgyFH");
       const fontHeight =
         metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
@@ -365,7 +365,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._textWrapper.setAttribute("font", "TrueType");
 
         this._div.style.fontFamily = font.getFontFamily();
-        this._div.style.fontSize = px(this._fontSize ?? 12);
+        this._div.style.fontSize = px(this._fontSize ?? 11);
+        this._div.style.lineHeight = px(this._fontSize ?? 11);
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"
           : "none";
@@ -475,7 +476,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     const self = this;
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    context.font = `${this._fontSize || 14}px ${
+    context.font = `${this._fontSize || 11}px ${
       (font && font.getFontFamily()) || "Arial"
     }`;
     const metrics = context.measureText(this.gettext());
