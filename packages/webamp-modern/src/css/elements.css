@@ -255,3 +255,10 @@ container:not(:active):not(container:focus-within) .webamp--img.inactivable {
   box-sizing: border-box;
   transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
 }
+
+
+#wasabi\.menubar,
+#wasabi\.menubar\.pl,
+#wasabi\.menubar\.ml {
+  background: var(--color-wasabi-window-background);
+}
