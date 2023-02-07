@@ -151,7 +151,7 @@ export function centerWindows(box: {
     const offsetLeft = left + window.scrollX;
     const offsetTop = top + window.scrollY;
 
-    // A layout has been suplied. We will compute the bounding box and
+    // A layout has been supplied. We will compute the bounding box and
     // center the given layout.
     const bounding = Utils.calculateBoundingBox(
       windowsInfo.filter((w) => getOpen(w.key))
@@ -233,10 +233,15 @@ export function setWindowLayout(layout?: WindowLayout): Thunk {
     }
     dispatch(
       updateWindowPositions(
-        Utils.objectMap(layout, (w) => ({
-          x: w.position.left,
-          y: w.position.top,
-        })),
+        Utils.objectMap(layout, (w) => {
+          // For some reason TypeScript cli thinks this
+          // is nullable, but in VSCode it does not...
+          if (w == null) throw new Error("w is null");
+          return {
+            x: w.position.left,
+            y: w.position.top,
+          };
+        }),
         false
       )
     );
