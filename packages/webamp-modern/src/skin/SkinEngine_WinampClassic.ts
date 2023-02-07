@@ -19,7 +19,7 @@ export default class ClassicSkinEngine extends SkinEngine {
   _streamSources: StreamSource[] = []; // for pop & push
 
   static canProcess = (filePath: string): boolean => {
-    return filePath.endsWith(".wsz") || filePath.endsWith(".zip");
+    return filePath.endsWith(".wsz") || filePath.endsWith(".zip")  || filePath.endsWith("/");
   };
 
   static identifyByFile = (filePath: string): string => {

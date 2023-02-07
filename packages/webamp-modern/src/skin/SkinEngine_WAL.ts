@@ -80,7 +80,7 @@ export default class SkinEngineWAL extends SkinEngine {
   }; //requested by skin, later compared with UiRoot._bitmaps
 
   static canProcess = (filePath: string): boolean => {
-    return filePath.endsWith(".wal") || filePath.endsWith(".zip");
+    return filePath.endsWith(".wal") || filePath.endsWith(".zip") || filePath.endsWith("/");
   };
 
   static identifyByFile = (filePath: string): string => {

@@ -59,7 +59,7 @@ export class Webamp5 extends WebAmpModern {
     let SkinEngineClass = null;
 
     //? usually the file extension is explicitly for SkinEngine. eg: `.wal`
-    let SkinEngineClasses = getSkinEngineClass(skinPath);
+    let SkinEngineClasses = await getSkinEngineClass(skinPath);
 
     //? when file extension is ambiguous eg. `.zip`, several
     //? skinEngines are supporting, but only one is actually working with.
@@ -101,15 +101,21 @@ export class Webamp5 extends WebAmpModern {
     uiRoot: UIRoot,
     skinEngine: SkinEngine
   ) {
-    const response = await fetch(skinPath);
-    if (response.status == 404) {
-      throw new Error(`Skin does not exist`);
-    }
-
-    //? pick one of correct fileExtractor
+    let response : Response;
     let fileExtractor: FileExtractor;
-    if (skinEngine != null) {
-      fileExtractor = skinEngine.getFileExtractor();
+    //? pick one of correct fileExtractor
+
+    if (skinPath.endsWith('/')){
+      fileExtractor = new PathFileExtractor();
+    }
+    else {
+      response = await fetch(skinPath);
+      if (response.status == 404) {
+        throw new Error(`Skin does not exist`);
+      }  
+      if (skinEngine != null) {
+        fileExtractor = skinEngine.getFileExtractor();
+      }
     }
     if (fileExtractor == null) {
       if (response.headers.get("content-type").startsWith("application/")) {
