@@ -2,6 +2,7 @@
   "593DBA22D0774976B952F4713655400B": {
     "parent": "Object",
     "name": "Config",
+    "deprecated": false,
     "functions": [
       {
         "name": "getItem",
@@ -42,6 +43,7 @@
   "D40302823AAB4d87878D12326FADFCD5": {
     "parent": "Object",
     "name": "ConfigItem",
+    "deprecated": false,
     "functions": [
       {
         "name": "getAttribute",
@@ -87,6 +89,7 @@
   "24DEC283B76E4a368CCC9E24C46B6C73": {
     "parent": "Object",
     "name": "ConfigAttribute",
+    "deprecated": false,
     "functions": [
       {
         "name": "setData",

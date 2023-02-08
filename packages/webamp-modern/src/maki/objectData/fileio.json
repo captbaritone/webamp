@@ -2,6 +2,7 @@
   "836F8B2EE0D14db4937F0D0A04C8DCD1": {
     "parent": "Object",
     "name": "File",
+    "deprecated": false,
     "functions": [
       {
         "name": "load",
@@ -28,6 +29,7 @@
   "417FFB69987F4be88D87D9965EEEC868": {
     "parent": "File",
     "name": "XmlDoc",
+    "deprecated": false,
     "functions": [
       {
         "name": "parser_addCallback",

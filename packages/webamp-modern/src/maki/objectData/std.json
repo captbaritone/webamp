@@ -2,6 +2,7 @@
   "516549710D874a5191E3A6B53235F3E7": {
     "parent": "@{00000000-0000-0000-0000-000000000000}@",
     "name": "Object",
+    "deprecated": false,
     "functions": [
       {
         "name": "getClassName",
@@ -40,6 +41,7 @@
   "D6F50F6493FA49b793F1BA66EFAE3E98": {
     "parent": "Object",
     "name": "System",
+    "deprecated": false,
     "functions": [
       {
         "name": "onScriptLoaded",
@@ -2138,6 +2140,7 @@
   "E90DC47B840D4ae7B02C040BD275F7FC": {
     "parent": "Object",
     "name": "Container",
+    "deprecated": false,
     "functions": [
       {
         "name": "onSwitchToLayout",
@@ -2305,6 +2308,7 @@
   "00C074A0FEA249a0BE8DFABBDB161640": {
     "parent": "Object",
     "name": "Wac",
+    "deprecated": true,
     "functions": [
       {
         "name": "getGuid",
@@ -2401,6 +2405,7 @@
   "B2023AB5434D4ba1BEAE59637503F3C6": {
     "parent": "Object",
     "name": "List",
+    "deprecated": false,
     "functions": [
       {
         "name": "addItem",
@@ -2471,6 +2476,7 @@
   "87C65778E74349fe85F909CC532AFD56": {
     "parent": "Object",
     "name": "BitList",
+    "deprecated": false,
     "functions": [
       {
         "name": "getItem",
@@ -2516,6 +2522,7 @@
   "38603665461B42a7AA75D83F6667BF73": {
     "parent": "Object",
     "name": "Map",
+    "deprecated": false,
     "functions": [
       {
         "name": "getValue",
@@ -2593,6 +2600,7 @@
   "F4787AF4B2BB4ef79CFBE74BA9BEA88D": {
     "parent": "Object",
     "name": "PopupMenu",
+    "deprecated": false,
     "functions": [
       {
         "name": "addSubMenu",
@@ -2692,6 +2700,7 @@
   "3A370C023CBF439f84F186885BCF1E36": {
     "parent": "Object",
     "name": "Region",
+    "deprecated": false,
     "functions": [
       {
         "name": "add",
@@ -2800,6 +2809,7 @@
   "5D0C5BB67DE14b1fA70F8D1659941941": {
     "parent": "Object",
     "name": "Timer",
+    "deprecated": false,
     "functions": [
       {
         "name": "onTimer",
@@ -2846,6 +2856,7 @@
   "A5376FA14E94411a83F605EC5EEA5F0A": {
     "parent": "Object",
     "name": "FeedWatcher",
+    "deprecated": true,
     "functions": [
       {
         "name": "setFeed",
@@ -2877,6 +2888,7 @@
   "4EE3E199C6364bec97CD78BC9C8628B0": {
     "parent": "Object",
     "name": "GuiObject",
+    "deprecated": false,
     "functions": [
       {
         "name": "show",
@@ -3673,6 +3685,7 @@
   "45BE95E520724191935CBB5FF9F117FD": {
     "parent": "GuiObject",
     "name": "Group",
+    "deprecated": false,
     "functions": [
       {
         "name": "getObject",
@@ -3729,6 +3742,7 @@
   "60906D4E537E482eB004CC9461885672": {
     "parent": "Group",
     "name": "Layout",
+    "deprecated": false,
     "functions": [
       {
         "name": "onDock",
@@ -3919,6 +3933,7 @@
   "403ABCC06F224bd68BA410C829932547": {
     "parent": "GuiObject",
     "name": "WindowHolder",
+    "deprecated": false,
     "functions": [
       {
         "name": "setRegionFromMap",
@@ -4003,6 +4018,7 @@
   "97AA3E4DF4D04fa8817B0AF22A454983": {
     "parent": "GuiObject",
     "name": "ComponentBucket",
+    "deprecated": false,
     "functions": [
       {
         "name": "getMaxHeight",
@@ -4049,6 +4065,7 @@
   "64E4BBFA81F449d9B0C0A85B2EC3BCFD": {
     "parent": "GuiObject",
     "name": "Edit",
+    "deprecated": false,
     "functions": [
       {
         "name": "onEnter",
@@ -4130,6 +4147,7 @@
   "62B65E3F375E408d8DEA76814AB91B77": {
     "parent": "GuiObject",
     "name": "Slider",
+    "deprecated": false,
     "functions": [
       {
         "name": "onSetPosition",
@@ -4191,6 +4209,7 @@
   "CE4F97BE77B04e199956D49833C96C27": {
     "parent": "GuiObject",
     "name": "Vis",
+    "deprecated": false,
     "functions": [
       {
         "name": "onFrame",
@@ -4237,6 +4256,7 @@
   "A8C2200D51EB4b2aBA7F5D4BC65D4C71": {
     "parent": "GuiObject",
     "name": "Browser",
+    "deprecated": false,
     "functions": [
       {
         "name": "navigateUrl",
@@ -4370,16 +4390,19 @@
   "8D1EBA38489E483eB9608D1F43C5C405": {
     "parent": "GuiObject",
     "name": "EqVis",
+    "deprecated": false,
     "functions": []
   },
   "0F08C940AF394b2380F3B8C48F7EBB59": {
     "parent": "GuiObject",
     "name": "Status",
+    "deprecated": false,
     "functions": []
   },
   "EFAA8672310E41faB7DC85A9525BCB4B": {
     "parent": "GuiObject",
     "name": "Text",
+    "deprecated": false,
     "functions": [
       {
         "name": "setText",
@@ -4426,11 +4449,13 @@
   "7DFD324437514e7cBF4082AE5F3ADC33": {
     "parent": "GuiObject",
     "name": "Title",
+    "deprecated": false,
     "functions": []
   },
   "5AB9FA159A7D4557ABC86557A6C67CA9": {
     "parent": "GuiObject",
     "name": "Layer",
+    "deprecated": false,
     "functions": [
       {
         "name": "onBeginResize",
@@ -4808,6 +4833,7 @@
   "698EDDCD8F1E4fec9B12F944F909FF45": {
     "parent": "GuiObject",
     "name": "Button",
+    "deprecated": false,
     "functions": [
       {
         "name": "onActivate",
@@ -4869,6 +4895,7 @@
   "6B64CD275A264c4b8C59E6A70CF6493A": {
     "parent": "Layer",
     "name": "AnimatedLayer",
+    "deprecated": false,
     "functions": [
       {
         "name": "onPlay",
@@ -5025,6 +5052,7 @@
   "6DCB05E48AC448c2B19349F0910EF54A": {
     "parent": "Layer",
     "name": "AlbumArtLayer",
+    "deprecated": false,
     "functions": [
       {
         "name": "refresh",
@@ -5051,6 +5079,7 @@
   "B4DCCFFF81FE4bcc961B720FD5BE0FFF": {
     "parent": "Button",
     "name": "ToggleButton",
+    "deprecated": false,
     "functions": [
       {
         "name": "onToggle",
@@ -5072,6 +5101,7 @@
   "01E28CE1B05911d5979FE4DE6F51760A": {
     "parent": "GuiObject",
     "name": "GroupList",
+    "deprecated": false,
     "functions": [
       {
         "name": "instantiate",
@@ -5132,6 +5162,7 @@
   "80F0F8BD1BA542a6A0933236A00C8D4A": {
     "parent": "Group",
     "name": "CfgGroup",
+    "deprecated": false,
     "functions": [
       {
         "name": "cfgGetInt",
@@ -5198,6 +5229,7 @@
   "CDCB785D81F242538F0561B872283CFA": {
     "parent": "GuiObject",
     "name": "QueryList",
+    "deprecated": true,
     "functions": [
       {
         "name": "onResetQuery",
@@ -5209,6 +5241,7 @@
   "9B2E341B6C9840fa8B850C1B6EE89405": {
     "parent": "GuiObject",
     "name": "MouseRedir",
+    "deprecated": false,
     "functions": [
       {
         "name": "setRedirection",
@@ -5258,6 +5291,7 @@
   "36D59B7103FD4af897950502B7DB267A": {
     "parent": "GuiObject",
     "name": "DropDownList",
+    "deprecated": false,
     "functions": [
       {
         "name": "getItemSelected",
@@ -5402,6 +5436,7 @@
   "7FD5F210ACC448dfA6A05451576CDC76": {
     "parent": "GuiObject",
     "name": "LayoutStatus",
+    "deprecated": false,
     "functions": [
       {
         "name": "callme",
@@ -5418,6 +5453,7 @@
   "B5BAA53505B34dcbADC1E618D28F6896": {
     "parent": "GuiObject",
     "name": "TabSheet",
+    "deprecated": false,
     "functions": [
       {
         "name": "getCurPage",
@@ -5439,6 +5475,7 @@
   "6129FEC1DAB74d51916501CA0C1B70DB": {
     "parent": "GuiObject",
     "name": "GuiList",
+    "deprecated": false,
     "functions": [
       {
         "name": "addColumn",
@@ -6253,6 +6290,7 @@
   "D59514F7ED3645e8980F3F4EA0522CD9": {
     "parent": "GuiObject",
     "name": "GuiTree",
+    "deprecated": false,
     "functions": [
       {
         "name": "onWantAutoContextMenu",
@@ -6768,6 +6806,7 @@
   "9B3B4B82667A420e8FFC794115809C02": {
     "parent": "Object",
     "name": "TreeItem",
+    "deprecated": false,
     "functions": [
       {
         "name": "getNumChildren",
@@ -6998,6 +7037,7 @@
   "1D8631C880D047929F98BD5D36B49136": {
     "parent": "GuiObject",
     "name": "MenuButton",
+    "deprecated": true,
     "functions": [
       {
         "name": "onOpenMenu",
@@ -7034,6 +7074,7 @@
   "C7ED319953194798986360B15A298CAA": {
     "parent": "GuiObject",
     "name": "CheckBox",
+    "deprecated": false,
     "functions": [
       {
         "name": "onToggle",
@@ -7080,6 +7121,7 @@
   "2D2D1376BE0A4CB9BC0C57E6E4C999F5": {
     "parent": "GuiObject",
     "name": "Form",
+    "deprecated": true,
     "functions": [
       {
         "name": "getContentsHeight",
@@ -7111,6 +7153,7 @@
   "E2BBC14D84F64173BDB3B2EB2F665550": {
     "parent": "GuiObject",
     "name": "Frame",
+    "deprecated": false,
     "functions": [
       {
         "name": "getPosition",
@@ -7142,6 +7185,7 @@
   "73C00594961F401B9B1B672427AC4165": {
     "parent": "GuiObject",
     "name": "Menu",
+    "deprecated": false,
     "functions": [
       {
         "name": "setMenuGroup",

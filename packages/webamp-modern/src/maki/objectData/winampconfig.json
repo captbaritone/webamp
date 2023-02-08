@@ -2,6 +2,7 @@
   "B2AD3F2B31ED4e31BC6DE9951CD555BB": {
     "parent": "Object",
     "name": "WinampConfig",
+    "deprecated": false,
     "functions": [
       {
         "name": "getGroup",
@@ -18,6 +19,7 @@
   "FC17844EC72B4518A068A8F930A5BA80": {
     "parent": "Object",
     "name": "WinampConfigGroup",
+    "deprecated": false,
     "functions": [
       {
         "name": "getBool",

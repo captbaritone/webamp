@@ -18,6 +18,7 @@ type ObjectDefinition = {
   name: string;
   functions: MethodDefinition[];
   parentClass?: ObjectDefinition;
+  deprecated?: boolean;
 };
 
 const objects: { [key: string]: ObjectDefinition } = {

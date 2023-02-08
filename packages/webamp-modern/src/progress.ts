@@ -49,6 +49,7 @@ table.appendChild(header);
 const classes = [];
 for (const [key, obj] of Object.entries(normalizedObjects)) {
   const name = obj.name;
+  const deprecated = obj.deprecated;
   const methods = [];
   const klass = getClass(getFormattedId(key.toLowerCase()));
   for (const method of obj.functions) {
@@ -71,7 +72,7 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
       }
     }
   }
-  classes.push({ name, methods });
+  classes.push({ name, deprecated, methods });
 }
 
 let total = 0;
@@ -88,9 +89,12 @@ for (const cls of classes) {
   const foundCount = cls.methods.filter(
     (m) => !m.hook && m.status === "found"
   ).length;
-  total += totalCount;
-  found += foundCount;
+  if(!cls.deprecated){
+    total += totalCount;
+    found += foundCount;
+  }
   className.innerText = `${cls.name} (${foundCount}/${totalCount})`;
+  className.style.color = cls.deprecated ? 'grey' : 'black';
   classRow.appendChild(className);
   const methodsCell = document.createElement("td");
   classRow.appendChild(methodsCell);
@@ -114,6 +118,10 @@ for (const cls of classes) {
         break;
     }
     methodsCell.appendChild(methodDiv);
+    if(cls.deprecated){
+      methodDiv.style.backgroundColor = "silver";
+      methodDiv.style.opacity = ".4";
+    }
   }
 
   table.appendChild(classRow);

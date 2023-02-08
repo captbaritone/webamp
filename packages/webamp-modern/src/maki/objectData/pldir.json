@@ -2,6 +2,7 @@
   "345BEEBC0229492190BE6CB6A49A79D9": {
     "parent": "Object",
     "name": "PlEdit",
+    "deprecated": false,
     "functions": [
       {
         "name": "getNumTracks",
@@ -204,6 +205,7 @@
   "61A7ABAD7D7941f6B1D0E1808603A4F4": {
     "parent": "Object",
     "name": "PlDir",
+    "deprecated": false,
     "functions": [
       {
         "name": "getNumItems",
