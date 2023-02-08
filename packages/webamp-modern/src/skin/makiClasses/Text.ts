@@ -366,7 +366,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
         this._div.style.fontFamily = font.getFontFamily();
         this._div.style.fontSize = px(this._fontSize ?? 11);
-        this._div.style.lineHeight = px(this._fontSize ?? 11);
+        // this._div.style.lineHeight = px(this._fontSize ?? 11);
+        // this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"
           : "none";
@@ -394,6 +395,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._renderBitmapFont(font);
     } else {
       this._textWrapper.innerText = this.gettext();
+      //? workaround of titlebar.text
+      this._div.style.lineHeight = this._div.style.height;
     }
   }
 
