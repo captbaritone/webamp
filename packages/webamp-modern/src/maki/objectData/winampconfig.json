@@ -12,7 +12,8 @@
             "config_group_guid"
           ]
         ],
-        "result": "WinampConfigGroup"
+        "result": "WinampConfigGroup",
+        "deprecated": false
       }
     ]
   },
@@ -29,7 +30,8 @@
             "itemname"
           ]
         ],
-        "result": "Boolean"
+        "result": "Boolean",
+        "deprecated": false
       },
       {
         "name": "setBool",
@@ -43,7 +45,8 @@
             "itemvalue"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getInt",
@@ -53,7 +56,8 @@
             "itemname"
           ]
         ],
-        "result": "Int"
+        "result": "Int",
+        "deprecated": false
       },
       {
         "name": "setInt",
@@ -63,7 +67,8 @@
             "itemname"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getString",
@@ -73,7 +78,8 @@
             "itemname"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "setString",
@@ -83,7 +89,8 @@
             "itemname"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       }
     ]
   }

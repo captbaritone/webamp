@@ -12,17 +12,20 @@
             "path"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "exists",
         "parameters": [],
-        "result": "boolean"
+        "result": "boolean",
+        "deprecated": false
       },
       {
         "name": "getSize",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       }
     ]
   },
@@ -39,12 +42,14 @@
             "section"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "parser_start",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "parser_onCallback",
@@ -66,7 +71,8 @@
             "paramvalue"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "parser_onCloseCallback",
@@ -80,7 +86,8 @@
             "xmltag"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "parser_onError",
@@ -106,12 +113,14 @@
             "errstr"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "parser_destroy",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       }
     ]
   }

@@ -11,6 +11,7 @@ type MethodDefinition = {
   name: string;
   result: string;
   parameters: string[][];
+  deprecated?: boolean;
 };
 
 type ObjectDefinition = {

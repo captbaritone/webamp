@@ -55,20 +55,21 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   for (const method of obj.functions) {
     const params = method.parameters.map(([type, name]) => name);
     const methodName = `${method.name}(${params.join(", ")})`;
+    const deprecated = method.deprecated;
     const hook = method.name.toLowerCase().startsWith("on");
     if (hook) {
-      methods.push({ name: methodName, hook: true });
+      methods.push({ name: methodName, hook: true, deprecated });
       continue;
     } else if (klass == null) {
-      methods.push({ name: methodName, status: "missing" });
+      methods.push({ name: methodName, status: "missing", deprecated });
     } else {
       const impl = klass.prototype[method.name.toLowerCase()];
       if (impl == null) {
-        methods.push({ name: methodName, status: "missing" });
+        methods.push({ name: methodName, status: "missing", deprecated });
       } else if (impl.length !== method.parameters.length) {
-        methods.push({ name: methodName, status: "wrong" });
+        methods.push({ name: methodName, status: "wrong", deprecated });
       } else {
-        methods.push({ name: methodName, status: "found" });
+        methods.push({ name: methodName, status: "found", deprecated });
       }
     }
   }
@@ -85,15 +86,17 @@ for (const cls of classes) {
   });
   const className = document.createElement("td");
   className.classList.add("class-name");
-  const totalCount = cls.methods.filter((m) => !m.hook).length;
-  const foundCount = cls.methods.filter(
-    (m) => !m.hook && m.status === "found"
-  ).length;
-  if(!cls.deprecated){
-    total += totalCount;
-    found += foundCount;
-  }
-  className.innerText = `${cls.name} (${foundCount}/${totalCount})`;
+  let totalCount = 0;
+  let foundCount = 0;
+  // const totalCount = cls.methods.filter((m) => !m.hook).length;
+  // const foundCount = cls.methods.filter(
+  //   (m) => !m.hook && m.status === "found"
+  // ).length;
+  // if(!cls.deprecated){
+  //   total += totalCount;
+  //   found += foundCount;
+  // }
+  // className.innerText = `${cls.name} (${foundCount}/${totalCount})`;
   className.style.color = cls.deprecated ? 'grey' : 'black';
   classRow.appendChild(className);
   const methodsCell = document.createElement("td");
@@ -102,6 +105,7 @@ for (const cls of classes) {
     if (method.hook) {
       continue;
     }
+    totalCount ++;
     const methodDiv = document.createElement("span");
     methodDiv.classList.add("method");
     methodDiv.innerText = method.name;
@@ -112,6 +116,7 @@ for (const cls of classes) {
         break;
       case "found":
         methodDiv.style.backgroundColor = "lightgreen";
+        foundCount ++;
         break;
       case "wrong":
         methodDiv.style.backgroundColor = "red";
@@ -119,10 +124,17 @@ for (const cls of classes) {
     }
     methodsCell.appendChild(methodDiv);
     if(cls.deprecated){
+      methodDiv.style.backgroundColor = "brown";
+      // methodDiv.style.opacity = ".4";
+    }
+    if(method.deprecated){
+      totalCount --;
       methodDiv.style.backgroundColor = "silver";
-      methodDiv.style.opacity = ".4";
     }
   }
+  className.innerText = `${cls.name} (${foundCount}/${totalCount})`;
+  total += totalCount;
+  found += foundCount;
 
   table.appendChild(classRow);
 }

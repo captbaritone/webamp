@@ -7,17 +7,20 @@
       {
         "name": "getNumTracks",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "getCurrentIndex",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "getNumSelectedTracks",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "getNextSelectedTrack",
@@ -27,12 +30,14 @@
             "i"
           ]
         ],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "showCurrentlyPlayingTrack",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "showTrack",
@@ -42,7 +47,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "enqueueFile",
@@ -52,12 +58,14 @@
             "file"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "clear",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "removeTrack",
@@ -67,7 +75,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "swapTracks",
@@ -81,7 +90,8 @@
             "item2"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "moveUp",
@@ -91,7 +101,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "moveDown",
@@ -101,7 +112,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "moveTo",
@@ -115,7 +127,8 @@
             "pos"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "playTrack",
@@ -125,7 +138,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getRating",
@@ -135,7 +149,8 @@
             "item"
           ]
         ],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "setRating",
@@ -149,7 +164,8 @@
             "rating"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getTitle",
@@ -159,7 +175,8 @@
             "item"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "getLength",
@@ -169,7 +186,8 @@
             "item"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "getMetaData",
@@ -183,7 +201,8 @@
             "metadatastring"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "getFileName",
@@ -193,12 +212,14 @@
             "item"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "onPleditModified",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       }
     ]
   },
@@ -210,7 +231,8 @@
       {
         "name": "getNumItems",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "getItemName",
@@ -220,17 +242,20 @@
             "item"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "showCurrentlyPlayingEntry",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "refresh",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "renameItem",
@@ -244,7 +269,8 @@
             "name"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "enqueueItem",
@@ -254,7 +280,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "playItem",
@@ -264,7 +291,8 @@
             "item"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       }
     ]
   }

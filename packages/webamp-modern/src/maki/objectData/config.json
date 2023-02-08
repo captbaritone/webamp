@@ -12,7 +12,8 @@
             "item_name"
           ]
         ],
-        "result": "ConfigItem"
+        "result": "ConfigItem",
+        "deprecated": false
       },
       {
         "name": "getItemByGuid",
@@ -22,7 +23,8 @@
             "item_guid"
           ]
         ],
-        "result": "ConfigItem"
+        "result": "ConfigItem",
+        "deprecated": false
       },
       {
         "name": "newItem",
@@ -36,7 +38,8 @@
             "item_guid"
           ]
         ],
-        "result": "ConfigItem"
+        "result": "ConfigItem",
+        "deprecated": false
       }
     ]
   },
@@ -53,7 +56,8 @@
             "attr_name"
           ]
         ],
-        "result": "ConfigAttribute"
+        "result": "ConfigAttribute",
+        "deprecated": false
       },
       {
         "name": "newAttribute",
@@ -67,7 +71,8 @@
             "default_value"
           ]
         ],
-        "result": "ConfigAttribute"
+        "result": "ConfigAttribute",
+        "deprecated": false
       },
       {
         "name": "getGuid",
@@ -77,12 +82,14 @@
             "attr_name"
           ]
         ],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "getName",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       }
     ]
   },
@@ -99,27 +106,32 @@
             "value"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getData",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "onDataChanged",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "getParentItem",
         "parameters": [],
-        "result": "ConfigItem"
+        "result": "ConfigItem",
+        "deprecated": false
       },
       {
         "name": "getAttributeName",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       }
     ]
   }

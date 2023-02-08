@@ -7,62 +7,74 @@
       {
         "name": "GetApplicationName",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetVersionString",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetVersionNumberString",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetBuildNumber",
         "parameters": [],
-        "result": "int"
+        "result": "int",
+        "deprecated": false
       },
       {
         "name": "GetGUID",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetCommandLine",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "Shutdown",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "CancelShutdown",
         "parameters": [],
-        "result": ""
+        "result": "",
+        "deprecated": false
       },
       {
         "name": "IsShuttingDown",
         "parameters": [],
-        "result": "boolean"
+        "result": "boolean",
+        "deprecated": false
       },
       {
         "name": "GetApplicationPath",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetSettingsPath",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "GetWorkingPath",
         "parameters": [],
-        "result": "String"
+        "result": "String",
+        "deprecated": false
       },
       {
         "name": "SetWorkingPath",
@@ -72,7 +84,8 @@
             "working_path"
           ]
         ],
-        "result": ""
+        "result": "",
+        "deprecated": false
       }
     ]
   }
