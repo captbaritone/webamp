@@ -11,6 +11,7 @@ import ToggleButton from "./makiClasses/ToggleButton";
 import LayoutStatus from "./makiClasses/LayoutStatus";
 import Status from "./makiClasses/Status";
 import Text from "./makiClasses/Text";
+import Menu from "./makiClasses/Menu";
 import Group from "./makiClasses/Group";
 import MakiMap from "./makiClasses/MakiMap";
 import Timer from "./makiClasses/Timer";
@@ -50,6 +51,7 @@ const CLASSES = [
   Status,
   LayoutStatus,
   Text,
+  Menu,
   Group,
   MakiMap,
   Timer,

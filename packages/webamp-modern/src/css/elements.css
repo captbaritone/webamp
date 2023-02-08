@@ -138,6 +138,11 @@ text span {
 container {
   position: absolute;
 }
+menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
 /* Lets register all supported tag's default property here: */
 albumart,
@@ -153,7 +158,7 @@ layout,
 progressgrid,
 slider,
 status,
-text,
+text,menu,
 vis,
 wasabiframe,
 wasabititlebar

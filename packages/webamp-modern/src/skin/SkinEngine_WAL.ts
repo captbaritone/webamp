@@ -10,6 +10,7 @@ import Layer from "./makiClasses/Layer";
 import Slider from "./makiClasses/Slider";
 import Button from "./makiClasses/Button";
 import Text from "./makiClasses/Text";
+import Menu from "./makiClasses/Menu";
 import Status from "./makiClasses/Status";
 import { parse as parseMaki } from "../maki/parser";
 import SystemObject from "./makiClasses/SystemObject";
@@ -300,6 +301,8 @@ export default class SkinEngineWAL extends SkinEngine {
         return this.scripts(node, parent);
       case "text":
         return this.text(node, parent);
+      case "menu":
+        return this.menu(node, parent);
       case "songticker":
         return this.songticker(node, parent);
       case "hideobject":
@@ -538,6 +541,10 @@ export default class SkinEngineWAL extends SkinEngine {
 
   async text(node: XmlElement, parent: any): Promise<Text> {
     return this.newGui(Text, node, parent);
+  }
+
+  async menu(node: XmlElement, parent: any): Promise<Menu> {
+    return this.newGui(Menu, node, parent);
   }
 
   async songticker(node: XmlElement, parent: any): Promise<Text> {
