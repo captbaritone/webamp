@@ -55,25 +55,25 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   for (const method of obj.functions) {
     const params = method.parameters.map(([type, name]) => name);
     const methodName = `${method.name}(${params.join(", ")})`;
-    const deprecated = method.deprecated;
+    const mdeprecated = method.deprecated;
     const hook = method.name.toLowerCase().startsWith("on");
     if (hook) {
-      methods.push({ name: methodName, hook: true, deprecated });
+      methods.push({ name: methodName, hook: true, deprecated:mdeprecated });
       continue;
     } else if (klass == null) {
-      methods.push({ name: methodName, status: "missing", deprecated });
+      methods.push({ name: methodName, status: "missing", deprecated:mdeprecated });
     } else {
       const impl = klass.prototype[method.name.toLowerCase()];
       if (impl == null) {
-        methods.push({ name: methodName, status: "missing", deprecated });
+        methods.push({ name: methodName, status: "missing", deprecated:mdeprecated });
       } else if (impl.length !== method.parameters.length) {
-        methods.push({ name: methodName, status: "wrong", deprecated });
+        methods.push({ name: methodName, status: "wrong", deprecated:mdeprecated });
       } else {
-        methods.push({ name: methodName, status: "found", deprecated });
+        methods.push({ name: methodName, status: "found", deprecated:mdeprecated });
       }
     }
   }
-  classes.push({ name, deprecated, methods });
+  classes.push({ name, deprecated, methods, implemented: !!klass });
 }
 
 let total = 0;
@@ -101,6 +101,9 @@ for (const cls of classes) {
   classRow.appendChild(className);
   const methodsCell = document.createElement("td");
   classRow.appendChild(methodsCell);
+
+  console.log('klass:', cls)
+  
   for (const method of cls.methods) {
     if (method.hook) {
       continue;
@@ -124,15 +127,33 @@ for (const cls of classes) {
     }
     methodsCell.appendChild(methodDiv);
     if(cls.deprecated){
-      methodDiv.style.backgroundColor = "brown";
+      methodDiv.style.backgroundColor = "white";
       // methodDiv.style.opacity = ".4";
     }
-    if(method.deprecated){
+    else if(method.deprecated){
       totalCount --;
       methodDiv.style.backgroundColor = "silver";
     }
   }
+  if(cls.methods.length == 0 || totalCount == 0){  //? has no method, lets keep it beauty.
+    const methodDiv = document.createElement("span");
+    methodDiv.classList.add("method");
+    methodDiv.classList.add("dummy");
+    methodsCell.appendChild(methodDiv);
+  }
+
   className.innerText = `${cls.name} (${foundCount}/${totalCount})`;
+
+
+  const methodDiv = document.createElement("span");
+    // methodDiv.classList.add("method");
+    methodDiv.classList.add("implementation");
+    // methodDiv.innerText = cls.name;
+    methodDiv.style.backgroundColor = cls.implemented? "lightgreen" : cls.deprecated ? 'white' : 'pink';
+    // methodDiv.title = ``;
+    // methodsCell.appendChild(methodDiv);
+    className.appendChild(methodDiv);
+
   total += totalCount;
   found += foundCount;
 
