@@ -1,18 +1,18 @@
 import GuiObj from "./GuiObj";
-import { UIRoot } from "../../UIRoot";
-import Group from "./Group";
-import { px, toBool, clamp } from "../../utils";
-import Button from "./Button";
+// import { UIRoot } from "../../UIRoot";
+// import Group from "./Group";
+// import { px, toBool, clamp } from "../../utils";
+// import Button from "./Button";
 import Layer from "./Layer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#?
-// eslint-disable-next-line rulesdir/proper-maki-types
 export default class Menu extends GuiObj {
-  static GUID = "73c00594f40961bb191bac2724674165";
-  //static GUID = "73C00594-961F-401B-9B1B-672427AC4165";
+  static GUID = "73c00594401b961f24671b9b6541ac27";
+  //static GUID "73C00594-961F-401B-9B1B-672427AC4165";
   _normal: string;
   _hover: string;
   _down: string;
+  _menu: string;
   _elNormal: GuiObj;
   _elHover: GuiObj;
   _elDown: GuiObj;
@@ -34,13 +34,18 @@ export default class Menu extends GuiObj {
       case "down":
         this._down = value.toLowerCase();
         break;
+      case "menu":
+        this._menu = value;
+        break;
       default:
         return false;
     }
     return true;
   }
 
-
+  getmenu(): string {
+    return this._menu;
+  }
 
   _showButton(el:GuiObj){
     for (const obj of [this._elNormal, this._elHover, this._elDown]) {

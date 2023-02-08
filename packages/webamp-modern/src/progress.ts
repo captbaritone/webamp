@@ -51,10 +51,12 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   const name = obj.name;
   const deprecated = obj.deprecated;
   const methods = [];
+  // if(obj.name == 'Menu') {debugger;}
   const klass = getClass(getFormattedId(key.toLowerCase()));
+  console.log('KLASS:'+key, klass, obj)
   for (const method of obj.functions) {
-    const params = method.parameters.map(([type, name]) => name);
-    const methodName = `${method.name}(${params.join(", ")})`;
+    const params = method.parameters.map(([type, name]) => `${name}: ${type}`);
+    const methodName = `${method.name}(${params.join(", ")})` + (method.result.length > 0 ? ': '+method.result : '') ;
     const mdeprecated = method.deprecated;
     const hook = method.name.toLowerCase().startsWith("on");
     if (hook) {
@@ -103,6 +105,8 @@ for (const cls of classes) {
   classRow.appendChild(methodsCell);
 
   console.log('klass:', cls)
+  total++;
+  found += cls.implemented ? 1 : 0;
   
   for (const method of cls.methods) {
     if (method.hook) {
@@ -129,6 +133,7 @@ for (const cls of classes) {
     if(cls.deprecated){
       methodDiv.style.backgroundColor = "white";
       // methodDiv.style.opacity = ".4";
+      totalCount --;
     }
     else if(method.deprecated){
       totalCount --;
@@ -146,13 +151,13 @@ for (const cls of classes) {
 
 
   const methodDiv = document.createElement("span");
-    // methodDiv.classList.add("method");
-    methodDiv.classList.add("implementation");
-    // methodDiv.innerText = cls.name;
-    methodDiv.style.backgroundColor = cls.implemented? "lightgreen" : cls.deprecated ? 'white' : 'pink';
-    // methodDiv.title = ``;
-    // methodsCell.appendChild(methodDiv);
-    className.appendChild(methodDiv);
+  // methodDiv.classList.add("method");
+  methodDiv.classList.add("implementation");
+  // methodDiv.innerText = cls.name;
+  methodDiv.style.backgroundColor = cls.implemented? "lightgreen" : cls.deprecated ? 'white' : 'pink';
+  // methodDiv.title = ``;
+  // methodsCell.appendChild(methodDiv);
+  className.appendChild(methodDiv);
 
   total += totalCount;
   found += foundCount;
