@@ -24,7 +24,7 @@ export default class Text extends GuiObj {
   _bold: boolean;
   _forceuppercase: boolean;
   _forcelowercase: boolean;
-  _align: string = "center";
+  _align: string = "left";
   _valign: string = "center";
   _font_id: string;
   _font_obj: TrueTypeFont | BitmapFont;

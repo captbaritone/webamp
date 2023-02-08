@@ -117,6 +117,7 @@ text wrap[font="BitmapFont"] {
   /* align-items: center; */
   align-items: var(--valign, center);
   justify-content: var(--align, center);
+  margin-left: 2px;
 }
 text span {
   user-select: none;
