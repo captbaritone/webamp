@@ -70,7 +70,7 @@ for (const klass of CLASSES) {
   if (klass.GUID == null) {
     throw new Error("Expected GUID on class.");
   }
-  GUID_MAP[klass.GUID] = klass;
+  GUID_MAP[klass.GUID.toLowerCase()] = klass;
 }
 
 // TODO: We could write a test using the data in object.ts which confirms that
