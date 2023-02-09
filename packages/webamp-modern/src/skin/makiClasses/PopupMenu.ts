@@ -41,6 +41,14 @@ export default class PopupMenu extends BaseObject {
     }
     item.checked = check;
   }
+  disablecommand(cmd_id:number, disable: boolean){
+    for (const item of this._items) {
+      if(item.type == 'item' && item.id == cmd_id){
+        item.disabled = disable;
+        break;
+      }
+    }
+  }
   popatmouse(): number {
     const message = this._items.map((item) => {
       switch (item.type) {
@@ -62,6 +70,10 @@ export default class PopupMenu extends BaseObject {
 
     return choice;
   }
+  getnumcommands(){
+    return this._items.length;
+  }
+
   /*
 extern PopupMenu.addSubMenu(PopupMenu submenu, String submenutext);
 extern Int PopupMenu.popAtXY(int x, int y);
