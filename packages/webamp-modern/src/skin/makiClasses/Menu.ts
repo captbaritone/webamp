@@ -9,10 +9,13 @@ import Layer from "./Layer";
 export default class Menu extends GuiObj {
   static GUID = "73c00594401b961f24671b9b6541ac27";
   //static GUID "73C00594-961F-401B-9B1B-672427AC4165";
-  _normal: string;
-  _hover: string;
-  _down: string;
-  _menu: string;
+  _normalId: string;
+  _hoverId: string;
+  _downId: string;
+  _menuId: string;
+  _menuGroupId: string;
+  _prevMenuId: string;
+  _nextMenuId: string;
   _elNormal: GuiObj;
   _elHover: GuiObj;
   _elDown: GuiObj;
@@ -26,16 +29,25 @@ export default class Menu extends GuiObj {
 
     switch (key.toLowerCase()) {
       case "normal":
-        this._normal = value.toLowerCase();
+        this.setnormalid(value);
         break;
       case "hover":
-        this._hover = value.toLowerCase();
+        this.sethoverid(value);
         break;
       case "down":
-        this._down = value.toLowerCase();
+        this.setdownid(value);
+        break;
+      case "next":
+        this._nextMenuId = value.toLowerCase();
+        break;
+      case "prev":
+        this._prevMenuId = value.toLowerCase();
         break;
       case "menu":
-        this._menu = value;
+        this.setmenu(value);
+        break;
+      case "menugroup":
+        this.setmenugroup(value);
         break;
       default:
         return false;
@@ -44,7 +56,26 @@ export default class Menu extends GuiObj {
   }
 
   getmenu(): string {
-    return this._menu;
+    return this._menuId;
+  }
+  setmenu(menuId:string) {
+    this._menuId = menuId;
+  }
+
+  getmenugroup(): string {
+    return this._menuGroupId;
+  }
+  setmenugroup(groupId:string) {
+    this._menuGroupId = groupId;
+  }
+  setnormalid(id :string){
+    this._normalId = id.toLowerCase();
+  }
+  setdownid(id :string){
+    this._downId = id.toLowerCase();
+  }
+  sethoverid(id :string){
+    this._hoverId = id.toLowerCase();
   }
 
   _showButton(el:GuiObj){
@@ -88,13 +119,13 @@ export default class Menu extends GuiObj {
     //console.log('found img')
     // debugger;
     for (const obj of this.getparent()._children) {
-      if (obj._id == this._normal) {
+      if (obj._id == this._normalId) {
         this._elNormal = obj;
       }
-      else if (obj._id == this._hover) {
+      else if (obj._id == this._hoverId) {
         this._elHover = obj;
       }
-      else if (obj._id == this._down) {
+      else if (obj._id == this._downId) {
         this._elDown = obj;
       }
       else if ((obj instanceof Layer) && obj._image) {

@@ -55,8 +55,8 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   const klass = getClass(getFormattedId(key.toLowerCase()));
   console.log('KLASS:'+key, klass, obj)
   for (const method of obj.functions) {
-    const params = method.parameters.map(([type, name]) => `${name}: ${type}`);
-    const methodName = `${method.name}(${params.join(", ")})` + (method.result.length > 0 ? ': '+method.result : '') ;
+    const params = method.parameters.map(([type, name]) => `${name}<i> :${type}</i>`);
+    const methodName = `${method.name}(${params.join(", ")})` + (method.result.length > 0 ? '<i> :'+method.result+'</i>' : '') ;
     const mdeprecated = method.deprecated;
     const hook = method.name.toLowerCase().startsWith("on");
     if (hook) {
@@ -115,7 +115,8 @@ for (const cls of classes) {
     totalCount ++;
     const methodDiv = document.createElement("span");
     methodDiv.classList.add("method");
-    methodDiv.innerText = method.name;
+    // methodDiv.innerText = method.name;
+    methodDiv.innerHTML = method.name;
     methodDiv.title = method.name;
     switch (method.status) {
       case "missing":

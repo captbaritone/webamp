@@ -182,6 +182,18 @@ export default class Vis extends GuiObj {
     }
   }
 
+  getmode(): number {
+    return this._mode;
+  }
+
+  nextmode(){
+    let newMode = this._mode + 1;
+    if(newMode> 2){
+      newMode = 0;
+    }
+    this.setmode(newMode);
+  }
+
   _setPainter(PainterType: typeof VisPaintHandler) {
     // uninteruptable painting requires _painter to be always available
     const oldPainter = this._painter;

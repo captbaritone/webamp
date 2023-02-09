@@ -51,7 +51,7 @@ export default class MakiMap extends BaseObject {
   getwidth(): number {
     return this._bitmap.getWidth();
   }
-  geheight(): number {
+  getheight(): number {
     return this._bitmap.getHeight();
   }
 

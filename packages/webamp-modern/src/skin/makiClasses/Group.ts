@@ -115,7 +115,7 @@ export default class Group extends Movable {
     return obj as Layout;
   }
 
-  isLayout(): boolean {
+  islayout(): boolean {
     return this._isLayout;
   }
 
