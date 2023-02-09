@@ -143,6 +143,9 @@ menu {
   padding: 0;
   list-style: none;
 }
+frame2 {
+  box-shadow: inset 0 0 5px red;
+}
 
 /* Lets register all supported tag's default property here: */
 albumart,
@@ -158,7 +161,7 @@ layout,
 progressgrid,
 slider,
 status,
-text,menu,
+text,menu,frame2,
 vis,
 wasabiframe,
 wasabititlebar

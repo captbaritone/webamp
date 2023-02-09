@@ -12,8 +12,10 @@ import LayoutStatus from "./makiClasses/LayoutStatus";
 import Status from "./makiClasses/Status";
 import Text from "./makiClasses/Text";
 import Menu from "./makiClasses/Menu";
+import Frame from "./makiClasses/Frame";
 import Group from "./makiClasses/Group";
 import MakiMap from "./makiClasses/MakiMap";
+import MakiList from "./makiClasses/List";
 import Timer from "./makiClasses/Timer";
 import Slider from "./makiClasses/Slider";
 import Vis from "./makiClasses/Vis";
@@ -52,8 +54,10 @@ const CLASSES = [
   LayoutStatus,
   Text,
   Menu,
+  Frame,
   Group,
   MakiMap,
+  MakiList,
   Timer,
   Slider,
   Vis,

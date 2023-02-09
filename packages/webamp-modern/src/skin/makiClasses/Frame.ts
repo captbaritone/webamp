@@ -8,6 +8,7 @@ import Layer from "./Layer";
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CWasabi:Frame.2F.3E
 export default class Frame extends GuiObj {
   static GUID = "e2bbc14d417384f6ebb2b3bd5055662f";
+  _position: number = 0;
   _normalId: string;
   _hoverId: string;
   _downId: string;
@@ -19,6 +20,10 @@ export default class Frame extends GuiObj {
   _elHover: GuiObj;
   _elDown: GuiObj;
   _elImage: Layer;
+
+  getElTag(): string {
+    return "frame2";
+  }
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -52,6 +57,13 @@ export default class Frame extends GuiObj {
         return false;
     }
     return true;
+  }
+
+  getposition(): number {
+    return this._position
+  }
+  setposition(position: number) {
+    this._position = position;
   }
 
   getmenu(): string {
@@ -141,7 +153,7 @@ export default class Frame extends GuiObj {
   
   draw() {
     // debugger;
-    this.resolveButtonsAction();
+    // this.resolveButtonsAction();
     // if(this._elImage){
     //   this.setXmlAttr('relatw', '0')
     //   const w = this._elImage.getwidth().toString();

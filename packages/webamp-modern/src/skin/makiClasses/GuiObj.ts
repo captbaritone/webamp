@@ -760,6 +760,11 @@ export default class GuiObj extends XmlObj {
     assume(false, "Unimplemented");
   }
 
+  onsetvisible(onoff: boolean ){
+    this._uiRoot.vm.dispatch(this, "onsetvisible", [
+      { type: "BOOLEAN", value: onoff ? 1 : 0 },
+    ]);
+  }
   onStartup() {
     assume(false, "Unimplemented");
   }

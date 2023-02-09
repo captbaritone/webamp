@@ -120,6 +120,9 @@ export default class SystemObject extends BaseObject {
     this._parentGroup = group;
   }
 
+  hasvideosupport(): number {
+    return 0; //TODO:
+  }
   /* Required for Maki */
   getruntimeversion(): number {
     return 5.666;
@@ -1096,6 +1099,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportwidthfromguiobject(g: GuiObj) {
     // TODO
+    return 100;
   }
 
   /**
@@ -1244,6 +1248,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportheightfromguiobject(g: GuiObj): number {
     // TODO
+    return 100;
   }
 
   /**
@@ -1350,6 +1355,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportleftfromguiobject(g: GuiObj): number {
     // TODO
+    return 0;
   }
 
   /**
@@ -1368,6 +1374,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewporttopfromguiobject(g: GuiObj): number {
     // TODO
+    return 0;
   }
 
   /**
