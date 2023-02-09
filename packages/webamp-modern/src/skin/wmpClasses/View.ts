@@ -114,7 +114,7 @@ export default class View extends Container {
       }
     };
 
-    const layout = this.getCurLayout();
+    const layout = this.getcurlayout();
     recursiveSetGlobal(layout);
   }
 

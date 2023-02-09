@@ -37,7 +37,8 @@ export default class Container extends XmlObj {
     }
     switch (key) {
       case "name":
-        this._name = value;
+        // this._name = value;
+        this.setname(value)
         break;
       case "id":
         this._originalId = value;
@@ -71,10 +72,10 @@ export default class Container extends XmlObj {
     for (const layout of this._layouts) {
       layout.init();
     }
-    // maki need 'onSwitchToLayout':
-    // this.switchToLayout(this.getCurLayout().getId())
+    // maki need 'onswitchtolayout':
+    // this.switchtolayout(this.getcurlayout().getId())
     this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
-      { type: "OBJECT", value: this.getCurLayout() },
+      { type: "OBJECT", value: this.getcurlayout() },
     ]);
   }
 
@@ -82,6 +83,16 @@ export default class Container extends XmlObj {
     for (const layout of this._layouts) {
       layout.dispose();
     }
+  }
+
+  setname(name:string) {
+    this._name = name;
+  }
+  getname(): string {
+    return this._name;
+  }
+  getguid(): string {
+    return this._componentGuid;
   }
 
   resolveAlias() {
@@ -163,7 +174,7 @@ export default class Container extends XmlObj {
 
   show() {
     if (!this._activeLayout) {
-      this.switchToLayout(this._layouts[0]._id);
+      this.switchtolayout(this._layouts[0]._id);
     }
     this._visible = true;
     this._renderLayout();
@@ -206,7 +217,7 @@ export default class Container extends XmlObj {
   /**
    * @ret Layout
    */
-  getCurLayout(): Layout {
+  getcurlayout(): Layout {
     return this._activeLayout;
   }
 
@@ -216,6 +227,14 @@ export default class Container extends XmlObj {
     if (this._activeLayout == null) {
       this._activeLayout = layout;
     }
+  }
+
+  getnumlayouts(): number {
+    return this._layouts.length;
+  }
+
+  enumlayout(num: number): Layout {
+    return this._layouts[num];
   }
 
   // parser need it.
@@ -228,7 +247,7 @@ export default class Container extends XmlObj {
     // this._div.removeChild(this._activeLayout.getDiv())
   }
 
-  switchToLayout(layout_id: string) {
+  switchtolayout(layout_id: string) {
     const layout = this.getlayout(layout_id);
     assert(layout != null, `Could not find layout with id "${layout_id}".`);
     this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
@@ -246,7 +265,7 @@ export default class Container extends XmlObj {
   ) {
     switch (action) {
       case "SWITCH":
-        this.switchToLayout(param);
+        this.switchtolayout(param);
         break;
       default:
         this._uiRoot.dispatch(action, param, actionTarget);
