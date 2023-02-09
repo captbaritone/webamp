@@ -56,6 +56,7 @@ export default class PopupMenu extends BaseObject {
       !this._items.some((item) => item.type === "item" && item.id === choice)
     ) {
       choice = Number(window.prompt(message.join("\n")));
+      if(choice==0) break;
     }
     // TODO: Validate
 
