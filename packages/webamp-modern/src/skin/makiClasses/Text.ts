@@ -291,6 +291,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
   }
 
+  ontextchanged(s: string) {
+    this._uiRoot.vm.dispatch(this, "ontextchanged", [
+      { type: "STRING", value: this.gettext() },
+    ]);
+  }
+
   gettext(): string {
     if ((this._text || "").startsWith(":") && this._drawn) {
       const layout = this.getparentlayout();
