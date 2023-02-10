@@ -164,7 +164,8 @@ status,
 text,menu,frame2,
 vis,
 wasabiframe,
-wasabititlebar
+wasabititlebar,
+windowholder
 {
   position: absolute;
   left: 0;

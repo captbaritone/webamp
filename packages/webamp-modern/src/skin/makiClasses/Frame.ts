@@ -3,7 +3,7 @@ import GuiObj from "./GuiObj";
 // import Group from "./Group";
 // import { px, toBool, clamp } from "../../utils";
 // import Button from "./Button";
-import Layer from "./Layer";
+// import Layer from "./Layer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CWasabi:Frame.2F.3E
 export default class Frame extends GuiObj {
@@ -126,29 +126,7 @@ export default class Frame extends GuiObj {
     // this.resolveButtonsAction();
     // this._uiRoot.vm.dispatch(this, "onstartup", []);
   }
-  resolveButtonsAction() {
-    //console.log('found img')
-    // debugger;
-    for (const obj of this.getparent()._children) {
-      if (obj._id == this._normalId) {
-        this._elNormal = obj;
-      }
-      else if (obj._id == this._hoverId) {
-        this._elHover = obj;
-      }
-      else if (obj._id == this._downId) {
-        this._elDown = obj;
-      }
-      else if ((obj instanceof Layer) && obj._image) {
-        // obj._div.style.position = 'relative'
-        this._elImage = obj;
-        this.setXmlAttr('relatw', '0')
-        const w = this._elImage.getwidth().toString();
-        this.setXmlAttr('w', w)
-        this._setButtonWidth(w)
-      }
-    }
-  }  
+
 
   
   draw() {

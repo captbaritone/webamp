@@ -55,6 +55,9 @@ export function toBool(str: string) {
     str === "0" || str === "1" || str === "false" || str === "true",
     `Expected bool value to be "0" or "1", but it was "${str}".`
   );
+  if(!isNaN(parseInt(str))){
+    return parseInt(str) > 0;
+  }
   return str === "1" || str === "true";
 }
 

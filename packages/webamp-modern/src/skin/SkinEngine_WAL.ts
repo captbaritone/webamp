@@ -552,19 +552,23 @@ export default class SkinEngineWAL extends SkinEngine {
   }
   async frame(node: XmlElement, parent: any): Promise<Frame> {
     const frame = (await this.newGui(Frame, node, parent)) as Frame;
+    let i = 0;
     for(const direction of ['left', 'top', 'right', 'bottom']){
       const group_id = node.attributes[direction];
       if (group_id != null){
         const pair = await this.group(
           new XmlElement("group", {
             id: group_id,
-            // w: "0",
-            // h: "0",
+            x: `${400*i}`,
+            y: "26",
+            w: '390',
+            h: "0",
             // relatw: "1",
-            // relath: "1",
+            relath: "1",
           }),
           parent
         );
+        i ++;
         // Element.addChild(content);
       }
     }
