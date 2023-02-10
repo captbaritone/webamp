@@ -91,6 +91,12 @@ export default class GuiObj extends XmlObj {
       case "autowidthsource":
         this._autowidthsource = value.toLowerCase();
         break;
+      case "fitparent":
+        this._relatw = '1';
+        this._relath = '1';
+        this._renderWidth();
+        this._renderHeight();
+        break;
       case "w":
       case "default_w":
         this._w = num(value);

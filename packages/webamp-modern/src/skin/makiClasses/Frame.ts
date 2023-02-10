@@ -11,6 +11,7 @@ import Group from "./Group";
 export default class Frame extends Group {
   static GUID = "e2bbc14d417384f6ebb2b3bd5055662f";
   _position: number = 0;
+  _orientation : string = 'h';
   _resizable: boolean = true;   //? Set this flag to allow the user to change the position of the framedivider. 
   _from: string;    //?  the edge. 'l' | 't' | 'r' | 'b'
   _width: number;   //?  How many pixels from the chosen edge to start.
@@ -39,7 +40,9 @@ export default class Frame extends Group {
       case "minwidth": this._minWidth = num(value); break;
       case "maxwidth": this._maxWidth = num(value); break;
 
-      case "from": this._from = value.toLowerCase()[0]; break;
+      case "orientation": this._orientation = value.toLowerCase()[0]; break;
+      // case "from": this._from = value.toLowerCase()[0]; break;
+      case "from": this.setFrom(value.toLowerCase()[0]); break;
       case "left": this._leftId = value.toLowerCase(); break;
       case "right": this._rightId = value.toLowerCase(); break;
       case "top": this._topId = value.toLowerCase(); break;
@@ -58,6 +61,17 @@ export default class Frame extends Group {
     this._position = position;
   }
 
+  setFrom(from:string){
+    //? because maki expect to read 'left' instead 'l'
+    const correction = {
+      l:'left',
+      r:'right',
+      b:'bottom',
+      t:'top'
+    }
+    this._from = correction[from];
+
+  }
   init() {
     super.init();
     // this.resolveButtonsAction();
@@ -73,36 +87,48 @@ export default class Frame extends Group {
 
   alignChildren(){
     console.log('FRAME:'+this._id, this)
-    if (this._from == 'l'){
+    const fullSizes = this._orientation == 'v'? {h:'0', relath:'1'} : {w:'0', relatw: '1'}
+    if (this._from == 'left'){
         const [el1,el2] = this._getEl(['left', 'right']);
         el1.setXmlAttributes({
+          ...fullSizes,
           w: `${this._width}`,
-          h: '0',
-          relath: '1',
         })
         el2.setXmlAttributes({
+          ...fullSizes,
           x: `${this._width}`,
           w: `-${this._width}`,
           relatw: '1',
-          h: '0',
-          relath: '1',
         })
     }
     else 
-    if (this._from == 'r'){
+    if (this._from == 'right'){
         const [el1,el2] = this._getEl(['left', 'right']);
         el1.setXmlAttributes({
+          ...fullSizes,
           w: `-${this._width}`,
           relatw: '1',
-          h: '0',
-          relath: '1',
         })
         el2.setXmlAttributes({
+          ...fullSizes,
           x: `-${this._width}`,
           relatx: '1',
           w: `${this._width}`,
-          h: '0',
+        })
+    }
+    else 
+    if (this._from == 'bottom'){
+        const [el1,el2] = this._getEl(['top', 'bottom']);
+        el1.setXmlAttributes({
+          ...fullSizes,
+          h: `-${this._height}`,
           relath: '1',
+        })
+        el2.setXmlAttributes({
+          ...fullSizes,
+          y: `-${this._height}`,
+          relaty: '1',
+          h: `${this._height}`,
         })
     }
     else {
