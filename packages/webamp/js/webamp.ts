@@ -13,6 +13,13 @@ export default class Webamp extends WebampLazy {
   }
 }
 
+console.log("Webamp loaded");
+
+console.log(Webamp);
+
 // Bit of a hack here. This overwrites the value set in WebampLazy.ts
 // @ts-ignore
 window.Webamp = Webamp;
+
+// @ts-ignore
+console.log("window.Webamp set", window.Webamp);
