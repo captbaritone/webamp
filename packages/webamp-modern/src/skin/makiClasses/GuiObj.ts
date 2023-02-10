@@ -125,15 +125,19 @@ export default class GuiObj extends XmlObj {
         break;
       case "relatw":
         this._relatw = value;
+        this._renderWidth();
         break;
       case "relath":
         this._relath = value;
+        this._renderHeight();
         break;
       case "relatx":
         this._relatx = value;
+        this._renderX();
         break;
       case "relaty":
         this._relaty = value;
+        this._renderY();
         break;
       case "droptarget":
         this._droptarget = value;

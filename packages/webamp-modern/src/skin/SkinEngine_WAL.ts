@@ -559,14 +559,15 @@ export default class SkinEngineWAL extends SkinEngine {
         const pair = await this.group(
           new XmlElement("group", {
             id: group_id,
-            x: `${400*i}`,
-            y: "26",
-            w: '390',
-            h: "0",
-            // relatw: "1",
-            relath: "1",
+            // x: `${400*i}`,
+            // y: "26",
+            // w: '390',
+            // h: "0",
+            // // relatw: "1",
+            // relath: "1",
           }),
-          parent
+          // parent
+          frame
         );
         i ++;
         // Element.addChild(content);
