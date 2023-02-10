@@ -110,6 +110,7 @@ async function initializeSkinListMenu() {
     { filename: "[Winamp] MMD3", download_url: "assets/MMD3.wal" },
     // { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
     { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
+    { filename: "[Winamp] BigBento", download_url: "assets/BigBento/" },
     {
       filename: "[wmp] Quicksilver WindowsMediaPlayer!",
       download_url: "assets/Quicksilver.wmz",

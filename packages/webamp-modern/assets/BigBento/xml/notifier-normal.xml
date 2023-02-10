@@ -1,0 +1,51 @@
+<groupdef id="notifier.albumart" sysregion="1" ghost="1" >
+	
+	<layer id="notifier.cover.bg" x="0" y="0" image="notifier.bg.cover" move="0"/>
+	<AlbumArt id="notifier.cover" x="18" y="15" h="50" w="50" move="0" rectrgn="1" notfoundImage="winamp.cover.notfound.50" noAutoRefresh="1"/>
+	<layer id="notifier.webcover" x="18" y="15" h="50" w="50" move="0" rectrgn="1" visible="0"/>
+
+</groupdef>
+
+<groupdef id="notifier.text" sysregion = "1" ghost="1">
+
+	<!-- mp: I know this is an unusual way to get text shadow - but it creates a much better effect than the shadow params -->
+	
+	<text id="plentry.shadow" x="0" y="13" default="2/15" w="100" color="notifier.bright.upper" font="Arial" fontsize="12" bold="1" ghost="1" alpha="128"/>
+	<text id="plentry" x="0" y="12" default="2/15" w="100" color="notifier.dark.upper" font="Arial" fontsize="12" bold="1" ghost="1"/>
+
+	<text id="nexttrack.shadow" x="-102" y="13" w="102" relatw="1" align="right" default="Next track" color="notifier.bright.upper" font="Arial" fontsize="12" bold="1" ghost="1" alpha="128"/>
+	<text id="nexttrack" x="-102" y="12" w="102" relatw="1" align="right" default="Next track" color="notifier.dark.upper" font="Arial" fontsize="12" bold="1" ghost="1"/>
+
+	<text id="title.shadow" x="0" y="28" w="0" relatw="1" default="Nothing" color="notifier.dark" font="Arial" fontsize="17" ghost="1" alpha="128" bold="1" translate="0"/>
+	<text id="title" x="0" y="27" w="0" relatw="1" default="Nothing" color="notifier.bright" font="Arial" fontsize="17" ghost="1" bold="1" translate="0"/>
+
+	<text id="artist.shadow" x="0" y="42" w="0" h="18" relatw="1" default="Nithin Sawhney" color="notifier.dark" font="Arial" fontsize="13" ghost="1" alpha="128" translate="0"/>
+	<text id="artist" x="0" y="41" w="0" h="18" relatw="1" default="Nithin Sawhney" color="notifier.bright" font="Arial" fontsize="13" ghost="1" alpha="235" translate="0"/>
+
+	<text id="album.shadow" x="0" y="55" w="0" h="14" relatw="1" default="Prophesy" color="notifier.dark" font="Arial" fontsize="13" ghost="1" alpha="128" translate="0"/>
+	<text id="album" x="0" y="54" w="0" h="14" relatw="1" default="Prophesy" color="notifier.bright" font="Arial" fontsize="13" ghost="1" alpha="235" translate="0"/>
+
+</groupdef>
+
+
+<layout id="normal" noparent="1" ontop="1" h="80" w="128" forcealpha="1" noactivation="1" nodock="1" move="0">
+
+	<grid left="notifier.bg.left" middle="notifier.bg.center" right="notifier.bg.right" fitparent="1" sysregion="1" ghost="1" rectrgn="0" move="0"/>
+	<group id="notifier.text" x="75" y="0" h="80" w="-95" relatw="1" move="0"/>
+	<group id="notifier.albumart" x="0" y="0" h="80" w="80" relatw="1" move="0" visible="0"/>
+
+	<text id="endofplayback.shadow" x="15" y="32" w="-35" relatw="1" align="center" default="End of playback" color="notifier.dark" font="Arial" fontsize="20" visible="0" ghost="1"/>
+	<text id="endofplayback" x="15" y="31" w="-35" relatw="1" align="center" default="End of playback" color="notifier.bright" font="Arial" fontsize="20" visible="0" ghost="1"/>
+
+</layout>
+
+<layout id="desktopalpha" noparent="1" ontop="1" h="80" w="128" desktopalpha="1" noactivation="1" nodock="1" move="0">
+
+	<grid left="notifier.bg.left.da" middle="notifier.bg.center.da" right="notifier.bg.right.da" fitparent="1" ghost="1" move="0"/>
+	<group id="notifier.text" x="75" y="0" h="80" w="-95" relatw="1" move="0"/>
+	<group id="notifier.albumart" x="0" y="0" h="80" w="80" relatw="1" move="0" visible="0"/>
+
+	<text id="endofplayback.shadow" x="15" y="32" w="-35" relatw="1" align="center" default="End of playback" color="notifier.dark" font="Arial" fontsize="20" visible="0" ghost="1"/>
+	<text id="endofplayback" x="15" y="31" w="-35" relatw="1" align="center" default="End of playback" color="notifier.bright" font="Arial" fontsize="20" visible="0" ghost="1"/>
+
+</layout>

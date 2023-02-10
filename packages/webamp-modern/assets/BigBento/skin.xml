@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<WinampAbstractionLayer version="1.35">
+	<skininfo>
+		<version>1.2.1</version>
+		<name>Big Bento</name>
+		<author>Martin Pöhlmann, Taber Buhl</author>
+		<comment>Graphics by Taber Buhl - Wasabi Development by Ben Allison and Martin Poehlmann</comment>
+		<email>martin@skinconsortium.com</email>
+		<screenshot>screenshot.png</screenshot>
+		<homepage>http://www.skinconsortium.com/</homepage>
+	</skininfo>
+
+	<accelerators section="general">
+		<accelerator bind="Alt+F" action="MENUHOTKEY_FILE" />
+		<accelerator bind="Alt+P" action="MENUHOTKEY_PLAY" />
+		<accelerator bind="Alt+O" action="MENUHOTKEY_OPTIONS" />
+		<accelerator bind="Alt+I" action="MENUHOTKEY_VIEW" />
+		<accelerator bind="Alt+H" action="MENUHOTKEY_HELP" />
+	</accelerators>
+
+	<accelerators section="normal">
+			<accelerator bind="space" action="SHOW_CURRENT_TRACK" />
+	</accelerators>
+
+	<scripts>
+		<script file="scripts/loadattribs.maki" param="big"/> <!-- Must be loaded at first -->
+	</scripts>
+
+	<include file="xml/color-presets.xml"/>
+	<include file="xml/system-colors.xml"/>
+	<include file="xml/system-elements.xml"/>
+	<include file="xml/standardframe.xml" />
+	<include file="xml/window-overrides.xml"/>
+	<include file="xml/player.xml"/>
+	<include file="xml/notifier.xml"/>
+	<include file="about/about.xml"/>
+
+	<scripts>
+		<script file="scripts/maximize.maki" param="166,23"/>
+	</scripts>
+
+</WinampAbstractionLayer>

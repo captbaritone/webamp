@@ -1,0 +1,83 @@
+<!-- This file is needed to prohibit the SUI Components show in a stand alone window -->
+
+<container id="MLibrary" name="Media Library" dynamic="1" component="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}" default_x="-1" default_y="-1" default_visible="0">
+
+	<layout id="normal" h="1" w="1">
+
+		<!--component
+			x="0"
+			y="0"
+			w="1"
+			h="1"
+			noshowcmdbar="1"
+			autoopen="0"
+			autoclose="0"
+			param="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}"
+		/-->
+
+		<!--script file="scripts/wndkill.maki" /-->
+
+		</layout>
+
+</container>
+
+<container id="AVS" name="Visualizations" dynamic="1" component="guid:{0000000A-000C-0010-FF7B-01014263450C}" default_x="-1" default_y="-1" default_visible="0">
+
+	<layout id="normal" h="1" w="1">
+
+		<component
+			x="0"
+			y="0"
+			w="1"
+			h="1"
+			noshowcmdbar="1"
+			autoopen="1"
+			autoclose="1"
+			param="guid:{0000000A-000C-0010-FF7B-01014263450C}"
+		/>
+
+	</layout>
+
+</container>
+
+
+<container id="Video" name="Video" dynamic="1" component="guid:{F0816D7B-FFFC-4343-80F2-E8199AA15CC3}" default_x="-1" default_y="-1" default_visible="0">
+
+	<layout id="normal" h="1" w="1">
+
+		<component
+			x="0"
+			y="0"
+			w="1"
+			h="1"
+			noshowcmdbar="1"
+			autoopen="1"
+			autoclose="1"
+			param="guid:{F0816D7B-FFFC-4343-80F2-E8199AA15CC3}"
+		/>
+
+	</layout>
+
+</container>
+
+
+<container id="Pledit" name="Playlist Editor" dynamic="1" component="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" default_x="-1" default_y="-1" default_visible="0">
+
+	<layout id="normal" h="1" w="1">
+
+		<component
+			x="0"
+			y="0"
+			w="1"
+			h="1"
+			noshowcmdbar="1"
+			autoopen="1"
+			autoclose="1"
+			param="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"
+		/>
+
+		<!--script file="scripts/wndkill.maki" /-->
+
+	</layout>
+
+</container>
