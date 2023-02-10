@@ -163,14 +163,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.10a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.10b");
           }
           if (this.debug) {
             console.log(`${b.value} > ${a.value}`);
@@ -187,14 +187,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.11a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.11b");
           }
           if (this.debug) {
             console.log(`${b.value} >= ${a.value}`);
@@ -211,14 +211,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.12a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.12b");
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
@@ -236,14 +236,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.13a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.13b");
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
@@ -493,7 +493,7 @@ class Interpreter {
             case "BOOLEAN":
             case "NULL":
               throw new Error(
-                `Tried to add non-numbers: ${b.type} + ${a.type}.`
+                `Tried to add non-numbers: ${b.type} + ${a.type}.64a`
               );
             case "STRING":
               if (b.type !== "STRING") {
@@ -505,7 +505,7 @@ class Interpreter {
           switch (b.type) {
             case "OBJECT":
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.64b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value + a.value });
@@ -520,14 +520,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.65a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.65b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value - a.value });
@@ -542,14 +542,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.66a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.66b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value * a.value });
@@ -564,13 +564,13 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.67a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.67b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value / a.value });
@@ -585,13 +585,13 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.68a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.68b");
             // Need to coerce LHS if not int, RHS is always int (enforced by compiler)
             case "FLOAT":
             case "DOUBLE":
@@ -628,7 +628,7 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.76a");
           }
           this.push({ type: a.type, value: -a.value });
           break;
@@ -642,13 +642,13 @@ class Interpreter {
             case "STRING":
             case "OBJECT":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.80a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.80b");
           }
           if (b.value && a.value) {
             this.push(a);
@@ -665,16 +665,16 @@ class Interpreter {
           switch (a.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
+            // case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.81a :"+a.type);
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
+            // case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.81b");
           }
           if (b.value) {
             this.push(b);
