@@ -9,17 +9,17 @@ import Layer from "./Layer";
 export default class Frame extends GuiObj {
   static GUID = "e2bbc14d417384f6ebb2b3bd5055662f";
   _position: number = 0;
-  _normalId: string;
-  _hoverId: string;
-  _downId: string;
-  _menuId: string;
-  _menuGroupId: string;
-  _prevMenuId: string;
-  _nextMenuId: string;
-  _elNormal: GuiObj;
-  _elHover: GuiObj;
-  _elDown: GuiObj;
-  _elImage: Layer;
+  _resizable: boolean = true;   //? Set this flag to allow the user to change the position of the framedivider. 
+  _from: string;    //?  the edge. 'l' | 't' | 'r' | 'b'
+  _width: number;   //?  How many pixels from the chosen edge to start.
+  _height: number;  //?  How many pixels from the chosen edge to start.
+  //* don't be confused with _minimumWidth & _maximumWidth !
+  _minWidth: number;    //? The minimum amount of pixels you are able to move the poppler if resizable (If you go below this value the poppler will snap to 0).
+  _maxwidth: number;    //? The maximum amount of pixels you are able to move the poppler if resizable.
+  _leftlId: string;
+  _rightId: string;
+  _topId: string;
+  _bottomId: string;
 
   getElTag(): string {
     return "frame2";

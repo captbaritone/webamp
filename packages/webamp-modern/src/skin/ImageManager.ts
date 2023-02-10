@@ -104,7 +104,7 @@ export default class ImageManager {
         // console.log("IM.ensure:", bitmap.getId());
         // await this.setBimapImg(bitmap);
         // bitmap._img = await this.getImage(bitmap.getFile());
-        // if (bitmap._img && bitmap._width == null && bitmap._height == null) {
+        // if (bitmap._img && bitmap._w == null && bitmap._h == null) {
         //   bitmap.setXmlAttr("w", String(bitmap._img.width));
         //   bitmap.setXmlAttr("h", String(bitmap._img.height));
         // }

@@ -551,7 +551,25 @@ export default class SkinEngineWAL extends SkinEngine {
     return this.newGui(Menu, node, parent);
   }
   async frame(node: XmlElement, parent: any): Promise<Frame> {
-    return this.newGui(Frame, node, parent);
+    const frame = (await this.newGui(Frame, node, parent)) as Frame;
+    for(const direction of ['left', 'top', 'right', 'bottom']){
+      const group_id = node.attributes[direction];
+      if (group_id != null){
+        const pair = await this.group(
+          new XmlElement("group", {
+            id: group_id,
+            // w: "0",
+            // h: "0",
+            // relatw: "1",
+            // relath: "1",
+          }),
+          parent
+        );
+        // Element.addChild(content);
+      }
+    }
+
+    return frame;
   }
 
   async songticker(node: XmlElement, parent: any): Promise<Text> {

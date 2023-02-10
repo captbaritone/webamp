@@ -46,8 +46,8 @@ export default class Status extends GuiObj {
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
+    if (this._h) {
+      return this._h;
     }
     if (this._stopbitmap != null) {
       const bitmap = this._uiRoot.getBitmap(this._stopbitmap);
@@ -58,8 +58,8 @@ export default class Status extends GuiObj {
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
+    if (this._w) {
+      return this._w;
     }
     if (this._stopbitmap != null) {
       const bitmap = this._uiRoot.getBitmap(this._stopbitmap);

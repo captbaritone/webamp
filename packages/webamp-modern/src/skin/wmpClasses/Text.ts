@@ -65,7 +65,7 @@ export default class TextZ extends MakiText {
     solvePendingProps(this, this._pendingProps);
     super.draw();
     this._div.classList.add("textz");
-    if (!this._width) {
+    if (!this._w) {
       this._div.style.setProperty("--full-width", "auto");
     }
     if (this.getwidth() == 0) {

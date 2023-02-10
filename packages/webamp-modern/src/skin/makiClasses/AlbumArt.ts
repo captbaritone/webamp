@@ -10,8 +10,8 @@ export default class AlbumArt extends Layer {
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
-    this._width = 0;
-    this._height = 0;
+    this._w = 0;
+    this._h = 0;
     this._relatw = "1";
     this._relath = "1";
   }

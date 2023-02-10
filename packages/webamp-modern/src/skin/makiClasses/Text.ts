@@ -453,7 +453,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     this._invalidateFullWidth();
     let textWidth = this._textFullWidth;
     if (this._relatw == "1") {
-      textWidth += this._width * -1;
+      textWidth += this._w * -1;
     }
     return textWidth;
   }

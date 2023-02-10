@@ -174,7 +174,7 @@ export default class AnimatedLayer extends Layer {
   }
 
   _getActualHeight(): number {
-    return this._height || this._div.getBoundingClientRect().height;
+    return this._h || this._div.getBoundingClientRect().height;
   }
 
   init() {

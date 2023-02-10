@@ -2,7 +2,7 @@ import { hexToRgb } from "../utils";
 
 export class Edges {
   _data: ImageData;
-  _width: number;
+  _w: number;
   // [x:refPoint, y:refPoint, ax: clip.x, ay:clip.y]
   _top: number[][] = [];
   _right: number[][] = [];
@@ -17,7 +17,7 @@ export class Edges {
 
   //? return true if not transparent
   opaqueByTransparent(x: number, y: number): boolean {
-    return this._data.data[(x + y * this._width) * 4 + 3] != 0;
+    return this._data.data[(x + y * this._w) * 4 + 3] != 0;
   }
 
   parseCanvasTransparency(
@@ -35,9 +35,9 @@ export class Edges {
     //set
     this.opaque = (x: number, y: number): boolean => {
       return (
-        this._data.data[(x + y * this._width) * 4 + 0] == rgb.r &&
-        this._data.data[(x + y * this._width) * 4 + 1] == rgb.g &&
-        this._data.data[(x + y * this._width) * 4 + 2] == rgb.b
+        this._data.data[(x + y * this._w) * 4 + 0] == rgb.r &&
+        this._data.data[(x + y * this._w) * 4 + 1] == rgb.g &&
+        this._data.data[(x + y * this._w) * 4 + 2] == rgb.b
       );
     };
     this._parseCanvasTransparency(canvas, null, null);
@@ -49,7 +49,7 @@ export class Edges {
     const transparent = sum(rgb.r, rgb.g, rgb.b);
     //set:
     this.opaque = (x: number, y: number): boolean => {
-      const start = (x + y * this._width) * 4;
+      const start = (x + y * this._w) * 4;
       const data = this._data.data.slice(start, start + 4);
       const result =
         //? opaque = pixel != color
@@ -66,7 +66,7 @@ export class Edges {
   ) {
     const w = preferedWidth || canvas.width;
     const h = preferedHeight || canvas.height;
-    this._width = w;
+    this._w = w;
     const ctx = canvas.getContext("2d");
     this._data = ctx.getImageData(0, 0, w, h);
     let points: number[][] = [];

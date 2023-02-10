@@ -28,8 +28,8 @@ export default class GuiObj extends XmlObj {
   // _id: string; moved to BaseObject
   _originalId: string; // non lowercase'd
   _name: string;
-  _width: number = 0;
-  _height: number = 0;
+  _w: number = 0;
+  _h: number = 0;
   _x: number = 0;
   _y: number = 0;
   _minimumHeight: number = 0;
@@ -93,12 +93,12 @@ export default class GuiObj extends XmlObj {
         break;
       case "w":
       case "default_w":
-        this._width = num(value);
+        this._w = num(value);
         this._renderWidth();
         break;
       case "h":
       case "default_h":
-        this._height = num(value);
+        this._h = num(value);
         this._renderHeight();
         break;
       case "x":
@@ -338,18 +338,18 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight(): number {
-    if (this._height || this._minimumHeight || this._maximumHeight) {
-      let h = Math.max(this._height || 0, this._minimumHeight);
+    if (this._h || this._minimumHeight || this._maximumHeight) {
+      let h = Math.max(this._h || 0, this._minimumHeight);
       h = Math.min(h, this._maximumHeight || h);
       return h;
     }
-    return this._height;
+    return this._h;
   }
   get height(): number {
     return this.getheight();
   }
   set height(value: number) {
-    this._height = value;
+    this._h = value;
     this._renderDimensions();
   }
 
@@ -359,20 +359,20 @@ export default class GuiObj extends XmlObj {
    * @ret The width of the object.
    */
   getwidth(): number {
-    if (this._width || this._minimumWidth || this._maximumWidth) {
-      let w = Math.max(this._width || 0, this._minimumWidth);
+    if (this._w || this._minimumWidth || this._maximumWidth) {
+      let w = Math.max(this._w || 0, this._minimumWidth);
       if (this._maximumHeight) {
         w = Math.min(w, this._maximumWidth || w);
       }
       return w;
     }
-    return this._width;
+    return this._w;
   }
   get width(): number {
     return this.getwidth();
   }
   set width(value: number) {
-    this._width = value;
+    this._w = value;
     this._renderDimensions();
   }
 
@@ -387,8 +387,8 @@ export default class GuiObj extends XmlObj {
   resize(x: number, y: number, w: number, h: number) {
     this._x = x;
     this._y = y;
-    this._width = w;
-    this._height = h;
+    this._w = w;
+    this._h = h;
     this._renderDimensions();
   }
 
@@ -397,10 +397,10 @@ export default class GuiObj extends XmlObj {
     return _ != null ? _.toString() : null;
   }
   getguiw(): number {
-    return this._width;
+    return this._w;
   }
   getguih(): number {
-    return this._height;
+    return this._h;
   }
   getguix(): number {
     return this._x;
@@ -644,8 +644,8 @@ export default class GuiObj extends XmlObj {
     const pairs = [
       ["_x", "_targetX", "_renderX"],
       ["_y", "_targetY", "_renderY"],
-      ["_width", "_targetWidth", "_renderWidth"],
-      ["_height", "_targetHeight", "_renderHeight"],
+      ["_w", "_targetWidth", "_renderWidth"],
+      ["_h", "_targetHeight", "_renderHeight"],
       ["_alpha", "_targetAlpha", "_renderAlpha"],
     ];
 
@@ -715,15 +715,15 @@ export default class GuiObj extends XmlObj {
     const start = {
       left: px(this._x ?? 0),
       top: px(this._y ?? 0),
-      width: px(this._width),
-      height: px(this._height),
+      width: px(this._w),
+      height: px(this._h),
       opacity: this._alpha / 255,
     };
     const end = {
       left: px(this._targetX ?? this._x ?? 0),
       top: px(this._targetY ?? this._y ?? 0),
-      width: px(this._targetWidth ?? this._width),
-      height: px(this._targetHeight ?? this._height),
+      width: px(this._targetWidth ?? this._w),
+      height: px(this._targetHeight ?? this._h),
       opacity: (this._targetAlpha ?? this._alpha) / 255,
     };
 
@@ -733,8 +733,8 @@ export default class GuiObj extends XmlObj {
     animation.addEventListener("finish", () => {
       this._x = this._targetX ?? this._x;
       this._y = this._targetY ?? this._y;
-      this._width = this._targetWidth ?? this._width;
-      this._height = this._targetHeight ?? this._height;
+      this._w = this._targetWidth ?? this._w;
+      this._h = this._targetHeight ?? this._h;
       this._alpha = this._targetAlpha ?? this._alpha;
       this._renderDimensions();
       this._renderAlpha();
@@ -904,12 +904,12 @@ export default class GuiObj extends XmlObj {
 
   _renderWidth() {
     this._div.style.width =
-      this._relatw == "1" ? relative(this._width ?? 0) : px(this.getwidth());
+      this._relatw == "1" ? relative(this._w ?? 0) : px(this.getwidth());
   }
 
   _renderHeight() {
     this._div.style.height =
-      this._relath == "1" ? relative(this._height ?? 0) : px(this.getheight());
+      this._relath == "1" ? relative(this._h ?? 0) : px(this.getheight());
   }
 
   _renderDimensions() {

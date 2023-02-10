@@ -16,8 +16,8 @@ export default class Bitmap {
   _canvas: HTMLCanvasElement;
   _x: number = 0;
   _y: number = 0;
-  _width: number;
-  _height: number;
+  _w: number;
+  _h: number;
   _file: string;
   _gammagroup: string;
 
@@ -49,10 +49,10 @@ export default class Bitmap {
         this._y = num(value) ?? 0;
         break;
       case "w":
-        this._width = num(value);
+        this._w = num(value);
         break;
       case "h":
-        this._height = num(value);
+        this._h = num(value);
         break;
       case "file":
         this._file = value;
@@ -75,11 +75,11 @@ export default class Bitmap {
   }
 
   getWidth() {
-    return this._width;
+    return this._w;
   }
 
   getHeight() {
-    return this._height;
+    return this._h;
   }
 
   getLeft() {
@@ -120,7 +120,7 @@ export default class Bitmap {
 
     //force. also possibly set null:
     this._img = await imageManager.getImage(this._file);
-    if (this._img && this._width == null && this._height == null) {
+    if (this._img && this._w == null && this._h == null) {
       this.setXmlAttr("w", String(this._img.width));
       this.setXmlAttr("h", String(this._img.height));
     }
@@ -137,8 +137,8 @@ export default class Bitmap {
   }
 
   _getBackgrondSizeCSSAttribute(): string {
-    const width = px(this._width);
-    const height = px(this._height);
+    const width = px(this._w);
+    const height = px(this._h);
     return `${width} ${height}`;
   }
 
@@ -196,8 +196,8 @@ export default class Bitmap {
       img as HTMLImageElement,
       this._x,
       this._y,
-      this._width,
-      this._height
+      this._w,
+      this._h
     );
     return buildCssProp(url);
   }

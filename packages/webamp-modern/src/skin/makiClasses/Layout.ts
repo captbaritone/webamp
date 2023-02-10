@@ -44,11 +44,11 @@ export default class Layout extends Group {
 
   _renderBackground() {
     super._renderBackground(); //set css
-    if (this._background != null && this._width == 0 && this._height == 0) {
+    if (this._background != null && this._w == 0 && this._h == 0) {
       const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap != null) {
-        this._width = bitmap.getWidth();
-        this._height = bitmap.getHeight();
+        this._w = bitmap.getWidth();
+        this._h = bitmap.getHeight();
         this._renderSize();
       }
     }
@@ -85,8 +85,8 @@ export default class Layout extends Group {
     container.setXmlAttr("x", String(x));
     container.setXmlAttr("y", String(y));
 
-    this._width = w;
-    this._height = h;
+    this._w = w;
+    this._h = h;
     this._renderDimensions();
   }
 
