@@ -92,6 +92,7 @@ export default class SystemObject extends BaseObject {
 
   init() {
     // dumpScriptDebug(this._parsedScript);
+    console.log('initing script:', this._id)
     const initialVariable = this._parsedScript.variables[0];
     if (initialVariable.type !== "OBJECT") {
       throw new Error("First variable was not SystemObject.");
@@ -897,6 +898,7 @@ export default class SystemObject extends BaseObject {
    */
   getcurrenttrackrating(): number {
     // TODO
+    return 1;
   }
   /**
    * Requires 5.5
