@@ -493,6 +493,14 @@ export default class GuiObj extends XmlObj {
     //TODO:
   }
 
+  onresize(x: number, y: number, w: number, h: number) {
+    this._uiRoot.vm.dispatch(this, "onresize", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+      { type: "INT", value: this.getwidth() },
+      { type: "INT", value: this.getheight() },
+    ]);
+  }
   /**
    * Hookable. Event happens when the left mouse
    * button was previously down and is now up.
