@@ -17,7 +17,7 @@ export default class Layout extends Group {
   static GUID = "60906d4e482e537e94cc04b072568861";
   _resizingDiv: HTMLDivElement = null;
   _resizing: boolean = false;
-  _resizable: number = 0; // combination of 4 directions: N/E/W/S
+  _canResize: number = 0; // combination of 4 directions: N/E/W/S
   _movingStartX: number; //container XY
   _movingStartY: number;
   _moving: boolean = false;
@@ -162,7 +162,7 @@ export default class Layout extends Group {
     const container = this._parent;
     const r = this._div.getBoundingClientRect();
     if (cmd == "constraint") {
-      this._resizable = dx;
+      this._canResize = dx;
     } else if (cmd == "start") {
       this.bringtofront();
       this._resizing = true;
@@ -181,16 +181,16 @@ export default class Layout extends Group {
         return;
       }
       // console.log(`resizing dx:${dx} dy:${dy}`);
-      if (this._resizable & RIGHT)
+      if (this._canResize & RIGHT)
         this._resizingDiv.style.width = px(clampW(r.width + dx));
-      if (this._resizable & BOTTOM)
+      if (this._canResize & BOTTOM)
         this._resizingDiv.style.height = px(clampH(r.height + dy));
 
-      if (this._resizable & LEFT) {
+      if (this._canResize & LEFT) {
         this._resizingDiv.style.left = px(container.getleft() + dx);
         this._resizingDiv.style.width = px(clampW(r.width + -dx));
       }
-      if (this._resizable & TOP) {
+      if (this._canResize & TOP) {
         this._resizingDiv.style.top = px(container.gettop() + dy);
         this._resizingDiv.style.height = px(clampH(r.height + -dy));
       }
