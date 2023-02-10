@@ -12,3 +12,7 @@ export default class Webamp extends WebampLazy {
     });
   }
 }
+
+// Bit of a hack here. This overwrites the value set in WebampLazy.ts
+// @ts-ignore
+window.Webamp = Webamp;
