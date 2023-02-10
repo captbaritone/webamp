@@ -31,6 +31,7 @@ import Region from "./makiClasses/Region";
 import { PlEdit, PlDir } from "./makiClasses/PlayList";
 import PlayListGui from "./makiClasses/PlayListGui";
 import WasabiTitleBar from "./makiClasses/WasabiTitle";
+import WindowHolder from "./makiClasses/WindowHolder";
 
 const CLASSES = [
   BaseObject,
@@ -67,6 +68,7 @@ const CLASSES = [
   PlayListGui,
   GuiObj,
   WasabiTitleBar,
+  WindowHolder,
 ];
 
 const GUID_MAP = {};
