@@ -49,7 +49,7 @@ table.appendChild(header);
 const classes = [];
 for (const [key, obj] of Object.entries(normalizedObjects)) {
   const name = obj.name;
-  const deprecated = obj.deprecated;
+  const deprecated = obj.deprecated || ['DropDownList', 'CheckBox', 'Edit', 'GroupList', 'GuiList', 'GuiTree', 'TreeItem', 'CfgGroup'].includes(obj.name);
   const methods = [];
   // if(obj.name == 'Menu') {debugger;}
   const klass = getClass(getFormattedId(key.toLowerCase()));
@@ -57,21 +57,22 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   for (const method of obj.functions) {
     const params = method.parameters.map(([type, name]) => `${name}<i> :${type}</i>`);
     const methodName = `${method.name}(${params.join(", ")})` + (method.result.length > 0 ? '<i> :'+method.result+'</i>' : '') ;
+    const blacklist = method.name.startsWith('fx_');
     const mdeprecated = method.deprecated;
     const hook = method.name.toLowerCase().startsWith("on");
     if (hook) {
-      methods.push({ name: methodName, hook: true, deprecated:mdeprecated });
+      methods.push({ name: methodName, hook: true, deprecated:mdeprecated, blacklist });
       continue;
     } else if (klass == null) {
-      methods.push({ name: methodName, status: "missing", deprecated:mdeprecated });
+      methods.push({ name: methodName, status: "missing", deprecated:mdeprecated, blacklist });
     } else {
       const impl = klass.prototype[method.name.toLowerCase()];
       if (impl == null) {
-        methods.push({ name: methodName, status: "missing", deprecated:mdeprecated });
+        methods.push({ name: methodName, status: "missing", deprecated:mdeprecated, blacklist });
       } else if (impl.length !== method.parameters.length) {
-        methods.push({ name: methodName, status: "wrong", deprecated:mdeprecated });
+        methods.push({ name: methodName, status: "wrong", deprecated:mdeprecated, blacklist });
       } else {
-        methods.push({ name: methodName, status: "found", deprecated:mdeprecated });
+        methods.push({ name: methodName, status: "found", deprecated:mdeprecated, blacklist });
       }
     }
   }
@@ -139,6 +140,10 @@ for (const cls of classes) {
     else if(method.deprecated){
       totalCount --;
       methodDiv.style.backgroundColor = "silver";
+    }
+    else if(method.blacklist){
+      totalCount --;
+      methodDiv.style.backgroundColor = "coral";
     }
   }
   if(cls.methods.length == 0 || totalCount == 0){  //? has no method, lets keep it beauty.
