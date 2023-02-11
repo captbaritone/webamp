@@ -31,6 +31,10 @@ export default class PopupMenu extends BaseObject {
   addseparator() {
     this._items.push({ type: "separator" });
   }
+  addsubmenu(submenu: PopupMenu, submenutext: string){
+    //TODO:
+    this.addcommand(submenutext, 0, false, false)
+  }
   checkcommand(cmd_id: number, check: boolean) {
     const item = this._items.find((item) => {
       return item.type === "item" && item.id === cmd_id;
@@ -69,6 +73,9 @@ export default class PopupMenu extends BaseObject {
     // TODO: Validate
 
     return choice;
+  }
+  popatxy(x:number, y:number):number{
+    return this.popatmouse()
   }
   getnumcommands(){
     return this._items.length;
