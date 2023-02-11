@@ -194,7 +194,7 @@ export default class GuiObj extends XmlObj {
     //TODO: check if old exist: dispose.
     this._configAttrib = configItem.getattribute(attrib);
     //TODO: dispose it
-    this._configAttrib.on("datachanged", this.__cfgAttribChanged);
+    this._configAttrib.on("datachanged", this.__cfgAttribChanged.bind(this));
   }
 
   /**

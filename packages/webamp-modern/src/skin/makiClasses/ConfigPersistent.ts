@@ -52,5 +52,5 @@ export default abstract class ConfigPersistent extends BaseObject {
       this.getStorageName(),
       JSON.stringify(this._configTree)
     );
-  }, 500);
+  }, 2000);
 }
