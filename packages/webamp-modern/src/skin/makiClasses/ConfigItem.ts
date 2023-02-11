@@ -19,7 +19,7 @@ export default class ConfigItem extends BaseObject {
     this._uiRoot = uiRoot;
     this._config = config;
     this._id = name;
-    this._guid = guid;
+    this._guid = guid.toLowerCase();
   }
 
   getname(): string {

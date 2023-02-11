@@ -297,6 +297,7 @@ export default class GuiObj extends XmlObj {
   show() {
     this._visible = true;
     this._renderVisibility();
+    this.onsetvisible(true);
   }
 
   /**
@@ -305,6 +306,7 @@ export default class GuiObj extends XmlObj {
   hide() {
     this._visible = false;
     this._renderVisibility();
+    this.onsetvisible(true);
   }
   isvisible(): boolean {
     return this._visible;

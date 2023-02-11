@@ -17,8 +17,8 @@ export default class Frame extends Group {
   _width: number;   //?  How many pixels from the chosen edge to start.
   _height: number;  //?  How many pixels from the chosen edge to start.
   //* don't be confused with _minimumWidth & _maximumWidth !
-  _minWidth: number;    //? The minimum amount of pixels you are able to move the poppler if resizable (If you go below this value the poppler will snap to 0).
-  _maxWidth: number;    //? The maximum amount of pixels you are able to move the poppler if resizable.
+  _minwidth: number;    //? The minimum amount of pixels you are able to move the poppler if resizable (If you go below this value the poppler will snap to 0).
+  _maxwidth: number;    //? The maximum amount of pixels you are able to move the poppler if resizable.
   _leftId: string;
   _rightId: string;
   _topId: string;
@@ -39,8 +39,8 @@ export default class Frame extends Group {
       // case "height": this._height = num(value); break;
       case "width": this._position = num(value); break;
       case "height": this._position = num(value); break;
-      case "minwidth": this._minWidth = num(value); break;
-      case "maxwidth": this._maxWidth = num(value); break;
+      case "minwidth": this._minwidth = num(value) || 0; break;
+      case "maxwidth": this._maxwidth = num(value) || 0; break;
 
       case "orientation": this._orientation = value.toLowerCase()[0]; break;
       // case "from": this._from = value.toLowerCase()[0]; break;
@@ -129,14 +129,14 @@ export default class Frame extends Group {
         const [el1,el2] = this._getEl(['top', 'bottom']);
         el1.setXmlAttributes({
           ...fullSizes,
-          h: `-${this._height}`,
+          h: `-${this._height + 4}`,
           relath: '1',
         })
         el2.setXmlAttributes({
           ...fullSizes,
-          y: `-${this._height}`,
+          y: `-${this._height - 4}`,
           relaty: '1',
-          h: `${this._height}`,
+          h: `${this._height - 8}`,
         })
     }
     else {
