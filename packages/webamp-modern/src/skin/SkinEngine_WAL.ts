@@ -941,6 +941,22 @@ export default class SkinEngineWAL extends SkinEngine {
     }
     await this.traverseChildren(node, parent);
   }
+  async windowholder(node: XmlElement, parent: any): Promise<Frame> {
+    const frame = (await this.newGroup(WindowHolder, node, parent) as Frame);
+    //TODO: parse dynamic element by guid value
+    const hold = node.attributes.hold;
+    // console.log('window-holder'); debugger;
+    if (hold && hold.toLowerCase() == "guid:{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}") {
+      await this.buildWasabiButtonFace();
+      const node2 = new XmlElement("component", {
+        fitparent: "1",
+      })
+      await this.newGui(PlayListGui, node2, frame);
+    }
+
+    return frame;
+  }
+
 
   async container(node: XmlElement): Promise<Container> {
     const container = new Container(this._uiRoot);
@@ -1124,9 +1140,6 @@ export default class SkinEngineWAL extends SkinEngine {
     );
   }
 
-  async windowholder(node: XmlElement, parent: any) {
-    return this.newGroup(WindowHolder, node, parent);
-  }
 
   skininfo(node: XmlElement, parent: any) {
     const skinInfo = {};
