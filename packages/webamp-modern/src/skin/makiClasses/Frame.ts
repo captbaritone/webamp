@@ -35,8 +35,10 @@ export default class Frame extends Group {
     }
 
     switch (key.toLowerCase()) {
-      case "width": this._width = num(value); break;
-      case "height": this._height = num(value); break;
+      // case "width": this._width = num(value); break;
+      // case "height": this._height = num(value); break;
+      case "width": this._position = num(value); break;
+      case "height": this._position = num(value); break;
       case "minwidth": this._minWidth = num(value); break;
       case "maxwidth": this._maxWidth = num(value); break;
 
@@ -59,6 +61,9 @@ export default class Frame extends Group {
   }
   setposition(position: number) {
     this._position = position;
+    // this._width = position;
+    // this._height = position;
+    this.alignChildren()
   }
 
   setFrom(from:string){
@@ -86,18 +91,21 @@ export default class Frame extends Group {
   }
 
   alignChildren(){
+    this.getDiv().style.setProperty('--position', `${this._position}`)
+    this._width = this._position;
+    this._height = this._position;
     console.log('FRAME:'+this._id, this)
     const fullSizes = this._orientation == 'v'? {h:'0', relath:'1'} : {w:'0', relatw: '1'}
     if (this._from == 'left'){
         const [el1,el2] = this._getEl(['left', 'right']);
         el1.setXmlAttributes({
           ...fullSizes,
-          w: `${this._width}`,
+          w: `${this._width - 4}`,
         })
         el2.setXmlAttributes({
           ...fullSizes,
-          x: `${this._width}`,
-          w: `-${this._width}`,
+          x: `${this._width + 4}`,
+          w: `-${this._width + 4}`,
           relatw: '1',
         })
     }
@@ -106,14 +114,14 @@ export default class Frame extends Group {
         const [el1,el2] = this._getEl(['left', 'right']);
         el1.setXmlAttributes({
           ...fullSizes,
-          w: `-${this._width}`,
+          w: `-${this._width + 4}`,
           relatw: '1',
         })
         el2.setXmlAttributes({
           ...fullSizes,
-          x: `-${this._width}`,
+          x: `-${this._width - 4}`,
           relatx: '1',
-          w: `${this._width}`,
+          w: `${this._width - 8}`,
         })
     }
     else 
