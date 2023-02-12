@@ -8,7 +8,9 @@
 		right="player.component.playlist.frame" 
 		from="r"
 		maxwidth="-141" 
-		minwidth="35" width="200" jump="right" />
+		minwidth="35" 
+		width="200" 
+		jump="right" />
 
 </groupdef>
 
@@ -16,7 +18,13 @@
 
 <groupdef id="player.component.playlist.frame" wantfocus="1" rectrgn="1">
 
-	<Wasabi:Frame id="playlist.dualwnd" fitparent="1" from="bottom" orientation="h" maxheight="null" bottom="player.component.playlist.albumart" top="player.component.playlist" minheight="55" height="100" jump="0"/>
+	<Wasabi:Frame id="playlist.dualwnd" fitparent="1" 
+		from="bottom" 
+		orientation="h" 
+		maxheight="null" 
+		bottom="player.component.playlist.albumart" 
+		top="player.component.playlist" 
+		minheight="55" height="100" jump="0"/>
 
 </groupdef>
 
@@ -34,7 +42,8 @@
 		bottomright="sui.background.bottomright"
 	/>
 
-	<group fitparent="-2" x="3" w="-5" relaw="1" id="info.component.cover2" />
+	<group fitparent="-2" x="3" w="-5" relaw="1" 
+	id="info.component.cover2" />
 
 </groupdef>
 

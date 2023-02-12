@@ -16,7 +16,11 @@ Internet:	www.skinconsortium.com
 
 // #define DEBUG
 #define FILE_NAME "pledit.m"
-#include <lib/debug.m>
+// #include <lib/debug.m>
+// #define DEBUG_PREFIX "["+ FILE_NAME +": " + getTimeStamp() + "] " + 
+#define DEBUG_PREFIX "" + 
+#define D_WTF 9
+#define D_NWTF 9
 
 #define PL_GUID "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}"
 #define PLC_POPPLER_POS 200
@@ -53,6 +57,7 @@ Global Int min_infowidth;
 
 System.onScriptLoaded ()
 {
+	debugString("WELCOME TO PLEDIT COY", 9);
 	initAttribs_Playlist();
 	normal = getScriptGroup();
 	player = normal.getContainer();
@@ -122,32 +127,16 @@ System.onScriptLoaded ()
 	}
 }
 
+
 system.onScriptUnloading ()
 {
 	int pos = pl_dualwnd.getPosition();
 	if (pos > 0) setPrivateInt(getSkinName(), "playlist_cover_poppler", pos);
 	delete dc_loadWnd;
 }
-
-dc_loadWnd.onTimer ()
-{
-	stop();
-	int pos = dualwnd.getPosition();
-	if (pos > 0) updatePoppler(pos);
-	playlist_enlarge_attrib.onDataChanged();
-
-	if (dualwnd.getPosition() > 0
-#ifdef DOHIDEMCV
-		|| dualwnd.getXMlParam("from") == "left"
-#endif
-		) dc_openPL.start();
-
-
-	else wdh_pl.hide(); //hideWa2Component(PL_GUID);
-}
-
 playlist_enlarge_attrib.onDataChanged ()
 {
+	debugString("inside playlist_enlarge_attrib.onDataChanged!", 9);
 	int pl_w = dualwnd.getPosition();
 
 #ifdef DOHIDEMCV
@@ -210,6 +199,24 @@ playlist_enlarge_attrib.onDataChanged ()
 		p_small.hide();
 	}
 }
+
+dc_loadWnd.onTimer ()
+{
+	stop();
+	int pos = dualwnd.getPosition();
+	if (pos > 0) updatePoppler(pos);
+	playlist_enlarge_attrib.onDataChanged();
+
+	if (dualwnd.getPosition() > 0
+#ifdef DOHIDEMCV
+		|| dualwnd.getXMlParam("from") == "left"
+#endif
+		) dc_openPL.start();
+
+
+	else wdh_pl.hide(); //hideWa2Component(PL_GUID);
+}
+
 
 g_playlist.onResize (int x, int y, int w, int h)
 {

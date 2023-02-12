@@ -42,10 +42,11 @@ Global List cycle;
 Global Boolean cycler_paused, quick_change;
 Global List ratingStars;
 
-#define CENTER_VAR Branding
+// #define CENTER_VAR Branding
 Global layer l_branding;
-#include <lib/centerlayer.m>
-#undef CENTER_VAR
+#include "fileinfobranding.m"
+// #include <lib/centerlayer.m>
+// #undef CENTER_VAR
 
 Global LinkObject linkArtist, linkAlbum, linkTitle, linkGenre, linkPublisher, linkSURl, linkSname;
 Global CycleObject cycleGenre, cyclePublisher, cycleTrack, cycleYear, cycleComposer, cycleAlbumartist, cycleFormat, cycleDisc;

@@ -71,6 +71,8 @@ System.onScriptLoaded()
 	slidercb.onSetPosition(slidercb.getPosition());
 
 	Crossfade.onToggle(Crossfade.getActivated());
+
+	debugString("WELCOME TO EQUALIZER COY", 9);
 }
 
 Balance.onSetPosition(int newpos)

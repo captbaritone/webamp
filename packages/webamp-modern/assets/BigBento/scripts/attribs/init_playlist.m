@@ -36,6 +36,7 @@ initAttribs_Playlist()
 	ConfigItem playlist_parent = addConfigSubMenu(optionsmenu_page, "Playlist", COSTUM_PAGE_PLAYLIST);
 
 	playlist_enlarge_attrib = playlist_parent.newAttribute("Enlarge Playlist", "0");
+	debugString("WELCOME TO PLEDIT.INIT!", 9);
 
 	playlist_cover_attrib = playlist_parent.newAttribute("Show Album Art if Playlist is enlarged", "0");
 

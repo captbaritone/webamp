@@ -209,9 +209,11 @@ ic_config.onDataChanged()
 
 _plsc_ic_attrib.onDataChanged()
 {
-	//debugString("ic_fileinfo.setData(" + getData() + ")", 9);
+	debugString("ic_fileinfo.setData(" + getData() + ")", 9);
 	if (attribs_mychange2) return;
+	debugString("ic_fileinfo. is not mychanged2", 9);
 	NOOFF
+	debugString("ic_fileinfo. after NOFF", 9);
 	attribs_mychange2 = 1;
 	ic_vis.setData("0");
 	ic_eq.setData("0");
@@ -220,6 +222,7 @@ _plsc_ic_attrib.onDataChanged()
 	_cflow_ic_attrib.setData("0");
 	ic_hidden.setdata("0");
 	attribs_mychange2 = 0;
+	debugString("ic_fileinfo. finish.", 9);
 }
 
 #ifdef IC_COVERFLOW
