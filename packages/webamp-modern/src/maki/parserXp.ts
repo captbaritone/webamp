@@ -15,6 +15,7 @@ export type Method = {
   name: string;
   typeOffset: number;
   returnType: DataType;
+  className?: string;
 };
 
 export type ParsedMaki = {
@@ -27,6 +28,7 @@ export type ParsedMaki = {
 };
 
 export type Binding = {
+    methodName?: string;
   commandOffset: number;
   methodOffset: number;
   variableOffset: number;
@@ -52,6 +54,8 @@ function getClassId(guid: string): string {
     }
 }
 
+let methods: Method[] = []
+let variables: Variable[] = []
 export function parse(data: ArrayBuffer): ParsedMaki {
   const makiFile = new MakiFile(data);
 
@@ -63,8 +67,8 @@ export function parse(data: ArrayBuffer): ParsedMaki {
   // Maybe it's additional version info?
   const extraVersion = makiFile.readUInt32LE();
   const classes = readClasses(makiFile);
-  const methods = readMethods(makiFile, classes);
-  const variables = readVariables({ makiFile, classes });
+  /* const */ methods = readMethods(makiFile, classes);
+  /* const */ variables = readVariables({ makiFile, classes });
   readConstants({ makiFile, variables });
   const bindings = readBindings(makiFile);
   const commands = decodeCode({ makiFile });
@@ -253,6 +257,7 @@ function readVariables({ makiFile, classes }) {
         type: typeName,
         value,
       };
+      variable._index_ = variables.length;
       variables.push(variable);
     }
   }
@@ -278,7 +283,9 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const variableOffset = makiFile.readUInt32LE();
     const methodOffset = makiFile.readUInt32LE();
     const binaryOffset = makiFile.readUInt32LE();
-    bindings.push({ variableOffset, binaryOffset, methodOffset });
+    const method = methods[methodOffset]
+    const methodName = `${method.className}.${method.name}`
+    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset });
   }
   return bindings;
 }
@@ -299,10 +306,13 @@ function decodeCode({ makiFile }) {
 function parseComand({ start, makiFile, length }) {
   const pos = makiFile.getPosition() - start;
   const opcode = makiFile.readUInt8();
+  const Command = COMMANDS[opcode] || {name: 'UNKNOWN', short: '-???-'}
+  const description = `${Command.short || Command.name} (${Command.name})`
   const command = {
+    description,
+    opcode,
     offset: pos,
     start,
-    opcode,
     arg: null,
     argType: opcodeToArgType(opcode),
   };
