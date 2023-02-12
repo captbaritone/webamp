@@ -40,6 +40,7 @@ import NStateButton from "./makiClasses/NStateButton";
 import EqVis from "./makiClasses/EqVis";
 import Images from "./makiClasses/Images";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
+import { FileExtractor, PathFileExtractor } from "./FileExtractor";
 
 export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
@@ -468,7 +469,17 @@ export default class SkinEngineWAL extends SkinEngine {
       node,
       parent
     );
-    this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
+    // if (!bucket.getWindowType()){
+    //   await this._loadThinger(bucket);
+    // }
+    // this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
+    this._uiRoot.addComponentBucket( bucket);
+  }
+
+  async _loadThinger(bucket: ComponentBucket) {
+    const ifileExtractor: FileExtractor = this._uiRoot._fileExtractor;
+    const fileExtractor: FileExtractor = new PathFileExtractor();
+    this._uiRoot.setFileExtractor(fileExtractor);
   }
 
   async dynamicXuiElement(node: XmlElement, parent: any) {
@@ -840,22 +851,39 @@ export default class SkinEngineWAL extends SkinEngine {
     this._uiRoot.addBucketEntry(windowType, groupDef);
 
     // in synchronouse mode, bucket may already exists
-    const bucket = this._uiRoot.getComponentBucket(windowType);
-    if (bucket) {
-      // custom signal to be not attached to bucket twice
-      groupDef.attributes.attached = "1";
-      const dummyNode = new XmlElement("dummy", {
-        id: groupDef.attributes.id,
-      });
-      await this.group(dummyNode, bucket);
+    // const bucket = this._uiRoot.getComponentBucket(windowType);
+    // if (bucket) {
+    //   // custom signal to be not attached to bucket twice
+    //   groupDef.attributes.attached = "1";
+    //   const dummyNode = new XmlElement("dummy", {
+    //     id: groupDef.attributes.id,
+    //   });
+    //   await this.group(dummyNode, bucket);
+    // }
+  }
+
+  async rebuildBuckets() {
+    for (const bucket of this._uiRoot._buckets) {
+      const wndType = bucket._wndType;
+      console.log(`rebuild Bucket "${wndType}"`, bucket)
+      for (const entry of this._uiRoot.getBucketEntries(wndType)) {
+        // if (entry.attributes.attached == "0") {
+          const dummyNode = new XmlElement("dummy", {
+            id: entry.attributes.id,
+          });
+          await this.group(dummyNode, bucket);
+        // }
+      }
     }
   }
 
+
   // assure that bucket entries are attached
-  async rebuildBuckets() {
+  async rebuildBuckets0() {
     for (const [wndType, bucket] of Object.entries<ComponentBucket>(
       this._uiRoot._buckets
     )) {
+      console.log(`rebuild Bucket "${wndType}"`, bucket)
       for (const entry of this._uiRoot.getBucketEntries(wndType)) {
         if (entry.attributes.attached == "0") {
           const dummyNode = new XmlElement("dummy", {

@@ -49,7 +49,8 @@ export class UIRoot {
   _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
   _systemObjects: SystemObject[] = [];
-  _buckets: { [wndType: string]: ComponentBucket } = {};
+  // _buckets: { [wndType: string]: ComponentBucket } = {};
+  _buckets: ComponentBucket[] = [];
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
@@ -112,7 +113,7 @@ export class UIRoot {
     this._containers = [];
     this._systemObjects = [];
     this._gammaNames = {};
-    this._buckets = {};
+    this._buckets = [];
     this._bucketEntries = {};
     this._xFades = [];
     this._additionalCss = []
@@ -245,12 +246,14 @@ export class UIRoot {
     return found;
   }
 
-  addComponentBucket(windowType: string, bucket: ComponentBucket) {
-    this._buckets[windowType] = bucket;
+  // addComponentBucket(windowType: string, bucket: ComponentBucket) {
+  addComponentBucket(bucket: ComponentBucket) {
+    // this._buckets[windowType] = bucket;
+    this._buckets.push(bucket);
   }
-  getComponentBucket(windowType: string): ComponentBucket {
-    return this._buckets[windowType];
-  }
+  // getComponentBucket(windowType: string): ComponentBucket {
+  //   return this._buckets[windowType];
+  // }
   addBucketEntry(windowType: string, entry: XmlElement) {
     if (!this._bucketEntries[windowType]) {
       this._bucketEntries[windowType] = [];

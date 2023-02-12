@@ -1,7 +1,7 @@
 import GuiObj from "./GuiObj";
 import { UIRoot } from "../../UIRoot";
 import Group from "./Group";
-import { px, toBool, clamp } from "../../utils";
+import { px, toBool, clamp, num } from "../../utils";
 import Button from "./Button";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ccomponentbucket.2F.3E
@@ -11,6 +11,9 @@ export default class ComponentBucket extends Group {
   _vertical: boolean = false; // default horizontal
   _wrapper: HTMLElement;
   _page: number = 0;
+  _leftmargin: number = 0;
+  _rightmargin: number = 0;
+  _spacing: number = 0;
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
@@ -29,6 +32,15 @@ export default class ComponentBucket extends Group {
         break;
       case "vertical":
         this._vertical = toBool(value);
+        break;
+      case "leftmargin":
+        this._leftmargin = num(value);
+        break;
+      case "rightmargin":
+        this._rightmargin = num(value);
+        break;
+      case "spacing":
+        this._spacing = num(value);
         break;
       default:
         return false;
@@ -97,7 +109,7 @@ export default class ComponentBucket extends Group {
         obj instanceof Button &&
         (obj._actionTarget == null || obj._actionTarget == "bucket") &&
         obj._action &&
-        obj._action.startsWith("cb_")
+        obj._action.toLowerCase().startsWith("cb_")
       ) {
         obj._actionTarget = this.getId();
       }
@@ -123,7 +135,7 @@ export default class ComponentBucket extends Group {
       : wrapperSize.width - viewportSize.width;
     const newScroll = clamp(
       currentStep + oneStep * maxSteps * step,
-      -maxScroll,
+      -(maxScroll + (this._leftmargin + this._rightmargin)),
       0
     );
     this._wrapper.style.setProperty(anchor, px(newScroll));
@@ -139,8 +151,13 @@ export default class ComponentBucket extends Group {
     super.draw();
     if (this._vertical) {
       this._div.classList.add("vertical");
+      this._wrapper.style.marginTop = px(this._leftmargin);
+      this._wrapper.style.marginBottom = px(this._rightmargin);
     } else {
       this._div.classList.remove("vertical");
+      this._wrapper.style.marginLeft = px(this._leftmargin);
+      this._wrapper.style.marginRight = px(this._rightmargin);
     }
+    this._wrapper.style.gap = px(this._spacing);
   }
 }
