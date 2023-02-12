@@ -158,7 +158,15 @@ class Interpreter {
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
           */
-          const result = V.newInt(b.value !== a.value);
+          // const result = V.newInt(b.value !== a.value);
+          let result;
+          // if comparing string, maybe case-insensitive
+          if(a.type == 'STRING' && b.type == 'STRING'){
+            result = V.newInt(b.value.toLowerCase() !== a.value.toLowerCase());
+            
+          } else {
+            result = V.newInt(b.value !== a.value);
+          }
           this.push(result);
           break;
         }
