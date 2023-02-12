@@ -1,0 +1,499 @@
+<groupdef id="ctitlebar" background="component.titlebg" autowidthsource="titlebar">
+	<text
+		id="titlebar"
+		ghost="1"
+		x="0"
+		y="0"
+		relatw="1"
+		h="21"
+		default=":componentname"
+		font="player.ticker.font7"
+		align="left"
+		doborder="0"
+		border="0"
+	/>
+</groupdef>
+
+<groupdef id="wasabi.frame.layout" background="studio.list.background">
+
+	<layer
+		x="20"
+		y="20"
+		w="-40"
+		relatw="1"
+		h="-40"
+		relath="1"
+		image="studio.green"
+		sysregion="1"
+	/>
+
+	<layer
+		id="topstretch"
+		x="127" y="0" w="-310" h="39"
+		relatw="1"
+		image="component.top-stretch"
+		move="1"
+		sysregion="1"
+	/>
+
+	<layer
+	 id="topstretchdisplay"
+	 x="127" y="0" w="-310" h="39"
+	 relatw="1"
+	 image="component.top-stretch-display"
+	 move="1"
+	 sysregion="1"
+	/>
+
+	<layer
+		id="bottomstretch"
+		x="160" y="-45"
+		relaty="1"
+		w="-310"
+		relatw="1"
+		image="component.bottom-stretch"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomstretchdisplay"
+		x="160" y="-45"
+		relaty="1"
+		w="-310"
+		relatw="1"
+		image="component.bottom-stretch-display"
+		sysregion="1"
+	/>
+
+	<layer
+		id="leftstretch"
+		x="0" y="39" w="28" h="-66"
+		relath="1"
+		image="component.left-stretch"
+		resize="left"
+		sysregion="1"
+	/>
+
+	<layer
+		id="leftstretchbg"
+		x="0" y="39" w="28" h="-66"
+		relath="1"
+		image="component.left-stretch-bg"
+		resize="left"
+		sysregion="1"
+	/>
+
+	<layer
+	 id="leftstretchdisplay"
+	 x="0" y="39" w="28" h="-66"
+	 relath="1"
+	 image="component.left-stretch-display"
+	 move="1"
+	 sysregion="1"
+	/>
+
+	<layer
+		id="rightstretch"
+		x="-28"
+		relatx="1"
+		h="-66"
+		y="39"
+		w="28"
+		relath="1"
+		image="component.right-stretch"
+		resize="right"
+		sysregion="1"
+	/>
+
+	<layer
+		id="rightstretchbg"
+		x="-28"
+		relatx="1"
+		h="-66"
+		y="39"
+		w="28"
+		relath="1"
+		image="component.right-stretch-bg"
+		resize="right"
+		sysregion="1"
+	/>
+
+	<layer
+		id="rightstretchdisplay"
+		x="-28"
+		relatx="1"
+		h="-66"
+		y="39"
+		w="28"
+		relath="1"
+		image="component.right-stretch-display"
+		resize="right"
+		sysregion="1"
+	/>
+
+	<layer
+		id="toprightcorner"
+		x="-195"
+		relatx="1"
+		h="39"
+		y="0"
+		image="component.top-right"
+		sysregion="1"
+	/>
+
+	<layer
+		id="toprightcornerlabel"
+		x="-191"
+		relatx="1"
+		h="16"
+		w="76"
+		y="4"
+		image="player.textlabel11"
+		sysregion="1"
+	/>
+
+	<layer
+		id="toprightcornerbg"
+		x="-195"
+		relatx="1"
+		h="39"
+		y="0"
+		image="component.top-right-bg"
+		sysregion="1"
+	/>
+
+	<layer
+		image="component.top-right-display"
+		x="-195"
+		y="0"
+		relatx="1"
+		ghost="1"
+	/>
+
+	<layer
+		id="topleftcorner"
+		x="0"
+		w="127"
+		y="0"
+		h="39"
+		image="component.top-left"
+		ghost="0" sysregion="1"
+	/>
+
+	<button
+		id="cSys"
+		action="CONTROLMENU"
+		x="18" y="4"
+		image="component.player.sys"
+		downImage="component.player.sys.down"
+		tooltip="Main Menu"
+		rectrgn="1"
+	/>
+
+	<layer
+		id="topleftcornerbg"
+		x="0"
+		w="127"
+		y="0"
+		h="39"
+		image="component.top-left-bg"
+		ghost="0" sysregion="1"
+	/>
+
+	<layer
+		image="component.top-left-display"
+		x="0"
+		y="0"
+		ghost="1"
+	/>
+
+	<layer
+		id="bottomleftcorner"
+		x="0"
+		y="-45"
+		w="160"
+		h="45"
+		relaty="1"
+		image="component.left-bottom"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomleftlabel"
+		x="18"
+		y="-8"
+		w="13"
+		h="5"
+		relaty="1"
+		image="component.label1"
+		sysregion="1"
+	/>
+
+
+
+	<layer
+		id="bottomleftcornerbg"
+		x="0"
+		y="-45"
+		w="160"
+		h="45"
+		relaty="1"
+		image="component.left-bottom-bg"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomrightcorner"
+		x="-160"
+		relatx="1"
+		y="-45"
+		relaty="1"
+		image="component.right-bottom"
+		resize="bottomright"
+		scale="bottomright"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomrightcornerbg"
+		x="-160"
+		relatx="1"
+		y="-45"
+		relaty="1"
+		image="component.right-bottom-bg"
+		resize="bottomright"
+		scale="bottomright"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomleftcornerdisplay"
+		x="0"
+		y="-45"
+		w="160"
+		h="45"
+		relaty="1"
+		image="component.left-bottom-display"
+		sysregion="1"
+	/>
+
+	<layer
+		id="bottomrightcornerdisplay"
+		x="-160"
+		relatx="1"
+		y="-45"
+		relaty="1"
+		image="component.right-bottom-display"
+		resize="bottomright"
+		scale="bottomright"
+		sysregion="1"
+	/>
+
+	<layer
+		id="cornerresize"
+		x="-11"
+		relatx="1"
+		y="-12"
+		relaty="1"
+		image="component.resize"
+		resize="bottomright"
+		scale="bottomright"
+		sysregion="1"
+	/>
+
+
+	<group
+		id="ctitlebar"
+		ghost="1"
+		x="119"
+		y="0"
+		h="21"
+	/>
+
+
+	<button
+		id="Close"
+		action="CLOSE"
+		x="-33" y="5"
+		relatx="1"
+		image="component.button.close" rectrgn="1"
+		downImage="component.button.close.down"
+		tooltip="Close Window"
+	/>
+
+	<layer
+		id="region-top-left"
+		x="0"
+		y="0"
+		image="component.region.top.left"
+		sysregion="-2"
+	/>
+
+	<layer
+		id="region-top-right"
+		x="-195"
+		y="0"
+		relatx="1"
+		image="component.region.top.right"
+		sysregion="-2"
+	/>
+
+
+	<layer
+		id="region-left"
+		x="0"
+		y="-45"
+		relaty="1"
+		image="component.region.left"
+		sysregion="-2"
+	/>
+
+	<layer
+		id="region-right"
+		x="-160"
+		y="-45"
+		relatx="1"
+		relaty="1"
+		image="component.region.right"
+		sysregion="-2"
+	/>
+
+	<group id="wasabi.titlebar" x="0" y="0" w="0" h="0"/>
+
+</groupdef>
+
+<groupdef id="wasabi.frame.playerbuttons" w="111" h="44">
+<button
+	id="ccPrevious"
+	action="PREV"
+	x="20" y="12"
+	image="component.player.prev"
+	downImage="component.player.prev.down"
+	tooltip="Previous"
+/>
+
+<button
+	id="ccNext"
+	action="NEXT"
+	x="91" y="23"
+	image="component.player.next"
+	downImage="component.player.next.down"
+	tooltip="Next"
+/>
+
+<button
+	id="ccPause"
+	action="PAUSE"
+	x="73" y="21"
+	image="component.player.pause"
+	downImage="component.player.pause.down"
+	tooltip="Pause"
+/>
+
+<button
+	id="ccPlay"
+	action="PLAY"
+	x="36" y="16"
+	image="component.player.play"
+	downImage="component.player.play.down"
+	tooltip="Play"
+/>
+
+<button
+	id="ccStop"
+	action="STOP"
+	x="56" y="19"
+	image="component.player.stop"
+	downImage="component.player.stop.down"
+	tooltip="Stop"
+/>
+
+
+ <slider
+	id="Seeker"
+	action="SEEK"
+	x="32" y="36"
+	w="70" h="8"
+	thumb="component.player.pos"
+	downThumb="component.player.pos.down"
+/>
+
+</groupdef>
+
+
+
+<groupdef id="wasabi.standardframe.statusbar" inherit_content="0">
+	<group id="wasabi.frame.layout" x="0" y="0" w="0" relatw="1" h="0" relath="1"/>
+	<group id="wasabi.frame.playerbuttons" x="0" y="-44" w="111" h="44" relaty="1"/>
+	<LayoutStatus id="standardframe.layoutstatus" x="126" y="-22" relaty="1" w="-156" relatw="1" h="17" exclude="{system}" />
+	<script id="standardframe.script" file="scripts/standardframe.maki" param="28,39,-56,-84,0,0,1,1" />
+</groupdef>
+
+
+<groupdef id="wasabi.standardframe.nostatusbar" inherit_content="0">
+	<group id="wasabi.frame.layout" x="0" y="0" w="0" h="0" relatw="1" relath="1"/>
+	<group id="wasabi.frame.playerbuttons" x="0" y="-44" w="111" h="44" relaty="1"/>
+	<script id="standardframe.script" file="scripts/standardframe.maki" param="28,39,-56,-84,0,0,1,1" />
+</groupdef>
+
+
+<groupdef id="wasabi.standardframe.modal" inherit_group="wasabi.standardframe.nostatusbar">
+	<group id="wasabi.panel" x="28" y="-21" w="-56" h="-20"
+		relatw="1" relath="1"
+	/>
+	<hideobject target="sysmenu"/>
+</groupdef>
+
+<groupdef id="wasabi.standardframe.static" inherit_group="wasabi.standardframe.nostatusbar">
+	<hideobject target="cornerresize" />
+</groupdef>
+
+
+<groupdef id="wasabi.buttonbar.stack" default_h="18">
+<grid
+		id=""
+		x="0" y="0"
+		w="0" h="0"
+		relatw="1" relath="1"
+		topleft="wasabi.label.top.left"
+		top="wasabi.label.top"
+		topright="wasabi.label.top.right"
+		left="wasabi.label.left"
+		middle="wasabi.label.middle"
+		right="wasabi.label.right"
+		bottomleft="wasabi.label.bottom.left"
+		bottom="wasabi.label.bottom"
+		bottomright="wasabi.label.bottom.right"
+		/>
+	<text
+		id="buttonbar.text"
+		x="2" y="1"
+		w="-10" h="0"
+		relatw="1" relath="1"
+		default="Error"
+		font="player.ticker.font7"
+		/>
+	<layer
+		id="buttonbar.arrow"
+		x="-15" y="6"
+		valign="center"
+		relatx="1"
+		image="wasabi.label.arrow.down"
+		/>
+	<button id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" rectrgn="1"/>
+</groupdef>
+
+
+
+<groupdef id="wasabi.statusbar" default_h="12">
+
+<group id="wasabi.objectframe.group" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+
+<!-- nonmodal progress bar -->
+	<layer id="wasabi.statusbar.progress.outline" image="statusbar.progress.outline" x="-104" relatx="1" y="3" w="100" h="10" visible="0" />
+	<layer id="wasabi.statusbar.progress.inside" image="statusbar.progress.inside" x="-104" relatx="1" y="3" w="1" h="10" visible="0" />
+
+	<!-- text line -->
+	<text id="wasabi.statusbar.text" x="6" y="1" w="-12" relatw="1" h="-1" relath="1" font="studio.component.statusbar" />
+
+</groupdef>

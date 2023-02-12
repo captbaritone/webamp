@@ -1,0 +1,17 @@
+<container id="ctsbig" name="ColorThemes" default_x="0" default_y="0" default_visible="0">
+
+	<groupdef id="ctbigcontent">
+		<ColorThemes:List id="main.colorthemes.list" x="2" y="5" w="-4" relatw="1" h="-49" relath="1"/>
+		<Wasabi:Button id="Switch" action="colorthemes_switch" action_target="main.colorthemes.list" x="0" y="-22" relaty="1" relatw="1" w="0" h="21" text="Switch"/>
+	</groupdef>
+
+	<layout id="normal" minimum_h="116" minimum_w="300" default_h="500" default_w="381" linkwidth="normal">
+		<Wasabi:StandardFrame:NoStatus
+			x="0" y="0" w="0" h="0" relatw="1" relath="1"
+			content="ctbigcontent"
+			padtitleright="18"
+			shade="shade"
+		/>
+	</layout>
+
+</container>
