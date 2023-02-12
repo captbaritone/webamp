@@ -38,7 +38,7 @@ export default class ConfigItem extends BaseObject {
   }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {
-    name = name.toLocaleLowerCase();
+    name = name.toLowerCase();
     let oldValue = this.getValue(name);
     if (oldValue == null) {
       this.setValue(name, defaultValue);
