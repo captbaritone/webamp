@@ -72,7 +72,10 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
       } else if (impl.length !== method.parameters.length) {
         methods.push({ name: methodName, status: "wrong", deprecated:mdeprecated, blacklist });
       } else {
-        methods.push({ name: methodName, status: "found", deprecated:mdeprecated, blacklist });
+        // const fake =  /\/\/TODO/.test(impl.toString());
+        const fake =  impl.toString().split('\n').length <=2;
+        methods.push({ name: methodName, status: "found", deprecated:mdeprecated, blacklist, fake });
+
       }
     }
   }
@@ -81,14 +84,20 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
 
 let total = 0;
 let found = 0;
+let dummy = 0;
 
 for (const cls of classes) {
   const classRow = document.createElement("tr");
-  classRow.addEventListener("click", () => {
-    classRow.classList.toggle("expanded");
-  });
+  // classRow.addEventListener("click", () => {
+  //   classRow.classList.toggle("expanded");
+  // });
+
   const className = document.createElement("td");
   className.classList.add("class-name");
+  className.addEventListener("click", () => {
+    classRow.classList.toggle("expanded");
+  });
+
   let totalCount = 0;
   let foundCount = 0;
   // const totalCount = cls.methods.filter((m) => !m.hook).length;
@@ -117,7 +126,7 @@ for (const cls of classes) {
     const methodDiv = document.createElement("span");
     methodDiv.classList.add("method");
     // methodDiv.innerText = method.name;
-    methodDiv.innerHTML = method.name;
+    methodDiv.innerHTML = `<span>${method.name}</span>`;
     methodDiv.title = method.name;
     switch (method.status) {
       case "missing":
@@ -125,6 +134,11 @@ for (const cls of classes) {
         break;
       case "found":
         methodDiv.style.backgroundColor = "lightgreen";
+        if(method.fake){
+          methodDiv.style.backgroundColor = "yellow";
+          methodDiv.classList.add('fake');
+          dummy++;
+        }
         foundCount ++;
         break;
       case "wrong":
@@ -173,4 +187,4 @@ for (const cls of classes) {
 
 methodHeader.innerText += ` (${found}/${total}, ${Math.round(
   (found / total) * 100
-)}% Complete)`;
+)}% Complete) | ${Math.round(((found - dummy) / total) * 100)}% Real.`;

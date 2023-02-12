@@ -25,9 +25,17 @@
        min-height: 20px;
        display: inline-block;
        overflow: hidden;
-       text-indent: -99999px;
+       /* text-indent: -99999px; */
        border: 1px solid grey;
        margin: 1px;
+      }
+      .method::before{
+        content: ' ';
+        margin-right: 1em;
+        padding: 0 3px;
+      }
+      .method span {
+        display: none;
       }
       .method i {
         color: #795548;
@@ -39,15 +47,19 @@
        /* height: 20px; */
        display: block;
        overflow: hidden;
-       text-indent: 0;
+       /* text-indent: 0; */
        border: none;
        margin: 1px;
        padding-left: 3px;
       }
+      .expanded .method span {
+        display: inline;
+      }
       .class-name {
         white-space: nowrap;
         font-weight: bold;
-        display: block;
+        /* display: block; */
+        vertical-align: top;
         cursor: pointer;
         text-align: right;
         margin-right: 4px;
@@ -64,6 +76,10 @@
       .dummy {
         opacity: 0.3;
         width: 1px;
+      }
+      .fake::before{
+        content: 'F';
+        background: rgba(0,0,0,.3);
       }
     </style>
   </head>
