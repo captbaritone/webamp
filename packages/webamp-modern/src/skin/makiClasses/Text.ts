@@ -305,6 +305,14 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       }
     }
     if (this._display) {
+      if (this._display == 'songinfo'){
+        const track =  this._uiRoot.playlist.currentTrack()        
+        if(track){
+          const m = track.metadata;
+          return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+        }
+      }
+
       return this._displayValue;
     }
     return this._text ?? "";
