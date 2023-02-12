@@ -1,0 +1,31 @@
+<!-- Browser String Table -->
+
+<StringTable id="nullsoft.browser">
+
+	<!-- Monitor Buttons -->
+	<StringEntry id="0"		string="Hide"/>
+	<StringEntry id="1"		string="Hide Media Monitor"/>
+	<StringEntry id="2"		string="Show"/>
+	<StringEntry id="3"		string="Show Media Monitor"/>
+	<StringEntry id="4"		string="Rescan"/>
+	<StringEntry id="5"		string="Rescan Document"/>
+	<StringEntry id="6"		string="Download"/>
+	<StringEntry id="7"		string="Download selected Items"/>
+	<StringEntry id="8"		string="Play"/>
+	<StringEntry id="9"		string="Play selected Items"/>
+	<StringEntry id="10"	string="Media Monitor"/>
+	<StringEntry id="11"	string="Switch to Media Monitor"/>
+	<StringEntry id="12"	string="Downloads"/>
+	<StringEntry id="13"	string="Switch to Active Downloads"/>
+	<StringEntry id="14"	string="Settings"/>
+	<StringEntry id="15"	string="Download Settings"/>
+
+	<StringEntry id="16"	string="Media From"/>
+	<StringEntry id="17"	string="Location"/>
+	<StringEntry id="18"	string="Transferred Data"/>
+	<StringEntry id="19"	string="Status"/>
+	<StringEntry id="20"	string="Title"/>
+
+	<StringEntry id="21"	string="Autoopen Media Monitor on media results"/>
+
+</StringTable>
