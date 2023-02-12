@@ -162,7 +162,7 @@ class Interpreter {
           let result;
           // if comparing string, maybe case-insensitive
           if(a.type == 'STRING' && b.type == 'STRING'){
-            result = V.newInt(b.value.toLowerCase() !== a.value.toLowerCase());
+            result = V.newInt(b.value.toLowerCase() != a.value.toLowerCase());
             
           } else {
             result = V.newInt(b.value !== a.value);
