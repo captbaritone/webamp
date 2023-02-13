@@ -153,7 +153,7 @@ export default class Menu extends Group {
     //   this._setButtonWidth(w)
     // }
     super.draw();
-    this._div.style.removeProperty('pointer-events')
+    this._div.style.pointerEvents = 'all';
     // if (this._vertical) {
     //   this._div.classList.add("vertical");
     // } else {
