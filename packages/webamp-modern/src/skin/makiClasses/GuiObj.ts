@@ -408,6 +408,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getxmlparam(param: string): string {
+    param = param.toLowerCase()
     const _ = this["_" + param];
     return _ != null ? _.toString() : null;
   }
@@ -776,7 +777,6 @@ export default class GuiObj extends XmlObj {
   }
   
   canceltarget() {
-    // assume(false, "Unimplemented: cancelTarget");
     this._goingToTarget = true;
   }
 
@@ -794,7 +794,6 @@ export default class GuiObj extends XmlObj {
   }
   onstartup() {
     this._uiRoot.vm.dispatch(this, "onstartup")
-    // assume(false, "Unimplemented");
   }
 
   /**
