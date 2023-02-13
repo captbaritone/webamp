@@ -44,8 +44,21 @@ const PRIMITIVE_TYPES = {
   4: "DOUBLE",
   6: "STRING",
 };
+const knownContainerGuids = {
+    "{0000000a-000c-0010-ff7b-01014263450c}": "[VIS]", // visualization
+    "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "[PL]", // playlist editor
+    "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "[ML]", // media library
+    "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "[CON]", // config?
+    "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "[LIR]", // lyric?
+    "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "[DL]", // download??
+    "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "[VIDEO]", // independent video window
+  };
 
 function getClassId(guid: string): string {
+    const known = knownContainerGuids[guid];
+    if(known){
+        return known
+    }
     try {
       const cls: Function = classResolver(guid);
       return cls.prototype.constructor.name;
