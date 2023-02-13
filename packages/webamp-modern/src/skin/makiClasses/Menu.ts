@@ -1,12 +1,12 @@
 import GuiObj from "./GuiObj";
 // import { UIRoot } from "../../UIRoot";
-// import Group from "./Group";
+import Group from "./Group";
 // import { px, toBool, clamp } from "../../utils";
 // import Button from "./Button";
 import Layer from "./Layer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#?
-export default class Menu extends GuiObj {
+export default class Menu extends Group {
   static GUID = "73c00594401b961f24671b9b6541ac27";
   //static GUID "73C00594-961F-401B-9B1B-672427AC4165";
   _normalId: string;
@@ -20,6 +20,7 @@ export default class Menu extends GuiObj {
   _elHover: GuiObj;
   _elDown: GuiObj;
   _elImage: Layer;
+  _popup: HTMLElement;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -103,10 +104,12 @@ export default class Menu extends GuiObj {
   onEnterArea(){
     super.onEnterArea()
     this._showButton(this._elHover);
+    this._div.classList.add('open')
   }
   onLeaveArea(){
     super.onLeaveArea()
-    this._showButton(null);
+    this._showButton(this._elNormal);
+    this._div.classList.remove('open')
   }
 
 
@@ -150,10 +153,17 @@ export default class Menu extends GuiObj {
     //   this._setButtonWidth(w)
     // }
     super.draw();
+    this._div.style.removeProperty('pointer-events')
     // if (this._vertical) {
     //   this._div.classList.add("vertical");
     // } else {
     //   this._div.classList.remove("vertical");
     // }
+
+    this._popup = document.createElement("div");
+    this._popup.classList.add('popup');
+    this._popup.classList.add('fake-popup');
+    // this._appendChildrenToDiv(this._popup);
+    this._div.appendChild(this._popup);
   }
 }

@@ -272,3 +272,25 @@ container:not(:active):not(container:focus-within) .webamp--img.inactivable {
 #wasabi\.menubar\.ml {
   background: var(--color-wasabi-window-background);
 }
+
+
+menu {
+  /* pointer-events: unset; */
+  overflow: visible;
+}
+/* FAKE POPUP */
+.fake-popup {
+  width: 200px;
+  height: 300px;
+  background-color: yellow;
+  z-index: 1000;
+}
+menu > .popup{
+  position: absolute;
+  left: 0;
+  top: 100%;
+  display: none;
+}
+.open > .popup{
+  display: block;
+}
