@@ -18,6 +18,7 @@ export default class Vm {
   // performant by normalizing some of these things when scripts are added.
   dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
     const reversedArgs = [...args].reverse();
+    let executed = 0;
     for (const script of this._scripts) {
       for (const binding of script.bindings) {
         if (
@@ -25,11 +26,13 @@ export default class Vm {
           script.variables[binding.variableOffset].value === object
         ) {
           this.interpret(script, binding.commandOffset, reversedArgs);
-          return 1;
+          // return 1;
+          executed ++;
         }
       }
     }
-    return 0;
+    return executed;
+    // return 0;
   }
 
   addScript(maki: ParsedMaki): number {
