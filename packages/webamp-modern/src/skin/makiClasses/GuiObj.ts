@@ -255,12 +255,14 @@ export default class GuiObj extends XmlObj {
 
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
+      console.log('mouse-down!');
       this.onLeftButtonDown(
         e.offsetX + this.getleft(),
         e.offsetY + this.gettop()
       );
 
       const mouseUpHandler = (e: MouseEvent) => {
+        console.log('mouse-up!');
         this.onLeftButtonUp(
           e.offsetX + this.getleft(),
           e.offsetY + this.gettop()
@@ -505,6 +507,9 @@ export default class GuiObj extends XmlObj {
     //TODO:
   }
 
+  ismouseoverrect(): boolean {
+    return true; //TODO:
+  }
   onresize(x: number, y: number, w: number, h: number) {
     this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: x },
@@ -707,12 +712,12 @@ export default class GuiObj extends XmlObj {
         this[key] = clamp(start + delta * progress, target, positive);
         this[renderKey]();
       }
-      if (timeDiff < duration) {
+      if (timeDiff < duration && this._goingToTarget) {
         window.requestAnimationFrame(update);
       } else {
         this._goingToTarget = false;
         // TODO: Clear targets?
-        this._uiRoot.vm.dispatch(this, "ontargetreached");
+        this.ontargetreached()
       }
     };
 
@@ -766,18 +771,19 @@ export default class GuiObj extends XmlObj {
    * it's previously set target.
    */
   ontargetreached() {
-    assume(false, "Unimplemented");
+    this._uiRoot.vm.dispatch(this, "ontargetreached")
   }
-
+  
   canceltarget() {
-    assume(false, "Unimplemented");
+    // assume(false, "Unimplemented: cancelTarget");
+    this._goingToTarget = true;
   }
 
   // [WHERE IS THIS?]
 
   // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
   reversetarget(reverse: number) {
-    assume(false, "Unimplemented");
+    assume(false, "Unimplemented: reverseTarget");
   }
 
   onsetvisible(onoff: boolean ){
@@ -785,8 +791,9 @@ export default class GuiObj extends XmlObj {
       { type: "BOOLEAN", value: onoff ? 1 : 0 },
     ]);
   }
-  onStartup() {
-    assume(false, "Unimplemented");
+  onstartup() {
+    this._uiRoot.vm.dispatch(this, "onstartup")
+    // assume(false, "Unimplemented");
   }
 
   /**

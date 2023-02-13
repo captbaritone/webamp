@@ -1721,6 +1721,7 @@ export default class SystemObject extends BaseObject {
 }
 
 function dumpScriptDebug(script: ParsedMaki) {
+  // @ts-ignore
   for (const [i, binding] of script.bindings.entries()) {
     const method = script.methods[binding.methodOffset];
     const guid = script.classes[method.typeOffset];
