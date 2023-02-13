@@ -7,6 +7,7 @@ import {
   assume,
   relative,
   findLast,
+  unimplemented,
 } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
@@ -508,7 +509,7 @@ export default class GuiObj extends XmlObj {
   }
 
   ismouseoverrect(): boolean {
-    return true; //TODO:
+    return unimplemented(true); //TODO:
   }
   onresize(x: number, y: number, w: number, h: number) {
     this._uiRoot.vm.dispatch(this, "onresize", [

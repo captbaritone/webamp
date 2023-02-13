@@ -73,7 +73,8 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
         methods.push({ name: methodName, status: "wrong", deprecated:mdeprecated, blacklist });
       } else {
         // const fake =  /\/\/TODO/.test(impl.toString());
-        const fake =  impl.toString().split('\n').length <=2;
+        const code = impl.toString();
+        const fake =  code.split('\n').length <= 2 || /[Uu]nimplemented/.test(code);
         methods.push({ name: methodName, status: "found", deprecated:mdeprecated, blacklist, fake });
 
       }
@@ -135,7 +136,7 @@ for (const cls of classes) {
       case "found":
         methodDiv.style.backgroundColor = "lightgreen";
         if(method.fake){
-          methodDiv.style.backgroundColor = "yellow";
+          methodDiv.style.backgroundColor = "greenyellow";
           methodDiv.classList.add('fake');
           dummy++;
         }

@@ -143,6 +143,10 @@ export const throttle = (fn: Function, wait: number = 300) => {
   };
 };
 
+export function unimplemented(value: any): any {
+  return value
+}
+
 /**
  * parse color string into byte values.
  * @param hex only a valid html : '#XXXXXX'
