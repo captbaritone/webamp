@@ -348,6 +348,13 @@ class Interpreter {
           let result = null;
           try {
             result = obj.value[methodName](...methodArgs);
+            // const afunction = obj.value[methodName];
+            // if(afunction.constructor.name === 'AsyncFunction'){
+            //   result = await afunction(...methodArgs);
+            // } else {
+            //   result = afunction(...methodArgs);
+            // }
+            
           } catch (err) {
             const args = JSON.stringify(methodArgs)
               .replace("[", "")
