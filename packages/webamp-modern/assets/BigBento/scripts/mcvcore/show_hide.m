@@ -183,7 +183,8 @@ switchToIcOnly ()
 }
 
 switchToEq ()
-{
+{	debugString("switc2eq @cbTimerRun="+integerToString(callbackTimer.isRunning()), 9);
+	debugString("switc2eq @tempDisableRun="+integerToString(tempDisable.isRunning()), 9);
 	if (callbackTimer.isRunning()) return;
 	if (tempDisable.isRunning()) return;
 	tempDisable.start();
@@ -218,6 +219,7 @@ switchToEq ()
 
 	showEq();
 	updateSaving(4);
+	debugString("switc2eq finished", 9);
 }
 
 switchToCfg ()

@@ -29,7 +29,7 @@ Note:		This script is based on drawer.m
 #include attribs/init_windowpage.m
 #include attribs/init_vis.m
 
-//define DEBUG
+#define DEBUG
 #define FILE_NAME "infocompcore.m"
 #include <lib/debug.m>
 

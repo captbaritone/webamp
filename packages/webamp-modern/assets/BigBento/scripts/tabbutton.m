@@ -69,7 +69,10 @@ mousetrap.onleaveArea ()
 
 mousetrap.onEnterArea ()
 {
-	normalGrid.hide(); hoverGrid.show(); normalText.hide(); hoverText.show();
+	normalGrid.hide(); 
+	hoverGrid.show(); 
+	normalText.hide(); 
+	hoverText.show();
 }
 
 mousetrap.onActivate (int activated)
