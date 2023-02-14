@@ -35,17 +35,17 @@ export default class ConfigAttribute extends BaseObject {
   }
 
   getdata(): string {
-    console.log('getData:',this._id, '=',this._configItem.getValue(this._id))
+    // console.log('getData:',this._id, '=',this._configItem.getValue(this._id))
     return this._configItem.getValue(this._id);
   }
   setdata(value: string) {
-    console.log('setData:',this._id, '=',value)
+    // console.log('setData:',this._id, '=',value)
     this._configItem.setValue(this._id, value);
     this.trigger("datachanged");
     this.ondatachanged()
   }
   ondatachanged() {
-    console.log(' -- triggering onDataChanged...'+ this._id, this._configItem.getValue(this._id))
+    // console.log(' -- triggering onDataChanged...'+ this._id, this._configItem.getValue(this._id))
     this._configItem._uiRoot.vm.dispatch(this, "ondatachanged");
     // console.log('triggered: onDataChanged.')
   }
