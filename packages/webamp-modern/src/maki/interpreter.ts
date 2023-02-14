@@ -511,9 +511,13 @@ class Interpreter {
         case 64: {
           const a = this.stack.pop();
           const b = this.stack.pop();
+          let a_value = a.value;
+          let b_value = b.value;
           switch (a.type) {
-            case "OBJECT":
             case "BOOLEAN":
+              a_value = a_value == 0? 0 : 1;
+              break;
+            case "OBJECT":
             case "NULL":
               throw new Error(
                 `Tried to add non-numbers: ${b.type} + ${a.type}.64a`
@@ -527,11 +531,18 @@ class Interpreter {
           }
           switch (b.type) {
             case "OBJECT":
+              throw new Error("Tried to add non-numbers.64b." 
+              + `A:${a.type}=${a.value}`
+              + `B:${b.type}=${b.value}`);
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.64b");
+              // BigBento:
+              // reset += (w == 0);
+	            // reset += (w < min_w);
+              b_value = b_value == 0? 0 : 1;
           }
           // TODO: Do we need to round the value if INT?
-          this.push({ type: a.type, value: b.value + a.value });
+          // this.push({ type: a.type, value: b.value + a.value });
+          this.push({ type: a.type, value: b_value + a_value });
           break;
         }
         // - (subtract)
