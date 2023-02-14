@@ -63,12 +63,15 @@ function getClassId(guid: string): string {
       const cls: Function = classResolver(guid);
       return cls.prototype.constructor.name;
     } catch (e) {
-      return '<unknown!>';
+      return '--unknown--';
     }
 }
 
 let methods: Method[] = []
 let variables: Variable[] = []
+let constants: any[] = []
+let classes: string[] = [];
+let classAliases: {[key:string] : string}  = {};
 export function parse(data: ArrayBuffer): ParsedMaki {
   const makiFile = new MakiFile(data);
 
@@ -79,7 +82,7 @@ export function parse(data: ArrayBuffer): ParsedMaki {
   // Not sure what we are skipping over here. Just some UInt 32.
   // Maybe it's additional version info?
   const extraVersion = makiFile.readUInt32LE();
-  const classes = readClasses(makiFile);
+  /* const */ classes = readClasses(makiFile);
   /* const */ methods = readMethods(makiFile, classes);
   /* const */ variables = readVariables({ makiFile, classes });
   readConstants({ makiFile, variables });
@@ -118,12 +121,15 @@ export function parse(data: ArrayBuffer): ParsedMaki {
     return command;
   });
   return {
-    variables,
+    version,
+    extraVersion,
     classes,
+    classAliases,
+    variables,
     methods,
     bindings: resolvedBindings,
     commands: resolvedCommands,
-    version,
+    // _commands: commands,
   };
 }
 
@@ -165,7 +171,7 @@ function readVersion(makiFile: MakiFile): number {
 function readClasses(makiFile: MakiFile): string[] {
   let count = makiFile.readUInt32LE();
   const classes = [];
-  const classesAlias = ['.. -- ..'];
+  const classesAlias = {};//['.. -- ..'];
   while (count--) {
     let identifier = "";
     let chunks = 4;
@@ -173,9 +179,12 @@ function readClasses(makiFile: MakiFile): string[] {
       identifier += makiFile.readUInt32LE().toString(16).padStart(8, "0");
     }
     classes.push(identifier);
-    classesAlias.push(`${getClassId(identifier)} = ${identifier}`);
+    // classesAlias.push(`${getClassId(identifier)} = ${identifier}`);
+    classesAlias[identifier] = getClassId(identifier);
   }
-  return classes.concat(classesAlias);
+  classAliases = classesAlias
+  return classes;
+  // return classes.concat(classesAlias);
 }
 
 function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
@@ -202,37 +211,51 @@ function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
 function readVariables({ makiFile, classes }) {
   let count = makiFile.readUInt32LE();
   const variables = [];
+  let newClass = 0;
   while (count--) {
     const typeOffset = makiFile.readUInt8();
     const object = makiFile.readUInt8();
     const subClass = makiFile.readUInt16LE();
     const uinit1 = makiFile.readUInt16LE();
     const uinit2 = makiFile.readUInt16LE();
-    makiFile.readUInt16LE(); // uinit3
-    makiFile.readUInt16LE(); //uinit4
+    const uinit3 = makiFile.readUInt16LE(); // uinit3
+    const uinit4 = makiFile.readUInt16LE(); //uinit4
     const global = makiFile.readUInt8();
-    makiFile.readUInt8(); // system
+    const isSystem = makiFile.readUInt8(); // system
 
     if (subClass) {
       const variable = variables[typeOffset];
       if (variable == null) {
         throw new Error("Invalid type");
+      } else {
+        // variables[typeOffset].isClass = true;
+        variable.isClass = true;
+        if(!variable.newClassName){
+          variable.newClassName = `NEW_CLASS_NAME-${++newClass}`;
+          // variable.type0 = variable.type;
+          variable.type = 'CLASS';
+        }
       }
 
       // assume(false, "Unimplemented subclass variable type");
       variables.push({
+        // type: variable.newClassName? "CLASS" : "OBJECT",
         type: "OBJECT",
         value: null,
         global,
         guid: variable.guid,
-        className: getClassId(variable.guid)
+        isSubClass: true,
+        inheritFrom: variable.newClassName ||  variable.className,
+        isObject:object,
+        // newClassDeclaration: true,
+        className: getClassId(variable.guid) || '^UNKNOWN^'
       });
     } else if (object) {
       const klass = classes[typeOffset];
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push({ type: "OBJECT", value: null, global, guid: klass, className: getClassId(klass) });
+      variables.push({ type: "OBJECT", value: null, global, guid: klass, className: getClassId(klass),isObject:object, });
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
@@ -269,9 +292,13 @@ function readVariables({ makiFile, classes }) {
         global,
         type: typeName,
         value,
+        isObject:object,
       };
       variable._index_ = variables.length;
       variables.push(variable);
+    }
+    if(isSystem){
+      variables[variables.length-1].isSystem = true
     }
   }
   return variables;
@@ -286,6 +313,7 @@ function readConstants({ makiFile, variables }) {
     const value = makiFile.readString();
     // TODO: Don't mutate
     variable.value = value;
+    variable.constantData = value;
   }
 }
 
@@ -297,8 +325,9 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const methodOffset = makiFile.readUInt32LE();
     const binaryOffset = makiFile.readUInt32LE();
     const method = methods[methodOffset]
+    // const methodName = `${method.newClassName || method.className}.${method.name}`
     const methodName = `${method.className}.${method.name}`
-    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset });
+    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset, variable: variables[variableOffset] });
   }
   return bindings;
 }
