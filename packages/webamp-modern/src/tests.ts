@@ -461,3 +461,49 @@ async function main() {
 }
 
 main();
+
+
+// https://stackoverflow.com/questions/65915371/how-do-i-make-the-program-wait-for-a-button-click-to-go-to-the-next-loop-iterati
+// const btn = document.querySelector('button1');
+const btn1 = document.getElementById('btn1');
+const btn2 = document.getElementById('btn2');
+const btn3 = document.getElementById('btn3');
+
+let successCallback;
+
+// function getNumber() {
+async function getNumber(): Promise<number> {
+    return new Promise(resolve => successCallback = resolve);
+}
+
+
+function btn1Click() {
+    if (successCallback) successCallback(1);
+}
+function btn2Click() {
+    if (successCallback) successCallback(2);
+}
+function btn3Click() {
+    if (successCallback) successCallback(-1);
+}
+
+async function doIt() {
+    console.log('wait for clic....')
+    btn1.addEventListener('click', btn1Click);
+    btn2.addEventListener('click', btn2Click);
+    btn3.addEventListener('click', btn3Click);
+
+    for (let c = 1; c < 10; c += 1) {
+      const ret = await getNumber();
+      console.log(c, 'result=', ret);
+      if(ret < 0) break;
+    }
+
+    btn1.removeEventListener('click', btn1Click);
+    btn2.removeEventListener('click', btn2Click);
+    btn3.removeEventListener('click', btn3Click);
+    console.log('Finished');
+}
+
+
+doIt();

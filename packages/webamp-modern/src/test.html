@@ -12,14 +12,24 @@
       }
       #editor {
         position: absolute;
-        top: 0;
+        top: 40px;
         right: 0;
         bottom: 0;
         left: 0;
       }
+      #panel * {
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
+    <div id="panel">
+      <h3>Async wait for click demo</h3>
+      <p>see the console</p>
+      <button id="btn1">1: Continue loop</button>
+      <button id="btn2">2: Continue loop</button>
+      <button id="btn3">3: STOP loop</button>
+    </div>
     <div id="editor"></div>
     <script type="module" src="/tests.js"></script>
     <!-- <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> -->
@@ -29,11 +39,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script> -->
-    <script
+    <!-- <script
       src="https://pagecdn.io/lib/ace/1.4.14/ace.min.js"
       crossorigin="anonymous"
       integrity="sha256-lHff7sYmofr9GsfmfNbPsMy6XbG8HoG0/zJvtovyCMU="
-      ></script>
+      ></script> -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
       <script>
         ace.config.set(
           "basePath",
