@@ -29,8 +29,16 @@
        border: 1px solid grey;
        margin: 1px;
       }
-      .method span {
-        display: none;
+      tr:not(.expanded) .method span {
+        /* display: none; */
+        display: inline-block;
+        pointer-events: none;
+        /* visibility: hidden; */
+        float: left;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        font-size: 0px;
       }
       .method i {
         color: #795548;
