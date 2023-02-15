@@ -89,10 +89,16 @@ declare global {
 }
 
 function explore(maki: ParsedMaki){
-    const div = document.getElementById('editor');
-    div.textContent = JSON.stringify(maki, null, "\t")
-    var editor = window.ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
+    const script = JSON.stringify(maki, null, "\t")
+    updateEditor(script, 'editor1')
+    updateEditor(script, 'editor2')
+}
+function updateEditor(txt: string, elementId: string){
+    const div = document.getElementById(elementId);
+    div.textContent = txt
+    var editor = window.ace.edit(elementId);
+    // editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/merbivore");
     editor.getSession().setMode("ace/mode/json");
 }
 // this._scripts[file] = scriptContents;
