@@ -195,7 +195,7 @@ function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
     // Offset into our parsed types
     const typeOffset = classCode & 0xff;
     // This is probably the second half of a uint32
-    makiFile.readUInt16LE();
+    const unknown1 = makiFile.readUInt16LE();
     const name = makiFile.readString();//.toLowerCase();
 
     const classGuid = classes[typeOffset];
@@ -203,7 +203,7 @@ function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
 
     const returnType = getReturnType(classGuid, name.toLowerCase());
 
-    methods.push({ name, typeOffset, returnType, className });
+    methods.push({ name, typeOffset, returnType, className, unknown1, classCode });
   }
   return methods;
 }

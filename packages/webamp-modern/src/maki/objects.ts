@@ -44,6 +44,7 @@ export function getReturnType(classId: string, methodName: string): DataType {
     case "STRING":
     case "FLOAT":
     case "BOOLEAN":
+    case "ANY":
       return upper as any;
     case "":
       return "NULL" as any;

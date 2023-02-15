@@ -1065,15 +1065,19 @@ export default class SystemObject extends BaseObject {
     this._uiRoot.audio.seekTo(pos);
   }
 
+  integer(d: number): number {
+    return Math.round(Number(d));
+  }
+
   /**
-   * Get the string representation of an integer.
+   * Get the string representation of an integer. 
    *
    * @ret         The string equivalent of the integer.
    * @param  value   The integer to change into a string.
    */
   integertostring(value: number): string {
     return String(Math.round(value));
-  }
+  }  
 
   /**
    * Convert a time in seconds to a M:SS value, does not
@@ -1210,7 +1214,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The current position in the track.
    */
-  getposition() {
+  getposition(): string {
+    return String(this._uiRoot.audio.getCurrentTime() * 1000)
     return "25000";
   }
 

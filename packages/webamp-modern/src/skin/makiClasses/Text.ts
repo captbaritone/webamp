@@ -47,7 +47,7 @@ export default class Text extends GuiObj {
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
     this._uiRoot = uiRoot;
-    this._textWrapper = document.createElement("wrap");
+    this._textWrapper = document.createElement("pre");
     this._div.appendChild(this._textWrapper);
   }
 
@@ -63,6 +63,7 @@ export default class Text extends GuiObj {
       case "text":
       case "default":
         // (str) A static string to be displayed.
+        // console.log('THETEXT', value)
         this._text = value;
         this._renderText();
         break;
@@ -408,9 +409,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (font instanceof BitmapFont) {
       this._renderBitmapFont(font);
     } else {
+      // console.log('THETEXT', this.gettext())
+      // this._textWrapper.innerHTML = '<pre>'+ this.gettext().replace(/[\n\r]/g,'<br/>') + '</pre>';
+      // this._textWrapper.innerHTML = '<div>'+ this.gettext().replace(/[\n]/g,'<br/>') + '</div>';
+      // this._textWrapper.innerHTML = '<pre>'+ this.gettext() + '</pre>';
       this._textWrapper.innerText = this.gettext();
       //? workaround of titlebar.text
-      this._div.style.lineHeight = this._div.style.height;
+      // this._div.style.lineHeight = this._div.style.height;
     }
   }
 
