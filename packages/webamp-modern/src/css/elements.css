@@ -102,7 +102,7 @@ text i {
 }
 text wrap {
   display: block;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   background-image: inherit;
   background-size: 0px;
   position: relative;
@@ -110,9 +110,12 @@ text wrap {
   height: 100%;
   width: var(--full-width);
   min-width: 100%;
+  font-family: monospace;
+  white-space: pre;
 }
 text wrap[font="BitmapFont"] {
   display: flex;
+  white-space: nowrap;
   /* vertical align: */
   /* align-items: center; */
   align-items: var(--valign, center);

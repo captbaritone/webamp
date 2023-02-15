@@ -47,7 +47,7 @@ export default class Text extends GuiObj {
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
     this._uiRoot = uiRoot;
-    this._textWrapper = document.createElement("pre");
+    this._textWrapper = document.createElement("wrap");
     this._div.appendChild(this._textWrapper);
   }
 
@@ -197,7 +197,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
       this._fontSize =
-        this._fontSize * (1 - (fontHeight - this._fontSize) / this._fontSize);
+        this._fontSize * (1 - (1.0 * fontHeight - this._fontSize) / (1.0 * this._fontSize));
     }
   }
 
