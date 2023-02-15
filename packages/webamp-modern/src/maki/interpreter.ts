@@ -61,6 +61,7 @@ class Interpreter {
   methods: Method[];
   commands: Command[];
   debug: boolean = false;
+  maki_id: string;
   classResolver: (guid: string) => any;
 
   constructor(
@@ -68,12 +69,13 @@ class Interpreter {
     classResolver: (guid: string) => any,
     uiRoot: UIRoot
   ) {
-    const { commands, methods, variables, classes } = program;
+    const { commands, methods, variables, classes, maki_id } = program;
     this.classResolver = classResolver;
     this.commands = commands;
     this.methods = methods;
     this.variables = variables;
     this.classes = classes;
+    this.maki_id = maki_id;
     this._uiRoot = uiRoot;
 
     this.stack = [];
@@ -341,7 +343,7 @@ class Interpreter {
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
-            `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
+            `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object. #${this.maki_id}`
           );
 
           // let value = obj.value[methodName](...methodArgs);

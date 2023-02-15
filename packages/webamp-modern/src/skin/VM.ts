@@ -21,15 +21,38 @@ export default class Vm {
     let executed = 0;
     for (const script of this._scripts) {
       for (const binding of script.bindings) {
-        if (
-          script.methods[binding.methodOffset].name === event &&
-          script.variables[binding.variableOffset].value === object
-        ) {
-          this.interpret(script, binding.commandOffset, reversedArgs);
-          // return 1;
-          executed ++;
+        if (script.methods[binding.methodOffset].name === event) {
+          let match = false;
+          // if(event.startsWith('onleftbu')){
+          //   debugger;
+          // }
+          const binding_var = script.variables[binding.variableOffset];
+          if (binding_var.type === 'CLASS') { 
+            const rootClass = classResolver(binding_var.guid);
+            // && binding_var.guid == (object.constructor as typeof BaseObject).GUID) {
+            if (object instanceof rootClass) {
+              console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
+              binding_var.value = object;
+              match = true;
+            }
+            // this.interpret(script, binding.commandOffset, reversedArgs);
+            // // return 1;
+            // executed ++;
+          } 
+          else if (binding_var.type === 'OBJECT' && binding_var.value === object) {
+            match = true;
+          }
+
+          if (match) {
+            this.interpret(script, binding.commandOffset, reversedArgs);
+            // return 1;
+            executed ++;
+          }
         }
       }
+    }
+    if(event.startsWith('onleft')){
+      console.log('dispatched',executed,'x :', event, object._id)
     }
     return executed;
     // return 0;

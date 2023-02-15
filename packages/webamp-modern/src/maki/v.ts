@@ -19,6 +19,11 @@ export type Variable =
       guid?: string;
     }
   | {
+      type: "CLASS";
+      value: BaseObject;
+      guid: string;
+    }
+  | {
       type: "NULL";
       value: null;
     };
