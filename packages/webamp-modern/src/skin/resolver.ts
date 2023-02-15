@@ -16,6 +16,20 @@ import Frame from "./makiClasses/Frame";
 import Group from "./makiClasses/Group";
 import MakiMap from "./makiClasses/MakiMap";
 import MakiList from "./makiClasses/List";
+import BitList from "./makiClasses/BitList";
+import GroupList from "./makiClasses/GroupList";
+import CfgGroup from "./makiClasses/CfgGroup";
+import TabSheet from "./makiClasses/TabSheet";
+import MouseRedir from "./makiClasses/MouseRedir";
+import DropDownList from "./makiClasses/DropDownList";
+import Edit from "./makiClasses/Edit";
+import Browser from "./makiClasses/Browser";
+import Wac from "./makiClasses/Wac";
+import QueryList from "./makiClasses/QueryList";
+import GuiList from "./makiClasses/GuiList";
+import GuiTree from "./makiClasses/GuiTree";
+import TreeItem from "./makiClasses/TreeItem";
+import CheckBox from "./makiClasses/CheckBox";
 import Timer from "./makiClasses/Timer";
 import Slider from "./makiClasses/Slider";
 import Vis from "./makiClasses/Vis";
@@ -59,6 +73,20 @@ const CLASSES = [
   Group,
   MakiMap,
   MakiList,
+  BitList,
+  GroupList,
+  CfgGroup,
+  TabSheet,
+  MouseRedir,
+  DropDownList,
+  Edit,
+  Browser,
+  Wac,
+  QueryList,
+  GuiList,
+  GuiTree,
+  TreeItem,
+  CheckBox,
   Timer,
   Slider,
   Vis,
