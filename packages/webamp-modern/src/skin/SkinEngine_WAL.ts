@@ -654,10 +654,11 @@ export default class SkinEngineWAL extends SkinEngine {
       return;
     }
 
-    console.log("parsing.maki:", file);
-    const parsedScript = parseMaki(maki);
+    const maki_id = `${file} (${id||'-unknow-id-'})`;
+    console.log("parsing.maki:", maki_id);
+    const parsedScript = parseMaki(maki, maki_id);
 
-    const systemObj = new SystemObject(this._uiRoot, parsedScript, param, `${id||''}@${file}`);
+    const systemObj = new SystemObject(this._uiRoot, parsedScript, param, maki_id);
 
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8

@@ -2,7 +2,8 @@
 import { classResolver } from "./skin/resolver";
 import { normalizedObjects, getFormattedId } from "./maki/objects";
 import BaseObject from "./skin/makiClasses/BaseObject";
-import { parse as parseMaki, ParsedMaki } from "./maki/parserXp";
+import { parse as parseMaki1 } from "./maki/parser";
+import { parse as parseMakiXp, ParsedMaki } from "./maki/parserXp";
 
 function hack() {
     // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -54,9 +55,9 @@ let total = 0;
 let found = 0;
 let dummy = 0;
 
-const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-});
+// const params = new Proxy(new URLSearchParams(window.location.search), {
+//     get: (searchParams, prop) => searchParams.get(prop),
+// });
 // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
 // let value = params.maki; // "some_value"
 const url = new URL(window.location.href);
@@ -77,8 +78,9 @@ async function main() {
         if (scriptContents == null) {
             `ScriptFile file not found at path ${makiPath}`
         } else {
-            const parsedScript = parseMaki(scriptContents);
-            explore(parsedScript)
+            const parsedScriptXp = parseMakiXp(scriptContents);
+            const parsedScript1 = parseMaki1(scriptContents, makiPath);
+            explore(parsedScriptXp, parsedScript1)
         }
         // return scriptContents
     });
@@ -88,9 +90,10 @@ declare global {
     interface Window { ace: any; }
 }
 
-function explore(maki: ParsedMaki){
+function explore(makiXp: ParsedMaki, maki: ParsedMaki){
+    const scriptXp = JSON.stringify(makiXp, null, "\t")
     const script = JSON.stringify(maki, null, "\t")
-    updateEditor(script, 'editor1')
+    updateEditor(scriptXp, 'editor1')
     updateEditor(script, 'editor2')
 }
 function updateEditor(txt: string, elementId: string){

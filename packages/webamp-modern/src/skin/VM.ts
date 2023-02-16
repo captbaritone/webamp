@@ -28,13 +28,18 @@ export default class Vm {
           // }
           const binding_var = script.variables[binding.variableOffset];
           if (binding_var.type === 'CLASS') { 
-            const rootClass = classResolver(binding_var.guid);
-            // && binding_var.guid == (object.constructor as typeof BaseObject).GUID) {
-            if (object instanceof rootClass) {
-              console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
-              binding_var.value = object;
-              match = true;
-            }
+            // const rootClass = classResolver(binding_var.guid);
+            // if (object instanceof rootClass) {
+              const found = binding_var.members.find(var_index => {
+                const member_var = script.variables[var_index];
+                return member_var.value == object;
+              })
+              if(found != null){
+                console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
+                // binding_var.value = object;
+                match = true;
+              }
+            // }
             // this.interpret(script, binding.commandOffset, reversedArgs);
             // // return 1;
             // executed ++;
