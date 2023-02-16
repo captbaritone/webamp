@@ -383,6 +383,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.style.fontSize = px(this._fontSize ?? 11);
         // this._div.style.lineHeight = px(this._fontSize ?? 11);
         // this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
+        this._div.style.lineHeight = '1';
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"
           : "none";
@@ -403,7 +404,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _renderText() {
     //TODO: invalidating text width is only important when srolling?
-    this._invalidateFullWidth();
+    if(this._ticker != "off")
+      this._invalidateFullWidth();
 
     const font = this._font_obj;
     if (font instanceof BitmapFont) {

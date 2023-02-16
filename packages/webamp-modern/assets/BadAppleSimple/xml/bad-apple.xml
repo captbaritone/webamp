@@ -31,7 +31,7 @@
 <container id="badapple" name="Bad Apple!!" default_visible="1" default_y="125">
 
 	<!-- <layout id="normal" minimum_w="460" maximum_w="460" w="460" minimum_h="429" maximum_h="429" h="429" appbar="top|bottom|left|right"> -->
-	<layout id="normal" minimum_w="460" w="460" minimum_h="429" h="429" appbar="top|bottom|left|right">
+	<layout id="normal" minimum_w="650" w="660" minimum_h="429" h="429" appbar="top|bottom|left|right">
 		<group x="0" y="0" w="0" h="0" relatw="1" relath="1" id="badapple.group" />
 		<!-- <sendparams target="wasabi.frame.layout.base.bg" alpha="0"/> -->
 	</layout>
