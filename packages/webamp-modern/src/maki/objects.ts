@@ -2,8 +2,8 @@ import stdPatched from "./objectData/stdPatched";
 import pldir from "./objectData/pldir.json";
 import config from "./objectData/config.json";
 import winampconfig from "./objectData/winampconfig.json";
-// import application from "./objectData/application";
-// import fileio from "./objectData/fileio";
+import application from "./objectData/application.json";
+import fileio from "./objectData/fileio.json";
 import { DataType } from "./v";
 import { assert } from "../utils";
 
@@ -27,8 +27,8 @@ const objects: { [key: string]: ObjectDefinition } = {
   ...pldir,
   ...config,
   ...winampconfig,
-  // ...application,
-  // ...fileio,
+  ...application,
+  ...fileio,
 };
 
 export function getClass(id: string): ObjectDefinition {
