@@ -15,6 +15,10 @@ export default class Application extends BaseObject {
     return 'WebAmp Modern'
   }
 
+  getversionstring(): string{
+    return unimplemented('5.66')
+  }
+
   /**
     Path where Winamp stores it's settings (studio.xnf, winamp.ini, etc)
   */

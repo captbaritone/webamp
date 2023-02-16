@@ -135,6 +135,10 @@ export default class SystemObject extends BaseObject {
   getskinname(): string {
     return this._uiRoot.getSkinName();
   }
+  getwinampversion(): string {
+    return this._uiRoot.APPLICATION.getversionstring();
+
+  }
 
   /**
    * This returns the X position of the mouse in the screen,

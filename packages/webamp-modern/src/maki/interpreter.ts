@@ -120,9 +120,10 @@ class Interpreter {
           const a = this.stack.pop();
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
+          assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
           assume(
             typeof a.value === typeof current.value || current.value == null,
-            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}.`
+            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${this.maki_id}`
           );
 
           current.value = a.value;
@@ -176,19 +177,22 @@ class Interpreter {
         case 10: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.10a");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.10b");
+          // it should work to compare both int & string
+          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.10a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.10b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} > ${a.value}`);
@@ -200,20 +204,23 @@ class Interpreter {
         case 11: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.11a");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.11b");
-          }
+          // it should work to compare both int & string
+          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.11a. " + this.maki_id);
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.11b");
+            }
+          }            
           if (this.debug) {
             console.log(`${b.value} >= ${a.value}`);
           }
@@ -224,19 +231,22 @@ class Interpreter {
         case 12: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.12a");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.12b");
+          // it should work to compare both int & string
+          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.12a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.12b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
@@ -249,19 +259,22 @@ class Interpreter {
         case 13: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.13a");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.13b");
+          // it should work to compare both int & string
+          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.13a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.13b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
