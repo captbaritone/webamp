@@ -11,6 +11,7 @@ import Config from "./Config";
 import WinampConfig from "./WinampConfig";
 
 import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING, Track } from "../AudioPlayer";
+import Application from "./Application";
 
 const MOUSE_POS = { x: 0, y: 0 };
 
@@ -105,6 +106,8 @@ export default class SystemObject extends BaseObject {
           vari.value = this._uiRoot.CONFIG;
         } else if (vari.guid == WinampConfig.GUID) {
           vari.value = this._uiRoot.WINAMP_CONFIG;
+        } else if (vari.guid == Application.GUID) {
+          vari.value = this._uiRoot.APPLICATION;
         }
       }
     }

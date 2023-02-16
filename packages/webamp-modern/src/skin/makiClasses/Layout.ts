@@ -2,7 +2,7 @@ import Group from "./Group";
 import * as Utils from "../../utils";
 import Container from "./Container";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
-import { px } from "../../utils";
+import { px, unimplemented } from "../../utils";
 import { UIRoot } from "../../UIRoot";
 
 // > A layout is a special kind of group, which shown inside a container. Each
@@ -127,11 +127,11 @@ export default class Layout extends Group {
   }
 
   getsnapadjustbottom(): number {
-    return 100;
+    return unimplemented(100);
   }
 
   clienttoscreenh(h: number): number {
-    return h;
+    return unimplemented(h);
   }
 
   islayoutanimationsafe(): boolean {
@@ -139,7 +139,10 @@ export default class Layout extends Group {
   }
 
   getscale(): number {
-    return 1.0;
+    return unimplemented(1.0);
+  }
+  setscale(scalevalue: number) {
+    //TODO
   }
 
   init() {

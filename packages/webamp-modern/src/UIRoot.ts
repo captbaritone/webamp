@@ -27,9 +27,11 @@ import Config from "./skin/makiClasses/Config";
 import WinampConfig from "./skin/makiClasses/WinampConfig";
 import { SkinEngineClass } from "./skin/SkinEngine";
 import { FileExtractor } from "./skin/FileExtractor";
+import Application from "./skin/makiClasses/Application";
 
 export class UIRoot {
   _id: string;
+  _application: Application;
   _config: Config;
   _winampConfig: WinampConfig;
   _div: HTMLDivElement = document.createElement("div");
@@ -78,6 +80,7 @@ export class UIRoot {
 
     this._imageManager = new ImageManager(this);
     this._config = new Config(this);
+    this._application = new Application(this);
     this._winampConfig = new WinampConfig(this);
     this.playlist = new PlEdit(this); // must be after _config.
     this.vm = new Vm(this);
@@ -754,6 +757,10 @@ export class UIRoot {
 
   get SkinEngineClass(): SkinEngineClass {
     return this._skinEngineClass;
+  }
+
+  get APPLICATION(): Application {
+    return this._application;
   }
 
   get CONFIG(): Config {

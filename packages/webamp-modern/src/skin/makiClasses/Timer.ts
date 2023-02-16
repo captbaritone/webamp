@@ -66,6 +66,10 @@ export default class Timer extends BaseObject {
       this._uiRoot.vm.dispatch(this, "ontimer");
     }
   }
+  
+  ontimer(){
+    this._uiRoot.vm.dispatch(this, "ontimer");
+  }
 
   setOnTimer(callback: () => void) {
     const handler = () => {
