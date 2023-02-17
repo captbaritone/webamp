@@ -18,6 +18,24 @@ export default class Vm {
   // performant by normalizing some of these things when scripts are added.
   dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
     const reversedArgs = [...args].reverse();
+    for (const script of this._scripts) {
+      for (const binding of script.bindings) {
+        if (
+          script.methods[binding.methodOffset].name === event &&
+          script.variables[binding.variableOffset].value === object
+        ) {
+          this.interpret(script, binding.commandOffset, event, reversedArgs);
+          // return 1;
+        }
+      }
+    }
+    return 0;
+  }
+
+  // This could easily become performance sensitive. We could make this more
+  // performant by normalizing some of these things when scripts are added.
+  dispatch0(object: BaseObject, event: string, args: Variable[] = []): number {
+    const reversedArgs = [...args].reverse();
     let executed = 0;
     for (const script of this._scripts) {
       for (const binding of script.bindings) {
@@ -70,10 +88,10 @@ export default class Vm {
   }
 
   interpret(script: ParsedMaki, commandOffset: number, eventName:string,  args: Variable[]) {
-    try{
+    // try{
       interpret(commandOffset, script, args, classResolver, eventName, this._uiRoot);
-    } catch {
-      console.log('ERRORdah')
-    }
+    // } catch {
+    //   console.log('ERRORdah')
+    // }
   }
 }
