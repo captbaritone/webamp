@@ -38,10 +38,11 @@ export function interpret(
   program: ParsedMaki,
   stack: Variable[],
   classResolver: (guid: string) => any,
+  eventName: string,
   uiRoot: UIRoot
 ) {
   validateMaki(program);
-  const interpreter = new Interpreter(program, classResolver, uiRoot);
+  const interpreter = new Interpreter(program, classResolver, eventName, uiRoot);
   interpreter.stack = stack;
   return interpreter.interpret(start);
 }
@@ -62,11 +63,13 @@ class Interpreter {
   commands: Command[];
   debug: boolean = false;
   maki_id: string;
+  eventName: string;
   classResolver: (guid: string) => any;
 
   constructor(
     program: ParsedMaki,
     classResolver: (guid: string) => any,
+    eventName: string,
     uiRoot: UIRoot
   ) {
     const { commands, methods, variables, classes, maki_id } = program;
@@ -76,6 +79,7 @@ class Interpreter {
     this.variables = variables;
     this.classes = classes;
     this.maki_id = maki_id;
+    this.eventName = eventName;
     this._uiRoot = uiRoot;
 
     this.stack = [];
@@ -121,7 +125,7 @@ class Interpreter {
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
           // assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
-          assume( a != null, `Assigning from invalid object into: ${current.value}. #${this.maki_id}. \n (see next error)`)
+          assume( a != null, `Assigning from invalid object into: ${current.value}. #${this.maki_id}. @${this.eventName} \n (see next error)`)
           assume(
             typeof a.value === typeof current.value || current.value == null,
             `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${this.maki_id}`

@@ -36,7 +36,7 @@ export default class Vm {
               })
               if(found != null){
                 console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
-                binding_var.value = object;
+                // binding_var.value = object;
                 match = true;
               }
             // }
@@ -49,7 +49,7 @@ export default class Vm {
           }
 
           if (match) {
-            this.interpret(script, binding.commandOffset, reversedArgs);
+            this.interpret(script, binding.commandOffset, event, reversedArgs);
             // return 1;
             executed ++;
           }
@@ -69,7 +69,11 @@ export default class Vm {
     return index;
   }
 
-  interpret(script: ParsedMaki, commandOffset: number, args: Variable[]) {
-    interpret(commandOffset, script, args, classResolver, this._uiRoot);
+  interpret(script: ParsedMaki, commandOffset: number, eventName:string,  args: Variable[]) {
+    try{
+      interpret(commandOffset, script, args, classResolver, eventName, this._uiRoot);
+    } catch {
+      console.log('ERRORdah')
+    }
   }
 }

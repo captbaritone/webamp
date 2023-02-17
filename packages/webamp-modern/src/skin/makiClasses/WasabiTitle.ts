@@ -44,11 +44,11 @@ export default class WasabiTitleBar extends Group {
 
   init() {
     super.init();
-    this._uiRoot.vm.dispatch(this, "onresize", [
-      { type: "INT", value: 0 },
-      { type: "INT", value: 0 },
-      { type: "INT", value: this.getwidth() },
-      { type: "INT", value: this.getheight() },
-    ]);
+    // this._uiRoot.vm.dispatch(this, "onresize", [
+    //   { type: "INT", value: 0 },
+    //   { type: "INT", value: 0 },
+    //   { type: "INT", value: this.getwidth() },
+    //   { type: "INT", value: this.getheight() },
+    // ]);
   }
 }

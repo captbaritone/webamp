@@ -1,4 +1,4 @@
-import { num } from "../../utils";
+import { assume, num } from "../../utils";
 import GuiObj from "./GuiObj";
 // import { UIRoot } from "../../UIRoot";
 import Group from "./Group";
@@ -78,16 +78,19 @@ export default class Frame extends Group {
 
   }
   init() {
+    // this.alignChildren();
     super.init();
-    // this.resolveButtonsAction();
     // this._uiRoot.vm.dispatch(this, "onstartup", []);
   }
 
   _getEl(directions: string[]): GuiObj[] {
-    return [
+    const ret = [
       this.findobject(this[`_${directions[0]}Id`]),
       this.findobject(this[`_${directions[1]}Id`]),
     ]
+    assume(ret[0] != null, 'Frame.'+directions[0] + ' NOT FOUND!')
+    assume(ret[1] != null, 'Frame.'+directions[1] + ' NOT FOUND!')
+    return ret
   }
 
   alignChildren(){
@@ -153,8 +156,9 @@ export default class Frame extends Group {
     //   this.setXmlAttr('w', w)
     //   this._setButtonWidth(w)
     // }
-    super.draw();
     this.alignChildren()
+    super.draw();
+    // this.alignChildren()
     // if (this._vertical) {
     //   this._div.classList.add("vertical");
     // } else {
