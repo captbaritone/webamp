@@ -28,7 +28,7 @@ export type ParsedMaki = {
 };
 
 export type Binding = {
-    methodName?: string;
+  methodName?: string;
   commandOffset: number;
   methodOffset: number;
   variableOffset: number;
@@ -45,33 +45,33 @@ const PRIMITIVE_TYPES = {
   6: "STRING",
 };
 const knownContainerGuids = {
-    "{0000000a-000c-0010-ff7b-01014263450c}": "[VIS]", // visualization
-    "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "[PL]", // playlist editor
-    "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "[ML]", // media library
-    "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "[CON]", // config?
-    "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "[LIR]", // lyric?
-    "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "[DL]", // download??
-    "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "[VIDEO]", // independent video window
-  };
+  "{0000000a-000c-0010-ff7b-01014263450c}": "[VIS]", // visualization
+  "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "[PL]", // playlist editor
+  "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "[ML]", // media library
+  "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "[CON]", // config?
+  "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "[LIR]", // lyric?
+  "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "[DL]", // download??
+  "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "[VIDEO]", // independent video window
+};
 
 function getClassId(guid: string): string {
-    const known = knownContainerGuids[guid];
-    if(known){
-        return known
-    }
-    try {
-      const cls: Function = classResolver(guid);
-      return cls.prototype.constructor.name;
-    } catch (e) {
-      return '--unknown--';
-    }
+  const known = knownContainerGuids[guid];
+  if (known) {
+    return known
+  }
+  try {
+    const cls: Function = classResolver(guid);
+    return cls.prototype.constructor.name;
+  } catch (e) {
+    return '--unknown--';
+  }
 }
 
 let methods: Method[] = []
 let variables: Variable[] = []
 let constants: any[] = []
 let classes: string[] = [];
-let classAliases: {[key:string] : string}  = {};
+let classAliases: { [key: string]: string } = {};
 export function parse(data: ArrayBuffer): ParsedMaki {
   const makiFile = new MakiFile(data);
 
@@ -230,7 +230,7 @@ function readVariables({ makiFile, classes }) {
       } else {
         // variables[typeOffset].isClass = true;
         variable.isClass = true;
-        if(!variable.newClassName){
+        if (!variable.newClassName) {
           variable.newClassName = `NEW_CLASS_NAME-${++newClass}`;
           // variable.type0 = variable.type;
           variable.type = 'CLASS';
@@ -245,8 +245,8 @@ function readVariables({ makiFile, classes }) {
         global,
         guid: variable.guid,
         isSubClass: true,
-        inheritFrom: variable.newClassName ||  variable.className,
-        isObject:object,
+        inheritFrom: variable.newClassName || variable.className,
+        isObject: object,
         // newClassDeclaration: true,
         className: getClassId(variable.guid) || '^UNKNOWN^'
       });
@@ -255,7 +255,7 @@ function readVariables({ makiFile, classes }) {
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push({ type: "OBJECT", value: null, global, guid: klass, className: getClassId(klass),isObject:object, });
+      variables.push({ type: "OBJECT", value: null, global, guid: klass, className: getClassId(klass), isObject: object, });
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
@@ -292,13 +292,13 @@ function readVariables({ makiFile, classes }) {
         global,
         type: typeName,
         value,
-        isObject:object,
+        isObject: object,
       };
       variable._index_ = variables.length;
       variables.push(variable);
     }
-    if(isSystem){
-      variables[variables.length-1].isSystem = true
+    if (isSystem) {
+      variables[variables.length - 1].isSystem = true
     }
   }
   return variables;
@@ -317,6 +317,20 @@ function readConstants({ makiFile, variables }) {
   }
 }
 
+function clone1level(o: object):object {
+  const ret = []
+  for (const [key, value] of Object.entries(o)) {
+    if (!(
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      value !== null
+    )) {
+      ret[key] = value
+    }
+  }
+  return ret
+}
+
 function readBindings(makiFile: MakiFile): Binding[] {
   let count = makiFile.readUInt32LE();
   const bindings = [];
@@ -327,7 +341,7 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const method = methods[methodOffset]
     // const methodName = `${method.newClassName || method.className}.${method.name}`
     const methodName = `${method.className}.${method.name}`
-    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset, variable: variables[variableOffset] });
+    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset, variable: clone1level(variables[variableOffset]) });
   }
   return bindings;
 }
@@ -348,7 +362,7 @@ function decodeCode({ makiFile }) {
 function parseComand({ start, makiFile, length }) {
   const pos = makiFile.getPosition() - start;
   const opcode = makiFile.readUInt8();
-  const Command = COMMANDS[opcode] || {name: 'UNKNOWN', short: '-???-'}
+  const Command = COMMANDS[opcode] || { name: 'UNKNOWN', short: '-???-' }
   const description = `${Command.short || Command.name} (${Command.name})`
   const command = {
     description,
@@ -391,7 +405,9 @@ function parseComand({ start, makiFile, length }) {
 
   // TODO: What even is this?
   if (opcode === 112 /* strangeCall */) {
-    makiFile.readUInt8();
+    const strangeFlag = makiFile.readUInt8();
+    command.strangeFlag = strangeFlag;
+
   }
   return command;
 }
