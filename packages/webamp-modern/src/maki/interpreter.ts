@@ -120,7 +120,8 @@ class Interpreter {
           const a = this.stack.pop();
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
-          assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
+          // assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
+          assume( a != null, `Assigning from invalid object into: ${current.value}. #${this.maki_id}. \n (see next error)`)
           assume(
             typeof a.value === typeof current.value || current.value == null,
             `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${this.maki_id}`
