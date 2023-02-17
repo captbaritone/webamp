@@ -36,7 +36,7 @@ export default class Vm {
               })
               if(found != null){
                 console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
-                // binding_var.value = object;
+                binding_var.value = object;
                 match = true;
               }
             // }
