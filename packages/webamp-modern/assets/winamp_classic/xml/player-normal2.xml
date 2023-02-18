@@ -2,6 +2,23 @@
     <layer id="main.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
     <layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
     
+    <!-- Timer -->
+    <text id="timer" display="time" x="33" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" />
+    <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/>
+    <script file="scripts/wa2songtimer.maki"/>
+    <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" valign="top"/>
+    <Text id="Infoticker" x="110" y="27" w="155" h="9" leftpadding="5" rightpadding="-5" font="wasabi.font.default" align="center" valign="top" fontsize="13" color="font.display.songticker" altfont="Arial" visible="0" />
+
+    <text id="mixrate" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <text id="bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <script file="scripts/winamp1kbps.maki"/>
+
+    <!-- Visualzation -->
+    <vis
+        id="vis"
+        x="24" y="43"
+        w="72" h="16"
+    />
 
     <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
     <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
