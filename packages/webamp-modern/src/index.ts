@@ -109,8 +109,11 @@ async function initializeSkinListMenu() {
     { filename: "[Winamp] default", download_url: "" },
     { filename: "[Winamp] MMD3", download_url: "assets/MMD3.wal" },
     // { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
-    { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
     { filename: "[Winamp] BigBento", download_url: "assets/BigBento/" },
+
+    { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
+    { filename: "[Winamp Classic] MacOSXAqua1-5", download_url: "assets/MacOSXAqua1-5.698dd4ab.wsz" },
+    { filename: "[Winamp Classic] Green-Dimension-V2", download_url: "assets/Green-Dimension-V2.6f88d5c3.wsz" },
     {
       filename: "[wmp] Quicksilver WindowsMediaPlayer!",
       download_url: "assets/Quicksilver.wmz",
