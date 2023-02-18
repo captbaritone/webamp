@@ -49,7 +49,11 @@ table.appendChild(header);
 const classes = [];
 for (const [key, obj] of Object.entries(normalizedObjects)) {
   const name = obj.name;
-  const deprecated = obj.deprecated || ['DropDownList', 'CheckBox', 'Edit', 'GroupList', 'GuiList', 'GuiTree', 'TreeItem', 'CfgGroup'].includes(obj.name);
+  const deprecated = obj.deprecated || [
+            'DropDownList', 'CheckBox', 'Edit', 'GroupList', 'GuiList', 'GuiTree', 
+            'Browser',
+            'XmlDoc', 'MouseRedir', //'Region',
+            'TreeItem', 'CfgGroup'].includes(obj.name);
   const methods = [];
   // if(obj.name == 'Menu') {debugger;}
   const klass = getClass(getFormattedId(key.toLowerCase()));

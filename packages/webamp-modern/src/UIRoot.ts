@@ -302,9 +302,19 @@ export class UIRoot {
     return this._containers;
   }
 
+  iterContainers(callback: (c:Container) => boolean ): Container {
+    for(const container of this._containers){
+      if(callback(container))
+        return container
+    }
+  }
+
   findContainer(id: string): Container {
-    const container = findLast(this.getContainers(), (ct) => ct.hasId(id));
-    return container;
+    // const container = findLast(this.getContainers(), (ct) => ct.hasId(id));
+    // return container;
+    return this.iterContainers((ct:Container)=>{
+      return ct.hasId(id)
+    })
   }
 
   addGammaSet(id: string, gammaSet: GammaGroup[]) {

@@ -2,7 +2,7 @@ import { getClass } from "../../maki/objects";
 import { ParsedMaki } from "../../maki/parser";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
-import { clamp, integerToTime } from "../../utils";
+import { clamp, integerToTime, unimplemented } from "../../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "../PrivateConfig";
 import { UIRoot } from "../../UIRoot";
@@ -125,7 +125,7 @@ export default class SystemObject extends BaseObject {
   }
 
   hasvideosupport(): number {
-    return 0; //TODO:
+    return unimplemented(1); 
   }
   /* Required for Maki */
   getruntimeversion(): number {
@@ -147,7 +147,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current X pos.
    */
   getmouseposx(): number {
-    return MOUSE_POS.x;
+    return unimplemented(MOUSE_POS.x);
   }
 
   /**
@@ -157,7 +157,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current Y pos.
    */
   getmouseposy(): number {
-    return MOUSE_POS.y;
+    return unimplemented(MOUSE_POS.y);
   }
 
   /**
@@ -185,7 +185,7 @@ export default class SystemObject extends BaseObject {
    */
   stringtointeger(str: string): number {
     // TODO: Confirm if this should be round/ceil/floor
-    return Math.round(Number(str));
+    return Math.floor(Number(str));
   }
 
   /**
@@ -661,7 +661,7 @@ export default class SystemObject extends BaseObject {
    * @param  num   The container's number for which you want to know the name.
    */
   enumcontainer(num: number) {
-    //TODO
+    return this._uiRoot._containers[num]
   }
 
   /**
@@ -731,7 +731,9 @@ export default class SystemObject extends BaseObject {
    *
    * Trigger the play event.
    */
-  play() {}
+  play() {
+    this._uiRoot.audio.play();
+  }
 
   /**
    * stop()
@@ -739,7 +741,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the stop event.
    */
   stop() {
-    // TODO
+    this._uiRoot.audio.stop();
   }
 
   /**
@@ -748,7 +750,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the pause event.
    */
   pause() {
-    // TODO
+    this._uiRoot.audio.pause();
   }
 
   /**
@@ -757,7 +759,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the next event.
    */
   next() {
-    // TODO
+    this._uiRoot.next();
   }
 
   /**
@@ -766,7 +768,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the previous event.
    */
   previous() {
-    // TODO
+    this._uiRoot.previous();
   }
 
   /**
@@ -775,7 +777,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the eject event.
    */
   eject() {
-    // TODO
+    this._uiRoot.eject();
   }
 
   /**
@@ -822,7 +824,7 @@ export default class SystemObject extends BaseObject {
    * @ret The name of what is playing.
    */
   getplayitemstring(): string {
-    return "Niente da Caprie";
+    return unimplemented("Niente da Caprie");
   }
 
   getplaylistlength(): number {
@@ -880,7 +882,7 @@ export default class SystemObject extends BaseObject {
    * @param  metadataname    The name of the metadata field you want to read.
    */
   getplayitemmetadatastring(metadataname: string): string {
-    return "Metadata"; // TODO
+    return unimplemented("Metadata"); // TODO
   }
 
   /**
@@ -889,14 +891,14 @@ export default class SystemObject extends BaseObject {
    * @param  metadataname    The name of the metadata field you want to read.
    */
   getmetadatastring(filename: string, metadataname: string): string {
-    return "Metadatastring"; // TODO
+    return unimplemented("Metadatastring"); // TODO
   }
 
   /**
    * TODO
    */
   getplayitemdisplaytitle(): string {
-    return "playitemdisplaytitle"; //What does this really do?
+    return unimplemented("playitemdisplaytitle"); //What does this really do?
   }
 
   /**
@@ -905,7 +907,7 @@ export default class SystemObject extends BaseObject {
    */
   getcurrenttrackrating(): number {
     // TODO
-    return 1;
+    return unimplemented(1);
   }
   /**
    * Requires 5.5
@@ -936,7 +938,7 @@ export default class SystemObject extends BaseObject {
    * @param ext The extension in question.
    */
   getextfamily(ext: string): string {
-    return "Audio";
+    return unimplemented("Audio");
   }
 
   /**
@@ -999,7 +1001,7 @@ export default class SystemObject extends BaseObject {
    * @param string returns the CD Ripping Directory
    */
   getdownloadpath(): string {
-    return "C:\\CD Rips";
+    return unimplemented("C:\\CD Rips");
   }
   /**
    * Requires 5.53
@@ -1041,7 +1043,7 @@ export default class SystemObject extends BaseObject {
    * @param fullfilename
    */
   getfilesize(fullfilename: string): number {
-    return 100;
+    return unimplemented(100);
   }
 
   /**
@@ -1050,7 +1052,7 @@ export default class SystemObject extends BaseObject {
    * @returns Will return 1 if an album art has been downloaded, otherwise 0
    */
   getalbumart(playitem: string): number {
-    return 1;
+    return unimplemented(1);
   }
 
   /**
@@ -1060,7 +1062,6 @@ export default class SystemObject extends BaseObject {
    */
   getplayitemlength(): number {
     return this._uiRoot.audio.getLength();
-    //
   }
 
   /**
@@ -1072,8 +1073,17 @@ export default class SystemObject extends BaseObject {
     this._uiRoot.audio.seekTo(pos);
   }
 
+  chr(charnum: number): string {
+    return String.fromCharCode(charnum);
+  }
+
   integer(d: number): number {
     return Math.round(Number(d));
+  }
+
+  frac(d :number) :number{
+    const i = Math.floor(d)
+    return d - i;
   }
 
   /**
@@ -1112,7 +1122,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportwidthfromguiobject(g: GuiObj) {
     // TODO
-    return 100;
+    return unimplemented(100);
   }
 
   /**
@@ -1129,7 +1139,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorwidth() {
-    // TODO
+    return screen.width
   }
 
   /**
@@ -1161,7 +1171,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   getextension(str: string): string {
-    return "mp3";
+    return unimplemented("mp3");
   }
 
   /**
@@ -1196,7 +1206,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   removepath(str: string): string {
-    return "test.mp3";
+    return unimplemented("test.mp3");
   }
 
   /**
@@ -1210,7 +1220,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   getpath(str: string): string {
-    return "c:\\music\\mp3";
+    return unimplemented("c:\\music\\mp3");
   }
 
   /**
@@ -1223,7 +1233,6 @@ export default class SystemObject extends BaseObject {
    */
   getposition(): string {
     return String(this._uiRoot.audio.getCurrentTime() * 1000)
-    return "25000";
   }
 
   /**
@@ -1262,7 +1271,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportheightfromguiobject(g: GuiObj): number {
     // TODO
-    return 100;
+    return unimplemented(100);
   }
 
   /**
@@ -1280,7 +1289,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorheight(): number {
-    // TODO
+    return screen.height
   }
 
   /**
@@ -1307,6 +1316,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorleft(): number {
     // TODO
+    return screenLeft
   }
 
   /**
@@ -1333,11 +1343,12 @@ export default class SystemObject extends BaseObject {
    */
   getmonitortop(): number {
     // TODO
+    return screenTop
   }
 
   getviewporttop(): number {
     // TODO: What should this really be?
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1360,7 +1371,7 @@ export default class SystemObject extends BaseObject {
 
   getviewportleft(): number {
     // TODO: What should this really be?
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1369,7 +1380,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportleftfromguiobject(g: GuiObj): number {
     // TODO
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1411,7 +1422,6 @@ export default class SystemObject extends BaseObject {
    */
   debugstring(str: string, severity: number) {
     console.log("Wasabi Console:", str);
-    // TODO
   }
 
   /**
@@ -1470,7 +1480,7 @@ export default class SystemObject extends BaseObject {
    */
   getcurappheight(): number {
     // TODO
-    return 1000;
+    return unimplemented(100);
   }
 
   /**
@@ -1480,7 +1490,7 @@ export default class SystemObject extends BaseObject {
    *  @ret The EQ's state.
    */
   geteq(): number {
-    return 1;
+    return unimplemented(1);
   }
 
   /**
@@ -1492,7 +1502,7 @@ export default class SystemObject extends BaseObject {
    * @ret The preamp's current value.
    */
   geteqpreamp(): number {
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1558,7 +1568,7 @@ export default class SystemObject extends BaseObject {
    * @ret ranges from 0 to 255
    */
   getvisband(channel: number, band: number): number {
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1710,25 +1720,29 @@ export default class SystemObject extends BaseObject {
     //TODO:
   }
 
+  isobjectvalid(o : any) :boolean {
+    return o != null;
+  }
+
   istransparencyavailable(): boolean {
     return true;
   }
 
   translate(str: string): string {
-    return str;
+    return unimplemented(str);
   }
 
   isvideo(): number {
-    return 0;
+    return unimplemented(0);
   }
   isvideofullscreen(): number {
-    return 0;
+    return unimplemented(0);
   }
   iskeydown(vk: number): number {
-    return 0;
+    return unimplemented(0);
   }
   isminimized(): number {
-    return 0;
+    return unimplemented(0);
   }
 }
 

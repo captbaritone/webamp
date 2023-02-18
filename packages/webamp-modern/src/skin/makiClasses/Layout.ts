@@ -18,6 +18,9 @@ export default class Layout extends Group {
   _resizingDiv: HTMLDivElement = null;
   _resizing: boolean = false;
   _canResize: number = 0; // combination of 4 directions: N/E/W/S
+  _scale: number = 1.0;
+  _opacity: number = 1.0;
+  _desktopalpha: boolean = false;
   _movingStartX: number; //container XY
   _movingStartY: number;
   _moving: boolean = false;
@@ -139,10 +142,26 @@ export default class Layout extends Group {
   }
 
   getscale(): number {
-    return unimplemented(1.0);
+    return this._scale;
   }
   setscale(scalevalue: number) {
-    //TODO
+    this._scale = scalevalue;
+    this.getDiv().style.transform = `scale(${this._scale})`
+  }
+
+  setdesktopalpha(onoff :boolean){
+    this._desktopalpha = unimplemented(onoff);
+  }
+  getdesktopalpha() :boolean{
+    return this._desktopalpha;
+  }
+  isdesktopalphaavailable(): boolean{
+    // html5 is always possible
+    return true;
+  }
+  isproversion(): boolean {
+    // lets avoid ugly (uneeded visible of only-non-pro) ui
+    return true;
   }
 
   init() {

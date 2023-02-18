@@ -819,22 +819,48 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
+
+  /**
+   * https://stackoverflow.com/questions/52604914/converting-screen-coordinates-to-page-coordinates
+   * Given the screen coordinates of a point, is there some way to calculate the coordinates of that point on the actual page of the browser?
+   */
+
   clienttoscreenx(x: number): number {
-    return x;
+    const element = this.getDiv()
+    const position = element.getBoundingClientRect();
+    return window.screenX + position.left + x;
   }
 
   clienttoscreeny(y: number): number {
-    return y;
+    const element = this.getDiv()
+    const position = element.getBoundingClientRect();
+    return window.screenX + position.top + y;
+  }
+  clienttoscreenw(w: number): number {
+    return unimplemented(this.clienttoscreenx(w))
+  }
+  clienttoscreenh(h: number): number {
+    return unimplemented(this.clienttoscreeny(h))
   }
 
   screentoclientx(x: number): number {
-    return x;
+    const element = this.getDiv()
+    const position = element.getBoundingClientRect();
+    return x - (window.screenX + position.left);
   }
 
   screentoclienty(y: number): number {
-    return y;
+    const element = this.getDiv()
+    const position = element.getBoundingClientRect();
+    return y - (window.screenX + position.top);
   }
-
+  screentoclientw(w: number): number {
+    return unimplemented(this.screentoclienty(w))
+  }
+  screentoclienth(h: number): number {
+    return unimplemented(this.screentoclienty(h))
+  }
+  
   getparent(): Group {
     return this._parent;
   }

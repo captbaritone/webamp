@@ -72,15 +72,18 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="nextp" file="cbuttons.bmp"  x="92" y="18" h="18" w="22"/>
     <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>
     `))
+
     promises.push(this.loadInline(`
-    <!-- SONGTICKERFONT -->
-    <!-- <bitmapfont id="player.SmallFixed" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/> -->
-    <bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>
     <!-- SONGTICKERFONT -->	
     <bitmapfont id="wasabi.font.default" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>	
-  
-  
     `))
+    promises.push(this.loadBmp_bignum())
+   
+    promises.push(this.loadInline(`
+    <bitmap id="posbarbg" file="posbar.bmp" x="0" y="0" w="248" h="10"/>
+    <bitmap id="posbar" file="posbar.bmp" x="248" y="0" w="29" h="10"/>
+    <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
+      `))
    
     promises.push(this.loadInline(`
     <bitmap id="wa.titlebar.on" file="titlebar.bmp"  x="27" y="0" h="13" w="275"/>
@@ -145,6 +148,19 @@ export default class ClassicSkinEngine extends SkinEngine {
     )
   }
 
+  async loadBmp_bignum() {
+    //? Bignum = numbers.bmp | nums_ex.bmp
+    const bignum = await this._uiRoot._fileExtractor.getFileAsBlob('numbers.bmp')
+    if(bignum){
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`)
+    } else {
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`)
+    }
+    //force. also possibly set null:
+    // const bitmap = this._uiRoot.getBitmap("player.BIGNUM")
+    // await bitmap.ensureImageLoaded()
+    // this._img = await this._uiRoot._imageManager.getImage(this._file);
+  }
 
   /**
    * Inherit: Actual bitmap loading from wsz

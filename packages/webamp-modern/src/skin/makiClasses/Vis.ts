@@ -1,5 +1,5 @@
 import { UIRoot } from "../../UIRoot";
-import { debounce, num, toBool } from "../../utils";
+import { debounce, num, toBool, unimplemented } from "../../utils";
 import { AUDIO_PLAYING } from "../AudioPlayer";
 import GammaGroup from "../GammaGroup";
 import GuiObj from "./GuiObj";
@@ -40,6 +40,7 @@ export default class Vis extends GuiObj {
   _oscStyle: string;
   _bandwidth: string;
   _gammagroup: string;
+  _realtime: boolean = true;
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
@@ -238,11 +239,13 @@ export default class Vis extends GuiObj {
     }
   }
 
-  /*extern Vis.onFrame();
-extern Vis.setRealtime(Boolean onoff);
-extern Boolean Vis.getRealtime();
-extern Int Vis.getMode();
-extern Vis.nextMode();*/
+  /*extern Vis.onFrame(); */
+  setrealtime(onoff: boolean){
+    this._realtime = unimplemented(onoff)
+  }
+  getrealtime(): boolean{
+    return this._realtime;
+  }
 
   _renderWidth() {
     super._renderWidth();

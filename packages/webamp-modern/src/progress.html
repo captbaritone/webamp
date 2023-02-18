@@ -56,7 +56,9 @@
        padding-left: 3px;
       }
       .expanded .method span {
-        display: inline;
+        display: inline-block;
+        padding-left: 55px;
+        text-indent: -27px;
       }
       .class-name {
         white-space: nowrap;
@@ -87,6 +89,7 @@
         margin-right: 1em;
         padding: 0 3px;
         opacity: 0;
+        position: absolute;
       }
       .fake::before{
         content: 'F';
