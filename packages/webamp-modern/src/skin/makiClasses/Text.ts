@@ -21,6 +21,7 @@ export default class Text extends GuiObj {
   _disposeDisplaySubscription: Function;
   _disposeTrackChangedSubscription: Function;
   _text: string;
+  _alternateText: string;
   _bold: boolean;
   _forceuppercase: boolean;
   _forcelowercase: boolean;
@@ -299,6 +300,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   gettext(): string {
+    if(this._alternateText){
+      // alternate text is used in Winamp3 to show a hint of a Play button while mouse down.
+      return this._alternateText;
+    }
     if ((this._text || "").startsWith(":") && this._drawn) {
       const layout = this.getparentlayout();
       if (layout) {
@@ -328,7 +333,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
   // overrides the display/text parameter with a custom string, set "" to cancel
   setalternatetext(txt: string) {
-    // TODO
+    this._alternateText = txt;
+    this._renderText()
   }
 
   //to speedup animation like text-scrolling, we spit rendering processes.
