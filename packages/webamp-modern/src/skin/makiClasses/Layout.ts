@@ -140,6 +140,9 @@ export default class Layout extends Group {
   islayoutanimationsafe(): boolean {
     return true;
   }
+  istransparencysafe(): boolean {
+    return true;
+  }
 
   getscale(): number {
     return this._scale;
@@ -155,14 +158,8 @@ export default class Layout extends Group {
   getdesktopalpha() :boolean{
     return this._desktopalpha;
   }
-  isdesktopalphaavailable(): boolean{
-    // html5 is always possible
-    return true;
-  }
-  isproversion(): boolean {
-    // lets avoid ugly (uneeded visible of only-non-pro) ui
-    return true;
-  }
+
+
 
   init() {
     super.init();

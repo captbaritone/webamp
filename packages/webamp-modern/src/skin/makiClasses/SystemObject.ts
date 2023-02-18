@@ -1744,6 +1744,15 @@ export default class SystemObject extends BaseObject {
   isminimized(): number {
     return unimplemented(0);
   }
+  isdesktopalphaavailable(): boolean{
+    // whether or not irregular window shape is supported by platform.
+    // html5 is always possible. Maybe used by html5 + electron.
+    return true;
+  }
+  isproversion(): boolean {
+    // lets avoid ugly (uneeded visible of only-non-pro) ui
+    return true;
+  }
 }
 
 function dumpScriptDebug(script: ParsedMaki) {

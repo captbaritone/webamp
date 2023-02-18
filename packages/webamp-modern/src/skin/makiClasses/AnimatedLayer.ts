@@ -1,4 +1,4 @@
-import { ensureVmInt, num, px, toBool } from "../../utils";
+import { ensureVmInt, num, px, toBool, unimplemented } from "../../utils";
 import Layer from "./Layer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
@@ -16,6 +16,7 @@ export default class AnimatedLayer extends Layer {
   _animationInterval: NodeJS.Timeout | null = null;
   _imageFormat: string; // api helper, together with elementFrames.
   _elementFrames: number;
+  _paused:boolean=false;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -77,6 +78,10 @@ export default class AnimatedLayer extends Layer {
     return bitmap.getHeight();
   }
 
+  getdirection(): number {
+    return unimplemented(this._vertical? 1 : 0)
+  }
+
   // api
   getlength(): number {
     const bitmap = this._uiRoot.getBitmap(this._image);
@@ -115,6 +120,7 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
+    this._paused = false;
     const end = this._endFrame;
     const start = this._startFrame;
     const change = end > start ? 1 : -1;
@@ -130,6 +136,9 @@ export default class AnimatedLayer extends Layer {
       return;
     }
     this._animationInterval = setInterval(() => {
+      if(this._paused){
+        return
+      }
       this.gotoframe(frame); // visual update
 
       if (frame === end) {
@@ -159,6 +168,7 @@ export default class AnimatedLayer extends Layer {
     }, this._speed);
   }
   pause() {
+    this._paused = true;
     this._uiRoot.vm.dispatch(this, "onpause");
     // TODO
   }
@@ -171,6 +181,28 @@ export default class AnimatedLayer extends Layer {
   }
   isplaying(): boolean {
     return this._animationInterval != null;
+  }
+  ispaused(): boolean {
+    return this._animationInterval != null && this._paused;
+  }
+  isstopped(): boolean {
+    return this.isplaying() && ! this._paused;
+  }
+
+  setautoreplay(onoff:boolean){
+    this._autoReplay = onoff;
+  }
+  getautoreplay():boolean{
+    return this._autoReplay;
+  }
+  getstartframe():number {
+    return this._startFrame;
+  }
+  getendframe():number {
+    return this._endFrame;
+  }
+  setrealtime(onoff: boolean){
+    const a = 1;
   }
 
   _getActualHeight(): number {

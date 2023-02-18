@@ -51,8 +51,8 @@ for (const [key, obj] of Object.entries(normalizedObjects)) {
   const name = obj.name;
   const deprecated = obj.deprecated || [
             'DropDownList', 'CheckBox', 'Edit', 'GroupList', 'GuiList', 'GuiTree', 
-            'Browser',
-            'XmlDoc', 'MouseRedir', //'Region',
+            'Browser', 
+            'XmlDoc', 'MouseRedir', //'Region', 'Application', 'File',
             'TreeItem', 'CfgGroup'].includes(obj.name);
   const methods = [];
   // if(obj.name == 'Menu') {debugger;}

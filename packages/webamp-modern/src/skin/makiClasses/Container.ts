@@ -16,6 +16,7 @@ export default class Container extends XmlObj {
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
+  _dynamic: boolean = false;
   _id: string;
   _originalId: string; // non lowercase'd
   _name: string;
@@ -43,6 +44,9 @@ export default class Container extends XmlObj {
       case "id":
         this._originalId = value;
         this._id = value.toLowerCase();
+        break;
+      case "dynamic":
+        this._dynamic = toBool(value);
         break;
       case "component":
         this._componentGuid = value.toLowerCase().split(":")[1];
@@ -212,6 +216,20 @@ export default class Container extends XmlObj {
       }
     }
     throw new Error(`Could not find a container with the id; "${layoutId}"`);
+  }
+
+  /**
+   isDynamic()
+
+  Tells you if the current container is a dynamic 
+  container or not. Values are true (1) for dynamic
+  false (0) for static.
+  Dynamic Container can has multiple instance at one time.
+
+  @ret The container type (dynamic or static).
+  */
+  isdynamic(): number {
+    return this._dynamic? 1 : 0;
   }
 
   /**
