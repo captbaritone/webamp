@@ -6,13 +6,14 @@ export type VariableObject =
     value: BaseObject;
     global?: boolean;
     guid?: string;
-    members? : number[]; // not realy needed, just to make eslint happy
-  }
-  | {
-    type: "CLASS";
-    value: BaseObject;
-    guid: string;
-    members? : number[];
+    members? : number[]; 
+    isClass? : boolean;
+  // }
+  // | {
+  //   type: "CLASS";
+  //   value: BaseObject;
+  //   guid: string;
+  //   members? : number[];
   };
 export type Variable =
   | VariableObject

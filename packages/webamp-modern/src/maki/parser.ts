@@ -56,7 +56,7 @@ export function parse(data: ArrayBuffer, maki_id: string): ParsedMaki {
   const methods = readMethods(makiFile, classes);
   const variables = readVariables({ makiFile, classes });
   readConstants({ makiFile, variables });
-  const bindings = readBindings(makiFile);
+  const bindings = readBindings(makiFile, variables);
   const commands = decodeCode({ makiFile });
 
   // TODO: Assert that we are at the end of the maki file
@@ -90,6 +90,60 @@ export function parse(data: ArrayBuffer, maki_id: string): ParsedMaki {
     }
     return command;
   });
+
+  // RESOLVE THE BINDING OF "CLASS"
+  // it is because we can't mutate the variable.value at runtime
+  /*
+  	{
+			"type": "CLASS",
+			"value": null,
+			"global": 0,
+			"guid": "4ee3e1994becc636bc78cd97b028869c",
+			"className": "GuiObj",
+			"isObject": 1,
+			"_index_": 11,
+			"isClass": true,
+			"newClassName": "NEW_CLASS_NAME-1",
+			"members": [
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22
+			],
+			"events": [
+				13,
+				14
+			]
+		},
+  */
+  // for( const ivar of variables){
+  //   if(ivar.isClass == true){
+  //     for(const ivarOffset of ivar.members){
+  //       const variable = variables[ivarOffset];
+  //       for(const methodOffset of ivar.events){
+  //         const binding = resolvedBindings[methodOffset];
+  //         const method = methods[binding.methodOffset];
+  //         const methodName = `${variable.className}.${method.name}`;
+  //         resolvedBindings.push({ 
+  //           ...binding,
+  //           methodName, 
+  //           variableOffset: ivarOffset, 
+  //           // binaryOffset, 
+  //           // methodOffset, 
+  //           // variable: clone1level(variables[variableOffset]) 
+  //           bindingOnClass: true,
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
+
   return {
     classes,
     methods,
@@ -191,8 +245,10 @@ function readVariables({ makiFile, classes }) {
       } else {
         // it is a subclassing, so let's mark inheritor as CLASS (base class)
         if(!variable.members) {
-          variable.type = 'CLASS';
+          variable.isClass = true;
+          // variable.type = 'CLASS';
           variable.members = []
+          variable.events = []; //method indexes
         }
       }
       
@@ -269,7 +325,7 @@ function readConstants({ makiFile, variables }) {
   }
 }
 
-function readBindings(makiFile: MakiFile): Binding[] {
+function readBindings(makiFile: MakiFile, variables: Variable[]): Binding[] {
   let count = makiFile.readUInt32LE();
   const bindings = [];
   while (count--) {
@@ -277,6 +333,11 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const methodOffset = makiFile.readUInt32LE();
     const binaryOffset = makiFile.readUInt32LE();
     bindings.push({ variableOffset, binaryOffset, methodOffset });
+    const aclass = variables[variableOffset];
+    if(!aclass.events){
+      aclass.events = []
+    }
+    aclass.events.push(bindings.length -1);
   }
   return bindings;
 }

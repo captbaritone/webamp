@@ -71,6 +71,7 @@ let methods: Method[] = []
 let variables: Variable[] = []
 let constants: any[] = []
 let classes: string[] = [];
+let bindings: Binding[] = [];
 let classAliases: { [key: string]: string } = {};
 export function parse(data: ArrayBuffer): ParsedMaki {
   const makiFile = new MakiFile(data);
@@ -86,7 +87,7 @@ export function parse(data: ArrayBuffer): ParsedMaki {
   /* const */ methods = readMethods(makiFile, classes);
   /* const */ variables = readVariables({ makiFile, classes });
   readConstants({ makiFile, variables });
-  const bindings = readBindings(makiFile);
+  /* const */ bindings = readBindings(makiFile);
   const commands = decodeCode({ makiFile });
 
   // TODO: Assert that we are at the end of the maki file
@@ -120,6 +121,60 @@ export function parse(data: ArrayBuffer): ParsedMaki {
     }
     return command;
   });
+
+  // RESOLVE THE BINDING OF "CLASS"
+  // it is because we can't mutate the variable.value at runtime
+  /*
+  	{
+			"type": "CLASS",
+			"value": null,
+			"global": 0,
+			"guid": "4ee3e1994becc636bc78cd97b028869c",
+			"className": "GuiObj",
+			"isObject": 1,
+			"_index_": 11,
+			"isClass": true,
+			"newClassName": "NEW_CLASS_NAME-1",
+			"members": [
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22
+			],
+			"events": [
+				13,
+				14
+			]
+		},
+  */
+  for( const ivar of variables){
+    if(ivar.isClass == true){
+      for(const ivarOffset of ivar.members){
+        const variable = variables[ivarOffset];
+        for(const methodOffset of ivar.events){
+          const binding = resolvedBindings[methodOffset];
+          const method = methods[binding.methodOffset];
+          const methodName = `${variable.className}.${method.name}`;
+          resolvedBindings.push({ 
+            ...binding,
+            methodName, 
+            variableOffset: ivarOffset, 
+            // binaryOffset, 
+            // methodOffset, 
+            // variable: clone1level(variables[variableOffset]) 
+            bindingOnClass: true,
+          });
+        }
+      }
+    }
+  }
+
   return {
     version,
     extraVersion,
@@ -187,7 +242,7 @@ function readClasses(makiFile: MakiFile): string[] {
   // return classes.concat(classesAlias);
 }
 
-function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
+function readMethods(makiFile: MakiFile, guids: string[]): Method[] {
   let count = makiFile.readUInt32LE();
   const methods: Method[] = [];
   while (count--) {
@@ -198,7 +253,7 @@ function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
     const unknown1 = makiFile.readUInt16LE();
     const name = makiFile.readString();//.toLowerCase();
 
-    const classGuid = classes[typeOffset];
+    const classGuid = guids[typeOffset];
     const className = getClassId(classGuid)
 
     const returnType = getReturnType(classGuid, name.toLowerCase());
@@ -228,12 +283,15 @@ function readVariables({ makiFile, classes }) {
       if (variable == null) {
         throw new Error("Invalid type");
       } else {
-        // variables[typeOffset].isClass = true;
-        variable.isClass = true;
-        if (!variable.newClassName) {
+        if(!variable.members) {
+          variables[typeOffset].isClass = true;
+          variable.isClass = true;
+        // if (!variable.newClassName) {
           variable.newClassName = `NEW_CLASS_NAME-${++newClass}`;
           // variable.type0 = variable.type;
           variable.type = 'CLASS';
+          variable.members = []
+          variable.events = []; //method indexes
         }
       }
 
@@ -248,8 +306,13 @@ function readVariables({ makiFile, classes }) {
         inheritFrom: variable.newClassName || variable.className,
         isObject: object,
         // newClassDeclaration: true,
-        className: getClassId(variable.guid) || '^UNKNOWN^'
+        className: getClassId(variable.guid) || '^UNKNOWN^',
       });
+      const index = variables.length - 1;
+
+      if(!variable.members.includes(index)) {
+        variable.members.push(index)
+      }
     } else if (object) {
       const klass = classes[typeOffset];
       if (klass == null) {
@@ -294,12 +357,12 @@ function readVariables({ makiFile, classes }) {
         value,
         isObject: object,
       };
-      variable._index_ = variables.length;
       variables.push(variable);
     }
     if (isSystem) {
       variables[variables.length - 1].isSystem = true
     }
+    variables[variables.length-1]._index_ = variables.length -1;
   }
   return variables;
 }
@@ -341,7 +404,18 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const method = methods[methodOffset]
     // const methodName = `${method.newClassName || method.className}.${method.name}`
     const methodName = `${method.className}.${method.name}`
-    bindings.push({ methodName, variableOffset, binaryOffset, methodOffset, variable: clone1level(variables[variableOffset]) });
+    bindings.push({ 
+      methodName, 
+      variableOffset, 
+      binaryOffset, 
+      methodOffset, 
+      variable: clone1level(variables[variableOffset]) 
+    });
+    const aclass = variables[variableOffset];
+    if(!aclass.events){
+      aclass.events = []
+    }
+    aclass.events.push(bindings.length -1);
   }
   return bindings;
 }

@@ -16,25 +16,38 @@ export default class Vm {
 
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
-  dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
+  dispatch1(object: BaseObject, event: string, args: Variable[] = []): number {
     const reversedArgs = [...args].reverse();
+    let executed = 0;
     for (const script of this._scripts) {
       for (const binding of script.bindings) {
         if (
           script.methods[binding.methodOffset].name === event &&
-          script.variables[binding.variableOffset].value === object
+          (
+            script.variables[binding.variableOffset].value === object || 
+            (script.variables[binding.variableOffset].isClass && 
+              script.variables[binding.variableOffset].members.find(vari => script.variables[vari].value == object))
+          )
         ) {
+          if(event.startsWith('onleftbu')){
+            // debugger;
+            console.log('EXEC EVENT:', event, binding)
+          }
           this.interpret(script, binding.commandOffset, event, reversedArgs);
+          executed ++;
           // return 1;
         }
       }
+    }
+    if(event.startsWith('onleft')){
+      console.log('dispatched',executed,'x :', event, object._id)
     }
     return 0;
   }
 
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
-  dispatch0(object: BaseObject, event: string, args: Variable[] = []): number {
+  dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
     const reversedArgs = [...args].reverse();
     let executed = 0;
     for (const script of this._scripts) {
@@ -45,7 +58,8 @@ export default class Vm {
           //   debugger;
           // }
           const binding_var = script.variables[binding.variableOffset];
-          if (binding_var.type === 'CLASS') { 
+          // if (binding_var.type === 'CLASS') { 
+          if (binding_var.isClass) { 
             // const rootClass = classResolver(binding_var.guid);
             // if (object instanceof rootClass) {
               const found = binding_var.members.find(var_index => {
@@ -54,7 +68,7 @@ export default class Vm {
               })
               if(found != null){
                 console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
-                // binding_var.value = object;
+                binding_var.value = object;
                 match = true;
               }
             // }
