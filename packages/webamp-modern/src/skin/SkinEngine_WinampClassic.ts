@@ -5,6 +5,7 @@ import { assume } from "../utils";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
 import { WmzImageManager } from "./classicClasses/wmzImageManager";
+import { PathFileExtractor } from "./FileExtractor";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
 import { registerSkinEngine } from "./SkinEngine";
@@ -28,21 +29,54 @@ export default class ClassicSkinEngine extends SkinEngine {
 
   // _pushCurrent
 
-  constructor(uiRoot: UIRoot) {
-    super(uiRoot);
-  }
+  // constructor(uiRoot: UIRoot) {
+  //   super(uiRoot);
+  // }
 
   /**
    * Process
    */
   async parseSkin() {
+    this._phase = RESOURCE_PHASE
+    await this.loadKnowBitmaps();
+    await this._loadBitmaps();
+
     // load internal wsz prototype from:
-    this._uiRoot.setSkinDir("assets/winamp_classic/");
-    this._uiRoot.setPreferZip(false);
-    this._uiRoot.setImageManager(new WmzImageManager(this._uiRoot));
-    this._imageManager = this._uiRoot.getImageManager();
+    // this._uiRoot.setSkinDir("assets/winamp_classic/");
+    // this._uiRoot.setPreferZip(false);
+    const fileExtractor = new PathFileExtractor();
+    await fileExtractor.prepare("assets/winamp_classic/", null);
+    this._uiRoot.setFileExtractor(fileExtractor);
+    // this._uiRoot.setImageManager(new WmzImageManager(this._uiRoot));
+    // this._imageManager = this._uiRoot.getImageManager();
     return await super.parseSkin();
   }
+
+  async loadKnowBitmaps() {
+    const promises = [];
+    promises.push(this.loadInline('<bitmap id="wa.main" file="main.bmp"/>'))
+    promises.push(this.loadInline(`	<bitmap id="prev" file="cbuttons.bmp"  x="0" y="0" h="18" w="23"/>
+    <bitmap id="play" file="cbuttons.bmp"  x="23" y="0" h="18" w="23"/>
+    <bitmap id="pause" file="cbuttons.bmp"  x="46" y="0" h="18" w="23"/>
+    <bitmap id="stop" file="cbuttons.bmp"  x="69" y="0" h="18" w="23"/>
+    <bitmap id="next" file="cbuttons.bmp"  x="92" y="0" h="18" w="22"/>
+    <bitmap id="eject" file="cbuttons.bmp"  x="114" y="0" h="16" w="22"/>
+  
+    <bitmap id="prevp" file="cbuttons.bmp"  x="0" y="18" h="18" w="23"/>
+    <bitmap id="playp" file="cbuttons.bmp"  x="23" y="18" h="18" w="23"/>
+    <bitmap id="pausep" file="cbuttons.bmp"  x="46" y="18" h="18" w="23"/>
+    <bitmap id="stopp" file="cbuttons.bmp"  x="69" y="18" h="18" w="23"/>
+    <bitmap id="nextp" file="cbuttons.bmp"  x="92" y="18" h="18" w="22"/>
+    <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>`))
+   
+    return Promise.all(promises);
+  }
+
+  async loadInline(strXml: string) {
+    const parsed = parseXml(`<elements>${strXml}</elements>`) as unknown as XmlElement;
+    return await this.traverseChildren(parsed);
+  }
+
 
   /**
    * Inherit: Actual bitmap loading from wsz
