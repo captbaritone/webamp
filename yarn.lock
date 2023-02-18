@@ -9598,6 +9598,13 @@ icss-utils@^2.1.0:
   dependencies:
     postcss "^6.0.1"
 
+id3-parser@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/id3-parser/-/id3-parser-2.0.0.tgz#e1de845af0943dbefacad9fd7c037f50671d714f"
+  integrity sha512-bkGeAtUX70rC9sq2mjzIrkmPZjUsGuqCjZKGFJnugKXqYVDuJgfWDa8MehUZaCqlkoCaXkYevYeaRxkHOJsv9w==
+  dependencies:
+    promise-a-plus "^0.7.0"
+
 ieee754-buffer@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ieee754-buffer/-/ieee754-buffer-2.0.0.tgz#5648050d1a037df59a6cc68f441c6b0b467314f8"
@@ -13756,6 +13763,11 @@ process@^0.11.10:
 progress@2.0.3, progress@^2.0.0, progress@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+
+promise-a-plus@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/promise-a-plus/-/promise-a-plus-0.7.0.tgz#3d3cad69271dba462554c66b7d35bbd46e752a62"
+  integrity sha512-cWbWdSKaHiNGWP3aUSAq5nkZFYL1A6glTMgGc/LpFZ6DEJ5FRXzu7T2k4mmi+cD/R5EJ9DHHzWezXnO1IMPb5w==
 
 promise-inflight@^1.0.1:
   version "1.0.1"

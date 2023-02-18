@@ -39,8 +39,6 @@
   "dependencies": {
     "@rgrove/parse-xml": "^3.0.0",
     "id3-parser": "^2.0.0",
-    "jszip": "^3.7.0",
-    "music-metadata-browser": "^2.5.6",
-    "then-read-stream": "^3.0.1"
+    "jszip": "^3.7.0"
   }
 }
