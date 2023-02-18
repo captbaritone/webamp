@@ -55,7 +55,8 @@ export default class ClassicSkinEngine extends SkinEngine {
   async loadKnowBitmaps() {
     const promises = [];
     promises.push(this.loadInline('<bitmap id="wa.main" file="main.bmp"/>'))
-    promises.push(this.loadInline(`	<bitmap id="prev" file="cbuttons.bmp"  x="0" y="0" h="18" w="23"/>
+    promises.push(this.loadInline(`
+    <bitmap id="prev" file="cbuttons.bmp"  x="0" y="0" h="18" w="23"/>
     <bitmap id="play" file="cbuttons.bmp"  x="23" y="0" h="18" w="23"/>
     <bitmap id="pause" file="cbuttons.bmp"  x="46" y="0" h="18" w="23"/>
     <bitmap id="stop" file="cbuttons.bmp"  x="69" y="0" h="18" w="23"/>
@@ -67,7 +68,52 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="pausep" file="cbuttons.bmp"  x="46" y="18" h="18" w="23"/>
     <bitmap id="stopp" file="cbuttons.bmp"  x="69" y="18" h="18" w="23"/>
     <bitmap id="nextp" file="cbuttons.bmp"  x="92" y="18" h="18" w="22"/>
-    <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>`))
+    <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>
+    `))
+   
+    promises.push(this.loadInline(`
+    <bitmap id="wa.titlebar.on" file="titlebar.bmp"  x="27" y="0" h="13" w="275"/>
+    <bitmap id="wa.titlebar.off" file="titlebar.bmp"  x="27" y="15" h="13" w="275"/>
+  
+    <bitmap id="wa.switch.on" file="titlebar.bmp" x="0" y="36" w="18" h="18"/>	
+    <bitmap id="wa.switch.pressed" file="titlebar.bmp" x="18" y="36" w="18" h="18"/>
+  
+    <bitmap id="menu" file="titlebar.bmp" x="0" y="0" w="9" h="9"/>
+    <bitmap id="menup" file="titlebar.bmp" x="0" y="9" w="9" h="9"/>
+  
+    <bitmap id="mini" file="titlebar.bmp" x="9" y="0" w="9" h="9"/>
+    <bitmap id="minip" file="titlebar.bmp" x="9" y="9" w="9" h="9"/>
+  
+    <bitmap id="close" file="titlebar.bmp" x="18" y="0" w="9" h="9"/>
+    <bitmap id="closep" file="titlebar.bmp" x="18" y="9" w="9" h="9"/>
+  
+    <bitmap id="switch" file="titlebar.bmp"  x="0" y="18" h="9" w="9"/>
+    <bitmap id="switchp" file="titlebar.bmp"  x="9" y="18" h="9" w="9"/>
+  
+    <!-- titlebar.png to titlebar.png -->
+	<bitmap id="wa2.player.title.quit" file="titlebar.bmp" x="18" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.quit.pressed" file="titlebar.bmp" x="18" y="9" h="9" w="9"/>
+	<bitmap id="wa2.player.title.shade" file="titlebar.bmp" x="0" y="18" h="9" w="9"/>
+	<bitmap id="wa2.player.title.shade.pressed" file="titlebar.bmp" x="9" y="18" h="9" w="9"/>
+
+	<bitmap id="wa2.player.title.shademode" file="titlebar.bmp" x="0" y="27" h="9" w="9"/>
+	<bitmap id="wa2.player.title.shademode.pressed" file="titlebar.bmp" x="9" y="27" h="9" w="9"/>
+
+	<bitmap id="wa2.player.title.min" file="titlebar.bmp" x="9" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.min.pressed" file="titlebar.bmp" x="9" y="9" h="9" w="9"/>
+	<bitmap id="wa2.player.title.menu" file="titlebar.bmp" x="0" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.menu.pressed" file="titlebar.bmp" x="0" y="9" h="9" w="9"/>
+
+	<!-- Winshade Stuff -->
+	<bitmap id="wa2.player.shade.enabled" file="titlebar.bmp" x="27" y="29" h="14" w="275"/>
+	<bitmap id="wa2.player.shade.disabled" file="titlebar.bmp" x="27" y="42" h="14" w="275"/>
+
+	<bitmap id="wa2.player.shade.menu" file="titlebar.bmp" x="0" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.shade.menu.pressed" file="titlebar.bmp" x="0" y="9" h="9" w="9"/>
+
+	<bitmap id="clutterbar" file="titlebar.bmp" x="304" y="0" w="8" h="43"/>
+
+    `))
    
     return Promise.all(promises);
   }

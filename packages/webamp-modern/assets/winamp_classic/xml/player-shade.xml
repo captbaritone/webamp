@@ -16,8 +16,8 @@
 
 	<button id="Eject" action="EJECT" x="216" y="3" w="9" h="9" tooltip="Eject" rectrgn="1"/>
 
-	<vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/>
-	<layer id="main.vis.trigger" x="79" y="5" w="38" h="5"/>
+	<!-- <vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/> -->
+	<!-- <layer id="main.vis.trigger" x="79" y="5" w="38" h="5"/> -->
 
 	<button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="wa2.player.title.shademode" downImage="wa2.player.title.shademode.pressed"/>
 	<button id="Close" inactivealpha="0" action="close" x="264" y="3" image="wa2.player.title.quit" downImage="wa2.player.title.quit.pressed" tooltip="Close" />
@@ -25,7 +25,7 @@
 	<button id="sysbutton" inactivealpha="0" action="SYSMENU" x="6" y="3" image="wa2.player.shade.menu" downImage="wa2.player.shade.menu.pressed" />
 	<slider id="seeker" action="seek" x="227" y="4" h="7" w="15" thumb="posbarsm"/>
 
-	<script file="scripts/wa2visualizer.maki"/>
+	<!-- <script file="scripts/wa2visualizer.maki"/> -->
 
 </groupdef>
 

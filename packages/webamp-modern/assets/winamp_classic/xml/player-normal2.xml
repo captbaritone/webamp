@@ -1,0 +1,23 @@
+<groupdef id="mainwindow" x="0" y="0" w="550" h="232" relatw="1" relath="1">
+    <layer id="main.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+    <layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
+    
+
+    <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
+    <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
+    <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
+    <button id="wabtn.stop" action="STOP" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
+    <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
+    <button id="wabtn.open" action="EJECT" x="136" y="89" image="ejectbmp" downimage="ejectp" tooltip="Open File(s)"/>
+
+    <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
+
+    <!-- <script file="scripts/monoster.maki"/> -->
+    <!-- <script file="scripts/display.maki"/> -->
+</groupdef>
+
+
+
+<layout id="normal" background="wa.main" droptarget="pldr" minimum_h="116" minimum_w="275">
+    <group id="mainwindow"/>
+</layout>

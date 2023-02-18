@@ -11,7 +11,7 @@
 	</skininfo>
 
 	<!-- wasabi replacement stuff, loads first -->
-    <include file="xml/wasabi.classic/xui/slider/slider.xml"/>
+    <!-- <include file="xml/wasabi.classic/xui/slider/slider.xml"/> -->
 	<!-- 
 	<include file="xml/wasabi.classic/xui/standardframe/standardframe.xml"/>
 	<include file="xml/wasabi.classic/xui/titlebar/titlebar.xml"/>
@@ -26,8 +26,8 @@
 	<include file="xml/pledit.xml"/>
 	<include file="xml/video.xml"/> -->
 	<include file="xml/player.xml"/>
-  <include file="xml/eq-elements.xml"/>
-	<include file="xml/eq.xml"/>
+  <!-- <include file="xml/eq-elements.xml"/> -->
+	<!-- <include file="xml/eq.xml"/> -->
 	<!-- <include file="xml/eqmain.xml"/> -->
 
 	<!-- needs to exist for testing -->
