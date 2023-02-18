@@ -251,10 +251,16 @@ export class PlEdit {
   // }
 }
 
+/**
+ * The PlaylistDirectory object is simply a list with all the saved playlist from the media library. 
+ * Please remember that this object is always on top of other objects, 
+ * so you'll have to hide it via maki if you dont want it to be visible. 
+ * This object was introduced in Winamp 5.5(skinversion 1.3)
+ */
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CPlaylistDirectory.2F.3E
 export class PlDir {
   static GUID = "61a7abad41f67d7980e1d0b1f4a40386";
   // taken from lib/pldir.mi
-  static guid = "{61A7ABAD-7D79-41f6-B1D0-E1808603A4F4}";
 
   showcurrentlyplayingentry(): void {
     // return unimplementedWarning("showcurrentlyplayingentry");
