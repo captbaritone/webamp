@@ -656,7 +656,7 @@ export default class SkinEngineWAL extends SkinEngine {
 
     const maki_id = `${file} (id=${id||"''"})`;
     console.log("parsing.maki:", maki_id);
-    const parsedScript = parseMaki(maki, maki_id);
+    const parsedScript = maki==true? this._scripts[file] : parseMaki(maki, maki_id);
 
     const systemObj = new SystemObject(this._uiRoot, parsedScript, param, maki_id);
 
