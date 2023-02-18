@@ -18,6 +18,7 @@ type StreamSource = {
 export default class ClassicSkinEngine extends SkinEngine {
   _wszRoot: string = "/assets/winamp_classic/";
   _streamSources: StreamSource[] = []; // for pop & push
+  _TXTs: {[key:string]:string} = {}
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".wsz") || filePath.endsWith(".zip")  || filePath.endsWith("/");
@@ -38,6 +39,7 @@ export default class ClassicSkinEngine extends SkinEngine {
    */
   async parseSkin() {
     this._phase = RESOURCE_PHASE
+    await this.loadKnowTXTs();
     await this.loadKnowBitmaps();
     await this._loadBitmaps();
 
@@ -69,6 +71,15 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="stopp" file="cbuttons.bmp"  x="69" y="18" h="18" w="23"/>
     <bitmap id="nextp" file="cbuttons.bmp"  x="92" y="18" h="18" w="22"/>
     <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>
+    `))
+    promises.push(this.loadInline(`
+    <!-- SONGTICKERFONT -->
+    <!-- <bitmapfont id="player.SmallFixed" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/> -->
+    <bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>
+    <!-- SONGTICKERFONT -->	
+    <bitmapfont id="wasabi.font.default" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>	
+  
+  
     `))
    
     promises.push(this.loadInline(`
@@ -121,6 +132,17 @@ export default class ClassicSkinEngine extends SkinEngine {
   async loadInline(strXml: string) {
     const parsed = parseXml(`<elements>${strXml}</elements>`) as unknown as XmlElement;
     return await this.traverseChildren(parsed);
+  }
+
+  async loadKnowTXTs() {
+    const txts = ['REGION.TXT', 'viscolor.txt', 'PLEDIT.TXT']
+    return await Promise.all(
+      txts.map(async (txt) => {
+        if(!this._TXTs[txt]){
+          this._TXTs[txt] = await this._uiRoot._fileExtractor.getFileAsString(txt);
+        }
+      })
+    )
   }
 
 
@@ -181,7 +203,7 @@ export default class ClassicSkinEngine extends SkinEngine {
   async vis(node: XmlElement, parent: any): Promise<Vis> {
     const vis = await super.vis(node, parent);
 
-    const content = await this._uiRoot.getFileAsStringZip("viscolor.txt");
+    const content = this._TXTs["viscolor.txt"];
     if (content) {
       const colors = parseViscolors(content);
       for (let i = 1; i < 16; i++) {
