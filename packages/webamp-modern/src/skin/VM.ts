@@ -67,7 +67,7 @@ export default class Vm {
                 return member_var.value == object;
               })
               if(found != null){
-                console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
+                // console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
                 binding_var.value = object;
                 match = true;
               }
@@ -88,9 +88,9 @@ export default class Vm {
         }
       }
     }
-    if(event.startsWith('onleft')){
-      console.log('dispatched',executed,'x :', event, object._id)
-    }
+    // if(event.startsWith('onleft')){
+    //   console.log('dispatched',executed,'x :', event, object._id)
+    // }
     return executed;
     // return 0;
   }
