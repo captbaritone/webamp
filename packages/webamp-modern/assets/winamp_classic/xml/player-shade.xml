@@ -16,7 +16,7 @@
 
 	<button id="Eject" action="EJECT" x="216" y="3" w="9" h="9" tooltip="Eject" rectrgn="1"/>
 
-	<!-- <vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/> -->
+	<vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/>
 	<!-- <layer id="main.vis.trigger" x="79" y="5" w="38" h="5"/> -->
 
 	<button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="wa2.player.title.shademode" downImage="wa2.player.title.shademode.pressed"/>

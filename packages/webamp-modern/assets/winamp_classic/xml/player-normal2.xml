@@ -8,6 +8,7 @@
     <script file="scripts/wa2songtimer.maki"/>
     <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" valign="top"/>
     <Text id="Infoticker" x="110" y="27" w="155" h="9" leftpadding="5" rightpadding="-5" font="wasabi.font.default" align="center" valign="top" fontsize="13" color="font.display.songticker" altfont="Arial" visible="0" />
+    <slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>
 
     <text id="mixrate" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
     <text id="bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
