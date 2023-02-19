@@ -99,8 +99,8 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="wa.pause" file="playpaus.bmp" x="9" y="0" w="9" h="9"/>
     <bitmap id="wa.stop" file="playpaus.bmp" x="18" y="0" w="9" h="9"/>
   
-    <bitmap id="wa.play.green" file="playpaus.bmp" x="36" y="0" w="3" h="9"/>
-    <bitmap id="wa.play.red" file="playpaus.bmp" x="39" y="0" w="3" h="9"/>
+    <bitmap id="traffic.green" file="playpaus.bmp" x="36" y="0" w="3" h="9"/>
+    <bitmap id="traffic.red" file="playpaus.bmp" x="39" y="0" w="3" h="9"/>
         `))
    
     promises.push(this.loadInline(`
