@@ -94,6 +94,14 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="posbar" file="posbar.bmp" x="248" y="0" w="29" h="10"/>
     <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
       `))
+    promises.push(this.loadInline(`
+    <bitmap id="wa.play" file="playpaus.bmp" x="0" y="0" w="9" h="9"/>
+    <bitmap id="wa.pause" file="playpaus.bmp" x="9" y="0" w="9" h="9"/>
+    <bitmap id="wa.stop" file="playpaus.bmp" x="18" y="0" w="9" h="9"/>
+  
+    <bitmap id="wa.play.green" file="playpaus.bmp" x="36" y="0" w="3" h="9"/>
+    <bitmap id="wa.play.red" file="playpaus.bmp" x="39" y="0" w="3" h="9"/>
+        `))
    
     promises.push(this.loadInline(`
     <bitmap id="wa.titlebar.on" file="titlebar.bmp"  x="27" y="0" h="13" w="275"/>

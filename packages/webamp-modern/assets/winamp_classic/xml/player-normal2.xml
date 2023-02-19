@@ -6,27 +6,39 @@
     <text id="timer" display="time" x="33" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" />
     <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/>
     <script file="scripts/wa2songtimer.maki"/>
+
+    <!-- Song Info-->
     <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" valign="top"/>
     <Text id="Infoticker" x="110" y="27" w="155" h="9" leftpadding="5" rightpadding="-5" font="wasabi.font.default" align="center" valign="top" fontsize="13" color="font.display.songticker" altfont="Arial" visible="0" />
-    <slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>
+    
+    <text id="Frequency" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <text id="Bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <!-- <script file="scripts/winamp1kbps.maki"/> -->
 
-    <text id="mixrate" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
-    <text id="bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
-    <script file="scripts/winamp1kbps.maki"/>
+    <layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
+    <layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
+    <!-- <script file="scripts/monoster.maki"/> -->
+    <script file="scripts/songinfoclassic.maki"/>
+
 
     <!-- Visualzation -->
+    <status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
+    <layer id="playbackstatus" x="24" y="28" image="wa.play.green"/>
+    <script file="scripts/classicplaystatus.maki"/>
     <vis
         id="vis"
         x="24" y="43"
         w="72" h="16"
     />
 
+    <slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp"/>
+
     <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
     <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
     <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
     <button id="wabtn.stop" action="STOP" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
     <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
-    <button id="wabtn.open" action="EJECT" x="136" y="89" image="ejectbmp" downimage="ejectp" tooltip="Open File(s)"/>
+    <button id="wabtn.open" action="EJECT" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
 
     <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
 

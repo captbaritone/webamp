@@ -1703,7 +1703,9 @@ export default class SystemObject extends BaseObject {
     const track = this._currentTrack();
     if(track){
       const m = track.metadata;
-      return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+      if(m){
+        return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+      }
     }
     return "123kbps stereo 79khz";
   }
