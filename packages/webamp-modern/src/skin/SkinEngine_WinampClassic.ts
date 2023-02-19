@@ -95,6 +95,14 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
       `))
     promises.push(this.loadInline(`
+    <bitmap id="player.toggler.eq.disabled" file="shufrep.bmp" x="0" y="61" h="12" w="23"/>
+    <bitmap id="player.toggler.eq.pressed" file="shufrep.bmp" x="46" y="73" h="12" w="23"/>
+    <bitmap id="player.toggler.eq.enabled" file="shufrep.bmp" x="0" y="73" h="12" w="23"/>
+    <bitmap id="player.toggler.pl.disabled" file="shufrep.bmp" x="23" y="61" h="12" w="23"/>
+    <bitmap id="player.toggler.pl.pressed" file="shufrep.bmp" x="69" y="73" h="12" w="23"/>
+    <bitmap id="player.toggler.pl.enabled" file="shufrep.bmp" x="23" y="73" h="12" w="23"/>  
+      `))
+    promises.push(this.loadInline(`
     <bitmap id="volumes" file="volume.bmp" x="0" y="0" w="68" h="420"/>
     <bitmap id="volbtnd" file="volume.bmp" x="0" y="422" w="14" h="11"/>
     <bitmap id="volbtn" file="volume.bmp" x="15" y="422" w="14" h="11"/>

@@ -32,6 +32,11 @@
     <!-- <script file="scripts/monoster.maki"/> -->
     <script file="scripts/songinfoclassic.maki"/>
 
+    <button id="btn-eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
+    <button id="btn-pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
+
+
+    <!--  [============[####]=========================================] -->
 
     <group id="sliders" x="107" y="57" h="13"/>
     <!-- <images source="volume"  id="volume.anim"  w="68" h="13" images="volumes" imagesspacing="15" /> -->
