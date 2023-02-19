@@ -10,6 +10,7 @@ Global layer mono, stereo;
 Global Text bitrateText, FrequencyText;
 Global Timer songInfoTimer;
 Global String SongInfoString;
+Global layer playstatus;
 // Global int c;
 
 System.onScriptLoaded(){
@@ -17,8 +18,9 @@ System.onScriptLoaded(){
 
 	bitrateText = frameGroup.findObject("Bitrate");
 	frequencyText = frameGroup.findObject("Frequency");
-
 	// channelDisplay = frameGroup.findObject("channels");
+	playstatus = frameGroup.findObject("PlaybackStatus");
+
 	mono = frameGroup.findObject("mono");
     stereo = frameGroup.findObject("stereo");
 
@@ -26,14 +28,21 @@ System.onScriptLoaded(){
 	songInfoTimer.setDelay(1000);
 
 	if (getStatus() == STATUS_PLAYING) {
+		playstatus.show();
 		// TODO: change to onPlay()
 		String sit = getSongInfoText();
 		if (sit != "") getSonginfo(sit);
 		else songInfoTimer.setDelay(50); // goes to 1000 once info is available
 		songInfoTimer.start();
+
 	} else if (getStatus() == STATUS_PAUSED) {
+		playstatus.hide();	
 		//TODO: change to onPause
-		getSonginfo(getSongInfoText());
+		getSonginfo(getSongInfoText());	
+
+	} else if (getStatus() == STATUS_STOPPED) {
+		playstatus.hide();
+        playstatus.setXmlParam("image", "wa.play.green");
 	}
 
 	// c = getChannels();
@@ -55,13 +64,16 @@ System.onScriptUnloading(){
 }
 
 System.onPlay(){
+	playstatus.show();
 	String sit = getSongInfoText();
 	if (sit != "") getSonginfo(sit);
 	else songInfoTimer.setDelay(50); // goes to 1000 once info is available
 	songInfoTimer.start();
+
 }
 
 System.onStop(){
+	playstatus.hide();
 	songInfoTimer.stop();
 	frequencyText.setText("");
 	bitrateText.setText("");
@@ -72,6 +84,7 @@ System.onStop(){
 }
 
 System.onResume(){
+	playstatus.show();
 	String sit = getSongInfoText();
 	if (sit != "") getSonginfo(sit);
 	else songInfoTimer.setDelay(50); // goes to 1000 once info is available
@@ -79,6 +92,7 @@ System.onResume(){
 }
 
 System.onPause(){
+	playstatus.hide();
 	songInfoTimer.stop();
 }
 
@@ -141,10 +155,14 @@ String tokenizeSongInfo(String tkn, String sinfo){
 
 getSonginfo(String SongInfoString) {
 	String tkn;
+	int bitrateint, freqint;
 
+	//? RATE KBps
 	tkn = tokenizeSongInfo("Bitrate", SongInfoString);
 	if(tkn != "") {bitrateText.setText(tkn);}
+	bitrateint = System.Stringtointeger(tkn);
 
+	// MONO | STEREO | SURROUND
 	tkn = tokenizeSongInfo("Channels", SongInfoString);
 	// channelDisplay.setXmlParam("image", "player.songinfo." + tkn);
     if(tkn == "mono"){
@@ -156,6 +174,35 @@ getSonginfo(String SongInfoString) {
         stereo.setXmlParam("image", "player.status.stereo.active");
 	}
 
+	// FREQUENCY KHz
 	tkn = tokenizeSongInfo("Frequency", SongInfoString);
 	frequencyText.setText(tkn);
+	freqint = System.Stringtointeger(tkn);
+
+	// IS BUFFERING ( NETWORK STATUS )
+	if(playstatus.isVisible()) {	
+		String currenttitle = System.strlower(System.getPlayItemDisplayTitle());
+		
+		if(System.strsearch(currenttitle, "[connecting") != -1){
+			playstatus.setXmlParam("image", "wa.play.red");
+		}
+		else if(System.strsearch(currenttitle, "[resolving hostname") != -1){
+			playstatus.setXmlParam("image", "wa.play.red");
+		}
+		else if(System.strsearch(currenttitle, "[http/1.1") != -1){
+			playstatus.setXmlParam("image", "wa.play.red");
+		}
+		else if(System.strsearch(currenttitle, "[buffer") != -1){
+			playstatus.setXmlParam("image", "wa.play.red");
+		}else{
+			if(bitrateint == 0 || bitrateint == -1 && freqint == 0 || freqint == -1){
+				playstatus.setXmlParam("image", "wa.play.red"); 
+				// setPlaysymbol.start(); x2nie: I dont care network status for now.
+			}
+			if(bitrateint > 0 && freqint > 0){
+				// setPlaysymbol.start(); 
+				playstatus.setXmlParam("image", "wa.play.green");
+			}
+		}
+	}
 }

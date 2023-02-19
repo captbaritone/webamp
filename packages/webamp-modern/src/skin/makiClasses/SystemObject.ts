@@ -185,7 +185,8 @@ export default class SystemObject extends BaseObject {
    */
   stringtointeger(str: string): number {
     // TODO: Confirm if this should be round/ceil/floor
-    return Math.floor(Number(str));
+    if(str=="") return 0;
+    return Math.floor(parseFloat(str));
   }
 
   /**
@@ -895,9 +896,37 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-   * TODO
+   setState2(){
+    String currenttitle = System.strlower(System.getPlayItemDisplayTitle());
+    
+    if(System.strsearch(currenttitle, "[connecting") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[resolving hostname") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[http/1.1") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[buffer") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}else{
+        if(bitrateint == 0 || bitrateint == -1 && freqint == 0 || freqint == -1){
+            playstatus.setXmlParam("image", "wa.play.red"); 
+            setPlaysymbol.start();
+        }
+        if(bitrateint > 0 && freqint > 0){setPlaysymbol.start(); 
+            playstatus.setXmlParam("image", "wa.play.green");
+        }
+    }
+}
+   */
+  /**
+   * Get network status of currrent playing items.
+   * @returns string
    */
   getplayitemdisplaytitle(): string {
+    // taken from  winamp_classic "classicDisplayStatus.m"
     return unimplemented("playitemdisplaytitle"); //What does this really do?
   }
 
