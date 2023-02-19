@@ -83,6 +83,13 @@ export default class ClassicSkinEngine extends SkinEngine {
     promises.push(this.loadBmp_bignum())
    
     promises.push(this.loadInline(`
+    <bitmap id="player.status.mono.active" file="monoster.bmp" x="29" y="0" h="12" w="27"/>
+    <bitmap id="player.status.mono.inactive" file="monoster.bmp" x="29" y="12" h="12" w="27"/>
+    <bitmap id="player.status.stereo.active" file="monoster.bmp" x="0" y="0" h="12" w="29"/>
+    <bitmap id="player.status.stereo.inactive" file="monoster.bmp" x="0" y="12" h="12" w="29"/>
+        `))
+   
+    promises.push(this.loadInline(`
     <bitmap id="posbarbg" file="posbar.bmp" x="0" y="0" w="248" h="10"/>
     <bitmap id="posbar" file="posbar.bmp" x="248" y="0" w="29" h="10"/>
     <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
