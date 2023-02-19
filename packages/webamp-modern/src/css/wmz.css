@@ -81,3 +81,8 @@ slider.background-stretched::before {
   position: absolute;
   inset: 0;
 }
+
+#web-amp container#main > #normal { clip-path: url(#region-for-normal); }
+#web-amp container#main > #shade  { clip-path: url(#region-for-windowshade); }
+/* #web-amp container#main > #normal { clip-path: url(#region-for-equalizer); } */
+/* #web-amp container#main > #normal { clip-path: url(#region-for-equalizerws); } */

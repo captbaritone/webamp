@@ -5,6 +5,7 @@ import { assume } from "../utils";
 import Bitmap from "./Bitmap";
 import BitmapFont from "./BitmapFont";
 import { WmzImageManager } from "./classicClasses/wmzImageManager";
+import regionParser from "./classicClasses/regionParser";
 import { PathFileExtractor } from "./FileExtractor";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
@@ -40,6 +41,8 @@ export default class ClassicSkinEngine extends SkinEngine {
   async parseSkin() {
     this._phase = RESOURCE_PHASE
     await this.loadKnowTXTs();
+    await this.buildRegionTXT();
+
     await this.loadKnowBitmaps();
     await this._loadBitmaps();
 
@@ -138,7 +141,7 @@ export default class ClassicSkinEngine extends SkinEngine {
   }
 
   async loadKnowTXTs() {
-    const txts = ['REGION.TXT', 'viscolor.txt', 'PLEDIT.TXT']
+    const txts = ['region.txt', 'viscolor.txt', 'PLEDIT.TXT']
     return await Promise.all(
       txts.map(async (txt) => {
         if(!this._TXTs[txt]){
@@ -146,6 +149,26 @@ export default class ClassicSkinEngine extends SkinEngine {
         }
       })
     )
+  }
+
+  async buildRegionTXT() {
+    const regionTxt = this._TXTs['region.txt'];
+    if(regionTxt){
+      const regionData = regionParser(regionTxt)
+      const plane = []
+      plane.push('<svg height="0" width="0"><defs>')
+      
+      for (const [windowName, polygons] of Object.entries(regionData)) {
+        // console.log('REGION:',windowName, polygons)
+        plane.push(`<clipPath id="region-for-${windowName}">`);
+        for(const polygon of polygons){
+          plane.push(`<polygon points="${polygon}"/>`);
+        }
+        plane.push(`</clipPath>`);
+      }
+      const svg = plane.join('')
+      this._uiRoot._div.innerHTML = svg;
+    }
   }
 
   async loadBmp_bignum() {
