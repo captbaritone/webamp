@@ -18,6 +18,7 @@
     <text id="mixrate" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
     <text id="bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
     <script file="scripts/winamp1kbps.maki"/>
+
     <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
     <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
     <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
@@ -25,14 +26,18 @@
     <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
     <button id="wabtn.open" action="EJECT" x="136" y="89" image="ejectbmp" downimage="ejectp" tooltip="Open File(s)"/>
     <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
+
     <button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>
     <button id="wa.minimize" x="244" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Minimize" activealpha="255" inactivealpha="0"/>
     <button id="wa.switch" x="254" y="3" action="SWITCH" param="shade" image="switch" downimage="switchp" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>
     <button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>
+
     <button id="btn-eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
     <button id="btn-pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
+    
     <layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
     <layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
+    
     <group id="sliders" x="107" y="57" h="13"/>
     <script file="scripts/monoster.maki"/>
     <script file="scripts/display.maki"/>

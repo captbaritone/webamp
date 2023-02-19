@@ -171,7 +171,10 @@ getSonginfo(String SongInfoString) {
 	if(bufferingStatus.isVisible()) {	
 		String currenttitle = System.strlower(System.getPlayItemDisplayTitle());
 		
-		if(System.strsearch(currenttitle, "[connecting") != -1){
+		if(System.strsearch(currenttitle, "[timed out") != -1){
+			bufferingStatus.setXmlParam("image", "traffic.red");
+		}
+		else if(System.strsearch(currenttitle, "[connecting") != -1){
 			bufferingStatus.setXmlParam("image", "traffic.red");
 		}
 		else if(System.strsearch(currenttitle, "[resolving hostname") != -1){
