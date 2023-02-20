@@ -215,14 +215,14 @@ export default class ClassicSkinEngine extends SkinEngine {
     //? Bignum = numfont.png | numbers.bmp | nums_ex.bmp
     // const getFile = this._uiRoot._fileExtractor.getFileAsBlob
     // let bignum = await getFile('numfont.png') 
-    if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('numfont.png'))){ // 0123456789- with transparency
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
-    } 
-    else if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('nums_ex.bmp'))){  // 0123456789- opaque
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
+    // if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('numfont.png'))){ // 0123456789- with transparency
+    //   await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
+    // } else 
+    if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('nums_ex.bmp'))){  // 0123456789- opaque
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="1"/>`);
     }
     else {
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`)
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="-1"/>`)
     }
     //force. also possibly set null:
     // const bitmap = this._uiRoot.getBitmap("player.BIGNUM")

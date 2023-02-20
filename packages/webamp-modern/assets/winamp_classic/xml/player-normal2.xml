@@ -15,7 +15,7 @@
         w="72" h="16"
     />
     <!-- Timer -->
-    <text id="timer" display="time" x="33" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" />
+    <text timeroffstyle="1" id="timer" display="time" x="30" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="3"  />
     <!-- <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/> -->
     <!-- <script file="scripts/wa2songtimer.maki"/> -->
 
@@ -36,14 +36,14 @@
     <button id="btn-pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
 
 
-    <!--  [============[####]=========================================] -->
-
     <group id="sliders" x="107" y="57" h="13"/>
     <!-- <images source="volume"  id="volume.anim"  w="68" h="13" images="volumes" imagesspacing="15" /> -->
     <!-- <Slider action="volume"  id="volume"       x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd" orientation="horizontal" /> -->
     <!-- <images source="balance" id="balance.anim" x="70" w="38" h="13" images="balances" imagesspacing="15" /> -->
     <!-- <Slider action="PAN"     id="balance"      x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd" orientation="horizontal" /> -->
 
+    <!--  [============[####]=========================================] -->
+    <layer                 id="seek.bg"            x="16" y="72" w="248" h="10" image="posbarbg"/>
     <slider action="SEEK"  id="player.slider.seek" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp"/>
 
     <button action="PREV"  id="wabtn.previous" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
@@ -53,23 +53,22 @@
     <button action="NEXT"  id="wabtn.next" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
     <button action="EJECT" id="wabtn.open" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
 
-    <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
-    <togglebutton id="Shuffle" x="164" y="89" image="shuf" downImage="shufp" activeImage="shufa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+    <togglebutton id="Shuffle" x="164" y="89" image="shuf" downImage="shufp" activeImage="shufa" tooltip="Toggle Shuffle" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+    <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" tooltip="Toggle Repeat" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
 
 
     <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
 
-    <!-- <script file="scripts/monoster.maki"/> -->
-    <!-- <script file="scripts/display.maki"/> -->
+    <script file="scripts/display.maki"/>
 </groupdef>
 
 <groupdef id="sliders">
   <images id="volume.anim" source="volume" w="68" h="13" images="volumes" imagesspacing="15" />
-  <Slider id="volume" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd"/>
+  <Slider id="volume" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd" tooltip="Volume Bar"/>
   <!-- <script file="scripts/volume.maki"/> -->
 
   <images id="balance.anim" source="balance" x="70" w="38" h="13" images="balances" imagesspacing="15" />
-  <Slider id="balance" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd"/>
+  <Slider id="balance" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd" tooltip="Panning Bar"/>
   <!-- <script file="scripts/balance.maki"/> -->
 </groupdef>
 

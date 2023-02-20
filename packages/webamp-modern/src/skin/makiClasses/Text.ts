@@ -34,6 +34,7 @@ export default class Text extends GuiObj {
   _ticker: string = "off"; // "scroll" | "bounce" | "off"
   _paddingX: number = 2;
   _timeColonWidth: number | null = null;
+  _timeroffstyle: number = 0;
   _textWrapper: HTMLElement;
   _scrollTimer: Timer;
   _scrollDirection: -1 | 1;
@@ -122,6 +123,8 @@ export default class Text extends GuiObj {
         this._prepareCss();
         this._renderText();
         break;
+      case "timeroffstyle":
+        this._timeroffstyle = num(value);
 
       case "shadowcolor":
         // (int) The comma delimited RGB color for underrendered shadow text.
@@ -159,6 +162,21 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
     return true;
   }
+
+  styledTime(time:string): string {
+    const originalTime = time;
+    if (this._timeroffstyle == 1) {
+      if(time.startsWith('-') && time.length==5){ // -9:59
+        time = time.replace('-', '-0')
+      } 
+      else if(time.length==4){  // 9:59
+        time = '0' + time
+      }
+    }
+    console.log(`timer:'${time}' < '${originalTime}'`)
+    return time    
+  }
+
 
   _autoDetectFontType() {
     if (this._font_id) {
@@ -244,13 +262,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       case "time":
         this._disposeDisplaySubscription =
           this._uiRoot.audio.onCurrentTimeChange(() => {
-            this.setDisplayValue(
+            this.setDisplayValue(this.styledTime(
               integerToTime(this._uiRoot.audio.getCurrentTime())
-            );
+            ));
           });
-        this.setDisplayValue(
+        this.setDisplayValue(this.styledTime(
           integerToTime(this._uiRoot.audio.getCurrentTime())
-        );
+        ));
         break;
       case "songlength":
         this._displayValue = "5:58";
