@@ -136,6 +136,7 @@ text span {
   background-position-y: var(--y);
   overflow: hidden;
   flex-shrink: 0;
+  background-repeat-x: no-repeat;
 }
 /* body > div *  */
 container {
