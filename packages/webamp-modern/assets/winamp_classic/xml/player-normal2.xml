@@ -16,7 +16,7 @@
     />
     <!-- Timer -->
     <text id="timer" display="time" x="33" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" />
-    <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/>
+    <!-- <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/> -->
     <!-- <script file="scripts/wa2songtimer.maki"/> -->
 
     <!-- Song Info-->
@@ -52,6 +52,10 @@
     <button action="STOP"  id="wabtn.stop" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
     <button action="NEXT"  id="wabtn.next" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
     <button action="EJECT" id="wabtn.open" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
+
+    <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
+    <togglebutton id="Shuffle" x="164" y="89" image="shuf" downImage="shufp" activeImage="shufa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+
 
     <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
 
