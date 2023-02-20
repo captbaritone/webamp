@@ -95,6 +95,15 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
       `))
     promises.push(this.loadInline(`
+    <bitmap id="rep" file="shufrep.bmp" x="0" y="0" w="28" h="15"/>
+    <bitmap id="repp" file="shufrep.bmp" x="0" y="15" w="28" h="15"/>
+    <bitmap id="repa" file="shufrep.bmp" x="0" y="30" w="28" h="15"/>
+  
+    <bitmap id="shuf" file="shufrep.bmp" x="28" y="0" h="15" w="47"/>
+    <bitmap id="shufp" file="shufrep.bmp" x="28" y="15" h="15" w="47"/>
+    <bitmap id="shufa" file="shufrep.bmp" x="28" y="30" h="15" w="47"/>
+      `))
+    promises.push(this.loadInline(`
     <bitmap id="player.toggler.eq.disabled" file="shufrep.bmp" x="0" y="61" h="12" w="23"/>
     <bitmap id="player.toggler.eq.pressed" file="shufrep.bmp" x="46" y="73" h="12" w="23"/>
     <bitmap id="player.toggler.eq.enabled" file="shufrep.bmp" x="0" y="73" h="12" w="23"/>
@@ -203,12 +212,17 @@ export default class ClassicSkinEngine extends SkinEngine {
   }
 
   async loadBmp_bignum() {
-    //? Bignum = numbers.bmp | nums_ex.bmp
-    const bignum = await this._uiRoot._fileExtractor.getFileAsBlob('numbers.bmp')
-    if(bignum){
+    //? Bignum = numfont.png | numbers.bmp | nums_ex.bmp
+    // const getFile = this._uiRoot._fileExtractor.getFileAsBlob
+    // let bignum = await getFile('numfont.png') 
+    if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('numfont.png'))){ // 0123456789- with transparency
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
+    } 
+    else if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('nums_ex.bmp'))){  // 0123456789- opaque
+      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
+    }
+    else {
       await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`)
-    } else {
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`)
     }
     //force. also possibly set null:
     // const bitmap = this._uiRoot.getBitmap("player.BIGNUM")
