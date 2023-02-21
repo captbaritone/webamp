@@ -309,9 +309,14 @@ export default class ClassicSkinEngine extends SkinEngine {
     const content = this._TXTs["viscolor.txt"];
     if (content) {
       const colors = parseViscolors(content);
-      for (let i = 1; i < 16; i++) {
+      for (let i = 1; i <= 16; i++) {
         vis.setxmlparam(`colorband${i}`, colors[i]);
       }
+      vis.setxmlparam(`colorallbands`, colors[17]);
+      for (let i = 1; i <= 5; i++) {
+        vis.setxmlparam(`colorosc${i}`, colors[17+i]);
+      }
+      vis.setxmlparam(`colorbandpeak`, colors[23]);
     }
     return vis;
   }
@@ -355,5 +360,6 @@ const parseViscolors = (text: string): string[] => {
     .map((rgb, i) => {
       colors[i] = rgb; // `rgb(${rgb})`;
     });
+  console.log('VISCOLOR:',colors)
   return colors;
 };
