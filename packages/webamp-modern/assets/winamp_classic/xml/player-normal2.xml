@@ -2,6 +2,12 @@
     <layer id="main.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
     <layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
     
+    <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
+    <button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>
+    <button id="wa.minimize" x="244" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Minimize" activealpha="255" inactivealpha="0"/>
+    <button id="wa.switch" x="254" y="3" action="SWITCH" param="shade" image="switch" downimage="switchp" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>
+    <button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>
+
 
     <!-- Play & Buffering status -->
     <status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
@@ -15,7 +21,7 @@
         w="72" h="16"
     />
     <!-- Timer -->
-    <text timeroffstyle="1" id="timer" display="time" x="30" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="3"  />
+    <text id="timer" display="time" x="30" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" timeroffstyle="1" />
     <!-- <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/> -->
     <!-- <script file="scripts/wa2songtimer.maki"/> -->
 
@@ -57,7 +63,6 @@
     <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" tooltip="Toggle Repeat" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
 
 
-    <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
 
     <script file="scripts/display.maki"/>
 </groupdef>

@@ -129,6 +129,25 @@ export default class ClassicSkinEngine extends SkinEngine {
         `))
    
     promises.push(this.loadInline(`
+    <bitmap id="posbarsl" file="titlebar.bmp" x="17" y="36" w="3" h="7"/>
+    <bitmap id="posbarsm" file="titlebar.bmp" x="20" y="36" w="3" h="7"/>
+    <bitmap id="posbarsr" file="titlebar.bmp" x="23" y="36" w="3" h="7"/>
+    <bitmap id="wa2.player.title.quit" file="titlebar.bmp" x="18" y="0" h="9" w="9"/>
+    <bitmap id="wa2.player.title.quit.pressed" file="titlebar.bmp" x="18" y="9" h="9" w="9"/>
+    <bitmap id="wa2.player.title.shade" file="titlebar.bmp" x="0" y="18" h="9" w="9"/>
+    <bitmap id="wa2.player.title.shade.pressed" file="titlebar.bmp" x="9" y="18" h="9" w="9"/>
+  
+    <bitmap id="wa2.player.title.shademode" file="titlebar.bmp" x="0" y="27" h="9" w="9"/>
+    <bitmap id="wa2.player.title.shademode.pressed" file="titlebar.bmp" x="9" y="27" h="9" w="9"/>
+  
+    <bitmap id="wa2.player.title.min" file="titlebar.bmp" x="9" y="0" h="9" w="9"/>
+    <bitmap id="wa2.player.title.min.pressed" file="titlebar.bmp" x="9" y="9" h="9" w="9"/>
+    <bitmap id="wa2.player.title.menu" file="titlebar.bmp" x="0" y="0" h="9" w="9"/>
+    <bitmap id="wa2.player.title.menu.pressed" file="titlebar.bmp" x="0" y="9" h="9" w="9"/>
+  
+          `))
+   
+    promises.push(this.loadInline(`
     <bitmap id="wa.titlebar.on" file="titlebar.bmp"  x="27" y="0" h="13" w="275"/>
     <bitmap id="wa.titlebar.off" file="titlebar.bmp"  x="27" y="15" h="13" w="275"/>
   

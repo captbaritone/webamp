@@ -240,6 +240,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   };
 
   _setDisplay(display: string) {
+    if(display==null){
+      // this method may called premateurly by timeroffstyle, hence display==unset
+      return;
+    }
     // if (display.toLowerCase() === this._display?.toLowerCase()) {
     //   return;
     // }

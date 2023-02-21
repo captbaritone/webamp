@@ -83,6 +83,7 @@ slider:hover:after {
   );
 }
 /* slider:active:after { */
+slider:active:after,
 .eq-surf slider:focus:after {
   background-image: var(
     --thumb-down-background-image,

@@ -3,17 +3,16 @@
 	<layer id="washade" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" ghost="1"/>
 	<layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" h="14" w="275" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" move="1"/>
 
-	<text id="timer" display="time" x="128" y="2" w="31" h="10" font="wasabi.font.default" align="right" timecolonwidth="5"/>
+	<text id="timer" display="time" x="124" y="2" w="31" h="10" font="wasabi.font.default" align="right" timecolonwidth="3" timeroffstyle="1" />
 	<layer id="TimerTrigger" x="128" y="2" w="31" h="10"/>
 
-	<script file="scripts/wa2songtimer.maki"/>
+	<!-- <script file="scripts/wa2songtimer.maki"/> -->
 
 	<button id="Previous" action="PREV" x="166" y="3" w="8" h="9" tooltip="Previous" rectrgn="1"/>
 	<button id="Play" action="PLAY" x="176" y="3" w="10" h="9" tooltip="Play" rectrgn="1"/>
 	<button id="Pause" action="PAUSE" x="186" y="3" w="10" h="9" tooltip="Pause" rectrgn="1"/>
 	<button id="Stop" action="STOP" x="196" y="3" w="9" h="9" tooltip="Stop" rectrgn="1"/>
 	<button id="Next" action="NEXT" x="206" y="3" w="8" h="9" tooltip="Next" rectrgn="1"/>
-
 	<button id="Eject" action="EJECT" x="216" y="3" w="9" h="9" tooltip="Eject" rectrgn="1"/>
 
 	<vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/>
