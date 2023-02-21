@@ -1,3 +1,6 @@
+.passthrough, .passthrough *{
+  pointer-events: none !important;
+}
 subview,
 buttongroup,
 buttonelement {

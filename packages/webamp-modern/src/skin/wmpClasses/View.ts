@@ -53,14 +53,16 @@ export default class View extends Container {
   init() {
     super.init();
 
-    // this.loadJsScripts();
+    // this.loadJsScripts(); //done in skinengin
+
+    const ctx = {view: this}
 
     // if (this._scriptFile) {
     //   this.prepareScriptGlobalObjects();
     //? temporary disabling due incomplete methods
     if (this._onLoad != null) {
       //   setTimeout(() => {
-      runInlineScript(this._onLoad);
+      runInlineScript(this._onLoad, ctx);
       //   }, 1000);
     }
     // }
@@ -68,11 +70,28 @@ export default class View extends Container {
     if (this._onTimer && this._timerInterval != null) {
       setTimeout(() => {
         console.log("Blendshutter!?", this._onTimer);
-        runInlineScript(this._onTimer);
+        runInlineScript(this._onTimer, ctx);
       }, this._timerInterval);
     }
+  }
+  // getwidth():number {
+  //   return this._activeLayout._w; // avoid getting bitmap.width
+  // }
+  // getheight():number {
+  //   return this._activeLayout._h; // avoid getting bitmap.width
+  // }
 
-    
+  get width():number {
+    return this.getWidth() // container.getWidth
+  }
+  get height():number{
+    return this.getHeight() // container.getHeight
+  }
+  set width(w:number) {
+    this.setWidth(w)
+  }
+  set height(h:number) {
+    this.setHeight(h)
   }
 
   //? WindowsMediaPlayer ========================

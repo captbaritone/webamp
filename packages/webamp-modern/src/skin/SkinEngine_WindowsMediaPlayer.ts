@@ -195,7 +195,8 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     //   id: node.attribute.id+ "_normal",
     // });
     // layoutNode.children = node.children;
-    (node.attributes.id = node.attributes.id + "_normal"),
+    node.attributes.id = node.attributes.id + "_normal";
+    node.attributes.allowzerosize = '1';
       // const container = await this.container(containerEl, null);
 
       // node.attributes.id = "normal";
@@ -328,6 +329,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     const transparentImages = [
       "background",
       "image",
+      "thumb",
       "hoverimage",
       "downimage",
       "hoverdownimage",
@@ -347,7 +349,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
             "thumb",
             "mappingimage",
             "clippingimage",
-          ])
+          ]) {
             if (element.attributes[att]) {
               const bitmapId = element.attributes[att];
               const bitmap: Attributes = {
@@ -361,6 +363,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
                     element.attributes.transparencycolor;
                 }
               }
+              console.log(`scan bitmap. att:'${att}' value:'${JSON.stringify(bitmap)}' @`, JSON.stringify(element.attributes))
               // if (att == "background") {
               //   if (element.attributes.transparencycolor != null) {
               //     node.attributes.transparentcolor =
@@ -369,6 +372,17 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
               // }
               this.bitmap(new XmlElement("bitmap", bitmap));
             }
+          }
+          //subview sometime only declare transparencyColor without image
+          // let children know it
+          if(element.name == 'subview' && element.attributes.transparencycolor){
+            const transparencyColor = element.attributes.transparencycolor;
+            for (const subChild of element.children) {
+              if(subChild instanceof XmlElement && !subChild.attributes.transparencycolor) {
+                subChild.attributes.transparencycolor = transparencyColor;
+              }
+            }
+          }
           recursiveScanChildren(element);
         }
       }
@@ -407,7 +421,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
       height: "h",
       backgroundimage: "background",
       alphablend: "alpha",
-      passthrough: "ghost",
+      // passthrough: "ghost",
     };
     const replacable = Object.keys(replacement);
     for (const att of Object.keys(element.attributes)) {

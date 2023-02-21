@@ -51,6 +51,7 @@ export function relative(size: number): string {
 }
 
 export function toBool(str: string) {
+  str = str.toLowerCase()
   assume(
     str === "0" || str === "1" || str === "false" || str === "true",
     `Expected bool value to be "0" or "1", but it was "${str}".`

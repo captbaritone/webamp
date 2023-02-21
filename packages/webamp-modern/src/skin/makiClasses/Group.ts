@@ -18,6 +18,7 @@ export default class Group extends Movable {
   _actualWidth: number; // for _invalidatesize, after draw
   _actualHeight: number;
   _regionCanvas: HTMLCanvasElement;
+  _allowZeroSize: boolean = false; //WMP set width = 0; in their script. Winamp unset width => get bitmap width
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -36,7 +37,10 @@ export default class Group extends Movable {
         this._drawBackground = Utils.toBool(value);
         this._renderBackground();
         break;
-      default:
+      case "allowzerosize":
+        this._allowZeroSize = Utils.toBool(value);
+        break;
+        default:
         return false;
     }
     return true;
@@ -122,6 +126,9 @@ export default class Group extends Movable {
   // This shadows `getheight()` on GuiObj
   getheight(): number {
     const h = super.getheight();
+    if (h==0 && this._allowZeroSize) {
+      return h;
+    }
     if (!h && this._background != null) {
       const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
@@ -138,6 +145,9 @@ export default class Group extends Movable {
       }
     }
     const w = super.getwidth();
+    if (w==0 && this._allowZeroSize) {
+      return w;
+    }
     if (!w && this._background != null) {
       const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();

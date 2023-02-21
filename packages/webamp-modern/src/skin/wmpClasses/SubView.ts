@@ -1,4 +1,4 @@
-import { num } from "../../utils";
+import { num, toBool } from "../../utils";
 import { AUDIO_PAUSED, AUDIO_PLAYING, AUDIO_STOPPED } from "../AudioPlayer";
 import { Edges } from "../Clippath";
 import Group from "../makiClasses/Group";
@@ -17,13 +17,19 @@ export default class SubView extends Group {
   }
 
   setXmlAttr(_key: string, value: string): boolean {
-    const key = _key.toLowerCase();
+    let key = _key.toLowerCase();
     if (value.startsWith("wmpenabled:player.controls.")) {
       this._audioEvent[value.split(".").pop()] = key;
       return;
     }
 
-    if (super.setXmlAttr(_key, value)) {
+    if(key=='passthrough'){
+      // key = 'ghost';
+      this.passThrough = value;
+      return true
+    }
+
+    if (super.setXmlAttr(key, value)) {
       return true;
     }
 
@@ -49,6 +55,13 @@ export default class SubView extends Group {
         return false;
     }
     return true;
+  }
+
+  set passThrough(val: string) {
+    const noMouse = toBool(val);
+    this.getDiv().classList.toggle('passthrough', noMouse) 
+    // this._ghost = noMouse;
+    // this._div.style.pointerEvents = this._ghost ? "none" : "auto";
   }
 
   moveTo(x: number, y: number, speed: number) {
@@ -81,10 +94,6 @@ export default class SubView extends Group {
     this._renderAlpha();
   }
 
-  set passThrough(value: string) {
-    this._ghost = value == "True";
-    this._div.style.pointerEvents = this._ghost ? "none" : "auto";
-  }
 
   init() {
     super.init();

@@ -152,6 +152,13 @@ export default class Container extends XmlObj {
     return this._activeLayout.getheight();
   }
 
+  setWidth(w: number) {
+     this._activeLayout.setXmlAttr('w',String(w));
+  }
+  setHeight(h: number) {
+    this._activeLayout.setXmlAttr('h',String(h));
+  }
+
   gettop(): number {
     return this._y;
   }
