@@ -117,7 +117,7 @@ export default class Vis extends GuiObj {
       case "colorosc4":
       case "colorosc5":
         //  color oscilloscope section #
-        const coOcIndex = parseInt(key);
+        const coOcIndex = parseInt(key.substring(8)) -1;
         this._colorOsc[coOcIndex] = value;
         break;
       case "colorallosc":
