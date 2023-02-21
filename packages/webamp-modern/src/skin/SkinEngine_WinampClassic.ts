@@ -312,7 +312,7 @@ export default class ClassicSkinEngine extends SkinEngine {
       for (let i = 1; i <= 16; i++) {
         vis.setxmlparam(`colorband${i}`, colors[i]);
       }
-      vis.setxmlparam(`colorallbands`, colors[17]);
+      // vis.setxmlparam(`colorallbands`, colors[17]);
       for (let i = 1; i <= 5; i++) {
         vis.setxmlparam(`colorosc${i}`, colors[17+i]);
       }
