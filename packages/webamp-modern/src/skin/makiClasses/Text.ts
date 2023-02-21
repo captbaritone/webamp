@@ -125,7 +125,8 @@ export default class Text extends GuiObj {
         break;
       case "timeroffstyle":
         this._timeroffstyle = num(value);
-
+        this._setDisplay(this._display);
+        break;
       case "shadowcolor":
         // (int) The comma delimited RGB color for underrendered shadow text.
         this._shadowColor = value;
@@ -234,14 +235,14 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   _onClick = () => {
     if (this._display.toLowerCase() == "time") {
       this._uiRoot.audio.toggleRemainingTime();
-      this.setDisplayValue(integerToTime(this._uiRoot.audio.getCurrentTime()));
+      this.setDisplayTime();
     }
   };
 
   _setDisplay(display: string) {
-    if (display.toLowerCase() === this._display?.toLowerCase()) {
-      return;
-    }
+    // if (display.toLowerCase() === this._display?.toLowerCase()) {
+    //   return;
+    // }
     if (this._disposeDisplaySubscription != null) {
       this._disposeDisplaySubscription();
     }
@@ -262,13 +263,16 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       case "time":
         this._disposeDisplaySubscription =
           this._uiRoot.audio.onCurrentTimeChange(() => {
-            this.setDisplayValue(this.styledTime(
-              integerToTime(this._uiRoot.audio.getCurrentTime())
-            ));
+            // this.setDisplayValue(this.styledTime(
+            //   integerToTime(this._uiRoot.audio.getCurrentTime())
+            // ));
+            this.setDisplayTime();
           });
-        this.setDisplayValue(this.styledTime(
-          integerToTime(this._uiRoot.audio.getCurrentTime())
-        ));
+        console.log('in changing display = time. by:',display)
+        this.setDisplayTime();
+        // this.setDisplayValue(this.styledTime(
+        //   integerToTime(this._uiRoot.audio.getCurrentTime())
+        // ));
         break;
       case "songlength":
         this._displayValue = "5:58";
@@ -309,6 +313,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         { type: "STRING", value: this.gettext() },
       ]);
     }
+  }
+
+  setDisplayTime() {
+    this.setDisplayValue(this.styledTime(
+      integerToTime(this._uiRoot.audio.getCurrentTime())
+    ));
   }
 
   ontextchanged(s: string) {
@@ -468,6 +478,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         // TODO: This is quite hacky.
         if (char === ":" && useColonWidth) {
           charNode.style.width = px(this._timeColonWidth);
+          charNode.style.marginRight = '0';
         }
         this._textWrapper.appendChild(charNode);
       }
