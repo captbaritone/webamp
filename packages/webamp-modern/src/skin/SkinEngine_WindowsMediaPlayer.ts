@@ -27,6 +27,7 @@ export type Attributes = {
 
 export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
   _phase: number = 0;
+  _views: View[] = []
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".wmz") || filePath.endsWith(".zip");
@@ -68,6 +69,11 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     await this.traverseChildren(parsed);
 
     this._setGlobalVar();
+
+    // await 
+    await Promise.all(
+      this._views.map(async (view) => await view.loadJsScripts())
+    );
 
     //debug:
     // for (const bmpId of Object.keys(UI_ROOT.getBitmaps())) {
@@ -182,6 +188,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     const container = new View(this._uiRoot);
     container.setXmlAttributes(node.attributes);
     this._uiRoot.addContainers(container);
+    this._views.push(container);
 
     // //? layout
     // const layoutNode = new XmlElement("layout", {

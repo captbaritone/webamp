@@ -53,6 +53,8 @@ export default class View extends Container {
   init() {
     super.init();
 
+    // this.loadJsScripts();
+
     // if (this._scriptFile) {
     //   this.prepareScriptGlobalObjects();
     //? temporary disabling due incomplete methods
@@ -70,7 +72,7 @@ export default class View extends Container {
       }, this._timerInterval);
     }
 
-    this.loadJsScripts();
+    
   }
 
   //? WindowsMediaPlayer ========================
