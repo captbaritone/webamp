@@ -1,5 +1,5 @@
 import { UIRoot } from "../UIRoot";
-import { assert, getId, normalizeDomId, num, px } from "../utils";
+import { assert, getId, hexToRgb, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
 export function genCssVar(bitmapId: string): string {
@@ -19,6 +19,7 @@ export default class Bitmap {
   _w: number;
   _h: number;
   _file: string;
+  _transparentColor: string;
   _gammagroup: string;
 
   // I am not sure, is bitmap need UiRoot?
@@ -59,6 +60,10 @@ export default class Bitmap {
         break;
       case "gammagroup":
         this._gammagroup = value;
+        break;
+      case "transparentcolor":
+        //seem as only windows media player uses it.
+        this._transparentColor = value;
         break;
       default:
         return false;
@@ -237,7 +242,39 @@ export default class Bitmap {
         const ctx = workingCanvas.getContext("2d");
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
         ctx.drawImage(this._img, -this._x, -this._y);
+
+        //set transparentColor if any
+        if (/* applyTransparency &&  */this._transparentColor != null) {
+          const rgb = hexToRgb(this._transparentColor);
+          // // get the image data object
+          // var data = ctx.getImageData(0, 0, this._canvas.width, this._canvas.height).data;
+          // get the image data object
+          var image = ctx.getImageData(
+            0,
+            0,
+            workingCanvas.width,
+            workingCanvas.height
+          );
+          // get the image data values
+          var data = image.data;
+          const length = data.length;
+          // set alpha=0 if match to color
+          for (var i = 0; i < length; i += 4) {
+            if (
+              data[i + 0] == rgb.r &&
+              data[i + 1] == rgb.g &&
+              data[i + 2] == rgb.b
+            ) {
+              data[i + 3] = 0;
+            }
+          }
+          // after the manipulation, reset the data
+          // image.data = data;
+          // and put the imagedata back to the canvas
+          ctx.putImageData(image, 0, 0);
+        }
       }
+      
       if (store) {
         this._canvas = workingCanvas;
       }
