@@ -66,8 +66,8 @@ export default class Timer extends BaseObject {
       this._uiRoot.vm.dispatch(this, "ontimer");
     }
   }
-  
-  ontimer(){
+
+  ontimer() {
     this._uiRoot.vm.dispatch(this, "ontimer");
   }
 

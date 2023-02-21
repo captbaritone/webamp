@@ -40,7 +40,7 @@ export default class Group extends Movable {
       case "allowzerosize":
         this._allowZeroSize = Utils.toBool(value);
         break;
-        default:
+      default:
         return false;
     }
     return true;
@@ -126,7 +126,7 @@ export default class Group extends Movable {
   // This shadows `getheight()` on GuiObj
   getheight(): number {
     const h = super.getheight();
-    if (h==0 && this._allowZeroSize) {
+    if (h == 0 && this._allowZeroSize) {
       return h;
     }
     if (!h && this._background != null) {
@@ -145,7 +145,7 @@ export default class Group extends Movable {
       }
     }
     const w = super.getwidth();
-    if (w==0 && this._allowZeroSize) {
+    if (w == 0 && this._allowZeroSize) {
       return w;
     }
     if (!w && this._background != null) {

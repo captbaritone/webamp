@@ -14,8 +14,9 @@ export default class BaseObject {
     return this.constructor.name;
   }
 
-  getid(): string { //? api
-    return this.getId()
+  getid(): string {
+    //? api
+    return this.getId();
   }
 
   getId() {

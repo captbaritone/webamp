@@ -101,18 +101,17 @@ export class Webamp5 extends WebAmpModern {
     uiRoot: UIRoot,
     skinEngine: SkinEngine
   ) {
-    let response : Response;
+    let response: Response;
     let fileExtractor: FileExtractor;
     //? pick one of correct fileExtractor
 
-    if (skinPath.endsWith('/')){
+    if (skinPath.endsWith("/")) {
       fileExtractor = new PathFileExtractor();
-    }
-    else {
+    } else {
       response = await fetch(skinPath);
       if (response.status == 404) {
         throw new Error(`Skin does not exist`);
-      }  
+      }
       if (skinEngine != null) {
         fileExtractor = skinEngine.getFileExtractor();
       }

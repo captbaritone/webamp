@@ -6,9 +6,9 @@ import { parse as parseMaki1 } from "./maki/parser";
 import { parse as parseMakiXp, ParsedMaki } from "./maki/parserXp";
 
 function hack() {
-    // Without this Snowpack will try to treeshake out resolver causing a circular
-    // dependency.
-    classResolver("A funny joke about why this is needed.");
+  // Without this Snowpack will try to treeshake out resolver causing a circular
+  // dependency.
+  classResolver("A funny joke about why this is needed.");
 }
 
 /*
@@ -26,13 +26,13 @@ addDropHandler(validateSkinMaki);
 */
 
 function getClass(guid: string): typeof BaseObject | null {
-    try {
-        return classResolver(guid);
-    } catch (e) {
-        return null;
-    }
+  try {
+    return classResolver(guid);
+  } catch (e) {
+    return null;
+  }
 }
-const panel = document.getElementById('panel');
+const panel = document.getElementById("panel");
 const totals = document.createElement("div");
 panel.appendChild(totals);
 const table = document.createElement("table");
@@ -50,7 +50,6 @@ table.appendChild(header);
 
 const classes = [];
 
-
 let total = 0;
 let found = 0;
 let dummy = 0;
@@ -61,53 +60,55 @@ let dummy = 0;
 // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
 // let value = params.maki; // "some_value"
 const url = new URL(window.location.href);
-let makiPath = url.searchParams.get('maki'); // "some_value"
-console.log('maki:', makiPath)
+let makiPath = url.searchParams.get("maki"); // "some_value"
+console.log("maki:", makiPath);
 if (!makiPath) {
-    makiPath = '/assets/MMD3/scripts/songinfo.maki';
-    url.searchParams.set("maki", makiPath);
-    window.history.pushState({ pageTitle: 'title' }, 'title', url);
-    // window.location.assign(url.href)
+  makiPath = "/assets/MMD3/scripts/songinfo.maki";
+  url.searchParams.set("maki", makiPath);
+  window.history.pushState({ pageTitle: "title" }, "title", url);
+  // window.location.assign(url.href)
 }
 
 async function main() {
-    // async function getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
-    // const response = await 
-    fetch(makiPath).then(async (response) => {
-        const scriptContents: ArrayBuffer = await response.arrayBuffer();
-        if (scriptContents == null) {
-            `ScriptFile file not found at path ${makiPath}`
-        } else {
-            const parsedScriptXp = parseMakiXp(scriptContents);
-            const parsedScript1 = parseMaki1(scriptContents, makiPath);
-            explore(parsedScriptXp, parsedScript1)
-        }
-        // return scriptContents
-    });
+  // async function getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
+  // const response = await
+  fetch(makiPath).then(async (response) => {
+    const scriptContents: ArrayBuffer = await response.arrayBuffer();
+    if (scriptContents == null) {
+      `ScriptFile file not found at path ${makiPath}`;
+    } else {
+      const parsedScriptXp = parseMakiXp(scriptContents);
+      const parsedScript1 = parseMaki1(scriptContents, makiPath);
+      explore(parsedScriptXp, parsedScript1);
+    }
+    // return scriptContents
+  });
 }
 
 declare global {
-    interface Window { ace: any; }
+  interface Window {
+    ace: any;
+  }
 }
 
-function explore(makiXp: ParsedMaki, maki: ParsedMaki){
-    const scriptXp = JSON.stringify(makiXp, null, "\t")
-    const script = JSON.stringify(maki, null, "\t")
-    updateEditor(scriptXp, 'editor1')
-    updateEditor(script, 'editor2')
+function explore(makiXp: ParsedMaki, maki: ParsedMaki) {
+  const scriptXp = JSON.stringify(makiXp, null, "\t");
+  const script = JSON.stringify(maki, null, "\t");
+  updateEditor(scriptXp, "editor1");
+  updateEditor(script, "editor2");
 }
-function updateEditor(txt: string, elementId: string){
-    const div = document.getElementById(elementId);
-    div.textContent = txt
-    var editor = window.ace.edit(elementId);
-    // editor.setTheme("ace/theme/monokai");
-    editor.setTheme("ace/theme/merbivore");
-    editor.getSession().setMode("ace/mode/json");
+function updateEditor(txt: string, elementId: string) {
+  const div = document.getElementById(elementId);
+  div.textContent = txt;
+  var editor = window.ace.edit(elementId);
+  // editor.setTheme("ace/theme/monokai");
+  editor.setTheme("ace/theme/merbivore");
+  editor.getSession().setMode("ace/mode/json");
 }
 // this._scripts[file] = scriptContents;
 
-main()
+main();
 
 methodHeader.innerText += ` (${found}/${total}, ${Math.round(
-    (found / total) * 100
+  (found / total) * 100
 )}% Complete) | ${Math.round(((found - dummy) / total) * 100)}% Real.`;

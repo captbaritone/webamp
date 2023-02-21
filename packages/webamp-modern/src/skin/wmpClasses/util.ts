@@ -1,9 +1,9 @@
 import GuiObj from "../makiClasses/GuiObj";
 
-export function runInlineScript(script: string, context:object={}) {
+export function runInlineScript(script: string, context: object = {}) {
   for (const [key, value] of Object.entries(context)) {
     // console.log(`${key}: ${value}`);
-    window[key] = value
+    window[key] = value;
   }
   // console.log('runOnClick:', script)
   for (var expression of script.split(";")) {

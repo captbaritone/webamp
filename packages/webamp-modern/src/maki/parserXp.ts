@@ -57,19 +57,19 @@ const knownContainerGuids = {
 function getClassId(guid: string): string {
   const known = knownContainerGuids[guid];
   if (known) {
-    return known
+    return known;
   }
   try {
     const cls: Function = classResolver(guid);
     return cls.prototype.constructor.name;
   } catch (e) {
-    return '--unknown--';
+    return "--unknown--";
   }
 }
 
-let methods: Method[] = []
-let variables: Variable[] = []
-let constants: any[] = []
+let methods: Method[] = [];
+let variables: Variable[] = [];
+let constants: any[] = [];
 let classes: string[] = [];
 let bindings: Binding[] = [];
 let classAliases: { [key: string]: string } = {};
@@ -153,21 +153,21 @@ export function parse(data: ArrayBuffer): ParsedMaki {
 			]
 		},
   */
-  for( const ivar of variables){
-    if(ivar.isClass == true){
-      for(const ivarOffset of ivar.members){
+  for (const ivar of variables) {
+    if (ivar.isClass == true) {
+      for (const ivarOffset of ivar.members) {
         const variable = variables[ivarOffset];
-        for(const methodOffset of ivar.events){
+        for (const methodOffset of ivar.events) {
           const binding = resolvedBindings[methodOffset];
           const method = methods[binding.methodOffset];
           const methodName = `${variable.className}.${method.name}`;
-          resolvedBindings.push({ 
+          resolvedBindings.push({
             ...binding,
-            methodName, 
-            variableOffset: ivarOffset, 
-            // binaryOffset, 
-            // methodOffset, 
-            // variable: clone1level(variables[variableOffset]) 
+            methodName,
+            variableOffset: ivarOffset,
+            // binaryOffset,
+            // methodOffset,
+            // variable: clone1level(variables[variableOffset])
             bindingOnClass: true,
           });
         }
@@ -226,7 +226,7 @@ function readVersion(makiFile: MakiFile): number {
 function readClasses(makiFile: MakiFile): string[] {
   let count = makiFile.readUInt32LE();
   const classes = [];
-  const classesAlias = {};//['.. -- ..'];
+  const classesAlias = {}; //['.. -- ..'];
   while (count--) {
     let identifier = "";
     let chunks = 4;
@@ -237,7 +237,7 @@ function readClasses(makiFile: MakiFile): string[] {
     // classesAlias.push(`${getClassId(identifier)} = ${identifier}`);
     classesAlias[identifier] = getClassId(identifier);
   }
-  classAliases = classesAlias
+  classAliases = classesAlias;
   return classes;
   // return classes.concat(classesAlias);
 }
@@ -251,14 +251,21 @@ function readMethods(makiFile: MakiFile, guids: string[]): Method[] {
     const typeOffset = classCode & 0xff;
     // This is probably the second half of a uint32
     const unknown1 = makiFile.readUInt16LE();
-    const name = makiFile.readString();//.toLowerCase();
+    const name = makiFile.readString(); //.toLowerCase();
 
     const classGuid = guids[typeOffset];
-    const className = getClassId(classGuid)
+    const className = getClassId(classGuid);
 
     const returnType = getReturnType(classGuid, name.toLowerCase());
 
-    methods.push({ name, typeOffset, returnType, className, unknown1, classCode });
+    methods.push({
+      name,
+      typeOffset,
+      returnType,
+      className,
+      unknown1,
+      classCode,
+    });
   }
   return methods;
 }
@@ -283,14 +290,14 @@ function readVariables({ makiFile, classes }) {
       if (variable == null) {
         throw new Error("Invalid type");
       } else {
-        if(!variable.members) {
+        if (!variable.members) {
           variables[typeOffset].isClass = true;
           variable.isClass = true;
-        // if (!variable.newClassName) {
+          // if (!variable.newClassName) {
           variable.newClassName = `NEW_CLASS_NAME-${++newClass}`;
           // variable.type0 = variable.type;
-          variable.type = 'CLASS';
-          variable.members = []
+          variable.type = "CLASS";
+          variable.members = [];
           variable.events = []; //method indexes
         }
       }
@@ -306,19 +313,26 @@ function readVariables({ makiFile, classes }) {
         inheritFrom: variable.newClassName || variable.className,
         isObject: object,
         // newClassDeclaration: true,
-        className: getClassId(variable.guid) || '^UNKNOWN^',
+        className: getClassId(variable.guid) || "^UNKNOWN^",
       });
       const index = variables.length - 1;
 
-      if(!variable.members.includes(index)) {
-        variable.members.push(index)
+      if (!variable.members.includes(index)) {
+        variable.members.push(index);
       }
     } else if (object) {
       const klass = classes[typeOffset];
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push({ type: "OBJECT", value: null, global, guid: klass, className: getClassId(klass), isObject: object, });
+      variables.push({
+        type: "OBJECT",
+        value: null,
+        global,
+        guid: klass,
+        className: getClassId(klass),
+        isObject: object,
+      });
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
@@ -360,9 +374,9 @@ function readVariables({ makiFile, classes }) {
       variables.push(variable);
     }
     if (isSystem) {
-      variables[variables.length - 1].isSystem = true
+      variables[variables.length - 1].isSystem = true;
     }
-    variables[variables.length-1]._index_ = variables.length -1;
+    variables[variables.length - 1]._index_ = variables.length - 1;
   }
   return variables;
 }
@@ -380,18 +394,16 @@ function readConstants({ makiFile, variables }) {
   }
 }
 
-function clone1level(o: object):object {
-  const ret = []
+function clone1level(o: object): object {
+  const ret = [];
   for (const [key, value] of Object.entries(o)) {
-    if (!(
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      value !== null
-    )) {
-      ret[key] = value
+    if (
+      !(typeof value === "object" && !Array.isArray(value) && value !== null)
+    ) {
+      ret[key] = value;
     }
   }
-  return ret
+  return ret;
 }
 
 function readBindings(makiFile: MakiFile): Binding[] {
@@ -401,21 +413,21 @@ function readBindings(makiFile: MakiFile): Binding[] {
     const variableOffset = makiFile.readUInt32LE();
     const methodOffset = makiFile.readUInt32LE();
     const binaryOffset = makiFile.readUInt32LE();
-    const method = methods[methodOffset]
+    const method = methods[methodOffset];
     // const methodName = `${method.newClassName || method.className}.${method.name}`
-    const methodName = `${method.className}.${method.name}`
-    bindings.push({ 
-      methodName, 
-      variableOffset, 
-      binaryOffset, 
-      methodOffset, 
-      variable: clone1level(variables[variableOffset]) 
+    const methodName = `${method.className}.${method.name}`;
+    bindings.push({
+      methodName,
+      variableOffset,
+      binaryOffset,
+      methodOffset,
+      variable: clone1level(variables[variableOffset]),
     });
     const aclass = variables[variableOffset];
-    if(!aclass.events){
-      aclass.events = []
+    if (!aclass.events) {
+      aclass.events = [];
     }
-    aclass.events.push(bindings.length -1);
+    aclass.events.push(bindings.length - 1);
   }
   return bindings;
 }
@@ -436,8 +448,8 @@ function decodeCode({ makiFile }) {
 function parseComand({ start, makiFile, length }) {
   const pos = makiFile.getPosition() - start;
   const opcode = makiFile.readUInt8();
-  const Command = COMMANDS[opcode] || { name: 'UNKNOWN', short: '-???-' }
-  const description = `${Command.short || Command.name} (${Command.name})`
+  const Command = COMMANDS[opcode] || { name: "UNKNOWN", short: "-???-" };
+  const description = `${Command.short || Command.name} (${Command.name})`;
   const command = {
     description,
     opcode,
@@ -481,7 +493,6 @@ function parseComand({ start, makiFile, length }) {
   if (opcode === 112 /* strangeCall */) {
     const strangeFlag = makiFile.readUInt8();
     command.strangeFlag = strangeFlag;
-
   }
   return command;
 }

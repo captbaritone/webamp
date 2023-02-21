@@ -130,13 +130,13 @@ export function parse(data: ArrayBuffer, maki_id: string): ParsedMaki {
   //         const binding = resolvedBindings[methodOffset];
   //         const method = methods[binding.methodOffset];
   //         const methodName = `${variable.className}.${method.name}`;
-  //         resolvedBindings.push({ 
+  //         resolvedBindings.push({
   //           ...binding,
-  //           methodName, 
-  //           variableOffset: ivarOffset, 
-  //           // binaryOffset, 
-  //           // methodOffset, 
-  //           // variable: clone1level(variables[variableOffset]) 
+  //           methodName,
+  //           variableOffset: ivarOffset,
+  //           // binaryOffset,
+  //           // methodOffset,
+  //           // variable: clone1level(variables[variableOffset])
   //           bindingOnClass: true,
   //         });
   //       }
@@ -244,14 +244,14 @@ function readVariables({ makiFile, classes }) {
         throw new Error("Invalid type");
       } else {
         // it is a subclassing, so let's mark inheritor as CLASS (base class)
-        if(!variable.members) {
+        if (!variable.members) {
           variable.isClass = true;
           // variable.type = 'CLASS';
-          variable.members = []
+          variable.members = [];
           variable.events = []; //method indexes
         }
       }
-      
+
       // assume(false, "Unimplemented subclass variable type");
       variables.push({
         type: "OBJECT",
@@ -261,8 +261,8 @@ function readVariables({ makiFile, classes }) {
       });
       const index = variables.length - 1;
 
-      if(!variable.members.includes(index)) {
-        variable.members.push(index)
+      if (!variable.members.includes(index)) {
+        variable.members.push(index);
       }
     } else if (object) {
       const klass = classes[typeOffset];
@@ -334,10 +334,10 @@ function readBindings(makiFile: MakiFile, variables: Variable[]): Binding[] {
     const binaryOffset = makiFile.readUInt32LE();
     bindings.push({ variableOffset, binaryOffset, methodOffset });
     const aclass = variables[variableOffset];
-    if(!aclass.events){
-      aclass.events = []
+    if (!aclass.events) {
+      aclass.events = [];
     }
-    aclass.events.push(bindings.length -1);
+    aclass.events.push(bindings.length - 1);
   }
   return bindings;
 }

@@ -12,27 +12,25 @@ export default class File extends BaseObject {
     this._uiRoot = uiRoot;
   }
 
-  load(path:string) {
-    this._path = path
+  load(path: string) {
+    this._path = path;
   }
 
   exists(): boolean {
     // return unimplemented(false)
-    ;
     // const response = await fetch(this._path);
     // return response.status == 200;
 
     const request = new XMLHttpRequest();
-    request.open('GET', this._path, false);  // `false` makes the request synchronous
+    request.open("GET", this._path, false); // `false` makes the request synchronous
     request.send(null);
     return request.status === 200;
   }
 
-  getsize() :number {
+  getsize(): number {
     const request = new XMLHttpRequest();
-    request.open('GET', this._path, false);  // `false` makes the request synchronous
+    request.open("GET", this._path, false); // `false` makes the request synchronous
     request.send(null);
-    return Number(request.getResponseHeader('content-length'));
+    return Number(request.getResponseHeader("content-length"));
   }
 }
-

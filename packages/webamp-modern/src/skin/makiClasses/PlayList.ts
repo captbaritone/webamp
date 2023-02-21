@@ -34,12 +34,12 @@ export class PlEdit {
 
   constructor(uiRoot: UIRoot) {
     this._uiRoot = uiRoot;
-    this._listenShuffleRepeat()
+    this._listenShuffleRepeat();
   }
 
   init() {
-    this._shuffleChanged() //trigger to get value from cache storage
-    this._repeatChanged() //trigger to get value from cache storage
+    this._shuffleChanged(); //trigger to get value from cache storage
+    this._repeatChanged(); //trigger to get value from cache storage
   }
 
   // shortcut of this.Emitter
@@ -56,38 +56,40 @@ export class PlEdit {
   //? ======= shuffle & Repeat Changes =======
   _listenShuffleRepeat() {
     // const [guid, attrib] = cfgattrib.split(";");
-    const guid = '{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}' // pl
+    const guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}"; // pl
     const configItem = this._uiRoot.CONFIG.getitem(guid);
-    this._shuffleAttrib = configItem.getattribute('shuffle');
-    this._repeatAttrib = configItem.getattribute('repeat');
+    this._shuffleAttrib = configItem.getattribute("shuffle");
+    this._repeatAttrib = configItem.getattribute("repeat");
     //TODO: dispose it
-    this._shuffleAttrib.on("datachanged", this._shuffleChanged
-    // ()=>{
+    this._shuffleAttrib.on(
+      "datachanged",
+      this._shuffleChanged
+      // ()=>{
       // const sshuffle = shuffleAttrib.getdata()
       // this._shuffle = toBool(sshuffle)
       // console.log('shuffle:',this._shuffle)
-    // }
+      // }
     );
-    this._repeatAttrib.on("datachanged", this._repeatChanged
-    // ()=>{
+    this._repeatAttrib.on(
+      "datachanged",
+      this._repeatChanged
+      // ()=>{
       // const srepeat = repeatAttrib.getdata()
       // this._repeat = num(srepeat)
       // console.log('repeat:',this._repeat)
-    // }
+      // }
     );
   }
-  _shuffleChanged=()=>{
-    const sshuffle = this._shuffleAttrib.getdata()
-    this._shuffle = toBool(sshuffle)
-    console.log('shuffle:',this._shuffle)
-  }
-  _repeatChanged=()=>{
-    const srepeat = this._repeatAttrib.getdata()
-    this._repeat = num(srepeat)
-    console.log('repeat:',this._repeat)
-  }
-
-
+  _shuffleChanged = () => {
+    const sshuffle = this._shuffleAttrib.getdata();
+    this._shuffle = toBool(sshuffle);
+    console.log("shuffle:", this._shuffle);
+  };
+  _repeatChanged = () => {
+    const srepeat = this._repeatAttrib.getdata();
+    this._repeat = num(srepeat);
+    console.log("repeat:", this._repeat);
+  };
 
   //? ======= General PlEdit Information =======
   getnumtracks(): number {
@@ -252,9 +254,9 @@ export class PlEdit {
 }
 
 /**
- * The PlaylistDirectory object is simply a list with all the saved playlist from the media library. 
- * Please remember that this object is always on top of other objects, 
- * so you'll have to hide it via maki if you dont want it to be visible. 
+ * The PlaylistDirectory object is simply a list with all the saved playlist from the media library.
+ * Please remember that this object is always on top of other objects,
+ * so you'll have to hide it via maki if you dont want it to be visible.
  * This object was introduced in Winamp 5.5(skinversion 1.3)
  */
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CPlaylistDirectory.2F.3E

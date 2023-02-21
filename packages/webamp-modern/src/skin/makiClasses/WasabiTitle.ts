@@ -36,9 +36,7 @@ export default class WasabiTitleBar extends Group {
   _renderWidth() {
     this._div.style.width =
       this._relatw == "1"
-        ? relative(
-            -this._padtitleleft + -this._padtitleright + this._w ?? 0
-          )
+        ? relative(-this._padtitleleft + -this._padtitleright + this._w ?? 0)
         : px(-this._padtitleright + this.getwidth());
   }
 

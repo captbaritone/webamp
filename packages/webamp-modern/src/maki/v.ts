@@ -1,20 +1,19 @@
 import BaseObject from "../skin/makiClasses/BaseObject";
 
-export type VariableObject =
-  | {
-    type: "OBJECT";
-    value: BaseObject;
-    global?: boolean;
-    guid?: string;
-    members? : number[]; 
-    isClass? : boolean;
+export type VariableObject = {
+  type: "OBJECT";
+  value: BaseObject;
+  global?: boolean;
+  guid?: string;
+  members?: number[];
+  isClass?: boolean;
   // }
   // | {
   //   type: "CLASS";
   //   value: BaseObject;
   //   guid: string;
   //   members? : number[];
-  };
+};
 export type Variable =
   | VariableObject
   | {
@@ -29,7 +28,6 @@ export type Variable =
       type: "STRING";
       value: string;
     }
-  
   | {
       type: "NULL";
       value: null;

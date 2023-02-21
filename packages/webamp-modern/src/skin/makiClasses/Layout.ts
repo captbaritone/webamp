@@ -149,17 +149,15 @@ export default class Layout extends Group {
   }
   setscale(scalevalue: number) {
     this._scale = scalevalue;
-    this.getDiv().style.transform = `scale(${this._scale})`
+    this.getDiv().style.transform = `scale(${this._scale})`;
   }
 
-  setdesktopalpha(onoff :boolean){
+  setdesktopalpha(onoff: boolean) {
     this._desktopalpha = unimplemented(onoff);
   }
-  getdesktopalpha() :boolean{
+  getdesktopalpha(): boolean {
     return this._desktopalpha;
   }
-
-
 
   init() {
     super.init();

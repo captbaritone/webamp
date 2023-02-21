@@ -117,7 +117,7 @@ export default class Vis extends GuiObj {
       case "colorosc4":
       case "colorosc5":
         //  color oscilloscope section #
-        const coOcIndex = parseInt(key.substring(8)) -1;
+        const coOcIndex = parseInt(key.substring(8)) - 1;
         this._colorOsc[coOcIndex] = value;
         break;
       case "colorallosc":
@@ -187,9 +187,9 @@ export default class Vis extends GuiObj {
     return this._mode;
   }
 
-  nextmode(){
+  nextmode() {
     let newMode = this._mode + 1;
-    if(newMode> 2){
+    if (newMode > 2) {
       newMode = 0;
     }
     this.setmode(newMode);
@@ -240,10 +240,10 @@ export default class Vis extends GuiObj {
   }
 
   /*extern Vis.onFrame(); */
-  setrealtime(onoff: boolean){
-    this._realtime = unimplemented(onoff)
+  setrealtime(onoff: boolean) {
+    this._realtime = unimplemented(onoff);
   }
-  getrealtime(): boolean{
+  getrealtime(): boolean {
     return this._realtime;
   }
 

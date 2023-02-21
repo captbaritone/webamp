@@ -6,7 +6,7 @@ export default class ConfigAttribute extends BaseObject {
   static GUID = "24dec2834a36b76e249ecc8c736c6bc4";
   _configItem: ConfigItem;
   _eventListener: Emitter;
-  
+
   constructor(configItem: ConfigItem, name: string) {
     super();
     this._configItem = configItem;
@@ -42,7 +42,7 @@ export default class ConfigAttribute extends BaseObject {
     // console.log('setData:',this._id, '=',value)
     this._configItem.setValue(this._id, value);
     this.trigger("datachanged");
-    this.ondatachanged()
+    this.ondatachanged();
   }
   ondatachanged() {
     // console.log(' -- triggering onDataChanged...'+ this._id, this._configItem.getValue(this._id))

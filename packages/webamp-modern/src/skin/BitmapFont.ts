@@ -2,19 +2,19 @@ import { num, px, toBool } from "../utils";
 import Bitmap from "./Bitmap";
 import ImageManager from "./ImageManager";
 
-const NUMS = "0123456789 -"
+const NUMS = "0123456789 -";
 const CHARS = [
-  "abcdefghijklmnopqrstuvwxyz\"@  ",
-  "0123456789\u2026.:()-'!_+\\/[]^&%,=$#\nâöä?*"
-]
+  'abcdefghijklmnopqrstuvwxyz"@  ',
+  "0123456789\u2026.:()-'!_+\\/[]^&%,=$#\nâöä?*",
+];
 
 const CHAR_MAP = {};
 CHARS.forEach((chars, line) => {
-    chars.split("").forEach((char,col) => {
+  chars.split("").forEach((char, col) => {
     CHAR_MAP[char] = [col, line];
-  })
-})
-console.log('CHAR_MAP:',CHAR_MAP)
+  });
+});
+console.log("CHAR_MAP:", CHAR_MAP);
 
 // http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmapfont.2F.3E
 export default class BitmapFont extends Bitmap {
@@ -75,11 +75,11 @@ export default class BitmapFont extends Bitmap {
   // For example, if we could do this in CSS, we could define everything except
   // the background position just once.
   renderLetter(char: string): HTMLSpanElement {
-    if(char == '-' && this._wa2bignum != 0){
-      if(this._wa2bignum == 1){
-        char = '.'; // Winamp2 nums_ex.bmp = '0123456789 -`
+    if (char == "-" && this._wa2bignum != 0) {
+      if (this._wa2bignum == 1) {
+        char = "."; // Winamp2 nums_ex.bmp = '0123456789 -`
       } else {
-        return this.renderWa2MinusChar()
+        return this.renderWa2MinusChar();
       }
     }
     const span = document.createElement("span");
@@ -91,8 +91,8 @@ export default class BitmapFont extends Bitmap {
   }
   renderWa2MinusChar(): HTMLSpanElement {
     const span = document.createElement("span");
-    span.innerText = '-'; // Keep things accessible
-    span.classList.add('minus', 'bignum')
+    span.innerText = "-"; // Keep things accessible
+    span.classList.add("minus", "bignum");
     return span;
   }
 

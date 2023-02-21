@@ -72,9 +72,7 @@ async function initializeSkinListMenu() {
     }
   `;
 
-
-
-  let bankskin1 = []
+  let bankskin1 = [];
   // try {
   //   const response = await fetch("https://api.webampskins.org/graphql", {
   //     method: "POST",
@@ -112,8 +110,14 @@ async function initializeSkinListMenu() {
     { filename: "[Winamp] BigBento", download_url: "assets/BigBento/" },
 
     { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
-    { filename: "[Winamp Classic] MacOSXAqua1-5", download_url: "assets/MacOSXAqua1-5.698dd4ab.wsz" },
-    { filename: "[Winamp Classic] Green-Dimension-V2", download_url: "assets/Green-Dimension-V2.6f88d5c3.wsz" },
+    {
+      filename: "[Winamp Classic] MacOSXAqua1-5",
+      download_url: "assets/MacOSXAqua1-5.698dd4ab.wsz",
+    },
+    {
+      filename: "[Winamp Classic] Green-Dimension-V2",
+      download_url: "assets/Green-Dimension-V2.6f88d5c3.wsz",
+    },
     {
       filename: "[wmp] Quicksilver WindowsMediaPlayer!",
       download_url: "assets/Quicksilver.wmz",
@@ -147,10 +151,19 @@ async function initializeSkinListMenu() {
     },
     { filename: "[K-Jofol] Limus 2.0", download_url: "assets/Limus2-0.zip" },
     { filename: "[Sonique] Default", download_url: "assets/sonique.sgf" },
-    { filename: "[Sonique] Scifi-Stories", download_url: "assets/scifi-stories.sgf" },
-    { filename: "[Sonique] Panthom (SkinBuilder)", download_url: "assets/phantom.sgf" },
+    {
+      filename: "[Sonique] Scifi-Stories",
+      download_url: "assets/scifi-stories.sgf",
+    },
+    {
+      filename: "[Sonique] Panthom (SkinBuilder)",
+      download_url: "assets/phantom.sgf",
+    },
     { filename: "[Sonique] ChainZ and", download_url: "assets/ChainZ-and.sgf" },
-    { filename: "[JetAudio] Small Bar", download_url: "assets/DefaultBar_s.jsk" },
+    {
+      filename: "[JetAudio] Small Bar",
+      download_url: "assets/DefaultBar_s.jsk",
+    },
     { filename: "[Cowon JetAudio] Gold", download_url: "assets/Gold.uib" },
     { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];

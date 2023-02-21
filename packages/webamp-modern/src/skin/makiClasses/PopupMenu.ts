@@ -5,17 +5,19 @@ import { assume } from "../../utils";
 // import sp from 'synchronized-promise';
 
 // taken from sp test
-const asyncFunctionBuilder = (success) => (value, timeouts = 1000) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(function () {
-      if (success) {
-        resolve(value)
-      } else {
-        reject(new TypeError(value))
-      }
-    }, timeouts)
-  })
-}
+const asyncFunctionBuilder =
+  (success) =>
+  (value, timeouts = 1000) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(function () {
+        if (success) {
+          resolve(value);
+        } else {
+          reject(new TypeError(value));
+        }
+      }, timeouts);
+    });
+  };
 // const async_sleep = (timeout) => {
 // 	// setTimeout(() => done(null, "wake up!"), timeout);
 //   const done = () => {}
@@ -33,20 +35,19 @@ type MenuItem =
       disabled: boolean;
     }
   | { type: "separator" }
-  | { 
-      type: "submenu"; 
+  | {
+      type: "submenu";
       text: string;
-      popup: PopupMenu; 
+      popup: PopupMenu;
     };
 
 function waitPopup(popup: PopupMenu): number {
   let result: number = -1;
-  const itemClick = (id:number) => {
-    result = id
-  }
-  const div = generatePopupDiv(popup, itemClick)
-  document.getElementById('web-amp').appendChild(div);
-
+  const itemClick = (id: number) => {
+    result = id;
+  };
+  const div = generatePopupDiv(popup, itemClick);
+  document.getElementById("web-amp").appendChild(div);
 
   // const sleep = asyncFunctionBuilder(true)
   // while (result < 0){
@@ -62,27 +63,25 @@ function waitPopup(popup: PopupMenu): number {
   //   }
   //   document.addEventListener('click', handleClick);
   // });
-  return 1
+  return 1;
 }
 
 function generatePopupDiv(popup: PopupMenu, callback: Function): HTMLElement {
-  const root = document.createElement('ul');
-  root.style.zIndex = '1000';
-  for( const menu of popup._items){
-    const item = document.createElement('li')
-    root.appendChild(item)
-    if(menu.type=='item'){
+  const root = document.createElement("ul");
+  root.style.zIndex = "1000";
+  for (const menu of popup._items) {
+    const item = document.createElement("li");
+    root.appendChild(item);
+    if (menu.type == "item") {
       item.textContent = menu.text;
-      item.onclick = (e) => callback(item.id)
-    }
-    else if(menu.type=='submenu'){
-      item.textContent = menu.text
-    }
-    else if(menu.type=='separator'){
-      item.textContent = '-----'
+      item.onclick = (e) => callback(item.id);
+    } else if (menu.type == "submenu") {
+      item.textContent = menu.text;
+    } else if (menu.type == "separator") {
+      item.textContent = "-----";
     }
   }
-  return root
+  return root;
 }
 
 export default class PopupMenu extends BaseObject {
@@ -105,7 +104,7 @@ export default class PopupMenu extends BaseObject {
   addseparator() {
     this._items.push({ type: "separator" });
   }
-  addsubmenu(submenu: PopupMenu, submenutext: string){
+  addsubmenu(submenu: PopupMenu, submenutext: string) {
     this._items.push({ type: "submenu", popup: submenu, text: submenutext });
     // // TODO:
     // this.addcommand(submenutext, 0, false, false)
@@ -120,9 +119,9 @@ export default class PopupMenu extends BaseObject {
     }
     item.checked = check;
   }
-  disablecommand(cmd_id:number, disable: boolean){
+  disablecommand(cmd_id: number, disable: boolean) {
     for (const item of this._items) {
-      if(item.type == 'item' && item.id == cmd_id){
+      if (item.type == "item" && item.id == cmd_id) {
         item.disabled = disable;
         break;
       }
@@ -150,17 +149,16 @@ export default class PopupMenu extends BaseObject {
       !this._items.some((item) => item.type === "item" && item.id === choice)
     ) {
       choice = Number(window.prompt(message.join("\n")));
-      if(choice==0) break;
+      if (choice == 0) break;
     }
     // TODO: Validate
 
     return choice;
   }
-  popatxy(x:number, y:number):number{
-    return this.popatmouse()
+  popatxy(x: number, y: number): number {
+    return this.popatmouse();
   }
-  getnumcommands(){
+  getnumcommands() {
     return this._items.length;
   }
-
 }

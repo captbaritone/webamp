@@ -119,7 +119,7 @@ export class UIRoot {
     this._buckets = [];
     this._bucketEntries = {};
     this._xFades = [];
-    this._additionalCss = []
+    this._additionalCss = [];
     removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
@@ -302,19 +302,18 @@ export class UIRoot {
     return this._containers;
   }
 
-  iterContainers(callback: (c:Container) => boolean ): Container {
-    for(const container of this._containers){
-      if(callback(container))
-        return container
+  iterContainers(callback: (c: Container) => boolean): Container {
+    for (const container of this._containers) {
+      if (callback(container)) return container;
     }
   }
 
   findContainer(id: string): Container {
     // const container = findLast(this.getContainers(), (ct) => ct.hasId(id));
     // return container;
-    return this.iterContainers((ct:Container)=>{
-      return ct.hasId(id)
-    })
+    return this.iterContainers((ct: Container) => {
+      return ct.hasId(id);
+    });
   }
 
   addGammaSet(id: string, gammaSet: GammaGroup[]) {
@@ -464,8 +463,8 @@ export class UIRoot {
     cssEl.textContent = `#${this._id} {${cssRules.join("\n")}}`;
     // cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
-  addAdditionalCss(css:string) {
-    this._additionalCss.push(css)
+  addAdditionalCss(css: string) {
+    this._additionalCss.push(css);
   }
 
   getXuiElement(xuitag: string): XmlElement | null {

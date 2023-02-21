@@ -3,7 +3,7 @@ import UibFileExtractor from "./cowonClasses/uibFileExtractor";
 import { FileExtractor } from "./FileExtractor";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 
-type VisitFun = (node: XmlElement, parent: any)=>Promise<any>;
+type VisitFun = (node: XmlElement, parent: any) => Promise<any>;
 
 export class CowonSkinEngine extends SkinEngine {
   _config: {}; // whole index.json
@@ -36,17 +36,19 @@ export class CowonSkinEngine extends SkinEngine {
   async parseSkin() {
     await this.loadKnowBitmaps();
 
-    const container = await this.container(new XmlElement('container'))
-    const layout = await this.layout(new XmlElement('container',{id:'main'}), container)
+    const container = await this.container(new XmlElement("container"));
+    const layout = await this.layout(
+      new XmlElement("container", { id: "main" }),
+      container
+    );
 
     // const xmlContent = await this.getMainJsc();
     // const parsed = parseXml(xmlContent) as unknown as XmlElement;
 
     // await this.asyncTraverseChildren(parsed, container, this.traverseRoot);
-
   }
 
-  async asyncTraverseChildren(node: XmlElement, parent: any, visit:VisitFun) {
+  async asyncTraverseChildren(node: XmlElement, parent: any, visit: VisitFun) {
     return await Promise.all(
       node.children.map((child) => {
         if (child instanceof XmlElement) {
@@ -56,7 +58,11 @@ export class CowonSkinEngine extends SkinEngine {
       })
     );
   }
-  async traverseChildren(node: XmlElement, parent: any = null, visit:VisitFun) {
+  async traverseChildren(
+    node: XmlElement,
+    parent: any = null,
+    visit: VisitFun
+  ) {
     for (const child of node.children) {
       if (child instanceof XmlElement) {
         await visit(child, parent);
@@ -65,11 +71,11 @@ export class CowonSkinEngine extends SkinEngine {
   }
 
   /**
-   * Scan root of xml. 
+   * Scan root of xml.
    * All root (or direct child of root) are Layout, or a GroupDef
-   * @param node 
-   * @param parent 
-   * @returns 
+   * @param node
+   * @param parent
+   * @returns
    */
   async traverseRoot(node: XmlElement, parent: any) {
     const tag = node.name.toLowerCase();
@@ -90,10 +96,10 @@ export class CowonSkinEngine extends SkinEngine {
   }
 
   /**
-   * Scan non root element. Usually a Group 
-   * @param node 
-   * @param parent 
-   * @returns 
+   * Scan non root element. Usually a Group
+   * @param node
+   * @param parent
+   * @returns
    */
   async traverseComponent(node: XmlElement, parent: any) {
     const tag = node.name.toLowerCase();
@@ -124,7 +130,7 @@ export class CowonSkinEngine extends SkinEngine {
     group.setXmlAttributes(node.attributes);
     await this.traverseChildren(node, group, this.traverseComponent);
     this.addToGroup(group, parent);
-    return group
+    return group;
   }
 
   async getMainJsc(): Promise<string> {
@@ -132,8 +138,8 @@ export class CowonSkinEngine extends SkinEngine {
     //? JetAudio set an xml attribute without quote for numberic value
     //? but I don't want to provide a new xml parser. so let it be a valid xml
     layout = layout.replace(/= *(\d+)/g, (match, num) => `="${num}"`);
-    layout = layout.replace(/---/g, tripledash => `--`);
-    layout = layout.replace(/\0/g, tripledash => ``);
+    layout = layout.replace(/---/g, (tripledash) => `--`);
+    layout = layout.replace(/\0/g, (tripledash) => ``);
     console.log(layout);
     return layout;
   }

@@ -11,27 +11,27 @@ export default class Application extends BaseObject {
     this._uiRoot = uiRoot;
   }
 
-  getapplicationname(): string{
-    return 'WebAmp Modern'
+  getapplicationname(): string {
+    return "WebAmp Modern";
   }
 
-  getversionstring(): string{
-    return unimplemented('5.66')
+  getversionstring(): string {
+    return unimplemented("5.66");
   }
 
   /**
     Path where Winamp stores it's settings (studio.xnf, winamp.ini, etc)
   */
-  getsettingspath():string {    
+  getsettingspath(): string {
     // in windows, should be C:\users\mename\Application Data\Winamp
-    return unimplemented('./')
+    return unimplemented("./");
   }
 
   /**
     Path where winamp.exe (or studio.exe) lives
   */
-  getapplicationpath():string {    
+  getapplicationpath(): string {
     // in windows, should be C:\Program Files\Winamp
-    return unimplemented('./')
+    return unimplemented("./");
   }
 }

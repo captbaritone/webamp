@@ -93,8 +93,8 @@ export default class GuiObj extends XmlObj {
         this._autowidthsource = value.toLowerCase();
         break;
       case "fitparent":
-        this._relatw = '1';
-        this._relath = '1';
+        this._relatw = "1";
+        this._relath = "1";
         this._renderWidth();
         this._renderHeight();
         break;
@@ -256,14 +256,14 @@ export default class GuiObj extends XmlObj {
 
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
-      console.log('mouse-down!');
+      console.log("mouse-down!");
       this.onLeftButtonDown(
         e.offsetX + this.getleft(),
         e.offsetY + this.gettop()
       );
 
       const mouseUpHandler = (e: MouseEvent) => {
-        console.log('mouse-up!');
+        console.log("mouse-up!");
         this.onLeftButtonUp(
           e.offsetX + this.getleft(),
           e.offsetY + this.gettop()
@@ -408,7 +408,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getxmlparam(param: string): string {
-    param = param.toLowerCase()
+    param = param.toLowerCase();
     const _ = this["_" + param];
     return _ != null ? _.toString() : null;
   }
@@ -719,7 +719,7 @@ export default class GuiObj extends XmlObj {
       } else {
         this._goingToTarget = false;
         // TODO: Clear targets?
-        this.ontargetreached()
+        this.ontargetreached();
       }
     };
 
@@ -773,9 +773,9 @@ export default class GuiObj extends XmlObj {
    * it's previously set target.
    */
   ontargetreached() {
-    this._uiRoot.vm.dispatch(this, "ontargetreached")
+    this._uiRoot.vm.dispatch(this, "ontargetreached");
   }
-  
+
   canceltarget() {
     this._goingToTarget = true;
   }
@@ -787,13 +787,13 @@ export default class GuiObj extends XmlObj {
     assume(false, "Unimplemented: reverseTarget");
   }
 
-  onsetvisible(onoff: boolean ){
+  onsetvisible(onoff: boolean) {
     this._uiRoot.vm.dispatch(this, "onsetvisible", [
       { type: "BOOLEAN", value: onoff ? 1 : 0 },
     ]);
   }
   onstartup() {
-    this._uiRoot.vm.dispatch(this, "onstartup")
+    this._uiRoot.vm.dispatch(this, "onstartup");
   }
 
   /**
@@ -819,48 +819,47 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
-
   /**
    * https://stackoverflow.com/questions/52604914/converting-screen-coordinates-to-page-coordinates
    * Given the screen coordinates of a point, is there some way to calculate the coordinates of that point on the actual page of the browser?
    */
 
   clienttoscreenx(x: number): number {
-    const element = this.getDiv()
+    const element = this.getDiv();
     const position = element.getBoundingClientRect();
     return window.screenX + position.left + x;
   }
 
   clienttoscreeny(y: number): number {
-    const element = this.getDiv()
+    const element = this.getDiv();
     const position = element.getBoundingClientRect();
     return window.screenX + position.top + y;
   }
   clienttoscreenw(w: number): number {
-    return unimplemented(this.clienttoscreenx(w))
+    return unimplemented(this.clienttoscreenx(w));
   }
   clienttoscreenh(h: number): number {
-    return unimplemented(this.clienttoscreeny(h))
+    return unimplemented(this.clienttoscreeny(h));
   }
 
   screentoclientx(x: number): number {
-    const element = this.getDiv()
+    const element = this.getDiv();
     const position = element.getBoundingClientRect();
     return x - (window.screenX + position.left);
   }
 
   screentoclienty(y: number): number {
-    const element = this.getDiv()
+    const element = this.getDiv();
     const position = element.getBoundingClientRect();
     return y - (window.screenX + position.top);
   }
   screentoclientw(w: number): number {
-    return unimplemented(this.screentoclienty(w))
+    return unimplemented(this.screentoclienty(w));
   }
   screentoclienth(h: number): number {
-    return unimplemented(this.screentoclienty(h))
+    return unimplemented(this.screentoclienty(h));
   }
-  
+
   getparent(): Group {
     return this._parent;
   }

@@ -23,16 +23,15 @@ export default class TextZ extends MakiText {
     if (value.startsWith("jscript:")) {
       this._pendingProps[key] = value;
       return true;
-    }
-    else if (key == "value") {
+    } else if (key == "value") {
       key = "text";
       if (value == "wmpprop:player.currentmedia.name") {
         this.setXmlAttr("display", "songname");
         this.setXmlAttr("ticker", "1");
         // return;
       }
-    // } else if(key == 'fonttype') {
-    //   key = 'font'
+      // } else if(key == 'fonttype') {
+      //   key = 'font'
     }
     if (super.setXmlAttr(key, _value)) {
       //   //? wmz has no action/param

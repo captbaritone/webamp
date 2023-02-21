@@ -6,14 +6,14 @@ import GuiObj from "./GuiObj";
  */
 export default class QueryList extends GuiObj {
   static GUID = "cdcb785d425381f2b861058ffa3c2872";
-//   _uiRoot: UIRoot;
+  //   _uiRoot: UIRoot;
 
-//   constructor(uiRoot: UIRoot) {
-//     super();
-//     this._uiRoot = uiRoot;
-//   }
+  //   constructor(uiRoot: UIRoot) {
+  //     super();
+  //     this._uiRoot = uiRoot;
+  //   }
 
-//   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
-//     // TODO:
-//   }
+  //   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
+  //     // TODO:
+  //   }
 }

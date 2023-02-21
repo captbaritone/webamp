@@ -172,7 +172,7 @@ export default class JskFileExtractor extends FileExtractor {
       this._i += 16 * 8;
     }
     const size = this.tell() - start;
-    const fileName = 'main.jsc'
+    const fileName = "main.jsc";
     this._toc[fileName] = {
       // at,
       fileName,

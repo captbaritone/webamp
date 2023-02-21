@@ -23,7 +23,7 @@ export async function parseMetaData(
     });
 
     //? don't await
-    genMetadata(track, audioTrackUrl, callback)
+    genMetadata(track, audioTrackUrl, callback);
   } catch (e) {
     // TODO: Should we update the state to indicate that we don't know the length?
     console.warn("ERROR:", e);
@@ -35,8 +35,6 @@ async function genMetadata(
   audioTrackUrl: string,
   callback: Function
 ) {
-
-
   //? ID3
   const bytes: Uint8Array = await fetchFileAsBuffer(audioTrackUrl);
   let id3: ITags;

@@ -193,7 +193,9 @@ export const registerSkinEngine = (Engine: SkinEngineClass) => {
  * @param uiRoot The instance used for check if the a file is available or not
  * @returns A class (not instance) that able to parse & load the skin
  */
-export async function getSkinEngineClass(filePath: string): Promise<SkinEngineClass[]> {
+export async function getSkinEngineClass(
+  filePath: string
+): Promise<SkinEngineClass[]> {
   // const process = (Engine: SkinEngineClass) => {
   //   const engine = new Engine();
   // }
@@ -204,13 +206,14 @@ export async function getSkinEngineClass(filePath: string): Promise<SkinEngineCl
   });
 
   //? #1 take care of path/dirlist: ask if a file exists
-  if (filePath.endsWith('/')) {
+  if (filePath.endsWith("/")) {
     for (const Engine of SKIN_ENGINES) {
       const aFileName = Engine.identifyByFile(filePath);
-      if(aFileName){ //may return null
+      if (aFileName) {
+        //may return null
         const response = await fetch(filePath + aFileName);
         if (response.status == 200) {
-          return [Engine]
+          return [Engine];
         }
       }
     }

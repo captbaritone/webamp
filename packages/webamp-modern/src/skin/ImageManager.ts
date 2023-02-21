@@ -164,7 +164,7 @@ export async function loadImage(imgUrl: string): Promise<HTMLImageElement> {
       resolve(img);
     });
     img.addEventListener("error", (e) => {
-      console.warn('cant load empty image:', imgUrl)
+      console.warn("cant load empty image:", imgUrl);
       reject(e);
     });
     img.src = imgUrl;

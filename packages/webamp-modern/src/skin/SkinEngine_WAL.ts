@@ -83,7 +83,11 @@ export default class SkinEngineWAL extends SkinEngine {
   }; //requested by skin, later compared with UiRoot._bitmaps
 
   static canProcess = (filePath: string): boolean => {
-    return filePath.endsWith(".wal") || filePath.endsWith(".zip") || filePath.endsWith("/");
+    return (
+      filePath.endsWith(".wal") ||
+      filePath.endsWith(".zip") ||
+      filePath.endsWith("/")
+    );
   };
 
   static identifyByFile = (filePath: string): string => {
@@ -473,7 +477,7 @@ export default class SkinEngineWAL extends SkinEngine {
     //   await this._loadThinger(bucket);
     // }
     // this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
-    this._uiRoot.addComponentBucket( bucket);
+    this._uiRoot.addComponentBucket(bucket);
   }
 
   async _loadThinger(bucket: ComponentBucket) {
@@ -564,9 +568,9 @@ export default class SkinEngineWAL extends SkinEngine {
   async frame(node: XmlElement, parent: any): Promise<Frame> {
     const frame = (await this.newGui(Frame, node, parent)) as Frame;
     let i = 0;
-    for(const direction of ['left', 'top', 'right', 'bottom']){
+    for (const direction of ["left", "top", "right", "bottom"]) {
       const group_id = node.attributes[direction];
-      if (group_id != null){
+      if (group_id != null) {
         const pair = await this.group(
           new XmlElement("group", {
             id: group_id,
@@ -580,7 +584,7 @@ export default class SkinEngineWAL extends SkinEngine {
           // parent
           frame
         );
-        i ++;
+        i++;
         // Element.addChild(content);
       }
     }
@@ -654,11 +658,17 @@ export default class SkinEngineWAL extends SkinEngine {
       return;
     }
 
-    const maki_id = `${file} (id=${id||"''"})`;
+    const maki_id = `${file} (id=${id || "''"})`;
     console.log("parsing.maki:", maki_id);
-    const parsedScript = maki==true? this._scripts[file] : parseMaki(maki, maki_id);
+    const parsedScript =
+      maki == true ? this._scripts[file] : parseMaki(maki, maki_id);
 
-    const systemObj = new SystemObject(this._uiRoot, parsedScript, param, maki_id);
+    const systemObj = new SystemObject(
+      this._uiRoot,
+      parsedScript,
+      param,
+      maki_id
+    );
 
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8
@@ -866,25 +876,24 @@ export default class SkinEngineWAL extends SkinEngine {
   async rebuildBuckets() {
     for (const bucket of this._uiRoot._buckets) {
       const wndType = bucket._wndType;
-      console.log(`rebuild Bucket "${wndType}"`, bucket)
+      console.log(`rebuild Bucket "${wndType}"`, bucket);
       for (const entry of this._uiRoot.getBucketEntries(wndType)) {
         // if (entry.attributes.attached == "0") {
-          const dummyNode = new XmlElement("dummy", {
-            id: entry.attributes.id,
-          });
-          await this.group(dummyNode, bucket);
+        const dummyNode = new XmlElement("dummy", {
+          id: entry.attributes.id,
+        });
+        await this.group(dummyNode, bucket);
         // }
       }
     }
   }
-
 
   // assure that bucket entries are attached
   async rebuildBuckets0() {
     for (const [wndType, bucket] of Object.entries<ComponentBucket>(
       this._uiRoot._buckets
     )) {
-      console.log(`rebuild Bucket "${wndType}"`, bucket)
+      console.log(`rebuild Bucket "${wndType}"`, bucket);
       for (const entry of this._uiRoot.getBucketEntries(wndType)) {
         if (entry.attributes.attached == "0") {
           const dummyNode = new XmlElement("dummy", {
@@ -971,21 +980,23 @@ export default class SkinEngineWAL extends SkinEngine {
     await this.traverseChildren(node, parent);
   }
   async windowholder(node: XmlElement, parent: any): Promise<Frame> {
-    const frame = (await this.newGroup(WindowHolder, node, parent) as Frame);
+    const frame = (await this.newGroup(WindowHolder, node, parent)) as Frame;
     //TODO: parse dynamic element by guid value
     const hold = node.attributes.hold;
     // console.log('window-holder'); debugger;
-    if (hold && hold.toLowerCase() == "guid:{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}") {
+    if (
+      hold &&
+      hold.toLowerCase() == "guid:{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}"
+    ) {
       await this.buildWasabiButtonFace();
       const node2 = new XmlElement("component", {
         fitparent: "1",
-      })
+      });
       await this.newGui(PlayListGui, node2, frame);
     }
 
     return frame;
   }
-
 
   async container(node: XmlElement): Promise<Container> {
     const container = new Container(this._uiRoot);
@@ -1168,7 +1179,6 @@ export default class SkinEngineWAL extends SkinEngine {
       })
     );
   }
-
 
   skininfo(node: XmlElement, parent: any) {
     const skinInfo = {};

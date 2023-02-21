@@ -23,24 +23,24 @@ export default class Vm {
       for (const binding of script.bindings) {
         if (
           script.methods[binding.methodOffset].name === event &&
-          (
-            script.variables[binding.variableOffset].value === object || 
-            (script.variables[binding.variableOffset].isClass && 
-              script.variables[binding.variableOffset].members.find(vari => script.variables[vari].value == object))
-          )
+          (script.variables[binding.variableOffset].value === object ||
+            (script.variables[binding.variableOffset].isClass &&
+              script.variables[binding.variableOffset].members.find(
+                (vari) => script.variables[vari].value == object
+              )))
         ) {
-          if(event.startsWith('onleftbu')){
+          if (event.startsWith("onleftbu")) {
             // debugger;
-            console.log('EXEC EVENT:', event, binding)
+            console.log("EXEC EVENT:", event, binding);
           }
           this.interpret(script, binding.commandOffset, event, reversedArgs);
-          executed ++;
+          executed++;
           // return 1;
         }
       }
     }
-    if(event.startsWith('onleft')){
-      console.log('dispatched',executed,'x :', event, object._id)
+    if (event.startsWith("onleft")) {
+      console.log("dispatched", executed, "x :", event, object._id);
     }
     return 0;
   }
@@ -58,32 +58,34 @@ export default class Vm {
           //   debugger;
           // }
           const binding_var = script.variables[binding.variableOffset];
-          // if (binding_var.type === 'CLASS') { 
-          if (binding_var.isClass) { 
+          // if (binding_var.type === 'CLASS') {
+          if (binding_var.isClass) {
             // const rootClass = classResolver(binding_var.guid);
             // if (object instanceof rootClass) {
-              const found = binding_var.members.find(var_index => {
-                const member_var = script.variables[var_index];
-                return member_var.value == object;
-              })
-              if(found != null){
-                // console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
-                binding_var.value = object;
-                match = true;
-              }
+            const found = binding_var.members.find((var_index) => {
+              const member_var = script.variables[var_index];
+              return member_var.value == object;
+            });
+            if (found != null) {
+              // console.log('doEvent:', event, 'CLASS:', binding_var.guid, '@')
+              binding_var.value = object;
+              match = true;
+            }
             // }
             // this.interpret(script, binding.commandOffset, reversedArgs);
             // // return 1;
             // executed ++;
-          } 
-          else if (binding_var.type === 'OBJECT' && binding_var.value === object) {
+          } else if (
+            binding_var.type === "OBJECT" &&
+            binding_var.value === object
+          ) {
             match = true;
           }
 
           if (match) {
             this.interpret(script, binding.commandOffset, event, reversedArgs);
             // return 1;
-            executed ++;
+            executed++;
           }
         }
       }
@@ -101,9 +103,21 @@ export default class Vm {
     return index;
   }
 
-  interpret(script: ParsedMaki, commandOffset: number, eventName:string,  args: Variable[]) {
+  interpret(
+    script: ParsedMaki,
+    commandOffset: number,
+    eventName: string,
+    args: Variable[]
+  ) {
     // try{
-      interpret(commandOffset, script, args, classResolver, eventName, this._uiRoot);
+    interpret(
+      commandOffset,
+      script,
+      args,
+      classResolver,
+      eventName,
+      this._uiRoot
+    );
     // } catch {
     //   console.log('ERRORdah')
     // }

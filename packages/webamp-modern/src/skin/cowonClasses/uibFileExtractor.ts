@@ -80,7 +80,7 @@ export default class UibFileExtractor extends FileExtractor {
     const part = this._arr.slice(chunk.start, chunk.size + chunk.start - 1);
     const magic = "BM"; // [0x42,0x4d]
     const fileSize = Uint32Array.from([chunk.size + 0x0e, 0, 0x0436]);
-    const blob = new Blob([magic, fileSize, part],{type: 'image/bmp'});
+    const blob = new Blob([magic, fileSize, part], { type: "image/bmp" });
     return blob;
   }
 

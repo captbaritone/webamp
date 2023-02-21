@@ -39,7 +39,7 @@ export default class Container extends XmlObj {
     switch (key) {
       case "name":
         // this._name = value;
-        this.setname(value)
+        this.setname(value);
         break;
       case "id":
         this._originalId = value;
@@ -89,7 +89,7 @@ export default class Container extends XmlObj {
     }
   }
 
-  setname(name:string) {
+  setname(name: string) {
     this._name = name;
   }
   getname(): string {
@@ -153,10 +153,10 @@ export default class Container extends XmlObj {
   }
 
   setWidth(w: number) {
-     this._activeLayout.setXmlAttr('w',String(w));
+    this._activeLayout.setXmlAttr("w", String(w));
   }
   setHeight(h: number) {
-    this._activeLayout.setXmlAttr('h',String(h));
+    this._activeLayout.setXmlAttr("h", String(h));
   }
 
   gettop(): number {
@@ -236,7 +236,7 @@ export default class Container extends XmlObj {
   @ret The container type (dynamic or static).
   */
   isdynamic(): number {
-    return this._dynamic? 1 : 0;
+    return this._dynamic ? 1 : 0;
   }
 
   /**

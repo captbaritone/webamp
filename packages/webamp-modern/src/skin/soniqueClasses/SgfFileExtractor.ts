@@ -17,7 +17,7 @@ export default class SgfFileExtractor extends FileExtractor {
     const buffer = await response.arrayBuffer();
     this._arr = new Uint8Array(buffer);
     this.buildTOC();
-    console.log('Sonique!:', Object.keys(this._toc))
+    console.log("Sonique!:", Object.keys(this._toc));
   }
 
   async getFileAsString(filePath: string): Promise<string> {
@@ -49,7 +49,7 @@ export default class SgfFileExtractor extends FileExtractor {
   async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
     const blob = await this.getFileAsBlob(filePath);
     if (!blob) return null;
-    return await blob.arrayBuffer()
+    return await blob.arrayBuffer();
     // return new Promise((resolve, reject) => {
     //   var reader = new FileReader();
 
@@ -64,10 +64,10 @@ export default class SgfFileExtractor extends FileExtractor {
     // });
   }
 
-  async getFileAsBlob(filePath: string): Promise<Blob> {    
-    console.log('getting ',filePath)
-    if (filePath=='/png/navitem'){
-      return navitem()
+  async getFileAsBlob(filePath: string): Promise<Blob> {
+    console.log("getting ", filePath);
+    if (filePath == "/png/navitem") {
+      return navitem();
     }
     const chunk = this._toc[filePath];
     if (!chunk) return null;
@@ -130,7 +130,7 @@ export default class SgfFileExtractor extends FileExtractor {
 
     for (let i = this._i; i < end; ++i) {
       const byte = this._arr[i];
-      if(byte!=0){
+      if (byte != 0) {
         ret += String.fromCharCode(byte);
       }
     }

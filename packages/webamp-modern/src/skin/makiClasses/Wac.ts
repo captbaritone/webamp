@@ -13,7 +13,7 @@ export default class Wac extends BaseObject {
     this._uiRoot = uiRoot;
   }
 
-//   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
-//     // TODO:
-//   }
+  //   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
+  //     // TODO:
+  //   }
 }

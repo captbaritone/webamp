@@ -138,8 +138,18 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // await this.loadSeek(this._rc, group);
     await this.loadEqualizer(this._rc, group);
 
-    await this.loadToggleButton("Repeat", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat", group, this._rc);
-    await this.loadToggleButton("Shuffle", "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle", group, this._rc);
+    await this.loadToggleButton(
+      "Repeat",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat",
+      group,
+      this._rc
+    );
+    await this.loadToggleButton(
+      "Shuffle",
+      "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle",
+      group,
+      this._rc
+    );
     await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
   }
@@ -287,11 +297,10 @@ export default class KJofol_SkinEngine extends SkinEngine {
     // console.log("rect:", rect);
     const [left, top, right, bottom, tooltip, downimage] = rect;
 
-    
     const node = new XmlElement("button", {
       id: nick,
       cfgattrib,
-      cfgval:"2",
+      cfgval: "2",
       tooltip,
       x: `${left}`,
       y: `${top}`,

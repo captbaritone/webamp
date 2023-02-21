@@ -33,15 +33,15 @@ export default class Config extends ConfigPersistent {
     itemGuid = itemGuid.toLowerCase();
     // line below wouldn't replace the _configTree. ^_^v
     // const cfg = new ConfigItem(this._uiRoot, this, itemName, itemGuid);
-    
+
     let cfg = this._items[itemGuid];
-    if(!cfg){
+    if (!cfg) {
       cfg = new ConfigItem(this._uiRoot, this, itemName, itemGuid);
       this._items[itemGuid] = cfg;
     }
 
-    if(itemName.toLowerCase() == itemGuid){
-      itemName = itemGuid
+    if (itemName.toLowerCase() == itemGuid) {
+      itemName = itemGuid;
     }
     this._aliases[itemName] = itemGuid;
     this._saveState();

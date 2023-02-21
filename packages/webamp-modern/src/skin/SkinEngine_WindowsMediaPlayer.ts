@@ -27,7 +27,7 @@ export type Attributes = {
 
 export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
   _phase: number = 0;
-  _views: View[] = []
+  _views: View[] = [];
 
   static canProcess = (filePath: string): boolean => {
     return filePath.endsWith(".wmz") || filePath.endsWith(".zip");
@@ -70,7 +70,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
 
     this._setGlobalVar();
 
-    // await 
+    // await
     await Promise.all(
       this._views.map(async (view) => await view.loadJsScripts())
     );
@@ -196,12 +196,12 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
     // });
     // layoutNode.children = node.children;
     node.attributes.id = node.attributes.id + "_normal";
-    node.attributes.allowzerosize = '1';
-      // const container = await this.container(containerEl, null);
+    node.attributes.allowzerosize = "1";
+    // const container = await this.container(containerEl, null);
 
-      // node.attributes.id = "normal";
+    // node.attributes.id = "normal";
 
-      await this.layout(node, container);
+    await this.layout(node, container);
     return container;
 
     //?old
@@ -363,7 +363,10 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
                     element.attributes.transparencycolor;
                 }
               }
-              console.log(`scan bitmap. att:'${att}' value:'${JSON.stringify(bitmap)}' @`, JSON.stringify(element.attributes))
+              console.log(
+                `scan bitmap. att:'${att}' value:'${JSON.stringify(bitmap)}' @`,
+                JSON.stringify(element.attributes)
+              );
               // if (att == "background") {
               //   if (element.attributes.transparencycolor != null) {
               //     node.attributes.transparentcolor =
@@ -375,10 +378,16 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
           }
           //subview sometime only declare transparencyColor without image
           // let children know it
-          if(element.name == 'subview' && element.attributes.transparencycolor){
+          if (
+            element.name == "subview" &&
+            element.attributes.transparencycolor
+          ) {
             const transparencyColor = element.attributes.transparencycolor;
             for (const subChild of element.children) {
-              if(subChild instanceof XmlElement && !subChild.attributes.transparencycolor) {
+              if (
+                subChild instanceof XmlElement &&
+                !subChild.attributes.transparencycolor
+              ) {
                 subChild.attributes.transparencycolor = transparencyColor;
               }
             }

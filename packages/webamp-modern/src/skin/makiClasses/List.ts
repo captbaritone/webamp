@@ -14,31 +14,32 @@ export default class MakiList extends BaseObject {
   }
 
   additem(_object: any) {
-    this._list.push(_object)
+    this._list.push(_object);
   }
 
-  removeitem(pos :number) {
+  removeitem(pos: number) {
     const item = this._list[pos];
-    if (item) { // only splice array when item is found
+    if (item) {
+      // only splice array when item is found
       this._list.splice(pos, 1); // 2nd parameter means remove one item only
     }
   }
 
-  finditem(_object :any) :number {
-    return this._list.indexOf(_object)
+  finditem(_object: any): number {
+    return this._list.indexOf(_object);
   }
-  finditem2(_object :any, startItem :number) :number {
-    return this._list.indexOf(_object, startItem)
+  finditem2(_object: any, startItem: number): number {
+    return this._list.indexOf(_object, startItem);
   }
 
   enumitem(pos: number): any {
-    return this._list[pos]
+    return this._list[pos];
   }
 
-  getnumitems() :number{
+  getnumitems(): number {
     return this._list.length;
   }
   removeall() {
-    this._list = []
+    this._list = [];
   }
 }

@@ -23,10 +23,10 @@ export default class SubView extends Group {
       return;
     }
 
-    if(key=='passthrough'){
+    if (key == "passthrough") {
       // key = 'ghost';
       this.passThrough = value;
-      return true
+      return true;
     }
 
     if (super.setXmlAttr(key, value)) {
@@ -59,7 +59,7 @@ export default class SubView extends Group {
 
   set passThrough(val: string) {
     const noMouse = toBool(val);
-    this.getDiv().classList.toggle('passthrough', noMouse) 
+    this.getDiv().classList.toggle("passthrough", noMouse);
     // this._ghost = noMouse;
     // this._div.style.pointerEvents = this._ghost ? "none" : "auto";
   }
@@ -93,7 +93,6 @@ export default class SubView extends Group {
     this._alpha = value;
     this._renderAlpha();
   }
-
 
   init() {
     super.init();

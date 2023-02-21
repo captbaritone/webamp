@@ -10,7 +10,12 @@ import GuiObj from "./GuiObj";
 import Config from "./Config";
 import WinampConfig from "./WinampConfig";
 
-import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING, Track } from "../AudioPlayer";
+import {
+  AUDIO_PAUSED,
+  AUDIO_STOPPED,
+  AUDIO_PLAYING,
+  Track,
+} from "../AudioPlayer";
 import Application from "./Application";
 
 const MOUSE_POS = { x: 0, y: 0 };
@@ -125,7 +130,7 @@ export default class SystemObject extends BaseObject {
   }
 
   hasvideosupport(): number {
-    return unimplemented(1); 
+    return unimplemented(1);
   }
   /* Required for Maki */
   getruntimeversion(): number {
@@ -137,7 +142,6 @@ export default class SystemObject extends BaseObject {
   }
   getwinampversion(): string {
     return this._uiRoot.APPLICATION.getversionstring();
-
   }
 
   /**
@@ -185,7 +189,7 @@ export default class SystemObject extends BaseObject {
    */
   stringtointeger(str: string): number {
     // TODO: Confirm if this should be round/ceil/floor
-    if(str=="") return 0;
+    if (str == "") return 0;
     return Math.floor(parseFloat(str));
   }
 
@@ -662,7 +666,7 @@ export default class SystemObject extends BaseObject {
    * @param  num   The container's number for which you want to know the name.
    */
   enumcontainer(num: number) {
-    return this._uiRoot._containers[num]
+    return this._uiRoot._containers[num];
   }
 
   /**
@@ -816,8 +820,8 @@ export default class SystemObject extends BaseObject {
   }
 
   // #region //? Track method =========================================
-  _currentTrack():Track {
-    return this._uiRoot.playlist.currentTrack()
+  _currentTrack(): Track {
+    return this._uiRoot.playlist.currentTrack();
   }
   /**
    * getPlayItemString()
@@ -1110,20 +1114,20 @@ export default class SystemObject extends BaseObject {
     return Math.round(Number(d));
   }
 
-  frac(d :number) :number{
-    const i = Math.floor(d)
+  frac(d: number): number {
+    const i = Math.floor(d);
     return d - i;
   }
 
   /**
-   * Get the string representation of an integer. 
+   * Get the string representation of an integer.
    *
    * @ret         The string equivalent of the integer.
    * @param  value   The integer to change into a string.
    */
   integertostring(value: number): string {
     return String(Math.round(value));
-  }  
+  }
 
   /**
    * Convert a time in seconds to a M:SS value, does not
@@ -1168,7 +1172,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorwidth() {
-    return screen.width
+    return screen.width;
   }
 
   /**
@@ -1261,7 +1265,7 @@ export default class SystemObject extends BaseObject {
    * @ret The current position in the track.
    */
   getposition(): string {
-    return String(this._uiRoot.audio.getCurrentTime() * 1000)
+    return String(this._uiRoot.audio.getCurrentTime() * 1000);
   }
 
   /**
@@ -1318,7 +1322,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorheight(): number {
-    return screen.height
+    return screen.height;
   }
 
   /**
@@ -1345,7 +1349,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorleft(): number {
     // TODO
-    return screenLeft
+    return screenLeft;
   }
 
   /**
@@ -1372,7 +1376,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitortop(): number {
     // TODO
-    return screenTop
+    return screenTop;
   }
 
   getviewporttop(): number {
@@ -1730,10 +1734,12 @@ export default class SystemObject extends BaseObject {
 
   getsonginfotext(): string {
     const track = this._currentTrack();
-    if(track){
+    if (track) {
       const m = track.metadata;
-      if(m){
-        return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+      if (m) {
+        return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(
+          m.sampleRate / 1000
+        )}khz`;
       }
     }
     return "123kbps stereo 79khz";
@@ -1751,7 +1757,7 @@ export default class SystemObject extends BaseObject {
     //TODO:
   }
 
-  isobjectvalid(o : any) :boolean {
+  isobjectvalid(o: any): boolean {
     return o != null;
   }
 
@@ -1775,7 +1781,7 @@ export default class SystemObject extends BaseObject {
   isminimized(): number {
     return unimplemented(0);
   }
-  isdesktopalphaavailable(): boolean{
+  isdesktopalphaavailable(): boolean {
     // whether or not irregular window shape is supported by platform.
     // html5 is always possible. Maybe used by html5 + electron.
     return true;

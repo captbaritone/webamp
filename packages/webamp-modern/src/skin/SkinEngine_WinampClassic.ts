@@ -19,10 +19,14 @@ type StreamSource = {
 export default class ClassicSkinEngine extends SkinEngine {
   _wszRoot: string = "/assets/winamp_classic/";
   _streamSources: StreamSource[] = []; // for pop & push
-  _TXTs: {[key:string]:string} = {}
+  _TXTs: { [key: string]: string } = {};
 
   static canProcess = (filePath: string): boolean => {
-    return filePath.endsWith(".wsz") || filePath.endsWith(".zip")  || filePath.endsWith("/");
+    return (
+      filePath.endsWith(".wsz") ||
+      filePath.endsWith(".zip") ||
+      filePath.endsWith("/")
+    );
   };
 
   static identifyByFile = (filePath: string): string => {
@@ -39,7 +43,7 @@ export default class ClassicSkinEngine extends SkinEngine {
    * Process
    */
   async parseSkin() {
-    this._phase = RESOURCE_PHASE
+    this._phase = RESOURCE_PHASE;
     await this.loadKnowTXTs();
     await this.buildRegionTXT();
 
@@ -59,8 +63,9 @@ export default class ClassicSkinEngine extends SkinEngine {
 
   async loadKnowBitmaps() {
     const promises = [];
-    promises.push(this.loadInline('<bitmap id="wa.main" file="main.bmp"/>'))
-    promises.push(this.loadInline(`
+    promises.push(this.loadInline('<bitmap id="wa.main" file="main.bmp"/>'));
+    promises.push(
+      this.loadInline(`
     <bitmap id="prev" file="cbuttons.bmp"  x="0" y="0" h="18" w="23"/>
     <bitmap id="play" file="cbuttons.bmp"  x="23" y="0" h="18" w="23"/>
     <bitmap id="pause" file="cbuttons.bmp"  x="46" y="0" h="18" w="23"/>
@@ -74,27 +79,35 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="stopp" file="cbuttons.bmp"  x="69" y="18" h="18" w="23"/>
     <bitmap id="nextp" file="cbuttons.bmp"  x="92" y="18" h="18" w="22"/>
     <bitmap id="ejectp" file="cbuttons.bmp"  x="114" y="16" h="16" w="22"/>
-    `))
+    `)
+    );
 
-    promises.push(this.loadInline(`
+    promises.push(
+      this.loadInline(`
     <!-- SONGTICKERFONT -->	
     <bitmapfont id="wasabi.font.default" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>	
-    `))
-    promises.push(this.loadBmp_bignum())
-   
-    promises.push(this.loadInline(`
+    `)
+    );
+    promises.push(this.loadBmp_bignum());
+
+    promises.push(
+      this.loadInline(`
     <bitmap id="player.status.mono.active" file="monoster.bmp" x="29" y="0" h="12" w="27"/>
     <bitmap id="player.status.mono.inactive" file="monoster.bmp" x="29" y="12" h="12" w="27"/>
     <bitmap id="player.status.stereo.active" file="monoster.bmp" x="0" y="0" h="12" w="29"/>
     <bitmap id="player.status.stereo.inactive" file="monoster.bmp" x="0" y="12" h="12" w="29"/>
-        `))
-   
-    promises.push(this.loadInline(`
+        `)
+    );
+
+    promises.push(
+      this.loadInline(`
     <bitmap id="posbarbg" file="posbar.bmp" x="0" y="0" w="248" h="10"/>
     <bitmap id="posbar" file="posbar.bmp" x="248" y="0" w="29" h="10"/>
     <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
-      `))
-    promises.push(this.loadInline(`
+      `)
+    );
+    promises.push(
+      this.loadInline(`
     <bitmap id="rep" file="shufrep.bmp" x="0" y="0" w="28" h="15"/>
     <bitmap id="repp" file="shufrep.bmp" x="0" y="15" w="28" h="15"/>
     <bitmap id="repa" file="shufrep.bmp" x="0" y="30" w="28" h="15"/>
@@ -102,33 +115,41 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="shuf" file="shufrep.bmp" x="28" y="0" h="15" w="47"/>
     <bitmap id="shufp" file="shufrep.bmp" x="28" y="15" h="15" w="47"/>
     <bitmap id="shufa" file="shufrep.bmp" x="28" y="30" h="15" w="47"/>
-      `))
-    promises.push(this.loadInline(`
+      `)
+    );
+    promises.push(
+      this.loadInline(`
     <bitmap id="player.toggler.eq.disabled" file="shufrep.bmp" x="0" y="61" h="12" w="23"/>
     <bitmap id="player.toggler.eq.pressed" file="shufrep.bmp" x="46" y="73" h="12" w="23"/>
     <bitmap id="player.toggler.eq.enabled" file="shufrep.bmp" x="0" y="73" h="12" w="23"/>
     <bitmap id="player.toggler.pl.disabled" file="shufrep.bmp" x="23" y="61" h="12" w="23"/>
     <bitmap id="player.toggler.pl.pressed" file="shufrep.bmp" x="69" y="73" h="12" w="23"/>
     <bitmap id="player.toggler.pl.enabled" file="shufrep.bmp" x="23" y="73" h="12" w="23"/>  
-      `))
-    promises.push(this.loadInline(`
+      `)
+    );
+    promises.push(
+      this.loadInline(`
     <bitmap id="volumes" file="volume.bmp" x="0" y="0" w="68" h="420"/>
     <bitmap id="volbtnd" file="volume.bmp" x="0" y="422" w="14" h="11"/>
     <bitmap id="volbtn" file="volume.bmp" x="15" y="422" w="14" h="11"/>
   
     <bitmap id="balances" file="balance.bmp" x="9" y="0" w="38" h="420"/>
     <bitmap id="panbtnd" file="balance.bmp" x="0" y="422" w="14" h="11"/>
-    <bitmap id="panbtn" file="balance.bmp" x="15" y="422" w="14" h="11"/>      `))
-    promises.push(this.loadInline(`
+    <bitmap id="panbtn" file="balance.bmp" x="15" y="422" w="14" h="11"/>      `)
+    );
+    promises.push(
+      this.loadInline(`
     <bitmap id="wa.play" file="playpaus.bmp" x="0" y="0" w="9" h="9"/>
     <bitmap id="wa.pause" file="playpaus.bmp" x="9" y="0" w="9" h="9"/>
     <bitmap id="wa.stop" file="playpaus.bmp" x="18" y="0" w="9" h="9"/>
   
     <bitmap id="traffic.green" file="playpaus.bmp" x="36" y="0" w="3" h="9"/>
     <bitmap id="traffic.red" file="playpaus.bmp" x="39" y="0" w="3" h="9"/>
-        `))
-   
-    promises.push(this.loadInline(`
+        `)
+    );
+
+    promises.push(
+      this.loadInline(`
     <bitmap id="posbarsl" file="titlebar.bmp" x="17" y="36" w="3" h="7"/>
     <bitmap id="posbarsm" file="titlebar.bmp" x="20" y="36" w="3" h="7"/>
     <bitmap id="posbarsr" file="titlebar.bmp" x="23" y="36" w="3" h="7"/>
@@ -145,9 +166,11 @@ export default class ClassicSkinEngine extends SkinEngine {
     <bitmap id="wa2.player.title.menu" file="titlebar.bmp" x="0" y="0" h="9" w="9"/>
     <bitmap id="wa2.player.title.menu.pressed" file="titlebar.bmp" x="0" y="9" h="9" w="9"/>
   
-          `))
-   
-    promises.push(this.loadInline(`
+          `)
+    );
+
+    promises.push(
+      this.loadInline(`
     <bitmap id="wa.titlebar.on" file="titlebar.bmp"  x="27" y="0" h="13" w="275"/>
     <bitmap id="wa.titlebar.off" file="titlebar.bmp"  x="27" y="15" h="13" w="275"/>
   
@@ -189,43 +212,48 @@ export default class ClassicSkinEngine extends SkinEngine {
 
 	<bitmap id="clutterbar" file="titlebar.bmp" x="304" y="0" w="8" h="43"/>
 
-    `))
-   
+    `)
+    );
+
     return Promise.all(promises);
   }
 
   async loadInline(strXml: string) {
-    const parsed = parseXml(`<elements>${strXml}</elements>`) as unknown as XmlElement;
+    const parsed = parseXml(
+      `<elements>${strXml}</elements>`
+    ) as unknown as XmlElement;
     return await this.traverseChildren(parsed);
   }
 
   async loadKnowTXTs() {
-    const txts = ['region.txt', 'viscolor.txt', 'PLEDIT.TXT']
+    const txts = ["region.txt", "viscolor.txt", "PLEDIT.TXT"];
     return await Promise.all(
       txts.map(async (txt) => {
-        if(!this._TXTs[txt]){
-          this._TXTs[txt] = await this._uiRoot._fileExtractor.getFileAsString(txt);
+        if (!this._TXTs[txt]) {
+          this._TXTs[txt] = await this._uiRoot._fileExtractor.getFileAsString(
+            txt
+          );
         }
       })
-    )
+    );
   }
 
   async buildRegionTXT() {
-    const regionTxt = this._TXTs['region.txt'];
-    if(regionTxt){
-      const regionData = regionParser(regionTxt)
-      const plane = []
-      plane.push('<svg height="0" width="0"><defs>')
-      
+    const regionTxt = this._TXTs["region.txt"];
+    if (regionTxt) {
+      const regionData = regionParser(regionTxt);
+      const plane = [];
+      plane.push('<svg height="0" width="0"><defs>');
+
       for (const [windowName, polygons] of Object.entries(regionData)) {
         // console.log('REGION:',windowName, polygons)
         plane.push(`<clipPath id="region-for-${windowName}">`);
-        for(const polygon of polygons){
+        for (const polygon of polygons) {
           plane.push(`<polygon points="${polygon}"/>`);
         }
         plane.push(`</clipPath>`);
       }
-      const svg = plane.join('')
+      const svg = plane.join("");
       this._uiRoot._div.innerHTML = svg;
     }
   }
@@ -233,15 +261,21 @@ export default class ClassicSkinEngine extends SkinEngine {
   async loadBmp_bignum() {
     //? Bignum = numfont.png | numbers.bmp | nums_ex.bmp
     // const getFile = this._uiRoot._fileExtractor.getFileAsBlob
-    // let bignum = await getFile('numfont.png') 
+    // let bignum = await getFile('numfont.png')
     // if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('numfont.png'))){ // 0123456789- with transparency
     //   await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>`);
-    // } else 
-    if(null != (await this._uiRoot._fileExtractor.getFileAsBlob('nums_ex.bmp'))){  // 0123456789- opaque
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="1"/>`);
-    }
-    else {
-      await this.loadInline(`<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="-1"/>`)
+    // } else
+    if (
+      null != (await this._uiRoot._fileExtractor.getFileAsBlob("nums_ex.bmp"))
+    ) {
+      // 0123456789- opaque
+      await this.loadInline(
+        `<bitmapfont id="player.BIGNUM" file="nums_ex.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="1"/>`
+      );
+    } else {
+      await this.loadInline(
+        `<bitmapfont id="player.BIGNUM" file="numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" wa2bignum="-1"/>`
+      );
     }
     //force. also possibly set null:
     // const bitmap = this._uiRoot.getBitmap("player.BIGNUM")
@@ -262,7 +296,7 @@ export default class ClassicSkinEngine extends SkinEngine {
    * inherit: we allow /wsz_root/ to be / (root)
    */
   parseXmlFragment(xml: string): XmlElement {
-    xml = xml.replace(/"skin\//gi, "\"");
+    xml = xml.replace(/"skin\//gi, '"');
     return super.parseXmlFragment(xml);
   }
 
@@ -314,7 +348,7 @@ export default class ClassicSkinEngine extends SkinEngine {
       }
       // vis.setxmlparam(`colorallbands`, colors[17]);
       for (let i = 1; i <= 5; i++) {
-        vis.setxmlparam(`colorosc${i}`, colors[17+i]);
+        vis.setxmlparam(`colorosc${i}`, colors[17 + i]);
       }
       vis.setxmlparam(`colorbandpeak`, colors[23]);
     }
@@ -360,6 +394,6 @@ const parseViscolors = (text: string): string[] => {
     .map((rgb, i) => {
       colors[i] = rgb; // `rgb(${rgb})`;
     });
-  console.log('VISCOLOR:',colors)
+  console.log("VISCOLOR:", colors);
   return colors;
 };

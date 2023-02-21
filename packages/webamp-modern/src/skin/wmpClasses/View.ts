@@ -55,7 +55,7 @@ export default class View extends Container {
 
     // this.loadJsScripts(); //done in skinengin
 
-    const ctx = {view: this}
+    const ctx = { view: this };
 
     // if (this._scriptFile) {
     //   this.prepareScriptGlobalObjects();
@@ -81,17 +81,17 @@ export default class View extends Container {
   //   return this._activeLayout._h; // avoid getting bitmap.width
   // }
 
-  get width():number {
-    return this.getWidth() // container.getWidth
+  get width(): number {
+    return this.getWidth(); // container.getWidth
   }
-  get height():number{
-    return this.getHeight() // container.getHeight
+  get height(): number {
+    return this.getHeight(); // container.getHeight
   }
-  set width(w:number) {
-    this.setWidth(w)
+  set width(w: number) {
+    this.setWidth(w);
   }
-  set height(h:number) {
-    this.setHeight(h)
+  set height(h: number) {
+    this.setHeight(h);
   }
 
   //? WindowsMediaPlayer ========================

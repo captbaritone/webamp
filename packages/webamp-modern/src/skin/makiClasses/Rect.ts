@@ -11,6 +11,4 @@ export default class Rect extends GuiObj {
   _left: HTMLElement;
   _middle: HTMLElement;
   _right: HTMLElement;
-
-  
 }

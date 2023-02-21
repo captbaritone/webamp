@@ -244,7 +244,7 @@ export default class Bitmap {
         ctx.drawImage(this._img, -this._x, -this._y);
 
         //set transparentColor if any
-        if (/* applyTransparency &&  */this._transparentColor != null) {
+        if (/* applyTransparency &&  */ this._transparentColor != null) {
           const rgb = hexToRgb(this._transparentColor);
           // // get the image data object
           // var data = ctx.getImageData(0, 0, this._canvas.width, this._canvas.height).data;
@@ -274,7 +274,7 @@ export default class Bitmap {
           ctx.putImageData(image, 0, 0);
         }
       }
-      
+
       if (store) {
         this._canvas = workingCanvas;
       }

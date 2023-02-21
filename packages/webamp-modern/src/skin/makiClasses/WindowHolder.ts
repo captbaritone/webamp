@@ -28,9 +28,9 @@ export default class WindowHolder extends Group {
     return this._heldObj;
   }
   getcomponentname(): string {
-    if(this._heldObj) {
+    if (this._heldObj) {
       return this._heldObj._name;
     }
-    return ''
+    return "";
   }
 }

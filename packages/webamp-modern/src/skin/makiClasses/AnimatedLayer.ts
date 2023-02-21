@@ -16,7 +16,7 @@ export default class AnimatedLayer extends Layer {
   _animationInterval: NodeJS.Timeout | null = null;
   _imageFormat: string; // api helper, together with elementFrames.
   _elementFrames: number;
-  _paused:boolean=false;
+  _paused: boolean = false;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -79,7 +79,7 @@ export default class AnimatedLayer extends Layer {
   }
 
   getdirection(): number {
-    return unimplemented(this._vertical? 1 : 0)
+    return unimplemented(this._vertical ? 1 : 0);
   }
 
   // api
@@ -136,8 +136,8 @@ export default class AnimatedLayer extends Layer {
       return;
     }
     this._animationInterval = setInterval(() => {
-      if(this._paused){
-        return
+      if (this._paused) {
+        return;
       }
       this.gotoframe(frame); // visual update
 
@@ -186,22 +186,22 @@ export default class AnimatedLayer extends Layer {
     return this._animationInterval != null && this._paused;
   }
   isstopped(): boolean {
-    return this.isplaying() && ! this._paused;
+    return this.isplaying() && !this._paused;
   }
 
-  setautoreplay(onoff:boolean){
+  setautoreplay(onoff: boolean) {
     this._autoReplay = onoff;
   }
-  getautoreplay():boolean{
+  getautoreplay(): boolean {
     return this._autoReplay;
   }
-  getstartframe():number {
+  getstartframe(): number {
     return this._startFrame;
   }
-  getendframe():number {
+  getendframe(): number {
     return this._endFrame;
   }
-  setrealtime(onoff: boolean){
+  setrealtime(onoff: boolean) {
     const a = 1;
   }
 

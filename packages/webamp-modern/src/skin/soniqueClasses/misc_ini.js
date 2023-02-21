@@ -288,4 +288,4 @@ MSM_MINIMIZE_y    =		16
 MSM_CLOSE_x       =		79
 MSM_CLOSE_y       =		26
 
-`
+`;

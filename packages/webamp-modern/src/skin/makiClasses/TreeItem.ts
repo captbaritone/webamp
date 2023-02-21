@@ -10,7 +10,7 @@ export default class TreeItem extends BaseObject {
     this._uiRoot = uiRoot;
   }
 
-//   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
-//     // TODO:
-//   }
+  //   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
+  //     // TODO:
+  //   }
 }

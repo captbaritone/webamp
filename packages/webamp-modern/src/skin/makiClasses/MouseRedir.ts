@@ -3,14 +3,14 @@ import { UIRoot } from "../../UIRoot";
 
 export default class MouseRedir extends GuiObj {
   static GUID = "9b2e341b40fa6c981b0c858b0594e86e";
-//   _uiRoot: UIRoot;
+  //   _uiRoot: UIRoot;
 
-//   constructor(uiRoot: UIRoot) {
-//     super();
-//     this._uiRoot = uiRoot;
-//   }
+  //   constructor(uiRoot: UIRoot) {
+  //     super();
+  //     this._uiRoot = uiRoot;
+  //   }
 
-//   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
-//     // TODO:
-//   }
+  //   loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
+  //     // TODO:
+  //   }
 }

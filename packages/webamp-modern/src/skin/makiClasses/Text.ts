@@ -164,20 +164,20 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     return true;
   }
 
-  styledTime(time:string): string {
+  styledTime(time: string): string {
     const originalTime = time;
     if (this._timeroffstyle == 1) {
-      if(time.startsWith('-') && time.length==5){ // -9:59
-        time = time.replace('-', '-0')
-      } 
-      else if(time.length==4){  // 9:59
-        time = '0' + time
+      if (time.startsWith("-") && time.length == 5) {
+        // -9:59
+        time = time.replace("-", "-0");
+      } else if (time.length == 4) {
+        // 9:59
+        time = "0" + time;
       }
     }
-    console.log(`timer:'${time}' < '${originalTime}'`)
-    return time    
+    console.log(`timer:'${time}' < '${originalTime}'`);
+    return time;
   }
-
 
   _autoDetectFontType() {
     if (this._font_id) {
@@ -217,7 +217,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
       this._fontSize =
-        this._fontSize * (1 - (1.0 * fontHeight - this._fontSize) / (1.0 * this._fontSize));
+        this._fontSize *
+        (1 - (1.0 * fontHeight - this._fontSize) / (1.0 * this._fontSize));
     }
   }
 
@@ -227,9 +228,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._prepareScrolling();
     }
     this._div.addEventListener("click", this._onClick);
-    if(this._displayHandler!=null){
-      this._displayHandler.init()
-    } 
+    if (this._displayHandler != null) {
+      this._displayHandler.init();
+    }
   }
 
   _onClick = () => {
@@ -240,7 +241,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   };
 
   _setDisplay(display: string) {
-    if(display==null){
+    if (display == null) {
       // this method may called premateurly by timeroffstyle, hence display==unset
       return;
     }
@@ -272,7 +273,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
             // ));
             this.setDisplayTime();
           });
-        console.log('in changing display = time. by:',display)
+        console.log("in changing display = time. by:", display);
         this.setDisplayTime();
         // this.setDisplayValue(this.styledTime(
         //   integerToTime(this._uiRoot.audio.getCurrentTime())
@@ -320,9 +321,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   setDisplayTime() {
-    this.setDisplayValue(this.styledTime(
-      integerToTime(this._uiRoot.audio.getCurrentTime())
-    ));
+    this.setDisplayValue(
+      this.styledTime(integerToTime(this._uiRoot.audio.getCurrentTime()))
+    );
   }
 
   ontextchanged(s: string) {
@@ -332,7 +333,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   gettext(): string {
-    if(this._alternateText){
+    if (this._alternateText) {
       // alternate text is used in Winamp3 to show a hint of a Play button while mouse down.
       return this._alternateText;
     }
@@ -343,11 +344,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       }
     }
     if (this._display) {
-      if (this._display == 'songinfo'){
-        const track =  this._uiRoot.playlist.currentTrack()        
-        if(track){
+      if (this._display == "songinfo") {
+        const track = this._uiRoot.playlist.currentTrack();
+        if (track) {
           const m = track.metadata;
-          return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(m.sampleRate / 1000)}khz`
+          return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(
+            m.sampleRate / 1000
+          )}khz`;
         }
       }
 
@@ -366,7 +369,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   // overrides the display/text parameter with a custom string, set "" to cancel
   setalternatetext(txt: string) {
     this._alternateText = txt;
-    this._renderText()
+    this._renderText();
   }
 
   //to speedup animation like text-scrolling, we spit rendering processes.
@@ -421,7 +424,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.style.fontSize = px(this._fontSize ?? 11);
         // this._div.style.lineHeight = px(this._fontSize ?? 11);
         // this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
-        this._div.style.lineHeight = '1';
+        this._div.style.lineHeight = "1";
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"
           : "none";
@@ -442,8 +445,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _renderText() {
     //TODO: invalidating text width is only important when srolling?
-    if(this._ticker != "off")
-      this._invalidateFullWidth();
+    if (this._ticker != "off") this._invalidateFullWidth();
 
     const font = this._font_obj;
     if (font instanceof BitmapFont) {
@@ -482,7 +484,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         // TODO: This is quite hacky.
         if (char === ":" && useColonWidth) {
           charNode.style.width = px(this._timeColonWidth);
-          charNode.style.marginRight = '0';
+          charNode.style.marginRight = "0";
         }
         this._textWrapper.appendChild(charNode);
       }
@@ -591,9 +593,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (this._disposeDisplaySubscription != null) {
       this._disposeDisplaySubscription();
     }
-    if(this._displayHandler!=null){
-      this._displayHandler.dispose()
-    } 
+    if (this._displayHandler != null) {
+      this._displayHandler.dispose();
+    }
   }
 
   /*
@@ -604,15 +606,14 @@ extern Text.onTextChanged(String newtxt);
   */
 
   /**
-   * 
+   *
    * @param Handler a class inherited from DisplayHandler
    */
-  setDisplayHandler(Handler: DisplayHandlerClass){
-    
-    if(this._displayHandler!=null){
-      this._displayHandler.dispose()
-    } 
-    this._displayHandler = new Handler(this); 
+  setDisplayHandler(Handler: DisplayHandlerClass) {
+    if (this._displayHandler != null) {
+      this._displayHandler.dispose();
+    }
+    this._displayHandler = new Handler(this);
   }
 }
 
@@ -631,7 +632,7 @@ export class DisplayHandler {
 
   init(): void {
     //* possible add a hook to uiRoot
-    //* to update text, call: 
+    //* to update text, call:
     //*   `this._text.setDisplayValue(newTextValue)`
   }
 

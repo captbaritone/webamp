@@ -74,7 +74,9 @@ export default class PlayListGui extends Group {
         this.refresh();
       });
       // line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
-      line.innerHTML = `<span>${i + 1}. ${pl.gettitle(i)}</span><span>${pl.getlength(i)}</span>`;
+      line.innerHTML = `<span>${i + 1}. ${pl.gettitle(
+        i
+      )}</span><span>${pl.getlength(i)}</span>`;
       this._contentPanel.appendChild(line);
     }
   };

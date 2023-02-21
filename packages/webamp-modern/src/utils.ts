@@ -51,12 +51,12 @@ export function relative(size: number): string {
 }
 
 export function toBool(str: string) {
-  str = str.toLowerCase()
+  str = str.toLowerCase();
   assume(
     str === "0" || str === "1" || str === "false" || str === "true",
     `Expected bool value to be "0" or "1", but it was "${str}".`
   );
-  if(!isNaN(parseInt(str))){
+  if (!isNaN(parseInt(str))) {
     return parseInt(str) > 0;
   }
   return str === "1" || str === "true";
@@ -145,7 +145,7 @@ export const throttle = (fn: Function, wait: number = 300) => {
 };
 
 export function unimplemented(value: any): any {
-  return value
+  return value;
 }
 
 /**

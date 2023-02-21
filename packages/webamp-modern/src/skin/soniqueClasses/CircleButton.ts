@@ -19,14 +19,14 @@ export default class CircleButton extends Button {
         this._renderBackground();
         break;
       default:
-          return false;
+        return false;
     }
     return true;
   }
 
   _renderBackground() {
     super._renderBackground();
-    
+
     if (this._iconimage != null && this._uiRoot.hasBitmap(this._iconimage)) {
       const bitmap = this._uiRoot.getBitmap(this._iconimage);
       this.setIconImage(bitmap);
@@ -38,14 +38,14 @@ export default class CircleButton extends Button {
   setIconImage(bitmap: Bitmap | null) {
     this._backgroundBitmap = bitmap;
     if (bitmap != null) {
-      bitmap._setAsBackground(this._div, 'icon-');
+      bitmap._setAsBackground(this._div, "icon-");
     } else {
       this._div.style.setProperty(`--icon-background-image`, "none");
     }
   }
 
   draw(): void {
-    super.draw()
-    this.getDiv().classList.add('circle') //TODO: remove temporary
+    super.draw();
+    this.getDiv().classList.add("circle"); //TODO: remove temporary
   }
 }

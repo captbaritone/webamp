@@ -58,7 +58,7 @@ export default class MakiFile {
     let ret = "";
     const end = Math.min(this._arr.length, this._i + length);
 
-    const buffer = this._arr.slice(this._i, end)
+    const buffer = this._arr.slice(this._i, end);
     ret = new TextDecoder().decode(buffer);
     this._i += length;
     return ret;

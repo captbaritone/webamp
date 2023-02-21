@@ -25,7 +25,10 @@ export default class AlbumArt extends Layer {
   _trackChanged = () => {
     let track: Track;
     if ((track = this._uiRoot.playlist.currentTrack())) {
-      if (this._trackId != track.id || (!this._hasPicture && track.metadata && track.metadata.image)) {
+      if (
+        this._trackId != track.id ||
+        (!this._hasPicture && track.metadata && track.metadata.image)
+      ) {
         this._trackId = track.id;
 
         if (track.metadata && track.metadata.image) {

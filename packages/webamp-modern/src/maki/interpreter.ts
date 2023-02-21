@@ -42,7 +42,12 @@ export function interpret(
   uiRoot: UIRoot
 ) {
   validateMaki(program);
-  const interpreter = new Interpreter(program, classResolver, eventName, uiRoot);
+  const interpreter = new Interpreter(
+    program,
+    classResolver,
+    eventName,
+    uiRoot
+  );
   interpreter.stack = stack;
   return interpreter.interpret(start);
 }
@@ -125,10 +130,15 @@ class Interpreter {
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
           // assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
-          assume( a != null, `Assigning from invalid object into: ${current.value}. #${this.maki_id}. @${this.eventName} \n (see next error)`)
+          assume(
+            a != null,
+            `Assigning from invalid object into: ${current.value}. #${this.maki_id}. @${this.eventName} \n (see next error)`
+          );
           assume(
             typeof a.value === typeof current.value || current.value == null,
-            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${this.maki_id}`
+            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${
+              this.maki_id
+            }`
           );
 
           current.value = a.value;
@@ -147,9 +157,8 @@ class Interpreter {
           // const result = V.newInt(b.value === a.value);
           let result;
           // if comparing string, maybe case-insensitive
-          if(a.type == 'STRING' && b.type == 'STRING'){
+          if (a.type == "STRING" && b.type == "STRING") {
             result = V.newInt(b.value.toLowerCase() == a.value.toLowerCase());
-            
           } else {
             result = V.newInt(b.value === a.value);
           }
@@ -169,9 +178,8 @@ class Interpreter {
           // const result = V.newInt(b.value !== a.value);
           let result;
           // if comparing string, maybe case-insensitive
-          if(a.type == 'STRING' && b.type == 'STRING'){
+          if (a.type == "STRING" && b.type == "STRING") {
             result = V.newInt(b.value.toLowerCase() != a.value.toLowerCase());
-            
           } else {
             result = V.newInt(b.value !== a.value);
           }
@@ -183,7 +191,12 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           // it should work to compare both int & string
-          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
             switch (a.type) {
               case "STRING":
               case "OBJECT":
@@ -210,13 +223,20 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           // it should work to compare both int & string
-          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
             switch (a.type) {
               case "STRING":
               case "OBJECT":
               case "BOOLEAN":
               case "NULL":
-                throw new Error("Tried to add non-numbers.11a. " + this.maki_id);
+                throw new Error(
+                  "Tried to add non-numbers.11a. " + this.maki_id
+                );
             }
             switch (b.type) {
               case "STRING":
@@ -225,7 +245,7 @@ class Interpreter {
               case "NULL":
                 throw new Error("Tried to add non-numbers.11b");
             }
-          }            
+          }
           if (this.debug) {
             console.log(`${b.value} >= ${a.value}`);
           }
@@ -237,7 +257,12 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           // it should work to compare both int & string
-          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
             switch (a.type) {
               case "STRING":
               case "OBJECT":
@@ -265,7 +290,12 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           // it should work to compare both int & string
-          if(! (a.type == b.type && ['INT', 'FLOAT', 'DOUBLE', 'STRING'].includes(a.type))){
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
             switch (a.type) {
               case "STRING":
               case "OBJECT":
@@ -374,7 +404,6 @@ class Interpreter {
             // } else {
             //   result = afunction(...methodArgs);
             // }
-            
           } catch (err) {
             const args = JSON.stringify(methodArgs)
               .replace("[", "")
@@ -535,7 +564,7 @@ class Interpreter {
           let b_value = b.value;
           switch (a.type) {
             case "BOOLEAN":
-              a_value = a_value == 0? 0 : 1;
+              a_value = a_value == 0 ? 0 : 1;
               break;
             case "OBJECT":
             case "NULL":
@@ -551,14 +580,16 @@ class Interpreter {
           }
           switch (b.type) {
             case "OBJECT":
-              throw new Error("Tried to add non-numbers.64b." 
-              + `A:${a.type}=${a.value}`
-              + `B:${b.type}=${b.value}`);
+              throw new Error(
+                "Tried to add non-numbers.64b." +
+                  `A:${a.type}=${a.value}` +
+                  `B:${b.type}=${b.value}`
+              );
             case "BOOLEAN":
               // BigBento:
               // reset += (w == 0);
-	            // reset += (w < min_w);
-              b_value = b_value == 0? 0 : 1;
+              // reset += (w < min_w);
+              b_value = b_value == 0 ? 0 : 1;
           }
           // TODO: Do we need to round the value if INT?
           // this.push({ type: a.type, value: b.value + a.value });
@@ -721,7 +752,7 @@ class Interpreter {
             case "OBJECT":
             // case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.81a :"+a.type);
+              throw new Error("Tried to add non-numbers.81a :" + a.type);
           }
           switch (b.type) {
             case "STRING":

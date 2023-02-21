@@ -108,61 +108,87 @@ export class SoniqueSkinEngine extends SkinEngine {
 
     //? dummy
     const gammaGroups = [
-      {id:"MidTop", value:"-3897,0,2394", gray:"0", boost:"0"},
-      {id:"SystemColor_1", value:"-4096,0,0", gray:"0", boost:"0"},
-      {id:"IconColor", value:"-4096,-4096,-4096", gray:"0", boost:"0"},
-      {id:"BlueBallsColorHover", value:"-144,-144,-144", gray:"0", boost:"0"},
+      { id: "MidTop", value: "-3897,0,2394", gray: "0", boost: "0" },
+      { id: "SystemColor_1", value: "-4096,0,0", gray: "0", boost: "0" },
+      { id: "IconColor", value: "-4096,-4096,-4096", gray: "0", boost: "0" },
+      {
+        id: "BlueBallsColorHover",
+        value: "-144,-144,-144",
+        gray: "0",
+        boost: "0",
+      },
       // {id:"SystemColor_3", value:"-4096,0,0", gray:"0", boost:"0"},
     ];
-    for (const gamma of gammaGroups){
-      console.log('gamma:', gamma.id, gamma.value, iColors.getString(gamma.id));
+    for (const gamma of gammaGroups) {
+      console.log("gamma:", gamma.id, gamma.value, iColors.getString(gamma.id));
       const gammaGroup = new GammaGroup();
       gammaGroup.setXmlAttributes(gamma);
-      gammaSet.push(gammaGroup)
+      gammaSet.push(gammaGroup);
     }
 
     //? real from .INI
     const knownColorsIni = [
-      'BlueBallsColor',
-      'SystemColor_1',
-      'SystemColor_2',
-      'SystemColor_3',
-    ]
-    function gamma(i:number):number {
-      return (i - 128) / 128 * 4096;
+      "BlueBallsColor",
+      "SystemColor_1",
+      "SystemColor_2",
+      "SystemColor_3",
+    ];
+    function gamma(i: number): number {
+      return ((i - 128) / 128) * 4096;
     }
-    for (const colorName of knownColorsIni){
-      const {r,g,b,a} = iColors.getRGBA(colorName);
-      const value= `${gamma(r)},${gamma(g)},${gamma(b)}`;
-      console.log('gamma:', colorName, value, [r,g,b,a], iColors.getString(colorName));
+    for (const colorName of knownColorsIni) {
+      const { r, g, b, a } = iColors.getRGBA(colorName);
+      const value = `${gamma(r)},${gamma(g)},${gamma(b)}`;
+      console.log(
+        "gamma:",
+        colorName,
+        value,
+        [r, g, b, a],
+        iColors.getString(colorName)
+      );
       const gammaGroup = new GammaGroup();
       gammaGroup.setXmlAttributes({
-        id:colorName, 
+        id: colorName,
         value,
       });
-      gammaSet.push(gammaGroup)
+      gammaSet.push(gammaGroup);
     }
 
-    this._uiRoot.addGammaSet('default', gammaSet);
+    this._uiRoot.addGammaSet("default", gammaSet);
   }
 
   async loadColorizedBitmaps() {
     const knownBitmaps = [
-      "down", 'up', 'minus', 'close', 'down2', 'up2', 'infinity','right',
-      'first', 'prev', 'play', 'pause', 'next', 'last', 'stop', 'eject', 'help'
+      "down",
+      "up",
+      "minus",
+      "close",
+      "down2",
+      "up2",
+      "infinity",
+      "right",
+      "first",
+      "prev",
+      "play",
+      "pause",
+      "next",
+      "last",
+      "stop",
+      "eject",
+      "help",
     ];
     let i = 0;
     for (const bitmapName of knownBitmaps) {
       await this.bitmap(
         new XmlElement("bitmap", {
           // file: '/jpeg/navitem1',
-          file: '/png/navitem',
+          file: "/png/navitem",
           id: `nav.${bitmapName}`,
-          x: `${i*10}`,
-          y: '0',
-          w: '10',
-          h: '10',
-          gammagroup: 'IconColor',
+          x: `${i * 10}`,
+          y: "0",
+          w: "10",
+          h: "10",
+          gammagroup: "IconColor",
           // gammagroup: 'BlueBallsColor',
           // gammagroup: 'SystemColor_3',
         })
@@ -173,26 +199,26 @@ export class SoniqueSkinEngine extends SkinEngine {
     //? button circle
     await this.bitmap(
       new XmlElement("bitmap", {
-        file: '/png/navitem',
+        file: "/png/navitem",
         id: `nav.item.normal`,
         x: `181`,
-        y: '0',
-        w: '10',
-        h: '10',
-        gammagroup: 'BlueBallsColor',
+        y: "0",
+        w: "10",
+        h: "10",
+        gammagroup: "BlueBallsColor",
         // gammagroup: 'SystemColor_3',
       })
     );
     await this.bitmap(
       new XmlElement("bitmap", {
-        file: '/png/navitem',
+        file: "/png/navitem",
         id: `nav.item.hover`,
         x: `181`,
-        y: '0',
-        w: '10',
-        h: '10',
+        y: "0",
+        w: "10",
+        h: "10",
         // gammagroup: 'BlueBallsColor',
-        gammagroup: 'BlueBallsColorHover',
+        gammagroup: "BlueBallsColorHover",
       })
     );
   }
@@ -374,7 +400,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     );
     // await this.loadButton("DockMode", "SWITCH;dock", group, this._rc);
     // await this.loadButton("Minimize", "SWITCH;shade", group, this._rc);
-    
+
     await this.loadMidTop(group);
     await this.loadMidBottom(group);
   }
@@ -435,11 +461,15 @@ export class SoniqueSkinEngine extends SkinEngine {
       parent
     );
 
-    await this.loadCircleButton("SingleUp", "SWITCH;nav", room, {image:'nav.up'});
-    await this.loadCircleButton("SingleDown", "SWITCH;small", room, {image:'nav.down'});
-    await this.loadCircleButton("Help", "", room, {image:'nav.help'});
-    await this.loadCircleButton("Minimize", "", room, {image:'nav.minus'});
-    await this.loadCircleButton("Close", "", room, {image:'nav.close'});
+    await this.loadCircleButton("SingleUp", "SWITCH;nav", room, {
+      image: "nav.up",
+    });
+    await this.loadCircleButton("SingleDown", "SWITCH;small", room, {
+      image: "nav.down",
+    });
+    await this.loadCircleButton("Help", "", room, { image: "nav.help" });
+    await this.loadCircleButton("Minimize", "", room, { image: "nav.minus" });
+    await this.loadCircleButton("Close", "", room, { image: "nav.close" });
   }
 
   async loadMidBottom(parent: Group) {
@@ -887,7 +917,7 @@ export class SoniqueSkinEngine extends SkinEngine {
     return button;
   }
 
-  async loadCircleButton(    
+  async loadCircleButton(
     nick: string,
     action: string,
     parent: Group,
@@ -930,8 +960,8 @@ export class SoniqueSkinEngine extends SkinEngine {
       action,
       param,
       // image: options.image,
-      image: 'nav.item.normal',
-      hoverImage: 'nav.item.hover',
+      image: "nav.item.normal",
+      hoverImage: "nav.item.hover",
       iconImage: options.image,
       x,
       y,

@@ -59,59 +59,58 @@ export default class Menu extends Group {
   getmenu(): string {
     return this._menuId;
   }
-  setmenu(menuId:string) {
+  setmenu(menuId: string) {
     this._menuId = menuId;
   }
 
   getmenugroup(): string {
     return this._menuGroupId;
   }
-  setmenugroup(groupId:string) {
+  setmenugroup(groupId: string) {
     this._menuGroupId = groupId;
   }
-  setnormalid(id :string){
+  setnormalid(id: string) {
     this._normalId = id.toLowerCase();
   }
-  setdownid(id :string){
+  setdownid(id: string) {
     this._downId = id.toLowerCase();
   }
-  sethoverid(id :string){
+  sethoverid(id: string) {
     this._hoverId = id.toLowerCase();
   }
 
-  _showButton(el:GuiObj){
+  _showButton(el: GuiObj) {
     for (const obj of [this._elNormal, this._elHover, this._elDown]) {
-      if (obj){
-        if (obj == el){
-          obj.show()
+      if (obj) {
+        if (obj == el) {
+          obj.show();
         } else {
-          obj.hide()
+          obj.hide();
         }
       }
     }
   }
-  _setButtonWidth(w: string){
+  _setButtonWidth(w: string) {
     for (const obj of [this._elNormal, this._elHover, this._elDown]) {
-      if (obj){
-        obj.setXmlAttr('w', w)
+      if (obj) {
+        obj.setXmlAttr("w", w);
       }
     }
   }
-  onLeftButtonDown(x: number, y: number){
-    super.onLeftButtonDown(x,y)
+  onLeftButtonDown(x: number, y: number) {
+    super.onLeftButtonDown(x, y);
     this._showButton(this._elDown);
   }
-  onEnterArea(){
-    super.onEnterArea()
+  onEnterArea() {
+    super.onEnterArea();
     this._showButton(this._elHover);
-    this._div.classList.add('open')
+    this._div.classList.add("open");
   }
-  onLeaveArea(){
-    super.onLeaveArea()
+  onLeaveArea() {
+    super.onLeaveArea();
     this._showButton(this._elNormal);
-    this._div.classList.remove('open')
+    this._div.classList.remove("open");
   }
-
 
   init() {
     super.init();
@@ -124,25 +123,21 @@ export default class Menu extends Group {
     for (const obj of this.getparent()._children) {
       if (obj._id == this._normalId) {
         this._elNormal = obj;
-      }
-      else if (obj._id == this._hoverId) {
+      } else if (obj._id == this._hoverId) {
         this._elHover = obj;
-      }
-      else if (obj._id == this._downId) {
+      } else if (obj._id == this._downId) {
         this._elDown = obj;
-      }
-      else if ((obj instanceof Layer) && obj._image) {
+      } else if (obj instanceof Layer && obj._image) {
         // obj._div.style.position = 'relative'
         this._elImage = obj;
-        this.setXmlAttr('relatw', '0')
+        this.setXmlAttr("relatw", "0");
         const w = this._elImage.getwidth().toString();
-        this.setXmlAttr('w', w)
-        this._setButtonWidth(w)
+        this.setXmlAttr("w", w);
+        this._setButtonWidth(w);
       }
     }
-  }  
+  }
 
-  
   draw() {
     // debugger;
     this.resolveButtonsAction();
@@ -153,7 +148,7 @@ export default class Menu extends Group {
     //   this._setButtonWidth(w)
     // }
     super.draw();
-    this._div.style.pointerEvents = 'all';
+    this._div.style.pointerEvents = "all";
     // if (this._vertical) {
     //   this._div.classList.add("vertical");
     // } else {
@@ -161,8 +156,8 @@ export default class Menu extends Group {
     // }
 
     this._popup = document.createElement("div");
-    this._popup.classList.add('popup');
-    this._popup.classList.add('fake-popup');
+    this._popup.classList.add("popup");
+    this._popup.classList.add("fake-popup");
     // this._appendChildrenToDiv(this._popup);
     this._div.appendChild(this._popup);
   }
