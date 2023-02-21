@@ -22,14 +22,20 @@ function parseFile(filePath) {
       const name = classDefinitionMatch[3]
         .replace(/^_predecl /, "")
         .replace(/^&/, "");
-      const deprecated = /^deprecated\s/.test(line)
-      objects[name.toLowerCase()] = { id, name, parent, deprecated, functions: [] };
+      const deprecated = /^deprecated\s/.test(line);
+      objects[name.toLowerCase()] = {
+        id,
+        name,
+        parent,
+        deprecated,
+        functions: [],
+      };
     }
-    
+
     const methodMatch = /\s*extern(\s+.*)?\s+(.*)\.(.*)\((.*)\);/.exec(line);
-    
+
     if (methodMatch) {
-      const methodDeprecated = /^deprecated\s/.test(line)
+      const methodDeprecated = /^deprecated\s/.test(line);
       const result = methodMatch[1] == null ? "" : methodMatch[1].trim();
       const className = methodMatch[2].toLowerCase();
       const name = methodMatch[3].trim();
@@ -53,7 +59,12 @@ function parseFile(filePath) {
           )}`
         );
       }
-      objects[className].functions.push({ name, parameters, result, deprecated:methodDeprecated });
+      objects[className].functions.push({
+        name,
+        parameters,
+        result,
+        deprecated: methodDeprecated,
+      });
     }
   });
 
