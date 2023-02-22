@@ -152,28 +152,28 @@ function makiTypeToTsType(makiType: string): string {
     case "double":
     case "float":
       return "number";
+    case "any":
+      return "any";
     case "string":
       return "string";
     case "map":
       return "MakiMap";
     case "boolean":
       return "boolean";
+    case "object":
+      return "BaseObject";
     case "guiobject":
       return "GuiObj";
     case "layout":
-      return "Layout";
     case "container":
-      return "Container";
     case "group":
-      return "Group";
     case "wac":
-      return "Wac";
     case "configitem":
-      return "ConfigItem";
     case "configattribute":
-      return "ConfigAttribute";
     case "winampconfiggroup":
-      return "WinampConfigGroup";
+    case "popupmenu":
+    case "menu":
+      return makiType;
     default:
       throw new Error(`Missing maki type: ${makiType}`);
   }

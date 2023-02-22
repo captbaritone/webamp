@@ -2,7 +2,7 @@ import { UIRoot } from "../../UIRoot";
 import Button from "./Button";
 
 export default class WasabiButton extends Button {
-  //   static GUID = "unknown";
+  static GUID = "OFFICIALLY-NO-GUID";
 
   getElTag(): string {
     return "button";
