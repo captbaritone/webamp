@@ -1,0 +1,83 @@
+<groupdef id="mainwindow" x="0" y="0" w="550" h="232" relatw="1" relath="1">
+    <layer id="main.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+    <layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
+    
+    <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off" ghost="1" />
+    <button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>
+    <button id="wa.minimize" x="244" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Minimize" activealpha="255" inactivealpha="0"/>
+    <button id="wa.switch" x="254" y="3" action="SWITCH" param="shade" image="switch" downimage="switchp" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>
+    <button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>
+
+
+    <!-- Play & Buffering status -->
+    <status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
+    <layer id="BufferingStatus" x="24" y="28" image="traffic.green"/>
+    <!-- <script file="scripts/classicplaystatus.maki"/> -->
+
+    <!-- Visualzation -->
+    <vis
+        id="vis"
+        x="24" y="43"
+        w="72" h="16"
+    />
+    <!-- Timer -->
+    <text id="timer" display="time" x="30" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" timeroffstyle="1" />
+    <!-- <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/> -->
+    <!-- <script file="scripts/wa2songtimer.maki"/> -->
+
+    <!-- Song Info-->
+    <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" valign="top"/>
+    <Text id="Infoticker" x="110" y="27" w="155" h="9" leftpadding="5" rightpadding="-5" font="wasabi.font.default" align="center" valign="top" fontsize="13" color="font.display.songticker" altfont="Arial" visible="0" />
+    
+    <text id="Frequency" x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <text id="Bitrate" x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+    <!-- <script file="scripts/winamp1kbps.maki"/> -->
+
+    <layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
+    <layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
+    <!-- <script file="scripts/monoster.maki"/> -->
+    <script file="scripts/songinfoclassic.maki"/>
+
+    <button id="btn-eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
+    <button id="btn-pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
+
+
+    <group id="sliders" x="107" y="57" h="13"/>
+    <!-- <images source="volume"  id="volume.anim"  w="68" h="13" images="volumes" imagesspacing="15" /> -->
+    <!-- <Slider action="volume"  id="volume"       x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd" orientation="horizontal" /> -->
+    <!-- <images source="balance" id="balance.anim" x="70" w="38" h="13" images="balances" imagesspacing="15" /> -->
+    <!-- <Slider action="PAN"     id="balance"      x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd" orientation="horizontal" /> -->
+
+    <!--  [============[####]=========================================] -->
+    <layer                 id="seek.bg"            x="16" y="72" w="248" h="10" image="posbarbg"/>
+    <slider action="SEEK"  id="player.slider.seek" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp"/>
+
+    <button action="PREV"  id="wabtn.previous" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
+    <button action="PLAY"  id="wabtn.play" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
+    <button action="PAUSE" id="wabtn.pause" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
+    <button action="STOP"  id="wabtn.stop" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
+    <button action="NEXT"  id="wabtn.next" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
+    <button action="EJECT" id="wabtn.open" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
+
+    <togglebutton id="Shuffle" x="164" y="89" image="shuf" downImage="shufp" activeImage="shufa" tooltip="Toggle Shuffle" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+    <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" tooltip="Toggle Repeat" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
+
+
+
+    <script file="scripts/display.maki"/>
+</groupdef>
+
+<groupdef id="sliders">
+  <images id="volume.anim" source="volume" w="68" h="13" images="volumes" imagesspacing="15" />
+  <Slider id="volume" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd" tooltip="Volume Bar"/>
+  <!-- <script file="scripts/volume.maki"/> -->
+
+  <images id="balance.anim" source="balance" x="70" w="38" h="13" images="balances" imagesspacing="15" />
+  <Slider id="balance" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd" tooltip="Panning Bar"/>
+  <!-- <script file="scripts/balance.maki"/> -->
+</groupdef>
+
+
+<layout id="normal" background="wa.main" droptarget="pldr" minimum_h="116" minimum_w="275">
+    <group id="mainwindow"/>
+</layout>

@@ -1,0 +1,31 @@
+<container id="video" name="Video Window" default_x="0" default_y="232" default_visible="0">
+	<layout id="normal" background="wasabi.frame.basetexture" minimum_h="116" minimum_w="275">
+		<layer id="video.topleft" image="video.topleft.active" x="0" y="0" inactiveimage="video.topleft.inactive" regionop="1"/>
+		<layer id="video.stretchybit" image="video.top.stretchybit.active" x="25" y="0" w="-50" relatw="1" inactiveimage="video.top.stretchybit.inactive" regionop="1"/>
+        <layer id="video.center" x="-100" y="0" image="video.top.center.active" inactiveimage="video.top.center.inactive"/>
+        <script file="scripts/_wa2-easylayout.maki" param="video.center;0;0;1;0;0;0"/>
+		<layer id="video.topright" image="video.topright.active" x="-25" y="0" relatx="1" inactiveimage="video.topright.inactive" regionop="1"/>
+		<layer id="video.left" image="video.left" x="0" y="20" h="-58" relath="1" regionop="1"/>
+		<layer id="video.right" image="video.right" x="-8" y="20" h="-58" relatx="1" relath="1" regionop="1"/>
+		<layer id="video.bottomleft" image="video.bottomleft" x="0" y="-38" relaty="1" regionop="1"/>
+		<layer id="video.bottom.stretchybit" image="video.bottom.stretchybit" x="125" y="-38" w="-250" relaty="1" relatw="1" regionop="1"/>
+		<layer id="video.bottomright" image="video.bottomright" x="-125" y="-38" relatx="1" relaty="1" regionop="1"/>
+		<layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
+
+		<!-- Since Winamp 5.0 the component xml object was renamed to windowholder -->
+		<windowholder id="studio.list" component=""  fitparent="1"
+			x="11" y="20" w="-19" h="-58" relatw="1" relath="1"
+			noshowcmdbar="1" autoopen="1" autoclose="1"
+			param="guid:{F0816D7B-FFFC-4343-80F2-E8199AA15CC3}"
+		/>
+
+    <button x="9" y="-29" action="VID_FS" relaty="1" rectrgn="1" image="video.fullscreen" downImage="video.fullscreenp"/>
+    <button x="24" y="-29" action="VID_1X" relaty="1" rectrgn="1" image="video.1x" downImage="video.1xp"/>
+    <button x="39" y="-29" action="VID_2X" relaty="1" rectrgn="1" image="video.2x" downImage="video.2xp"/>
+    <button x="69" y="-29" action="VID_Misc" relaty="1" rectrgn="1" image="video.misc" downImage="video.miscp"/>
+
+    <text id="wasabi.statusbar.text" display="VID_INFO" x="94" y="-28" w="-119" h="14" valign="top" relatw="1" relaty="1" font="Tahoma" color="x50" fontsize="14" wrap="0" ghost="1" antialias="0"/>
+		<!-- Close Button -->
+		<button x="-11" y="3" relatx="1" relaty="0" action="Close" rectrgn="1" image="video.close" downImage="video.closep" inactiveAlpha="0"/>
+	</layout>
+</container>

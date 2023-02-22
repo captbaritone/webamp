@@ -2,15 +2,21 @@ import { getClass } from "../../maki/objects";
 import { ParsedMaki } from "../../maki/parser";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
-import { clamp, integerToTime } from "../../utils";
+import { clamp, integerToTime, unimplemented } from "../../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "../PrivateConfig";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import GuiObj from "./GuiObj";
-import Config, { CONFIG } from "./Config";
-import WinampConfig, { WINAMP_CONFIG } from "./WinampConfig";
+import Config from "./Config";
+import WinampConfig from "./WinampConfig";
 
-import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
+import {
+  AUDIO_PAUSED,
+  AUDIO_STOPPED,
+  AUDIO_PLAYING,
+  Track,
+} from "../AudioPlayer";
+import Application from "./Application";
 
 const MOUSE_POS = { x: 0, y: 0 };
 
@@ -23,51 +29,76 @@ document.addEventListener("mousemove", (e: MouseEvent) => {
 
 export default class SystemObject extends BaseObject {
   static GUID = "d6f50f6449b793fa66baf193983eaeef";
+  _uiRoot: UIRoot;
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
   _param: string;
   _id: string;
 
-  constructor(parsedScript: ParsedMaki, param: string, id: string) {
+  constructor(
+    uiRoot: UIRoot,
+    parsedScript: ParsedMaki,
+    param: string,
+    id: string
+  ) {
     super();
+    this._uiRoot = uiRoot;
     this._parsedScript = parsedScript;
     this._param = param;
     this._id = id; // useful while debuggin
-    UI_ROOT.audio.onSeek(() => {
-      UI_ROOT.vm.dispatch(this, "onseek", [
-        { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
+    this._uiRoot.audio.onSeek(() => {
+      this._uiRoot.vm.dispatch(this, "onseek", [
+        {
+          type: "INT",
+          value: this._uiRoot.audio.getCurrentTimePercent() * 255,
+        },
       ]);
     });
-    UI_ROOT.audio.on("play", () => UI_ROOT.vm.dispatch(this, "onplay", []));
-    UI_ROOT.audio.on("pause", () => UI_ROOT.vm.dispatch(this, "onpause", []));
-    UI_ROOT.audio.on("stop", () => UI_ROOT.vm.dispatch(this, "onstop", []));
-    // UI_ROOT.audio.onPlay(() => UI_ROOT.vm.dispatch(this, "onplay", []));
-    UI_ROOT.audio.onVolumeChanged(() => {
-      UI_ROOT.vm.dispatch(this, "onvolumechanged", [
-        { type: "INT", value: UI_ROOT.audio.getVolume() * 255 },
+    this._uiRoot.audio.on("play", () =>
+      this._uiRoot.vm.dispatch(this, "onplay", [])
+    );
+    this._uiRoot.audio.on("pause", () =>
+      this._uiRoot.vm.dispatch(this, "onpause", [])
+    );
+    this._uiRoot.audio.on("stop", () =>
+      this._uiRoot.vm.dispatch(this, "onstop", [])
+    );
+    // this._uiRoot.audio.onPlay(() => this._uiRoot.vm.dispatch(this, "onplay", []));
+    this._uiRoot.audio.onVolumeChanged(() => {
+      this._uiRoot.vm.dispatch(this, "onvolumechanged", [
+        { type: "INT", value: this._uiRoot.audio.getVolume() * 255 },
       ]);
     });
     const EqBandHandle = (band: number) => {
-      // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
-      UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
-        { type: "INT", value: band },
-        { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
+      // console.log('eq.changed:',band, this._uiRoot.audio.getEq(String(band)))
+      this._uiRoot.vm.dispatch(this, "oneqbandchanged", [
+        { type: "INT", value: band - 1 },
+        {
+          type: "INT",
+          value: this._uiRoot.audio.getEq(String(band)) * 255 - 127,
+        },
       ]);
     };
-    UI_ROOT.audio.onEqChange("1", () => EqBandHandle(1));
-    UI_ROOT.audio.onEqChange("2", () => EqBandHandle(2));
-    UI_ROOT.audio.onEqChange("3", () => EqBandHandle(3));
-    UI_ROOT.audio.onEqChange("4", () => EqBandHandle(4));
-    UI_ROOT.audio.onEqChange("5", () => EqBandHandle(5));
-    UI_ROOT.audio.onEqChange("6", () => EqBandHandle(6));
-    UI_ROOT.audio.onEqChange("7", () => EqBandHandle(7));
-    UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
-    UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
-    UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
+    this._uiRoot.audio.onEqChange("1", () => EqBandHandle(1));
+    this._uiRoot.audio.onEqChange("2", () => EqBandHandle(2));
+    this._uiRoot.audio.onEqChange("3", () => EqBandHandle(3));
+    this._uiRoot.audio.onEqChange("4", () => EqBandHandle(4));
+    this._uiRoot.audio.onEqChange("5", () => EqBandHandle(5));
+    this._uiRoot.audio.onEqChange("6", () => EqBandHandle(6));
+    this._uiRoot.audio.onEqChange("7", () => EqBandHandle(7));
+    this._uiRoot.audio.onEqChange("8", () => EqBandHandle(8));
+    this._uiRoot.audio.onEqChange("9", () => EqBandHandle(9));
+    this._uiRoot.audio.onEqChange("10", () => EqBandHandle(10));
+    this._uiRoot.audio.onEqChange("preamp", () => {
+      this._uiRoot.vm.dispatch(this, "oneqpreampchanged", [
+        { type: "INT", value: this._uiRoot.audio.getEq("preamp") * 255 - 127 },
+      ]);
+    });
   }
 
   init() {
     // dumpScriptDebug(this._parsedScript);
+    // console.log('initing script:', this._id)
     const initialVariable = this._parsedScript.variables[0];
     if (initialVariable.type !== "OBJECT") {
       throw new Error("First variable was not SystemObject.");
@@ -77,28 +108,40 @@ export default class SystemObject extends BaseObject {
     for (const vari of this._parsedScript.variables) {
       if (vari.type == "OBJECT") {
         if (vari.guid == Config.GUID) {
-          vari.value = CONFIG;
+          vari.value = this._uiRoot.CONFIG;
         } else if (vari.guid == WinampConfig.GUID) {
-          vari.value = WINAMP_CONFIG;
+          vari.value = this._uiRoot.WINAMP_CONFIG;
+        } else if (vari.guid == Application.GUID) {
+          vari.value = this._uiRoot.APPLICATION;
         }
       }
     }
 
-    UI_ROOT.vm.addScript(this._parsedScript);
-    UI_ROOT.vm.dispatch(this, "onscriptloaded");
+    this._uiRoot.vm.addScript(this._parsedScript);
+    this._uiRoot.vm.dispatch(this, "onscriptloaded");
+  }
+
+  dispose() {
+    this._uiRoot.vm.dispatch(this, "onscriptunloading");
   }
 
   setParentGroup(group: Group) {
     this._parentGroup = group;
   }
 
+  hasvideosupport(): number {
+    return unimplemented(1);
+  }
   /* Required for Maki */
   getruntimeversion(): number {
     return 5.666;
   }
 
   getskinname(): string {
-    return "TODO: Get the Real skin name";
+    return this._uiRoot.getSkinName();
+  }
+  getwinampversion(): string {
+    return this._uiRoot.APPLICATION.getversionstring();
   }
 
   /**
@@ -108,7 +151,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current X pos.
    */
   getmouseposx(): number {
-    return MOUSE_POS.x;
+    return unimplemented(MOUSE_POS.x);
   }
 
   /**
@@ -118,7 +161,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current Y pos.
    */
   getmouseposy(): number {
-    return MOUSE_POS.y;
+    return unimplemented(MOUSE_POS.y);
   }
 
   /**
@@ -146,7 +189,8 @@ export default class SystemObject extends BaseObject {
    */
   stringtointeger(str: string): number {
     // TODO: Confirm if this should be round/ceil/floor
-    return Math.round(Number(str));
+    if (str == "") return 0;
+    return Math.floor(parseFloat(str));
   }
 
   /**
@@ -561,7 +605,7 @@ export default class SystemObject extends BaseObject {
    **/
   getcontainer(containerId: string): Container {
     const lower = containerId.toLowerCase();
-    for (const container of UI_ROOT.getContainers()) {
+    for (const container of this._uiRoot.getContainers()) {
       if (container.getId() === lower) {
         return container;
       }
@@ -607,7 +651,7 @@ export default class SystemObject extends BaseObject {
    * @ret The number of containers.
    */
   getnumcontainers(): number {
-    return UI_ROOT.getContainers().length;
+    return this._uiRoot.getContainers().length;
   }
 
   /**
@@ -622,7 +666,7 @@ export default class SystemObject extends BaseObject {
    * @param  num   The container's number for which you want to know the name.
    */
   enumcontainer(num: number) {
-    //TODO
+    return this._uiRoot._containers[num];
   }
 
   /**
@@ -653,7 +697,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the left vu meter.
    */
   getleftvumeter(): number {
-    return UI_ROOT.audio._vuMeter;
+    return this._uiRoot.audio._vuMeter * 255;
   }
 
   /**
@@ -663,7 +707,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the right vu meter.
    */
   getrightvumeter(): number {
-    return UI_ROOT.audio._vuMeter;
+    return this._uiRoot.audio._vuMeter * 255;
   }
 
   /**
@@ -672,7 +716,7 @@ export default class SystemObject extends BaseObject {
    * @ret The current volume.
    **/
   getvolume(): number {
-    return UI_ROOT.audio.getVolume() * 255;
+    return this._uiRoot.audio.getVolume() * 255;
   }
 
   /**
@@ -684,7 +728,7 @@ export default class SystemObject extends BaseObject {
   setvolume(_vol: number) {
     const vol = clamp(_vol, 0, 255);
 
-    UI_ROOT.audio.setVolume(vol / 255);
+    this._uiRoot.audio.setVolume(vol / 255);
   }
 
   /**
@@ -692,7 +736,9 @@ export default class SystemObject extends BaseObject {
    *
    * Trigger the play event.
    */
-  play() {}
+  play() {
+    this._uiRoot.audio.play();
+  }
 
   /**
    * stop()
@@ -700,7 +746,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the stop event.
    */
   stop() {
-    // TODO
+    this._uiRoot.audio.stop();
   }
 
   /**
@@ -709,7 +755,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the pause event.
    */
   pause() {
-    // TODO
+    this._uiRoot.audio.pause();
   }
 
   /**
@@ -718,7 +764,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the next event.
    */
   next() {
-    // TODO
+    this._uiRoot.next();
   }
 
   /**
@@ -727,7 +773,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the previous event.
    */
   previous() {
-    // TODO
+    this._uiRoot.previous();
   }
 
   /**
@@ -736,7 +782,7 @@ export default class SystemObject extends BaseObject {
    * Trigger the eject event.
    */
   eject() {
-    // TODO
+    this._uiRoot.eject();
   }
 
   /**
@@ -773,21 +819,25 @@ export default class SystemObject extends BaseObject {
     // TODO
   }
 
+  // #region //? Track method =========================================
+  _currentTrack(): Track {
+    return this._uiRoot.playlist.currentTrack();
+  }
   /**
    * getPlayItemString()
    *
    * @ret The name of what is playing.
    */
   getplayitemstring(): string {
-    return "Niente da Caprie";
+    return unimplemented("Niente da Caprie");
   }
 
   getplaylistlength(): number {
-    return UI_ROOT.playlist.getnumtracks();
+    return this._uiRoot.playlist.getnumtracks();
   }
 
   getplaylistindex(): number {
-    return UI_ROOT.playlist.getcurrentindex();
+    return this._uiRoot.playlist.getcurrentindex();
   }
 
   /**
@@ -837,7 +887,7 @@ export default class SystemObject extends BaseObject {
    * @param  metadataname    The name of the metadata field you want to read.
    */
   getplayitemmetadatastring(metadataname: string): string {
-    return "Metadata"; // TODO
+    return unimplemented("Metadata"); // TODO
   }
 
   /**
@@ -846,14 +896,42 @@ export default class SystemObject extends BaseObject {
    * @param  metadataname    The name of the metadata field you want to read.
    */
   getmetadatastring(filename: string, metadataname: string): string {
-    return "Metadatastring"; // TODO
+    return unimplemented("Metadatastring"); // TODO
   }
 
   /**
-   * TODO
+   setState2(){
+    String currenttitle = System.strlower(System.getPlayItemDisplayTitle());
+    
+    if(System.strsearch(currenttitle, "[connecting") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[resolving hostname") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[http/1.1") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}
+    if(System.strsearch(currenttitle, "[buffer") != -1){
+		playstatus.setXmlParam("image", "wa.play.red");
+	}else{
+        if(bitrateint == 0 || bitrateint == -1 && freqint == 0 || freqint == -1){
+            playstatus.setXmlParam("image", "wa.play.red"); 
+            setPlaysymbol.start();
+        }
+        if(bitrateint > 0 && freqint > 0){setPlaysymbol.start(); 
+            playstatus.setXmlParam("image", "wa.play.green");
+        }
+    }
+}
+   */
+  /**
+   * Get network status of currrent playing items.
+   * @returns string
    */
   getplayitemdisplaytitle(): string {
-    return "playitemdisplaytitle"; //What does this really do?
+    // taken from  winamp_classic "classicDisplayStatus.m"
+    return unimplemented("playitemdisplaytitle"); //What does this really do?
   }
 
   /**
@@ -862,6 +940,7 @@ export default class SystemObject extends BaseObject {
    */
   getcurrenttrackrating(): number {
     // TODO
+    return unimplemented(1);
   }
   /**
    * Requires 5.5
@@ -892,7 +971,7 @@ export default class SystemObject extends BaseObject {
    * @param ext The extension in question.
    */
   getextfamily(ext: string): string {
-    return "Audio";
+    return unimplemented("Audio");
   }
 
   /**
@@ -955,7 +1034,7 @@ export default class SystemObject extends BaseObject {
    * @param string returns the CD Ripping Directory
    */
   getdownloadpath(): string {
-    return "C:\\CD Rips";
+    return unimplemented("C:\\CD Rips");
   }
   /**
    * Requires 5.53
@@ -997,7 +1076,7 @@ export default class SystemObject extends BaseObject {
    * @param fullfilename
    */
   getfilesize(fullfilename: string): number {
-    return 100;
+    return unimplemented(100);
   }
 
   /**
@@ -1006,7 +1085,7 @@ export default class SystemObject extends BaseObject {
    * @returns Will return 1 if an album art has been downloaded, otherwise 0
    */
   getalbumart(playitem: string): number {
-    return 1;
+    return unimplemented(1);
   }
 
   /**
@@ -1015,8 +1094,7 @@ export default class SystemObject extends BaseObject {
    * @ret Length of the track, in seconds.
    */
   getplayitemlength(): number {
-    return UI_ROOT.audio.getLength();
-    //
+    return this._uiRoot.audio.getLength();
   }
 
   /**
@@ -1025,7 +1103,20 @@ export default class SystemObject extends BaseObject {
    */
   seekto(pos: number) {
     // Note: For some reason I seem to be getting passed seconds here not MS
-    UI_ROOT.audio.seekTo(pos);
+    this._uiRoot.audio.seekTo(pos);
+  }
+
+  chr(charnum: number): string {
+    return String.fromCharCode(charnum);
+  }
+
+  integer(d: number): number {
+    return Math.round(Number(d));
+  }
+
+  frac(d: number): number {
+    const i = Math.floor(d);
+    return d - i;
   }
 
   /**
@@ -1064,6 +1155,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportwidthfromguiobject(g: GuiObj) {
     // TODO
+    return unimplemented(100);
   }
 
   /**
@@ -1080,7 +1172,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorwidth() {
-    // TODO
+    return screen.width;
   }
 
   /**
@@ -1112,7 +1204,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   getextension(str: string): string {
-    return "mp3";
+    return unimplemented("mp3");
   }
 
   /**
@@ -1130,7 +1222,7 @@ export default class SystemObject extends BaseObject {
    * @param  separator   The separator to use.
    * @param  tokennum    The token to retreive.
    */
-  gettoken(str: string, separator: string, tokennum: number) {
+  gettoken(str: string, separator: string, tokennum: number): string {
     // getToken("28,39,-56,-84,0,0,1,1", ",", 3) will return "-84"
     const commas = str.split(separator);
     return commas[tokennum] || "";
@@ -1147,7 +1239,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   removepath(str: string): string {
-    return "test.mp3";
+    return unimplemented("test.mp3");
   }
 
   /**
@@ -1161,7 +1253,7 @@ export default class SystemObject extends BaseObject {
    * @param str The fullpath of a file.
    */
   getpath(str: string): string {
-    return "c:\\music\\mp3";
+    return unimplemented("c:\\music\\mp3");
   }
 
   /**
@@ -1172,8 +1264,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The current position in the track.
    */
-  getposition() {
-    return "25000";
+  getposition(): string {
+    return String(this._uiRoot.audio.getCurrentTime() * 1000);
   }
 
   /**
@@ -1184,7 +1276,7 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    const audioState = UI_ROOT.audio.getState();
+    const audioState = this._uiRoot.audio.getState();
     switch (audioState) {
       case AUDIO_PLAYING:
         return 1;
@@ -1212,6 +1304,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportheightfromguiobject(g: GuiObj): number {
     // TODO
+    return unimplemented(100);
   }
 
   /**
@@ -1229,7 +1322,7 @@ export default class SystemObject extends BaseObject {
    * Int
    */
   getmonitorheight(): number {
-    // TODO
+    return screen.height;
   }
 
   /**
@@ -1256,6 +1349,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorleft(): number {
     // TODO
+    return screenLeft;
   }
 
   /**
@@ -1282,11 +1376,12 @@ export default class SystemObject extends BaseObject {
    */
   getmonitortop(): number {
     // TODO
+    return screenTop;
   }
 
   getviewporttop(): number {
     // TODO: What should this really be?
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1309,7 +1404,7 @@ export default class SystemObject extends BaseObject {
 
   getviewportleft(): number {
     // TODO: What should this really be?
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1318,6 +1413,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportleftfromguiobject(g: GuiObj): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1336,6 +1432,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewporttopfromguiobject(g: GuiObj): number {
     // TODO
+    return 0;
   }
 
   /**
@@ -1358,7 +1455,6 @@ export default class SystemObject extends BaseObject {
    */
   debugstring(str: string, severity: number) {
     console.log("Wasabi Console:", str);
-    // TODO
   }
 
   /**
@@ -1417,19 +1513,7 @@ export default class SystemObject extends BaseObject {
    */
   getcurappheight(): number {
     // TODO
-    return 1000;
-  }
-
-  /**
-   * Get the value of an equalizer band. The bands
-   * are numbered from 0 (60Hz) to 9 (16kHz). The return
-   * value range is from -127 to +127.
-   *
-   * @ret       The value of the band.
-   * @param  band  The eq band number you want to get.
-   */
-  geteqband(band: number): number {
-    return 100;
+    return unimplemented(100);
   }
 
   /**
@@ -1439,7 +1523,7 @@ export default class SystemObject extends BaseObject {
    *  @ret The EQ's state.
    */
   geteq(): number {
-    return 1;
+    return unimplemented(1);
   }
 
   /**
@@ -1451,7 +1535,7 @@ export default class SystemObject extends BaseObject {
    * @ret The preamp's current value.
    */
   geteqpreamp(): number {
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1473,7 +1557,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the pre-amp.
    */
   seteqpreamp(value: number) {
-    // TODO
+    this._uiRoot.audio.setEq("preamp", (value + 127) / 255);
   }
 
   /**
@@ -1485,7 +1569,30 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the specified band.
    */
   seteqband(band: number, value: number) {
-    // TODO
+    this._uiRoot.audio.setEq(String(band + 1), (value + 127) / 255);
+  }
+
+  /**
+   getEqBand()
+
+  Get the value of an equalizer band. The bands
+  are numbered from 0 (60Hz) to 9 (16kHz). The return
+  value range is from -127 to +127.
+
+  @ret       The value of the band.
+  @param  band  The eq band number you want to get.
+  */
+  geteqband(band: number): number {
+    // console.log('getEqBand',band, this._uiRoot.audio.getEq(String(band + 1)) * 255 - 127);
+    return this._uiRoot.audio.getEq(String(band + 1)) * 255 - 127;
+  }
+
+  //maki need it
+  oneqbandchanged(band: number, value: number) {
+    this._uiRoot.vm.dispatch(this, "oneqbandchanged", [
+      { type: "INT", value: band },
+      { type: "INT", value: value },
+    ]);
   }
 
   /**
@@ -1494,7 +1601,7 @@ export default class SystemObject extends BaseObject {
    * @ret ranges from 0 to 255
    */
   getvisband(channel: number, band: number): number {
-    return 0;
+    return unimplemented(0);
   }
 
   /**
@@ -1626,6 +1733,15 @@ export default class SystemObject extends BaseObject {
   oneqfreqchanged(isiso: number) {}
 
   getsonginfotext(): string {
+    const track = this._currentTrack();
+    if (track) {
+      const m = track.metadata;
+      if (m) {
+        return `${m.bitrate}kbps ${m.channelMode} ${Math.floor(
+          m.sampleRate / 1000
+        )}khz`;
+      }
+    }
     return "123kbps stereo 79khz";
   }
 
@@ -1641,29 +1757,43 @@ export default class SystemObject extends BaseObject {
     //TODO:
   }
 
+  isobjectvalid(o: any): boolean {
+    return o != null;
+  }
+
   istransparencyavailable(): boolean {
     return true;
   }
 
   translate(str: string): string {
-    return str;
+    return unimplemented(str);
   }
 
   isvideo(): number {
-    return 0;
+    return unimplemented(0);
   }
   isvideofullscreen(): number {
-    return 0;
+    return unimplemented(0);
   }
   iskeydown(vk: number): number {
-    return 0;
+    return unimplemented(0);
   }
   isminimized(): number {
-    return 0;
+    return unimplemented(0);
+  }
+  isdesktopalphaavailable(): boolean {
+    // whether or not irregular window shape is supported by platform.
+    // html5 is always possible. Maybe used by html5 + electron.
+    return true;
+  }
+  isproversion(): boolean {
+    // lets avoid ugly (uneeded visible of only-non-pro) ui
+    return true;
   }
 }
 
 function dumpScriptDebug(script: ParsedMaki) {
+  // @ts-ignore
   for (const [i, binding] of script.bindings.entries()) {
     const method = script.methods[binding.methodOffset];
     const guid = script.classes[method.typeOffset];

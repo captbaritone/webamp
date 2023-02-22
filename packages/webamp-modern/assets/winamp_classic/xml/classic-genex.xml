@@ -1,0 +1,165 @@
+    <!-- This is loosely based on genex.bmp, this won't take the color pixels from genex.bmp itself,
+    so you have to do the fun of typing all those color values yourself, enjoy! -->
+
+    <color id="x48" value="0,0,0"/> <!-- item background (background to edits, listviews etc) -->
+    <color id="x50" value="0,255,0"/> <!-- item foreground (text color of edit/listview, etc) -->
+    <color id="x52" value="33,33,57"/> <!-- window background (used to set the bg color for the dialog) -->
+    <color id="x54" value="57,57,66"/> <!-- button text color -->
+    <color id="x56" value="255,255,255"/> <!-- window text color -->
+    <color id="x58" value="132,148,165"/> <!-- color of dividers and sunken borders -->
+    <color id="x60" value="0,0,198"/> <!-- selection color for listviews/playlists/etc -->
+    <color id="x60-ext" value="16,16,127"/> <!-- selection color for listviews/playlists/etc, unfocused -->
+    <color id="x62" value="72,72,120"/> <!-- listview header background color -->
+    <color id="x64" value="255,255,255"/> <!-- listview header text color -->
+    <color id="x66" value="108,108,180"/> <!-- listview header frame top color -->
+    <color id="x68" value="36,36,60"/> <!-- listview header frame middle color -->
+    <color id="x70" value="18,18,30"/> <!-- listview header frame bottom color -->
+    <color id="x72" value="36,36,60"/> <!-- listview header empty color -->
+    <color id="x74" value="36,36,60"/> <!-- scrollbar foreground color -->
+    <color id="x76" value="36,36,60"/> <!-- scrollbar background color -->
+    <color id="x78" value="121,130,150"/> <!-- inverse scrollbar foreground color -->
+    <color id="x80" value="78,88,110"/> <!-- inverse scrollbar background color -->
+    <color id="x82" value="36,36,60"/> <!-- scrollbar dead area color -->	
+
+<!-- Generic Button -->
+
+    <!--bitmap id="wasabi.button.top.left"             file="skin/genex.bmp" x="0" y="0" h="3" w="3"/>
+    <bitmap id="wasabi.button.top"                  file="skin/genex.bmp" x="3" y="0" h="3" w="41"/>
+    <bitmap id="wasabi.button.top.right"            file="skin/genex.bmp" x="44" y="0" h="3" w="3"/>
+    <bitmap id="wasabi.button.left"                 file="skin/genex.bmp" x="0" y="3" h="9" w="3"/>
+    <bitmap id="wasabi.button.center"               file="skin/genex.bmp" x="3" y="0" h="9" w="41"/>
+    <bitmap id="wasabi.button.right"                file="skin/genex.bmp" x="44" y="0" h="9" w="3"/>
+    <bitmap id="wasabi.button.bottom.left"          file="skin/genex.bmp" x="0" y="12" h="3" w="3"/>
+    <bitmap id="wasabi.button.bottom"               file="skin/genex.bmp" x="3" y="12" h="3" w="41"/>
+    <bitmap id="wasabi.button.bottom.right"         file="skin/genex.bmp" x="44" y="12" h="3" w="3"/>
+
+    <bitmap id="wasabi.button.hover.top.left" file="skin/genex.bmp" x="33" y="134" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.top" file="skin/genex.bmp" x="37" y="134" h="4" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.top.right" file="skin/genex.bmp" x="62" y="134" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.left" file="skin/genex.bmp" x="33" y="138" h="25" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.center" file="skin/genex.bmp" x="37" y="138" h="25" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.right" file="skin/genex.bmp" x="62" y="138" h="25" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.bottom.left" file="skin/genex.bmp" x="33" y="163" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.bottom" file="skin/genex.bmp" x="37" y="163" h="4" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.hover.bottom.right" file="skin/genex.bmp" x="62" y="163" h="4" w="4" gammagroup="greybuttons"/>
+
+    <bitmap id="wasabi.button.pressed.top.left" file="skin/genex.bmp" x="66" y="134" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.top" file="skin/genex.bmp" x="70" y="134" h="4" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.top.right" file="skin/genex.bmp" x="95" y="134" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.left" file="skin/genex.bmp" x="66" y="138" h="25" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.center" file="skin/genex.bmp" x="70" y="138" h="25" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.right" file="skin/genex.bmp" x="95" y="138" h="25" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.bottom.left" file="skin/genex.bmp" x="66" y="163" h="4" w="4" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.bottom" file="skin/genex.bmp" x="70" y="163" h="4" w="25" gammagroup="greybuttons"/>
+    <bitmap id="wasabi.button.pressed.bottom.right" file="skin/genex.bmp" x="95" y="163" h="4" w="4" gammagroup="greybuttons"/-->
+
+    <bitmap id="studio.button.upperLeft"            file="skin/genex.bmp" x="0" y="0" h="3" w="3"/>
+    <bitmap id="studio.button.top"                  file="skin/genex.bmp" x="3" y="0" h="3" w="41"/>
+    <bitmap id="studio.button.upperRight"           file="skin/genex.bmp" x="44" y="0" h="3" w="3"/>
+    <bitmap id="studio.button.left"                 file="skin/genex.bmp" x="0" y="3" h="9" w="3"/>
+    <bitmap id="studio.button.middle"               file="skin/genex.bmp" x="3" y="3" h="9" w="41"/>
+    <bitmap id="studio.button.right"                file="skin/genex.bmp" x="44" y="3" h="9" w="3"/>
+    <bitmap id="studio.button.lowerLeft"            file="skin/genex.bmp" x="0" y="12" h="3" w="3"/>
+    <bitmap id="studio.button.bottom"               file="skin/genex.bmp" x="3" y="12" h="3" w="41"/>
+    <bitmap id="studio.button.lowerRight"           file="skin/genex.bmp" x="44" y="12" h="3" w="3"/>
+
+    <bitmap id="studio.button.pressed.upperLeft"    file="skin/genex.bmp" x="0" y="15" h="3" w="3"/>
+    <bitmap id="studio.button.pressed.top"          file="skin/genex.bmp" x="3" y="15" h="3" w="41"/>
+    <bitmap id="studio.button.pressed.upperRight"   file="skin/genex.bmp" x="44" y="15" h="3" w="3"/>
+    <bitmap id="studio.button.pressed.left"         file="skin/genex.bmp" x="0" y="18" h="9" w="3"/>
+    <bitmap id="studio.button.pressed.middle"       file="skin/genex.bmp" x="3" y="18" h="9" w="41"/>
+    <bitmap id="studio.button.pressed.right"        file="skin/genex.bmp" x="44" y="18" h="9" w="3"/>
+    <bitmap id="studio.button.pressed.lowerLeft"    file="skin/genex.bmp" x="0" y="27" h="3" w="3"/>
+    <bitmap id="studio.button.pressed.bottom"       file="skin/genex.bmp" x="3" y="27" h="3" w="41"/>
+    <bitmap id="studio.button.pressed.lowerRight"   file="skin/genex.bmp" x="44" y="27" h="3" w="3"/>
+
+    <!-- Old List & Tree scrollbars -->
+    <!--bitmap id="studio.scrollbar.horizontal.background" 		file="skin/genex.bmp" x="112" y="31" h="28" w="14"/-->
+    <!--bitmap id="studio.scrollbar.horizontal.left" 				file="skin/genex.bmp" x="50" y="9" h="16" w="16"/>
+    <bitmap id="studio.scrollbar.horizontal.left.hilite" 		file="skin/genex.bmp" x="50" y="25" h="16" w="16"/>
+    <bitmap id="studio.scrollbar.horizontal.left.pressed" 		file="skin/genex.bmp" x="50" y="41" h="16" w="16"/>
+    <bitmap id="studio.scrollbar.horizontal.right" 				file="skin/genex.bmp" x="109" y="9" h="13" w="16"/>
+    <bitmap id="studio.scrollbar.horizontal.right.hilite" 		file="skin/genex.bmp" x="109" y="25" h="16" w="16"/>
+    <bitmap id="studio.scrollbar.horizontal.right.pressed" 		file="skin/genex.bmp" x="109" y="41" h="16" w="16"/-->
+    <bitmap id="studio.scrollbar.horizontal.button" 			file="skin/genex.bmp" x="84" y="31" h="14" w="28"/>
+    <bitmap id="studio.scrollbar.horizontal.button.hilite" 		file="skin/genex.bmp" x="84" y="31" h="14" w="28"/>
+    <bitmap id="studio.scrollbar.horizontal.button.pressed" 	file="skin/genex.bmp" x="84" y="45" h="14" w="28"/>
+
+    <!--bitmap id="studio.scrollbar.vertical.background" 			file="skin/genex.bmp" x="112" y="31" h="28" w="14"/-->
+    <!--bitmap id="studio.scrollbar.vertical.left" 				file="skin/genex.bmp" x="84" y="31" h="28" w="3"/>
+    <bitmap id="studio.scrollbar.vertical.left.hilite" 			file="skin/genex.bmp" x="84" y="31" h="28" w="3"/>
+    <bitmap id="studio.scrollbar.vertical.left.pressed" 		file="skin/genex.bmp" x="84" y="31" h="28" w="3"/>
+
+    <bitmap id="studio.scrollbar.vertical.right" 				file="skin/genex.bmp" x="109" y="31" h="28" w="3"/>
+    <bitmap id="studio.scrollbar.vertical.right.hilite" 		file="skin/genex.bmp" x="109" y="31" h="28" w="3"/>
+    <bitmap id="studio.scrollbar.vertical.right.pressed" 		file="skin/genex.bmp" x="109" y="31" h="28" w="3"/-->
+
+    <bitmap id="studio.scrollbar.vertical.button" 				file="skin/genex.bmp" x="56" y="31" h="28" w="14"/>
+    <bitmap id="studio.scrollbar.vertical.button.hilite" 		file="skin/genex.bmp" x="56" y="31" h="28" w="14"/>
+    <bitmap id="studio.scrollbar.vertical.button.pressed" 		file="skin/genex.bmp" x="70" y="31" h="28" w="14"/>
+
+    <!-- NewList & Tree scrollbars -->
+
+    <bitmap id="wasabi.scrollbar.horizontal.left" 				    file="skin/genex.bmp" x="0" y="45" h="14" w="14"/> <!--left -->
+    <bitmap id="wasabi.scrollbar.horizontal.left.hover" 			file="skin/genex.bmp" x="0" y="45" h="14" w="14"/>
+    <bitmap id="wasabi.scrollbar.horizontal.left.pressed" 		    file="skin/genex.bmp" x="28" y="45" h="14" w="14" />
+    <bitmap id="wasabi.scrollbar.horizontal.right" 				    file="skin/genex.bmp" x="14" y="45" h="14" w="14"/> <!-- right -->
+    <bitmap id="wasabi.scrollbar.horizontal.right.hover" 			file="skin/genex.bmp" x="14" y="45" h="14" w="14"/>
+    <bitmap id="wasabi.scrollbar.horizontal.right.pressed" 		    file="skin/genex.bmp" x="42" y="45" h="14" w="14"/>
+
+    <!--bitmap id="wasabi.scrollbar.horizontal.button.left" 			file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.middle" 		    file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.right" 		    file="skin/genex.bmp" x="67" y="31" h="28" w="3"/>
+
+    <bitmap id="wasabi.scrollbar.horizontal.button.left.hover" 	    file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.middle.hover" 	file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.right.hover" 	file="skin/genex.bmp" x="67" y="31" h="28" w="3"/>
+
+    <bitmap id="wasabi.scrollbar.horizontal.button.left.pressed" 	file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.middle.pressed"  file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.horizontal.button.right.pressed"   file="skin/genex.bmp" x="67" y="31" h="28" w="3"/-->
+
+
+    <!--bitmap id="studio.scrollbar.vertical.background" 			    file="skin/genex.bmp" x="112" y="35" h="20" w="14"/>
+
+    <bitmap id="wasabi.scrollbar.vertical.background" 			    file="skin/genex.bmp" x="112" y="35" h="20" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.top" 		    file="skin/genex.bmp" x="112" y="31" h="4" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.middle" 	    file="skin/genex.bmp" x="112" y="35" h="20" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.bottom" 	    file="skin/genex.bmp" x="112" y="55" h="4" w="14"/>
+	
+    <bitmap id="studio.scrollbar.horizontal.background" 			file="skin/genex.bmp" x="88" y="59" h="14" w="20"/>
+
+    <bitmap id="wasabi.scrollbar.horizontal.background" 			file="skin/genex.bmp" x="88" y="59" h="14" w="20"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.top" 	    file="skin/genex.bmp" x="84" y="59" h="14" w="4"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.middle" 	    file="skin/genex.bmp" x="88" y="59" h="14" w="20"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.bottom" 	    file="skin/genex.bmp" x="108" y="59" h="14" w="4"/-->
+
+    <bitmap id="wasabi.scrollbar.vertical.background" 			    file="skin/genex.bmp" x="112" y="31" h="28" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.top" 		    file="skin/genex.bmp" x="112" y="31" h="28" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.middle" 	    file="skin/genex.bmp" x="112" y="31" h="28" w="14"/>
+	<bitmap id="wasabi.scrollbar.vertical.background.bottom" 	    file="skin/genex.bmp" x="112" y="31" h="28" w="14"/>
+	
+    <bitmap id="wasabi.scrollbar.horizontal.background" 			file="skin/genex.bmp" x="84" y="59" h="14" w="28"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.top" 	    file="skin/genex.bmp" x="84" y="59" h="14" w="28"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.middle" 	    file="skin/genex.bmp" x="84" y="59" h="14" w="28"/>
+	<bitmap id="wasabi.scrollbar.horizontal.background.bottom" 	    file="skin/genex.bmp" x="84" y="59" h="14" w="28"/>
+
+	
+    <bitmap id="wasabi.scrollbar.vertical.left"					    file="skin/genex.bmp" x="0" y="31" h="14" w="14"/> <!-- up -->
+    <bitmap id="wasabi.scrollbar.vertical.left.hover" 			    file="skin/genex.bmp" x="0" y="31" h="14" w="14"/>
+    <bitmap id="wasabi.scrollbar.vertical.left.pressed" 			file="skin/genex.bmp" x="28" y="31" h="14" w="14" />
+    <bitmap id="wasabi.scrollbar.vertical.right" 					file="skin/genex.bmp" x="14" y="31" h="14" w="14"/> <!-- down -->
+    <bitmap id="wasabi.scrollbar.vertical.right.hover" 			    file="skin/genex.bmp" x="14" y="31" h="14" w="14"/>
+    <bitmap id="wasabi.scrollbar.vertical.right.pressed" 			file="skin/genex.bmp" x="42" y="31" h="14" w="14"/>
+
+    <!--bitmap id="wasabi.scrollbar.vertical.button.top" 			    file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.middle" 			file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.bottom" 			file="skin/genex.bmp" x="67" y="31" h="28" w="3"/>
+
+    <bitmap id="wasabi.scrollbar.vertical.button.top.hover" 		file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.middle.hover" 	    file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.bottom.hover" 	    file="skin/genex.bmp" x="67" y="31" h="28" w="3"/>
+
+    <bitmap id="wasabi.scrollbar.vertical.button.top.pressed" 	    file="skin/genex.bmp" x="56" y="31" h="28" w="3"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.middle.pressed" 	file="skin/genex.bmp" x="59" y="31" h="28" w="8"/>
+    <bitmap id="wasabi.scrollbar.vertical.button.bottom.pressed" 	file="skin/genex.bmp" x="67" y="31" h="28" w="3"/-->

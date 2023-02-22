@@ -9,6 +9,10 @@ export default class MakiFile {
     this._i = 0;
   }
 
+  isEof(): boolean {
+    return this._i == this._arr.length;
+  }
+
   readInt32LE(): number {
     const offset = this._i >>> 0;
     this._i += 4;
@@ -54,9 +58,8 @@ export default class MakiFile {
     let ret = "";
     const end = Math.min(this._arr.length, this._i + length);
 
-    for (let i = this._i; i < end; ++i) {
-      ret += String.fromCharCode(this._arr[i]);
-    }
+    const buffer = this._arr.slice(this._i, end);
+    ret = new TextDecoder().decode(buffer);
     this._i += length;
     return ret;
   }

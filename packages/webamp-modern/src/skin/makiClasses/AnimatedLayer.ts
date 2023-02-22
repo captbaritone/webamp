@@ -1,24 +1,61 @@
-import UI_ROOT from "../../UIRoot";
-import { ensureVmInt, num, px } from "../../utils";
+import { ensureVmInt, num, px, toBool, unimplemented } from "../../utils";
 import Layer from "./Layer";
 
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
 export default class AnimatedLayer extends Layer {
   static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
+  _vertical: boolean = true;
   _currentFrame: number = 0;
   _startFrame: number = 0;
   _endFrame: number = 0;
-  _speed: number = 0;
+  _speed: number = 200;
+  _frameWidth: number;
+  _frameHeight: number;
+  _autoReplay: boolean = true;
+  _autoPlay: boolean = false;
   _animationInterval: NodeJS.Timeout | null = null;
+  _imageFormat: string; // api helper, together with elementFrames.
+  _elementFrames: number;
+  _paused: boolean = false;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
+    if (key == "image" && /\%[0-9]*d/.test(value)) {
+      this._imageFormat = value;
+      return true;
+    }
     if (super.setXmlAttr(key, value)) {
       return true;
     }
     switch (key) {
+      case "speed":
+        this._speed = num(value);
+        break;
+      case "start":
+        this._startFrame = num(value);
+        break;
+      case "end":
+        this._endFrame = num(value);
+        break;
       case "frameheight":
-        this._height = num(value);
-        this._renderHeight();
+        // (int) The height in pixels of each cell of animation.
+        // If frameheight is set, the animation will be assumed to be a vertical
+        // strip of cells in the given bitmap.
+        this._frameHeight = num(value);
+        this._vertical = true;
+        break;
+      case "framewidth":
+        // (int) The height in pixels of each cell of animation.
+        // If frameheight is set, the animation will be assumed to be a vertical
+        // strip of cells in the given bitmap.
+        this._frameWidth = num(value);
+        this._vertical = false;
+        break;
+      case "autoplay":
+        this._autoPlay = toBool(value);
+        break;
+      case "autoreplay":
+        this._autoReplay = toBool(value);
         break;
       default:
         return false;
@@ -26,19 +63,43 @@ export default class AnimatedLayer extends Layer {
     return true;
   }
 
+  // _renderHeight() {
+  //   super._renderHeight();
+  //   if (this._frameHeight) {
+  //     const height = parseInt(this._div.style.height);
+  //     this._div.style.height = px(this._frameHeight);
+  //     this._div.style.transform = `scaleY(${height / this._frameHeight})`;
+  //     this._div.style.transformOrigin = "top left";
+  //   }
+  // }
+
   _getImageHeight(): number {
-    const bitmap = UI_ROOT.getBitmap(this._image);
+    const bitmap = this._uiRoot.getBitmap(this._image);
     return bitmap.getHeight();
   }
 
+  getdirection(): number {
+    return unimplemented(this._vertical ? 1 : 0);
+  }
+
+  // api
   getlength(): number {
-    // TODO: What about other orientations?
-    return this._getImageHeight() / this.getheight();
+    const bitmap = this._uiRoot.getBitmap(this._image);
+    // return bitmap.getHeight();
+    if (!bitmap || !bitmap.getImg()) {
+      return 0;
+    }
+
+    if (this._vertical) {
+      return bitmap.getHeight() / (this._frameHeight || this.getheight());
+    } else {
+      return bitmap.getWidth() / (this._frameWidth || this.getwidth());
+    }
   }
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
     this._renderFrame();
-    UI_ROOT.vm.dispatch(this, "onframe", [
+    this._uiRoot.vm.dispatch(this, "onframe", [
       { type: "INT", value: this._currentFrame },
     ]);
   }
@@ -59,30 +120,56 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
+    this._paused = false;
     const end = this._endFrame;
     const start = this._startFrame;
-
     const change = end > start ? 1 : -1;
+    const backward: boolean = end < start;
 
     let frame = this._startFrame;
-    this.gotoframe(frame);
-    UI_ROOT.vm.dispatch(this, "onplay");
-    if (frame === end) {
+    this.gotoframe(frame); // initially, jump to start
+
+    this._uiRoot.vm.dispatch(this, "onplay");
+
+    if (frame === end && !this._autoReplay) {
       this.stop();
       return;
     }
     this._animationInterval = setInterval(() => {
-      frame += change;
-      this.gotoframe(frame);
+      if (this._paused) {
+        return;
+      }
+      this.gotoframe(frame); // visual update
+
       if (frame === end) {
-        clearInterval(this._animationInterval);
-        this._animationInterval = null;
-        this.stop();
+        if (!this._autoReplay) {
+          // clearInterval(this._animationInterval);
+          // this._animationInterval = null;
+          this.stop();
+        }
+      }
+      if (backward) {
+        // warning: should able to animate! through every single frame. dont jump!
+        frame -= 1;
+        if (frame < end) {
+          frame = start;
+        } else if (frame > start) {
+          frame = end;
+        }
+      } else {
+        // normal, go forward
+        frame += change;
+        if (frame < start) {
+          frame = end;
+        } else if (frame > end) {
+          frame = start;
+        }
       }
     }, this._speed);
   }
   pause() {
-    UI_ROOT.vm.dispatch(this, "onpause");
+    this._paused = true;
+    this._uiRoot.vm.dispatch(this, "onpause");
     // TODO
   }
   stop() {
@@ -90,16 +177,61 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
-    UI_ROOT.vm.dispatch(this, "onstop");
+    this._uiRoot.vm.dispatch(this, "onstop");
   }
   isplaying(): boolean {
     return this._animationInterval != null;
   }
+  ispaused(): boolean {
+    return this._animationInterval != null && this._paused;
+  }
+  isstopped(): boolean {
+    return this.isplaying() && !this._paused;
+  }
 
+  setautoreplay(onoff: boolean) {
+    this._autoReplay = onoff;
+  }
+  getautoreplay(): boolean {
+    return this._autoReplay;
+  }
+  getstartframe(): number {
+    return this._startFrame;
+  }
+  getendframe(): number {
+    return this._endFrame;
+  }
+  setrealtime(onoff: boolean) {
+    const a = 1;
+  }
+
+  _getActualHeight(): number {
+    return this._h || this._div.getBoundingClientRect().height;
+  }
+
+  init() {
+    super.init();
+    if (!this._frameHeight) {
+      this._frameHeight = this.getheight();
+    }
+    if (this._endFrame == 0 && this.getlength() > 0) {
+      this._endFrame = this.getlength() - 1;
+    }
+    if (this._startFrame != 0) {
+      this.gotoframe(this._startFrame);
+    }
+    if (this._autoPlay) this.play();
+  }
   _renderFrame() {
-    this._div.style.backgroundPositionY = px(
-      -(this._currentFrame * this.getheight())
-    );
+    if (this._vertical) {
+      this._div.style.backgroundPositionY = px(
+        -(this._currentFrame * this._frameHeight)
+      );
+    } else {
+      this._div.style.backgroundPositionX = px(
+        -(this._currentFrame * this._frameWidth)
+      );
+    }
   }
 
   /*

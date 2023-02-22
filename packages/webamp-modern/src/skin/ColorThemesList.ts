@@ -1,5 +1,5 @@
 import GuiObj from "./makiClasses/GuiObj";
-import UI_ROOT from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import { removeAllChildNodes, toBool } from "../utils";
 
 export default class ColorThemesList extends GuiObj {
@@ -7,8 +7,8 @@ export default class ColorThemesList extends GuiObj {
   _nohscroll: boolean = false;
   _nocolheader: boolean = false;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this._div.appendChild(this._select);
     this._registerEvents();
   }
@@ -44,10 +44,10 @@ export default class ColorThemesList extends GuiObj {
     this._select.style.width = "100%";
     this._select.style.height = "100%";
 
-    for (const key of UI_ROOT._gammaSets.keys()) {
+    for (const key of this._uiRoot._gammaSets.keys()) {
       const option = document.createElement("option");
       option.value = key;
-      option.innerText = UI_ROOT._gammaNames[key];
+      option.innerText = this._uiRoot._gammaNames[key];
       this._select.appendChild(option);
     }
 
@@ -66,13 +66,13 @@ export default class ColorThemesList extends GuiObj {
       this._select.style.setProperty("--colheader", "'Theme'");
     }
 
-    this._select.value = UI_ROOT._activeGammaSetName;
+    this._select.value = this._uiRoot._activeGammaSetName;
     this._renderBoldSelection();
   }
 
   _renderBoldSelection() {
     Array.from(this._select.options).forEach((option_element) => {
-      if (option_element.value === UI_ROOT._activeGammaSetName) {
+      if (option_element.value === this._uiRoot._activeGammaSetName) {
         option_element.setAttribute("selected", "selected");
       } else {
         option_element.removeAttribute("selected");
@@ -89,7 +89,7 @@ export default class ColorThemesList extends GuiObj {
       case "colorthemes_switch":
         const selected = this._select.value;
         if (selected != null) {
-          UI_ROOT.enableGammaSet(selected);
+          this._uiRoot.enableGammaSet(selected);
           this._renderBoldSelection();
         }
         return true;

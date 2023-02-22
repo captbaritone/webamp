@@ -1,0 +1,83 @@
+<groupdef id="eq-content">
+    <layer id="eqwin.bg"  x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+    <layer id="titlebar" x="0" y="0" dblClickAction="SWITCH;eq-shade" image="eq.titlebar" inactiveimage="eq.titlebar.inactive" move="1"/>
+    <!--layer image="eqbg"/-->
+    <!-- <Wasabi:Button id="close" x="290" y="11" w="72" h="20" text="Close" action="close" retcode="0"/> -->
+    <!-- <Wasabi:Button id="EQ_0" x="290" y="60" w="72" h="20" text="Zero" retcode="0"/> -->
+    <!-- <Wasabi:Button id="reset" x="290" y="36" w="72" h="20" text="Reset" retcode="0"/> -->
+    <layer id="spline.bg" x="86" y="17" image="eqvis.bg" />
+    <eqvis id="spline" x="86" y="17" w="113" h="19" colortop="211,34,27" colormiddle="239,220,49" colorbottom="42,154,22" colorpreamp="246,181,0" gamma="192" />
+    <button id="toggle" action="EQ_TOGGLE" x="14" y="18" 
+        image="eq.on" 
+        downImage="eq.on.pressed" 
+        activeImage="eq.on.active" tooltip="Toggle EQ processing" />
+    <button id="auto" action="EQ_AUTO" x="38" y="18" 
+        image="eq.auto" 
+        downImage="eq.auto.pressed" 
+        activeImage="eq.auto.active" tooltip="Toggle EQ automatic processing" />
+    <button id="presets" action="MENU" param="presets" x="217" y="18" 
+    image="eq.preset" 
+    downImage="eq.preset.pressed" tooltip="Display Presets menu" />
+    <button id="EQ_p12" x="45" y="36" w="21" h="12" rectrgn="1" />
+    <button id="EQ_0" x="45" y="63" w="21" h="12" rectrgn="1" />
+    <button id="EQ_m12" x="45" y="88" w="21" h="12" rectrgn="1" />
+    <!-- Backgrounds -->
+    <layer id="preampback" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
+    <layer id="eq1back" x="78" y="38" image="eq.slider.level1" />
+    <layer id="eq2back" x="96" y="38" image="eq.slider.level1" />
+    <layer id="eq3back" x="114" y="38" image="eq.slider.level1" />
+    <layer id="eq4back" x="132" y="38" image="eq.slider.level1" />
+    <layer id="eq5back" x="150" y="38" image="eq.slider.level1" />
+    <layer id="eq6back" x="168" y="38" image="eq.slider.level5" />
+    <layer id="eq7back" x="186" y="38" image="eq.slider.level7" />
+    <layer id="eq8back" x="204" y="38" image="eq.slider.level10" />
+    <layer id="eq9back" x="222" y="38" image="eq.slider.level14" />
+    <layer id="eq10back" x="240" y="38" image="eq.slider.level28" />
+    <!-- <grid x="271" y="95" w="11" h="11" topleft="wasabi.objectframe.top.left" top="wasabi.objectframe.top" topright="wasabi.objectframe.top.right" left="wasabi.objectframe.left" middle="wasabi.objectframe.center" right="wasabi.objectframe.right" bottomleft="wasabi.objectframe.bottom.left" bottom="wasabi.objectframe.bottom" bottomright="wasabi.objectframe.bottom.right" />
+
+            <button x="273" y="97" image="wasabi.button.checkbox" activeImage="wasabi.button.checkbox.pressed" action="EQ_TOGGLE" rectrgn="1" /> -->
+    <!-- <text x="282" y="94" text="EQ Enabled" align="left"/> -->
+    <!-- 
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="74" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="111" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="149" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="186" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="224" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="261" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="299" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="336" y="127" h="88" w="8"/>
+         -->
+    <slider id="preamp" action="EQ_BAND" param="preamp" x="22" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq1" action="EQ_BAND" param="1" x="79" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq2" action="EQ_BAND" param="2" x="97" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq3" action="EQ_BAND" param="3" x="115" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq4" action="EQ_BAND" param="4" x="133" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq5" action="EQ_BAND" param="5" x="151" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq6" action="EQ_BAND" param="6" x="169" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq7" action="EQ_BAND" param="7" x="187" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq8" action="EQ_BAND" param="8" x="205" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq9" action="EQ_BAND" param="9" x="223" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <slider id="eq10" action="EQ_BAND" param="10" x="241" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed" />
+    <!-- <script file="scripts/ZeroEQ.maki"/> -->
+    <!-- <script file="scripts/ResetEQ.maki"/> -->
+    <!-- taken from winamp modern: -->
+    <script file="scripts/eq.maki"/>
+</groupdef>
+
+<groupdef id="shadeeq">
+    <layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" h="14" w="275" image="eq.shade.on" inactiveimage="eq.shade.off" move="1"/>
+    <button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="eqshade.shade" downImage="eqshade.shadep"/>
+    <button id="Close" inactivealpha="0" action="close" x="264" y="3" image="eqshade.close" downImage="eqshade.closep"/>
+    <slider id="volume" action="volume" x="61" y="4" h="7" w="97" thumb="eqshade.vol.seekm"/>
+    <slider id="balance" action="pan" x="164" y="4" h="7" w="43" thumb="eqshade.bal.seekm"/>
+</groupdef>
+
+<container id="EQ" name="Equalizer" default_x="0" default_y="116" default_visible="1">
+    <layout id="normal" w="275" h="116" background="eq.bg">
+        <group id="eq-content" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+    </layout>
+
+    <layout id="eq-shade" background="eq.shade.on" minimum_h="14" minimum_w="275">
+		<group id="shadeeq" x="0" y="0" sysregion="1"/>
+	</layout>
+</container>

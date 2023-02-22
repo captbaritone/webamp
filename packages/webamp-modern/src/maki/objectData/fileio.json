@@ -1,0 +1,127 @@
+{
+  "836F8B2EE0D14db4937F0D0A04C8DCD1": {
+    "parent": "Object",
+    "name": "File",
+    "deprecated": false,
+    "functions": [
+      {
+        "name": "load",
+        "parameters": [
+          [
+            "String",
+            "path"
+          ]
+        ],
+        "result": "",
+        "deprecated": false
+      },
+      {
+        "name": "exists",
+        "parameters": [],
+        "result": "boolean",
+        "deprecated": false
+      },
+      {
+        "name": "getSize",
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
+      }
+    ]
+  },
+  "417FFB69987F4be88D87D9965EEEC868": {
+    "parent": "File",
+    "name": "XmlDoc",
+    "deprecated": false,
+    "functions": [
+      {
+        "name": "parser_addCallback",
+        "parameters": [
+          [
+            "String",
+            "section"
+          ]
+        ],
+        "result": "",
+        "deprecated": false
+      },
+      {
+        "name": "parser_start",
+        "parameters": [],
+        "result": "",
+        "deprecated": false
+      },
+      {
+        "name": "parser_onCallback",
+        "parameters": [
+          [
+            "String",
+            "xmlpath"
+          ],
+          [
+            "String",
+            "xmltag"
+          ],
+          [
+            "list",
+            "paramname"
+          ],
+          [
+            "list",
+            "paramvalue"
+          ]
+        ],
+        "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "parser_onCloseCallback",
+        "parameters": [
+          [
+            "String",
+            "xmlpath"
+          ],
+          [
+            "String",
+            "xmltag"
+          ]
+        ],
+        "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "parser_onError",
+        "parameters": [
+          [
+            "String",
+            "filename"
+          ],
+          [
+            "int",
+            "linenum"
+          ],
+          [
+            "String",
+            "incpath"
+          ],
+          [
+            "int",
+            "errcode"
+          ],
+          [
+            "String",
+            "errstr"
+          ]
+        ],
+        "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "parser_destroy",
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
+      }
+    ]
+  }
+}

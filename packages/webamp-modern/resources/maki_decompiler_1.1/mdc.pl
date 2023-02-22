@@ -6,6 +6,8 @@ use Data::Dumper;
 use Carp ();
 local $SIG{__WARN__} = \&Carp::cluck;
 
+# use lib '/home/fathony/Documents/X2NIE/webamp/packages/webamp-modern/resources/maki_decompiler_1.1';
+
 use PerlAmp::Maki::Objects;
 use PerlAmp::Maki::Code;
 use PerlAmp::Maki::Parse;

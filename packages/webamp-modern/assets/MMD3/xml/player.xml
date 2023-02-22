@@ -1,0 +1,10 @@
+<include file="player-elements.xml"/>
+
+<container id="main" name="Main Window" default_x="0" default_y="0" default_visible="1">
+	<include file="thinger.xml"/>
+	<include file="thinger-buttons.xml"/>
+	<include file="player-normal.xml"/>
+	<include file="player-shade.xml"/>
+	<include file="player-shade2.xml"/>
+</container>
+

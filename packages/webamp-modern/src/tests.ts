@@ -1,10 +1,12 @@
 import "./maki/parser";
-import { parse as parseMaki, ParsedMaki } from "./maki/parser";
+import { Binding, parse as parseMaki, ParsedMaki } from "./maki/parser";
 import { getMethod, getClass } from "./maki/objects";
 
 import JSZip from "jszip";
 // This module is imported early here in order to avoid a circular dependency.
 import { classResolver } from "./skin/resolver";
+import { Variable } from "./maki/v";
+import { getCaseInsensitiveFile } from "./utils";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -23,6 +25,7 @@ type Ast =
       body: Ast[];
       variableName: string;
       hookName: string;
+      binding?: Binding;
       // TODO: make this Ast[]
       args: string;
     }
@@ -32,13 +35,16 @@ type Ast =
       methodName: string;
       args: Ast[];
       body: Ast[];
+      comment?: string;
     }
   | {
       kind: "ASSIGNMENT";
       variableName: string;
       expression: Ast;
+      a?: Ast;
+      b?: Ast;
     }
-  | { kind: "IDENTIFIER"; value: string }
+  | { kind: "IDENTIFIER"; value: string; variable?: Variable }
   | {
       kind: "BINARY_EXPRESSION";
       left: Ast;
@@ -71,11 +77,13 @@ function prettyPrint(ast: Ast, indent: number = 0): string {
         return indented(prettyPrint(statement, indent + 1), indent + 1);
       });
       const name = `${ast.variableName}.${ast.hookName}`;
-      return `${name}(${ast.args}){\n${body.join("\n")}\n}`;
+      return `${name}(${ast.args}){//${JSON.stringify(
+        ast.binding
+      )}\n${body.join("\n")}\n}`;
     case "CALL":
       return `${ast.objectName}.${ast.methodName}(${ast.args.map(
         prettyPrint
-      )})`;
+      )}) /*${ast.comment}*/ `;
     case "ASSIGNMENT":
       return `${ast.variableName} = ${prettyPrint(ast.expression)};`;
     case "IDENTIFIER":
@@ -106,7 +114,7 @@ class Decompiler {
   variableTypeName(offset: number): string {
     const variable = this._program.variables[offset];
     let type = variable.type;
-    switch (type) {
+    switch (variable.type) {
       case "OBJECT": {
         const guid = variable.guid;
         const klass = getClass(guid);
@@ -115,9 +123,12 @@ class Decompiler {
       case "INT":
         return "int";
       case "DOUBLE":
+      case "FLOAT":
         return "double";
       case "STRING":
         return "string";
+      case "BOOLEAN":
+        return "boolean";
       default:
         throw new Error(`Unexpected type: ${type}`);
     }
@@ -164,6 +175,7 @@ class Decompiler {
       const methodDefinition = getMethod(guid, method.name);
       output.push({
         kind: "HOOK",
+        binding,
         variableName: this.variableName(binding.variableOffset),
         hookName: method.name,
         args: methodDefinition.parameters
@@ -203,6 +215,7 @@ class Decompiler {
           stack.push({
             kind: "IDENTIFIER",
             value: this.variableName(command.arg),
+            variable: this._program.variables[command.arg],
           });
           break;
         }
@@ -282,12 +295,73 @@ class Decompiler {
           break;
         }
         // call
-        case 24:
-        case 112:
+        case 24: // call
+          const methodOffset24 = command.arg;
+          const method24 = this._program.methods[methodOffset24];
+          let methodName24 = method24.name;
+          // methodName24 = methodName24.toLowerCase();
+          const guid24 = this._program.classes[method24.typeOffset];
+          const methodDefinition24 = getMethod(guid24, method24.name);
+          const obj24 = stack.pop();
+          if (obj24.kind !== "IDENTIFIER") {
+            throw new Error("Expectd ident");
+          }
+          const args24 = methodDefinition24.parameters.map((param) => {
+            return stack.pop();
+          });
+          nodes.push({
+            kind: "CALL",
+            objectName: obj24.value,
+            methodName: methodName24,
+            args: args24,
+            body: [],
+            comment: "call",
+          });
+          stack.push({
+            kind: "CALL",
+            objectName: obj24.value,
+            methodName: methodName24,
+            args: args24,
+            body: [],
+            comment: "call",
+          });
+          break;
+        // case 25: // call Global
+        // const methodOffset25 = command.arg;
+        // const method25 = this._program.methods[methodOffset25];
+        // let methodName25 = method25.name;
+        // methodName25 = methodName25.toLowerCase();
+        // const guid25 = this._program.classes[method25.typeOffset];
+        // const methodDefinition25 = getMethod(guid25, method25.name);
+        // const obj25 = stack.pop();
+        // if (obj25.kind !== "IDENTIFIER") {
+        //   throw new Error("Expectd ident");
+        // }
+        // const args25 = methodDefinition25.parameters.map((param) => {
+        //   return stack.pop();
+        // });
+        // nodes.push({
+        //   kind: "CALL",
+        //   objectName: obj25.value,
+        //   methodName:methodName25,
+        //   args: args25,
+        //   body: [],
+        //   comment: 'call-Global'
+        // });
+        // stack.push({
+        //   kind: "CALL",
+        //   objectName: obj25.value,
+        //   methodName:methodName25,
+        //   args: args25,
+        //   body: [],
+        //   comment: 'call-GollBall'
+        // })
+        // break;
+        case 112: // strangeCall
           const methodOffset = command.arg;
           const method = this._program.methods[methodOffset];
           let methodName = method.name;
-          methodName = methodName.toLowerCase();
+          // methodName = methodName.toLowerCase();
           const guid = this._program.classes[method.typeOffset];
           const methodDefinition = getMethod(guid, method.name);
           const obj = stack.pop();
@@ -297,11 +371,22 @@ class Decompiler {
           const args = methodDefinition.parameters.map((param) => {
             return stack.pop();
           });
-          stack.push({
+          nodes.push({
+            kind: "CALL",
             objectName: obj.value,
             methodName,
-            kind: "CALL",
             args,
+            body: [],
+            comment:
+              "STRANGECALL:" + JSON.stringify({ methodOffset, method, obj }),
+          });
+          stack.push({
+            kind: "CALL",
+            objectName: obj.value,
+            methodName: methodName,
+            args: args,
+            body: [],
+            comment: "stack-call",
           });
           break;
         case 33: {
@@ -322,6 +407,13 @@ class Decompiler {
             variableName: a.name,
             expression: b,
           });
+          nodes.push({
+            kind: "ASSIGNMENT",
+            variableName: JSON.stringify(a),
+            expression: b,
+            a,
+            b,
+          });
           break;
         case 25:
           callStack.push(ip);
@@ -338,11 +430,18 @@ class Decompiler {
 }
 
 async function main() {
-  const response = await fetch("assets/CornerAmp_Redux.wal");
+  // const skin = "assets/CornerAmp_Redux.wal";
+  // const script = "scripts/corner.maki";
+
+  const skin = "assets/WinampModern566.wal";
+  const script = "scripts/eq.maki";
+
+  const response = await fetch(skin);
   const data = await response.blob();
   const zip = await JSZip.loadAsync(data);
 
-  const makiFile = zip.file("scripts/corner.maki");
+  // const makiFile = zip.file(script);
+  const makiFile = getCaseInsensitiveFile(zip, script);
   const scriptContents = await makiFile.async("arraybuffer");
   // TODO: Try catch?
   const parsedScript = parseMaki(scriptContents);
@@ -351,12 +450,57 @@ async function main() {
 
   const decompiled = decompiler.decompile();
 
-  const textarea = document.createElement("textarea");
-  textarea.style.display = "flex";
-  textarea.style.width = "100%";
-  textarea.style.height = "100vh";
-  textarea.innerHTML = decompiled;
-  document.body.appendChild(textarea);
+  // const textarea = document.createElement("pre");
+  // textarea.style.display = "flex";
+  // textarea.style.width = "100%";
+  // textarea.style.height = "100vh";
+  // textarea.innerHTML = decompiled;
+  // document.body.appendChild(textarea);
+  document.getElementById("editor").innerHTML = decompiled;
+  window.loaded();
 }
 
 main();
+
+// https://stackoverflow.com/questions/65915371/how-do-i-make-the-program-wait-for-a-button-click-to-go-to-the-next-loop-iterati
+// const btn = document.querySelector('button1');
+const btn1 = document.getElementById("btn1");
+const btn2 = document.getElementById("btn2");
+const btn3 = document.getElementById("btn3");
+
+let successCallback;
+
+// function getNumber() {
+async function getNumber(): Promise<number> {
+  return new Promise((resolve) => (successCallback = resolve));
+}
+
+function btn1Click() {
+  if (successCallback) successCallback(1);
+}
+function btn2Click() {
+  if (successCallback) successCallback(2);
+}
+function btn3Click() {
+  if (successCallback) successCallback(-1);
+}
+
+async function doIt() {
+  console.log("wait for clic....");
+  btn1.addEventListener("click", btn1Click);
+  btn2.addEventListener("click", btn2Click);
+  btn3.addEventListener("click", btn3Click);
+
+  for (let c = 1; c < 10; c += 1) {
+    const ret = await getNumber();
+    console.log(c, "result=", ret);
+    if (ret < 0) break;
+  }
+
+  btn1.removeEventListener("click", btn1Click);
+  btn2.removeEventListener("click", btn2Click);
+  btn3.removeEventListener("click", btn3Click);
+  console.log("Finished");
+}
+
+doIt();

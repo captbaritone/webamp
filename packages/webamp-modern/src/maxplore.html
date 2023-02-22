@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Webamp Modern" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+    <title>Maki Explorer</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .editor {
+            display: inline-block;
+            height: 100vh;
+            width: calc((100% - 200px) / 2);
+            float: left;
+        }
+
+        #panel {
+            display: inline-block;
+            height: 100vh;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="editor" id="editor1"></div>
+    <div class="editor" id="editor2"></div>
+    <div id="panel">
+        <h1>Maki File Explorer</h1>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+    <script type="module" src="./maxplore.js"></script>
+</body>
+
+</html>

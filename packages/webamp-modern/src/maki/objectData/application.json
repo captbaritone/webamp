@@ -1,78 +1,92 @@
 {
   "B8E867B027154da7A5BA53DBA1FCFEAC": {
     "parent": "Object",
+    "name": "Application",
+    "deprecated": false,
     "functions": [
       {
-        "result": "String",
         "name": "GetApplicationName",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "GetVersionString",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "GetVersionNumberString",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "int",
         "name": "GetBuildNumber",
-        "parameters": []
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "GetGUID",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "GetCommandLine",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "Shutdown",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "CancelShutdown",
-        "parameters": []
-      },
-      {
-        "result": "boolean",
-        "name": "IsShuttingDown",
-        "parameters": []
-      },
-      {
-        "result": "String",
-        "name": "GetApplicationPath",
-        "parameters": []
-      },
-      {
-        "result": "String",
-        "name": "GetSettingsPath",
-        "parameters": []
-      },
-      {
-        "result": "String",
-        "name": "GetWorkingPath",
-        "parameters": []
-      },
-      {
+        "parameters": [],
         "result": "",
+        "deprecated": false
+      },
+      {
+        "name": "IsShuttingDown",
+        "parameters": [],
+        "result": "boolean",
+        "deprecated": false
+      },
+      {
+        "name": "GetApplicationPath",
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "GetSettingsPath",
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "GetWorkingPath",
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
+      },
+      {
         "name": "SetWorkingPath",
         "parameters": [
           [
             "String",
             "working_path"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       }
-    ],
-    "name": "Application"
+    ]
   }
 }

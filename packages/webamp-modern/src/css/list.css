@@ -24,16 +24,38 @@ colorthemeslist {
 }
 colorthemeslist > select {
   border: none;
+  background-color: transparent;
+  color: inherit;
 }
 
 /* == PLAYLIST == */
-/* .pl.list {
-  pointer-events: all;
-} */
+.pl.list {
+  /* pointer-events: all; */
+  color: aqua;
+  background: none;
+}
 .pl > .content-list {
   margin-right: 15px;
   max-height: 100%;
+  /* background: black; */
+  min-height: 100%;
   overflow: auto;
+  background-color: var(--color-wasabi-list-background, transparent);
+  background-image: var(--bitmap-studio-list-background, none);
+}
+.pl > .content-list > div {
+  display: flex;
+}
+.pl > .content-list div>span:first-child{
+  /* color:red; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.pl > .content-list div>span:last-child{
+  width: 30px;
+  float: right;
+  text-align: right;
 }
 .pl > .content-list::-webkit-scrollbar {
   display: none;
@@ -63,8 +85,12 @@ colorthemeslist > select {
 .pl > slider {
   z-index: 1;
 }
+.classic .pl::before,
+.classic .pl::after {
+  content: none;
+}
 
-.pl > slider::before /* button.wasabi */ {
+.pl > slider::after /* button.wasabi */ {
   box-sizing: border-box;
   background-image: none;
   border: 4px solid transparent;
@@ -73,11 +99,11 @@ colorthemeslist > select {
   border-image-slice: 4 fill;
   vertical-align: middle;
 }
-.pl > slider:active:before /* button.wasabi:active  */ {
+.pl > slider:active:after /* button.wasabi:active  */ {
   border-image-source: var(--bitmap-studio-button-pressed);
 }
 
-.pl > slider::after {
+.pl > slider::before {
   content: "";
   position: absolute;
   /* TODO: do centering it by calc the real grip's bitmap height/width. */

@@ -1,74 +1,84 @@
 {
   "345BEEBC0229492190BE6CB6A49A79D9": {
     "parent": "Object",
+    "name": "PlEdit",
+    "deprecated": false,
     "functions": [
       {
-        "result": "int",
         "name": "getNumTracks",
-        "parameters": []
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "int",
         "name": "getCurrentIndex",
-        "parameters": []
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "int",
         "name": "getNumSelectedTracks",
-        "parameters": []
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "int",
         "name": "getNextSelectedTrack",
         "parameters": [
           [
             "int",
             "i"
           ]
-        ]
+        ],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "showCurrentlyPlayingTrack",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "showTrack",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "enqueueFile",
         "parameters": [
           [
             "string",
             "file"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "clear",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "removeTrack",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "swapTracks",
         "parameters": [
           [
@@ -79,30 +89,33 @@
             "int",
             "item2"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "moveUp",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "moveDown",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "moveTo",
         "parameters": [
           [
@@ -113,30 +126,33 @@
             "int",
             "pos"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "playTrack",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "int",
         "name": "getRating",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "setRating",
         "parameters": [
           [
@@ -147,30 +163,33 @@
             "int",
             "rating"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getTitle",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getLength",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getMetaData",
         "parameters": [
           [
@@ -181,56 +200,64 @@
             "String",
             "metadatastring"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getFileName",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "onPleditModified",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       }
-    ],
-    "name": "PlEdit"
+    ]
   },
   "61A7ABAD7D7941f6B1D0E1808603A4F4": {
     "parent": "Object",
+    "name": "PlDir",
+    "deprecated": false,
     "functions": [
       {
-        "result": "int",
         "name": "getNumItems",
-        "parameters": []
+        "parameters": [],
+        "result": "int",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getItemName",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "showCurrentlyPlayingEntry",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "refresh",
-        "parameters": []
+        "parameters": [],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "renameItem",
         "parameters": [
           [
@@ -241,29 +268,32 @@
             "String",
             "name"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "enqueueItem",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "playItem",
         "parameters": [
           [
             "int",
             "item"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       }
-    ],
-    "name": "PlDir"
+    ]
   }
 }

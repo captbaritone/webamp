@@ -1,0 +1,55 @@
+<!-- config menu items -->
+<groupdef id="bucket.entry.3" windowtype="thinger.config" w="44" h="38">
+  <togglebutton
+    id="btn"
+    action="TOGGLE" param="guid:pl"
+    x="0" y="0"
+     hoverImage="winamp.thinger.pledit.hilited"
+      downImage="winamp.thinger.pledit.selected"
+    activeImage="winamp.thinger.pledit.selected"
+          image="winamp.thinger.pledit"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.1" windowtype="thinger.config" w="44" h="38">
+  <togglebutton
+    id="btn"
+    action="TOGGLE" param="guid:ml"
+    x="0" y="0"
+     hoverImage="winamp.thinger.library.hilited"
+      downImage="winamp.thinger.library.selected"
+    activeImage="winamp.thinger.library.selected"
+          image="winamp.thinger.library"
+    rectrgn="1"
+  />
+</groupdef>
+
+<!-- config menu items -->
+<groupdef id="bucket.entry.2" windowtype="thinger.config" w="44" h="38">
+  <togglebutton
+    id="btn"
+    action="TOGGLE" param="guid:video"
+    x="0" y="0"
+     hoverImage="winamp.thinger.video.hilited"
+      downImage="winamp.thinger.video.selected"
+    activeImage="winamp.thinger.video.selected"
+          image="winamp.thinger.video"
+    rectrgn="1"
+  />
+</groupdef>
+
+
+
+<groupdef id="bucket.entry.4" windowtype="thinger.config" w="44" h="38">
+  <togglebutton
+    id="btn"
+    action="TOGGLE" param="guid:vis"
+    x="0" y="0"
+     hoverImage="winamp.thinger.vis.hilited"
+      downImage="winamp.thinger.vis.selected"
+    activeImage="winamp.thinger.vis.selected"
+          image="winamp.thinger.vis"
+    rectrgn="1"
+  />
+</groupdef>

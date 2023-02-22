@@ -12,6 +12,7 @@ const files = {
   std: path.join(lib566, "std.mi"),
   winampconfig: path.join(lib566, "winampconfig.mi"),
   application: path.join(lib566, "application.mi"),
+  fileio: path.join(lib566, "fileio.mi"),
 };
 
 Object.keys(files).forEach((name) => {
@@ -22,5 +23,9 @@ Object.keys(files).forEach((name) => {
     `../src/maki/objectData/${name}.json`
   );
 
-  fs.writeFileSync(destinationPath, JSON.stringify(types, null, 2));
+  fs.writeFileSync(
+    destinationPath,
+    JSON.stringify(types, null, 2)
+    // `export default ${JSON.stringify(types, null, 2)}`
+  );
 });

@@ -1,0 +1,13 @@
+<!-- This defines the statusbar content of a layoutstatus object -->
+
+<elements>
+   <color id="wasabi.statusbar.text" value="x64" /> <!-- Component status text color when using TTF -->
+</elements>
+
+<groupdef id="wasabi.statusbar" default_h="12">
+
+  <group id="wasabi.objectframe.group" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+  <!-- text line -->
+  <text id="wasabi.statusbar.text" x="6" y="1" w="-12" relatw="1" h="-1" relath="1" font="studio.component.statusbar" />
+
+</groupdef>

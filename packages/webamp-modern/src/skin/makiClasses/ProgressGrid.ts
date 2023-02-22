@@ -1,19 +1,20 @@
 import Grid from "./Grid";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { px } from "../../utils";
 
-// http://wiki.winamp.com/wiki/XML_GUI_Objects
 export default class ProgressGrid extends Grid {
-  //   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
+  static GUID = "OFFICIALLY-NO-GUID";
   _disposeDisplaySubscription: () => void | null = null;
 
-  constructor() {
-    super();
-    this._disposeDisplaySubscription = UI_ROOT.audio.onCurrentTimeChange(() => {
-      this._middle.style.width = `${
-        UI_ROOT.audio.getCurrentTimePercent() * 100
-      }%`;
-    });
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
+    this._disposeDisplaySubscription = this._uiRoot.audio.onCurrentTimeChange(
+      () => {
+        this._middle.style.width = `${
+          this._uiRoot.audio.getCurrentTimePercent() * 100
+        }%`;
+      }
+    );
   }
 
   setXmlAttr(key: string, value: string): boolean {

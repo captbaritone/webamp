@@ -1,11 +1,11 @@
 import Group from "./Group";
 import { findLast, num, px, removeAllChildNodes, toBool } from "../../utils";
-import UI_ROOT from "../../UIRoot";
 import { XmlElement } from "@rgrove/parse-xml";
 import GuiObj from "./GuiObj";
-import SkinParser from "../parse";
+import SkinParser from "../SkinEngine_WAL";
 
 export default class GroupXFade extends Group {
+  static GUID = "OFFICIALLY-NO-GUID";
   _speed: number = null;
   _activeChild: GuiObj = null;
 
@@ -41,7 +41,7 @@ export default class GroupXFade extends Group {
     source: GuiObj = null
   ): boolean {
     if (action.toLowerCase().startsWith("switchto;")) {
-      UI_ROOT.vm.dispatch(this, "onaction", [
+      this._uiRoot.vm.dispatch(this, "onaction", [
         { type: "STRING", value: action },
         { type: "STRING", value: param },
         { type: "INT", value: 0 },
@@ -84,14 +84,14 @@ export default class GroupXFade extends Group {
         alpha: "0",
       });
       //TODO: Find a way to reuse skinParser instead create new one
-      const parser = new SkinParser(UI_ROOT);
+      const parser = new SkinParser(this._uiRoot);
       child = await parser.group(dummyNode, this);
       child.draw();
       child.init();
       this._div.appendChild(child.getDiv());
     }
+    await this._fadeIn(child);
     this._activeChild = child;
-    this._fadeIn(child);
   }
 
   // hide slowly
@@ -100,12 +100,13 @@ export default class GroupXFade extends Group {
     child.setalpha(0);
     setTimeout(() => {
       child._div.classList.remove("fading-out");
-    }, this._speed);
+      child.hide(); //set display=none to completely disabling mouse event
+    }, this._speed * 1500);
   }
   //show slowly
   async _fadeIn(child: GuiObj) {
+    child.show();
     child.setalpha(255);
-    //
   }
 
   draw() {

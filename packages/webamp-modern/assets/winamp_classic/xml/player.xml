@@ -1,0 +1,11 @@
+<!-- <include file="player-elements.xml"/> -->
+<!-- <include file="player-elements-shade.xml"/> -->
+
+<container id="main" name="Player Window" default_x="0" default_y="0" default_h="164" default_visible="1">
+
+  <include file="player-normal2.xml"/>
+  <include file="player-shade.xml"/>
+  <!-- <include file="main.xml"/> -->
+
+</container>
+

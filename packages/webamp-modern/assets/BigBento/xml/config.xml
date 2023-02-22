@@ -1,0 +1,627 @@
+<groupdef id="info.component.config">
+
+	<!-- config page target -->
+	<GroupXFade speed="0.5"  x="0" y="1" w="0" h="0" relatw="1" relath="1" id="skin.config.target" />
+
+	<!-- config menu -->
+	<componentbucket id="my.bucket" x="1" y="1" w="72" h="100" spacing="0" leftmargin="0" rightmargin="0" vertical="1" wndtype="skin.config" />
+	<layer x="74" y="0" image="config.vdivider" move="0"/>
+
+	<script file="scripts/configtarget.maki" />
+</groupdef>
+
+<!-- config menu items -->
+
+<groupdef id="bucket.entry.0" windowtype="skin.config" w="72" h="14">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.appearance" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.appearance" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.1" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.songticker" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.songticker" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.2" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.autoresize" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.windowsizing" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.3" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.notifier" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.notifier" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.4" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.visualization" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.visualization" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.5" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.playlist" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.playlist" ghost="1"/>
+</groupdef>
+
+<groupdef id="bucket.entry.6" windowtype="skin.config" w="98" h="18">
+	<togglebutton
+		id="btn"
+		action="switchto;optionsgroup.cthemes" action_target="skin.config.target"
+		fitparent="1" rectrgn="1"
+		hoverImage="config.button.hover"
+		downImage="config.button.selected"
+		activeImage="config.button.selected"
+	/>
+	<layer x="0" y="0" image="config.button.text.colorthemes" ghost="1"/>
+</groupdef>
+
+
+<!-- config menu pages -->
+
+<groupdef id="optionsgroup.autoresize">
+
+	<togglebutton x="76" y="14" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{0542AFA4-48D9-4c9f-8900-5739D52C114F};Prevent video resize" 
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{0542AFA4-48D9-4c9f-8900-5739D52C114F};Prevent video resize" />
+
+	<togglebutton x="76" y="0" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Autoresize Main Window if maximized" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Autoresize Main Window if maximized" />
+
+	<togglebutton x="76" y="28" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Link shade and player width" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Link shade and player width" />
+
+
+	<layer x="76" y="45" image="config.windowsizing.titlebar.text" ghost="1" />
+
+	<togglebutton x="76" y="59" h="12" w="54" rectrgn="1"
+		hoverImage="config.windowsizing.titlebar.maximize.hover"
+		cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Maximize Window on Titlebar Doubleclick" 
+	/>
+	<togglebutton x="76" y="59" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Maximize Window on Titlebar Doubleclick" />
+
+	<togglebutton x="145" y="59" h="12" w="89" rectrgn="1"
+		hoverImage="config.windowsizing.titlebar.shade.hover"
+		cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Switch to Shade on Titlebar Doubleclick" 
+	/>
+	<togglebutton x="145" y="59" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Switch to Shade on Titlebar Doubleclick" />
+
+	<layer x="76" y="0" image="config.windowsizing.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.songticker">
+
+	<togglebutton x="76" y="0" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Disable Songticker Scrolling" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Disable Songticker Scrolling" />
+
+	<togglebutton x="76" y="14" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Modern Songticker Scrolling" 
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Modern Songticker Scrolling" />
+
+	<togglebutton x="76" y="28" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Classic Songticker Scrolling" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF4};Classic Songticker Scrolling" />
+
+	<layer x="76" y="0" image="config.songticker.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.cthemes" >
+
+	<ColorThemes:List
+		id="colorthemes"
+		x="75" y="0"
+		w="-76" h="99" relatw="1"
+		nohscroll="1"
+		nocolheader="1"
+		visible="0"
+		antialias="0"
+		fontsize="13"
+	/>
+
+	<button id="colorthemes.prev"
+		action="colorthemes_previous"
+		action_target="colorthemes"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Color Theme"
+	/>
+
+	<button id="colorthemes.switch"
+	    action="colorthemes_switch"
+		action_target="colorthemes"
+		x="30" y="-19" relaty="1"
+		image="config.colorthemes.button.set.normal"
+		hoverImage="config.colorthemes.button.set.hover"
+		downImage="config.colorthemes.button.set.down"
+		tooltip="Switch to selected Color Theme"
+	/>
+
+	<button id="colorthemes.next"
+		action="colorthemes_next"
+		action_target="colorthemes"
+		x="61" y="-19" relaty="1"
+		image="config.colorthemes.button.next.normal"
+		hoverImage="config.colorthemes.button.next.hover"
+		downImage="config.colorthemes.button.next.down"
+		tooltip="Next Color Theme"
+	/>
+
+	<button id="colorthemes.more"
+		x="92" y="-19" relaty="1"
+		image="config.colorthemes.button.more.normal"
+		hoverImage="config.colorthemes.button.more.hover"
+		downImage="config.colorthemes.button.more.down"
+		tooltip="Download more Color Themes"
+	/>
+
+	<script file="scripts/colorthemes.maki" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.appearance" >
+
+	<togglebutton x="76" y="0" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Main Window Menu" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Main Window Menu" />
+
+	<togglebutton x="76" y="18" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Visualizer Reflection" 
+	/>
+	<togglebutton x="76" y="18" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Visualizer Reflection" />
+
+	<togglebutton x="76" y="32" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Timer Reflection" 
+	/>
+	<togglebutton x="76" y="32" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Timer Reflection" />
+
+	<togglebutton x="76" y="50" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Enable Beat Visualization" 
+	/>
+	<togglebutton x="76" y="50" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Enable Beat Visualization" />
+
+	<togglebutton x="76" y="68" h="12" w="144" rectrgn="1"
+		hoverImage="config.notifier.sub.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Switch to Bento with Small Buttons" 
+	/>
+
+	<button
+		action="switchto;optionsgroup.appearance.2;subpage" action_target="skin.config.target"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<button
+		action="switchto;optionsgroup.appearance.2;subpage" action_target="skin.config.target"
+		x="30" y="-19" relaty="1"
+		image="config.colorthemes.button.next.normal"
+		hoverImage="config.colorthemes.button.next.hover"
+		downImage="config.colorthemes.button.next.down"
+		tooltip="Next Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.appearance.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.appearance.2" >
+
+	<togglebutton x="76" y="0" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Artist-Information Buttons" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Artist-Information Buttons" />
+
+	<togglebutton x="76" y="14" h="12" w="144" rectrgn="1"
+		hoverImage="config.songticker.scroll.hover"
+		cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Playlist Tab" 
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Show Playlist Tab" />
+
+	<button
+		action="switchto;optionsgroup.appearance;subpage" action_target="skin.config.target"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<button
+		action="switchto;optionsgroup.appearance;subpage" action_target="skin.config.target"
+		x="30" y="-19" relaty="1"
+		image="config.colorthemes.button.next.normal"
+		hoverImage="config.colorthemes.button.next.hover"
+		downImage="config.colorthemes.button.next.down"
+		tooltip="Next Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.appearance.2.text" ghost="1" />
+
+</groupdef>
+
+
+<groupdef id="optionsgroup.notifier" >
+
+	<button id="holdtime.decrease"
+		x="132" y="42" h="12" w="8" rectrgn="1"
+		image="config.button.left.normal"
+		hoverImage="config.button.left.hover"
+		downImage="config.button.left.down"
+	/>
+	<text id="holdtime.text"
+		x="137" y="42" w="40" h="12"
+		text=""
+		font="config.bitmapfont"
+		align="center"
+	/>
+	<button id="holdtime.increase"
+		x="179" y="42" h="12" w="8" rectrgn="1"
+		image="config.button.right.normal"
+		hoverImage="config.button.right.hover"
+		downImage="config.button.right.down"
+	/>
+	<script file="scripts/timecontrol.maki" param="holdtime.text;holdtime.decrease;holdtime.increase|{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications display time|100|10000|0.001|a"/>
+
+	<button
+		action="switchto;optionsgroup.notifier.show;subpage" action_target="skin.config.target"
+		x="77" y="0" h="12" w="158" rectrgn="1"
+		hoverImage="config.notifier.sub.hover"
+	/>
+	<layer id="notifier.show" x="147" y="0" image="config.notifier.text.always" ghost="1"/>
+	<script file="scripts/imagecontrol.maki" param="notifier.show|4|{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show always;config.notifier.text.always|{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show with windowshade and when minimized;config.notifier.text.shade_minimized|{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show only when minimized;config.notifier.text.minimized|{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Never show;config.notifier.text.never" />
+
+	<button
+		action="switchto;optionsgroup.notifier.location;subpage" action_target="skin.config.target"
+		x="77" y="14" h="12" w="158" rectrgn="1"
+		hoverImage="config.notifier.sub.hover"
+	/>
+	<layer id="notifier.location" x="123" y="14" image="config.notifier.text.bottomright" ghost="1"/>
+	<script file="scripts/imagecontrol.maki" param="notifier.location|6|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Left;config.notifier.text.topleft|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Center;config.notifier.text.topcenter|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Right;config.notifier.text.topright|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Left;config.notifier.text.bottomleft|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Center;config.notifier.text.bottomcenter|{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Right;config.notifier.text.bottomright" />
+
+	<button
+		action="switchto;optionsgroup.notifier.animation.fadein;subpage" action_target="skin.config.target"
+		x="77" y="28" h="12" w="158" rectrgn="1"
+		hoverImage="config.notifier.sub.hover"
+	/>
+	<layer id="notifier.fadein" x="165" y="28" image="config.notifier.text.alphafade" ghost="1"/>
+	<script file="scripts/imagecontrol.maki" param="notifier.fadein|3|{D9891A39-7A38-45d8-9D51-A08F7270C836};Alpha Fade;config.notifier.text.alphafade|{D9891A39-7A38-45d8-9D51-A08F7270C836};Vertical Slide;config.notifier.text.vslide|{D9891A39-7A38-45d8-9D51-A08F7270C836};Horizontal Slide;config.notifier.text.hslide" />
+
+	<button
+		action="switchto;optionsgroup.notifier.animation.fadeout;subpage" action_target="skin.config.target"
+		x="77" y="56" h="12" w="158" rectrgn="1"
+		hoverImage="config.notifier.sub.hover"
+	/>
+	<layer id="notifier.fadeout" x="174" y="56" image="config.notifier.text.alphafade" ghost="1"/>
+	<script file="scripts/imagecontrol.maki" param="notifier.fadeout|3|{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Alpha Fade ;config.notifier.text.alphafade|{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Vertical Slide ;config.notifier.text.vslide|{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Horizontal Slide ;config.notifier.text.hslide" />
+
+	<layer x="76" y="0" image="config.notifier.text" ghost="1" />
+</groupdef>
+
+<!-- notifier -->
+
+<groupdef id="optionsgroup.notifier.show" >
+
+	<togglebutton x="76" y="0" h="12" w="139" rectrgn="1"
+		hoverImage="config.notifier.show.hover"
+		cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show always" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show always" />
+
+	<togglebutton x="76" y="14" h="12" w="139" rectrgn="1"
+		hoverImage="config.notifier.show.hover"
+		cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show with windowshade and when minimized"
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show with windowshade and when minimized" />
+
+	<togglebutton x="76" y="28" h="12" w="139" rectrgn="1"
+		hoverImage="config.notifier.show.hover"
+		cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show only when minimized" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show only when minimized" />
+
+	<togglebutton x="76" y="42" h="12" w="139" rectrgn="1"
+		hoverImage="config.notifier.show.hover"
+		cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Never show" 
+	/>
+	<togglebutton x="76" y="42" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Never show" />
+
+	<togglebutton x="76" y="60" h="12" w="139" rectrgn="1"
+		hoverImage="config.notifier.show.hover"
+		cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Disable in fullscreen" 
+	/>
+	<togglebutton x="76" y="60" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Disable in fullscreen" />
+
+	<button
+		action="switchto;optionsgroup.notifier;subpage" action_target="skin.config.target"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.notifier.show.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.notifier.location" >
+
+	<togglebutton x="76" y="0" h="12" w="66" rectrgn="1"
+		hoverImage="config.notifier.location.top.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Left" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Left" />
+
+	<togglebutton x="76" y="14" h="12" w="66" rectrgn="1"
+		hoverImage="config.notifier.location.top.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Center"
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Center" />
+
+	<togglebutton x="76" y="28" h="12" w="66" rectrgn="1"
+		hoverImage="config.notifier.location.top.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Right" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Top Right" />
+
+
+	<togglebutton x="152" y="0" h="12" w="81" rectrgn="1"
+		hoverImage="config.notifier.location.bottom.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Left" 
+	/>
+	<togglebutton x="152" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Left" />
+
+	<togglebutton x="152" y="14" h="12" w="81" rectrgn="1"
+		hoverImage="config.notifier.location.bottom.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Center"
+	/>
+	<togglebutton x="152" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Center" />
+
+	<togglebutton x="152" y="28" h="12" w="81" rectrgn="1"
+		hoverImage="config.notifier.location.bottom.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Right" 
+	/>
+	<togglebutton x="152" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Bottom Right" />
+
+
+	<togglebutton x="76" y="46" h="12" w="106" rectrgn="1"
+		hoverImage="config.notifier.location.relative.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Relative to Viewport" 
+	/>
+	<togglebutton x="76" y="46" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Relative to Viewport" />
+
+	<togglebutton x="76" y="60" h="12" w="106" rectrgn="1"
+		hoverImage="config.notifier.location.relative.hover"
+		cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Relative to Monitor" 
+	/>
+	<togglebutton x="76" y="60" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{715B2C0D-1DF0-4bb2-9D74-0FACAE27CE97};Relative to Monitor" />
+
+	<button
+		action="switchto;optionsgroup.notifier;subpage" action_target="skin.config.target"
+		x="0" y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.notifier.location.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.notifier.animation.fadein" >
+
+	<togglebutton x="76" y="0" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Alpha Fade" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Alpha Fade" />
+
+	<togglebutton x="76" y="14" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Vertical Slide"
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Vertical Slide" />
+
+	<togglebutton x="76" y="28" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Horizontal Slide" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{D9891A39-7A38-45d8-9D51-A08F7270C836};Horizontal Slide" />
+
+	<button id="fdin.decrease"
+		x="156" y="46" h="12" w="8" rectrgn="1"
+		image="config.button.left.normal"
+		hoverImage="config.button.left.hover"
+		downImage="config.button.left.down"
+	/>
+	<text id="fdin.text"
+		x="161" y="46" w="40" h="12"
+		text=""
+		font="config.bitmapfont"
+		align="center"
+	/>
+	<button id="fdin.increase"
+		x="203" y="46" h="12" w="8" rectrgn="1"
+		image="config.button.right.normal"
+		hoverImage="config.button.right.hover"
+		downImage="config.button.right.down"
+	/>
+	<script file="scripts/timecontrol.maki" param="fdin.text;fdin.decrease;fdin.increase|{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications fade in time|100|10000|0.001|a"/>
+
+
+	<button
+		action="switchto;optionsgroup.notifier;subpage" action_target="skin.config.target"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.notifier.animation.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.notifier.animation.fadeout" >
+
+	<togglebutton x="76" y="0" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Alpha Fade " 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Alpha Fade " />
+
+	<togglebutton x="76" y="14" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Vertical Slide "
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Vertical Slide " />
+
+	<togglebutton x="76" y="28" h="12" w="83" rectrgn="1"
+		hoverImage="config.notifier.animation.hover"
+		cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Horizontal Slide " 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{560EAE41-1379-4927-AC55-FB5F4D47C9B8};Horizontal Slide " />
+
+	<button id="fdout.decrease"
+		x="156" y="46" h="12" w="8" rectrgn="1"
+		image="config.button.left.normal"
+		hoverImage="config.button.left.hover"
+		downImage="config.button.left.down"
+	/>
+	<text id="fdout.text"
+		x="161" y="46" w="40" h="12"
+		text=""
+		font="config.bitmapfont"
+		align="center"
+	/>
+	<button id="fdout.increase"
+		x="203" y="46" h="12" w="8" rectrgn="1"
+		image="config.button.right.normal"
+		hoverImage="config.button.right.hover"
+		downImage="config.button.right.down"
+	/>
+	<script file="scripts/timecontrol.maki" param="fdout.text;fdout.decrease;fdout.increase|{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications fade out time|100|10000|0.001|a"/>
+
+
+	<button
+		action="switchto;optionsgroup.notifier;subpage" action_target="skin.config.target"
+		x="0"  y="-19" relaty="1"
+		image="config.colorthemes.button.prev2.normal"
+		hoverImage="config.colorthemes.button.prev2.hover"
+		downImage="config.colorthemes.button.prev2.down"
+		tooltip="Previous Configpage"
+	/>
+
+	<layer x="76" y="0" image="config.notifier.animation.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.visualization" >
+
+	<togglebutton x="76" y="14" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Big Component View" 
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Big Component View" />
+
+	<togglebutton x="76" y="28" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Multi Content View (stretched)" 
+	/>
+	<togglebutton x="76" y="28" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Multi Content View (stretched)" />
+
+	<togglebutton x="76" y="42" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Multi Content View (mini)" 
+	/>
+	<togglebutton x="76" y="42" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{090B63DE-FD24-4528-ABE5-A522615E8AE9};Open in Multi Content View (mini)" />
+
+	<layer x="76" y="0" image="config.visualization.text" ghost="1" />
+
+</groupdef>
+
+<groupdef id="optionsgroup.playlist" >
+
+	<togglebutton x="76" y="0" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{0167CFD9-5D35-404a-8F03-80ED5B89DEDF};Enlarge Playlist" 
+	/>
+	<togglebutton x="76" y="0" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{0167CFD9-5D35-404a-8F03-80ED5B89DEDF};Enlarge Playlist" />
+
+	<togglebutton x="76" y="14" h="12" w="158" rectrgn="1"
+		hoverImage="config.windowsizing.autoresize.hover"
+		cfgattrib="{0167CFD9-5D35-404a-8F03-80ED5B89DEDF};Show Album Art if Playlist is enlarged" 
+	/>
+	<togglebutton x="76" y="14" image="config.checkbox.inactive" activeImage="config.checkbox.active" ghost="1" cfgattrib="{0167CFD9-5D35-404a-8F03-80ED5B89DEDF};Show Album Art if Playlist is enlarged" />
+
+	<layer x="76" y="0" image="config.playlist.text" ghost="1" />
+
+</groupdef>

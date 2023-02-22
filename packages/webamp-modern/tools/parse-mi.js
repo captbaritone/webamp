@@ -22,12 +22,20 @@ function parseFile(filePath) {
       const name = classDefinitionMatch[3]
         .replace(/^_predecl /, "")
         .replace(/^&/, "");
-      objects[name.toLowerCase()] = { id, name, parent, functions: [] };
+      const deprecated = /^deprecated\s/.test(line);
+      objects[name.toLowerCase()] = {
+        id,
+        name,
+        parent,
+        deprecated,
+        functions: [],
+      };
     }
 
     const methodMatch = /\s*extern(\s+.*)?\s+(.*)\.(.*)\((.*)\);/.exec(line);
 
     if (methodMatch) {
+      const methodDeprecated = /^deprecated\s/.test(line);
       const result = methodMatch[1] == null ? "" : methodMatch[1].trim();
       const className = methodMatch[2].toLowerCase();
       const name = methodMatch[3].trim();
@@ -51,14 +59,19 @@ function parseFile(filePath) {
           )}`
         );
       }
-      objects[className].functions.push({ result, name, parameters });
+      objects[className].functions.push({
+        name,
+        parameters,
+        result,
+        deprecated: methodDeprecated,
+      });
     }
   });
 
   const objectIds = {};
   Object.keys(objects).forEach((normalizedName) => {
-    const { id, parent, functions, name } = objects[normalizedName];
-    objectIds[id] = { parent, functions, name };
+    const { id, parent, functions, name, deprecated } = objects[normalizedName];
+    objectIds[id] = { parent, name, deprecated, functions };
   });
 
   return objectIds;

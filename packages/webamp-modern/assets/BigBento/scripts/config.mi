@@ -1,0 +1,29 @@
+//----------------------------------------------------------------------------------------------------------------
+// config.mi
+//
+// standard definitions for internal objects
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __CONFIG_MI
+#define __CONFIG_MI
+
+extern class @{593DBA22-D077-4976-B952-F4713655400B}@ Object _predecl Config;
+extern class @{D4030282-3AAB-4d87-878D-12326FADFCD5}@ Object ConfigItem;
+extern class @{24DEC283-B76E-4a36-8CCC-9E24C46B6C73}@ Object ConfigAttribute;
+
+extern ConfigItem Config.getItem(String item_name);
+extern ConfigItem Config.getItemByGuid(String item_guid);
+extern ConfigItem Config.newItem(String item_name, String item_guid);
+
+extern ConfigAttribute ConfigItem.getAttribute(String attr_name);
+extern ConfigAttribute ConfigItem.newAttribute(String attr_name, String default_value);
+extern String ConfigItem.getGuid(String attr_name);
+extern String ConfigItem.getName(); //TODO
+
+extern ConfigAttribute.setData(String value);
+extern String ConfigAttribute.getData();
+extern ConfigAttribute.onDataChanged();
+extern ConfigItem ConfigAttribute.getParentItem();
+extern String ConfigAttribute.getAttributeName();
+
+#endif
