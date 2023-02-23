@@ -2,6 +2,10 @@ import { Rule } from "eslint";
 import { ClassDeclaration, PropertyDefinition } from "estree";
 import { getClass } from "../../src/maki/objects";
 import path from "path";
+// debug stuff
+// https://stackoverflow.com/questions/11616630/how-can-i-print-a-circular-structure-in-a-json-like-format
+import * as util from "util"; // has no default export
+let firstProblem = true; //to throw first only
 
 function isMakiModule(context: Rule.RuleContext): boolean {
   const filePath = context.getFilename();
@@ -15,12 +19,24 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
   }
   return {
     ClassDeclaration(node) {
+      if (node["abstract"] == true) return; // any intermediate class must be marked as abstract class
+      if (node.id.name.endsWith("Handler")) return; // any action/vis-painter must be ended with Handler
       const guid = guidFromClassDeclaration(node);
       if (guid == null) {
         context.report({
           node,
           message: `Expected Maki class to declare a static property "GUID".`,
         });
+        if (firstProblem) {
+          context.report({
+            node,
+            message:
+              "noguid" + /* JSON.stringify */ util.inspect(node, { depth: 3 }),
+          });
+          firstProblem = false;
+        }
+      } else if (guid == "OFFICIALLY-NO-GUID") {
+        //? Okay, it seem that the class is never touched by maki script
       } else {
         const objectInfo = getClass(guid);
         if (objectInfo == null) {
@@ -78,14 +94,14 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
         if (returnType == null) {
           context.report({
             loc: typeLoc,
-            message: `Missing return type for Maki method. Expected "${expectedTsType}".`,
+            message: `Missing return type for Maki method '${name}'. Expected "${expectedTsType}".`,
           });
           return;
         }
         if (returnType !== expectedTsType) {
           context.report({
             loc: typeLoc,
-            message: `Incorrect TypeScript return type for Maki method. Expected "${expectedTsType}" but found "${returnType}".`,
+            message: `Incorrect TypeScript return type for Maki method '${name}'. Expected "${expectedTsType}" but found "${returnType}".`,
           });
           return;
         }
@@ -96,12 +112,12 @@ module.exports = function (context: Rule.RuleContext): Rule.RuleListener {
       if (args.length !== argDefinitions.length) {
         context.report({
           node,
-          message: `Incorrect arity for Maki method. Expected ${argDefinitions.length} arguments but found ${args.length}.`,
+          message: `Incorrect arity for Maki method '${name}'. Expected ${argDefinitions.length} arguments but found ${args.length}.`,
         });
         return;
       }
 
-      for (const [i, arg] of args.entries()) {
+      for (const [i, arg] of Object.entries(args)) {
         const [defType, defName] = argDefinitions[i];
         const tsDefType = makiTypeToTsType(defType);
         const tsType = getHumanReadableTSType(
@@ -136,28 +152,28 @@ function makiTypeToTsType(makiType: string): string {
     case "double":
     case "float":
       return "number";
+    case "any":
+      return "any";
     case "string":
       return "string";
     case "map":
       return "MakiMap";
     case "boolean":
       return "boolean";
+    case "object":
+      return "BaseObject";
     case "guiobject":
       return "GuiObj";
     case "layout":
-      return "Layout";
     case "container":
-      return "Container";
     case "group":
-      return "Group";
     case "wac":
-      return "Wac";
     case "configitem":
-      return "ConfigItem";
     case "configattribute":
-      return "ConfigAttribute";
     case "winampconfiggroup":
-      return "WinampConfigGroup";
+    case "popupmenu":
+    case "menu":
+      return makiType;
     default:
       throw new Error(`Missing maki type: ${makiType}`);
   }

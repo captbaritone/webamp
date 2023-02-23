@@ -45,6 +45,7 @@ yarn start
 
 - [ ] Handle case (in)sensitivity of includes.
 - [ ] Handle forward/backward slashes issues (if they exist)
+- [ ] Draw in few canvases instead of huge HTML Elements
 
 ## Known Bugs
 

@@ -1,0 +1,76 @@
+    <groupdef id="eq">
+
+        <layer id="blah" dblClickAction="SWITCH;shadeeq" x="0" y="0" h="14" w="275" move="1"/>
+        <!-- <layer id="eq.bg" image="wa.eq" ghost="1"/> -->
+
+        <layer id="waeq.titlebar" x="0" y="0" image="eq.titlebar" inactiveimage="eq.titlebar.inactive" move="1"/>
+        <layer id="waeq.eqvis" x="86" y="17" image="wa.eqvis.bg" ghost="1"/>
+
+        <button id="eq.switch" x="254" y="3" action="SWITCH" param="shadeeq" image="eq.switch" downimage="eq.switchp" activealpha="255" inactivealpha="0"/>
+        <button id="eq.close" x="264" y="3" action="CLOSE" image="eq.close" downimage="eq.closep" activealpha="255" inactivealpha="0"/>
+
+        <Button id="eq.on" action="EQ_TOGGLE" x="14" y="18" image="eq.off" downimage="eq.offp" activeImage="eq.on"/>
+        <Button id="eq.auto" visible="1" action="EQ_AUTO" x="39" y="18" image="eq.auto" downimage="eq.autop" activeImage="eq.autoon"/>
+
+        <togglebutton id="eq.presets" x="217" y="18" image="eq.presets" downimage="eq.presetsp" action="MENU" param="PRESETS"/>
+
+        <button id="12db" x="44" y="36" w="22" h="7" rectrgn="1"/>
+        <button id="0db" x="45" y="65" w="20" h="7" rectrgn="1"/>
+        <button id="-12db" x="44" y="95" w="22" h="7" rectrgn="1"/>
+
+        <eqvis x="88" y="17" w="109" h="19" colortop="239,24,16" colormiddle="239,231,49" colorbottom="24,156,8" colorpreamp="156,181,206"/>
+			<layer id="preamp_layer" x="21" y="38" image="eq.slider0"/>
+			<layer id="eq1back" x="78" y="38" image="eq.slider0"/>
+			<layer id="eq2back" x="96" y="38" image="eq.slider0"/>
+			<layer id="eq3back" x="114" y="38" image="eq.slider0"/>
+			<layer id="eq4back" x="132" y="38" image="eq.slider0"/>
+			<layer id="eq5back" x="150" y="38" image="eq.slider0"/>
+			<layer id="eq6back" x="168" y="38" image="eq.slider0"/>
+			<layer id="eq7back" x="186" y="38" image="eq.slider0"/>
+			<layer id="eq8back" x="204" y="38" image="eq.slider0"/>
+			<layer id="eq9back" x="222" y="38" image="eq.slider0"/>
+			<layer id="eq10back" x="240" y="38" image="eq.slider0"/>
+
+            <script file="scripts/eqmain_dbs.maki"/>
+
+			<slider id="preamp" action="EQ_PREAMP" x="22" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq1" action="EQ_BAND" param="1" x="79" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq2" action="EQ_BAND" param="2" x="97" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq3" action="EQ_BAND" param="3" x="115" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq4" action="EQ_BAND" param="4" x="133" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq5" action="EQ_BAND" param="5" x="151" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq6" action="EQ_BAND" param="6" x="169" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq7" action="EQ_BAND" param="7" x="187" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq8" action="EQ_BAND" param="8" x="205" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq9" action="EQ_BAND" param="9" x="223" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+			<slider id="eq10" action="EQ_BAND" param="10" x="241" y="38" w="11" h="62" orientation="vertical" thumb="eq.slider" downThumb="eq.slider.pressed"/>
+
+        <script file="scripts/eq_layers.maki"/>
+
+    <!-- <script file="scripts/eq_iso_mode.maki"/> -->
+
+    </groupdef>
+
+    <groupdef id="shadeeq">
+    
+        <layer id="blah" dblClickAction="SWITCH;eq" x="0" y="0" h="14" w="275" image="eq.shade.on" inactiveimage="eq.shade.off" move="1"/>
+
+        <button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="eqshade.shade" downImage="eqshade.shadep"/>
+        <button id="Close" inactivealpha="0" action="close" x="264" y="3" image="eqshade.close" downImage="eqshade.closep"/>
+
+        <slider id="volume" action="volume" x="61" y="4" h="7" w="97" thumb="eqshade.vol.seekm"/>
+        <slider id="balance" action="pan" x="164" y="4" h="7" w="43" thumb="eqshade.vol.seekm"/>
+
+    </groupdef>
+
+<container id="EQ" name="Equalizer" default_y="116">
+
+
+    <layout id="EQ" background="eq.bg" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
+        <group id="eq"/>
+    </layout>
+    <layout id="shadeeq" background="eq.shade.on" minimum_h="14" minimum_w="275">
+		<group id="shadeeq" x="0" y="0" sysregion="1"/>
+	</layout>
+
+</container>

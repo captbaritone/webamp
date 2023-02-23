@@ -1,5 +1,4 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
 import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
 
 // Maybe this?
@@ -11,13 +10,13 @@ export default class Status extends GuiObj {
   _pausebitmap: string;
   _state: string = AUDIO_STOPPED;
 
-  constructor() {
-    super();
-    UI_ROOT.audio.on("statchanged", () => this._updateStatus());
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
+    this._uiRoot.audio.on("statchanged", () => this._updateStatus());
   }
 
   _updateStatus() {
-    this._state = UI_ROOT.audio.getState();
+    this._state = this._uiRoot.audio.getState();
     this._renderBackground();
   }
 
@@ -47,11 +46,11 @@ export default class Status extends GuiObj {
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
+    if (this._h) {
+      return this._h;
     }
     if (this._stopbitmap != null) {
-      const bitmap = UI_ROOT.getBitmap(this._stopbitmap);
+      const bitmap = this._uiRoot.getBitmap(this._stopbitmap);
       return bitmap ? bitmap.getHeight() : 15;
     }
     return super.getheight();
@@ -59,11 +58,11 @@ export default class Status extends GuiObj {
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
+    if (this._w) {
+      return this._w;
     }
     if (this._stopbitmap != null) {
-      const bitmap = UI_ROOT.getBitmap(this._stopbitmap);
+      const bitmap = this._uiRoot.getBitmap(this._stopbitmap);
       return bitmap ? bitmap.getWidth() : 15;
     }
     return super.getwidth();
@@ -83,7 +82,7 @@ export default class Status extends GuiObj {
         bitmap_id = this._stopbitmap;
         break;
     }
-    const bitmap = UI_ROOT.getBitmap(bitmap_id);
+    const bitmap = this._uiRoot.getBitmap(bitmap_id);
     if (bitmap != null) {
       this.setBackgroundImage(bitmap);
     } else {
@@ -93,7 +92,6 @@ export default class Status extends GuiObj {
 
   draw() {
     super.draw();
-    // this._div.setAttribute("data-obj-name", "Button");
     this._div.classList.add("webamp--img");
     this._renderBackground();
   }

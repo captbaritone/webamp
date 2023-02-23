@@ -1,7 +1,6 @@
 import GuiObj from "./GuiObj";
 
-// Maybe this?
-// http://wiki.winamp.com/wiki/
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayoutstatus.2F.3E
 export default class LayoutStatus extends GuiObj {
   static GUID = "7fd5f21048dfacc45154a0a676dc6c57";
 

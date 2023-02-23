@@ -1,7 +1,7 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import Group from "./Group";
-import { px, toBool } from "../../utils";
+import { px, toBool, clamp, num } from "../../utils";
 import Button from "./Button";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ccomponentbucket.2F.3E
@@ -11,9 +11,12 @@ export default class ComponentBucket extends Group {
   _vertical: boolean = false; // default horizontal
   _wrapper: HTMLElement;
   _page: number = 0;
+  _leftmargin: number = 0;
+  _rightmargin: number = 0;
+  _spacing: number = 0;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this._wrapper = document.createElement("wrapper");
   }
 
@@ -29,6 +32,15 @@ export default class ComponentBucket extends Group {
         break;
       case "vertical":
         this._vertical = toBool(value);
+        break;
+      case "leftmargin":
+        this._leftmargin = num(value);
+        break;
+      case "rightmargin":
+        this._rightmargin = num(value);
+        break;
+      case "spacing":
+        this._spacing = num(value);
         break;
       default:
         return false;
@@ -48,11 +60,15 @@ export default class ComponentBucket extends Group {
   }
 
   setscroll(x: number): number {
-    return 10; //TODO setscroll to ._div
+    const anchor = this._vertical ? "top" : "left";
+    this._wrapper.style.setProperty(anchor, px(x));
+    return x;
   }
 
   getscroll(): number {
-    return 10; //TODO: Check by ._div.scroll
+    const anchor = this._vertical ? "top" : "left";
+    const value = parseInt(this._wrapper.style.getPropertyValue(anchor));
+    return value;
   }
 
   getnumchildren(): number {
@@ -85,6 +101,7 @@ export default class ComponentBucket extends Group {
   init() {
     this.resolveButtonsAction();
     super.init();
+    this._uiRoot.vm.dispatch(this, "onstartup", []);
   }
   resolveButtonsAction() {
     for (const obj of this.getparent()._children) {
@@ -92,7 +109,7 @@ export default class ComponentBucket extends Group {
         obj instanceof Button &&
         (obj._actionTarget == null || obj._actionTarget == "bucket") &&
         obj._action &&
-        obj._action.startsWith("cb_")
+        obj._action.toLowerCase().startsWith("cb_")
       ) {
         obj._actionTarget = this.getId();
       }
@@ -107,8 +124,21 @@ export default class ComponentBucket extends Group {
     const currentStep = this._vertical
       ? this._wrapper.offsetTop
       : this._wrapper.offsetLeft;
-    //TODO: Clamp to not over top nor over left (showing empty space bug)
-    this._wrapper.style.setProperty(anchor, px(currentStep + oneStep * step));
+    const viewportSize = this._div.getBoundingClientRect();
+    const maxViewport = this._vertical
+      ? viewportSize.height
+      : viewportSize.width;
+    const maxSteps = Math.ceil(maxViewport / oneStep);
+    const wrapperSize = this._wrapper.getBoundingClientRect();
+    const maxScroll = this._vertical
+      ? wrapperSize.height - viewportSize.height
+      : wrapperSize.width - viewportSize.width;
+    const newScroll = clamp(
+      currentStep + oneStep * maxSteps * step,
+      -(maxScroll + (this._leftmargin + this._rightmargin)),
+      0
+    );
+    this._wrapper.style.setProperty(anchor, px(newScroll));
   }
 
   appendChildrenDiv() {
@@ -121,8 +151,13 @@ export default class ComponentBucket extends Group {
     super.draw();
     if (this._vertical) {
       this._div.classList.add("vertical");
+      this._wrapper.style.marginTop = px(this._leftmargin);
+      this._wrapper.style.marginBottom = px(this._rightmargin);
     } else {
       this._div.classList.remove("vertical");
+      this._wrapper.style.marginLeft = px(this._leftmargin);
+      this._wrapper.style.marginRight = px(this._rightmargin);
     }
+    this._wrapper.style.gap = px(this._spacing);
   }
 }

@@ -8,7 +8,7 @@ module.exports = {
     src: "/",
     assets: "/assets",
   },
-  exclude: ["*.tmp"],
+  exclude: ["*.tmp", "extracted-*"],
   plugins: [
     /* ... */
   ],

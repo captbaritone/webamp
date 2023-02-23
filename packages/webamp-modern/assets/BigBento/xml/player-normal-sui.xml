@@ -1,0 +1,358 @@
+<!-- SUI:Component:Browser -->
+
+<groupdef id="wdh.browser">
+
+	<Winamp:Browser x="0" y="1" h="-1" w="0" relatw="1" relath="1" id="sui.component.browser" download="0"/>
+
+</groupdef>
+
+<!-- SUI:Component:MediaLibrary -->
+<!--
+<groupdef id="wdh.ml.dualwnd.ml">
+
+	<windowholder id="wdh" fitparent="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}"/>
+
+</groupdef>
+
+<groupdef id="wdh.ml.dualwnd.dropbox">
+
+	<windowholder id="wdh" fitparent="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{E2E4AD32-D87B-4b9e-BF58-46A1336DDC8F}" />
+
+</groupdef>
+-->
+<groupdef id="wdh.ml">
+<!--
+	<wasabi:frame id="wdh.ml.dualwnd" x="3" y="4" w="-5" h="-4" relath="1" relatw="1" width="0" maxwidth="-100" minwidth="150" from="right" left="wdh.ml.dualwnd.ml" right="wdh.ml.dualwnd.dropbox" vbitmap="gen.dropbox.verticaldivider" vgrabber="gen.dropbox.verticalgrabber"/>
+
+	<script file="scripts/gen_dropbox.maki"/>
+-->
+
+	<windowholder id="wdh" x="3" y="4" w="-5" h="-4" relath="1" relatw="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{6B0EDF80-C9A5-11D3-9F26-00C04F39FFC6}"/>
+</groupdef>
+
+<!-- SUI:Component:Video -->
+
+<groupdef id="wdh.video.resizable">
+
+	<rect id="bg" color="0,0,0" fitparent="1" filled="1" rectrgn="1"/>
+
+	<rect id="wdh.outer" x="4" y="4" w="-8" relatw="1" h="-8" relath="1" color="80,80,80"/>
+
+	<rect id="wdh.drag" x="-5" y="-5" relatx="1" relaty="1" h="5" w="5" filled="1" color="100,100,100" cursor="IDC_SIZENWSE"/>
+
+	<windowholder id="wdh" x="5" y="5" w="-10" relatw="1" h="-10" relath="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{F0816D7B-FFFC-4343-80F2-E8199AA15CC3}"/>
+
+	<script file="scripts/videoresize.maki"/>
+
+</groupdef>
+
+<groupdef id="wdh.video">
+
+	<layer x="1" y="4" h="1" w="-2" relatw="1" image="sui.component.bottom2" move="0" alpha="180"/>
+	<layer x="1" y="-24" relaty="1" h="1" w="-2" relatw="1" image="sui.component.top2" move="0" />
+
+	<group id="wdh.video.resizable" x="1" y="5" w="-2" relatw="1" h="-29" relath="1" />
+
+	<Button action="VID_FS"
+		x="4" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.fullscreen.normal"
+		hoverImage="video.button.fullscreen.hover"
+		downImage="video.button.fullscreen.down"
+		tooltip="Fullscreen"
+	/>
+
+	<Button action="VID_1X"
+		x="29" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.1x.normal"
+		hoverImage="video.button.1x.hover"
+		downImage="video.button.1x.down"
+		tooltip="Normal Size"
+	/>
+
+	<Button action="VID_2X"
+		x="54" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.2x.normal"
+		hoverImage="video.button.2x.hover"
+		downImage="video.button.2x.down"
+		tooltip="Double Size"
+	/>
+
+	<!--<Button action="VID_TV"
+		x="80" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.itv.normal"
+		hoverImage="video.button.itv.hover"
+		downImage="video.button.itv.down"
+		tooltip="Internet TV"
+	/>-->
+
+	<NStatesButton nstates="2"
+		x="-53" relatx="1" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.pin.normal"
+		hoverImage="video.button.pin.hover"
+		downImage="video.button.pin.down"
+		tooltip="Enable Video in Window resizing"
+		cfgattrib="{E704AB5A-108E-4309-B54B-43EBA5C0C3AA};Enable Video in Window resizing"
+	/>
+
+
+	<Button action="VID_Misc"
+		x="-27" y="-21" h="21" w="24" relaty="1" relatx="1" rectrgn="1"
+		image="video.button.cfg.normal"
+		hoverImage="video.button.cfg.hover"
+		downImage="video.button.cfg.down"
+		tooltip="Video Options"
+	/>
+
+	<text id="info" display="VID_Info" ticker="1"
+		x="105" y="-18" relaty="1" h="13" w="-161" relatw="1"
+		align="center" color="color.window.txt"
+	/>
+
+</groupdef>
+
+<groupdef id="wdh.pl">
+
+	<layer x="1" y="4" h="1" w="-2" relatw="1" image="sui.component.bottom2" move="0" alpha="180"/>
+	<layer x="1" y="-24" relaty="1" h="1" w="-2" relatw="1" image="sui.component.top2" move="0" />
+
+	<windowholder id="wdh" x="1" y="5" w="-2" relatw="1" h="-29" relath="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}"/>
+
+	<Wasabi:Button action="PE_Add"
+		x="4" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="pledit.tab.button.add"
+		center_image="1"
+		tooltip="Add Files to Playlist"
+	/>
+
+	<Wasabi:Button action="PE_Rem"
+		x="29" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="pledit.tab.button.rem"
+		center_image="1"
+		tooltip="Remove Files from Playlist"
+	/>
+
+	<Wasabi:Button action="PE_Sel"
+		x="54" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="pledit.tab.button.sel"
+		center_image="1"
+		tooltip="Select Files in Playlist"
+	/>
+
+	<Wasabi:Button action="PE_Misc"
+		x="79" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="pledit.tab.button.misc"
+		center_image="1"
+		tooltip="Misc Actions"
+	/>
+
+	<Wasabi:Button action="PE_List"
+		x="104" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="pledit.tab.button.manage"
+		center_image="1"
+		tooltip="Manage Playlist"
+	/>
+
+	<Wasabi:Button id="pe.move.top"
+		x="-27" y="-21" h="21" w="24" relaty="1" relatx="1" rectrgn="1"
+		image="pledit.tab.button.up"
+		center_image="1"
+		tooltip="Video Options"
+	/>
+
+	<text id="info" display="PE_Info" ticker="1"
+		x="131" y="-18" relaty="1" h="13" w="-161" relatw="1"
+		align="center" color="color.window.txt"
+	/>
+
+</groupdef>
+
+<!-- SUI:Component:Visualization -->
+
+<groupdef id="wdh.vis">
+
+	<layer x="1" y="4" h="1" w="-2" relatw="1" image="sui.component.bottom2" move="0" alpha="180"/>
+	<layer x="1" y="-24" relaty="1" h="1" w="-2" relatw="1" image="sui.component.top2" move="0" />
+
+	<rect id="bg" color="0,0,0" x="1" y="5" w="-2" relatw="1" h="-29" relath="1" filled="1" rectrgn="1"/>
+
+	<windowholder id="wdh.vis.object" x="1" y="5" w="-2" relatw="1" h="-29" relath="1" autofocus="1" wantfocus="1" autoclose="1" autoopen="1" autoavailable="0" visible="1" hold="guid:{0000000A-000C-0010-FF7B-01014263450C}"/>
+
+	<Button action="VIS_FS"
+		x="4" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="video.button.fullscreen.normal"
+		hoverImage="video.button.fullscreen.hover"
+		downImage="video.button.fullscreen.down"
+		tooltip="Fullscreen"
+	/>
+
+	<Button action="VIS_Prev"
+		x="29" y="-21" h="21" w="21" relaty="1"  rectrgn="1"
+		image="vis.button.prev.normal"
+		hoverImage="vis.button.prev.hover"
+		downImage="vis.button.prev.down"
+		tooltip="Previous Visualization Preset"
+	/>
+
+	<Button action="VIS_Next"
+		x="51" y="-21" h="21" w="21" relaty="1"  rectrgn="1"
+		image="vis.button.next.normal"
+		hoverImage="vis.button.next.hover"
+		downImage="vis.button.next.down"
+		tooltip="Next Visualization Preset"
+	/>
+
+	<ToggleButton id="vis.random"
+		x="74" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		image="vis.button.random.normal"
+		hoverImage="vis.button.random.hover"
+		downImage="vis.button.random.down"
+		tooltip="Randomly change Visualization Presets"
+		cfgattrib="{0000000A-000C-0010-FF7B-01014263450C};Random"
+	/>
+
+	<ToggleButton id="vis.random.active"
+		x="74" y="-21" h="21" w="24" relaty="1"  rectrgn="1"
+		ActiveImage="vis.button.random.active"
+		ghost="1"
+		cfgattrib="{0000000A-000C-0010-FF7B-01014263450C};Random"
+	/>
+
+	<script file="scripts/syncbutton.maki" param="vis.random;vis.random.active" />
+
+	<Button action="VIS_Menu"
+		x="-52" y="-21" h="21" w="24" relaty="1" relatx="1" rectrgn="1"
+		image="vis.button.presets.normal"
+		hoverImage="vis.button.presets.hover"
+		downImage="vis.button.presets.down"
+		tooltip="Presets"
+	/>
+
+	<Button action="VIS_Cfg"
+		x="-27" y="-21" h="21" w="24" relaty="1" relatx="1" rectrgn="1"
+		image="video.button.cfg.normal"
+		hoverImage="video.button.cfg.hover"
+		downImage="video.button.cfg.down"
+		tooltip="Preset Editor / Options"
+	/>
+
+</groupdef>
+
+<groupdef id="sui.components">
+
+	<group id="wdh.ml" fitparent="1" visible="0" />
+	<group id="wdh.pl" fitparent="1" visible="0" />
+	<group id="wdh.vis" fitparent="1" visible="0" />
+	<group id="wdh.video" fitparent="1" visible="0" />
+	<group id="wdh.browser" fitparent="1" visible="0" />
+
+</groupdef>
+
+<!-- 
+Params for <Bento:TabButton/>
+text="sometext"
+the object itself is a button.
+-->
+
+<groupdef id="bento.tabbutton" xuitag="Bento:TabButton" embed_xui="bento.tabbutton.mousetrap">
+
+	<grid id="bento.tabbutton.normal"
+		fitparent="1" y="0" h="-1" relath="1" visible="1"
+		left="sui.button.inactive.normal.left"
+		middle="sui.button.inactive.normal.center"
+		right="sui.button.inactive.normal.right"
+	/>
+
+	<text id="bento.tabbutton.normal.text" x="8" y="4" w="-17" relatw="1" h="15" bold="1" align="center" font="Tahoma" fontsize="14" antialias="0"  visible="1" color="color.tabbutton.text.inactive" shadow="1" shadowcolor="color.tabbutton.text.inactive.shadow" shadowx="0" shadowy="1"/>
+
+	<grid id="bento.tabbutton.hover"
+		fitparent="1" y="0" h="-1" relath="1" visible="0"
+		left="sui.button.inactive.hover.left"
+		middle="sui.button.inactive.hover.center"
+		right="sui.button.inactive.hover.right"
+	/>
+
+	<text id="bento.tabbutton.hover.text" x="8" y="4" w="-17" relatw="1" h="15" bold="1" align="center" font="Tahoma" fontsize="14" antialias="0"  visible="0" color="color.tabbutton.text.inactive.hover" shadow="1" shadowcolor="color.tabbutton.text.inactive.shadow" shadowx="0" shadowy="1"/>
+
+	<grid id="bento.tabbutton.active"
+		fitparent="1" y="0" h="-1" relath="1" visible="0"
+		left="sui.button.active.normal.left"
+		middle="sui.button.active.normal.center"
+		right="sui.button.active.normal.right"
+	/>
+
+	<text id="bento.tabbutton.active.text" x="8" y="4" w="-17" relatw="1" h="15" bold="1" align="center" font="Tahoma" fontsize="14" antialias="0" visible="0" color="color.tabbutton.text.active" shadow="1" shadowcolor="color.tabbutton.text.active.shadow" shadowx="0" shadowy="1"/>
+
+	<grid id="bento.tabbutton.footer"
+		x="0" y="-1" h="1" w="0" relatw="1" relaty="1" visible="0"
+		left="sui.button.active.footer.left"
+		middle="sui.button.active.footer.center"
+		right="sui.button.active.footer.right"
+	/>
+
+	<button id="bento.tabbutton.mousetrap" fitparent="1" y="1" h="-1" relath="1" rectrgn="1" />
+
+	<script file="scripts/tabbutton.maki" />
+
+</groupdef>
+
+<groupdef id="sui.content" >
+
+	<grid fitparent="1"
+		topleft="sui.background.topleft"
+		top="sui.background.top"
+		topright="sui.background.topright"
+		left="sui.background.left"
+		middle="sui.background.center"
+		right="sui.background.right"
+		bottomleft="sui.background.bottomleft"
+		bottom="sui.background.bottom"
+		bottomright="sui.background.bottomright"
+	/>
+
+	<grid x="1" y="29" h="-30" w="-2" relath="1" relatw="1"
+		topleft="sui.component.topleft"
+		top="sui.component.top"
+		topright="sui.component.topright"
+		left="sui.component.left"
+		middle="sui.component.center"
+		right="sui.component.right"
+		bottomleft="sui.component.bottomleft"
+		bottom="sui.component.bottom"
+		bottomright="sui.component.bottomright"
+	/>
+
+	<Bento:TabButton
+		id="switch.ml"
+		x="4" h="23" w="112" y="7"
+		tabtext="Media Library"
+	/>
+
+	<Bento:TabButton
+		id="switch.pl"
+		x="117" h="23" w="62" y="7"
+		tabtext="Playlist"
+	/>
+
+	<Bento:TabButton
+		id="switch.video"
+		x="117" h="23" w="62" y="7"
+		tabtext="Video"
+	/>
+
+	<Bento:TabButton
+		id="switch.vis"
+		x="180" h="23" w="109" y="7"
+		tabtext="Visualization"
+	/>
+
+	<Bento:TabButton
+		id="switch.browser"
+		x="290" h="23" w="83" y="7"
+		tabtext="Browser"
+	/>
+
+	<script file="scripts/tabcontrol.maki" param="@HAVE_LIBRARY@"/>
+
+	<group id="sui.components" x="1" y="29" h="-32" w="-2" relatw="1" relath="1"/>
+
+</groupdef>

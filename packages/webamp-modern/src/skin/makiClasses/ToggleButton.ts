@@ -1,5 +1,4 @@
 import { V } from "../../maki/v";
-import UI_ROOT from "../../UIRoot";
 import Button from "./Button";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
@@ -14,6 +13,12 @@ export default class ToggleButton extends Button {
     return this._active ? 1 : 0;
   }
 
+  _cfgAttribChanged(newValue: string) {
+    //do something when configAttrib broadcast message `datachanged` by other object
+    this.setactivated(newValue != "0");
+    this.ontoggle(this._active);
+  }
+
   /**
    * This method is called by Button
    */
@@ -22,14 +27,16 @@ export default class ToggleButton extends Button {
     e.stopPropagation();
     // implementation of standard mouse down
     this.setactivated(!this._active);
+    this.updateCfgAttib(this._active ? "1" : "0");
+    this.ontoggle(this._active);
   }
 
   ontoggle(onoff: boolean) {
-    UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
+    this._uiRoot.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
   onactivate(activated: number) {
-    UI_ROOT.vm.dispatch(this, "onactivate", [
+    this._uiRoot.vm.dispatch(this, "onactivate", [
       { type: "INT", value: activated },
     ]);
   }
@@ -38,9 +45,4 @@ export default class ToggleButton extends Button {
     super.draw();
     this._div.setAttribute("data-obj-name", "ToggleButton");
   }
-
-  /*
-  extern ToggleButton.onToggle(Boolean onoff);
-  extern int TOggleButton.getCurCfgVal()
-  */
 }

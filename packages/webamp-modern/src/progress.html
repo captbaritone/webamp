@@ -22,31 +22,80 @@
       }
       .method {
         width: 20px;
-       height: 20px;
+       min-height: 20px;
        display: inline-block;
        overflow: hidden;
-       text-indent: -99999px;
+       /* text-indent: -99999px; */
        border: 1px solid grey;
        margin: 1px;
       }
+      tr:not(.expanded) .method span {
+        /* display: none; */
+        display: inline-block;
+        pointer-events: none;
+        /* visibility: hidden; */
+        float: left;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        font-size: 0px;
+      }
+      .method i {
+        color: #795548;
+        font-style: normal;
+      }
 
       .expanded .method {
-        width: auto;
-       height: 20px;
+       width: auto;
+       /* height: 20px; */
        display: block;
        overflow: hidden;
-       text-indent: 0;
+       /* text-indent: 0; */
        border: none;
        margin: 1px;
        padding-left: 3px;
       }
+      .expanded .method span {
+        display: inline-block;
+        padding-left: 55px;
+        text-indent: -27px;
+      }
       .class-name {
         white-space: nowrap;
         font-weight: bold;
-        display: block;
+        /* display: block; */
+        vertical-align: top;
         cursor: pointer;
         text-align: right;
         margin-right: 4px;
+      }
+      .implementation {
+        width:  15px;
+        height: 15px;
+        display: inline-block;
+        vertical-align: bottom;
+        border-radius: 50%;
+        margin-left: 5px;
+        border: 1px solid grey;
+      }
+      .dummy {
+        opacity: 0.3;
+        width: 1px;
+      }
+
+      .method::before{
+        content: 'M';
+        width: 10px;
+        margin-right: 1em;
+        padding: 0 3px;
+        opacity: 0;
+        position: absolute;
+      }
+      .fake::before{
+        content: 'F';
+        background: rgba(255,255,255,.7);
+        border-radius: 50%;
+        opacity: 1;
       }
     </style>
   </head>

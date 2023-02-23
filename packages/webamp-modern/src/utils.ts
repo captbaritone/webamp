@@ -22,7 +22,19 @@ export function getCaseInsensitiveFile(
   filePath: string
 ): JSZipObject | null {
   const normalized = filePath.replace(/[\/\\]/g, `[/\\\\]`);
-  return zip.file(new RegExp(normalized, "i"))[0] ?? null;
+  const files = zip.file(new RegExp(normalized, "i"));
+  if (files && files.length > 1) {
+    // console.log('asking',filePath,'got files:', files);
+    const requestName = filePath.split("/").pop().toLowerCase();
+    for (let i = 0; i < files.length; i++) {
+      const responseName = files[i].name.split("/").pop().toLowerCase();
+      if (responseName == requestName) {
+        return files[i];
+      }
+    }
+    return zip.file(new RegExp(`^${normalized}$`, "i"))[0] ?? null;
+  }
+  return files[0] ?? null;
 }
 
 export function num(str: string | void): number | null {
@@ -39,11 +51,15 @@ export function relative(size: number): string {
 }
 
 export function toBool(str: string) {
-  assert(
-    str === "0" || str === "1",
+  str = str.toLowerCase();
+  assume(
+    str === "0" || str === "1" || str === "false" || str === "true",
     `Expected bool value to be "0" or "1", but it was "${str}".`
   );
-  return str === "1";
+  if (!isNaN(parseInt(str))) {
+    return parseInt(str) > 0;
+  }
+  return str === "1" || str === "true";
 }
 
 let id = 0;
@@ -92,6 +108,19 @@ export function getUrlQuery(location: Location, variable: string): string {
   return new URL(location.href).searchParams.get(variable);
 }
 
+export function debounce<Params extends any[]>(
+  func: (...args: Params) => any,
+  timeout: number
+): (...args: Params) => void {
+  let timer: NodeJS.Timeout;
+  return (...args: Params) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, timeout);
+  };
+}
+
 export const throttle = (fn: Function, wait: number = 300) => {
   let inThrottle: boolean,
     lastFn: ReturnType<typeof setTimeout>,
@@ -100,9 +129,9 @@ export const throttle = (fn: Function, wait: number = 300) => {
     const context = this,
       args = arguments;
     if (!inThrottle) {
+      inThrottle = true;
       fn.apply(context, args);
       lastTime = Date.now();
-      inThrottle = true;
     } else {
       clearTimeout(lastFn);
       lastFn = setTimeout(() => {
@@ -114,6 +143,24 @@ export const throttle = (fn: Function, wait: number = 300) => {
     }
   };
 };
+
+export function unimplemented(value: any): any {
+  return value;
+}
+
+/**
+ * parse color string into byte values.
+ * @param hex only a valid html : '#XXXXXX'
+ * @returns an object with respected keys of: r,g,b.
+ */
+export function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+}
 
 /**
  * Purpuse: to hold eventListeners

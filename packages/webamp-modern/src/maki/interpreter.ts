@@ -3,6 +3,8 @@ import { assert, assume } from "../utils";
 import { ParsedMaki, Command, Method } from "./parser";
 import { getClass, getMethod } from "./objects";
 import GuiObj from "../skin/makiClasses/GuiObj";
+import BaseObject from "../skin/makiClasses/BaseObject";
+import { UIRoot } from "../UIRoot";
 // import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
@@ -35,21 +37,29 @@ export function interpret(
   start: number,
   program: ParsedMaki,
   stack: Variable[],
-  classResolver: (guid: string) => any
+  classResolver: (guid: string) => any,
+  eventName: string,
+  uiRoot: UIRoot
 ) {
   validateMaki(program);
-  const interpreter = new Interpreter(program, classResolver);
+  const interpreter = new Interpreter(
+    program,
+    classResolver,
+    eventName,
+    uiRoot
+  );
   interpreter.stack = stack;
   return interpreter.interpret(start);
 }
 
 function validateVariable(v: Variable) {
-  if (v.type === "OBJECT" && typeof v.value !== "object") {
+  if (v.type === "OBJECT" && typeof v.value !== "object" && v.value !== 0) {
     debugger;
   }
 }
 
 class Interpreter {
+  _uiRoot: UIRoot; // actually only new Klass(uiRoot)
   stack: Variable[];
   callStack: number[];
   classes: string[];
@@ -57,14 +67,25 @@ class Interpreter {
   methods: Method[];
   commands: Command[];
   debug: boolean = false;
+  maki_id: string;
+  eventName: string;
   classResolver: (guid: string) => any;
-  constructor(program: ParsedMaki, classResolver: (guid: string) => any) {
-    const { commands, methods, variables, classes } = program;
+
+  constructor(
+    program: ParsedMaki,
+    classResolver: (guid: string) => any,
+    eventName: string,
+    uiRoot: UIRoot
+  ) {
+    const { commands, methods, variables, classes, maki_id } = program;
     this.classResolver = classResolver;
     this.commands = commands;
     this.methods = methods;
     this.variables = variables;
     this.classes = classes;
+    this.maki_id = maki_id;
+    this.eventName = eventName;
+    this._uiRoot = uiRoot;
 
     this.stack = [];
     this.callStack = [];
@@ -108,9 +129,16 @@ class Interpreter {
           const a = this.stack.pop();
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
+          // assume( a != null, `Assigning from invalid object into: ${JSON.stringify(current)}. #${this.maki_id}`)
+          assume(
+            a != null,
+            `Assigning from invalid object into: ${current.value}. #${this.maki_id}. @${this.eventName} \n (see next error)`
+          );
           assume(
             typeof a.value === typeof current.value || current.value == null,
-            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}.`
+            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}. #${
+              this.maki_id
+            }`
           );
 
           current.value = a.value;
@@ -126,7 +154,14 @@ class Interpreter {
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
           */
-          const result = V.newInt(b.value === a.value);
+          // const result = V.newInt(b.value === a.value);
+          let result;
+          // if comparing string, maybe case-insensitive
+          if (a.type == "STRING" && b.type == "STRING") {
+            result = V.newInt(b.value.toLowerCase() == a.value.toLowerCase());
+          } else {
+            result = V.newInt(b.value === a.value);
+          }
           this.push(result);
           break;
         }
@@ -140,7 +175,14 @@ class Interpreter {
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
           */
-          const result = V.newInt(b.value !== a.value);
+          // const result = V.newInt(b.value !== a.value);
+          let result;
+          // if comparing string, maybe case-insensitive
+          if (a.type == "STRING" && b.type == "STRING") {
+            result = V.newInt(b.value.toLowerCase() != a.value.toLowerCase());
+          } else {
+            result = V.newInt(b.value !== a.value);
+          }
           this.push(result);
           break;
         }
@@ -148,19 +190,27 @@ class Interpreter {
         case 10: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
+          // it should work to compare both int & string
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.10a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.10b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} > ${a.value}`);
@@ -172,44 +222,61 @@ class Interpreter {
         case 11: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
+          // it should work to compare both int & string
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error(
+                  "Tried to add non-numbers.11a. " + this.maki_id
+                );
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.11b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} >= ${a.value}`);
           }
           this.push(V.newInt(b.value >= a.value));
           break;
-          break;
         }
         // <
         case 12: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
+          // it should work to compare both int & string
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.12a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.12b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
@@ -222,19 +289,27 @@ class Interpreter {
         case 13: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
-          }
-          switch (b.type) {
-            case "STRING":
-            case "OBJECT":
-            case "BOOLEAN":
-            case "NULL":
-              throw new Error("Tried to add non-numbers.");
+          // it should work to compare both int & string
+          if (
+            !(
+              a.type == b.type &&
+              ["INT", "FLOAT", "DOUBLE", "STRING"].includes(a.type)
+            )
+          ) {
+            switch (a.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.13a");
+            }
+            switch (b.type) {
+              case "STRING":
+              case "OBJECT":
+              case "BOOLEAN":
+              case "NULL":
+                throw new Error("Tried to add non-numbers.13b");
+            }
           }
           if (this.debug) {
             console.log(`${b.value} < ${a.value}`);
@@ -316,47 +391,61 @@ class Interpreter {
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
-            `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
+            `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object. #${this.maki_id}`
           );
 
           // let value = obj.value[methodName](...methodArgs);
-          let value;
+          let result = null;
           try {
-            value = obj.value[methodName](...methodArgs);
+            result = obj.value[methodName](...methodArgs);
+            // const afunction = obj.value[methodName];
+            // if(afunction.constructor.name === 'AsyncFunction'){
+            //   result = await afunction(...methodArgs);
+            // } else {
+            //   result = afunction(...methodArgs);
+            // }
           } catch (err) {
+            const args = JSON.stringify(methodArgs)
+              .replace("[", "")
+              .replace("]", "");
             console.warn(
-              `error call: ${klass.name}.${methodName}(...${JSON.stringify(
-                methodArgs
-              )})`,
+              `error call: ${klass.name}.${methodName}(${args})`,
               `err: ${err.message} obj:`,
               obj
             );
-            value = null;
+            result = null;
           }
 
-          if (value === undefined && returnType !== "NULL") {
+          if (result === undefined && returnType !== "NULL") {
             throw new Error(
               `Did not expect ${klass.name}.${methodName}: ${returnType} to return undefined`
             );
           }
-          if (value === null) {
+          if (result === null) {
             // variables[1] holds global NULL value
-            value = this.variables[1];
+            result = this.variables[1];
           }
           if (returnType === "BOOLEAN") {
-            assert(typeof value === "boolean", "BOOL should return a boolean");
-            value = value ? 1 : 0;
+            assert(
+              typeof result === "boolean",
+              `${
+                klass.name
+              }.${methodName} should return a boolean, but "${JSON.stringify(
+                result
+              )}"`
+            );
+            result = result ? 1 : 0;
           }
           if (returnType === "OBJECT") {
             assert(
-              typeof value === "object",
-              `Expected the returned value of ${klass.name}.${methodName} to be an object, but it was "${value}"`
+              typeof result === "object",
+              `Expected the returned value of ${klass.name}.${methodName} to be an object, but it was "${result}"`
             );
           }
           if (this.debug) {
             console.log(`Calling method ${methodName}`);
           }
-          this.push({ type: returnType, value } as any);
+          this.push({ type: returnType, value: result } as any);
           break;
         }
         // callGlobal
@@ -389,7 +478,23 @@ class Interpreter {
             `Type mismatch: ${a.type} != ${b.type} at ip: ${ip}`
           );
           */
-          b.value = a.value;
+          if (a.type == "OBJECT" && b.type == "OBJECT") {
+            // TODO: do attach bindings here now, since we got the variable type=object
+            // const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
+            // console.log(objId, '=','dest:',b, 'src:',a)
+          }
+          if (b == null) {
+            // TypeError: Cannot set properties of undefined (setting 'value'):
+            const objId =
+              a.value instanceof BaseObject ? a.value.getId() : "!noid";
+            console.log(objId, ":=", "dest:", b, "src:", a);
+            //b={value:null}
+            console.warn("Hey, can't move: b.value=a.value with b==nul;a=", a);
+          }
+          if (b != null) {
+            //temporary, to see what next problem ?
+            b.value = a.value;
+          }
           this.push(a);
           break;
         }
@@ -455,12 +560,16 @@ class Interpreter {
         case 64: {
           const a = this.stack.pop();
           const b = this.stack.pop();
+          let a_value = a.value;
+          let b_value = b.value;
           switch (a.type) {
-            case "OBJECT":
             case "BOOLEAN":
+              a_value = a_value == 0 ? 0 : 1;
+              break;
+            case "OBJECT":
             case "NULL":
               throw new Error(
-                `Tried to add non-numbers: ${b.type} + ${a.type}.`
+                `Tried to add non-numbers: ${b.type} + ${a.type}.64a`
               );
             case "STRING":
               if (b.type !== "STRING") {
@@ -471,11 +580,20 @@ class Interpreter {
           }
           switch (b.type) {
             case "OBJECT":
+              throw new Error(
+                "Tried to add non-numbers.64b." +
+                  `A:${a.type}=${a.value}` +
+                  `B:${b.type}=${b.value}`
+              );
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              // BigBento:
+              // reset += (w == 0);
+              // reset += (w < min_w);
+              b_value = b_value == 0 ? 0 : 1;
           }
           // TODO: Do we need to round the value if INT?
-          this.push({ type: a.type, value: b.value + a.value });
+          // this.push({ type: a.type, value: b.value + a.value });
+          this.push({ type: a.type, value: b_value + a_value });
           break;
         }
         // - (subtract)
@@ -487,14 +605,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.65a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.65b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value - a.value });
@@ -509,14 +627,14 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.66a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.66b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value * a.value });
@@ -531,13 +649,13 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.67a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.67b");
           }
           // TODO: Do we need to round the value if INT?
           this.push({ type: a.type, value: b.value / a.value });
@@ -552,13 +670,13 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.68a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "BOOLEAN":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.68b");
             // Need to coerce LHS if not int, RHS is always int (enforced by compiler)
             case "FLOAT":
             case "DOUBLE":
@@ -595,7 +713,7 @@ class Interpreter {
             case "OBJECT":
             case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.76a");
           }
           this.push({ type: a.type, value: -a.value });
           break;
@@ -609,13 +727,13 @@ class Interpreter {
             case "STRING":
             case "OBJECT":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.80a");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.80b");
           }
           if (b.value && a.value) {
             this.push(a);
@@ -632,16 +750,16 @@ class Interpreter {
           switch (a.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
+            // case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.81a :" + a.type);
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
+            // case "BOOLEAN":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error("Tried to add non-numbers.81b");
           }
           if (b.value) {
             this.push(b);
@@ -665,7 +783,7 @@ class Interpreter {
           const classesOffset = command.arg;
           const guid = this.classes[classesOffset];
           const Klass = this.classResolver(guid);
-          const klassInst = new Klass();
+          const klassInst = new Klass(this._uiRoot);
           this.push({ type: "OBJECT", value: klassInst });
           break;
         }

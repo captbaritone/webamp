@@ -1,29 +1,32 @@
 {
   "593DBA22D0774976B952F4713655400B": {
     "parent": "Object",
+    "name": "Config",
+    "deprecated": false,
     "functions": [
       {
-        "result": "ConfigItem",
         "name": "getItem",
         "parameters": [
           [
             "String",
             "item_name"
           ]
-        ]
+        ],
+        "result": "ConfigItem",
+        "deprecated": false
       },
       {
-        "result": "ConfigItem",
         "name": "getItemByGuid",
         "parameters": [
           [
             "String",
             "item_guid"
           ]
-        ]
+        ],
+        "result": "ConfigItem",
+        "deprecated": false
       },
       {
-        "result": "ConfigItem",
         "name": "newItem",
         "parameters": [
           [
@@ -34,26 +37,29 @@
             "String",
             "item_guid"
           ]
-        ]
+        ],
+        "result": "ConfigItem",
+        "deprecated": false
       }
-    ],
-    "name": "Config"
+    ]
   },
   "D40302823AAB4d87878D12326FADFCD5": {
     "parent": "Object",
+    "name": "ConfigItem",
+    "deprecated": false,
     "functions": [
       {
-        "result": "ConfigAttribute",
         "name": "getAttribute",
         "parameters": [
           [
             "String",
             "attr_name"
           ]
-        ]
+        ],
+        "result": "ConfigAttribute",
+        "deprecated": false
       },
       {
-        "result": "ConfigAttribute",
         "name": "newAttribute",
         "parameters": [
           [
@@ -64,60 +70,69 @@
             "String",
             "default_value"
           ]
-        ]
+        ],
+        "result": "ConfigAttribute",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getGuid",
         "parameters": [
           [
             "String",
             "attr_name"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getName",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       }
-    ],
-    "name": "ConfigItem"
+    ]
   },
   "24DEC283B76E4a368CCC9E24C46B6C73": {
     "parent": "Object",
+    "name": "ConfigAttribute",
+    "deprecated": false,
     "functions": [
       {
-        "result": "",
         "name": "setData",
         "parameters": [
           [
             "String",
             "value"
           ]
-        ]
-      },
-      {
-        "result": "String",
-        "name": "getData",
-        "parameters": []
-      },
-      {
+        ],
         "result": "",
-        "name": "onDataChanged",
-        "parameters": []
+        "deprecated": false
       },
       {
-        "result": "ConfigItem",
-        "name": "getParentItem",
-        "parameters": []
-      },
-      {
+        "name": "getData",
+        "parameters": [],
         "result": "String",
+        "deprecated": false
+      },
+      {
+        "name": "onDataChanged",
+        "parameters": [],
+        "result": "",
+        "deprecated": false
+      },
+      {
+        "name": "getParentItem",
+        "parameters": [],
+        "result": "ConfigItem",
+        "deprecated": false
+      },
+      {
         "name": "getAttributeName",
-        "parameters": []
+        "parameters": [],
+        "result": "String",
+        "deprecated": false
       }
-    ],
-    "name": "ConfigAttribute"
+    ]
   }
 }

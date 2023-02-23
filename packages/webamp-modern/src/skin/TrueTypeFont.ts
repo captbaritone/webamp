@@ -55,6 +55,7 @@ export default class TrueTypeFont {
 
   // Ensure we've loaded the font into our asset loader.
   async ensureFontLoaded(imageManager: ImageManager) {
+    if (!this._file) return;
     Utils.assert(
       this._fontFace == null,
       "Tried to ensure a TrueTypeFont was laoded more than once."

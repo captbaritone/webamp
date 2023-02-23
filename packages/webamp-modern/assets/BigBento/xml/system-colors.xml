@@ -1,0 +1,87 @@
+<elements>
+
+	<!-- General Color Definitions -->
+
+	<color id="color.display" value="147,175,185" gammagroup="DisplayText"/>
+	<color id="color.display.bg" value="8,9,10" gammagroup="PlayerDisplay"/>
+	<color id="color.window.bg" value="51,55,56" gammagroup="WindowBackground"/>
+	<color id="color.window.txt" value="210,210,210" gammagroup="WindowText"/>
+	<color id="color.selected.active" value="200,200,200" gammagroup="Selection"/>
+	<color id="color.selected.active.bg" value="49,53,64" gammagroup="SelectionBg"/>
+	<color id="color.selected.inactive.bg" value="42,46,57" gammagroup="SelectionBg Inactive"/>
+
+	<color id="color.tabbutton.text.inactive" value="196,196,196" gammagroup="CompButtonInactiveText"/>
+	<color id="color.tabbutton.text.active" value="220,220,220" gammagroup="CompButtonActiveText"/>
+	<color id="color.tabbutton.text.inactive.hover" value="215,215,215" gammagroup="CompButtonInactiveText"/>
+	<color id="color.tabbutton.text.inactive.shadow" value="16,16,16" gammagroup="CompButtonInactive"/>
+	<color id="color.tabbutton.text.active.shadow" value="13,13,13" gammagroup="CompButtonActive"/>
+
+	<!-- Specific Color Definitions -->
+
+	<color id="wasabi.text.color" value="color.window.txt" gammagroup="WindowText"/>
+	<color id="wasabi.titlebar.color" value="216,217,219" gammagroup="TitlebarText"/>
+
+	<color id="white" value="255,255,255" gammagroup="DisplayText"/>
+	<color id="white" value="color.window.txt" gammagroup="WindowText"/>
+
+	<!-- Generic Trees -->
+	<color id="wasabi.tree.text" value="color.display" gammagroup="DisplayText"/> <!-- Item text color -->
+	<color id="wasabi.tree.selected" value="color.selected.active" gammagroup="Selection"/> <!-- Select item text background color -->
+	<color id="wasabi.tree.hiliteddrop" value="color.selected.active" gammagroup="Selection"/> <!-- Drop marker color -->
+
+	<!-- Generic Lists -->
+	<color id="wasabi.list.text" value="color.display" gammagroup="DisplayText"/> <!--lists/trees item foreground (also edit text) -->
+	<color id="wasabi.list.background" value="color.display.bg" gammagroup="PlayerDisplay"/>	<!--lists/trees item background (also bg for edit) -->
+	<color id="wasabi.list.text.alternate" value="147,175,185" gammagroup="DisplayText"/> 
+	<color id="wasabi.list.background.alternate" value="13,14,15" gammagroup="PlayerDisplay"/>	
+
+	<color id="wasabi.list.text.selected" value="color.selected.active" gammagroup="Selection"/> <!--listview/treeview selection bar text color -->
+	<color id="wasabi.list.text.selected.background" value="color.selected.active.bg" gammagroup="SelectionBg"/> <!--listview/treeview selection bar backcolor -->
+	<color id="studio.list.item.selected" value="color.selected.active" gammagroup="Selection"/>
+	<color id="studio.list.item.focused" value="color.selected.active.bg" gammagroup="SelectionBg"/>
+
+
+	<color id="wasabi.list.text.current" value="color.selected.active" gammagroup="Selection"/> <!-- currently playing item in lists -->
+	<color id="wasabi.list.text.selected.inactive" value="color.window.txt" gammagroup="WindowText"/> <!-- listview/treeview selection bar textcolor (inactive) -->
+	<color id="wasabi.list.text.selected.background.inactive" value="color.selected.inactive.bg" gammagroup="SelectionBg Inactive"/> <!-- listview/treeview selectionbar back color (inactive) -->
+
+	<color id="wasabi.list.column.background" value="73,76,77" gammagroup="Column"/> <!-- listview header background color -->
+	<color id="wasabi.list.column.text" value="color.window.txt" gammagroup="Column Text"/> <!-- listview header text color -->
+	<color id="wasabi.list.column.frame.top" value="100,103,104" gammagroup="Column"/> <!-- listview header frame top color -->
+	<color id="wasabi.list.column.frame.middle" value="57,61,62" gammagroup="Column"/> <!-- listview header frame middle color -->
+	<color id="wasabi.list.column.frame.bottom" value="31,34,35" gammagroup="Column"/> <!-- listview header frame bottom color -->
+	<color id="wasabi.list.column.empty" value="color.window.bg" gammagroup="ComponentFrame"/> <!-- listview header empty color (beyond the columns -->
+
+	<!-- edit wnds -->
+	<color id="wasabi.window.background" value="color.window.bg" gammagroup="ComponentFrame"/> <!--window background. -	If this color is not defined, a whole container is created in memory to extract a pixel, so specifying it makes skin loading faster -->
+	<color id="wasabi.window.text" value="color.window.txt" gammagroup="WindowText"/> <!--text color within windows -->
+	<color id="wasabi.border.sunken" value="color.display.bg" gammagroup="Frame_Borders"/> <!-- color of dividers and sunken borders -->
+
+	<color id="wasabi.scrollbar.foreground" value="20,21,22" gammagroup="ScrollBarTrack"/> <!-- scrollbar foreground color -->
+	<color id="wasabi.scrollbar.background" value="20,21,22" gammagroup="ScrollBarTrack"/> <!-- scrollbar background color -->
+	<color id="wasabi.scrollbar.foreground.inverted" value="20,21,22" gammagroup="ScrollBarTrack"/> <!-- inverse scrollbar foreground color -->
+	<color id="wasabi.scrollbar.background.inverted" value="20,21,22" gammagroup="ScrollBarTrack"/> <!-- inverse scrollbar background color -->
+
+	<color id="wasabi.button.text" value="30,30,30" gammagroup="PlayerButton"/> <!-- Buttons text color -->
+	<color id="wasabi.button.hiliteText" value="color.display" gammagroup="DisplayText"/> <!-- Buttons hilite text color, used by tab windows-->
+	<color id="wasabi.button.dimmedText" value="149,156,169" gammagroup="PlayerButton"/> <!-- Buttons dimmed text color, when disabled -->
+
+	<bitmap id="wasabi.tree.background" file="window/framewnd-windowshade.png" h="64" w="64" color="8,9,10" gammagroup="PlayerDisplay"/><!-- Tree background bitmap (tile) -->
+	<bitmap id="wasabi.list.background" file="window/framewnd-windowshade.png" h="64" w="64" color="8,9,10" gammagroup="PlayerDisplay"/><!-- Tree background bitmap (tile) -->
+
+	<!-- Winamp 5.53+ MediaLibrary PopupMenu -->
+
+	<color id="wasabi.popupmenu.frame" value="100,103,104" gammagroup="WindowBackground"/>
+	<color id="wasabi.popupmenu.separator" value="36,37,38" gammagroup="WindowBackground"/>
+	<color id="wasabi.popupmenu.background.selected" value="100,103,104" gammagroup="WindowBackground"/>
+	<!-- pre 5.55:
+	<color id="wasabi.popupmenu.background" value="color.display.bg" gammagroup="PlayerDisplay"/>
+	<color id="wasabi.popupmenu.background.selected" value="color.selected.active.bg" gammagroup="SelectionBg"/>
+	<color id="wasabi.popupmenu.text" value="color.display" gammagroup="DisplayText"/>
+	<color id="wasabi.popupmenu.text.selected" value="color.selected.active" gammagroup="Selection"/>
+	<color id="wasabi.popupmenu.text.inactive" value="20,21,22" gammagroup="ScrollBarTrack"/>
+	<color id="wasabi.popupmenu.frame" value="20,21,22" gammagroup="ScrollBarTrack"/>
+	<color id="wasabi.popupmenu.separator" value="20,21,22" gammagroup="ScrollBarTrack"/>
+	-->
+
+</elements>

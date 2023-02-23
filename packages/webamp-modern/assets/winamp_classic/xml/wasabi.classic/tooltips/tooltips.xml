@@ -1,0 +1,14 @@
+<groupdef id="wasabi.tooltip.group" h="17" noactivation="1">
+
+	<rect id="tooltip.grid" x="0" y="0" w="0" h="17" sysregion="1" relatw="1" filled="1" color="x48"/>
+
+	<rect id="tooltip.grid.frame" x="1" y="1" w="-2" h="15" sysregion="1" relatw="1" filled="1" color="x52"/>
+
+	<text id="tooltip.text"
+    x="1" y="1" w="0" h="67"
+    relatw="1" relath="0" align="left" valign="top" default="Tooltip Sample" 
+    font="tahoma" antialias="1" fontsize="14" color="x56"/>
+	
+	<script id="tip" file="xml\wasabi.classic\tooltips\tooltips.maki"/>
+
+</groupdef>

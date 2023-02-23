@@ -2,6 +2,8 @@ import stdPatched from "./objectData/stdPatched";
 import pldir from "./objectData/pldir.json";
 import config from "./objectData/config.json";
 import winampconfig from "./objectData/winampconfig.json";
+import application from "./objectData/application.json";
+import fileio from "./objectData/fileio.json";
 import { DataType } from "./v";
 import { assert } from "../utils";
 
@@ -9,6 +11,7 @@ type MethodDefinition = {
   name: string;
   result: string;
   parameters: string[][];
+  deprecated?: boolean;
 };
 
 type ObjectDefinition = {
@@ -16,6 +19,7 @@ type ObjectDefinition = {
   name: string;
   functions: MethodDefinition[];
   parentClass?: ObjectDefinition;
+  deprecated?: boolean;
 };
 
 const objects: { [key: string]: ObjectDefinition } = {
@@ -23,6 +27,8 @@ const objects: { [key: string]: ObjectDefinition } = {
   ...pldir,
   ...config,
   ...winampconfig,
+  ...application,
+  ...fileio,
 };
 
 export function getClass(id: string): ObjectDefinition {
@@ -38,6 +44,7 @@ export function getReturnType(classId: string, methodName: string): DataType {
     case "STRING":
     case "FLOAT":
     case "BOOLEAN":
+    case "ANY":
       return upper as any;
     case "":
       return "NULL" as any;

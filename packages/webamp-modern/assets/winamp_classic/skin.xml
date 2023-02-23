@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<WinampAbstractionLayer version="1.35">
+	<skininfo>
+		<version>-</version>
+		<name>-</name>
+		<comment>-</comment>
+		<author>-</author>
+		<email>-</email>
+		<screenshot>screenshot.png</screenshot>
+	</skininfo>
+
+	<!-- wasabi replacement stuff, loads first -->
+    <!-- <include file="xml/wasabi.classic/xui/slider/slider.xml"/> -->
+	<!-- 
+	<include file="xml/wasabi.classic/xui/standardframe/standardframe.xml"/>
+	<include file="xml/wasabi.classic/xui/titlebar/titlebar.xml"/>
+	<include file="xml/wasabi.classic/system-elements.xml"/>
+	<include file="xml/wasabi.classic/groups/objectframe.xml"/>
+	<include file="xml/wasabi.classic/titlebox/titlebox.xml"/>
+	<include file="xml/wasabi.classic/statusbar/statusbar.xml"/>
+	<include file="xml/wasabi.classic/tooltips/tooltips.xml"/> -->
+
+	<!-- the usual suspects -->
+	<!-- <include file="xml/main.xml"/>
+	<include file="xml/pledit.xml"/>
+	<include file="xml/video.xml"/> -->
+	<include file="xml/player.xml"/>
+  <!-- <include file="xml/eq-elements.xml"/> -->
+	<!-- <include file="xml/eq.xml"/> -->
+	<!-- <include file="xml/eqmain.xml"/> -->
+
+	<!-- needs to exist for testing -->
+	<!-- <include file="xml/themes.xml"/> -->
+
+	<!-- needs to exist here to hook into the main window and equalizer -->
+	<!-- <script file="scripts/actioninfo.maki"/> -->
+
+</WinampAbstractionLayer>

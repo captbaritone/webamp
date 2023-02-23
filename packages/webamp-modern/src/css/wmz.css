@@ -1,0 +1,120 @@
+.passthrough, .passthrough *{
+  pointer-events: none !important;
+}
+subview,
+buttongroup,
+buttonelement {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  background-color: var(--background-color);
+}
+buttongroup {
+  background: none;
+}
+buttongroup > buttonelement {
+  width: inherit !important;
+  height: inherit !important;
+  background-position: top left;
+  cursor: pointer;
+}
+buttongroup.webamp--img:active,
+buttongroup.webamp--img:hover:active,
+buttongroup.webamp--img:hover {
+  background-image: var(--background-image);
+}
+subview.webamp--img::before,
+buttongroup.has-image::before{
+  content: '';
+  position: absolute;
+  background-image: var(--background-image);
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  z-index: 0;
+}
+buttongroup > buttonelement.down {
+  background-image: var(--down-background-image, var(--background-image));
+}
+buttongroup > buttonelement:hover {
+  background-image: var(--hover-background-image, var(--background-image));
+}
+buttongroup > buttonelement.down:hover {
+  background-image: var(
+    --hover-down-background-image,
+    var(--hover-background-image, var(--background-image))
+  );
+}
+buttongroup > buttonelement:active,
+buttongroup > buttonelement:hover:active {
+  background-image: var(--down-background-image, var(--background-image));
+}
+button.disabled,
+buttongroup > buttonelement.disabled {
+  pointer-events: none !important;
+  background-image: var(
+    --disabled-background-image,
+    var(--background-image)
+  ) !important;
+}
+
+text.textz wrap {
+  width: auto;
+}
+
+subview > * {
+  background-color: var(--background-color);
+} 
+
+/** SLIDER **/
+slider.background-stretched::before {
+  content: "";
+  box-sizing: border-box;
+  border: 7px solid transparent;
+  border-top-width: var(--border-height-px);
+  border-bottom-width: var(--border-height-px);
+  border-left-width: var(--border-width-px);
+  border-right-width: var(--border-width-px);
+  border-image-source: var(--background-image);
+  border-image-slice: var(--border-height) var(--border-width) fill;
+  position: absolute;
+  inset: 0;
+}
+
+#web-amp container#main > #normal { clip-path: url(#region-for-normal); }
+#web-amp container#main > #shade  { clip-path: url(#region-for-windowshade); }
+/* #web-amp container#main > #normal { clip-path: url(#region-for-equalizer); } */
+/* #web-amp container#main > #normal { clip-path: url(#region-for-equalizerws); } */
+
+
+/* WA2 PSEUDO OF MINUS SIGN */
+text span.bignum.minus{
+  background-position-x: 15px;
+  position: relative;
+  /* box-shadow: inset 0 0 1px yellow; */
+}
+text span.bignum.minus::before,
+text span.bignum.minus::after{
+  content: '';
+  position: absolute;
+  background: inherit;
+  background-position: inherit;
+  left: 1px;
+  top:5px;
+  width: 4px;
+  height: 3px;
+  /* border:1px solid fuchsia; */
+  background-position-x: -63px;
+  background-position-y: -13px;
+}
+text span.bignum.minus::after{
+  background-position-x: -49px;
+  background-position-y: -13px;
+  left:5px;
+  /* border:1px solid lime; */
+}

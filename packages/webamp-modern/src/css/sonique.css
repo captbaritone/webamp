@@ -1,0 +1,31 @@
+.text-shaped {
+  color: silver;
+  font-size: 9px;
+  text-align: center;
+  color: aqua;
+  font-weight: bold;
+}
+.text-shaped::before {
+  content: "";
+  width: 50%;
+  height: 100%;
+  float: left;
+  shape-outside: var(--bottom-arc1);
+  shape-margin: 3px;
+}
+.text-shaped.right {
+  position: initial;
+}
+.text-shaped.right::before {
+  float: right;
+  shape-outside: var(--bottom-arc2);
+}
+
+button.circle::before {
+  /* background-color: aqua; */
+  /* border-radius: 50%; */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--icon-background-image);
+}

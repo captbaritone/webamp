@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import {
   assert,
   num,
@@ -7,12 +7,15 @@ import {
   assume,
   relative,
   findLast,
+  unimplemented,
 } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
 import Layout from "./Layout";
 import Region from "./Region";
+import ConfigAttribute from "./ConfigAttribute";
+import { XmlElement } from "@rgrove/parse-xml";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -20,12 +23,14 @@ let BRING_MOST_TOP: number = 1;
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {
   static GUID = "4ee3e1994becc636bc78cd97b028869c";
+  _uiRoot: UIRoot;
   _parent: Group;
   _children: GuiObj[] = [];
-  _id: string;
+  // _id: string; moved to BaseObject
+  _originalId: string; // non lowercase'd
   _name: string;
-  _width: number = 0;
-  _height: number = 0;
+  _w: number = 0;
+  _h: number = 0;
   _x: number = 0;
   _y: number = 0;
   _minimumHeight: number = 0;
@@ -34,8 +39,8 @@ export default class GuiObj extends XmlObj {
   _maximumWidth: number = 0;
   _relatx: string;
   _relaty: string;
-  _relatw: string;
-  _relath: string;
+  _relatw: string = "0";
+  _relath: string = "0";
   _autowidthsource: string;
   _droptarget: string;
   _visible: boolean = true;
@@ -52,11 +57,13 @@ export default class GuiObj extends XmlObj {
   _goingToTarget: boolean = false;
   _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
+  _configAttrib: ConfigAttribute;
 
   _metaCommands: XmlElement[] = [];
 
-  constructor() {
+  constructor(uiRoot: UIRoot) {
     super();
+    this._uiRoot = uiRoot;
 
     this._div = document.createElement(
       this.getElTag().toLowerCase().replace("_", "")
@@ -75,6 +82,7 @@ export default class GuiObj extends XmlObj {
     const key = _key.toLowerCase();
     switch (key) {
       case "id":
+        this._originalId = value;
         this._id = value.toLowerCase();
         break;
       case "name":
@@ -84,14 +92,20 @@ export default class GuiObj extends XmlObj {
       case "autowidthsource":
         this._autowidthsource = value.toLowerCase();
         break;
+      case "fitparent":
+        this._relatw = "1";
+        this._relath = "1";
+        this._renderWidth();
+        this._renderHeight();
+        break;
       case "w":
       case "default_w":
-        this._width = num(value);
+        this._w = num(value);
         this._renderWidth();
         break;
       case "h":
       case "default_h":
-        this._height = num(value);
+        this._h = num(value);
         this._renderHeight();
         break;
       case "x":
@@ -118,15 +132,19 @@ export default class GuiObj extends XmlObj {
         break;
       case "relatw":
         this._relatw = value;
+        this._renderWidth();
         break;
       case "relath":
         this._relath = value;
+        this._renderHeight();
         break;
       case "relatx":
         this._relatx = value;
+        this._renderX();
         break;
       case "relaty":
         this._relaty = value;
+        this._renderY();
         break;
       case "droptarget":
         this._droptarget = value;
@@ -158,6 +176,9 @@ export default class GuiObj extends XmlObj {
       case "sysregion":
         this._sysregion = num(value);
         break;
+      case "cfgattrib":
+        this._setConfigAttrib(value);
+        break;
       default:
         return false;
     }
@@ -166,6 +187,36 @@ export default class GuiObj extends XmlObj {
 
   setxmlparam(key: string, value: string) {
     this.setXmlAttr(key, value);
+  }
+
+  _setConfigAttrib(cfgattrib: string) {
+    const [guid, attrib] = cfgattrib.split(";");
+    const configItem = this._uiRoot.CONFIG.getitem(guid);
+    //TODO: check if old exist: dispose.
+    this._configAttrib = configItem.getattribute(attrib);
+    //TODO: dispose it
+    this._configAttrib.on("datachanged", this.__cfgAttribChanged.bind(this));
+  }
+
+  /**
+   * a callback that will be triggered when cfgattrib just being changed.
+   * Inteded for disposable of .on() & .off()
+   */
+  __cfgAttribChanged = () => {
+    // this function is called when other object make change to cfgattrib
+    const newValue = this._configAttrib.getdata();
+    this._cfgAttribChanged(newValue);
+  };
+
+  _cfgAttribChanged(newValue: string) {
+    // inheritor shall
+    // do something when configAttrib broadcast message `datachanged` by other object
+  }
+
+  updateCfgAttib(newValue: string) {
+    if (this._configAttrib != null) {
+      this._configAttrib.setdata(newValue);
+    }
   }
 
   setSize(newWidth: number, newHeight: number) {}
@@ -199,14 +250,20 @@ export default class GuiObj extends XmlObj {
       }
     }
 
+    if (this._configAttrib) {
+      this._cfgAttribChanged(this._configAttrib.getdata());
+    }
+
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
+      console.log("mouse-down!");
       this.onLeftButtonDown(
         e.offsetX + this.getleft(),
         e.offsetY + this.gettop()
       );
 
       const mouseUpHandler = (e: MouseEvent) => {
+        console.log("mouse-up!");
         this.onLeftButtonUp(
           e.offsetX + this.getleft(),
           e.offsetY + this.gettop()
@@ -224,12 +281,17 @@ export default class GuiObj extends XmlObj {
     });
   }
 
+  dispose() {}
+
   getDiv(): HTMLElement {
     return this._div;
   }
 
   getId(): string {
     return this._id || "";
+  }
+  getOriginalId(): string {
+    return this._originalId;
   }
 
   /**
@@ -238,6 +300,7 @@ export default class GuiObj extends XmlObj {
   show() {
     this._visible = true;
     this._renderVisibility();
+    this.onsetvisible(true);
   }
 
   /**
@@ -246,9 +309,22 @@ export default class GuiObj extends XmlObj {
   hide() {
     this._visible = false;
     this._renderVisibility();
+    this.onsetvisible(true);
   }
   isvisible(): boolean {
     return this._visible;
+  }
+
+  /** getter setter */
+  get visible(): boolean {
+    return this._visible;
+  }
+  set visible(showing: boolean) {
+    if (showing) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   /**
@@ -277,12 +353,19 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight(): number {
-    if (this._height || this._minimumHeight || this._maximumHeight) {
-      let h = Math.max(this._height || 0, this._minimumHeight);
+    if (this._h || this._minimumHeight || this._maximumHeight) {
+      let h = Math.max(this._h || 0, this._minimumHeight);
       h = Math.min(h, this._maximumHeight || h);
       return h;
     }
-    return this._height;
+    return this._h;
+  }
+  get height(): number {
+    return this.getheight();
+  }
+  set height(value: number) {
+    this._h = value;
+    this._renderDimensions();
   }
 
   /**
@@ -291,14 +374,21 @@ export default class GuiObj extends XmlObj {
    * @ret The width of the object.
    */
   getwidth(): number {
-    if (this._width || this._minimumWidth || this._maximumWidth) {
-      let w = Math.max(this._width || 0, this._minimumWidth);
+    if (this._w || this._minimumWidth || this._maximumWidth) {
+      let w = Math.max(this._w || 0, this._minimumWidth);
       if (this._maximumHeight) {
         w = Math.min(w, this._maximumWidth || w);
       }
       return w;
     }
-    return this._width;
+    return this._w;
+  }
+  get width(): number {
+    return this.getwidth();
+  }
+  set width(value: number) {
+    this._w = value;
+    this._renderDimensions();
   }
 
   /**
@@ -312,20 +402,21 @@ export default class GuiObj extends XmlObj {
   resize(x: number, y: number, w: number, h: number) {
     this._x = x;
     this._y = y;
-    this._width = w;
-    this._height = h;
+    this._w = w;
+    this._h = h;
     this._renderDimensions();
   }
 
   getxmlparam(param: string): string {
+    param = param.toLowerCase();
     const _ = this["_" + param];
     return _ != null ? _.toString() : null;
   }
   getguiw(): number {
-    return this._width;
+    return this._w;
   }
   getguih(): number {
-    return this._height;
+    return this._h;
   }
   getguix(): number {
     return this._x;
@@ -383,7 +474,9 @@ export default class GuiObj extends XmlObj {
   /* internal findObject with custom error msg */
   findobjectF(id: string, msg: string): GuiObj {
     const ret = this._findobject(id);
-    if (!ret && id != "sysmenu") {
+    // temporary stop complaining missing obj, reduce polution of Devtool's Cnsole
+    const warnMissingObject = false;
+    if (warnMissingObject && !ret && id != "sysmenu") {
       console.warn(msg);
     }
     return ret;
@@ -416,6 +509,17 @@ export default class GuiObj extends XmlObj {
     //TODO:
   }
 
+  ismouseoverrect(): boolean {
+    return unimplemented(true); //TODO:
+  }
+  onresize(x: number, y: number, w: number, h: number) {
+    this._uiRoot.vm.dispatch(this, "onresize", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+      { type: "INT", value: this.getwidth() },
+      { type: "INT", value: this.getheight() },
+    ]);
+  }
   /**
    * Hookable. Event happens when the left mouse
    * button was previously down and is now up.
@@ -424,7 +528,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onLeftButtonUp(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -447,7 +551,7 @@ export default class GuiObj extends XmlObj {
       "Expected click to be below the component's top"
     );
     this.getparentlayout().bringtofront();
-    UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
+    this._uiRoot.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -461,7 +565,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonUp(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onrightbuttonup", [
+    this._uiRoot.vm.dispatch(this, "onrightbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -475,7 +579,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonDown(x: number, y: number) {
-    UI_ROOT.vm.dispatch(this, "onrightbuttondown", [
+    this._uiRoot.vm.dispatch(this, "onrightbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -486,7 +590,7 @@ export default class GuiObj extends XmlObj {
    * enters the objects area.
    */
   onEnterArea() {
-    UI_ROOT.vm.dispatch(this, "onenterarea");
+    this._uiRoot.vm.dispatch(this, "onenterarea");
   }
 
   /**
@@ -494,7 +598,7 @@ export default class GuiObj extends XmlObj {
    * leaves the objects area.
    */
   onLeaveArea() {
-    UI_ROOT.vm.dispatch(this, "onleavearea");
+    this._uiRoot.vm.dispatch(this, "onleavearea");
   }
 
   /**
@@ -567,8 +671,8 @@ export default class GuiObj extends XmlObj {
     const pairs = [
       ["_x", "_targetX", "_renderX"],
       ["_y", "_targetY", "_renderY"],
-      ["_width", "_targetWidth", "_renderWidth"],
-      ["_height", "_targetHeight", "_renderHeight"],
+      ["_w", "_targetWidth", "_renderWidth"],
+      ["_h", "_targetHeight", "_renderHeight"],
       ["_alpha", "_targetAlpha", "_renderAlpha"],
     ];
 
@@ -610,12 +714,12 @@ export default class GuiObj extends XmlObj {
         this[key] = clamp(start + delta * progress, target, positive);
         this[renderKey]();
       }
-      if (timeDiff < duration) {
+      if (timeDiff < duration && this._goingToTarget) {
         window.requestAnimationFrame(update);
       } else {
         this._goingToTarget = false;
         // TODO: Clear targets?
-        UI_ROOT.vm.dispatch(this, "ontargetreached");
+        this.ontargetreached();
       }
     };
 
@@ -638,15 +742,15 @@ export default class GuiObj extends XmlObj {
     const start = {
       left: px(this._x ?? 0),
       top: px(this._y ?? 0),
-      width: px(this._width),
-      height: px(this._height),
+      width: px(this._w),
+      height: px(this._h),
       opacity: this._alpha / 255,
     };
     const end = {
       left: px(this._targetX ?? this._x ?? 0),
       top: px(this._targetY ?? this._y ?? 0),
-      width: px(this._targetWidth ?? this._width),
-      height: px(this._targetHeight ?? this._height),
+      width: px(this._targetWidth ?? this._w),
+      height: px(this._targetHeight ?? this._h),
       opacity: (this._targetAlpha ?? this._alpha) / 255,
     };
 
@@ -656,12 +760,12 @@ export default class GuiObj extends XmlObj {
     animation.addEventListener("finish", () => {
       this._x = this._targetX ?? this._x;
       this._y = this._targetY ?? this._y;
-      this._width = this._targetWidth ?? this._width;
-      this._height = this._targetHeight ?? this._height;
+      this._w = this._targetWidth ?? this._w;
+      this._h = this._targetHeight ?? this._h;
       this._alpha = this._targetAlpha ?? this._alpha;
       this._renderDimensions();
       this._renderAlpha();
-      UI_ROOT.vm.dispatch(this, "ontargetreached");
+      this._uiRoot.vm.dispatch(this, "ontargetreached");
     });
   }
   /**
@@ -669,22 +773,27 @@ export default class GuiObj extends XmlObj {
    * it's previously set target.
    */
   ontargetreached() {
-    assume(false, "Unimplemented");
+    this._uiRoot.vm.dispatch(this, "ontargetreached");
   }
 
   canceltarget() {
-    assume(false, "Unimplemented");
+    this._goingToTarget = true;
   }
 
   // [WHERE IS THIS?]
 
   // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
   reversetarget(reverse: number) {
-    assume(false, "Unimplemented");
+    assume(false, "Unimplemented: reverseTarget");
   }
 
-  onStartup() {
-    assume(false, "Unimplemented");
+  onsetvisible(onoff: boolean) {
+    this._uiRoot.vm.dispatch(this, "onsetvisible", [
+      { type: "BOOLEAN", value: onoff ? 1 : 0 },
+    ]);
+  }
+  onstartup() {
+    this._uiRoot.vm.dispatch(this, "onstartup");
   }
 
   /**
@@ -710,20 +819,45 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
+  /**
+   * https://stackoverflow.com/questions/52604914/converting-screen-coordinates-to-page-coordinates
+   * Given the screen coordinates of a point, is there some way to calculate the coordinates of that point on the actual page of the browser?
+   */
+
   clienttoscreenx(x: number): number {
-    return x;
+    const element = this.getDiv();
+    const position = element.getBoundingClientRect();
+    return window.screenX + position.left + x;
   }
 
   clienttoscreeny(y: number): number {
-    return y;
+    const element = this.getDiv();
+    const position = element.getBoundingClientRect();
+    return window.screenX + position.top + y;
+  }
+  clienttoscreenw(w: number): number {
+    return unimplemented(this.clienttoscreenx(w));
+  }
+  clienttoscreenh(h: number): number {
+    return unimplemented(this.clienttoscreeny(h));
   }
 
   screentoclientx(x: number): number {
-    return x;
+    const element = this.getDiv();
+    const position = element.getBoundingClientRect();
+    return x - (window.screenX + position.left);
   }
 
   screentoclienty(y: number): number {
-    return y;
+    const element = this.getDiv();
+    const position = element.getBoundingClientRect();
+    return y - (window.screenX + position.top);
+  }
+  screentoclientw(w: number): number {
+    return unimplemented(this.screentoclienty(w));
+  }
+  screentoclienth(h: number): number {
+    return unimplemented(this.screentoclienty(h));
   }
 
   getparent(): Group {
@@ -780,7 +914,7 @@ export default class GuiObj extends XmlObj {
     p1: number,
     p2: number
   ): number {
-    return UI_ROOT.vm.dispatch(this, "onaction", [
+    return this._uiRoot.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },
       { type: "STRING", value: param },
       { type: "INT", value: x },
@@ -822,12 +956,12 @@ export default class GuiObj extends XmlObj {
 
   _renderWidth() {
     this._div.style.width =
-      this._relatw == "1" ? relative(this._width ?? 0) : px(this.getwidth());
+      this._relatw == "1" ? relative(this._w ?? 0) : px(this.getwidth());
   }
 
   _renderHeight() {
     this._div.style.height =
-      this._relath == "1" ? relative(this._height ?? 0) : px(this.getheight());
+      this._relath == "1" ? relative(this._h ?? 0) : px(this.getheight());
   }
 
   _renderDimensions() {
@@ -837,8 +971,17 @@ export default class GuiObj extends XmlObj {
     this._renderHeight();
   }
 
+  _renderLocation() {
+    this._renderX();
+    this._renderY();
+  }
+  _renderSize() {
+    this._renderWidth();
+    this._renderHeight();
+  }
+
   doResize() {
-    UI_ROOT.vm.dispatch(this, "onresize", [
+    this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
       { type: "INT", value: this.getwidth() },
@@ -873,6 +1016,17 @@ export default class GuiObj extends XmlObj {
   setActiveBackgroundImage(bitmap: Bitmap | null) {
     if (bitmap != null) {
       bitmap.setAsActiveBackground(this._div);
+    }
+  }
+  setInactiveBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsInactiveBackground(this._div);
+    }
+  }
+
+  setDisabledBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsDisabledBackground(this._div);
     }
   }
 

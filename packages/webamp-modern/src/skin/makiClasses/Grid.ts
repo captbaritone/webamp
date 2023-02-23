@@ -1,17 +1,18 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
 import { px } from "../../utils";
+import { UIRoot } from "../../UIRoot";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects
+// @ts-ignore In fact Grid has no GUID
 export default class Grid extends GuiObj {
-  //   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
+  static GUID = "OFFICIALLY-NO-GUID";
   _image: string; // link to Bitmap._id
   _left: HTMLElement;
   _middle: HTMLElement;
   _right: HTMLElement;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     this._left = document.createElement("left");
     this._middle = document.createElement("middle");
     this._right = document.createElement("right");
@@ -26,8 +27,6 @@ export default class Grid extends GuiObj {
     }
     switch (key) {
       case "middle":
-        // this._image = value;
-        // this._renderBackground();
         this._setBitmap(this._middle, value);
         break;
       case "left":
@@ -44,11 +43,11 @@ export default class Grid extends GuiObj {
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
+    if (this._h) {
+      return this._h;
     }
     if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
+      const bitmap = this._uiRoot.getBitmap(this._image);
       if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
@@ -56,24 +55,24 @@ export default class Grid extends GuiObj {
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
+    if (this._w) {
+      return this._w;
     }
     if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
+      const bitmap = this._uiRoot.getBitmap(this._image);
       if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
   }
 
   _renderBackground() {
-    const bitmap = this._image != null ? UI_ROOT.getBitmap(this._image) : null;
+    const bitmap =
+      this._image != null ? this._uiRoot.getBitmap(this._image) : null;
     this.setBackgroundImage(bitmap);
   }
 
   _setBitmap(element: HTMLElement, bitmap_id: string) {
-    const bitmap = UI_ROOT.getBitmap(bitmap_id);
-    // this.setBackgroundImage(bitmap);
+    const bitmap = this._uiRoot.getBitmap(bitmap_id);
     if (bitmap) {
       bitmap.setAsBackground(element);
       element.style.width = px(bitmap.getWidth());
@@ -82,15 +81,11 @@ export default class Grid extends GuiObj {
 
   draw() {
     super.draw();
-    // this._div.setAttribute("data-obj-name", "Layer");
-    // this._div.style.pointerEvents = this._sysregion==-2 || this._ghost? 'none' : 'auto';
     this._div.style.pointerEvents = "none";
-    // this._div.style.overflow = "hidden";
     this._div.style.removeProperty("display");
     this._div.classList.add("webamp--img");
     this._renderBackground();
   }
-  //setRegionFromMap(regionMap:Map, threshold:number)
 
   isinvalid(): boolean {
     return false;

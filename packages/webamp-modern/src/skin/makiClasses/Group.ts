@@ -1,5 +1,4 @@
 import * as Utils from "../../utils";
-import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 import Movable from "./Movable";
@@ -19,6 +18,7 @@ export default class Group extends Movable {
   _actualWidth: number; // for _invalidatesize, after draw
   _actualHeight: number;
   _regionCanvas: HTMLCanvasElement;
+  _allowZeroSize: boolean = false; //WMP set width = 0; in their script. Winamp unset width => get bitmap width
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -37,6 +37,9 @@ export default class Group extends Movable {
         this._drawBackground = Utils.toBool(value);
         this._renderBackground();
         break;
+      case "allowzerosize":
+        this._allowZeroSize = Utils.toBool(value);
+        break;
       default:
         return false;
     }
@@ -54,6 +57,15 @@ export default class Group extends Movable {
     }
     for (const child of this._children) {
       child.init();
+    }
+  }
+
+  dispose() {
+    for (const systemObject of this._systemObjects) {
+      systemObject.dispose();
+    }
+    for (const child of this._children) {
+      child.dispose();
     }
   }
 
@@ -107,15 +119,18 @@ export default class Group extends Movable {
     return obj as Layout;
   }
 
-  isLayout(): boolean {
+  islayout(): boolean {
     return this._isLayout;
   }
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
     const h = super.getheight();
-    if (h == null && this._background != null) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+    if (h == 0 && this._allowZeroSize) {
+      return h;
+    }
+    if (!h && this._background != null) {
+      const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
     }
     return h ?? 0;
@@ -130,16 +145,19 @@ export default class Group extends Movable {
       }
     }
     const w = super.getwidth();
-    if (w == null && this._background != null) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+    if (w == 0 && this._allowZeroSize) {
+      return w;
+    }
+    if (!w && this._background != null) {
+      const bitmap = this._uiRoot.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
-    return w ?? 0;
+    return w || this._div.getBoundingClientRect().width;
   }
 
   _renderBackground() {
     if (this._background != null && this._drawBackground) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
+      const bitmap = this._uiRoot.getBitmap(this._background);
       this.setBackgroundImage(bitmap);
     } else {
       this.setBackgroundImage(null);
@@ -147,7 +165,7 @@ export default class Group extends Movable {
   }
 
   async doResize() {
-    UI_ROOT.vm.dispatch(this, "onresize", [
+    this._uiRoot.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
       { type: "INT", value: 0 },
       { type: "INT", value: this.getwidth() },
@@ -179,7 +197,6 @@ export default class Group extends Movable {
     this._regionCanvas = null;
     let hasRegions = false;
     for (const child of this._children) {
-      // child.draw();
       if (child._sysregion == -1 || child._sysregion == -2) {
         this.putAsRegion(child);
         hasRegions = true;
@@ -201,7 +218,6 @@ export default class Group extends Movable {
       const bound = this._div.getBoundingClientRect();
       canvas.width = bound.width;
       canvas.height = bound.height;
-      // console.log('createRegionCanvas:', bound.width, bound.height)
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, bound.width, bound.height);
@@ -213,19 +229,21 @@ export default class Group extends Movable {
     const ctx2 = this._regionCanvas.getContext("2d");
     const r = child._div.getBoundingClientRect();
     const bitmap = child._backgroundBitmap;
-    const img = child._backgroundBitmap.getImg();
-    ctx2.drawImage(
-      img,
-      bitmap._x,
-      bitmap._y,
-      r.width,
-      r.height,
+    if (bitmap && bitmap.loaded()) {
+      const img = bitmap.getImg();
+      ctx2.drawImage(
+        img,
+        bitmap._x,
+        bitmap._y,
+        r.width,
+        r.height,
 
-      child._div.offsetLeft,
-      child._div.offsetTop,
-      r.width,
-      r.height
-    );
+        child._div.offsetLeft,
+        child._div.offsetTop,
+        r.width,
+        r.height
+      );
+    }
   }
 
   setRegion() {
@@ -269,7 +287,7 @@ export default class Group extends Movable {
     super.draw();
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
-    if (this._movable || this._resizable) {
+    if (this._movable || this._canResize) {
       this._div.style.pointerEvents = "auto";
     } else {
       this._div.style.pointerEvents = "none";

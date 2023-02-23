@@ -1,0 +1,84 @@
+<container id="PL" name="Playlist Editor" default_y="232" default_visible="1">
+	<layout id="normal" image="wasabi.frame.basetexture" minimum_h="116" minimum_w="275" default_h="116" linkwidth="shadepl">
+		<!-- Can use the grid object here but then you won't have the inactive image option -->
+		<layer id="wa2.pl1" image="wa2.pl.1" x="0" y="0" inactiveimage="wa2.pl.1.disabled" regionop="1"/>
+		<layer id="wa2.pl2" image="wa2.pl.2" x="25" y="0" w="-50" relatw="1" inactiveimage="wa2.pl.2.disabled" regionop="1"/>
+		<layer id="wa2.pl3" image="wa2.pl.3" x="-25" y="0" relatx="1" inactiveimage="wa2.pl.3.disabled" regionop="1"/>
+		<layer id="wa2.pl4" image="wa2.pl.4" x="0" y="20" h="-58" relath="1" regionop="1"/>
+		<layer id="wa2.pl5" image="wa2.pl.5" x="25" y="20" w="-50" h="-58" relatw="1" relath="1" regionop="1"/>
+		<layer id="wa2.pl6" image="wa2.pl.6" x="-25" y="20" h="-58" relatx="1" relath="1" regionop="1"/>
+		<layer id="wa2.pl7" image="wa2.pl.7" x="0" y="-38" relaty="1" regionop="1"/>
+		<layer id="wa2.pl8" image="wa2.pl.8" x="125" y="-38" w="-275" relaty="1" relatw="1" regionop="1"/>
+		<layer id="wa2.pl9" image="wa2.pl.9" x="-150" y="-38" relatx="1" relaty="1" regionop="1"/>
+		<layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
+
+		<!-- Layers that needs to be hidden or centered -->
+		<layer id="pl.center.logo" image="wa2.pl.2.center" x="-100" y="0" inactiveimage="wa2.pl.2.center.disabled"/>
+		<script file="scripts/_wa2-easylayout.maki" param="pl.center.logo;0;0;1;0;0;0"/>
+
+        <layer dblClickAction="SWITCH;shadepl" x="0" y="0" w="0" h="14" relatw="1" move="1"/>
+
+		<layer id="pl.vis.area" image="wa2.pl.8.vis" x="-225" y="-38" relatx="1" relaty="1"/>
+        <group id="waclassicvis" x="-223" y="-26" w="76" h="16" relatx="1" relaty="1"/>
+        <!--script file="scripts/hideplvis.maki"/-->
+		<script file="scripts/_wa2-easylayout.maki" param="pl.vis.area;350;0;0;0;0;0"/>
+        <script file="scripts/_wa2-easylayout.maki" param="waclassicvis;350;0;0;0;0;0"/>
+		<!-- Small Ticker/Timer -->
+		<text id="pe.info" display="PE_INFO" x="-145" y="-28" w="91" h="6" font="wasabi.font.default" relatx="1" relaty="1"/>
+		<text id="timer" display="time" x="-83" y="-15" w="31" h="6" timeroffstyle="2" align="right" font="wasabi.font.default" relatx="1" relaty="1"  timecolonwidth="5"/>
+        <layer id="TimerTrigger" x="-83" y="-15" w="31" h="6" relatx="1" relaty="1"/>
+        <script file="scripts/wa2songtimer.maki"/>
+
+		<!-- Add Playlist Entry (List) -->
+		<button action="PE_ADD"	x="11" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_REM"	x="40" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_SEL"	x="69" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_MISC" x="98" y="-30" w="25" h="18" relatx="0" relaty="1" rectrgn="1"/>
+		<button action="PE_LIST" x="-47" y="-30" w="25" h="18" relatx="1" relaty="1" rectrgn="1"/>
+		<!-- End Playlist Entries -->
+
+		<!-- Since Winamp 5.0 the component xml object was renamed to windowholder -->
+		<windowholder id="wasabi.list" component="guid:{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}"  fitparent="1"
+			x="12" y="20" w="-31" h="-58" relatw="1" relath="1"
+			noshowcmdbar="1" autoopen="1" autoclose="1" opacity="120"
+			param="guid:pl"
+		/> <!-- change w to -20 for the editor to take up the whole space -->
+
+		<!-- Playback buttons - No images so must use rectrgn="1" -->
+		<button x="-145" y="-16" w="8" h="9" relatx="1" relaty="1" action="Prev" rectrgn="1"/>
+		<button x="-137" y="-16" w="10" h="9" relatx="1" relaty="1" action="Play" rectrgn="1"/>
+		<button x="-127" y="-16" w="10" h="9" relatx="1" relaty="1" action="Pause" rectrgn="1"/>
+		<button x="-117" y="-16" w="9" h="9" relatx="1" relaty="1" action="Stop" rectrgn="1"/>
+		<button x="-108" y="-16" w="8" h="9" relatx="1" relaty="1" action="Next" rectrgn="1"/>
+		<button x="-100" y="-16" w="10" h="9" relatx="1" relaty="1" action="Eject" rectrgn="1"/>
+		<!-- Close Button -->
+		<button image="wa2.pl.close" downImage="wa2.pl.closep" inactiveAlpha="0" x="-11" y="3" relatx="1" relaty="0" action="Close" rectrgn="1"
+		/>
+		<!-- Playlist Shade -->
+		<button id="winshade" action="SWITCH" param="shadepl" x="-21" y="3" relatx="1" relaty="0" image="wa2.pl.shade" downImage="wa2.pl.shadep" inactiveAlpha="0"/>
+	</layout>
+    <layout id="shadepl" background="wasabi.frame.basetexture" minimum_h="14" maximum_h="14" minimum_w="275" linkwidth="normal">
+
+        <layer image="wa2.plshade.left" ghost="1"/>
+        <layer image="wa2.plshade.middle" x="25" w="-75" relatw="1" tile="1" ghost="1"/>
+        <layer x="-50" relatx="1" image="wa2.plshade.right.active" inactiveimage="wa2.plshade.right.inactive" ghost="1"/>
+
+        <Songticker
+		id="songticker"
+		x="4" y="4"
+		w="-34" h="9" relatw="1"
+		font="wasabi.font.default" altfont="arial" fontsize="13"
+		altvalign="center" ghost="1"/>
+
+        <layer dblClickAction="SWITCH;normal" x="0" y="0" w="0" h="14" relatw="1" move="1"/>
+
+        <layer x="-29" y="3" relatx="1" w="9" h="10" resize="right"/>
+
+        <!-- Close Button -->
+		<button image="wa2.plshade.close" downImage="wa2.pl.closep" inactiveAlpha="0" x="-11" y="3" relatx="1" relaty="0" action="Close" rectrgn="1"/>
+		<!-- Playlist Shade -->
+		<button id="winshade" action="SWITCH" param="normal" x="-21" y="3" relatx="1" relaty="0" image="wa2.plshade.shade" downImage="wa2.plshade.shadep" inactiveAlpha="0"/>
+
+		<!--group id="shadepl" x="0" y="0"/-->
+	</layout>
+</container>

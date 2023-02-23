@@ -1,9 +1,10 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../../UIRoot";
 import { V } from "../../maki/v";
+import AudioEventedGui from "../AudioEventedGui";
+import { UIRoot } from "../../UIRoot";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
-export default class Button extends GuiObj {
+export default class Button extends AudioEventedGui {
   static GUID = "698eddcd4fec8f1e44f9129b45ff09f9";
   _image: string;
   _downimage: string;
@@ -14,14 +15,11 @@ export default class Button extends GuiObj {
   _param: string | null = null;
   _actionTarget: string | null = null;
 
-  constructor() {
-    super();
+  constructor(uiRoot: UIRoot) {
+    super(uiRoot);
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e: MouseEvent) => {
-      if (this._action) {
-        this.dispatchAction(this._action, this._param, this._actionTarget);
-      }
       if (e.button == 0) {
         this.leftclick();
       }
@@ -68,11 +66,11 @@ export default class Button extends GuiObj {
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
+    if (this._h) {
+      return this._h;
     }
     if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
+      const bitmap = this._uiRoot.getBitmap(this._image);
       if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
@@ -80,11 +78,11 @@ export default class Button extends GuiObj {
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
+    if (this._w) {
+      return this._w;
     }
     if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
+      const bitmap = this._uiRoot.getBitmap(this._image);
       if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
@@ -93,37 +91,34 @@ export default class Button extends GuiObj {
   getactivated(): boolean {
     return this._active ? true : false;
   }
-  setactivated(_onoff: boolean | number) {
-    const onoff = Boolean(_onoff);
+  setactivated(onoff: boolean): void {
+    onoff = Boolean(onoff); // may receive int as bool
 
     if (onoff !== this._active) {
       this._active = onoff;
-      if (this._active) {
-        this._div.classList.add("active");
-      } else {
-        this._div.classList.remove("active");
-      }
-      UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
+      this._renderActive();
     }
+    //sometime maki call: setactivated(getactivated())
+    this._uiRoot.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
   }
 
   setactivatednocallback(onoff: boolean) {
     if (onoff !== this._active) {
       this._active = onoff;
-      if (this._active) {
-        this._div.classList.add("active");
-      } else {
-        this._div.classList.remove("active");
-      }
+      this._renderActive();
     }
   }
 
   leftclick() {
+    if (this._action) {
+      this.dispatchAction(this._action, this._param, this._actionTarget);
+      this.invalidateActionState();
+    }
     this.onLeftClick();
   }
 
   onLeftClick() {
-    UI_ROOT.vm.dispatch(this, "onleftclick", []);
+    this._uiRoot.vm.dispatch(this, "onleftclick", []);
   }
 
   handleAction(
@@ -142,30 +137,69 @@ export default class Button extends GuiObj {
     return false;
   }
 
+  /**
+   * when button has "action" property,
+   * the "active" property should auto reflect the actual situation.
+   * eg action="EQ_TOGGLE" will set button to active|not
+   */
+  invalidateActionState() {
+    const active = this._uiRoot.getActionState(
+      this._action,
+      this._param,
+      this._actionTarget
+    );
+    if (active != null) {
+      this.setactivatednocallback(active);
+    }
+  }
+
+  init() {
+    super.init();
+
+    if (this._action != null) {
+      // listen the actual action state
+      this._uiRoot.on(this._action.toLowerCase(), () =>
+        this.invalidateActionState()
+      );
+    }
+    this.invalidateActionState();
+  }
+
+  _renderActive() {
+    if (this._active) {
+      this._div.classList.add("active");
+    } else {
+      this._div.classList.remove("active");
+    }
+  }
+
   _renderBackground() {
-    if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
+    if (this._image != null && this._uiRoot.hasBitmap(this._image)) {
+      const bitmap = this._uiRoot.getBitmap(this._image);
       this.setBackgroundImage(bitmap);
     } else {
       this.setBackgroundImage(null);
     }
 
-    if (this._downimage != null) {
-      const downBitmap = UI_ROOT.getBitmap(this._downimage);
+    if (this._downimage != null && this._uiRoot.hasBitmap(this._downimage)) {
+      const downBitmap = this._uiRoot.getBitmap(this._downimage);
       this.setDownBackgroundImage(downBitmap);
     } else {
       this.setDownBackgroundImage(null);
     }
 
-    if (this._hoverimage != null) {
-      const hoverimage = UI_ROOT.getBitmap(this._hoverimage);
+    if (this._hoverimage != null && this._uiRoot.hasBitmap(this._hoverimage)) {
+      const hoverimage = this._uiRoot.getBitmap(this._hoverimage);
       this.setHoverBackgroundImage(hoverimage);
     } else {
       this.setHoverBackgroundImage(null);
     }
 
-    if (this._activeimage != null) {
-      const activeimage = UI_ROOT.getBitmap(this._activeimage);
+    if (
+      this._activeimage != null &&
+      this._uiRoot.hasBitmap(this._activeimage)
+    ) {
+      const activeimage = this._uiRoot.getBitmap(this._activeimage);
       this.setActiveBackgroundImage(activeimage);
     } else {
       this.setActiveBackgroundImage(null);

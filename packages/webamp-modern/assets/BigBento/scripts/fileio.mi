@@ -1,0 +1,130 @@
+//----------------------------------------------------------------------------------------------------------------
+// fileio.mi
+//
+// standard handles for file input and output (only xml parsing atm)
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __FILEIO_MI
+#define __FILEIO_MI
+
+
+extern class @{836F8B2E-E0D1-4db4-937F-0D0A04C8DCD1}@ Object &File;
+extern class @{417FFB69-987F-4be8-8D87-D9965EEEC868}@ File &XmlDoc;
+
+
+
+//*****************************************************************************
+// File CLASS
+//*****************************************************************************
+/**
+ File Class.
+
+ @short    Root Object for handling files
+ @author   Nullsoft Inc.
+ @ver      1.0
+*/
+
+extern		File.load (String path); // !Always call this first!
+extern	boolean File.exists ();
+extern	int	File.getSize ();
+
+
+//*****************************************************************************
+// XmlDoc CLASS
+//*****************************************************************************
+/**
+ XmlDoc Class.
+
+ @short    Root Object for handling xml files
+ @author   Nullsoft Inc.
+ @ver      1.0
+*/
+
+
+/**
+ parser_addCallback()
+
+ Add a XML tag to the global callback list for this file. Ensure to load the file first!
+ You can call this function more than once in order to add multiple callbacks (not implemented yet).
+ Use / for subtags and * as wildchar.
+ Example:
+ <main>
+   <cfg>
+     <int id="a" value="1"/>
+     <int id="b" value="2"/>
+     <int id="c" value="3"/>
+     <string id="d" value="bla" />
+   </cfg>
+   <otherstuff what="blabla"/>
+ </main>
+ in order to read all items listed under cfg add this callback:
+
+ Global XmlDoc myDoc;
+
+ System.onScriptLoaded()
+ {
+	myDoc = new XmlDoc;
+	myDoc.load("C:\mycfg.xml");
+	myDoc.parser_addCallback("main/cfg/*");
+	myDoc.parser_addCallback("main/otherstuff");
+	myDoc.parser_start();
+	myDoc.parser_destroy();
+ }
+
+ Note: myDoc.parser_addCallback("*"); will parse everything.
+
+ @param  any XML tag you want a callback for
+*/
+extern		XmlDoc.parser_addCallback (String section);
+
+
+/**
+ parser_start()
+
+ Start parsing the XmlDoc.
+*/
+extern		XmlDoc.parser_start ();
+
+
+/**
+ parser_onCallback()
+
+ Hookable. Called everytime an opening XML tag with a added callback is found. 
+ opening XML tags: <sometag id="bla"> or <sometag id="bla"/> 
+
+ @param  XML path to the XML tag that triggered the callback (uppercase!)
+ @param  name of the XML tag that triggered the callback
+ @param  List that holds the paramnames
+ @param  List that holds the paramvalues (sorted in the same way as List paramname)
+*/
+extern	String	XmlDoc.parser_onCallback (String xmlpath, String xmltag, list paramname, list paramvalue);
+
+
+/**
+ parser_onCloseCallback()
+
+ Hookable. Called everytime a closing XML tag with an added callback is found.
+ closing XML tag: </sometag> or <sometag id="bla"/> 
+
+ @param  XML tag that triggered the callback
+*/
+extern	String	XmlDoc.parser_onCloseCallback (String xmlpath, String xmltag);
+
+
+/**
+ parser_onError()
+
+ due to some API changes filename and incpath will hold an empty string since winamp 5.56
+*/
+extern  String  XmlDoc.parser_onError (String filename, int linenum, String incpath, int errcode, String errstr);
+
+
+/**
+ parser_destroy()
+
+ Always call this if you are done with parsing, or if you want to reset your callbacks.
+*/
+extern	String	XmlDoc.parser_destroy ();
+
+
+#endif

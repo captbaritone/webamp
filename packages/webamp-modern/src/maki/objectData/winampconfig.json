@@ -1,35 +1,39 @@
 {
   "B2AD3F2B31ED4e31BC6DE9951CD555BB": {
     "parent": "Object",
+    "name": "WinampConfig",
+    "deprecated": false,
     "functions": [
       {
-        "result": "WinampConfigGroup",
         "name": "getGroup",
         "parameters": [
           [
             "String",
             "config_group_guid"
           ]
-        ]
+        ],
+        "result": "WinampConfigGroup",
+        "deprecated": false
       }
-    ],
-    "name": "WinampConfig"
+    ]
   },
   "FC17844EC72B4518A068A8F930A5BA80": {
     "parent": "Object",
+    "name": "WinampConfigGroup",
+    "deprecated": false,
     "functions": [
       {
-        "result": "Boolean",
         "name": "getBool",
         "parameters": [
           [
             "String",
             "itemname"
           ]
-        ]
+        ],
+        "result": "Boolean",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "setBool",
         "parameters": [
           [
@@ -40,49 +44,54 @@
             "Boolean",
             "itemvalue"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "Int",
         "name": "getInt",
         "parameters": [
           [
             "String",
             "itemname"
           ]
-        ]
+        ],
+        "result": "Int",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "setInt",
         "parameters": [
           [
             "String",
             "itemname"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       },
       {
-        "result": "String",
         "name": "getString",
         "parameters": [
           [
             "String",
             "itemname"
           ]
-        ]
+        ],
+        "result": "String",
+        "deprecated": false
       },
       {
-        "result": "",
         "name": "setString",
         "parameters": [
           [
             "String",
             "itemname"
           ]
-        ]
+        ],
+        "result": "",
+        "deprecated": false
       }
-    ],
-    "name": "WinampConfigGroup"
+    ]
   }
 }

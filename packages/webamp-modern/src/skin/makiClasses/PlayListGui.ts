@@ -1,15 +1,14 @@
-import UI_ROOT from "../../UIRoot";
 import { removeAllChildNodes } from "../../utils";
 import Group from "./Group";
 import Slider, { ActionHandler } from "./Slider";
 
+// eslint-disable-next-line rulesdir/proper-maki-types
 export default class PlayListGui extends Group {
-  static GUID = "pl";
-  static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
+  static GUID = "45f3f7c14ee6a6f35e125ea18d3ffc92";
+  // static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
   _selectedIndex: number = -1;
   _contentPanel: HTMLDivElement = document.createElement("div");
-  _slider: Slider = new Slider();
-  _sliderHandler: ActionHandler;
+  _slider: Slider = new Slider(this._uiRoot);
 
   getElTag(): string {
     return "group";
@@ -17,7 +16,9 @@ export default class PlayListGui extends Group {
 
   init() {
     super.init();
-    UI_ROOT.playlist.on("trackchange", this.refresh);
+    this._uiRoot.playlist.on("trackchange", this.refresh);
+    this._contentPanel.addEventListener("scroll", this._contentScrolled);
+    this.refresh();
   }
 
   _prepareScrollbar() {
@@ -31,13 +32,11 @@ export default class PlayListGui extends Group {
       relath: "1",
     });
     this._slider.setThumbSize(8, 18);
-    this._sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
-    this._slider.setActionHandler(this._sliderHandler);
+    const sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
+    this._slider.setActionHandler(sliderHandler);
     this._slider.getDiv().classList.add("scrollbar");
-    this._slider.draw();
+    // this._slider.draw();
     this.addChild(this._slider);
-
-    this._contentPanel.addEventListener("scroll", this._contentScrolled);
   }
 
   _contentScrolled = () => {
@@ -55,7 +54,7 @@ export default class PlayListGui extends Group {
   // experimental, brutal, just to see reflection of PlayList changes
   refresh = () => {
     removeAllChildNodes(this._contentPanel);
-    const pl = UI_ROOT.playlist;
+    const pl = this._uiRoot.playlist;
     const currentTrack = pl.getcurrentindex();
     for (let i = 0; i < pl.getnumtracks(); i++) {
       const line = document.createElement("div");
@@ -70,11 +69,14 @@ export default class PlayListGui extends Group {
         this.refresh();
       });
       line.addEventListener("dblclick", (ev: MouseEvent) => {
-        UI_ROOT.playlist.playtrack(i);
-        UI_ROOT.audio.play();
+        this._uiRoot.playlist.playtrack(i);
+        this._uiRoot.audio.play();
         this.refresh();
       });
-      line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
+      // line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
+      line.innerHTML = `<span>${i + 1}. ${pl.gettitle(
+        i
+      )}</span><span>${pl.getlength(i)}</span>`;
       this._contentPanel.appendChild(line);
     }
   };
@@ -82,8 +84,8 @@ export default class PlayListGui extends Group {
   itemClick = () => {};
 
   draw() {
-    super.draw();
     this._prepareScrollbar();
+    super.draw();
     this._div.appendChild(this._contentPanel);
 
     this._contentPanel.classList.add("content-list");

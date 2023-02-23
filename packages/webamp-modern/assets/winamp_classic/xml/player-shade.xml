@@ -1,0 +1,34 @@
+<groupdef id="shademain">
+
+	<layer id="washade" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" ghost="1"/>
+	<layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" h="14" w="275" image="wa2.player.shade.enabled" inactiveimage="wa2.player.shade.disabled" move="1"/>
+
+	<text id="timer" display="time" x="124" y="2" w="31" h="10" font="wasabi.font.default" align="right" timecolonwidth="3" timeroffstyle="1" />
+	<layer id="TimerTrigger" x="128" y="2" w="31" h="10"/>
+
+	<!-- <script file="scripts/wa2songtimer.maki"/> -->
+
+	<button id="Previous" action="PREV" x="166" y="3" w="8" h="9" tooltip="Previous" rectrgn="1"/>
+	<button id="Play" action="PLAY" x="176" y="3" w="10" h="9" tooltip="Play" rectrgn="1"/>
+	<button id="Pause" action="PAUSE" x="186" y="3" w="10" h="9" tooltip="Pause" rectrgn="1"/>
+	<button id="Stop" action="STOP" x="196" y="3" w="9" h="9" tooltip="Stop" rectrgn="1"/>
+	<button id="Next" action="NEXT" x="206" y="3" w="8" h="9" tooltip="Next" rectrgn="1"/>
+	<button id="Eject" action="EJECT" x="216" y="3" w="9" h="9" tooltip="Eject" rectrgn="1"/>
+
+	<vis id="wa.vis" x="79" y="5" w="38" h="5" fps="60"/>
+	<!-- <layer id="main.vis.trigger" x="79" y="5" w="38" h="5"/> -->
+
+	<button id="winshade" inactivealpha="0" action="SWITCH" param="normal" x="254" y="3" image="wa2.player.title.shademode" downImage="wa2.player.title.shademode.pressed"/>
+	<button id="Close" inactivealpha="0" action="close" x="264" y="3" image="wa2.player.title.quit" downImage="wa2.player.title.quit.pressed" tooltip="Close" />
+	<button id="Minimize" inactivealpha="0" action="MINIMIZE" x="244" y="3" image="wa2.player.title.min" downImage="wa2.player.title.min.pressed" tooltip="Minimize Winamp" />
+	<button id="sysbutton" inactivealpha="0" action="SYSMENU" x="6" y="3" image="wa2.player.shade.menu" downImage="wa2.player.shade.menu.pressed" />
+	<slider id="seeker" action="seek" x="227" y="4" h="7" w="15" thumb="posbarsm"/>
+
+	<!-- <script file="scripts/wa2visualizer.maki"/> -->
+
+</groupdef>
+
+
+<layout id="shade" background="shade_fallback" minimum_h="14" minimum_w="275">
+	<group id="shademain" x="0" y="0" sysregion="1"/>
+</layout>

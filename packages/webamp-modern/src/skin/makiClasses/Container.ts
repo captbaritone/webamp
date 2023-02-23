@@ -1,4 +1,4 @@
-import UI_ROOT from "../../UIRoot";
+import { UIRoot } from "../../UIRoot";
 import { assert, num, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
 import XmlObj from "../XmlObj";
@@ -12,18 +12,23 @@ import Group from "./Group";
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Container extends XmlObj {
   static GUID = "e90dc47b4ae7840d0b042cb0fcf775d2";
+  _uiRoot: UIRoot;
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
+  _dynamic: boolean = false;
   _id: string;
+  _originalId: string; // non lowercase'd
   _name: string;
   _x: number = 0;
   _y: number = 0;
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
   _componentAlias: string; // eg. "guid:pl"
   _div: HTMLElement = document.createElement("container");
-  constructor() {
+
+  constructor(uiRoot: UIRoot) {
     super();
+    this._uiRoot = uiRoot;
   }
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -33,17 +38,23 @@ export default class Container extends XmlObj {
     }
     switch (key) {
       case "name":
-        this._name = value;
+        // this._name = value;
+        this.setname(value);
         break;
       case "id":
+        this._originalId = value;
         this._id = value.toLowerCase();
+        break;
+      case "dynamic":
+        this._dynamic = toBool(value);
         break;
       case "component":
         this._componentGuid = value.toLowerCase().split(":")[1];
         this.resolveAlias();
         break;
       case "default_visible":
-        this._visible = toBool(value);
+        // allow @HAVE_LIBRARY@ (for now, its recognized as "false")
+        this._visible = value == "1";
         break;
       case "x":
       case "default_x":
@@ -65,6 +76,27 @@ export default class Container extends XmlObj {
     for (const layout of this._layouts) {
       layout.init();
     }
+    // maki need 'onswitchtolayout':
+    // this.switchtolayout(this.getcurlayout().getId())
+    this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: this.getcurlayout() },
+    ]);
+  }
+
+  dispose() {
+    for (const layout of this._layouts) {
+      layout.dispose();
+    }
+  }
+
+  setname(name: string) {
+    this._name = name;
+  }
+  getname(): string {
+    return this._name;
+  }
+  getguid(): string {
+    return this._componentGuid;
   }
 
   resolveAlias() {
@@ -105,6 +137,9 @@ export default class Container extends XmlObj {
   getId() {
     return this._id;
   }
+  getOriginalId(): string {
+    return this._originalId;
+  }
 
   getDiv(): HTMLElement {
     return this._div;
@@ -117,6 +152,21 @@ export default class Container extends XmlObj {
     return this._activeLayout.getheight();
   }
 
+  setWidth(w: number) {
+    this._activeLayout.setXmlAttr("w", String(w));
+  }
+  setHeight(h: number) {
+    this._activeLayout.setXmlAttr("h", String(h));
+  }
+
+  gettop(): number {
+    return this._y;
+  }
+
+  getleft(): number {
+    return this._x;
+  }
+
   center() {
     const height = document.documentElement.clientHeight;
     const width = document.documentElement.clientWidth;
@@ -124,9 +174,18 @@ export default class Container extends XmlObj {
     this._div.style.left = px((width - this.getWidth()) / 2);
   }
 
+  setLocation(x: number, y: number) {
+    if (x == this._x && y == this._y) {
+      return;
+    }
+    this._x = x;
+    this._y = y;
+    this._renderDimensions();
+  }
+
   show() {
     if (!this._activeLayout) {
-      this.switchToLayout(this._layouts[0]._id);
+      this.switchtolayout(this._layouts[0]._id);
     }
     this._visible = true;
     this._renderLayout();
@@ -142,6 +201,9 @@ export default class Container extends XmlObj {
   close() {
     this._activeLayout = null;
     this.hide();
+  }
+  getVisible(): boolean {
+    return this._visible;
   }
 
   /* Required for Maki */
@@ -164,9 +226,23 @@ export default class Container extends XmlObj {
   }
 
   /**
+   isDynamic()
+
+  Tells you if the current container is a dynamic 
+  container or not. Values are true (1) for dynamic
+  false (0) for static.
+  Dynamic Container can has multiple instance at one time.
+
+  @ret The container type (dynamic or static).
+  */
+  isdynamic(): number {
+    return this._dynamic ? 1 : 0;
+  }
+
+  /**
    * @ret Layout
    */
-  getCurLayout(): Layout {
+  getcurlayout(): Layout {
     return this._activeLayout;
   }
 
@@ -178,6 +254,14 @@ export default class Container extends XmlObj {
     }
   }
 
+  getnumlayouts(): number {
+    return this._layouts.length;
+  }
+
+  enumlayout(num: number): Layout {
+    return this._layouts[num];
+  }
+
   // parser need it.
   addChild(layout: Layout) {
     this.addLayout(layout);
@@ -185,17 +269,18 @@ export default class Container extends XmlObj {
 
   _clearCurrentLayout() {
     removeAllChildNodes(this._div);
+    // this._div.removeChild(this._activeLayout.getDiv())
   }
 
-  switchToLayout(layout_id: string) {
+  switchtolayout(layout_id: string) {
     const layout = this.getlayout(layout_id);
     assert(layout != null, `Could not find layout with id "${layout_id}".`);
+    this._uiRoot.vm.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: layout },
+    ]);
     this._clearCurrentLayout();
     this._activeLayout = layout;
     this._renderLayout();
-    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
-      { type: "OBJECT", value: layout },
-    ]);
   }
 
   dispatchAction(
@@ -205,10 +290,10 @@ export default class Container extends XmlObj {
   ) {
     switch (action) {
       case "SWITCH":
-        this.switchToLayout(param);
+        this.switchtolayout(param);
         break;
       default:
-        UI_ROOT.dispatch(action, param, actionTarget);
+        this._uiRoot.dispatch(action, param, actionTarget);
     }
   }
 
@@ -219,18 +304,25 @@ export default class Container extends XmlObj {
 
   _renderLayout() {
     if (this._visible && this._activeLayout) {
-      this._activeLayout.draw();
+      // this._activeLayout.draw();
       this._div.appendChild(this._activeLayout.getDiv());
       // this.center();
     } else {
-      removeAllChildNodes(this._div);
+      this._clearCurrentLayout();
+    }
+  }
+
+  _renderLayouts() {
+    for (const layout of this._layouts) {
+      layout.draw();
     }
   }
 
   draw() {
-    this._div.setAttribute("id", this.getId());
+    this.getId() && this._div.setAttribute("id", this.getId());
     this._div.setAttribute("tabindex", "1");
     this._renderDimensions();
+    this._renderLayouts();
     this._renderLayout();
   }
 }

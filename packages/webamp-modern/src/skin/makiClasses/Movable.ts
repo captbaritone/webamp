@@ -8,9 +8,9 @@ import GuiObj from "./GuiObj";
 import Layout from "./Layout";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 
-export default class Movable extends GuiObj {
+export default abstract class Movable extends GuiObj {
   _movable: boolean = false;
-  _resizable: number = 0;
+  _canResize: number = 0;
   _resize: string;
   _resizingEventsRegistered: boolean = false;
   _movingEventsRegistered: boolean = false;
@@ -42,7 +42,7 @@ export default class Movable extends GuiObj {
       this._unregisterResizingEvents();
       // winamp cursor for movable area is default/arrow.
       this._div.style.removeProperty("cursor");
-      this._resizable = MOVE; // = left + top - (width, height)
+      this._canResize = MOVE; // = left + top - (width, height)
       this._registerMovingEvents();
     } else {
       this._unregisterMovingEvents();
@@ -50,42 +50,42 @@ export default class Movable extends GuiObj {
       switch (this._resize) {
         case "right":
           this._div.style.cursor = "e-resize";
-          this._resizable = RIGHT;
+          this._canResize = RIGHT;
           break;
         case "left":
           this._div.style.cursor = "w-resize";
-          this._resizable = LEFT;
+          this._canResize = LEFT;
           break;
         case "top":
           this._div.style.cursor = "n-resize";
-          this._resizable = TOP;
+          this._canResize = TOP;
           break;
         case "bottom":
           this._div.style.cursor = "s-resize";
-          this._resizable = BOTTOM;
+          this._canResize = BOTTOM;
           break;
         case "topleft":
           this._div.style.cursor = "nw-resize";
-          this._resizable = TOP | LEFT;
+          this._canResize = TOP | LEFT;
           break;
         case "topright":
           this._div.style.cursor = "ne-resize";
-          this._resizable = TOP | RIGHT;
+          this._canResize = TOP | RIGHT;
           break;
         case "bottomleft":
           this._div.style.cursor = "sw-resize";
-          this._resizable = BOTTOM | LEFT;
+          this._canResize = BOTTOM | LEFT;
           break;
         case "bottomright":
           this._div.style.cursor = "se-resize";
-          this._resizable = BOTTOM | RIGHT;
+          this._canResize = BOTTOM | RIGHT;
           break;
         default:
           this._div.style.removeProperty("cursor");
-          this._resizable = 0;
+          this._canResize = 0;
       }
 
-      if (this._resizable != 0) {
+      if (this._canResize != 0) {
         this._registerResizingEvents();
       } else {
         this._unregisterResizingEvents();
@@ -112,7 +112,7 @@ export default class Movable extends GuiObj {
     downEvent.stopPropagation();
     if (downEvent.button != 0) return; // only care LeftButton
     const layout = this.getparentlayout() as Layout;
-    layout.setResizing("constraint", this._resizable, 0);
+    layout.setResizing("constraint", this._canResize, 0);
     layout.setResizing("start", 0, 0);
     layout.setResizing(
       this._div.style.getPropertyValue("cursor"),
@@ -187,7 +187,7 @@ export default class Movable extends GuiObj {
       const deltaX = newMouseX - startX;
       layout.setMoving("final", deltaX, deltaY);
     };
-    document.addEventListener("mousemove", throttle(handleMove, 50));
+    document.addEventListener("mousemove", throttle(handleMove, 10));
     document.addEventListener("mouseup", handleMouseUp);
   };
 
@@ -195,7 +195,7 @@ export default class Movable extends GuiObj {
     super.draw();
     if (this._ghost || this._sysregion == -2) {
       this._div.style.pointerEvents = "none";
-    } else if (this._movable || this._resizable) {
+    } else if (this._movable || this._canResize) {
       this._div.style.pointerEvents = "auto";
     } else if (this._ghost) {
       this._div.style.pointerEvents = "none";

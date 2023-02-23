@@ -1,18 +1,17 @@
-import JSZip from "jszip";
-// This module is imported early here in order to avoid a circular dependency.
-import { classResolver } from "./skin/resolver";
-import SkinParser from "./skin/parse";
-import UI_ROOT from "./UIRoot";
-import { getUrlQuery } from "./utils";
-import { addDropHandler } from "./dropTarget";
+import { WebAmpModern, IWebampModern, Options } from "./WebampModernInteface";
 
-function hack() {
-  // Without this Snowpack will try to treeshake out resolver causing a circular
-  // dependency.
-  classResolver("A funny joke about why this is needed.");
+declare global {
+  interface Window {
+    WebampModern: typeof WebAmpModern;
+  }
 }
 
-addDropHandler(loadSkin);
+function getUrlQuery(location: Location, variable: string): string {
+  return new URL(location.href).searchParams.get(variable);
+}
+
+// temporary disable:
+// addDropHandler(loadSkin);
 
 const STATUS = document.getElementById("status");
 
@@ -23,63 +22,37 @@ function setStatus(status: string) {
 // const DEFAULT_SKIN = "assets/MMD3.wal"
 const DEFAULT_SKIN = "assets/WinampModern566.wal";
 
+// type Webamp = window.WebampModern
+var webamp: IWebampModern;
+
 async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
 
-  setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
-  const response = await fetch(skinPath);
-  const data = await response.blob();
-  await loadSkin(data);
+  // changeSkinByUrl();
+
+  const option: Options = {
+    skin: skinPath,
+    tracks: [
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+    ],
+  };
 
   setStatus("Downloading MP3...");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  webamp = new window.WebampModern(document.getElementById("web-amp"), option);
+  webamp.onLogMessage(setStatus);
 
+  // var webamp2 = new window.WebampModern(document.getElementById("web-amp"), {...option, skin:"assets/MMD3.wal"});
   setStatus("");
 }
 
-async function loadSkin(skinData: Blob) {
-  UI_ROOT.reset();
-  document.body.appendChild(UI_ROOT.getRootDiv());
-
-  setStatus("Loading .wal archive...");
-  const zip = await JSZip.loadAsync(skinData);
-  UI_ROOT.setZip(zip);
-
-  setStatus("Parsing XML and initializing images...");
-  const parser = new SkinParser(UI_ROOT);
-
-  // This is always the same as the global singleton.
-  const uiRoot = await parser.parse();
-
-  uiRoot.loadTrueTypeFonts();
-
-  const start = performance.now();
-  uiRoot.enableDefaultGammaSet();
-  const end = performance.now();
-  console.log(`Loading initial gamma took: ${(end - start) / 1000}s`);
-
-  setStatus("Rendering skin for the first time...");
-  uiRoot.draw();
-  uiRoot.init();
-
-  setStatus("Initializing Maki...");
-  for (const container of uiRoot.getContainers()) {
-    container.init();
-  }
+async function changeSkinByUrl() {
+  setStatus("Downloading skin...");
+  const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
+  webamp.switchSkin(skinPath);
   setStatus("");
 }
 
@@ -99,18 +72,23 @@ async function initializeSkinListMenu() {
     }
   `;
 
-  const response = await fetch("https://api.webampskins.org/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    mode: "cors",
-    credentials: "include",
-    body: JSON.stringify({ query, variables: {} }),
-  });
-
-  const data = await response.json();
+  let bankskin1 = [];
+  // try {
+  //   const response = await fetch("https://api.webampskins.org/graphql", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //     mode: "cors",
+  //     credentials: "include",
+  //     body: JSON.stringify({ query, variables: {} }),
+  //   });
+  //   const data = await response.json();
+  //   bankskin1 = data.data.modern_skins.nodes;
+  // } catch (e) {
+  //   console.warn('faile to load skins from api.webampskins.org')
+  // }
 
   const select = document.createElement("select");
   select.style.position = "absolute";
@@ -126,11 +104,71 @@ async function initializeSkinListMenu() {
   const current = getUrlQuery(window.location, "skin");
 
   const internalSkins = [
-    { filename: "default", download_url: "" },
-    { filename: "MMD3", download_url: "assets/MMD3.wal" },
+    { filename: "[Winamp] default", download_url: "" },
+    { filename: "[Winamp] MMD3", download_url: "assets/MMD3.wal" },
+    // { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
+    { filename: "[Winamp] BigBento", download_url: "assets/BigBento/" },
+
+    { filename: "[Winamp Classic]", download_url: "assets/base-2.91.wsz" },
+    {
+      filename: "[Winamp Classic] MacOSXAqua1-5",
+      download_url: "assets/MacOSXAqua1-5.698dd4ab.wsz",
+    },
+    {
+      filename: "[Winamp Classic] Green-Dimension-V2",
+      download_url: "assets/Green-Dimension-V2.6f88d5c3.wsz",
+    },
+    {
+      filename: "[wmp] Quicksilver WindowsMediaPlayer!",
+      download_url: "assets/Quicksilver.wmz",
+    },
+    { filename: "[wmp] Windows XP", download_url: "assets/Windows-XP.wmz" },
+    {
+      filename: "[wmp] Famous Headspace",
+      download_url: "assets/Headspace.wmz",
+    },
+
+    {
+      filename: "[Audion Face] Smoothface 2",
+      download_url: "assets/Smoothface2.face",
+    },
+    {
+      filename: "[Audion Face] Gizmo 2.0",
+      download_url: "assets/Gizmo2.0.face",
+    },
+    {
+      filename: "[Audion Face] Tokyo Bay",
+      download_url: "assets/TokyoBay.face",
+    },
+    { filename: "[K-Jofol] Default", download_url: "assets/Default.kjofol" },
+    {
+      filename: "[K-Jofol] Illusion 1.0",
+      download_url: "assets/Illusion1-0.kjofol",
+    },
+    {
+      filename: "[K-Jofol] K-Nine 05r",
+      download_url: "assets/K-Nine05r.kjofol",
+    },
+    { filename: "[K-Jofol] Limus 2.0", download_url: "assets/Limus2-0.zip" },
+    { filename: "[Sonique] Default", download_url: "assets/sonique.sgf" },
+    {
+      filename: "[Sonique] Scifi-Stories",
+      download_url: "assets/scifi-stories.sgf",
+    },
+    {
+      filename: "[Sonique] Panthom (SkinBuilder)",
+      download_url: "assets/phantom.sgf",
+    },
+    { filename: "[Sonique] ChainZ and", download_url: "assets/ChainZ-and.sgf" },
+    {
+      filename: "[JetAudio] Small Bar",
+      download_url: "assets/DefaultBar_s.jsk",
+    },
+    { filename: "[Cowon JetAudio] Gold", download_url: "assets/Gold.uib" },
+    { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 
-  const skins = [...internalSkins, ...data.data.modern_skins.nodes];
+  const skins = [...internalSkins, ...bankskin1];
 
   for (const skin of skins) {
     const option = document.createElement("option");
@@ -146,9 +184,23 @@ async function initializeSkinListMenu() {
   select.addEventListener("change", (e: any) => {
     const url = new URL(window.location.href);
     url.searchParams.set("skin", e.target.value);
-    window.location.replace(url.href);
+    // window.location.replace(url.href);
+    const title = e.target.text;
+    const newPath = url.href.substring(url.origin.length);
+
+    // https://stackoverflow.com/questions/3338642/updating-address-bar-with-new-url-without-hash-or-reloading-the-page
+    window.history.pushState({ pageTitle: title }, title, newPath);
+    changeSkinByUrl();
+
     downloadLink.href = e.target.value;
   });
+
+  window.onpopstate = function (e) {
+    if (e.state) {
+      document.title = e.state.pageTitle;
+    }
+    changeSkinByUrl();
+  };
 
   document.body.appendChild(select);
   document.body.appendChild(downloadLink);

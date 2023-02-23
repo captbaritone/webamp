@@ -1,23 +1,35 @@
-// TODO: Persist this to local state?
-class PrivateConfig {
-  _sections: Map<string, Map<string, string>> = new Map();
-  _getSection(section: string) {
-    if (!this._sections.has(section)) {
-      this._sections.set(section, new Map());
-    }
-    return this._sections.get(section);
-  }
-  getPrivateInt(section: string, item: string, defvalue: number): number {
-    const value: string = this._getSection(section).get(item);
-    return value ? parseInt(value) : defvalue;
+import ConfigPersistent from "./makiClasses/ConfigPersistent";
+
+class PrivateConfig extends ConfigPersistent {
+  getStorageName(): string {
+    return "_PRIVATE-CONFIG_";
   }
 
-  setPrivateInt(section: string, item: string, value: number) {
-    return this._getSection(section).set(item, value.toString());
+  getPrivateInt(section: string, item: string, defvalue: number): number {
+    let value: string = this.getValue(section, item);
+    // if not found, create new one
+    if (value == null) {
+      value = this.setValue(section, item, String(defvalue));
+    }
+    return Number(value);
+  }
+
+  setPrivateInt(section: string, item: string, value: number): number {
+    const strValue: string = this.setValue(section, item, String(value));
+    return Number(strValue);
   }
 
   getPrivateString(section: string, item: string, defvalue: string): string {
-    return this._getSection(section).get(item) ?? defvalue;
+    let value: string = this.getValue(section, item);
+    // if not found, create new one
+    if (value == null) {
+      value = this.setValue(section, item, defvalue);
+    }
+    return value;
+  }
+
+  setPrivateString(section: string, item: string, value: string): string {
+    return this.setValue(section, item, String(value));
   }
 }
 

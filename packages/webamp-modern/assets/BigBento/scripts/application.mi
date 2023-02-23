@@ -1,0 +1,88 @@
+//----------------------------------------------------------------------------------------------------------------
+// application.mi
+//
+// reflects the api_application object into Maki
+// some of the functions may not make a lot of sense in the context of skin scripting
+// they are here for completeness
+// some of these functions duplicate functionality provided in the system object
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __APPLICATION_MI
+#define __APPLICATION_MI
+
+extern class @{B8E867B0-2715-4da7-A5BA-53DBA1FCFEAC}@ Object _predecl Application;
+
+//*****************************************************************************
+// APPLICATION CLASS
+//*****************************************************************************
+/**
+ Application Class.
+
+ @short    Application Object
+ @author   benski
+ @ver      1.0
+*/
+
+// static functions
+extern	String	Application.GetApplicationName();
+extern	String	Application.GetVersionString();
+extern	String	Application.GetVersionNumberString();
+extern	int	Application.GetBuildNumber();
+
+/**
+  A unique ID that represents what GUID this application is
+  Winamp 5 is {4BE592C7-6937-426a-A388-ACF0EBC88E93}
+  other Wasabi-based applications (e.g. ClipX, Winamp3, wasabi.player) will have a different GUID
+  however, this maki class only currently resides in Winamp5, so it's a bit irrevelant :)
+*/
+extern	String	Application.GetGUID();
+
+/**
+  The commandline that Winamp was called with
+*/
+extern	String	Application.GetCommandLine();
+
+/**
+  Shuts Winamp down.
+*/
+extern	Application.Shutdown();
+
+/**
+  cancels an shutdown in progress
+  see note for IsShuttingDown about the futility of this maki script function
+*/
+extern	Application.CancelShutdown ();
+
+/**
+  tests if we're in the middle of shutting down winamp.
+  This is part of the application API in Wasabi, so it's reflected here
+  but it might not be of much use to your script,
+  since you'll likely be unloaded before this function
+  ever gets a chance to return true
+*/
+extern	boolean	Application.IsShuttingDown();
+
+/**
+  Path where winamp.exe (or studio.exe) lives
+*/
+extern	String	Application.GetApplicationPath();
+
+/**
+  Path where Winamp stores it's settings (studio.xnf, winamp.ini, etc)
+*/
+extern	String	Application.GetSettingsPath();
+
+/**
+  Gets the current working path.  This is the same path that will open by default
+  in Winamp's "Open File" dialog.
+  Working path persists across Winamp launches
+*/
+
+extern	String	Application.GetWorkingPath();
+
+/**
+  Sets a new working path.  
+*/
+extern	Application.SetWorkingPath(String working_path);
+
+#endif

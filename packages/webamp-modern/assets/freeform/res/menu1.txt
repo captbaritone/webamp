@@ -1,0 +1,273 @@
+POPUP "Main"
+  MENUITEM "Nullsoft &Winamp...",  40041
+  MENUITEM SEPARATOR
+  POPUP "&Play"
+    MENUITEM "&File...   	L",  40029
+    MENUITEM "&URL...	Ctrl+L",  40185
+    MENUITEM "&Folder...	Shift+L",  40187
+    MENUITEM SEPARATOR
+    POPUP "&Bookmark"
+  ENDPOPUP
+    MENUITEM "(no bookmarks)",  40322
+  ENDPOPUP
+  MENUITEM "View &file info...	Alt+3",  40188
+  POPUP "&Bookmarks"
+    MENUITEM "&Edit bookmarks...	Ctrl+Alt+I",  40320
+    MENUITEM "&Add current as bookmark	Ctrl+Alt+B",  40321
+    MENUITEM SEPARATOR
+  ENDPOPUP
+  MENUITEM SEPARATOR
+  MENUITEM "&Main Window	Alt+W",  40258
+  MENUITEM "Playlist &Editor	Alt+E",  40040
+  MENUITEM "E&qualizer     	Alt+G",  40036
+  MENUITEM "&Video	Alt+V",  40328
+  MENUITEM SEPARATOR
+  POPUP "&Options"
+    MENUITEM "&Preferences...    	Ctrl+P",  40012
+    POPUP "Skins"
+      MENUITEM "S&kin Browser...	Alt+S",  40219
+      MENUITEM "<< Get more skins! >>",  40316
+      MENUITEM SEPARATOR
+      MENUITEM "Winamp Classic",  32767
+    ENDPOPUP
+    MENUITEM SEPARATOR
+    MENUITEM "Time &elapsed	Ctrl+T toggles",  40037
+    MENUITEM "Time re&maining	Ctrl+T toggles",  40038
+    MENUITEM SEPARATOR
+    MENUITEM "&Always On Top	Ctrl+A",  40019
+    MENUITEM "&Double Size	Ctrl+D",  40165
+    MENUITEM "&EasyMove	Ctrl+E",  40186
+    MENUITEM SEPARATOR
+    MENUITEM "&Repeat	R",  40022
+    MENUITEM "&Shuffle	S",  40023
+  ENDPOPUP
+  POPUP "Play&back"
+    MENUITEM "P&revious	Z",  40044
+    MENUITEM "&Play	X",  40045
+    MENUITEM "P&ause	C",  40046
+    MENUITEM "&Stop	V",  40047
+    MENUITEM "&Next              	B",  40048
+    MENUITEM SEPARATOR
+    MENUITEM "Stop w/ fa&deout	Shift+V",  40147
+    MENUITEM "Stop after &current	Ctrl+V",  40157
+    MENUITEM "&Back 5 seconds	Left",  40144
+    MENUITEM "&Fwd 5 seconds	Right",  40148
+    MENUITEM "&Start of list	Ctrl+Z",  40154
+    MENUITEM "&End of list	Ctrl+B",  40158
+    MENUITEM "10 t&racks back	Num. 1",  40197
+    MENUITEM "10 &tracks fwd	Num. 3",  40195
+    MENUITEM SEPARATOR
+    MENUITEM "&Jump to time	Ctrl+J",  40193
+    MENUITEM "Ju&mp to file	J",  40194
+  ENDPOPUP
+  POPUP "&Visualization"
+    MENUITEM "Start/Stop &plug-in	Ctrl+Shift+K",  40192
+    MENUITEM "&Configure plug-in... 	Alt+K",  40221
+    MENUITEM "&Select plug-in...	Ctrl+K",  40191
+  ENDPOPUP
+  POPUP "&Skins"
+    MENUITEM "S&kin Browser...	Alt+S",  40219
+    MENUITEM "<< Get more skins! >>",  40316
+    MENUITEM SEPARATOR
+    MENUITEM "Winamp Classic",  32767
+  ENDPOPUP
+  MENUITEM SEPARATOR
+  MENUITEM "Winamp &Help	F1",  40347
+  MENUITEM SEPARATOR
+  MENUITEM "E&xit	Alt+F4",  40001
+ENDPOPUP
+POPUP "EQpresets"
+  POPUP "Load"
+    MENUITEM "&Preset...",  40172
+    MENUITEM "&Auto-load preset...",  40173
+    MENUITEM "&Default",  40174
+    MENUITEM SEPARATOR
+    MENUITEM "From &EQF...",  40253
+  ENDPOPUP
+  POPUP "Save"
+    MENUITEM "&Preset...",  40175
+    MENUITEM "&Auto-load preset...",  40176
+    MENUITEM "&Default",  40177
+    MENUITEM SEPARATOR
+    MENUITEM "To &EQF...",  40254
+  ENDPOPUP
+  POPUP "Delete"
+ENDPOPUP
+  MENUITEM "&Preset...",  40178
+  MENUITEM "&Auto-load preset...",  40180
+ENDPOPUP
+POPUP "PLContextMenu"
+  POPUP "MiscOpt"
+    POPUP "File info"
+      MENUITEM "F&ile info...	Alt+3",  40208
+      MENUITEM "Playlist &entry...	Ctrl+E",  40255
+    ENDPOPUP
+    POPUP "Sort"
+      MENUITEM "Sort list by &title	Ctrl+Shift+1",  40209
+      MENUITEM "Sort list by &filename	Ctrl+Shift+2",  40210
+      MENUITEM "Sort list by &path and filename	Ctrl+Shift+3",  40211
+      MENUITEM SEPARATOR
+      MENUITEM "R&everse list	Ctrl+R",  40213
+      MENUITEM "&Randomize list	Ctrl+Shift+R",  40212
+    ENDPOPUP
+    POPUP "Misc"
+  ENDPOPUP
+    MENUITEM "&Generate HTML playlist	Ctrl+Alt+G",  40292
+    MENUITEM SEPARATOR
+    MENUITEM "&Read extended info on selection	Ctrl+Alt+E",  40293
+  ENDPOPUP
+  POPUP "Add"
+    MENUITEM "Add &file(s)	L",  1032
+    MENUITEM "Add f&older	Shift+L",  1036
+    MENUITEM "Add &URL	Ctrl+L",  1039
+  ENDPOPUP
+  POPUP "Remove"
+    MENUITEM "&Remove selected	Delete",  1034
+    MENUITEM "Crop &selected	Ctrl+Delete",  1035
+    MENUITEM "&Clear playlist	Ctrl+Shift+Delete",  40214
+    POPUP "Remove..."
+  ENDPOPUP
+    MENUITEM "Remove &missing files from playlist	Alt+Delete",  40222
+    MENUITEM "&Physically remove selected file(s)",  40223
+  ENDPOPUP
+  POPUP "Select"
+    MENUITEM "Select &all	Ctrl+A",  40205
+    MENUITEM "Select &none",  40207
+    MENUITEM "&Invert selection	Ctrl+I",  40171
+  ENDPOPUP
+  POPUP "Playlist"
+    MENUITEM "&Open playlist...	Ctrl+O",  40202
+    MENUITEM "&Save playlist...	Ctrl+S",  40204
+    MENUITEM "&New playlist (clear)	Ctrl+N",  40214
+  ENDPOPUP
+  POPUP "Context"
+ENDPOPUP
+  MENUITEM "&Play item(s)	Enter",  40184
+  MENUITEM SEPARATOR
+  MENUITEM "&Remove item(s)	Delete",  1034
+  MENUITEM "&Crop files	Ctrl+Delete",  1035
+  MENUITEM SEPARATOR
+  MENUITEM "Edit &metadata for selection...	Shift+E",  40470
+  MENUITEM "&View file info...	Alt+3",  40208
+  MENUITEM "Playlist &entry	Ctrl+E",  40255
+  MENUITEM "&Bookmark item(s)	Ctrl+Alt+B",  40319
+  MENUITEM SEPARATOR
+  POPUP "Rate &items"
+    MENUITEM "*****",  40402
+    MENUITEM "****",  40403
+    MENUITEM "***",  40404
+    MENUITEM "**",  40405
+    MENUITEM "*",  40406
+    MENUITEM "No rating",  40407
+  ENDPOPUP
+  MENUITEM SEPARATOR
+  MENUITEM "Explore item(s) &folder	Ctrl+F",  40468
+ENDPOPUP
+POPUP "Context menus"
+  POPUP "Song title"
+    MENUITEM "View &file info...	Alt+3 or Dblclick",  40188
+    MENUITEM "&Jump to file...	J",  40194
+    MENUITEM "Jump to &time...	Ctrl+J",  40193
+    MENUITEM "&Autoscroll songname",  40189
+    MENUITEM SEPARATOR
+    POPUP "&Rating"
+  ENDPOPUP
+    MENUITEM "*****",  40396
+    MENUITEM "****",  40397
+    MENUITEM "***",  40398
+    MENUITEM "**",  40399
+    MENUITEM "*",  40400
+    MENUITEM "No rating",  40401
+  ENDPOPUP
+  POPUP "Time display"
+    MENUITEM "Time &elapsed	Ctrl+T toggles",  40037
+    MENUITEM "Time re&maining	Ctrl+T toggles",  40038
+  ENDPOPUP
+  POPUP "Previous button"
+    MENUITEM "&Previous	Click",  40044
+    MENUITEM "&Start of list	Ctrl+Click",  40154
+    MENUITEM "&Rewind 5 seconds	Shift+Click",  40144
+  ENDPOPUP
+  POPUP "Play Button"
+    MENUITEM "&Play/restart	Click",  40045
+    MENUITEM "Open &URL...	Ctrl+Click",  40155
+    MENUITEM "Open &file...	Shift+Click",  40145
+  ENDPOPUP
+  POPUP "Pause button"
+    MENUITEM "&Pause/Unpause	Click",  40046
+  ENDPOPUP
+  POPUP "Stop button"
+    MENUITEM "&Stop	Click",  40047
+    MENUITEM "Stop w/&fadeout	Shift+Click",  40147
+    MENUITEM "Stop after &current	Ctrl+Click",  40157
+  ENDPOPUP
+  POPUP "Next button"
+    MENUITEM "&Next	Click",  40048
+    MENUITEM "&Fastforward 5 seconds	Shift+Click",  40148
+    MENUITEM "&End of list	Ctrl+Click",  40158
+  ENDPOPUP
+  POPUP "Eject button"
+    MENUITEM "Open &file...	Click",  40029
+    MENUITEM "Open f&older...	Shift+Click",  40187
+    MENUITEM "Open &URL...	Ctrl+Click",  40185
+  ENDPOPUP
+  POPUP "Seek bar"
+    MENUITEM "&Jump to time	Ctrl+J",  40193
+    MENUITEM "&Rewind 5 seconds	Left Arrow",  40061
+    MENUITEM "&Forward 5 seconds	Right Arrow",  40060
+  ENDPOPUP
+  POPUP "Shuffle"
+    MENUITEM "&Shuffle	S",  40023
+  ENDPOPUP
+  POPUP "Repeat"
+    MENUITEM "&Repeat	R",  40022
+    MENUITEM "&Manual Playlist Advance	Shift+R",  40395
+  ENDPOPUP
+  POPUP "EQ button"
+    MENUITEM "Graphical E&qualizer	Alt+G",  40036
+  ENDPOPUP
+  POPUP "PE button"
+    MENUITEM "Playlist &Editor	Alt+E",  40040
+  ENDPOPUP
+  POPUP "VideoWnd"
+ENDPOPUP
+  MENUITEM "&Fullscreen	Alt+Enter",  40329
+  MENUITEM SEPARATOR
+  MENUITEM "&Normal size	1",  40330
+  MENUITEM "&Half size	` or 3",  40332
+  MENUITEM "&Double size	2",  40331
+  MENUITEM SEPARATOR
+  MENUITEM "Vertically &flip	Shift+F",  40465
+  MENUITEM SEPARATOR
+  POPUP "&Audio track"
+    MENUITEM "Track 1",  40408
+  ENDPOPUP
+  POPUP "&Video track"
+    MENUITEM "Track 1",  40424
+  ENDPOPUP
+  MENUITEM SEPARATOR
+  MENUITEM "Video &options...",  40333
+ENDPOPUP
+POPUP "EQContext"
+  POPUP "enbut"
+    MENUITEM "&EQ enabled	N",  40244
+  ENDPOPUP
+  POPUP "albut"
+ENDPOPUP
+  MENUITEM "&EQ autoloading enabled	A",  40245
+ENDPOPUP
+POPUP "Prefs"
+ENDPOPUP
+POPUP "Skin"
+  MENUITEM "&Switch to skin",  40386
+  MENUITEM SEPARATOR
+  MENUITEM "&Rename skin...",  40388
+  MENUITEM "&Delete skin...",  40387
+ENDPOPUP
+POPUP "Lang"
+ENDPOPUP
+MENUITEM "&Switch to language pack",  40458
+MENUITEM SEPARATOR
+MENUITEM "&Rename language pack...",  40459
+MENUITEM "&Delete language pack...",  40460
+ENDPOPUP

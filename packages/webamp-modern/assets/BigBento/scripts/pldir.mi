@@ -1,0 +1,96 @@
+//----------------------------------------------------------------------------------------------------------------
+// pldir.mi
+//
+// standard handles for PlEdit manipulation
+//----------------------------------------------------------------------------------------------------------------
+
+
+extern class @{345BEEBC-0229-4921-90BE-6CB6A49A79D9}@ Object _predecl &PlEdit;	// Our Winamp Playlist Editor
+extern class @{61A7ABAD-7D79-41f6-B1D0-E1808603A4F4}@ Object _predecl PlDir;	// <PlEditDirectory/>
+
+
+
+//*****************************************************************************
+// PlEdit CLASS
+//*****************************************************************************
+/**
+ PlEdit Class.
+
+ @short    Our main PlEdit Editor.
+ @author   Nullsoft Inc.
+ @ver      1.0
+*/
+
+		// General PlEdit Information
+extern	int	PlEdit.getNumTracks ();				// Returns total number of tracks
+extern	int	PlEdit.getCurrentIndex ();			// Index of the currently Playing Item
+extern	int	PlEdit.getNumSelectedTracks ();
+extern	int	PlEdit.getNextSelectedTrack (int i);
+
+
+		// Manipulate PlEdit View
+extern		PlEdit.showCurrentlyPlayingTrack ();		// Scrolls the PL to the currently playling item (mostly used with onKeyDown: space)
+extern		PlEdit.showTrack (int item);
+
+		// Manipulate PlEdit Entries
+extern		PlEdit.enqueueFile (string file);		// Enqueues a file at the end of the PL
+extern		PlEdit.clear ();
+extern		PlEdit.removeTrack (int item);			// Removes a specific Track from PL
+extern		PlEdit.swapTracks (int item1, int item2);	// Changes the position of item1 and item2
+extern		PlEdit.moveUp (int item);			// Moves item one position up
+extern		PlEdit.moveDown (int item);			// Moves item one position down
+extern		PlEdit.moveTo (int item, int pos);		// Moves an item to a new position in our PlEdit (this one is faster as calling multiple swaps in maki)
+extern		PlEdit.playTrack (int item);
+
+
+		// Metadata Stuff
+extern	int	PlEdit.getRating (int item);
+extern		PlEdit.setRating (int item, int rating);	// Sets Rating of track #item to a value from 0-5
+extern	String	PlEdit.getTitle (int item);
+extern	String	PlEdit.getLength (int item);
+extern	String	PlEdit.getMetaData (int item, String metadatastring);	// You know the metadata strings, don't you?
+extern	String	PlEdit.getFileName (int item);
+
+/**
+ Hookable.
+ You need to instanciate a PlEdit object first. so basically it goes like this:
+
+ Global PlEdit PeListener;
+
+ System.onScriptLoaded ()
+ {
+	PeListener = new PlEdit;
+ }
+
+ PeListener.onPleditModified ()
+ {
+	// Do some crazy stuff
+ }
+*/
+extern		PlEdit.onPleditModified	();
+
+//*****************************************************************************
+// PlDir CLASS
+//*****************************************************************************
+/**
+ PlDir Class.
+
+ @short    Handles for the <PlEditDirectory/> XML object and ML PlEdits view.
+ @author   Nullsoft Inc.
+ @ver      1.0
+*/
+
+		// General PlEdits Information
+extern	int	PlDir.getNumItems ();				// Returns total number of stored PlEdits in your ml
+extern	String	PlDir.getItemName (int item);
+
+		// Manipulate PlDir View
+extern		PlDir.showCurrentlyPlayingEntry ();		// Backwards Compatibility (wa3 relict), does the same as PlEdit.showCurrentlyPlayingTrack ()
+extern		PlDir.refresh();				// Not working 100% on ml lists
+
+		// Manipulate PlDir Entries
+extern		PlDir.renameItem (int item, String name);
+
+		// Playback funtions
+extern		PlDir.enqueueItem (int item);
+extern		PlDir.playItem (int item);

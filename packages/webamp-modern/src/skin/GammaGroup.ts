@@ -1,5 +1,6 @@
 import { clamp, normalizeDomId, num } from "../utils";
-import { glTransformImage } from "./GammaWebGL";
+import Bitmap from "./Bitmap";
+// import { glTransformImage } from "./GammaWebGL";
 
 // https://www.pawelporwisz.pl/winamp/wct_en.php
 export default class GammaGroup {
