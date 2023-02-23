@@ -1,0 +1,64 @@
+<include file="player-elements.xml"/>
+
+<container id="main" name="Main Window" primarycomponent="guid:player">
+
+	<include file="player-normal.xml"/>
+	<include file="player-shade.xml"/>
+
+</container>
+
+<container id="browser.quicklink.edit.dialog2" name="Edit Quicklink" dynamic="1" default_visible="0" nomenu="1" >
+
+	<groupdef id="browser.quicklink.content">
+
+		<text x="5" y="3" text="Store Quick Link in:" color="color.window.txt" ghost="1" antialias="0"/>
+
+		<wasabi:Combobox id="edit.parent" x="5" y="20" w="-10" h="20" relatw="1" maxitems="5"/>
+
+		<text x="5" y="43" text="Quick Link Name:" color="color.window.txt" ghost="1" antialias="0"/>
+
+		<wasabi:editbox id="edit.name" x="5" y="60" w="-10" h="20" relatw="1"/>
+
+		<text x="5" y="83" text="Quick Link URL:" color="color.window.txt" ghost="1" antialias="0"/>
+
+		<wasabi:editbox id="edit.url" x="5" y="100" w="-10" h="20" relatw="1"/>
+
+		<wasabi:button x="5" y="128" w="-10" h="19" relatw="1" text="OK" id="return.values"/>
+
+	</groupdef>
+
+	<layout id="normal" noparent="1" ontop="1" noactivation="1" minimum_h="194" minimum_w="300" maximum_h="194" maximum_w="300" lockminmax="1" nodock="1" move="0" >
+
+		<Wasabi:StandardFrame:Static
+			fitparent="1"
+			regionop="1"
+			content="browser.quicklink.content"
+		/>
+
+	</layout>
+
+</container>
+
+<container id="browser.submenu.edit2" name="Edit Submenu" dynamic="1" default_visible="0" nomenu="1" >
+
+	<groupdef id="browser.submenu.content">
+
+		<text x="5" y="2" text="Submenu Name:" color="color.window.txt" ghost="1" antialias="0"/>
+
+		<wasabi:editbox id="edit.name" x="5" y="20" w="-10" h="20" relatw="1"/>
+
+		<wasabi:button x="5" y="48" w="-10" h="19" relatw="1" text="OK" id="return.values"/>
+
+	</groupdef>
+
+	<layout id="normal" noparent="1" ontop="1" noactivation="1" minimum_h="114" minimum_w="300" maximum_h="114" maximum_w="300" lockminmax="1" nodock="1" move="0" >
+
+		<Wasabi:StandardFrame:Static
+			fitparent="1"
+			regionop="1"
+			content="browser.submenu.content"
+		/>
+
+	</layout>
+
+</container>

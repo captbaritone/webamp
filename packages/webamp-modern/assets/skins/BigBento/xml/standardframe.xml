@@ -1,0 +1,152 @@
+<!-- =======================================================================================================
+
+  This group serves as a template for all the Wasabi:StandardFrame objects
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.frame.layout">
+
+	<layer x="0" y="0" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="-1" relatx="1" y="0" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="0" y="-1" relaty="1" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="-1" relatx="1" y="-1" relaty="1" h="1" w="1" image="window.background.region" regionop="-2" />
+
+	<grid 
+		x="0" y="0" h="23" w="0" relatw="1" regionop="1"
+		left="window.titlebar.grid.left"
+		middle="window.titlebar.grid.middle"
+		right="window.titlebar.grid.right"
+	/>
+	<grid 
+		x="0" y="0" h="23" w="0" relatw="1" regionop="1"
+		left="window.titlebar.grid.over.left"
+		middle="window.titlebar.grid.over.middle"
+		right="window.titlebar.grid.over.right"
+	/>
+
+	<layer x="0" y="0" h="23" w="0" relatw="1" move="1" />
+
+	<text id="componentname" x="27" y="5" w="-77" h="14" relatw="1" size="10" bold="1" default=":componentname" ghost="1" color="wasabi.titlebar.color" font="Arial" align="left" forceuppercase="1" antialias="1"/>
+
+	<layer x="0" y="23" w="5" h="5" image="window.background.topleft" resize="left" regionop="1"/>
+	<layer x="5" y="23" w="-10" relatw="1" h="5" image="window.background.top" regionop="1"/>
+	<layer x="-5" relatx="1" y="23" w="5" h="5" image="window.background.topright" resize="right" regionop="1"/>
+	<layer x="0" y="28" w="5" h="-33" relath="1" image="window.background.left" resize="left" regionop="1"/>
+	<layer x="5" y="28" w="-10" relatw="1" h="-33" relath="1" image="window.background.center" move="1" regionop="1"/>
+	<layer x="-5" relatx="1" y="28" w="5" h="-33" relath="1" image="window.background.right" resize="right" regionop="1"/>
+	<layer x="0" y="-5" relaty="1" w="5" h="5" image="window.background.bottomleft" resize="bottomleft" id="player.resizer.bottomleft" regionop="1"/>
+	<layer x="5" y="-5" relaty="1" w="-10" relatw="1" h="5" image="window.background.bottom" resize="bottom" id="player.resizer.bottom" regionop="1"/>
+	<layer x="-5" relatx="1" y="-5" relaty="1" w="5" h="5" image="window.background.bottomright" regionop="1"/>
+	<layer x="-26" y="-15" w="19" h="10" relaty="1" relatx="1" image="window.background.resizer" id="player.resizer.bottomright" rectrgn="1" regionop="1"/>
+	<layer x="-26" y="-15" w="26" h="11" relaty="1" relatx="1" resize="bottomright" id="player.resizer.bottomright.dummy" rectrgn="1" />
+
+	<layer id="window.resize.disabler" fitparent="1" move="1" visible="0"/>
+
+	<button 
+		x="-44" relatx="1" y="5" h="13" w="17" visible="0"
+		id="restore"
+		image="window.titlebar.button.restore.normal"
+		hoverImage="window.titlebar.button.restore.hover"
+		downImage="window.titlebar.button.restore.down"
+		tooltip="Restore Window"
+	/>
+
+	<button 
+		x="-44" relatx="1" y="5" h="13" w="17"
+		id="maximize"
+		image="window.titlebar.button.maximize.normal"
+		hoverImage="window.titlebar.button.maximize.hover"
+		downImage="window.titlebar.button.maximize.down"
+		tooltip="Maximize Window"
+	/>
+
+	<button 
+		x="7" y="5" h="13" w="15"
+		action="SYSMENU" 
+		image="window.titlebar.button.sysmenu.normal"
+		hoverImage="window.titlebar.button.sysmenu.hover"
+		downImage="window.titlebar.button.sysmenu.down"
+		tooltip="Main Menu"
+	/>
+
+	<button 
+		x="-24" relatx="1" y="5" h="13" w="17"
+		action="CLOSE"
+		image="window.titlebar.button.close.normal"
+		hoverImage="window.titlebar.button.close.hover"
+		downImage="window.titlebar.button.close.down"
+		tooltip="Close Window"
+	/>
+
+   <LayoutStatus id="sysmenu.status" bg="0" x="5" y="2" h="13" w="15" includeonly="{system}" />
+   <hideobject target="sysmenu.status"/>
+
+   <script file="scripts/simplemaximize.maki"/>
+
+ </groupdef>
+
+
+
+
+<!-- =======================================================================================================
+
+  <Wasabi:StandardFrame:Status /> implementation
+
+======================================================================================================== -->
+
+ <groupdef id="wasabi.standardframe.statusbar" background="wasabi.frame.basetexture" sysregion="1" xuitag="Wasabi:StandardFrame:Status">
+
+  <group id="wasabi.frame.layout" x="0" y="0" w="0" relatw="1" h="0" relath="1"/>
+
+  <LayoutStatus id="standardframe.layoutstatus" x="5" y="-33" relaty="1" w="-10" relatw="1" h="18" exclude="{system}" />
+  <script id="standardframe.script" file="scripts/standardframe.maki" param="5,26,-10,-63,0,0,1,1" />
+
+</groupdef>
+
+
+
+
+<!-- =======================================================================================================
+
+  <Wasabi:StandardFrame:NoStatus /> implementation
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.standardframe.nostatusbar" background="wasabi.frame.basetexture" sysregion="1" xuitag="Wasabi:StandardFrame:NoStatus">
+
+  <group id="wasabi.frame.layout" x="0" y="0" w="0" h="0" relatw="1" relath="1"/>
+
+  <script id="standardframe.script" file="scripts/standardframe.maki" param="5,26,-10,-45,0,0,1,1" />
+
+</groupdef>
+
+
+
+
+
+<!-- =======================================================================================================
+
+  <Wasabi:StandardFrame:Modal /> implementation
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.standardframe.modal" inherit_group="wasabi.standardframe.nostatusbar" background="wasabi.frame.basetexture" sysregion="1" xuitag="Wasabi:StandardFrame:Modal">
+  <sendparams target="window.resize.disabler" visible="1" />
+  <sendparams target="player.resizer.bottomright" visible="0" />
+  <sendparams target="restore" visible="0" />
+  <sendparams target="maximize" visible="0" />
+</groupdef>
+
+
+<!-- =======================================================================================================
+
+  <Wasabi:StandardFrame:Static /> implementation
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.standardframe.static" inherit_group="wasabi.standardframe.nostatusbar" background="wasabi.frame.basetexture" sysregion="1" xuitag="Wasabi:StandardFrame:Static">
+  <sendparams target="window.resize.disabler" visible="1" />
+  <sendparams target="player.resizer.bottomright" visible="0" />
+  <sendparams target="restore" visible="0" />
+  <sendparams target="maximize" visible="0" />
+</groupdef>

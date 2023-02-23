@@ -1,0 +1,61 @@
+<elements>
+
+	<!-- Generic Trees -->
+	<color id="studio.tree.text" value="255,255,255"/>
+	<color id="studio.tree.selected" value="0,0,0"/>
+	<color id="studio.tree.hilited" value="255,255,255"/>
+	<color id="studio.tree.hiliteddrop" value="255,255,255"/>
+
+	<!-- Generic Lists -->
+	<color id="studio.list.text" value="255,255,255"/>
+	<color id="studio.list.item.selected" value="0,67,120"/>
+	<color id="studio.list.item.focused" value="57,95,130"/>
+	<color id="studio.list.column.background" value="0,0,0"/>
+	<color id="studio.list.column.text" value="178,178,178"/>
+	<color id="studio.list.column.separator" value="0,0,0"/>
+	<color id="studio.list.item.selected.fg" value="255,255,255" />
+
+	<!-- Item Lists -->
+	<color id="common.itemlist.outline.current" value="255,255,255"/>
+	<color id="common.itemlist.outline.focus" value="212,230,245"/>
+
+	<!-- playlist editor -->
+	<color id="pledit.text" value="255,255,255"/>
+	<color id="pledit.text.current" value="248,248,248"/>
+	<color id="pledit.currentoutline" value="120,178,193"/>
+	<color id="pledit.dir.plitem.currect" value="255,255,255"/>
+	<color id="pledit.dir.plitem" value="255,255,255" />
+	<color id="pledit.dir.working" value="57,95,130" />
+	<color id="pledit.dir.workingbg" value="81,117,124" />
+	<color id="pledit.text.readonly" value="200,200,200"/>
+
+	<!-- Message box -->
+	<color id="studio.msgBox.background" value="32,32,32"/>
+	<color id="studio.textBar.text" value="75,75,75"/>
+	<color id="studio.textBar.background" value="32,32,32"/>
+
+	<!-- Buttons -->
+	<color id="studio.button.text" value="0,0,0"/>
+	<color id="studio.button.hiliteText" value="75,75,75"/>
+	<color id="studio.button.dimmedText" value="120,120,120"/>
+
+	<!-- Popup menus -->
+	<color id="studio.popup.text" value="0,0,0"/>
+	<color id="studio.popup.hiliteText" value="255,255,255"/>
+	<color id="studio.popup.dimmedText" value="150,150,150"/>
+
+	<!-- Components -->
+	<color id="studio.status.text" value="212,230,245" />
+	<color id="studio.component.title.foreground" value="255,255,255"/>
+	<color id="studio.component.title.border" value="1,1,1"/>
+
+	<!-- labeled windows -->
+	<color id="common.labelwnd.foreground" value="212,230,245"/>
+	<color id="common.labelwnd.background" value="0,0,0"/>
+
+	<!-- edit wnds -->
+	<color id="wasabi.edit.selection" value="255,255,255" gammagroup="Backgrounds"/>
+	<color id="wasabi.edit.text" value="255,255,255" gammagroup="Text"/>
+	<color id="wasabi.edit.background" value="20,20,20" gammagroup="Backgrounds"/>
+
+</elements>

@@ -1,0 +1,340 @@
+<groupdef id="shade.cbuttons">
+
+	<Button id="Prev"
+		x="0" y="0" h="16" w="14" rectrgn="1"
+		image="shade.button.previous.normal"
+		hoverImage="shade.button.previous.hover"
+		downImage="shade.button.previous.down"
+		action="PREV" tooltip="Previous Track"
+	/>
+
+	<Button id="Play"
+		x="14" y="0" h="16" w="12" rectrgn="1"
+		image="shade.button.play.normal"
+		hoverImage="shade.button.play.hover"
+		downImage="shade.button.play.down"
+		action="PLAY" tooltip="Play"
+	/>
+
+	<Button id="Pause"
+		x="26" y="0" h="16" w="12" rectrgn="1"
+		image="shade.button.pause.normal"
+		hoverImage="shade.button.pause.hover"
+		downImage="shade.button.pause.down"
+		action="PAUSE" tooltip="Pause Playback"
+	/>
+
+	<Button id="Stop"
+		x="38" y="0" h="16" w="14" rectrgn="1"
+		image="shade.button.stop.normal"
+		hoverImage="shade.button.stop.hover"
+		downImage="shade.button.stop.down"
+		action="STOP" tooltip="Stop Playback"
+	/>
+
+	<Button id="Next"
+		x="52" y="0" h="16" w="14" rectrgn="1"
+		image="shade.button.next.normal"
+		hoverImage="shade.button.next.hover"
+		downImage="shade.button.next.down"
+		action="NEXT" tooltip="Next Track"
+	/>
+
+	<Button id="Eject"
+		x="72" y="0" h="16" w="15" rectrgn="1"
+		image="shade.button.eject.normal"
+		hoverImage="shade.button.eject.hover"
+		downImage="shade.button.eject.down"
+		action="EJECT" tooltip="Open File(s)"
+	/>
+</groupdef>
+
+<groupdef id="shade.display">
+
+	<grid 
+		x="0" y="0" h="18" w="-6" relatw="1" ghost="1"
+		left="shade.display.left"
+		middle="shade.display.middle"
+		right="shade.display.right"
+	/>
+
+	<text id="SongTime"
+		x="3" y="7" h="5" w="35" relatw="0" timeroffstyle="1" timecolonwidth="6"
+		display="time" align="left" font="player.bitmapfont.songinfo"
+	/>
+
+	<SongTicker id="Songticker" nograbb="1" move="1"
+		x="0" y="2" h="12" w="-8" relatw="1"
+		display="SONGTITLE" showlen="1" ticker="1" rightpadding="-3"
+		rightclickaction="trackmenu" dblclickaction="trackinfo" align="right"
+		color="color.display" fontsize="12" valign="top" bold="2"
+	/>
+	<text id="InfoDisplay" nograbb="1" move="1"
+		x="0" y="2" h="12" w="-8" relatw="1" offsetx="-3"
+		align="right" color="color.display" fontsize="12" valign="top" bold="2" ghost="1"
+	/>
+
+	<script file="scripts/songticker.maki" param="5,big" />
+
+</groupdef>
+
+<groupdef id="shade.vis">
+
+	<grid 
+		x="0" y="0" h="18" w="-6" relatw="1" ghost="1"
+		left="shade.display.left"
+		middle="shade.display.middle"
+		right="shade.display.right"
+	/>
+
+	<vis
+		id="main.vis"
+		x="4" y="4"
+		w="54" h="9"
+		colorbandpeak="162,193,204"
+		colorband1="82,97,102"
+		colorband2="74,88,93"
+		colorband3="78,92,97"
+		colorband4="83,97,104"
+		colorband5="88,102,107"
+		colorband6="94,107,112"
+		colorband7="100,113,118"
+		colorband8="106,120,125"
+		colorband9="112,121,131"
+		colorband10="117,131,136"
+		colorband11="122,137,142"
+		colorband12="127,141,146"
+		colorband13="131,145,150"
+		colorband14="136,150,155"
+		colorband15="140,154,159"
+		colorband16="145,159,164"
+		colorosc1="82,97,102"
+		colorosc2="83,97,104"
+		colorosc3="106,120,125"
+		colorosc4="127,141,146"
+		colorosc5="145,159,164"
+		gammagroup="Displaytext"
+	/>
+
+	<layer id="main.vis.trigger" x="2" y="3" h="11" w="58" rectrgn="1"/>
+
+	<script file="scripts/visualizer.maki"/>
+
+</groupdef>
+
+<groupdef id="shade.volume">
+
+	<button id="mute" x="0" y="0" w="16" h="16" 
+		image="shade.button.mute.normal"
+		hoverImage="shade.button.mute.hover"
+		downImage="shade.button.mute.down"
+		tooltip="Mute Volume"
+	/>
+	<button id="etum" x="0" y="0" w="16" h="16" 
+		image="shade.button.demute.normal"
+		hoverImage="shade.button.demute.hover"
+		downImage="shade.button.demute.down"
+		tooltip="Turn Volume on"
+		visible="0"
+	/>
+
+	<layer id="player.volume.label" x="20" y="1" image="shade.label.volume" ghost="1"/>
+
+	<layer id="shade.volume.bg"
+		x="17" y="5" h="5" w="40"
+		image="shade.track.volume"
+		ghost="1"
+	/>
+	
+	<grid id="player.volume.fill"
+		x="19" y="7" h="2" w="38"
+		left="player.slider.light.left"
+		middle="player.slider.light.center"
+		right="player.slider.light.right"
+	/>
+
+	<Slider
+		id="Volume"
+		action="Volume"
+		x="16" y="4" h="10" w="42"
+		thumb="shade.volume.thumb.normal"
+		hoverThumb="shade.volume.thumb.hover"
+		downThumb="shade.volume.thumb.down"
+		tooltip="Volume"
+	/>
+
+	<script file="scripts/mute.maki" param="38"/>
+	<!-- param = max_w for volume fillbar -->
+
+</groupdef>
+
+<groupdef id="shade.seek">
+
+	<grid id="player.seek.bg"
+		x="1" y="5" h="5" w="-5" relatw="1"
+		left="shade.track.seek.left"
+		middle="shade.track.seek.middle"
+		right="shade.track.seek.right"
+	/>
+
+	<ProgressGrid id="progressbar"
+		x="3" y="7" h="2" w="-7" relatw="1"
+		orientation="right"
+		left="player.slider.light.left"
+		middle="player.slider.light.center"
+		right="player.slider.light.right"
+	/>
+
+	<Slider
+		id="seeker"
+		action="SEEK"
+		x="0" y="4" h="10" w="-4" relatw="1"
+		thumb="shade.seek.thumb.normal"
+		hoverThumb="shade.seek.thumb.hover"
+		downThumb="shade.seek.thumb.down"
+		ghost="1"
+		visible="0"
+		tooltip="Seeker"
+	/>
+
+	<Slider
+		id="seeker.ghost"
+		action="SEEK"
+		x="0" y="4" h="10" w="-4" relatw="1"
+		thumb="shade.seek.thumb.normal"
+		hoverThumb="shade.seek.thumb.hover"
+		downThumb="shade.seek.thumb.down"
+		tooltip="Seeker"
+	/>
+
+	<script file="scripts/seek.maki"/>
+
+</groupdef>
+
+<groupdef id="shade.links">
+
+	<rect color="0,0,0" alpha="180" x="0" y="0" w="47" h="21" filled="1"/>
+
+	<button id="search" x="24" y="0" w="22" h="21" 
+		image="shade.button.search.normal"
+		hoverImage="shade.button.search.hover"
+		downImage="shade.button.search.down"
+		tooltip="Search the web for this artist"
+	/>
+	<layer id="search.bg" ghost="1" x="24" y="0" image="shade.button.icon.bg" />
+	<layer id="search.icon" ghost="1" x="24" y="0" image="shade.button.icon.search" />
+	<script file="scripts/syncbutton.maki" param="search;search.bg"/>
+	<script file="scripts/syncbutton.maki" param="search;search.icon"/>
+
+	<button id="nowplaying" x="1" y="0" w="22" h="21" 
+		image="shade.button.search.normal"
+		hoverImage="shade.button.search.hover"
+		downImage="shade.button.search.down"
+		tooltip="More information about this artist"
+	/>
+	<layer id="nowplaying.bg" ghost="1" x="1" y="0" image="shade.button.icon.bg" />
+	<layer id="nowplaying.icon" ghost="1" x="1" y="0" image="shade.button.icon.nowplaying" />
+	<script file="scripts/syncbutton.maki" param="nowplaying;nowplaying.bg"/>
+	<script file="scripts/syncbutton.maki" param="nowplaying;nowplaying.icon"/>
+
+	<script file="scripts/syncbutton.maki" param="nowplaying;nowplaying.icon"/>
+
+	<script file="scripts/shadelinks.maki"/>
+
+</groupdef>
+
+<layout id="shade" minimum_w="273" h="23" minimum_h="23" maximum_h="23" w="500" primarycomponent="guid:player" appbar="top|bottom">
+
+	<!-- Background -->
+
+	<group id="window.background.regions" fitparent="1" sysregion="1" />
+
+	<layer id="window.background.maximize" fitparent="1" image="window.background.maximized" sysregion="1" visible="0"/>
+
+	<grid 
+		x="0" y="0" h="23" w="0" relatw="1" regionop="1"
+		left="window.titlebar.grid.left"
+		middle="window.titlebar.grid.middle"
+		right="window.titlebar.grid.right"
+	/>
+	<grid 
+		x="0" y="0" h="23" w="0" relatw="1" regionop="1"
+		left="window.titlebar.grid.over.left"
+		middle="window.titlebar.grid.over.middle"
+		right="window.titlebar.grid.over.right"
+	/>
+
+	<layer x="35" y="7" image="window.titlebar.text.winamp" ghost="1" />
+
+	<guiobject fitparent="1" rectrgn="1" move="1" id="shade.mousetrap"/>
+
+	<!-- System Buttons -->
+
+	<button 
+		x="7" y="5" h="13" w="15"
+		action="SYSMENU" 
+		image="window.titlebar.button.sysmenu.normal"
+		hoverImage="window.titlebar.button.sysmenu.hover"
+		downImage="window.titlebar.button.sysmenu.down"
+		tooltip="Main Menu"
+	/>
+
+	<button 
+		x="-84" relatx="1" y="5" h="13" w="17"
+		id="shade.button.minimize"
+		action="MINIMIZE"
+		image="window.titlebar.button.minimize.normal"
+		hoverImage="window.titlebar.button.minimize.hover"
+		downImage="window.titlebar.button.minimize.down"
+		tooltip="Minimize Winamp"
+	/>
+
+	<button 
+		x="-64" relatx="1" y="5" h="13" w="17"
+		id="shade.button.restore"
+		image="window.titlebar.button.restore.normal"
+		hoverImage="window.titlebar.button.restore.hover"
+		downImage="window.titlebar.button.restore.down"
+		tooltip="Restore Winamp"
+	/>
+
+	<button 
+		x="-64" relatx="1" y="5" h="13" w="17"
+		id="shade.button.maximize"
+		image="window.titlebar.button.maximize.normal"
+		hoverImage="window.titlebar.button.maximize.hover"
+		downImage="window.titlebar.button.maximize.down"
+		tooltip="Maximize Winamp"
+	/>
+
+	<button 
+		x="-44" relatx="1" y="5" h="13" w="17"
+		action="SWITCH" param="normal" 
+		image="window.titlebar.button.shade.normal"
+		hoverImage="window.titlebar.button.shade.hover"
+		downImage="window.titlebar.button.shade.down"
+		tooltip="Main Mode"
+	/>
+
+	<button 
+		x="-24" relatx="1" y="5" h="13" w="17"
+		action="CLOSE"
+		image="window.titlebar.button.close.normal"
+		hoverImage="window.titlebar.button.close.hover"
+		downImage="window.titlebar.button.close.down"
+		tooltip="Exit Winamp"
+	/>
+
+	<layer x="-6" y="2" w="5" h="18" rectrgn="1" relatx="1" resize="right" image="shade.resizer.right" id="shade.resizer.right"/>
+	<layer x="-6" y="0" w="6" h="23" rectrgn="1" relatx="1" resize="right" id="shade.resizer.right2"/>
+
+	<group id="shade.display" x="163" y="3" w="100" h="18" visible="0"/>
+	<group id="shade.cbuttons" x="93" y="4" w="96" h="16"/>
+	<group id="shade.volume" x="163" y="4" w="65" h="16" visible="0"/>
+	<group id="shade.seek" x="-151" relatx="1" y="4" w="63" h="16" visible="0"/>
+	<group id="shade.vis" x="96" y="3" w="67" h="16" visible="0"/>
+	<group id="shade.links" x="0" y="1" w="51" h="21" relatx="1" visible="0"/>
+
+	<script file="scripts/shadesize.maki" param="90" />
+
+</layout>

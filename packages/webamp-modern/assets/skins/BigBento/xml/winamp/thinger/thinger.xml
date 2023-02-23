@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+<elements>
+  <bitmap id="winamp.thinger.library.hilited" file="library-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.library.selected" file="library-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.library" file="library-unselected.png" gammagroup="Thinger icons"/> 
+  
+  <bitmap id="winamp.thinger.video.hilited" file="video-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.video.selected" file="video-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.video" file="video-unselected.png" gammagroup="Thinger icons"/> 
+  
+  <bitmap id="winamp.thinger.pledit.hilited" file="pledit-hover.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.pledit.selected" file="pledit-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.pledit" file="pledit-unselected.png" gammagroup="Thinger icons"/> 
+
+  <bitmap id="winamp.thinger.vis.hilited" file="vis-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.vis.selected" file="vis-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.vis" file="vis-unselected.png" gammagroup="Thinger icons"/> 
+ 
+</elements>
+</WinampAbstractionLayer>

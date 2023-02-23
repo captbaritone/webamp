@@ -1,0 +1,475 @@
+<elements>
+
+<!-- Player Backgrounds/Overlays -->
+	<bitmap id="player.bgbase" file="player/bg.png" x="0" y="0" h="216" w="581" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.bgbase.overlay" file="player/bgoverlay.png" x="0" y="0" h="216" w="381" gammagroup="Backgrounds"/>
+	<bitmap id="player.bgbase.overlayx" file="player/bgoverlay_x.png" x="0" y="0" h="216" w="381" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.eq.bg" file="player/eqbg.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+	<bitmap id="player.eq.bgx" file="player/eqbgx.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.eq.buttonoverlay" file="player/eqbuttonoverlay.png" x="0" y="0" h="174" w="34" gammagroup="Backgrounds"/>
+	<bitmap id="player.eq.buttonoverlayx" file="player/eqbuttonoverlayx.png" x="0" y="0" h="174" w="34" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.visd.bg" file="player/visdbg.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+	<bitmap id="player.visd.bgx" file="player/visdbgx.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+
+
+	<bitmap id="player.vis.bg" file="player/visbg.png" x="0" y="0" h="65" w="121" gammagroup="Display"/>
+	<bitmap id="player.ct.bg" file="player/ct_bg.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+	<bitmap id="player.ct.bgx" file="player/ct_bgx.png" x="0" y="0" h="169" w="232" gammagroup="Backgrounds"/>
+	<bitmap id="player.vis.bg2" file="player/visbg2.png" x="0" y="0" h="61" w="121" gammagroup="Display"/>
+	<bitmap id="player.vis.overlay" file="player/visoverlay.png" x="0" y="0" h="56" w="110" gammagroup="Display"/>
+	<bitmap id="player.vis.overlay3" file="player/visoverlay2.png" x="0" y="0" h="56" w="110" gammagroup="Display"/>
+	<bitmap id="player.title.overlay" file="player/titleoverlay.png" x="0" y="0" h="27" w="203" gammagroup="Display"/>
+	<bitmap id="player.title.overlay2" file="player/titleoverlay2.png" x="0" y="0" h="27" w="203" gammagroup="Display"/>
+	<bitmap id="player.frontcover" file="player/front.png" x="0" y="0" h="216" w="308" gammagroup="Frontcover"/>
+
+	<bitmap id="player.ct.overlay" file="player/ctlayer.png" x="0" y="0" h="126" w="31" gammagroup="Backgrounds"/>
+	<bitmap id="player.ct.overlayx" file="player/ctlayerx.png" x="0" y="0" h="126" w="31" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.ct.listbg" file="player/ctlistbg.png" x="0" y="0" h="120" w="168" gammagroup="Backgrounds"/>
+	<bitmap id="player.ct.listbgx" file="player/ctlistbgx.png" x="0" y="0" h="120" w="168" gammagroup="Backgrounds"/>
+
+	<bitmap id="player.ctdummy1" file="player/ctdummy1.png" x="0" y="0" h="75" w="152" gammagroup="Display"/>
+	<bitmap id="player.ctdummy2" file="player/ctdummy2.png" x="0" y="0" h="100" w="165" gammagroup="Buttons"/>
+	<bitmap id="player.ctdummy3" file="player/ctdummy3.png" x="0" y="0" h="42" w="107" gammagroup="Backgrounds"/>
+
+<!-- Player ToggleButtons -->
+	<bitmap id="player.button.crossfade" file="player/b_toggle.png" x="0" y="0" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.crossfade.down" file="player/b_toggle.png" x="40" y="0" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.shuffle" file="player/b_toggle.png" x="2" y="25" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.shuffle.down" file="player/b_toggle.png" x="42" y="25" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.repeat" file="player/b_toggle.png" x="6" y="50" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.repeat.down" file="player/b_toggle.png" x="46" y="50" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.display.labels" file="player/displaylabels.png" x="0" y="0" h="49" w="28" gammagroup="DisplayLabel"/>
+	<bitmap id="player.togglies.crossfade.on" file="player/crossfade.png" x="0" y="0" h="9" w="39" gammagroup="DisplayLabel"/>
+	<bitmap id="player.togglies.shuffle.on" file="player/shuffle.png" x="0" y="0" h="9" w="31" gammagroup="DisplayLabel"/>
+	<bitmap id="player.togglies.repeat.on" file="player/repeat.png" x="0" y="0" h="9" w="27" gammagroup="DisplayLabel"/>
+
+<!-- Player MainButtons -->
+	<bitmap id="player.button.open" file="player/b_open.png" x="0" y="0" h="28" w="28" gammagroup="Buttons"/>
+	<bitmap id="player.button.open.down" file="player/b_opend.png" x="0" y="0" h="28" w="28" gammagroup="Buttons"/>
+	<bitmap id="player.button.minimize" file="player/winbuttons.png" x="0" y="0" h="12" w="12" gammagroup="Buttons"/>
+	<bitmap id="player.button.minimize.down" file="player/winbuttons.png" x="0" y="40" h="12" w="12" gammagroup="Buttons"/>
+	<bitmap id="player.button.close" file="player/winbuttons.png" x="17" y="0" h="17" w="17" gammagroup="Buttons"/>
+	<bitmap id="player.button.close.down" file="player/winbuttons.png" x="17" y="40" h="17" w="17" gammagroup="Buttons"/>
+	<bitmap id="player.button.small" file="player/winbuttons.png" x="4" y="15" h="13" w="13" gammagroup="Buttons"/>
+	<bitmap id="player.button.small.down" file="player/winbuttons.png" x="4" y="55" h="13" w="13" gammagroup="Buttons"/>
+	<bitmap id="player.button.play" file="player/main_buttons.png" x="142" y="0" h="33" w="32" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.play.down" file="player/main_buttons.png" x="142" y="90" h="33" w="32" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.pause" file="player/main_buttons.png" x="462" y="27" h="20" w="20" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.pause.down" file="player/main_buttons.png" x="462" y="117" h="20" w="20" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.stop" file="player/main_buttons.png" x="0" y="0" h="33" w="31" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.stop.down" file="player/main_buttons.png" x="0" y="90" h="33" w="31" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.prev" file="player/main_buttons.png" x="220" y="34" h="30" w="31" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.prev.down" file="player/main_buttons.png" x="220" y="124" h="30" w="31" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.next" file="player/main_buttons.png" x="362" y="34" h="30" w="32" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.next.down" file="player/main_buttons.png" x="362" y="124" h="30" w="32" gammagroup="ButtonsFront"/>
+	<bitmap id="player.button.sys" file="player/b_sys.png" x="0" y="0" h="11" w="22" gammagroup="Backgrounds"/>
+	<bitmap id="player.button.sys.down" file="player/b_sys.png" x="0" y="20" h="11" w="22" gammagroup="Backgrounds"/>
+	<bitmap id="player.button.pos" file="player/b_pos.png" x="0" y="1" h="16" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.pos.down" file="player/b_pos.png" x="0" y="1" h="16" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.cfg.down" file="player/b_cfg.png" x="0" y="0" h="14" w="14" gammagroup="Buttons"/>
+	<bitmap id="player.button.cfg" file="player/b_cfg.png" x="30" y="0" h="14" w="14" gammagroup="Buttons"/>
+
+<!-- SliderButtons -->
+	<bitmap id="player.button.eqs" file="player/b_eqb.png" x="0" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.eqs.down" file="player/b_eqb.png" x="40" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.eqs2" file="player/b_eqb2.png" x="0" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.eqs2.down" file="player/b_eqb2.png" x="40" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.viss" file="player/b_visb.png" x="0" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.viss.down" file="player/b_visb.png" x="40" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.viss2" file="player/b_visb2.png" x="0" y="0" h="20" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.viss2.down" file="player/b_visb2.png" x="40" y="0" h="20" w="20" gammagroup="Buttons"/>
+
+	<bitmap id="player.button.ct" file="player/b_colortheme.png" x="0" y="0" h="59" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.ct.down" file="player/b_colortheme.png" x="60" y="0" h="59" w="22" gammagroup="Buttons"/>
+
+	<bitmap id="player.button.ctbig" file="player/b_ctbig.png" x="0" y="30" h="17" w="20" gammagroup="Buttons"/>
+	<bitmap id="player.button.ctbig.down" file="player/b_ctbig.png" x="0" y="0" h="17" w="20" gammagroup="Buttons"/>
+
+	<bitmap id="player.button.ctx" file="player/b_colorthemex.png" x="0" y="0" h="59" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.ctx.down" file="player/b_colorthemex.png" x="60" y="0" h="59" w="22" gammagroup="Buttons"/>
+
+	<bitmap id="player.button.ct2x" file="player/b_colortheme2x.png" x="0" y="0" h="59" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.ct2x.down" file="player/b_colorthemex.png" x="60" y="0" h="59" w="22" gammagroup="Buttons"/>
+
+	<bitmap id="player.button.ct2" file="player/b_colortheme2.png" x="0" y="0" h="59" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.ct2.down" file="player/b_colortheme2.png" x="60" y="0" h="59" w="22" gammagroup="Buttons"/>
+	<bitmap id="player.button.switch" file="player/b_switch.png" x="0" y="30" h="12" w="34" gammagroup="Buttons"/>
+	<bitmap id="player.button.switch.down" file="player/b_switch.png" x="0" y="0" h="12" w="34" gammagroup="Buttons"/>
+
+
+<!-- Advanced VISualisation	 -->
+	<bitmap id="player.button.visbbg1.down" file="player/visbuttons.png" x="1" y="1" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg1" file="player/visbuttons.png" x="1" y="111" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg2.down" file="player/visbuttons.png" x="41" y="1" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg2" file="player/visbuttons.png" x="41" y="111" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg3.down" file="player/visbuttons.png" x="1" y="36" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg3" file="player/visbuttons.png" x="1" y="146" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg4.down" file="player/visbuttons.png" x="41" y="36" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg4" file="player/visbuttons.png" x="41" y="146" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg5.down" file="player/visbuttons.png" x="1" y="71" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg5" file="player/visbuttons.png" x="1" y="181" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg6.down" file="player/visbuttons.png" x="41" y="71" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbbg6" file="player/visbuttons.png" x="41" y="181" h="29" w="29" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg1.down" file="player/visbuttons.png" x="81" y="1" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg1" file="player/visbuttons.png" x="81" y="111" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg3.down" file="player/visbuttons.png" x="81" y="36" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg3" file="player/visbuttons.png" x="81" y="146" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg5.down" file="player/visbuttons.png" x="81" y="71" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.button.visbfg5" file="player/visbuttons.png" x="81" y="181" h="29" w="42" gammagroup="Buttons"/>
+	<bitmap id="player.vis.ani1" file="player/box-anim.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.ani2" file="player/cc0-anim2.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.ani3" file="player/mmd3b00000-anim.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.ani4" file="player/boxesb0000-anim.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.ani5" file="player/kugellicht0000-anim.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.ani6" file="player/boxesc0000-anim.png" gammagroup="VISDisplay"/>
+	<bitmap id="player.vis.hint" file="player/vishint.png" x="0" y="0" h="56" w="110" gammagroup="Display"/>
+
+<!-- EQ -->
+	<bitmap id="player.button.eqonoff" file="player/b_eq2.png" x="0" y="0" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.eqonoff.down" file="player/b_eq2.png" x="0" y="40" h="19" w="19" gammagroup="Buttons"/>
+	<bitmap id="player.button.auto" file="player/b_eq2.png" x="47" y="0" h="19" w="30" gammagroup="Buttons"/>
+	<bitmap id="player.button.auto.down" file="player/b_eq2.png" x="47" y="40" h="19" w="30" gammagroup="Buttons"/>
+	<bitmap id="player.button.presets" file="player/b_eq2.png" x="105" y="2" h="17" w="37" gammagroup="Buttons"/>
+	<bitmap id="player.button.presets.down" file="player/b_eq2.png" x="105" y="42" h="17" w="37" gammagroup="Buttons"/>
+	<bitmap id="player.main.eq.knob.down" file="player/b_eq.png" x="0" y="0" h="21" w="14" gammagroup="Buttons"/>
+	<bitmap id="player.main.eq.knob" file="player/b_eq.png" x="28" y="0" h="21" w="14" gammagroup="Buttons"/>
+	<bitmap id="player.main.eq.knob2.down" file="player/b_eq3.png" x="1" y="2" h="11" w="9" gammagroup="Buttons"/>
+	<bitmap id="player.main.eq.knob2" file="player/b_eq3.png" x="11" y="2" h="11" w="9" gammagroup="Buttons"/>
+	<bitmap id="player.main.eq.cfdisplay" file="player/cfdisplay.png" x="0" y="0" h="14" w="18" gammagroup="Display"/>
+
+<!-- LED -->
+	<bitmap id="player.led.on" file="player/led_on.png" x="0" y="0" h="14" w="14" gammagroup="LED"/>
+
+<!-- Volume/Bass/treble -->
+	<bitmap id="player.anim.volume" file="player/volume.png" gammagroup="ButtonsFront"/>
+	<bitmap id="player.anim.volumeled" file="player/volumeled.png" gammagroup="KnobLED"/>
+	<bitmap id="player.anim.volume2" file="player/volumedisplay.png" gammagroup="DisplayLabel"/>
+	<bitmap id="player.map.volume" file="player/map.png"/>
+	<bitmap id="player.map.volume2" file="player/map2.png"/>
+	<bitmap id="player.anim.bass" file="player/bass.png" gammagroup="ButtonsFront"/>
+	<bitmap id="player.anim.bassled" file="player/bassled.png" gammagroup="KnobLED"/>
+	<bitmap id="player.map.bass" file="player/bassmap.png"/>
+	<bitmap id="player.anim.treble" file="player/treble.png" gammagroup="ButtonsFront"/>
+	<bitmap id="player.anim.trebleled" file="player/trebleled.png" gammagroup="KnobLED"/>
+	<bitmap id="player.map.treble" file="player/treblemap.png"/>
+
+<!-- Display	 -->
+	<bitmap id="player.display" file="player/display.png" x="0" y="0" h="116" w="271" gammagroup="Display"/>
+	<bitmap id="player.display2" file="player/display2.png" x="0" y="0" h="116" w="271" gammagroup="Display"/>
+	<bitmap id="player.status.stop" file="player/stop.png" x="0" y="0" h="6" w="22" gammagroup="DisplayLabel"/>
+	<bitmap id="player.status.pause" file="player/pause.png" x="0" y="0" h="6" w="22" gammagroup="DisplayLabel"/>
+	<bitmap id="player.status.play" file="player/play.png" x="0" y="0" h="6" w="22" gammagroup="DisplayLabel"/>
+	<bitmap id="player.mono" file="player/mono.png" x="0" y="0" h="6" w="23" gammagroup="DisplayLabel"/>
+	<bitmap id="player.stereo" file="player/stereo.png" x="0" y="0" h="6" w="35" gammagroup="DisplayLabel"/>
+
+	<bitmap id="player.glow" file="player/glow.png" x="0" y="0" h="81" w="81" gammagroup="LED"/>
+
+
+<!-- Textlabels	 -->
+	<bitmap id="player.textlabel1" file="player/label1.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="player.textlabel2" file="player/label2.png" gammagroup="FrontcoverLabel"/>
+	<bitmap id="player.textlabel3" file="player/label3.png" gammagroup="FrontcoverLabel"/>
+	<bitmap id="player.textlabel4" file="player/label4.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="player.textlabel5" file="player/label5.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="player.textlabel6" file="player/label6.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="player.textlabel6x" file="player/label6x.png" gammagroup="BackgroundLabel"/>
+
+	<bitmap id="player.textlabel7" file="player/label7.png" gammagroup="CoverLabel"/>
+	<bitmap id="player.textlabel8" file="player/label8.png" gammagroup="CoverLabel"/>
+	<bitmap id="player.textlabel9" file="player/label9.png" gammagroup="CoverLabel"/>
+	<bitmap id="player.textlabel10" file="player/label10.png" gammagroup="CoverLabel"/>
+	<bitmap id="player.textlabel11" file="player/label11.png" gammagroup="MainLabel"/>
+	<bitmap id="player.textlabel12" file="player/label12.png" gammagroup="PosLabel"/>
+	<bitmap id="player.textlabel13" file="player/label13.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="player.textlabel14" file="player/label14.png" gammagroup="BackgroundLabel"/>
+
+<!-- Thinger -->
+	<bitmap id="player.thinger.main.lefta" file="player/thingerbuttons.png" x="0" y="20" w="15" h="15" gammagroup="ThingerButtons" />
+	<bitmap id="player.thinger.main.lefta.down" file="player/thingerbuttons.png" x="0" y="0" w="15" h="15" gammagroup="ThingerButtons" />
+	<bitmap id="player.thinger.main.righta" file="player/thingerbuttons.png"	x="18" y="20" w="15" h="15" gammagroup="ThingerButtons" />
+	<bitmap id="player.thinger.main.righta.down" file="player/thingerbuttons.png"	x="18" y="0" w="15" h="15" gammagroup="ThingerButtons" />
+	<bitmap id="player.thinger.overlay" file="player/thingeroverlay.png" x="0" y="0" h="68" w="67" gammagroup="Thinger"/>
+	<bitmap id="player.thinger" file="player/thinger.png" x="0" y="0" h="68" w="67" gammagroup="Thinger"/>
+
+<!-- Fonts -->
+	<bitmapfont id="player.ticker.font" file="player/tickerfont2.png" charwidth="10" charheight="21" hspacing="-1" vspacing="0" gammagroup="Display"/>
+	<bitmapfont id="player.ticker.font2" file="player/tickerfont3.png" charwidth="6" charheight="21" hspacing="-1" vspacing="0" gammagroup="Display"/>
+	<bitmapfont id="player.ticker.font3" file="player/tickerfont6.png" charwidth="5" charheight="21" hspacing="-1" vspacing="0" gammagroup="Display"/>
+	<bitmapfont id="player.ticker.font4" file="player/tickerfont4.png" charwidth="5" charheight="21" hspacing="-1" vspacing="0" gammagroup="Display"/>
+	<bitmapfont id="player.ticker.font7" file="player/tickerfont7.png" charwidth="5" charheight="21" hspacing="-1" vspacing="0" gammagroup="Display"/>
+	<bitmapfont id="player.time.font" file="player/numfont.png" charwidth="12" charheight="18" hspacing="0" vspacing="0"/>
+	<bitmapfont id="player.time.font3" file="player/numfont3.png" charwidth="8" charheight="12" hspacing="0" vspacing="0"/>
+	<bitmapfont id="player.title.font" file="player/titlefont.png" charwidth="10" charheight="20" hspacing="-5" vspacing="-9"/>
+	<bitmapfont id="player.minifont" file="player/minifont.png" charwidth="4" charheight="6" hspacing="0" vspacing="1" gammagroup="Thinger"/>
+
+<!-- Tooltip -->
+	<bitmap id="wasabi.tooltip.top.left" file="player/tooltips-elements.png" x="0" y="0" h="2" w="2" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.top" file="player/tooltips-elements.png" x="2" y="0" h="2" w="11" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.top.right" file="player/tooltips-elements.png" x="15" y="0" h="2" w="2" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.left" file="player/tooltips-elements.png" x="0" y="2" h="11" w="2" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.center" file="player/tooltips-elements.png" x="2" y="2" h="11" w="11" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.right" file="player/tooltips-elements.png" x="15" y="2" h="11" w="2" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.bottom.left" file="player/tooltips-elements.png" x="0" y="15" h="2" w="2" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.bottom" file="player/tooltips-elements.png" x="2" y="15" h="2" w="11" gammagroup="Buttons"/>
+	<bitmap id="wasabi.tooltip.bottom.right" file="player/tooltips-elements.png" x="15" y="15" h="2" w="2" gammagroup="Buttons"/>
+
+
+<!-- *************************************************************** -->
+<!-- PL-Shade -->
+<!-- *************************************************************** -->
+
+	<bitmap id="pl.bg" file="player/plbg.png" gammagroup="Backgrounds" />
+	<bitmap id="pl.left" file="player/plleft.png" gammagroup="Backgrounds" />
+	<bitmap id="pl.middle" file="player/plmiddle.png" gammagroup="Frontcover" />
+	<bitmap id="pl.right" file="player/plright.png" gammagroup="Backgrounds" />
+
+	<bitmap id="pl.left.front" file="player/plleftfront.png" gammagroup="Frontcover" />
+	<bitmap id="pl.middle.front" file="player/plmiddle.png" gammagroup="Frontcover" />
+	<bitmap id="pl.right.front" file="player/plrightfront.png" gammagroup="Frontcover" />
+
+	<bitmap id="pl.left.display" file="player/pldisplay.png" gammagroup="Display" x="0" y="0" w="25" h="15"/>
+	<bitmap id="pl.middle.display" file="player/pldisplay.png" gammagroup="Display" x="26" y="0" w="30" h="15"/>
+	<bitmap id="pl.right.display" file="player/pldisplay.png" gammagroup="Display" x="207" y="0" w="52" h="15"/>
+	<bitmap id="pl.left.display.ov" file="player/pldisplayoverlay.png" gammagroup="Display" x="0" y="0" w="25" h="15"/>
+	<bitmap id="pl.middle.display.ov" file="player/pldisplayoverlay.png" gammagroup="Display" x="26" y="0" w="30" h="15"/>
+	<bitmap id="pl.right.display.ov" file="player/pldisplayoverlay.png" gammagroup="Display" x="207" y="0" w="52" h="15"/>
+
+	<bitmap id="pl.button.bg" file="player/b_plsh_bg.png" gammagroup="Frontcover" />
+
+	<bitmap id="pl.button.small" file="player/winbuttons.png" x="4" y="15" h="13" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="pl.button.small.down" file="player/winbuttons.png" x="4" y="55" h="13" w="13" gammagroup="ButtonsFront"/>
+
+
+
+
+	<bitmap id="playershade.eq.bg" file="player-winshade/eq_bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade.eq.front" file="player-winshade/eq_front.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.config.bg" file="player-winshade/cfg_bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade.config.front" file="player-winshade/cfg_front.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.ct.bg" file="player-winshade/ct_bg.png" gammagroup="Backgrounds" />
+
+
+<!-- *************************************************************** -->
+<!-- Winshade -->
+<!-- *************************************************************** -->
+
+<!-- PlayerShade Backgrounds/Overlays -->
+	<bitmap id="playershade.bg" file="player-winshade/bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade.bgt" file="player-winshade/bg.png" x="0" y="0" h="23" w="800" gammagroup="Backgrounds" />
+	<bitmap id="playershade.front" file="player-winshade/front.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.eq.bg" file="player-winshade/eq_bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade.eq.front" file="player-winshade/eq_front.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.config.bg" file="player-winshade/cfg_bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade.config.front" file="player-winshade/cfg_front.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.ct.bg" file="player-winshade/ct_bg.png" gammagroup="Backgrounds" />
+
+	<bitmap id="playershade.pl.bg" file="player-winshade/plbg.png" gammagroup="Frontcover" />
+	<bitmap id="playershade.pl.display" file="player-winshade/pldisplay.png" gammagroup="Display" />
+
+<!-- PlayerShade MainButtons -->
+	<bitmap id="playershade.button.open" file="player-winshade/shadebuttons.png" x="114" y="11" h="8" w="19" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.open.down" file="player-winshade/shadebuttons.png" x="114" y="41" h="8" w="19" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.minimize" file="player-winshade/shadebuttons.png" x="0" y="0" h="13" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.minimize.down" file="player-winshade/shadebuttons.png" x="0" y="0" h="13" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.close" file="player-winshade/shadebuttons.png" x="0" y="0" h="16" w="16" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.close.down" file="player-winshade/shadebuttons.png" x="0" y="0" h="16" w="16" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.play" file="player-winshade/shadebuttons.png" x="182" y="6" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.play.down" file="player-winshade/shadebuttons.png" x="182" y="36" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pause" file="player-winshade/shadebuttons.png" x="197" y="6" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pause.down" file="player-winshade/shadebuttons.png" x="197" y="36" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.stop" file="player-winshade/shadebuttons.png" x="212" y="6" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.stop.down" file="player-winshade/shadebuttons.png" x="212" y="36" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.prev" file="player-winshade/shadebuttons.png" x="156" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.prev.down" file="player-winshade/shadebuttons.png" x="156" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.next" file="player-winshade/shadebuttons.png" x="237" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.next.down" file="player-winshade/shadebuttons.png" x="237" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+
+	<bitmap id="playershade.button.plb" file="player-winshade/shadebuttons.png" x="84" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.plb.down" file="player-winshade/shadebuttons.png" x="84" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.plb2" file="player-winshade/shadebuttons.png" x="26" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.plb2.down" file="player-winshade/shadebuttons.png" x="26" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+
+	<bitmap id="playershade.button.pos1" file="player-winshade/shadebuttons.png" x="279" y="0" h="7" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pos1.ghost" file="player-winshade/shadebuttons.png" x="279" y="30" h="7" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pos1.down" file="player-winshade/shadebuttons.png" x="279" y="30" h="7" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pos2" file="player-winshade/shadebuttons.png" x="279" y="16" h="6" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pos2.ghost" file="player-winshade/shadebuttons.png" x="279" y="46" h="6" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pos2.down" file="player-winshade/shadebuttons.png" x="279" y="46" h="6" w="14" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.big" file="player-winshade/shadebuttons.png" x="0" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.big.down" file="player-winshade/shadebuttons.png" x="0" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.big2" file="player-winshade/shadebuttons.png" x="58" y="13" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.big2.down" file="player-winshade/shadebuttons.png" x="58" y="33" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.minimize" file="player-winshade/shadebuttons.png" x="47" y="13" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.minimize.down" file="player-winshade/shadebuttons.png" x="47" y="33" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.close" file="player-winshade/shadebuttons.png" x="69" y="13" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.close.down" file="player-winshade/shadebuttons.png" x="69" y="33" h="7" w="7" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.eq" file="player-winshade/shadebuttons.png" x="156" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.eq.down" file="player-winshade/shadebuttons.png" x="216" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.eq.active" file="player-winshade/shadebuttons.png" x="86" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pl" file="player-winshade/shadebuttons.png" x="170" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pl.down" file="player-winshade/shadebuttons.png" x="230" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.pl.active" file="player-winshade/shadebuttons.png" x="100" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.t" file="player-winshade/shadebuttons.png" x="147" y="20" h="12" w="8" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.t.down" file="player-winshade/shadebuttons.png" x="207" y="20" h="12" w="8" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.t.active" file="player-winshade/shadebuttons.png" x="77" y="20" h="12" w="8" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.cfg" file="player-winshade/shadebuttons.png" x="184" y="20" h="12" w="17" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.cfg.down" file="player-winshade/shadebuttons.png" x="244" y="20" h="12" w="17" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.cfg.active" file="player-winshade/shadebuttons.png" x="128" y="20" h="12" w="17" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.ct" file="player-winshade/shadebuttons.png" x="255" y="37" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.ct.down" file="player-winshade/shadebuttons.png" x="255" y="7" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.ct.active" file="player-winshade/shadebuttons.png" x="114" y="20" h="12" w="13" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade.button.sys" file="player-winshade/b_sys.png" x="0" y="0" h="9" w="19" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.sys.down" file="player-winshade/b_sys.png" x="0" y="20" h="9" w="19" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.ctbig" file="player-winshade/b_ctbig.png" x="0" y="0" h="22" w="14" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.ctbig.down" file="player-winshade/b_ctbig.png" x="20" y="0" h="22" w="14" gammagroup="Buttons"/>
+
+<!-- EQ -->
+	<bitmap id="playershade.main.eq.knob" file="player-winshade/shadebuttons.png" x="331" y="24" h="6" w="7" gammagroup="Buttons"/>
+	<bitmap id="playershade.main.eq.knob.down" file="player-winshade/shadebuttons.png" x="341" y="24" h="6" w="7" gammagroup="Buttons"/>
+
+
+<!-- Volume -->
+	<bitmap id="playershade.button.volume" file="player-winshade/shadebuttons.png" x="381" y="12" h="10" w="16" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.volume.down" file="player-winshade/shadebuttons.png" x="381" y="42" h="10" w="16" gammagroup="Buttons"/>
+
+<!-- Displays -->
+	<bitmap id="playershade.display1" file="player-winshade/display1.png" x="0" y="0" h="15" w="83" gammagroup="Display"/>
+	<bitmap id="playershade.display1.overlay" file="player-winshade/display1_overlay.png" x="0" y="0" h="15" w="83" gammagroup="Display"/>
+	<bitmap id="playershade.display2" file="player-winshade/display2.png" x="0" y="0" h="15" w="142" gammagroup="Display"/>
+	<bitmap id="playershade.display2eq" file="player-winshade/display2eq.png" x="0" y="0" h="15" w="142" gammagroup="Display"/>
+	<bitmap id="playershade.display2.overlay" file="player-winshade/display2_overlay.png" x="0" y="0" h="15" w="142" gammagroup="Display"/>
+
+<!-- Toggler -->
+	<bitmap id="player-winshade.toggler.repeat" file="player-winshade/shadebuttons.png" x="478" y="11" h="8" w="23" gammagroup="Buttons"/>
+	<bitmap id="player-winshade.toggler.repeat.down" file="player-winshade/shadebuttons.png" x="478" y="41" h="8" w="23" gammagroup="Buttons"/>
+	<bitmap id="player-winshade.toggler.shuffle" file="player-winshade/shadebuttons.png" x="446" y="11" h="8" w="27" gammagroup="Buttons"/>
+	<bitmap id="player-winshade.toggler.shuffle.down" file="player-winshade/shadebuttons.png" x="446" y="41" h="8" w="27" gammagroup="Buttons"/>
+	<bitmap id="player-winshade.toggler.crossfade" file="player-winshade/shadebuttons.png" x="506" y="11" h="8" w="19" gammagroup="Buttons"/>
+	<bitmap id="player-winshade.toggler.crossfade.down" file="player-winshade/shadebuttons.png" x="506" y="41" h="8" w="19" gammagroup="Buttons"/>
+
+<!-- Thinger -->
+	<bitmap id="playershade.thingerbg" file="player-winshade/thinger_bg.png" x="0" y="0" h="64" w="163" gammagroup="Backgrounds"/>
+	<bitmap id="playershade.thingerfront" file="player-winshade/thinger_front.png" x="0" y="0" h="18" w="163" gammagroup="Frontcover"/>
+
+<!-- Labels -->
+	<bitmap id="playershade.textlabel1" file="player-winshade/slabel1.png" gammagroup="FrontcoverLabel"/>
+	<bitmap id="playershade.textlabel2" file="player-winshade/slabel2.png" gammagroup="FrontcoverLabel"/>
+	<bitmap id="playershade.textlabel3" file="player-winshade/slabel3.png" gammagroup="BackgroundLabel"/>
+	<bitmap id="playershade.textlabel4" file="player-winshade/flabels.png" x="66" y="0" h="12" w="27" gammagroup="FrontcoverLabel"/>
+	<bitmap id="playershade.textlabel5" file="player-winshade/flabels.png" x="36" y="0" h="12" w="27" gammagroup="FrontcoverLabel"/>
+	<bitmap id="playershade.textlabel6" file="player-winshade/flabels.png" x="0" y="2" h="10" w="31" gammagroup="FrontcoverLabel"/>
+
+
+<!-- CFG-Buttons -->
+	<bitmap id="playershade.button.mode.v" file="player-winshade/b_mode.png" x="0" y="20" h="14" w="55" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.mode.v.down" file="player-winshade/b_mode.png" x="0" y="0" h="14" w="55" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.mode.v.active" file="player-winshade/b_mode.png" x="0" y="40" h="14" w="55" gammagroup="Buttons"/>
+
+	<bitmap id="playershade.button.mode.h" file="player-winshade/b_mode.png" x="55" y="20" h="12" w="60" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.mode.h.down" file="player-winshade/b_mode.png" x="55" y="0" h="12" w="60" gammagroup="Buttons"/>
+	<bitmap id="playershade.button.mode.h.active" file="player-winshade/b_mode.png" x="55" y="40" h="12" w="60" gammagroup="Buttons"/>
+
+
+
+<!-- *************************************************************** -->
+<!-- Winshade 2 -->
+<!-- *************************************************************** -->
+
+<!-- PlayerShade Backgrounds/Overlays -->
+	<bitmap id="playershade2.bg" file="player-winshade2/bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.rbg" file="player-winshade2/bg2.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.front1" file="player-winshade2/front1.png" gammagroup="Frontcover" />
+	<bitmap id="playershade2.front2" file="player-winshade2/front2.png" gammagroup="Frontcover" />
+	<bitmap id="playershade2.front2.overlay" file="player-winshade2/front2overlay.png" gammagroup="Frontcover" />
+
+	<bitmap id="playershade2.thinger.bg" file="player-winshade2/thinger_bg2.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.thinger.front" file="player-winshade2/thinger_front2.png" gammagroup="Frontcover" />
+
+	<bitmap id="playershade2.thinger.display.overlay" file="player-winshade2/thinger_displayoverlay.png" gammagroup="Thinger" />
+
+	<bitmap id="playershade2.thinger.display" file="player-winshade2/thinger_display.png" gammagroup="Thinger" />
+	<bitmap id="playershade2.eq.bg" file="player-winshade2/eq_bg2.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.cfg.bg" file="player-winshade2/cfg_bg2.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.ct.bg" file="player-winshade2/ct_bg.png" gammagroup="Backgrounds" />
+	<bitmap id="playershade2.ct.listbg" file="player-winshade2/ctlistbg.png" x="0" y="0" h="175" w="108" gammagroup="Backgrounds"/>
+
+	<bitmap id="playershade2.ctdummy1" file="player-winshade2/ctdummy1.png" x="0" y="0" h="133" w="94" gammagroup="Display"/>
+	<bitmap id="playershade2.ctdummy2" file="player-winshade2/ctdummy2.png" x="0" y="0" h="158" w="107" gammagroup="Buttons"/>
+	<bitmap id="playershade2.ctdummy3" file="player-winshade2/ctdummy3.png" x="0" y="0" h="99" w="49" gammagroup="Backgrounds"/>
+
+<!-- Displays -->
+	<bitmap id="playershade2.display1" file="player-winshade2/display2.png" x="0" y="0" h="35" w="90" gammagroup="Display"/>
+	<bitmap id="playershade2.display1.overlay" file="player-winshade2/display2overlay.png" x="0" y="0" h="35" w="90" gammagroup="Display"/>
+
+<!-- Buttons -->
+	<bitmap id="playershade2.button.pos1" file="player-winshade2/b_seek.png" x="10" y="0" h="12" w="9" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade2.button.pos1.down" file="player-winshade2/b_seek.png" x="0" y="0" h="12" w="9" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade2.button.ct" file="player-winshade2/b_ct.png" x="0" y="0" h="14" w="62" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.ct.down" file="player-winshade2/b_ct.png" x="0" y="20" h="14" w="62" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.thinger.main.lefta" file="player-winshade/shadebuttons.png" x="13" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade2.thinger.main.lefta.down" file="player-winshade/shadebuttons.png" x="13" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade2.thinger.main.righta" file="player-winshade/shadebuttons.png" x="102" y="5" h="11" w="11" gammagroup="ButtonsFront"/>
+	<bitmap id="playershade2.thinger.main.righta.down" file="player-winshade/shadebuttons.png" x="102" y="35" h="11" w="11" gammagroup="ButtonsFront"/>
+
+	<bitmap id="playershade2.button.eq.on" file="player-winshade2/b_eq.png" x="0" y="0" h="11" w="13" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.on.down" file="player-winshade2/b_eq.png" x="0" y="20" h="11" w="13" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.on.active" file="player-winshade2/b_eq.png" x="0" y="40" h="11" w="13" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.auto" file="player-winshade2/b_eq.png" x="14" y="0" h="11" w="21" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.auto.down" file="player-winshade2/b_eq.png" x="14" y="20" h="11" w="21" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.auto.active" file="player-winshade2/b_eq.png" x="14" y="40" h="11" w="21" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.presets" file="player-winshade2/b_eq.png" x="36" y="0" h="11" w="33" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.eq.presets.down" file="player-winshade2/b_eq.png" x="36" y="20" h="11" w="33" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.button.tools.thinger" file="player-winshade2/b_tools.png" x="0" y="0" h="12" w="31" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.thinger.down" file="player-winshade2/b_tools.png" x="0" y="20" h="12" w="31" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.thinger.active" file="player-winshade2/b_tools.png" x="0" y="40" h="12" w="31" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.eq" file="player-winshade2/b_tools.png" x="31" y="0" h="12" w="14" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.eq.down" file="player-winshade2/b_tools.png" x="31" y="20" h="12" w="14" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.eq.active" file="player-winshade2/b_tools.png" x="31" y="40" h="12" w="14" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.cfg" file="player-winshade2/b_tools.png" x="79" y="0" h="12" w="27" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.cfg.down" file="player-winshade2/b_tools.png" x="79" y="20" h="12" w="27" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.cfg.active" file="player-winshade2/b_tools.png" x="79" y="40" h="12" w="27" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.pl" file="player-winshade2/b_tools.png" x="45" y="0" h="12" w="34" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.pl.down" file="player-winshade2/b_tools.png" x="45" y="20" h="12" w="34" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.tools.pl.active" file="player-winshade2/b_tools.png" x="45" y="40" h="12" w="34" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.button.mode.v" file="player-winshade2/b_mode.png" x="0" y="20" h="12" w="50" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.mode.v.down" file="player-winshade2/b_mode.png" x="0" y="0" h="12" w="50" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.mode.v.active" file="player-winshade2/b_mode.png" x="0" y="40" h="12" w="50" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.button.mode.h" file="player-winshade2/b_mode.png" x="51" y="20" h="12" w="55" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.mode.h.down" file="player-winshade2/b_mode.png" x="51" y="0" h="12" w="55" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.mode.h.active" file="player-winshade2/b_mode.png" x="51" y="40" h="12" w="55" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.button.cfg.aot" file="player-winshade2/b_cfg.png" x="0" y="0" h="10" w="88" gammagroup="BackgroundLabel"/>
+	<bitmap id="playershade2.button.cfg.aot.down" file="player-winshade2/b_cfg.png" x="100" y="0" h="10" w="88" gammagroup="BackgroundLabel"/>
+	<bitmap id="playershade2.button.cfg.aot.active" file="player-winshade2/b_cfg.png" x="200" y="0" h="10" w="88" gammagroup="BackgroundLabel"/>
+
+	<bitmap id="playershade2.button.cfg.scroll" file="player-winshade2/b_cfg.png" x="0" y="15" h="10" w="88" gammagroup="BackgroundLabel"/>
+	<bitmap id="playershade2.button.cfg.scroll.down" file="player-winshade2/b_cfg.png" x="100" y="15" h="10" w="88" gammagroup="BackgroundLabel"/>
+	<bitmap id="playershade2.button.cfg.scroll.active" file="player-winshade2/b_cfg.png" x="200" y="15" h="10" w="88" gammagroup="BackgroundLabel"/>
+
+	<bitmap id="playershade2.button.closect" file="player-winshade2/b_closect.png" x="0" y="20" h="12" w="106" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.closect.down" file="player-winshade2/b_closect.png" x="0" y="0" h="12" w="106" gammagroup="Buttons"/>
+
+	<bitmap id="playershade2.button.sys" file="player-winshade2/b_sys.png" x="0" y="0" h="8" w="11" gammagroup="Frontcover"/>
+	<bitmap id="playershade2.button.sys.down" file="player-winshade2/b_sys.png" x="0" y="10" h="8" w="11" gammagroup="Frontcover"/>
+
+	<bitmap id="playershade2.button.ctbig" file="player-winshade2/b_ctbig.png" x="0" y="0" h="11" w="12" gammagroup="Buttons"/>
+	<bitmap id="playershade2.button.ctbig.down" file="player-winshade2/b_ctbig.png" x="20" y="0" h="11" w="12" gammagroup="Buttons"/>
+
+
+
+<!-- Label -->
+	<bitmap id="playershade2.textlabel1" file="player-winshade2/slabel1.png" gammagroup="CoverLabel"/>
+	<bitmap id="playershade2.textlabel2" file="player-winshade2/slabel2.png" gammagroup="CoverLabel"/>
+	<bitmap id="playershade2.textlabel3" file="player-winshade2/slabel3.png" gammagroup="CoverLabel"/>
+	<bitmap id="playershade2.textlabel4" file="player-winshade2/slabel4.png" gammagroup="CoverLabel"/>
+
+</elements>

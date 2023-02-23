@@ -1,0 +1,119 @@
+//----------------------------------------------------------------------------------------------------------------
+// fileio.mi
+//
+// standard handles for file input and output (only xml parsing atm)
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __COLORMGR_MI
+#define __COLORMGR_MI
+
+extern class @{AEE235FF-EBD1-498f-96AF-D7E0DAD4541A}@ System _predecl &ColorMgr;
+extern class @{95DDB221-00E3-4e2b-8EA5-833548C13C10}@ Object &Color;
+extern class @{0D024DB9-9574-42d0-B8C7-26B553F1F987}@ Object &GammaSet;
+extern class @{B81F004D-ACBA-453d-A06B-30192A1DA17D}@ Object &GammaGroup;
+
+//*****************************************************************************
+// ColorMgr CLASS
+//*****************************************************************************
+/**
+ ColorMgr Class.
+
+ @short    Static Object for handling colors
+ @author   Nullsoft Inc.
+ @ver      1.0
+
+*/
+
+extern	Color	ColorMgr.getColor (String colorID);
+extern	Color	ColorMgr.enumColor (int n);
+extern	int	ColorMgr.getNumColors();
+
+extern GammaSet	ColorMgr.getGammaSet (String colorID);
+extern GammaSet	ColorMgr.enumGammaSet (int n);
+extern GammaSet	ColorMgr.getCurrentGammaSet (); // available after ColorMgr.onLoaded() was called
+extern GammaSet	ColorMgr.newGammaSet(String name);
+extern	int	ColorMgr.getNumGammaSets ();
+
+// for the next callbacks u need to instanciate a ColorMgr object.
+extern		ColorMgr.onBeforeLoadingElements(); // stuff is loading, might not work hehe
+extern		ColorMgr.onGuiLoaded(); // skin gui objects loaded from xml
+extern		ColorMgr.onLoaded(); // all done, new skin in place
+
+extern		ColorMgr.onColorThemesListChanged();
+extern		ColorMgr.onColorThemeChanged(String newtheme);
+
+
+//*****************************************************************************
+// Color CLASS
+//*****************************************************************************
+/**
+ Color Class.
+
+ @short    Object for handling colors
+ @author   Nullsoft Inc.
+ @ver      1.0
+
+*/
+
+extern	String	Color.getID ();
+extern	int	Color.getRed ();
+extern	int	Color.getGreen ();
+extern	int	Color.getBlue ();
+extern	int	Color.getRedWithGamma ();
+extern	int	Color.getGreenWithGamma ();
+extern	int	Color.getBlueWithGamma ();
+extern	int	Color.getAlpha ();
+extern	String	Color.getGammagroup ();
+
+
+//*****************************************************************************
+// GammaSet CLASS
+//*****************************************************************************
+/**
+ GammaSet Class.
+
+ @short    Object for handling gamma sets
+ @author   Nullsoft Inc.
+ @ver      1.0
+
+*/
+
+extern	String		GammaSet.getID();
+extern			GammaSet.apply();
+extern			GammaSet.remove(); // u should still delete the object then
+extern			GammaSet.rename(String newname);
+extern			GammaSet.update(); // Syncs missing groups
+extern	GammaGroup	Gammaset.getGeneralGroup();
+extern	int		Gammaset.getNumGammaGroups();
+extern	GammaGroup	Gammaset.enumGammaGroup(int n);
+extern	GammaGroup	Gammaset.getGammaGroup(String name);
+
+
+
+//*****************************************************************************
+// GammaGroup CLASS
+//*****************************************************************************
+/**
+ GammaGroup Class.
+
+ @short    Object for handling gamma groups
+ @author   Nullsoft Inc.
+ @ver      1.0
+
+*/
+
+extern	String	Gammagroup.getID ();
+extern	int	Gammagroup.getRed ();
+extern	int	Gammagroup.getGreen ();
+extern	int	Gammagroup.getBlue ();
+extern	int	Gammagroup.getBoost ();
+extern	int	Gammagroup.getGray ();
+
+extern		Gammagroup.setID (String id);
+extern		Gammagroup.setRed (int _color);
+extern		Gammagroup.setGreen (int _color);
+extern		Gammagroup.setBlue (int _color);
+extern		Gammagroup.setBoost (int _color);
+extern		Gammagroup.setGray (int _color);
+
+#endif
