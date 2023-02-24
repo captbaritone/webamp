@@ -6,7 +6,10 @@ import GuiObj from "./GuiObj";
 
 type ColorTriplet = string;
 
-class VisPaintHandler {
+/**
+ * Base class of AVS (animation frame renderer engine)
+ */
+export class VisPaintHandler {
   _vis: Vis;
 
   constructor(vis: Vis) {
@@ -14,11 +17,28 @@ class VisPaintHandler {
     // this.prepare();
   }
 
+  /**
+   * Attemp to build cached bitmaps for later use while render a frame.
+   * Purpose: fast rendering in animation loop
+   */
   prepare() {}
 
+  /**
+   * Called once per frame rendiring
+   */
   paintFrame(ctx: CanvasRenderingContext2D) {}
 
+  /**
+   * Attemp to cleanup cached bitmaps
+   */
   dispose() {}
+}
+
+// type VisPaintHandlerClass = {new(vis: Vis): VisPaintHandler;};
+type VisPaintHandlerClass = typeof VisPaintHandler;
+const VISPAINTERS: {[key:string]: VisPaintHandlerClass} = {}; 
+export function registerPainter(key: string, painterclass: VisPaintHandlerClass) {
+  VISPAINTERS[key] = painterclass;
 }
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cvis.2F.3E
@@ -31,7 +51,7 @@ export default class Vis extends GuiObj {
   // "0" is no display,
   // "1" is spectrum,
   // "2" is oscilloscope. Default is to read from a config item. When the user clicks on the vis, it will cycle between its three modes.
-  _mode: number = 1;
+  _mode: string = '1';
   _colorBands: ColorTriplet[] = []; // 1..16
   _colorBandPeak: ColorTriplet = "255,255,255";
   _colorOsc: ColorTriplet[] = []; // 1..5
@@ -60,7 +80,7 @@ export default class Vis extends GuiObj {
 
     switch (key) {
       case "mode":
-        this.setmode(num(value));
+        this.setmode(value);
         break;
       case "gammagroup":
         this._gammagroup = value;
@@ -140,7 +160,7 @@ export default class Vis extends GuiObj {
   }
 
   init() {
-    this.setmode(1);
+    this.setmode(this._mode); // in case xml doesn't define mode.
     super.init();
     this.audioStatusChanged();
   }
@@ -150,6 +170,10 @@ export default class Vis extends GuiObj {
     this._stopVisualizer();
   }
 
+  /**
+   * Called when any a color changed.
+   * Debounce = avoid too many changes in a range time (100ms here)
+   */
   _rebuildPainter = debounce(() => {
     if (this._painter) {
       this._painter.prepare();
@@ -165,34 +189,36 @@ export default class Vis extends GuiObj {
     this._rebuildPainter();
   };
 
-  setmode(mode: number) {
+  setmode(mode: string) {
     this._mode = mode;
-    switch (mode) {
-      case 1:
-        // "1" is spectrum,
-        this._setPainter(BarPaintHandler);
-        break;
-      case 2:
-        // "2" is oscilloscope.
-        this._setPainter(WavePaintHandler);
-        break;
-      default:
-        // "0" is no display,
-        this._setPainter(NoVisualizerHandler);
-        break;
-    }
+    this._setPainter( VISPAINTERS[mode] )
+    // return 
+    // switch (mode) {
+    //   case '1':
+    //     // "1" is spectrum,
+    //     this._setPainter(BarPaintHandler);
+    //     break;
+    //   case '2':
+    //     // "2" is oscilloscope.
+    //     this._setPainter(WavePaintHandler);
+    //     break;
+    //   default:
+    //     // "0" is no display,
+    //     this._setPainter(NoVisualizerHandler);
+    //     break;
+    // }
   }
 
   getmode(): number {
-    return this._mode;
+    return parseInt('0'+ this._mode); // so we support non numeral use. eg: 'butterchurn'
   }
 
   nextmode() {
-    let newMode = this._mode + 1;
+    let newMode = this.getmode() + 1;
     if (newMode > 2) {
       newMode = 0;
     }
-    this.setmode(newMode);
+    this.setmode(String(newMode));
   }
 
   _setPainter(PainterType: typeof VisPaintHandler) {
@@ -261,6 +287,7 @@ export default class Vis extends GuiObj {
 
   draw() {
     super.draw();
+    this._canvas.setAttribute('id', this.getId()+'-canvas');
     this._div.appendChild(this._canvas);
   }
 }
@@ -277,6 +304,7 @@ class NoVisualizerHandler extends VisPaintHandler {
     }
   }
 }
+registerPainter('0', NoVisualizerHandler)
 
 //? =============================== BAR PAINTER ===============================
 const NUM_BARS = 20;
@@ -437,6 +465,7 @@ class BarPaintHandler extends VisPaintHandler {
     }
   }
 }
+registerPainter('1', BarPaintHandler)
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
 
@@ -461,3 +490,4 @@ class WavePaintHandler extends VisPaintHandler {
     }
   }
 }
+registerPainter('2', WavePaintHandler)
