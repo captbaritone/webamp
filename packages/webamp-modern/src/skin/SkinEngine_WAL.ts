@@ -41,6 +41,7 @@ import EqVis from "./makiClasses/EqVis";
 import Images from "./makiClasses/Images";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 import { FileExtractor, PathFileExtractor } from "./FileExtractor";
+import Avs from "./makiClasses/Avs";
 
 export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
@@ -970,6 +971,17 @@ export default class SkinEngineWAL extends SkinEngine {
   }
 
   async component(node: XmlElement, parent: any) {
+    const id = this._uiRoot.guid2alias(node.attributes.param)
+    switch (id) {
+      case 'vis':
+        // const gui = new Avs(this._uiRoot);
+        // // const spec = new XmlElement("dummy", { fitparent: '1' });
+        // gui.setXmlAttributes(spec.attributes)
+        // this.addChild(gui);
+        // this._heldObj = gui;
+        return this.newGui(Avs, node, parent);
+        break
+    }
     //TODO: parse dynamic element by guid value
     if (
       node.attributes.param == "guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"

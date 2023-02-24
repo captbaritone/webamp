@@ -58,7 +58,7 @@ class ButterchurnPaintHandler extends VisPaintHandler {
   //   super(vis);
   // }
   prepare() {
-    this._visualizer = null; //destroy. is it okay by just set null?
+    // this._visualizer = null; //destroy. is it okay by just set null?
   }
 
   _buildButterchurn() {
