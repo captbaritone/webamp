@@ -13,18 +13,21 @@ import {
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
-import Container from "./skin/makiClasses/Container";
 import Vm from "./skin/VM";
-import BaseObject from "./skin/makiClasses/BaseObject";
 import AUDIO_PLAYER, { AudioPlayer, Track } from "./skin/AudioPlayer";
+import PRIVATE_CONFIG from "./skin/PrivateConfig";
+import ImageManager from "./skin/ImageManager";
+
+import Container from "./skin/makiClasses/Container";
+import BaseObject from "./skin/makiClasses/BaseObject";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit } from "./skin/makiClasses/PlayList";
-import PRIVATE_CONFIG from "./skin/PrivateConfig";
-import ImageManager from "./skin/ImageManager";
 import Config from "./skin/makiClasses/Config";
 import WinampConfig from "./skin/makiClasses/WinampConfig";
+import Avs from "./skin/makiClasses/Avs";
+
 import { SkinEngineClass } from "./skin/SkinEngine";
 import { FileExtractor } from "./skin/FileExtractor";
 import Application from "./skin/makiClasses/Application";
@@ -32,8 +35,10 @@ import Application from "./skin/makiClasses/Application";
 export class UIRoot {
   _id: string;
   _application: Application;
+  _avss: Avs[] = [];
   _config: Config;
   _winampConfig: WinampConfig;
+
   _div: HTMLDivElement = document.createElement("div");
   _imageManager: ImageManager;
   // Just a temporary place to stash things
@@ -530,6 +535,15 @@ export class UIRoot {
         break;
       case "eject":
         this.eject();
+        break;
+      case "vis_next":
+      case "vis_prev":
+      case "vis_f5":
+        if(this._avss.length){
+          for(const avs of this._avss) {
+            avs.dispatchAction(action, param, actionTarget)
+          }
+        }
         break;
       case "eq_toggle":
         this.eq_toggle();

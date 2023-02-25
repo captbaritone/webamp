@@ -32,6 +32,12 @@ export class VisPaintHandler {
    * Attemp to cleanup cached bitmaps
    */
   dispose() {}
+
+  /**
+   * called if it is an AVS.
+   * @param action vis_prev | vis_next | vis_f5 (fullscreen) |
+   */
+  doAction(action:string, param:string){}
 }
 
 // type VisPaintHandlerClass = {new(vis: Vis): VisPaintHandler;};
@@ -298,7 +304,7 @@ export default class Vis extends GuiObj {
 //========= visualizer implementations ==========
 
 class NoVisualizerHandler extends VisPaintHandler {
-  
+
   prepare() {
     const ctx = this._vis._canvas.getContext('2d')
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);

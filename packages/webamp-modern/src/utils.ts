@@ -75,6 +75,19 @@ export function ensureVmInt(num: number): number {
 export function clamp(num: number, min: number, max: number): number {
   return Math.max(min, Math.min(num, max));
 }
+// same as clamp, but goto next/prev instead floor/ceil.
+export function circular(num: number, min: number, max: number): number {
+  assert(min < max, 'illegal circular parameter.')
+  while (num < min){  // -2 < 0
+    num = max + num;
+  }
+  while (num > max){  //   10 > 5
+    num = num - max;  // = 10 - 5
+  }
+  // return Math.max(min, Math.min(num, max));
+  assert((num >= min) && (num <=max), 'stupid in math, boss?')
+  return num;
+}
 
 export function normalizeDomId(id: string) {
   return id.replace(/[^a-zA-Z0-9]/g, "-");
