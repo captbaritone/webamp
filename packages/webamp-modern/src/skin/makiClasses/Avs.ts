@@ -14,36 +14,6 @@ export default class Avs extends Vis {
     this._mode = 'milkdrop';
     super.init();
   }
-
-  /**
- * Called when any a color changed.
- * Debounce = avoid too many changes in a range time (100ms here)
- */
-  _rebuildPainter = debounce(() => {
-    if (this._painter) {
-      this._painter.prepare();
-      // const ctx = this._canvas.getContext("2d");
-      // if (ctx == null) {
-      //   return;
-      // }
-      this._painter.paintFrame(null);
-    }
-  }, 100);
-
-  _startVisualizer() {
-    // Kick off the animation loop
-    // const ctx = this._canvas.getContext("2d");
-    // if (ctx == null) {
-    //   return;
-    // }
-    // ctx.imageSmoothingEnabled = false;
-    this._rebuildPainter();
-    const loop = () => {
-      this._painter.paintFrame(null);
-      this._animationRequest = window.requestAnimationFrame(loop);
-    };
-    loop();
-  }
 }
 
 
@@ -68,7 +38,7 @@ class ButterchurnPaintHandler extends VisPaintHandler {
     const canvas = this._vis._canvas;
     const width = 200;
     const height = 200;
-    this._visualizer = butterchurn.createVisualizer(audioContext, canvas, {
+    this._visualizer = butterchurn.createVisualizer(audio._context, canvas, {
       /* width: canvas. */width,
       /* height: canvas. */height
     });
@@ -82,10 +52,10 @@ class ButterchurnPaintHandler extends VisPaintHandler {
 
     this._visualizer.loadPreset(preset, 0.0); // 2nd argument is the number of seconds to blend presets
 
-    // this._visualizer.connect(audio)
+    this._visualizer.connectAudio(audio._analyser)
   }
 
-  paintFrame(ctx: CanvasRenderingContext2D) {
+  paintFrame() {
     if (!this._visualizer) {
 
       if (!document.getElementById(this._vis._canvas.id) )

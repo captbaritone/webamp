@@ -26,7 +26,7 @@ export class VisPaintHandler {
   /**
    * Called once per frame rendiring
    */
-  paintFrame(ctx: CanvasRenderingContext2D) {}
+  paintFrame() {}
 
   /**
    * Attemp to cleanup cached bitmaps
@@ -177,11 +177,11 @@ export default class Vis extends GuiObj {
   _rebuildPainter = debounce(() => {
     if (this._painter) {
       this._painter.prepare();
-      const ctx = this._canvas.getContext("2d");
-      if (ctx == null) {
-        return;
-      }
-      this._painter.paintFrame(ctx);
+      // const ctx = this._canvas.getContext("2d");
+      // if (ctx == null) {
+      //   return;
+      // }
+      this._painter.paintFrame();
     }
   }, 100);
 
@@ -191,7 +191,7 @@ export default class Vis extends GuiObj {
 
   setmode(mode: string) {
     this._mode = mode;
-    const painterClass = VISPAINTERS[mode] || NoVisualizerHandler;
+    const painterClass = VISPAINTERS[mode] || VISPAINTERS['0'] /* NoVisualizerHandler */;
     this._setPainter( painterClass )
     // return 
     // switch (mode) {
@@ -248,14 +248,14 @@ export default class Vis extends GuiObj {
 
   _startVisualizer() {
     // Kick off the animation loop
-    const ctx = this._canvas.getContext("2d");
-    if (ctx == null) {
-      return;
-    }
-    ctx.imageSmoothingEnabled = false;
+    // const ctx = this._canvas.getContext("2d");
+    // if (ctx == null) {
+    //   return;
+    // }
+    // ctx.imageSmoothingEnabled = false;
     this._rebuildPainter();
     const loop = () => {
-      this._painter.paintFrame(ctx);
+      this._painter.paintFrame();
       this._animationRequest = window.requestAnimationFrame(loop);
     };
     loop();
@@ -298,13 +298,10 @@ export default class Vis extends GuiObj {
 //========= visualizer implementations ==========
 
 class NoVisualizerHandler extends VisPaintHandler {
-  _cleared: boolean = false;
-
-  paintFrame(ctx: CanvasRenderingContext2D) {
-    if (!this._cleared) {
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      this._cleared = true;
-    }
+  
+  prepare() {
+    const ctx = this._vis._canvas.getContext('2d')
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 }
 registerPainter('0', NoVisualizerHandler)
@@ -348,6 +345,7 @@ class BarPaintHandler extends VisPaintHandler {
   _bufferLength: number;
   _octaveBuckets: number[];
   _dataArray: Uint8Array;
+  _ctx : CanvasRenderingContext2D;
 
   constructor(vis: Vis) {
     super(vis);
@@ -385,9 +383,13 @@ class BarPaintHandler extends VisPaintHandler {
     ctx.strokeStyle = this._color;
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, 1, vis._canvas.height);
+    ctx.imageSmoothingEnabled = false;
+    this._ctx = this._vis._canvas.getContext('2d')
   }
 
-  paintFrame(ctx: CanvasRenderingContext2D) {
+  paintFrame() {
+    if(!this._ctx) return;
+    const ctx = this._ctx
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     ctx.clearRect(0, 0, w, h);
@@ -473,9 +475,14 @@ registerPainter('1', BarPaintHandler)
 //? =============================== OSCILOSCOPE PAINTER ===============================
 
 class WavePaintHandler extends VisPaintHandler {
-  prepare() {}
+  _ctx : CanvasRenderingContext2D;
+  prepare() {
+    this._ctx = this._vis._canvas.getContext('2d')
+  }
 
-  paintFrame(ctx: CanvasRenderingContext2D) {
+  paintFrame() {
+    if(!this._ctx) return;
+    const ctx = this._ctx
     const width = ctx.canvas.width;
     const height = ctx.canvas.height;
     ctx.clearRect(0, 0, width, height);
