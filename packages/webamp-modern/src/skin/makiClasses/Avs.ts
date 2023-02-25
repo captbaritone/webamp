@@ -128,8 +128,8 @@ class ButterchurnPaintHandler extends VisPaintHandler {
 
     const canvas = this._vis._canvas;
     const bound = canvas.getBoundingClientRect()
-    const width = bound.width;
-    const height = bound.height;
+    const width = Math.max(bound.width, 10);
+    const height = Math.max(bound.height, 10);
     canvas.width = width;
     canvas.height = height;
     this._visualizer.setRendererSize(width, height);
