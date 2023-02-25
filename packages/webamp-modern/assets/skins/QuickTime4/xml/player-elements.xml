@@ -1,0 +1,18 @@
+<elements>
+
+<!-- Player Backgrounds/Overlays -->
+  <bitmap id="player.main" file="window/normal.png" x="0" y="0" gammagroup="Backgrounds"/>
+ 
+<!-- Playback buttons -->
+
+  <bitmap id="player.button.play"         file="window/normal.png"         x="147" y="56" h="45" w="45" gammagroup="Buttons"/>
+  <bitmap id="player.button.play.pressed" file="window/normal-pressed.png" x="147" y="56" h="45" w="45" gammagroup="Buttons"/>
+
+  <bitmap id="player.button.pause"         file="window/normal.png"         x="200" y="60" h="30" w="30" gammagroup="Buttons"/>
+  <bitmap id="player.button.pause.pressed" file="window/normal-pressed.png" x="200" y="60" h="30" w="30" gammagroup="Buttons"/>
+
+<!-- Seek -->
+  <bitmap id="player.button.seek" file="window/normal-pressed.png" x="69" y="32" h="9" w="7" gammagroup="Buttons"/>
+
+
+</elements>
