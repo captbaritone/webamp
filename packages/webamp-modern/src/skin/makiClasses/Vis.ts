@@ -191,7 +191,8 @@ export default class Vis extends GuiObj {
 
   setmode(mode: string) {
     this._mode = mode;
-    this._setPainter( VISPAINTERS[mode] )
+    const painterClass = VISPAINTERS[mode] || NoVisualizerHandler;
+    this._setPainter( painterClass )
     // return 
     // switch (mode) {
     //   case '1':
@@ -225,6 +226,8 @@ export default class Vis extends GuiObj {
     // uninteruptable painting requires _painter to be always available
     const oldPainter = this._painter;
     this._painter = new PainterType(this);
+
+    this.audioStatusChanged(); // stop loop of old painter, preparing new painter.
 
     if (oldPainter) {
       oldPainter.dispose();
