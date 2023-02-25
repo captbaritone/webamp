@@ -39,6 +39,7 @@ export class AudioPlayer {
   //events aka addEventListener()
   _eventListener: Emitter = new Emitter();
   _vuMeter: number = 0;
+  _last_itime: number = 0;
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
@@ -164,6 +165,20 @@ export class AudioPlayer {
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
+    this._audio.addEventListener("timeupdate", () => this.doTimeUpdate());
+  }
+
+  /**
+   * This method should only the called directly by the audio
+   * purpose: call to update text only when the second is different (not per-250ms)
+   */
+  doTimeUpdate(){
+    const i = this._audio.currentTime << 0;
+    if(i != this._last_itime){
+      this._last_itime = i;
+      this.trigger('timeupdate')
+      // console.log('ITEIMER:', this.getCurrentTime())
+    }
   }
 
   setEqEnabled(enable: boolean) {
@@ -235,6 +250,7 @@ export class AudioPlayer {
 
   play() {
     this._isStop = false;
+    this.trigger("timeupdate");
     this._audio.play();
     this.trigger("play");
     this.trigger("statchanged");
@@ -377,13 +393,14 @@ export class AudioPlayer {
     }
   }
 
-  onCurrentTimeChange(cb: () => void): () => void {
-    const handler = () => cb();
-    this._audio.addEventListener("timeupdate", handler);
-    const dispose = () => {
-      this._audio.removeEventListener("timeupdate", handler);
-    };
-    return dispose;
+  onCurrentTimeChange(cb: () => void): Function {
+    // const handler = () => cb();
+    // this._audio.addEventListener("timeupdate", handler);
+    // const dispose = () => {
+    //   this._audio.removeEventListener("timeupdate", handler);
+    // };
+    // return dispose;
+    return this.on("timeupdate", cb)
   }
 
   onSeek(cb: () => void): () => void {

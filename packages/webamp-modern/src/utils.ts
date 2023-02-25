@@ -101,7 +101,7 @@ export function removeAllChildNodes(parent: Element) {
 
 export function integerToTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
-  const secs = String(Math.abs(Math.round(seconds % 60))).padStart(2, "0");
+  const secs = String(Math.abs(Math.floor(seconds % 60))).padStart(2, "0");
   return `${mins}:${secs}`;
 }
 

@@ -164,20 +164,20 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     return true;
   }
 
-  styledTime(time: string): string {
-    const originalTime = time;
-    if (this._timeroffstyle == 1) {
-      if (time.startsWith("-") && time.length == 5) {
-        // -9:59
-        time = time.replace("-", "-0");
-      } else if (time.length == 4) {
-        // 9:59
-        time = "0" + time;
-      }
-    }
-    console.log(`timer:'${time}' < '${originalTime}'`);
-    return time;
-  }
+  // styledTime(time: string): string {
+  //   const originalTime = time;
+  //   if (this._timeroffstyle == 1) {
+  //     if (time.startsWith("-") && time.length == 5) {
+  //       // -9:59
+  //       time = time.replace("-", "-0");
+  //     } else if (time.length == 4) {
+  //       // 9:59
+  //       time = "0" + time;
+  //     }
+  //   }
+  //   console.log(`timer:'${time}' < '${originalTime}'`);
+  //   return time;
+  // }
 
   _autoDetectFontType() {
     if (this._font_id) {
@@ -321,8 +321,24 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   setDisplayTime() {
+    if(this._uiRoot.audio._isStop){
+      switch(this._timeroffstyle){
+        case 0 :
+          this.setDisplayValue("  : ")
+          break;
+        case 1:
+          this.setDisplayValue( "00:00")
+          break;
+        case 2:
+          this.setDisplayValue( "")
+          break;
+      }
+      return;
+    }
     this.setDisplayValue(
-      this.styledTime(integerToTime(this._uiRoot.audio.getCurrentTime()))
+      // this.styledTime(
+        integerToTime(this._uiRoot.audio.getCurrentTime())
+      // )
     );
   }
 
