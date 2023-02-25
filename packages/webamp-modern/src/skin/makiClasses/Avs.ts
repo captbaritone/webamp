@@ -130,7 +130,7 @@ class ButterchurnPaintHandler extends VisPaintHandler {
     // const height = canvas.height;
     // this._visualizer.setRendererSize(width, height);
     this._visualizer.launchSongTitleAnim(`Preset:[${this._presetIndex}] : ${presetName}`)
-    this._visualizer.renderer.supertext.duration = 100;
+    this._visualizer.renderer.supertext.duration = 7;
     this._visualizer.render()
 
   }
