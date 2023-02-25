@@ -122,13 +122,17 @@ class ButterchurnPaintHandler extends VisPaintHandler {
 
     //somehow, not switched to other preset.
     //below is a bad hack to fishing the changes
-    const audio = this._vis._uiRoot.audio;
-    this._visualizer.disconnectAudio(audio._analyser)
-    this._visualizer.connectAudio(audio._analyser)
-    // const canvas = this._vis._canvas;
-    // const width = canvas.width;
-    // const height = canvas.height;
-    // this._visualizer.setRendererSize(width, height);
+    // const audio = this._vis._uiRoot.audio;
+    // this._visualizer.disconnectAudio(audio._analyser)
+    // this._visualizer.connectAudio(audio._analyser)
+
+    const canvas = this._vis._canvas;
+    const bound = canvas.getBoundingClientRect()
+    const width = bound.width;
+    const height = bound.height;
+    canvas.width = width;
+    canvas.height = height;
+    this._visualizer.setRendererSize(width, height);
     this._visualizer.launchSongTitleAnim(`Preset:[${this._presetIndex}] : ${presetName}`)
     this._visualizer.renderer.supertext.duration = 7;
     this._visualizer.render()
