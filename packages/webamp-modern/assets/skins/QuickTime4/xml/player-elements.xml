@@ -4,11 +4,19 @@
   <bitmap id="player.main" file="window/normal.png" x="0" y="0" gammagroup="Backgrounds"/>
  
 <!-- Drawer Background -->
-  <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="339" gammagroup="Backgrounds"/>
-  <bitmap id="drawer.main.center" file="window/drawer.png" x="0" y="0" h="50" w="339" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="340" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.main.center" file="window/drawer.png" x="0" y="0"   h="50" w="340" gammagroup="Backgrounds"/>
+<!-- Drawer InnerBackground -->
+  <!-- <bitmap id="drawer.inner.left" file="window/dardk-drawer.png" x="0" y="4" h="119" w="10" gammagroup="Backgrounds"/> -->
+  <!-- <bitmap id="drawer.inner.center" file="window/dardk-drawer.png" x="68" y="4" h="119" w="10" gammagroup="Backgrounds"/> -->
+  <!-- <bitmap id="drawer.inner.right" file="window/dardk-drawer.png" x="186" y="4" h="119" w="20" gammagroup="Backgrounds"/> -->
+
+  <bitmap id="drawer.inner.fill"   file="window/dark-drawer.png" x="7" y="25" h="1" w="326" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.inner.bottom" file="window/dark-drawer.png" x="7" y="0" h="54" w="326" gammagroup="Backgrounds"/>
+
 <!-- Drawer Elements -->
-  <bitmap id="drawer.button.open"         file="window/normal.png"         x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
-  <bitmap id="drawer.button.open.pressed" file="window/normal-pressed.png" x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+  <bitmap id="drawer.button.open"  file="window/normal.png"         x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+  <bitmap id="drawer.button.close" file="window/normal-pressed.png" x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
 
 <!-- Playback buttons -->
 

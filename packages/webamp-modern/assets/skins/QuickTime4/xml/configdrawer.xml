@@ -107,8 +107,8 @@
   <group id="config.tab.colorthemes.on" x="0" y="0"/>
 </groupdef>
 
-<groupdef id="player.config.inner" name="Config Inner" w="326" h="127">
-  <layer
+<groupdef id="player.config.inner" name="Config Inner" w="326" h="84">
+  <!-- <layer
      id="drawer.inner.left"
      x="0" y="0"
      image="drawer.inner.left"
@@ -125,6 +125,24 @@
      x="-20" y="0"
      relatx="1"
      image="drawer.inner.right"
+   /> -->
+  <layer
+     id="drawer.inner.fill"
+     x="0" y="0"
+     relath="1"
+     relatw="1"
+     w="0"
+     h="-54"
+     image="drawer.inner.fill"
+   />
+  <layer
+     id="drawer.inner.bottom"
+     x="0" y="-54"
+     relatw="1"
+     relaty="1"
+     w="0"
+     h="54"
+     image="drawer.inner.bottom"
    />
 </groupdef>
 
@@ -1112,21 +1130,21 @@
 
 <groupdef id="player.normal.drawer.content" name="Config Drawer Content" w="326" h="127">
   <group id="player.config.inner" x="0" y="0"/>
-  <group id="config.tabs" x="10" y="108" />
-  <group id="player.normal.drawer.eq" x="3" y="15" visible="0"/>
-  <group id="player.normal.drawer.options" x="5" y="13" visible="0"/>
-  <group id="player.normal.drawer.colorthemes" x="8" y="14" visible="0"/>
+  <!-- <group id="config.tabs" x="10" y="108" /> -->
+  <!-- <group id="player.normal.drawer.eq" x="3" y="15" visible="0"/> -->
+  <!-- <group id="player.normal.drawer.options" x="5" y="13" visible="0"/> -->
+  <!-- <group id="player.normal.drawer.colorthemes" x="8" y="14" visible="0"/> -->
 </groupdef>
 
 
-<groupdef id="player.normal.drawer" name="Config Drawer" relatw="1" w="0" h="134" background="wasabi.frame.basetexture">
+<groupdef id="player.normal.drawer" name="Config Drawer" relatw="1" w="0" h="106" background="wasabi.frame.basetexture">
 
    <layer
      id="drawer.window.bottom"
      x="0" y="-33"
      relaty="1"
      image="drawer.main.bottom"
-     resize="left"
+     resize="bottom"
    />
    <layer
      id="drawer.window.center"
@@ -1137,7 +1155,7 @@
    />
    
 
-  <!-- <group id="player.normal.drawer.content" x="0" y="0"/> -->
+  <group id="player.normal.drawer.content" x="0" y="0"/>
 
 
    <!-- <layer
@@ -1170,11 +1188,18 @@
 
    <layer
      id="drawer.resizer"
-     w="20" h="20"
-     x="-20" y="-20"
+     w="25" h="25"
+     x="-25" y="-25"
      relatx="1"
      relaty="1"
-     resize="right"
+     resize="bottom"
+   />
+   <layer
+     id="drawer.grip.resizer"
+     x="158" y="-20"
+     w="24" h="20"
+     relaty="1"
+     resize="bottom"
    />
 
 </groupdef>
