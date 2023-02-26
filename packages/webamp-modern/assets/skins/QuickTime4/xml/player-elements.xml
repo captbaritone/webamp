@@ -3,6 +3,13 @@
 <!-- Player Backgrounds/Overlays -->
   <bitmap id="player.main" file="window/normal.png" x="0" y="0" gammagroup="Backgrounds"/>
  
+<!-- Drawer Background -->
+  <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="339" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.main.center" file="window/drawer.png" x="0" y="0" h="50" w="339" gammagroup="Backgrounds"/>
+<!-- Drawer Elements -->
+  <bitmap id="drawer.button.open"         file="window/normal.png"         x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+  <bitmap id="drawer.button.open.pressed" file="window/normal-pressed.png" x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+
 <!-- Playback buttons -->
 
   <bitmap id="player.button.play"         file="window/normal.png"         x="147" y="56" h="45" w="45" gammagroup="Buttons"/>

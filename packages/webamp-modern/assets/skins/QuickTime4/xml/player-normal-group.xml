@@ -55,7 +55,7 @@
   />
 
   <!-- NEXT -->
-  <layer
+  <!-- <layer
     id="Next.bg"
     x="120" y="0"
     image="player.button.next.bg"
@@ -73,6 +73,16 @@
     downImage="player.button.next.pressed"
     hoverImage="player.button.next.hover"
     tooltip="Next"
+    rectrgn="1"
+  /> -->
+
+  <button
+    id="drawer.button.open"
+    x="310" y="60"
+    image="drawer.button.open"
+    downImage="drawer.button.open.pressed"
+    activeImage="drawer.button.open.pressed"
+    tooltip="Open Configuration Drawer"
     rectrgn="1"
   />
 
@@ -1119,8 +1129,8 @@
 </groupdef>
 
 <groupdef id="player.content.dummy.group" name="WinampDummyGroup" relatw="1" relath="1" w="0" h="0">
-  <group id="player.normal.drawer" x="0" y="-263" relaty="1" sysregion="1" move="1"/>
-  <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/>
+  <group id="player.normal.drawer" x="0" y="-134" relaty="1" sysregion="1" move="1"/>
+  <!-- <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/> -->
   <group id="player.main" x="0" y="0" relaty="0" sysregion="1"/>
   <group id="AVSGroup" x="0" y="17" sysregion="1"/>
 
@@ -1167,4 +1177,4 @@
   <!-- <script id="mainmenu.script" file="scripts/mainmenu.maki" /> -->
 </groupdef>
 
-<!-- <include file="configdrawer.xml" /> -->
+<include file="configdrawer.xml" />
