@@ -23,8 +23,14 @@ Global Int mychange;
 Global Boolean loaded=0;
 Global Timer deferred_opendrawer;
 
+Global Int minMainH, vidvisH, titlebarH, drawerOpenH;
+
 System.onScriptLoaded() {
 	initAttribs();
+	minMainH = 123;
+	vidvisH = 0;
+	titlebarH = 20;
+	drawerOpenH = 172;
 
 	frameGroup = getScriptGroup();
 	main = frameGroup.getParentLayout();
@@ -138,18 +144,38 @@ mouseLayerCOLORTHEMES.onLeftButtonDown(int x, int y) {
 OpenDrawer(int animate) {
 	btnOpen.hide();
 	btnClose.show();
-	DrawerContent.show();
+	// DrawerContent.show();
+	DrawerContent.setXMLParam("alpha","255");
 	main.beforeRedock();
 	if (animate && scrollconfigdrawerattrib.getData() == "1") {
 		lockUI();
-		drawer.setTargetX(drawer.getGuiX());
-		drawer.setTargetY(-194);
-		drawer.setTargetW(drawer.getGuiW());
-		drawer.setTargetH(drawer.getGuiH());
-		drawer.setTargetSpeed(1);
-		drawer.gotoTarget();
+		// drawer.setTargetY(-194);
+		// drawer.setTargetX(drawer.getGuiX());
+		// drawer.setTargetW(drawer.getGuiW());
+		// drawer.setTargetH(drawer.getGuiH());
+		// drawer.setTargetSpeed(1);
+		// drawer.gotoTarget();
+
+		main.setTargetH(titlebarH + vidvisH + drawerOpenH);
+		main.setTargetY(main.getGuiY());
+		main.setTargetX(main.getGuiX());
+		main.setTargetW(main.getGuiW());
+		main.setTargetSpeed(1);
+
+		DrawerContent.setTargetY(65);
+		DrawerContent.setTargetX(DrawerContent.getGuiX());
+		DrawerContent.setTargetW(DrawerContent.getGuiW());
+		DrawerContent.setTargetH(DrawerContent.getGuiH());
+		DrawerContent.setTargetSpeed(1);
+
+		main.gotoTarget();
+		DrawerContent.gotoTarget();
+
 	} else {
-		drawer.setXMLParam("y","-194");
+		// drawer.setXMLParam("y","-194");
+		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+		DrawerContent.setXMLParam("y",integertostring(65));
+
 		setPrivateInt("winamp5", "DrawerOpen", 1);
 		ColorThemes.show();
 		adjustSnapPoints(1);
@@ -164,20 +190,39 @@ closeDrawer(int animate) {
 	main.beforeRedock();
 //	main.setXmlParam("minimum_h", "280");
 	ColorThemes.hide();
-	DrawerContent.hide();
+	// DrawerContent.hide();
+	DrawerContent.setXMLParam("alpha","0");
+	DrawerContent.setXMLParam("y","0");
 
 	btnClose.hide();
 	btnOpen.show();
 	if (animate && scrollconfigdrawerattrib.getData() == "1") {
 		lockUI();
-		drawer.setTargetX(drawer.getGuiX());
-		drawer.setTargetY(-263);
-		drawer.setTargetW(drawer.getGuiW());
-		drawer.setTargetH(drawer.getGuiH());
-		drawer.setTargetSpeed(1);
-		drawer.gotoTarget();
+		// drawer.setTargetY(-263);
+		// drawer.setTargetX(drawer.getGuiX());
+		// drawer.setTargetW(drawer.getGuiW());
+		// drawer.setTargetH(drawer.getGuiH());
+		// drawer.setTargetSpeed(1);
+		// drawer.gotoTarget();
+
+		main.setTargetH(titlebarH + vidvisH);
+		main.setTargetY(main.getGuiY());
+		main.setTargetX(main.getGuiX());
+		main.setTargetW(main.getGuiW());
+		main.setTargetSpeed(1);
+		main.gotoTarget();
+
+		// DrawerContent.setTargetY(65);
+		// DrawerContent.setTargetX(drawer.getGuiX());
+		// DrawerContent.setTargetW(drawer.getGuiW());
+		// DrawerContent.setTargetH(drawer.getGuiH());
+		// DrawerContent.setTargetSpeed(1);
+		// DrawerContent.gotoTarget();
+
 	} else {
-		drawer.setXMLParam("y","-263");
+		// drawer.setXMLParam("y","-263");
+		main.setXMLParam("h",integertostring(titlebarH + vidvisH));
+
 		DrawerShadow.hide();
 		setPrivateInt("winamp5", "DrawerOpen", 0);
 		adjustSnapPoints(0);
