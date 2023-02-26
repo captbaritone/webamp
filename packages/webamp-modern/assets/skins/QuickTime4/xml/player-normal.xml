@@ -6,14 +6,13 @@
   id="normal"
   minimum_w="340"
   minimum_h="123"
-  h="280"
+  h="123"
   w="340"
   droptarget="pldr"
   snapadjustbottom="116"
   linkwidth="shade" 
   >
 
-  <group id="player.content.group" x="0" y="0" fitparent="1"/>
   <!-- 
   <Wasabi:MainFrame:NoStatus
     x="0" y="0" w="0" h="0" relatw="1" relath="1"
@@ -27,6 +26,48 @@
   <sendparams target="window.top.left;window.top;window.top.right;window.left;window.right;window.bottom.left.top;window.bottom.left;window.bottom.left.bottom;window.bottom.top;window.bottom;window.bottom.bottom;window.bottom.right.top;window.bottom.right;window.bottom.right.bottom;" resize="0"/>
   <hideobject target="close;close.inactive"/>
    -->
+
+  <layer
+    id="titlebar"
+    w="0" h="20"
+    relatw="1"
+    image="player.main.title"
+  /> 
+  <!-- Songticker -->
+  <Songticker
+    id="Songticker" showlen="1"
+    x="8" y="5"
+    relatw="1"
+    w="0" h="13"
+    leftpadding="5"
+    rightpadding="-5"
+    font="player.songticker.font"
+    align="center"
+    valign="top"
+    rightclickaction="trackmenu"
+    dblclickaction="trackinfo"
+    fontsize="12"
+    color="font.display.songticker"
+    altfont="Arial"
+   />
+  
+  <Text
+    id="Infoticker"
+    x="8" y="43"
+    relatw="1"
+    w="-16" h="23"
+    leftpadding="5"
+    rightpadding="-5"
+    font="player.songticker.font"
+    align="center"
+    valign="top"
+    fontsize="18"
+    color="font.display.songticker"
+    altfont="Arial"
+	visible="0"
+   />
+
+  <group id="player.content.group" x="0" y="20" h="-20" relath="1" w="0" relatw="1"/>
 
 
 <button

@@ -1,7 +1,8 @@
 <elements>
 
 <!-- Player Backgrounds/Overlays -->
-  <bitmap id="player.main" file="window/normal.png" x="0" y="0" gammagroup="Backgrounds"/>
+  <bitmap id="player.main" file="window/normal.png" x="0" y="20" gammagroup="Backgrounds"/>
+  <bitmap id="player.main.title" file="window/normal.png" x="0" y="0" h="20" w="340" gammagroup="Backgrounds"/>
  
 <!-- Drawer Background -->
   <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="340" gammagroup="Backgrounds"/>

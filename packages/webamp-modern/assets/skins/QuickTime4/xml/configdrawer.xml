@@ -1129,7 +1129,7 @@
 
 
 <groupdef id="player.normal.drawer.content" name="Config Drawer Content" w="326" h="127">
-  <group id="player.config.inner" x="0" y="0"/>
+  <group id="player.config.inner" visible="0" x="0" y="0"/>
   <!-- <group id="config.tabs" x="10" y="108" /> -->
   <!-- <group id="player.normal.drawer.eq" x="3" y="15" visible="0"/> -->
   <!-- <group id="player.normal.drawer.options" x="5" y="13" visible="0"/> -->
@@ -1141,7 +1141,7 @@
 
    <layer
      id="drawer.window.bottom"
-     x="0" y="-33"
+     x="0" y="-34"
      relaty="1"
      image="drawer.main.bottom"
      resize="bottom"

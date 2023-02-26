@@ -23,7 +23,7 @@
   <button
     id="Play"
     action="PLAY"
-    x="147" y="56"
+    x="147" y="7"
     image="player.button.play"
     downImage="player.button.play.pressed"
     tooltip="Play"
@@ -34,7 +34,7 @@
   <button
     id="Pause"
     action="PAUSE"
-    x="200" y="60"
+    x="200" y="11"
     image="player.button.pause"
     downImage="player.button.pause.pressed"
     hoverImage="player.button.pause.hover"
@@ -78,7 +78,7 @@
 
   <button
     id="drawer.button.close"
-    x="310" y="60"
+    x="310" y="11"
     image="drawer.button.close"
     downImage="drawer.button.open"
     tooltip="Close Configuration Drawer"
@@ -86,7 +86,7 @@
   />
   <button
     id="drawer.button.open"
-    x="310" y="60"
+    x="310" y="11"
     image="drawer.button.open"
     downImage="drawer.button.close"
     tooltip="Open Configuration Drawer"
@@ -265,7 +265,7 @@
   <text
     id="timer"
     display="time"
-    x="14" y="28"
+    x="14" y="8"
     w="70" h="20"
     font="player.BIGNUM"
     align="left"
@@ -298,7 +298,7 @@
 
   <vis
     id="visual"
-    x="-24" y="26" w="55" h="16"
+    x="-24" y="6" w="55" h="16"
     relatx="1"
     gammagroup="DisplayVis"
     ColorBand1="000,000,000"
@@ -340,56 +340,13 @@
   />
 
   <!-- Songticker -->
-  <Songticker
-    id="Songticker" showlen="1"
-    x="8" y="5"
-    relatw="1"
-    w="0" h="13"
-    leftpadding="5"
-    rightpadding="-5"
-    font="player.songticker.font"
-    align="center"
-    valign="top"
-    rightclickaction="trackmenu"
-    dblclickaction="trackinfo"
-    fontsize="12"
-    color="font.display.songticker"
-    altfont="Arial"
-   />
   
-  <Text
-    id="Infoticker"
-    x="8" y="43"
-    relatw="1"
-    w="-16" h="23"
-    leftpadding="5"
-    rightpadding="-5"
-    font="player.songticker.font"
-    align="center"
-    valign="top"
-    fontsize="18"
-    color="font.display.songticker"
-    altfont="Arial"
-	visible="0"
-   />
 
   <!-- Songticker overlay -->
-  <layer
-    id="display.left.overlay"
-    x="0" y="0"
-    ghost="1"
-    image="player.display.left.overlay"
-  />
-  <layer
-    id="display.right.overlay"
-    x="-21" y="0"
-    ghost="1"
-    relatx="1"
-    image="player.display.right.overlay"
-  />
+
 
   <!-- the songinfo -->
-  <group id="player.normal.songinfo" x="96" y="17" />
+  <!-- <group id="player.normal.songinfo" x="96" y="17" /> -->
 
   <group id="player.normal.display.beatvisualization" x="200" y="11" visible="0"/>
 
@@ -922,7 +879,7 @@
   <group id="player.normal.display" x="5" y="3" />
 
   <!-- the playback buttons -->
-  <group id="player.normal.playbuttons" x="0" y="0" />
+  <group id="player.normal.playbuttons" x="0" y="29" />
 
   <!-- the volume / mute / resize / ... -->
   <group id="player.bar.rightbottom" x="0" y="0" />
@@ -963,7 +920,7 @@
   <slider
     id="Seeker"
     action="SEEK"
-    x="60" y="32"
+    x="60" y="12"
     h="9"
     w="208"
     thumb="player.button.seek"
@@ -1136,7 +1093,8 @@
 </groupdef>
 
 <groupdef id="player.content.dummy.group" name="WinampDummyGroup" relatw="1" relath="1" w="0" h="0">
-  <group id="player.normal.drawer" x="0" y="-263" relaty="1" sysregion="1" move="1"/>
+  <!-- <group id="player.normal.drawer" x="0" y="-263" relaty="1" sysregion="1" move="1"/> -->
+  <group id="player.normal.drawer" x="0" top="17" h="0" relath="1" sysregion="1" move="1"/>
   <!-- <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/> -->
   <group id="player.main" x="0" y="0" relaty="0" sysregion="1"/>
   <group id="AVSGroup" x="0" y="17" sysregion="1"/>
@@ -1174,7 +1132,7 @@
     image="player.openclose.overlay"
   />
 
-  <script id="configtabs.script" file="scripts/configtabs.maki" />
+  <!-- <script id="configtabs.script" file="scripts/configtabs.maki" /> -->
   <!-- <script id="videoavs.script" file="scripts/videoavs.maki" /> -->
 
 </groupdef>
