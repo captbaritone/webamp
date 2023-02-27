@@ -796,7 +796,7 @@
     image="player.button.videoavs.up.bg2"
   /> -->
 
-  <group id="video.group" x="8" y="2" relatw="1" relath="1" w="-8" h="-2"/>
+  <group id="video.group" x="8" y="2" relatw="1" relath="1" w="-16" h="-2"/>
   <!--
   <group id="buttons.video" x="10" relatw="1" w="0" relaty="1" y="-21"/>
   <group id="buttons.vis" x="10" relatw="1" w="0" relaty="1" y="-21"/>
