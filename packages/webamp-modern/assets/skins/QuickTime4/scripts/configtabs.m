@@ -287,12 +287,12 @@ closeDrawer(int animate) {
 
 	// } else {
 		// drawer.setXMLParam("y","-263");
-		debugstring("onclose: drawerH:"+integertostring(drawerH)+" ,drawerOpenH:"+integertostring(drawerOpenH), 0);
+		// debugstring("onclose: drawerH:"+integertostring(drawerH)+" ,drawerOpenH:"+integertostring(drawerOpenH), 0);
 		if(drawerH == drawerOpenH){
 			//main.setXMLParam("h",integertostring(titlebarH + vidvisH));
 			drawerH = drawerCloseH;
 		}
-		debugstring("onclose2: drawerH:"+integertostring(drawerH)+" ,drawerCloseH:"+integertostring(drawerCloseH), 0);
+		// debugstring("onclose2: drawerH:"+integertostring(drawerH)+" ,drawerCloseH:"+integertostring(drawerCloseH), 0);
 		drawerHmin = drawerCloseH;
 		Reflow();
 
@@ -438,6 +438,7 @@ btnAvsOpen.onLeftClick() {
 
 // after calculation, actual re-arrange groups vertically
 Reflow() {
+
 	int h,y;
 	h = 0;
 	// h = titlebarH;
@@ -452,15 +453,15 @@ Reflow() {
 		dummyGroup.setXMLParam("h",integertostring(h * -1));
 	}
 
+	// constraint
+	h = titlebarH + vidvisH + drawerHmin;
+	main.setXMLParam("minimum_h",integertostring(h));
+
 	// layout:
 	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerH));
 
-	// constraint
-	// h = titlebarH + vidvisH + drawerHmin;
-	// main.setXMLParam("minimum_h",integertostring(h));
 	
 
-	//TODO: Sset minimumHeight
 }
 
 // attempt to calc  actual drawer.bottom.H
