@@ -1128,7 +1128,7 @@
 </groupdef>
 
 
-<groupdef id="player.normal.drawer.content" name="Config Drawer Content" w="326" h="127" aplpha="128" >
+<groupdef id="player.normal.drawer.content" name="Config Drawer Content" w="326" h="127"  >
   <group id="player.config.inner" x="0" y="0"/>
   <!-- <group id="config.tabs" x="10" y="108" /> -->
   <!-- <group id="player.normal.drawer.eq" x="3" y="15" visible="0"/> -->
@@ -1187,7 +1187,7 @@
    />
    
 
-  <group id="player.normal.drawer.content" x="0" y="0"/>
+  <group id="player.normal.drawer.content" x="0" y="0" alpha="0"/>
 
 
    <!-- <layer

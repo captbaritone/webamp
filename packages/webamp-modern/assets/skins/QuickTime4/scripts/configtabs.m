@@ -250,6 +250,7 @@ OpenDrawer(int animate) {
 }
 
 closeDrawer(int animate) {
+	Preflow();
 	main.beforeRedock();
 //	main.setXmlParam("minimum_h", "280");
 	ColorThemes.hide();
@@ -286,10 +287,12 @@ closeDrawer(int animate) {
 
 	// } else {
 		// drawer.setXMLParam("y","-263");
-		if(drawerH <= drawerOpenH){
+		debugstring("onclose: drawerH:"+integertostring(drawerH)+" ,drawerOpenH:"+integertostring(drawerOpenH), 0);
+		if(drawerH == drawerOpenH){
 			//main.setXMLParam("h",integertostring(titlebarH + vidvisH));
 			drawerH = drawerCloseH;
 		}
+		debugstring("onclose2: drawerH:"+integertostring(drawerH)+" ,drawerCloseH:"+integertostring(drawerCloseH), 0);
 		drawerHmin = drawerCloseH;
 		Reflow();
 
@@ -309,20 +312,20 @@ btnOpen.onLeftClick() {
 	openDrawer(1);
 }
 
-drawer.onTargetReached() {
-	if (btnClose.isVisible()) {
-		setPrivateInt("winamp5", "DrawerOpen", 1);
-		ColorThemes.show();
-		adjustSnapPoints(1);
-	} else {
-		// DrawerShadow.hide();
-		setPrivateInt("winamp5", "DrawerOpen", 0);
-		adjustSnapPoints(0);
-	}
-	updateAttribs();
-	main.redock();
-	// unlockUI();
-}
+// drawer.onTargetReached() {
+// 	if (btnClose.isVisible()) {
+// 		setPrivateInt("winamp5", "DrawerOpen", 1);
+// 		ColorThemes.show();
+// 		adjustSnapPoints(1);
+// 	} else {
+// 		// DrawerShadow.hide();
+// 		setPrivateInt("winamp5", "DrawerOpen", 0);
+// 		adjustSnapPoints(0);
+// 	}
+// 	updateAttribs();
+// 	main.redock();
+// 	// unlockUI();
+// }
 
 ShowDrawer() {
 	drawer.setXmlParam("y", "-147");
@@ -453,9 +456,8 @@ Reflow() {
 	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerH));
 
 	// constraint
-	h += titlebarH;
-	h += drawerHmin;
-	main.setXMLParam("minimum_h",integertostring(h));
+	// h = titlebarH + vidvisH + drawerHmin;
+	// main.setXMLParam("minimum_h",integertostring(h));
 	
 
 	//TODO: Sset minimumHeight
