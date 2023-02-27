@@ -17,6 +17,7 @@ Function WindowHolder getVisWindowHolder();
 Function AVS_setHandle(int open);
 Function Video_setHandle(int open);
 Function Reflow();
+Function Preflow(); 
 
 Global Group frameGroup,PlayerMain,VideoVisGroup, dummyGroup;
 Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEMESoff;
@@ -389,6 +390,8 @@ movie_visible(int open){
 
 // Toggle AVS clicked
 btnAvsOpen.onLeftClick() {
+	Preflow();
+
 	if(videoavsOpened == 2) { 	// avs is already opened
 		// lets close
 		AVS_setHandle(0);		// unload animation
@@ -409,7 +412,7 @@ btnAvsOpen.onLeftClick() {
 	Reflow();
 }
 
-// after calculation, lets re-arrange groups vertically
+// after calculation, actual re-arrange groups vertically
 Reflow() {
 	int h;
 	h = 0;
@@ -421,9 +424,18 @@ Reflow() {
 	dummyGroup.setXMLParam("h",integertostring(h * -1));
 
 	// layout:
-	h += titlebarH
+	// h += titlebarH;
 	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
 
+}
+
+// attempt to calc  actual drawer.bottom.H
+Preflow() {
+	int h;
+	h = main.getHeight();
+	h -= titlebarH;
+	h -= vidvisH;
+	drawerOpenH = h;
 }
 
 WindowHolder getVisWindowHolder() {
