@@ -62,7 +62,10 @@
        width="340" />
     <g
        id="g903"
-       transform="matrix(0.08717529,0,0,0.08717529,50.681437,458.08334)">
+       transform="matrix(0.08717529,0,0,0.08717529,50.681437,458.08334)"
+       inkscape:export-filename="/home/fathony/Documents/X2NIE/webamp/packages/webamp-modern/assets/skins/QuickTime4/thinger/vis.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <path
          style="fill:#f99930;fill-opacity:1;stroke:none"
          d="m -344.40278,392.72222 c -6.77111,0 -12.22222,5.4511 -12.22222,12.22222 v 24.44444 c 0,6.77111 5.45111,12.22222 12.22222,12.22222 h 48.88889 c 6.77111,0 12.22222,-5.45111 12.22222,-12.22222 v -24.44444 c 0,-6.77112 -5.45111,-12.22222 -12.22222,-12.22222 z"
