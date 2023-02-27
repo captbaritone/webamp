@@ -24,7 +24,7 @@ Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEME
 Global Group ContentEQ,ContentOPTIONS,ContentCOLORTHEMES;
 Global Layer mouseLayerEQ,mouseLayerOPTIONS,mouseLayerCOLORTHEMES;
 Global Button btnClose,btnOpen;
-Global Group Drawer,DrawerShadow,DrawerContent;
+Global Group Drawer,// DrawerShadow,DrawerContent;
 Global GuiObject ColorThemes;
 Global Layout main;
 Global Int mychange;
@@ -98,7 +98,7 @@ System.onScriptLoaded() {
 	btnClose = frameGroup.findObject("drawer.button.close");
 	btnOpen = frameGroup.findObject("drawer.button.open");
 	drawer = frameGroup.findObject("player.normal.drawer");
-	DrawerShadow = frameGroup.findObject("player.normal.drawer.shadow");
+	// DrawerShadow = frameGroup.findObject("player.normal.drawer.shadow");
 	DrawerContent = frameGroup.findObject("player.normal.drawer.content");
 
 	btnAvsOpen = frameGroup.findObject("avs.toggle");
@@ -229,7 +229,7 @@ OpenDrawer(int animate) {
 		updateAttribs();
 		main.Redock();
 	}
-	DrawerShadow.show();
+	// DrawerShadow.show();
 //	main.setXmlParam("minimum_h", "397");
 }
 
@@ -272,7 +272,7 @@ closeDrawer(int animate) {
 		// drawer.setXMLParam("y","-263");
 		main.setXMLParam("h",integertostring(titlebarH + vidvisH));
 
-		DrawerShadow.hide();
+		// DrawerShadow.hide();
 		setPrivateInt("winamp5", "DrawerOpen", 0);
 		adjustSnapPoints(0);
 		updateAttribs();
@@ -294,7 +294,7 @@ drawer.onTargetReached() {
 		ColorThemes.show();
 		adjustSnapPoints(1);
 	} else {
-		DrawerShadow.hide();
+		// DrawerShadow.hide();
 		setPrivateInt("winamp5", "DrawerOpen", 0);
 		adjustSnapPoints(0);
 	}
@@ -308,7 +308,7 @@ ShowDrawer() {
 	ColorThemes.show();
 	btnOpen.hide();
 	btnClose.show();
-	DrawerShadow.show();
+	// DrawerShadow.show();
 	adjustSnapPoints(1);
 }
 
