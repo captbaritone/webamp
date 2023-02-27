@@ -16,8 +16,9 @@ Function WindowHolder getVideoWindowHolder();
 Function WindowHolder getVisWindowHolder();
 Function AVS_setHandle(int open);
 Function Video_setHandle(int open);
+Function Reflow();
 
-Global Group frameGroup,PlayerMain,VideoVisGroup;
+Global Group frameGroup,PlayerMain,VideoVisGroup, dummyGroup;
 Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEMESoff;
 Global Group ContentEQ,ContentOPTIONS,ContentCOLORTHEMES;
 Global Layer mouseLayerEQ,mouseLayerOPTIONS,mouseLayerCOLORTHEMES;
@@ -70,6 +71,8 @@ System.onScriptLoaded() {
 
 	frameGroup = getScriptGroup();
 	main = frameGroup.getParentLayout();
+
+	dummyGroup=frameGroup.findObject("player.content.dummy.group");
 
 	tabs=frameGroup.findObject("config.tabs");
 	tEQon=frameGroup.findObject("config.tab.eq.on");
@@ -382,7 +385,6 @@ movie_visible(int open){
 		VideoVisGroup.hide();
 		vidvisH = 0;
 	}
-	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
 }
 
 // Toggle AVS clicked
@@ -404,6 +406,24 @@ btnAvsOpen.onLeftClick() {
 		AVS_setHandle(1);		// load animation
 		videoavsOpened = 2;
 	}
+	Reflow();
+}
+
+// after calculation, lets re-arrange groups vertically
+Reflow() {
+	int h;
+	h = 0;
+	// h = titlebarH;
+	// if(videoavsOpened != 0){
+		h += vidvisH;
+	// }
+	dummyGroup.setXMLParam("y",integertostring(h));
+	dummyGroup.setXMLParam("h",integertostring(h * -1));
+
+	// layout:
+	h += titlebarH
+	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+
 }
 
 WindowHolder getVisWindowHolder() {
