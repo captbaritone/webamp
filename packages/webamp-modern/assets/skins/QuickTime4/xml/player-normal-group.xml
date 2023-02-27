@@ -809,7 +809,9 @@
 </groupdef>
 
 
-<groupdef id="player.main" relatw="1" w="0" h="114" background="player.main">
+<groupdef id="player.main" relatw="1" w="0" h="114" >
+  <layer id="mousetrap" x="0" y="0" w="0" h="65" relatw="1" move="1" image="player.main"/>
+  <layer id="mousetrap" x="0" y="65" w="0" h="30" relatw="1" move="0" image="player.main.beach"/>
    <!-- <layer
      id="window.left"
      x="0" y="0"
@@ -1184,6 +1186,7 @@
     altfont="Arial"
 	visible="0"
    />
+   <layer id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
 </groupdef>
 
 <include file="configdrawer.xml" />
