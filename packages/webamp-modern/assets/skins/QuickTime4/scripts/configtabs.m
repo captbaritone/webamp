@@ -24,7 +24,7 @@ Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEME
 Global Group ContentEQ,ContentOPTIONS,ContentCOLORTHEMES;
 Global Layer mouseLayerEQ,mouseLayerOPTIONS,mouseLayerCOLORTHEMES;
 Global Button btnClose,btnOpen;
-Global Group Drawer,// DrawerShadow,DrawerContent;
+Global Group Drawer,DrawerContent; // DrawerShadow,
 Global GuiObject ColorThemes;
 Global Layout main;
 Global Int mychange;
@@ -59,15 +59,22 @@ Global Timer deferred_opendrawer;
  * 	 - better if we could remember the size being dictated by user drag (up & down)
  * 	================================
  */
-Global Int minMainH, vidvisH, titlebarH, drawerOpenH, videoavsOpened;
+Global Int minMainH, mainH, vidvisH, titlebarH, drawerH, drawerOpenH, drawerCloseH, drawerHmin, videoavsOpened;
 Global Button btnAvsOpen, btnVideoOpen;
 
 System.onScriptLoaded() {
 	initAttribs();
-	minMainH = 123;
-	vidvisH = 0;
+	// fix:
+	minMainH = 123;	//minimum
 	titlebarH = 20;
 	drawerOpenH = 172;
+	drawerCloseH = 103;
+
+	//dynamic var
+	mainH = 0;
+	drawerH = 0;
+	drawerHmin = 0;
+	vidvisH = 0;
 	videoavsOpened = 0; // 1=video opened, 2=avs opened, 0 = no one.
 
 	frameGroup = getScriptGroup();
@@ -185,50 +192,59 @@ mouseLayerCOLORTHEMES.onLeftButtonDown(int x, int y) {
 }
 
 OpenDrawer(int animate) {
+	Preflow();
 	btnOpen.hide();
 	btnClose.show();
 	main.beforeRedock();
-	if (animate && scrollconfigdrawerattrib.getData() == "1") {
-		lockUI();
-		// drawer.setTargetY(-194);
-		// drawer.setTargetX(drawer.getGuiX());
-		// drawer.setTargetW(drawer.getGuiW());
-		// drawer.setTargetH(drawer.getGuiH());
-		// drawer.setTargetSpeed(1);
-		// drawer.gotoTarget();
+	// if (animate && scrollconfigdrawerattrib.getData() == "1") {
+	// 	// lockUI();
+	// 	// drawer.setTargetY(-194);
+	// 	// drawer.setTargetX(drawer.getGuiX());
+	// 	// drawer.setTargetW(drawer.getGuiW());
+	// 	// drawer.setTargetH(drawer.getGuiH());
+	// 	// drawer.setTargetSpeed(1);
+	// 	// drawer.gotoTarget();
 
-		// main.setTargetH(titlebarH + vidvisH + drawerOpenH);
-		// main.setTargetY(main.getGuiY());
-		// main.setTargetX(main.getGuiX());
-		// main.setTargetW(main.getGuiW());
-		// main.setTargetSpeed(1);
-		// main.gotoTarget();
-		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+	// 	// main.setTargetH(titlebarH + vidvisH + drawerOpenH);
+	// 	// main.setTargetY(main.getGuiY());
+	// 	// main.setTargetX(main.getGuiX());
+	// 	// main.setTargetW(main.getGuiW());
+	// 	// main.setTargetSpeed(1);
+	// 	// main.gotoTarget();
 
-		//sadly the animation cant be async. :(
-		// DrawerContent.setTargetY(65);
-		// DrawerContent.setTargetX(DrawerContent.getGuiX());
-		// DrawerContent.setTargetW(DrawerContent.getGuiW());
-		// DrawerContent.setTargetH(DrawerContent.getGuiH());
-		// DrawerContent.setTargetSpeed(1);
+	// 	if(drawerH < drawerOpenH){
+	// 		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+	// 	}
 
-		// DrawerContent.gotoTarget();
-		// DrawerContent.setXMLParam("y","65");
-		DrawerContent.setXMLParam("y","65");
-		DrawerContent.setXMLParam("alpha","255");
+	// 	//sadly the animation cant be async. :(
+	// 	// DrawerContent.setTargetY(65);
+	// 	// DrawerContent.setTargetX(DrawerContent.getGuiX());
+	// 	// DrawerContent.setTargetW(DrawerContent.getGuiW());
+	// 	// DrawerContent.setTargetH(DrawerContent.getGuiH());
+	// 	// DrawerContent.setTargetSpeed(1);
 
-	} else {
+	// 	// DrawerContent.gotoTarget();
+	// 	// DrawerContent.setXMLParam("y","65");
+	// 	DrawerContent.setXMLParam("y","65");
+	// 	DrawerContent.setXMLParam("alpha","255");
+
+	// } else {
 		// drawer.setXMLParam("y","-194");
-		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+		if(drawerH < drawerOpenH){
+			// main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+			drawerH = drawerOpenH;
+		}
+		drawerHmin = drawerOpenH;
 		DrawerContent.setXMLParam("y","65");
 		DrawerContent.setXMLParam("alpha","255");
+		Reflow();
 
 		setPrivateInt("winamp5", "DrawerOpen", 1);
 		ColorThemes.show();
 		adjustSnapPoints(1);
 		updateAttribs();
 		main.Redock();
-	}
+	// }
 	// DrawerShadow.show();
 //	main.setXmlParam("minimum_h", "397");
 }
@@ -243,41 +259,46 @@ closeDrawer(int animate) {
 
 	btnClose.hide();
 	btnOpen.show();
-	if (animate && scrollconfigdrawerattrib.getData() == "1") {
-		lockUI();
-		// drawer.setTargetY(-263);
-		// drawer.setTargetX(drawer.getGuiX());
-		// drawer.setTargetW(drawer.getGuiW());
-		// drawer.setTargetH(drawer.getGuiH());
-		// drawer.setTargetSpeed(1);
-		// drawer.gotoTarget();
+	// if (animate && scrollconfigdrawerattrib.getData() == "1") {
+	// 	// lockUI();
+	// 	// drawer.setTargetY(-263);
+	// 	// drawer.setTargetX(drawer.getGuiX());
+	// 	// drawer.setTargetW(drawer.getGuiW());
+	// 	// drawer.setTargetH(drawer.getGuiH());
+	// 	// drawer.setTargetSpeed(1);
+	// 	// drawer.gotoTarget();
 
-		//? ANIMATING LAYOUT IS SUCK
-		// main.setTargetH(titlebarH + vidvisH);
-		// main.setTargetY(main.getGuiY());
-		// main.setTargetX(main.getGuiX());
-		// main.setTargetW(main.getGuiW());
-		// main.setTargetSpeed(1);
-		// main.gotoTarget();
-		main.setXMLParam("h",integertostring(titlebarH + vidvisH));
+	// 	//? ANIMATING LAYOUT IS SUCK
+	// 	// main.setTargetH(titlebarH + vidvisH);
+	// 	// main.setTargetY(main.getGuiY());
+	// 	// main.setTargetX(main.getGuiX());
+	// 	// main.setTargetW(main.getGuiW());
+	// 	// main.setTargetSpeed(1);
+	// 	// main.gotoTarget();
+	// 	main.setXMLParam("h",integertostring(titlebarH + vidvisH));
 
-		// DrawerContent.setTargetY(65);
-		// DrawerContent.setTargetX(drawer.getGuiX());
-		// DrawerContent.setTargetW(drawer.getGuiW());
-		// DrawerContent.setTargetH(drawer.getGuiH());
-		// DrawerContent.setTargetSpeed(1);
-		// DrawerContent.gotoTarget();
+	// 	// DrawerContent.setTargetY(65);
+	// 	// DrawerContent.setTargetX(drawer.getGuiX());
+	// 	// DrawerContent.setTargetW(drawer.getGuiW());
+	// 	// DrawerContent.setTargetH(drawer.getGuiH());
+	// 	// DrawerContent.setTargetSpeed(1);
+	// 	// DrawerContent.gotoTarget();
 
-	} else {
+	// } else {
 		// drawer.setXMLParam("y","-263");
-		main.setXMLParam("h",integertostring(titlebarH + vidvisH));
+		if(drawerH <= drawerOpenH){
+			//main.setXMLParam("h",integertostring(titlebarH + vidvisH));
+			drawerH = drawerCloseH;
+		}
+		drawerHmin = drawerCloseH;
+		Reflow();
 
 		// DrawerShadow.hide();
 		setPrivateInt("winamp5", "DrawerOpen", 0);
 		adjustSnapPoints(0);
 		updateAttribs();
 		main.redock();
-	}
+	// }
 }
 
 btnClose.onLeftClick() {
@@ -300,7 +321,7 @@ drawer.onTargetReached() {
 	}
 	updateAttribs();
 	main.redock();
-	unlockUI();
+	// unlockUI();
 }
 
 ShowDrawer() {
@@ -414,28 +435,40 @@ btnAvsOpen.onLeftClick() {
 
 // after calculation, actual re-arrange groups vertically
 Reflow() {
-	int h;
+	int h,y;
 	h = 0;
 	// h = titlebarH;
 	// if(videoavsOpened != 0){
 		h += vidvisH;
 	// }
-	dummyGroup.setXMLParam("y",integertostring(h));
-	dummyGroup.setXMLParam("h",integertostring(h * -1));
+
+	// reduce traffic, we prevent set same value
+	y = dummyGroup.getTop();
+	if(y != h){
+		dummyGroup.setXMLParam("y",integertostring(h));
+		dummyGroup.setXMLParam("h",integertostring(h * -1));
+	}
 
 	// layout:
-	// h += titlebarH;
-	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerH));
 
+	// constraint
+	h += titlebarH;
+	h += drawerHmin;
+	main.setXMLParam("minimum_h",integertostring(h));
+	
+
+	//TODO: Sset minimumHeight
 }
 
 // attempt to calc  actual drawer.bottom.H
 Preflow() {
+	mainH = main.getHeight();
 	int h;
-	h = main.getHeight();
+	h = mainH;
 	h -= titlebarH;
 	h -= vidvisH;
-	drawerOpenH = h;
+	drawerH = h; // this is the current real drawer.H
 }
 
 WindowHolder getVisWindowHolder() {
