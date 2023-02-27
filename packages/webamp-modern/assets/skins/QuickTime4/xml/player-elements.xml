@@ -30,5 +30,14 @@
 <!-- Seek -->
   <bitmap id="player.button.seek" file="window/normal-pressed.png" x="69" y="32" h="9" w="7" gammagroup="Buttons"/>
 
+<!-- VIDEO/AVS -->
+  <bitmap id="player.button.avs0" file="thinger/vis-selected.png" x="0" y="0" gammagroup="Buttons2"/>
+  <bitmap id="player.button.video0" file="thinger/video-selected.png" x="0" y="0" gammagroup="Buttons2"/>
+
+  <bitmap id="player.button.video" file="thinger/quicktime.png" x="0" y="0" gammagroup="Buttons2"/>
+  <bitmap id="player.button.avs" file="thinger/vis.png" x="0" y="0" gammagroup="Buttons2"/>
+
+  <bitmap id="player.videoavs.middle" file="window/videoavs.png" x="0" y="20" h="244" w="340" gammagroup="Backgrounds"/>
+ 
 
 </elements>

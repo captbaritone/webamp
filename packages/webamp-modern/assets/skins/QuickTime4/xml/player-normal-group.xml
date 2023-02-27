@@ -722,8 +722,8 @@
 </groupdef>
 
 
-<groupdef id="AVSGroup" relatw="1" w="0" relath="1" h="-280" visible="0" background="wasabi.frame.basetexture">
-  <layer
+<groupdef id="AVSGroup" relatw="1" w="0" h="244" visible="0" background="player.videoavs.middle">
+  <!-- <layer
     x="0" y="0"
     image="player.videoavs.topleft"
     resize="left"
@@ -794,9 +794,10 @@
     x="-45" y="0"
     relatx="1"
     image="player.button.videoavs.up.bg2"
-  />
+  /> -->
 
-  <group id="video.group" x="4" y="21" relatw="1" relath="1" w="-8" h="-47"/>
+  <group id="video.group" x="4" y="21" relatw="1" relath="1" w="-8" h="-10"/>
+  <!--
   <group id="buttons.video" x="10" relatw="1" w="0" relaty="1" y="-21"/>
   <group id="buttons.vis" x="10" relatw="1" w="0" relaty="1" y="-21"/>
   <group id="buttons.video.detach" x="5" y="3" visible="0"/>
@@ -804,12 +805,12 @@
 
   <group id="buttons.video.switchto" x="-170" y="3" relatx="1" visible="0"/>
   <group id="buttons.vis.switchto" x="-170" y="3" relatx="1" visible="1"/>
-
+ -->
 </groupdef>
 
 
 <groupdef id="player.main" relatw="1" w="0" h="114" background="player.main">
-   <layer
+   <!-- <layer
      id="window.left"
      x="0" y="0"
      image="player.main.left"
@@ -873,7 +874,7 @@
      relatx="1"
      image="player.main.right.region"
      sysregion="-2"
-   />
+   /> -->
 
   <!-- the display -->
   <group id="player.normal.display" x="5" y="3" />
@@ -888,7 +889,7 @@
 
   <!-- SEEK SLIDER -->
 
-  <layer
+  <!-- <layer
     id="seekbar.left"
     x="6" y="75"
     ghost="1"
@@ -908,7 +909,7 @@
     ghost="1"
     relatx="1"
     image="player.seekbar.right"
-  />
+  /> -->
 
   <!-- <ProgressGrid
     w="-110" h="4" relatw="1"
@@ -941,7 +942,7 @@
 
 
   <!-- Shuffle / Repeat -->
-  <layer
+  <!-- <layer
     id="button.repeat.bg"
     x="-44" y="18"
     ghost="1"
@@ -1084,7 +1085,7 @@
      relath="1"
      relatx="1"
      resize="right"
-   />
+   /> -->
 
   <!-- <script id="seek.script" file="scripts/seek.maki" /> -->
   <!-- <script id="display.script" file="scripts/display.maki" /> -->
@@ -1097,9 +1098,9 @@
   <group id="player.normal.drawer" x="0" top="17" h="0" relath="1" sysregion="1" move="1"/>
   <!-- <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/> -->
   <group id="player.main" x="0" y="0" relaty="0" sysregion="1"/>
-  <group id="AVSGroup" x="0" y="17" sysregion="1"/>
+  <group id="AVSGroup" x="0" y="0" sysregion="1"/>
 
-  <layer
+ <!--  <layer
     id="player.button.videoavs.up.bg"
     x="-45" y="17"
     relatx="1"
@@ -1130,7 +1131,7 @@
     x="-44" y="16"
     relatx="1"
     image="player.openclose.overlay"
-  />
+  /> -->
 
   <script id="configtabs.script" file="scripts/configtabs.maki" />
   <!-- <script id="videoavs.script" file="scripts/videoavs.maki" /> -->

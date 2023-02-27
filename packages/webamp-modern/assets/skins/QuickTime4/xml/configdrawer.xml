@@ -1136,22 +1136,54 @@
   <!-- <group id="player.normal.drawer.colorthemes" x="8" y="14" visible="0"/> -->
 </groupdef>
 
+<groupdef id="thinger">
+    <layer
+     id="thinger.bg"
+     x="0" y="0"
+     h="50"
+     image="drawer.main.center"
+   />
+
+  <button
+    id="video.toggle"
+    x="13" y="10"
+    image="player.button.video"
+    tooltip="Open Video"
+  />
+
+  <button
+    id="avs.toggle"
+    x="67" y="10"
+    image="player.button.avs"
+    tooltip="Open Visualization"
+  />
+
+</groupdef>
 
 <groupdef id="player.normal.drawer" name="Config Drawer" relatw="1" w="0" h="106" background="wasabi.frame.basetexture">
 
-   <layer
-     id="drawer.window.bottom"
-     x="0" y="-34"
+   <!-- <layer
+     id="drawer.window.center"
+     x="0" y="-634"
+     h="634"
      relaty="1"
-     image="drawer.main.bottom"
-     resize="bottom"
-   />
+     image="drawer.main.center"
+   /> -->
    <layer
      id="drawer.window.center"
      x="0" y="0"
      h="-33"
      relath="1"
      image="drawer.main.center"
+   />
+  <!-- <group id="thinger" x="0" y="-134" relaty="1"/> -->
+  <group id="thinger" x="0" y="-84" relaty="1"/>
+   <layer
+     id="drawer.window.bottom"
+     x="0" y="-34"
+     relaty="1"
+     image="drawer.main.bottom"
+     resize="bottom"
    />
    
 

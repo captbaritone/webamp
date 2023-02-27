@@ -11,6 +11,14 @@ function updateAttribs();
 function ShowDrawer();
 function adjustSnapPoints(int DrawerOpen);
 
+function openVideoAvs(int open);
+Function WindowHolder getVideoWindowHolder();
+Function WindowHolder getVisWindowHolder();
+Function drawer_hideVis();
+Function drawer_showVis();
+Function drawer_hideVideo();
+Function drawer_showVideo();
+
 Global Group frameGroup,PlayerMain,VideoVisGroup;
 Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEMESoff;
 Global Group ContentEQ,ContentOPTIONS,ContentCOLORTHEMES;
@@ -23,7 +31,8 @@ Global Int mychange;
 Global Boolean loaded=0;
 Global Timer deferred_opendrawer;
 
-Global Int minMainH, vidvisH, titlebarH, drawerOpenH;
+Global Int minMainH, vidvisH, titlebarH, drawerOpenH, videoavsOpened;
+Global Button btnAvsOpen, btnVideoOpen;
 
 System.onScriptLoaded() {
 	initAttribs();
@@ -31,6 +40,7 @@ System.onScriptLoaded() {
 	vidvisH = 0;
 	titlebarH = 20;
 	drawerOpenH = 172;
+	videoavsOpened = 0; // 1=video opened, 2=avs opened, 0 = no one.
 
 	frameGroup = getScriptGroup();
 	main = frameGroup.getParentLayout();
@@ -60,6 +70,9 @@ System.onScriptLoaded() {
 	drawer = frameGroup.findObject("player.normal.drawer");
 	DrawerShadow = frameGroup.findObject("player.normal.drawer.shadow");
 	DrawerContent = frameGroup.findObject("player.normal.drawer.content");
+
+	btnAvsOpen = frameGroup.findObject("avs.toggle");
+	btnVideoOpen = frameGroup.findObject("video.toggle");
 
 	int tabEQwidth=tEQon.getWidth();
 	int tabOPTIONSwidth=tOPTIONSon.getWidth();
@@ -144,8 +157,6 @@ mouseLayerCOLORTHEMES.onLeftButtonDown(int x, int y) {
 OpenDrawer(int animate) {
 	btnOpen.hide();
 	btnClose.show();
-	// DrawerContent.show();
-	DrawerContent.setXMLParam("alpha","255");
 	main.beforeRedock();
 	if (animate && scrollconfigdrawerattrib.getData() == "1") {
 		lockUI();
@@ -156,25 +167,31 @@ OpenDrawer(int animate) {
 		// drawer.setTargetSpeed(1);
 		// drawer.gotoTarget();
 
-		main.setTargetH(titlebarH + vidvisH + drawerOpenH);
-		main.setTargetY(main.getGuiY());
-		main.setTargetX(main.getGuiX());
-		main.setTargetW(main.getGuiW());
-		main.setTargetSpeed(1);
+		// main.setTargetH(titlebarH + vidvisH + drawerOpenH);
+		// main.setTargetY(main.getGuiY());
+		// main.setTargetX(main.getGuiX());
+		// main.setTargetW(main.getGuiW());
+		// main.setTargetSpeed(1);
+		// main.gotoTarget();
+		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
 
-		DrawerContent.setTargetY(65);
-		DrawerContent.setTargetX(DrawerContent.getGuiX());
-		DrawerContent.setTargetW(DrawerContent.getGuiW());
-		DrawerContent.setTargetH(DrawerContent.getGuiH());
-		DrawerContent.setTargetSpeed(1);
+		//sadly the animation cant be async. :(
+		// DrawerContent.setTargetY(65);
+		// DrawerContent.setTargetX(DrawerContent.getGuiX());
+		// DrawerContent.setTargetW(DrawerContent.getGuiW());
+		// DrawerContent.setTargetH(DrawerContent.getGuiH());
+		// DrawerContent.setTargetSpeed(1);
 
-		main.gotoTarget();
-		DrawerContent.gotoTarget();
+		// DrawerContent.gotoTarget();
+		// DrawerContent.setXMLParam("y","65");
+		DrawerContent.setXMLParam("y","65");
+		DrawerContent.setXMLParam("alpha","255");
 
 	} else {
 		// drawer.setXMLParam("y","-194");
 		main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
-		DrawerContent.setXMLParam("y",integertostring(65));
+		DrawerContent.setXMLParam("y","65");
+		DrawerContent.setXMLParam("alpha","255");
 
 		setPrivateInt("winamp5", "DrawerOpen", 1);
 		ColorThemes.show();
@@ -205,12 +222,14 @@ closeDrawer(int animate) {
 		// drawer.setTargetSpeed(1);
 		// drawer.gotoTarget();
 
-		main.setTargetH(titlebarH + vidvisH);
-		main.setTargetY(main.getGuiY());
-		main.setTargetX(main.getGuiX());
-		main.setTargetW(main.getGuiW());
-		main.setTargetSpeed(1);
-		main.gotoTarget();
+		//? ANIMATING LAYOUT IS SUCK
+		// main.setTargetH(titlebarH + vidvisH);
+		// main.setTargetY(main.getGuiY());
+		// main.setTargetX(main.getGuiX());
+		// main.setTargetW(main.getGuiW());
+		// main.setTargetSpeed(1);
+		// main.gotoTarget();
+		main.setXMLParam("h",integertostring(titlebarH + vidvisH));
 
 		// DrawerContent.setTargetY(65);
 		// DrawerContent.setTargetX(drawer.getGuiX());
@@ -324,4 +343,127 @@ System.onKeyDown(String key) {
         eq_visible_attrib.setData("0");
     complete;
   }
+}
+
+// Show or Hide the Video/AVS area
+openVideoAvs(int open){
+	if(open == 1){
+		VideoVisGroup.show();
+		vidvisH = 244;
+	}
+	else {
+		VideoVisGroup.hide();
+		vidvisH = 0;
+	}
+	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
+}
+
+btnAvsOpen.onLeftClick() {
+	if(videoavsOpened == 2) { // avs is already opened
+		drawer_hideVis();
+		openVideoAvs(0);
+		videoavsOpened = 0;
+	} 
+	else if(videoavsOpened == 1) { // video is already opened
+		drawer_hideVideo();
+		drawer_showVis();
+		videoavsOpened = 2;
+	} 
+	else {
+		openVideoAvs(1);
+		drawer_showVis();
+		videoavsOpened = 2;
+	}
+}
+
+WindowHolder getVisWindowHolder() {
+    WindowHolder wh = getScriptGroup().findObject("myviswnd");
+    return wh; // we return our vis windowholder object
+}
+
+WindowHolder getVideoWindowHolder() {
+    WindowHolder wh = getScriptGroup().findObject("myvideownd");
+    return wh; // we return our video windowholder object
+}
+
+// -----------------------------------------------------------------------
+drawer_showVis() {
+// #ifdef DEBUG
+//     DebugString("drawer_showVis",0 );
+// #endif
+//     __showing_vis = 1;
+//     setPrivateInt("winamp5", __myname+"OpenState", OPEN);
+//     setPrivateInt("winamp5", __myname+"State", CONTENT_VIS);
+    GuiObject o = getVisWindowHolder();
+    if (o != NULL) { 
+		// __bypasscancel = 1; 
+		o.show(); 
+		// __bypasscancel = 0; 
+	}
+// #ifdef DEBUG
+//     else DebugString("vis object not provided (show)", 0);
+// #endif
+//     onShowVis();
+//     __showing_vis = 0;
+}
+
+// -----------------------------------------------------------------------
+drawer_hideVis() {
+//     __callback_vis_show = 0;
+// #ifdef DEBUG
+//     DebugString("drawer_hideVis",0 );
+// #endif
+//     __hiding_vis = 1;
+    GuiObject o = getVisWindowHolder();
+    if (o != NULL) { 
+		// __bypasscancel = 1; 
+		o.hide(); 
+		// __bypasscancel = 0; 
+	}
+// #ifdef DEBUG
+//     else DebugString("video object not found (hide)", 0);
+// #endif
+//     onHideVis();
+//     __hiding_vis = 0;
+}
+
+// -----------------------------------------------------------------------
+drawer_showVideo() {
+// #ifdef DEBUG
+//     DebugString("drawer_showVideo",0 );
+// #endif
+//     __showing_video = 1;
+//     setPrivateInt("winamp5", __myname+"OpenState", OPEN);
+//     setPrivateInt("winamp5", __myname+"State", CONTENT_VIDEO);
+    GuiObject o = getVideoWindowHolder();
+    if (o != NULL) { 
+		// __bypasscancel = 1; 
+		o.show(); 
+		// __bypasscancel = 0; 
+	}
+// #ifdef DEBUG
+//     else DebugString("vis object not found (show)", 0);
+// #endif
+//     onShowVideo();
+//     __showing_video = 0;
+}
+
+// -----------------------------------------------------------------------
+drawer_hideVideo() {
+//     __callback_video_show = 0;
+// #ifdef DEBUG
+//     DebugString("drawer_hideVideo",0 );
+// #endif
+//     __hiding_video = 1;
+    GuiObject o = getVideoWindowHolder();
+    if (o != NULL) { 
+		// __bypasscancel = 1; 
+		o.hide(); 
+		// __bypasscancel = 0; 
+	}
+// #ifdef DEBUG
+//     else DebugString("video object not found (hide)", 0);
+// #endif
+//     onHideVideo();
+//     __hiding_video = 0;
 }
