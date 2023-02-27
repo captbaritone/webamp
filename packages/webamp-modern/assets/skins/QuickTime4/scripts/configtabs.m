@@ -11,13 +11,11 @@ function updateAttribs();
 function ShowDrawer();
 function adjustSnapPoints(int DrawerOpen);
 
-function openVideoAvs(int open);
+function movie_visible(int open);
 Function WindowHolder getVideoWindowHolder();
 Function WindowHolder getVisWindowHolder();
-Function drawer_hideVis();
-Function drawer_showVis();
-Function drawer_hideVideo();
-Function drawer_showVideo();
+Function AVS_setHandle(int open);
+Function Video_setHandle(int open);
 
 Global Group frameGroup,PlayerMain,VideoVisGroup;
 Global Group tabs,tEQon,tEQoff,tOPTIONSon,tOPTIONSoff,tCOLORTHEMESon,tCOLORTHEMESoff;
@@ -31,6 +29,34 @@ Global Int mychange;
 Global Boolean loaded=0;
 Global Timer deferred_opendrawer;
 
+/**
+ * Some fact:
+ * 
+ * 	Player only cotains 2 groups: Player.Title.Group & Player.Content.Group
+ * 	TitelbarH = 20
+ *  Maybe we will add Menu in future !
+ * 
+ *  PlayerContentGroup contains 2 groups in order: dummy, avs
+ * 	Video.H = 244
+ * 	dummy.Y = avs.H (should after Video, vertically).
+ * 
+ * 	if video visible, dummy.H = 100% - videh.H
+ * 
+ *  Dummy.group contains 2 in orders: drawer, main
+ * 	drawer.Y == main.Y == 0
+ *  drawer.H = 100%
+ *  main is covering drawer.
+ * 
+ * 	drawer closed: 	mainH = 123
+ * 	drawer opened:	mainH = 192
+ * 
+ * 	================================
+ *  Now, the problem :
+ * 	 - drawer.H is 100%, but user might increase
+ * 	 - drawer.H must protect the drawerInner.H (minimum height of layout)
+ * 	 - better if we could remember the size being dictated by user drag (up & down)
+ * 	================================
+ */
 Global Int minMainH, vidvisH, titlebarH, drawerOpenH, videoavsOpened;
 Global Button btnAvsOpen, btnVideoOpen;
 
@@ -345,8 +371,9 @@ System.onKeyDown(String key) {
   }
 }
 
-// Show or Hide the Video/AVS area
-openVideoAvs(int open){
+// Show or Hide the Video/AVS area.
+// called by button.leftCLick
+movie_visible(int open){
 	if(open == 1){
 		VideoVisGroup.show();
 		vidvisH = 244;
@@ -358,20 +385,23 @@ openVideoAvs(int open){
 	main.setXMLParam("h",integertostring(titlebarH + vidvisH + drawerOpenH));
 }
 
+// Toggle AVS clicked
 btnAvsOpen.onLeftClick() {
-	if(videoavsOpened == 2) { // avs is already opened
-		drawer_hideVis();
-		openVideoAvs(0);
+	if(videoavsOpened == 2) { 	// avs is already opened
+		// lets close
+		AVS_setHandle(0);		// unload animation
+		movie_visible(0);		// show container
 		videoavsOpened = 0;
 	} 
-	else if(videoavsOpened == 1) { // video is already opened
-		drawer_hideVideo();
-		drawer_showVis();
+	else 
+	if(videoavsOpened == 1) { 	// video is currently opened
+		Video_setHandle(0);		// unload media
+		AVS_setHandle(1);		// load animation
 		videoavsOpened = 2;
 	} 
-	else {
-		openVideoAvs(1);
-		drawer_showVis();
+	else {						// no animation yet
+		movie_visible(1);		// show container
+		AVS_setHandle(1);		// load animation
 		videoavsOpened = 2;
 	}
 }
@@ -387,83 +417,27 @@ WindowHolder getVideoWindowHolder() {
 }
 
 // -----------------------------------------------------------------------
-drawer_showVis() {
-// #ifdef DEBUG
-//     DebugString("drawer_showVis",0 );
-// #endif
-//     __showing_vis = 1;
-//     setPrivateInt("winamp5", __myname+"OpenState", OPEN);
-//     setPrivateInt("winamp5", __myname+"State", CONTENT_VIS);
+AVS_setHandle(int open) {
     GuiObject o = getVisWindowHolder();
     if (o != NULL) { 
-		// __bypasscancel = 1; 
-		o.show(); 
-		// __bypasscancel = 0; 
+		if(open == 1){
+			o.show(); 
+		}  else {
+			o.hide(); 
+		}
 	}
-// #ifdef DEBUG
-//     else DebugString("vis object not provided (show)", 0);
-// #endif
-//     onShowVis();
-//     __showing_vis = 0;
 }
 
 // -----------------------------------------------------------------------
-drawer_hideVis() {
-//     __callback_vis_show = 0;
-// #ifdef DEBUG
-//     DebugString("drawer_hideVis",0 );
-// #endif
-//     __hiding_vis = 1;
-    GuiObject o = getVisWindowHolder();
-    if (o != NULL) { 
-		// __bypasscancel = 1; 
-		o.hide(); 
-		// __bypasscancel = 0; 
-	}
-// #ifdef DEBUG
-//     else DebugString("video object not found (hide)", 0);
-// #endif
-//     onHideVis();
-//     __hiding_vis = 0;
-}
-
-// -----------------------------------------------------------------------
-drawer_showVideo() {
-// #ifdef DEBUG
-//     DebugString("drawer_showVideo",0 );
-// #endif
-//     __showing_video = 1;
-//     setPrivateInt("winamp5", __myname+"OpenState", OPEN);
-//     setPrivateInt("winamp5", __myname+"State", CONTENT_VIDEO);
+Video_setHandle(int open) {
     GuiObject o = getVideoWindowHolder();
     if (o != NULL) { 
-		// __bypasscancel = 1; 
-		o.show(); 
-		// __bypasscancel = 0; 
+		if(open == 1){
+			o.show(); 
+		}  else {
+			o.hide(); 
+		}
 	}
-// #ifdef DEBUG
-//     else DebugString("vis object not found (show)", 0);
-// #endif
-//     onShowVideo();
-//     __showing_video = 0;
 }
 
-// -----------------------------------------------------------------------
-drawer_hideVideo() {
-//     __callback_video_show = 0;
-// #ifdef DEBUG
-//     DebugString("drawer_hideVideo",0 );
-// #endif
-//     __hiding_video = 1;
-    GuiObject o = getVideoWindowHolder();
-    if (o != NULL) { 
-		// __bypasscancel = 1; 
-		o.hide(); 
-		// __bypasscancel = 0; 
-	}
-// #ifdef DEBUG
-//     else DebugString("video object not found (hide)", 0);
-// #endif
-//     onHideVideo();
-//     __hiding_video = 0;
-}
+
