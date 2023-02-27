@@ -796,7 +796,7 @@
     image="player.button.videoavs.up.bg2"
   /> -->
 
-  <group id="video.group" x="4" y="21" relatw="1" relath="1" w="-8" h="-10"/>
+  <group id="video.group" x="8" y="2" relatw="1" relath="1" w="-8" h="-2"/>
   <!--
   <group id="buttons.video" x="10" relatw="1" w="0" relaty="1" y="-21"/>
   <group id="buttons.vis" x="10" relatw="1" w="0" relaty="1" y="-21"/>
@@ -811,7 +811,7 @@
 
 <groupdef id="player.main" relatw="1" w="0" h="114" >
   <layer id="mousetrap" x="0" y="0" w="0" h="65" relatw="1" move="1" image="player.main"/>
-  <layer id="mousetrap" x="0" y="65" w="0" h="30" relatw="1" move="0" image="player.main.beach"/>
+  <layer id="beach" x="0" y="65" w="0" h="30" relatw="1" ghost="1" image="player.main.beach"/>
    <!-- <layer
      id="window.left"
      x="0" y="0"
@@ -1100,7 +1100,7 @@
   <group id="player.normal.drawer" x="0" top="17" h="0" relath="1" sysregion="1" move="1"/>
   <!-- <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/> -->
   <group id="player.main" x="0" y="0" relaty="0" sysregion="1"/>
-  <group id="AVSGroup" x="0" y="0" sysregion="1"/>
+  <!-- Moved to parent <group id="AVSGroup" x="0" y="0" sysregion="1"/> -->
 
  <!--  <layer
     id="player.button.videoavs.up.bg"
@@ -1141,8 +1141,9 @@
 </groupdef>
 
 <groupdef id="player.content.group" name="Winamp">
-  <group id="player.content.dummy.group" x="0" y="0"/>
+  <group id="player.content.dummy.group" x="0" y="0" h="0" relath="1"/>
   <!-- <script id="mainmenu.script" file="scripts/mainmenu.maki" /> -->
+  <group id="AVSGroup" x="0" y="0" sysregion="1"/>
 </groupdef>
 
 <groupdef id="player.title.group">
