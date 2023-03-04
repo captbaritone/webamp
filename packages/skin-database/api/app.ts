@@ -181,6 +181,7 @@ const allowList = [
   /http:\/\/localhost:3000/,
   /http:\/\/localhost:3001/,
   /netlify.app/,
+  /https:\/\/dustinbrett.com/
 ];
 
 const corsOptions: CorsOptions = {
