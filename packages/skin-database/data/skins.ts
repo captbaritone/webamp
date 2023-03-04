@@ -529,7 +529,7 @@ export async function getSkinToPostToMastodon(): Promise<string | null> {
       "skin_reviews.review": "APPROVED",
       "refreshes.error": null,
     })
-    .where("likes", ">", 20)
+    .where("likes", ">", 10)
     .groupBy("skins.md5")
     .orderByRaw("random()")
     .limit(1);
