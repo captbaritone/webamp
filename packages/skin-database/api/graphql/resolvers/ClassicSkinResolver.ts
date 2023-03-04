@@ -1,6 +1,7 @@
 import CommonSkinResolver from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
+import path from "path";
 
 export default class ClassicSkinResolver
   extends CommonSkinResolver
@@ -9,6 +10,13 @@ export default class ClassicSkinResolver
   __typename = "ClassicSkin";
   async id() {
     return toId(this.__typename, this.md5());
+  }
+  async filename(normalize_extension = false) {
+    const filename = await this._model.getFileName();
+    if (normalize_extension) {
+      return path.parse(filename).name + ".wsz";
+    }
+    return filename;
   }
   museum_url() {
     return this._model.getMuseumUrl();

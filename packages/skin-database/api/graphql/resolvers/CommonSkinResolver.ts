@@ -12,9 +12,7 @@ export default class CommonSkinResolver {
   md5() {
     return this._model.getMd5();
   }
-  filename() {
-    return this._model.getFileName();
-  }
+
   download_url() {
     return this._model.getSkinUrl();
   }

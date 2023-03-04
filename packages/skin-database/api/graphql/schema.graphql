@@ -32,7 +32,13 @@ interface Skin {
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
   """
-  filename: String
+  filename(
+    """
+    If true, the the correct file extension (.wsz or .wal) will be .
+    Otherwise, the original user-uploaded file extension will be used.
+    """
+    normalize_extension: Boolean = false
+  ): String
 
   """
   Has the skin been tweeted?
@@ -97,7 +103,13 @@ type ModernSkin implements Skin & Node {
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
   """
-  filename: String
+  filename(
+    """
+    If true, the the correct file extension (.wsz or .wal) will be .
+    Otherwise, the original user-uploaded file extension will be used.
+    """
+    normalize_extension: Boolean = false
+  ): String
 
   """
   Has the skin been tweeted?
@@ -174,7 +186,13 @@ type ClassicSkin implements Skin & Node {
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
   """
-  filename: String
+  filename(
+    """
+    If true, the the correct file extension (.wsz or .wal) will be .
+    Otherwise, the original user-uploaded file extension will be used.
+    """
+    normalize_extension: Boolean = false
+  ): String
 
   """
   Text of the readme file extracted from the skin
