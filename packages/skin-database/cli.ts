@@ -370,12 +370,14 @@ program
             AND md5 != "5470d71673a88254d3c197ba10bae16c"
             AND md5 != "b23ee30b939d8c9c8664615fa2bb0b42" -- Readme too big
             AND md5 != "e8bf0eb8c5a2c7950ccf3ed2b8211a96" -- region.txt fails
+            AND update_timestamp IS null
           GROUP BY md5
           ORDER BY update_timestamp
           LIMIT ?;`,
-        [20000]
+        [500]
       );
       const md5s = rows.map((row) => row.md5);
+      console.log(md5s.length)
       console.log(await Skins.updateSearchIndexs(ctx, md5s));
     }
     if (refreshContentHash) {
