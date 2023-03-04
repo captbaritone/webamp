@@ -243,8 +243,6 @@ export async function updateSearchIndexs(
   ctx: UserContext,
   md5s: string[]
 ): Promise<any> {
-  // Avoid indexing while we wait for our account to get back in good standing.
-  return;
   const skinIndexes = await getSearchIndexes(ctx, md5s);
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
