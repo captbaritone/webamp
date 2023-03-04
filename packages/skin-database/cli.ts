@@ -336,7 +336,7 @@ program
     "Refresh the data we keep about files within skin archives"
   )
   .option("--refresh-content-hash", "Refresh content hash")
-  .option("--update-search-index", "Refresh content hash")
+  .option("--update-search-index", "Update the algolia search index")
   .option("--configure-r2-cors", "Configure CORS for r2")
   .option(
     "--compute-museum-order",
