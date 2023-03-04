@@ -24,7 +24,7 @@ import { getTransparentAreaSize } from "../transparency";
 export const IS_README = /(file_id\.diz)|(\.txt)$/i;
 // Skinning Updates.txt ?
 export const IS_NOT_README =
-  /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
+  /(dialogs\.txt)|(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
