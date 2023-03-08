@@ -327,20 +327,20 @@ type  PaintBarFunction = (
   peakHeight: number
 ) => void;
 
-function octaveBucketsForBufferLength(bufferLength: number): number[] {
-  const octaveBuckets = new Array(NUM_BARS).fill(0);
+function octaveBucketsForBufferLength(bufferLength: number, barCount:number=NUM_BARS): number[] {
+  const octaveBuckets = new Array(barCount).fill(0);
   const minHz = 200;
   const maxHz = 22050;
-  const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
+  const octaveStep = Math.pow(maxHz / minHz, 1 / barCount);
 
   octaveBuckets[0] = 0;
   octaveBuckets[1] = minHz;
-  for (let i = 2; i < NUM_BARS - 1; i++) {
+  for (let i = 2; i < barCount - 1; i++) {
     octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
   }
-  octaveBuckets[NUM_BARS - 1] = maxHz;
+  octaveBuckets[barCount - 1] = maxHz;
 
-  for (let i = 0; i < NUM_BARS; i++) {
+  for (let i = 0; i < barCount; i++) {
     const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
     octaveBuckets[i] = octaveIdx;
   }
@@ -406,10 +406,13 @@ class BarPaintHandler extends VisPaintHandler {
 
     if(this._vis._bandwidth=='wide'){
       this.paintFrame = this.paintFrameWide.bind(this)
+      this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     } else {
       // thin
-      this._barPeaks = new Array(this._vis._canvas.width).fill(0);
-      this._barPeakFrames = new Array(this._vis._canvas.width).fill(0);
+      const w = this._vis._canvas.width;
+      this._barPeaks = new Array(w).fill(0);
+      this._barPeakFrames = new Array(w).fill(0);
+      this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength, w);
       this.paintFrame = this.paintFrameThin.bind(this);
     }
     
@@ -480,8 +483,10 @@ class BarPaintHandler extends VisPaintHandler {
     this._analyser.getByteFrequencyData(this._dataArray);
     const heightMultiplier = h / 256;
     for (let j = 0; j < w - 1; j++) {
-      const start = Math.round(j/w * this._dataArray.length);
-      const end = Math.round((j+1)/w * this._dataArray.length );
+      // const start = Math.round(j/w * this._dataArray.length);
+      // const end = Math.round((j+1)/w * this._dataArray.length );
+      const start = this._octaveBuckets[j];
+      const end = this._octaveBuckets[j + 1];
       let amplitude = 0;
       amplitude /= end - start;
       for (let k = start; k < end; k++) {

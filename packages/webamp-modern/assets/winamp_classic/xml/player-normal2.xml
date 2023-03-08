@@ -19,6 +19,8 @@
         id="vis"
         x="24" y="43"
         w="72" h="16"
+        coloring="fire"
+        bbandwidth="thin"
     />
     <!-- Timer -->
     <text id="timer" display="time" x="30" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" timeroffstyle="1" />

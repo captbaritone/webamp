@@ -5,6 +5,7 @@
   <bitmap id="player.main"       file="window/normal.png" x="0" y="20" h="65" w="340" gammagroup="Backgrounds"/>
   <bitmap id="player.main.beach" file="window/normal.png" x="0" y="85" h="30" w="340" gammagroup="Backgrounds"/>
  
+  <bitmap id="player.vis.mask" file="window/normal-pressed.png" x="272" y="27" h="20" w="57" gammagroup="Buttons"/>
 <!-- Drawer Background -->
   <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="340" gammagroup="Backgrounds"/>
   <bitmap id="drawer.main.center" file="window/drawer.png" x="0" y="0"   h="50" w="340" gammagroup="Backgrounds"/>

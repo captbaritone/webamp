@@ -298,46 +298,27 @@
 
   <vis
     id="visual"
-    x="-24" y="6" w="55" h="16"
+    x="-24" y="6" w="57" h="16"
     relatx="1"
     gammagroup="DisplayVis"
-    ColorBand1="000,000,000"
-    ColorBand2="247,255,231"
-    ColorBand3="000,000,000"
-    ColorBand4="247,255,231"
-    ColorBand5="000,000,000"
-    ColorBand6="247,255,231"
-    ColorBand7="000,000,000"
-    ColorBand8="247,255,231"
-    ColorBand9="000,000,000"
-    ColorBand10="247,255,231"
-    ColorBand11="000,000,000"
-    ColorBand12="247,255,231"
-    ColorBand13="000,000,000"
-    ColorBand14="247,255,231"
-    ColorBand15="000,000,000"
-    ColorBand16="247,255,231"
-
-    colorbandpeak="000,000,000"
-    colorosc1="255,255,255"
-    colorosc2="255,255,255"
-    colorosc3="255,255,255"
-    colorosc4="255,255,255"
-    colorosc5="255,255,255"
+    bandwidth="thin"
+    colorallbands="0,0,0"
+    peaks="0"
   />
+  <layer id="vis.mask" image="player.vis.mask" x="-24" y="4" w="57" h="20" relatx="1" ghost="1"/>
 
-  <layer id="main.vis.trigger" x="-93" y="13" w="72" h="25" relatx="1" rectrgn="1"/>
+  <!-- <layer id="main.vis.trigger" x="-93" y="13" w="72" h="25" relatx="1" rectrgn="1"/> -->
 
   <!-- <script file="scripts/visualizer.maki" /> -->
 
 
-  <layer
+  <!-- <layer
     id="visualization.overlay"
     x="-99" y="12"
     relatx="1"
     image="player.visualization.overlay"
     ghost="1"
-  />
+  /> -->
 
   <!-- Songticker -->
   
