@@ -61,10 +61,10 @@ export default class Vis extends GuiObj {
   _colorBands: ColorTriplet[] = []; // 1..16
   _colorBandPeak: ColorTriplet = "255,255,255";
   _colorOsc: ColorTriplet[] = []; // 1..5
-  _coloring: string;
+  _coloring: string = 'normal';
   _peaks: boolean = true;
   _oscStyle: string;
-  _bandwidth: string;
+  _bandwidth: string = 'wide';
   _gammagroup: string;
   _realtime: boolean = true;
 
@@ -317,6 +317,7 @@ registerPainter('0', NoVisualizerHandler)
 const NUM_BARS = 20;
 const PIXEL_DENSITY = 1;
 const BAR_PEAK_DROP_RATE = 0.01;
+type  PaintFrameFunction = () => void;
 type  PaintBarFunction = (
   ctx: CanvasRenderingContext2D,
   // barIndex: number,
@@ -362,6 +363,7 @@ class BarPaintHandler extends VisPaintHandler {
   _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
   paintBar : PaintBarFunction;
+  paintFrame : PaintFrameFunction;
 
   constructor(vis: Vis) {
     super(vis);
@@ -401,6 +403,16 @@ class BarPaintHandler extends VisPaintHandler {
     ctx.fillRect(0, 0, 1, vis._canvas.height);
     ctx.imageSmoothingEnabled = false;
     this._ctx = this._vis._canvas.getContext('2d')
+
+    if(this._vis._bandwidth=='wide'){
+      this.paintFrame = this.paintFrameWide.bind(this)
+    } else {
+      // thin
+      this._barPeaks = new Array(this._vis._canvas.width).fill(0);
+      this._barPeakFrames = new Array(this._vis._canvas.width).fill(0);
+      this.paintFrame = this.paintFrameThin.bind(this);
+    }
+    
     if(this._vis._coloring=='fire'){
       this.paintBar = this.paintBarFire.bind(this)
     } else {
@@ -408,7 +420,7 @@ class BarPaintHandler extends VisPaintHandler {
     }
   }
 
-  paintFrame() {
+  paintFrameWide() {
     if(!this._ctx) return;
     const ctx = this._ctx
     const w = ctx.canvas.width;
@@ -418,7 +430,7 @@ class BarPaintHandler extends VisPaintHandler {
 
     this._analyser.getByteFrequencyData(this._dataArray);
     const heightMultiplier = h / 256;
-    const xOffset = this._barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
+    // const xOffset = this._barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     for (let j = 0; j < NUM_BARS - 1; j++) {
       const start = this._octaveBuckets[j];
       const end = this._octaveBuckets[j + 1];
@@ -448,6 +460,54 @@ class BarPaintHandler extends VisPaintHandler {
         // j /* * xOffset */,
         x1,
         x2,
+        amplitude * heightMultiplier,
+        barPeak * heightMultiplier
+      );
+    }
+  }
+
+  /**
+   * drawing 1pixel width bars
+   */
+  paintFrameThin() {
+    if(!this._ctx) return;
+    const ctx = this._ctx
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = this._color;
+
+    this._analyser.getByteFrequencyData(this._dataArray);
+    const heightMultiplier = h / 256;
+    for (let j = 0; j < w - 1; j++) {
+      const start = Math.round(j/w * this._dataArray.length);
+      const end = Math.round((j+1)/w * this._dataArray.length );
+      let amplitude = 0;
+      amplitude /= end - start;
+      for (let k = start; k < end; k++) {
+        amplitude = Math.max(amplitude, this._dataArray[k]);
+      }
+
+      // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
+      let barPeak =
+        this._barPeaks[j] -
+        BAR_PEAK_DROP_RATE * Math.pow(this._barPeakFrames[j], 2);
+      if (barPeak < amplitude) {
+        barPeak = amplitude;
+        this._barPeakFrames[j] = 0;
+      } else {
+        this._barPeakFrames[j] += 1;
+      }
+      this._barPeaks[j] = barPeak;
+
+      // var x1 = Math.round(this._barWidth * j);
+      // var x2 = Math.round(this._barWidth * (j + 1)) - 2;
+  
+      this.paintBar(
+        ctx,
+        // j /* * xOffset */,
+        j,
+        j,
         amplitude * heightMultiplier,
         barPeak * heightMultiplier
       );
@@ -509,7 +569,12 @@ class BarPaintHandler extends VisPaintHandler {
 
     if (this._vis._peaks) {
       const peakY = h - peakHeight;
-      ctx.drawImage(this._peak, 0, 0, 1, 1, x, peakY, x2 - x + 1, 1);
+      ctx.drawImage(
+        this._peak, 
+        0, 0, 
+        1, 1, 
+        x, peakY, 
+        x2 - x + 1, 1);
     }
   }
 }
