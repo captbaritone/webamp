@@ -83,6 +83,7 @@ export default class Vis extends GuiObj {
     if (super.setXmlAttr(key, value)) {
       return true;
     }
+    value = value.toLowerCase()
 
     switch (key) {
       case "mode":
@@ -316,6 +317,12 @@ registerPainter('0', NoVisualizerHandler)
 const NUM_BARS = 20;
 const PIXEL_DENSITY = 1;
 const BAR_PEAK_DROP_RATE = 0.01;
+type  PaintBarFunction = (
+  ctx: CanvasRenderingContext2D,
+  barIndex: number,
+  barHeight: number,
+  peakHeight: number
+) => void;
 
 function octaveBucketsForBufferLength(bufferLength: number): number[] {
   const octaveBuckets = new Array(NUM_BARS).fill(0);
@@ -352,6 +359,7 @@ class BarPaintHandler extends VisPaintHandler {
   _octaveBuckets: number[];
   _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
+  paintBar : PaintBarFunction;
 
   constructor(vis: Vis) {
     super(vis);
@@ -391,6 +399,11 @@ class BarPaintHandler extends VisPaintHandler {
     ctx.fillRect(0, 0, 1, vis._canvas.height);
     ctx.imageSmoothingEnabled = false;
     this._ctx = this._vis._canvas.getContext('2d')
+    if(this._vis._coloring=='fire'){
+      this.paintBar = this.paintBarFire.bind(this)
+    } else {
+      this.paintBar = this.paintBarNormal.bind(this)
+    }
   }
 
   paintFrame() {
@@ -434,7 +447,7 @@ class BarPaintHandler extends VisPaintHandler {
     }
   }
 
-  paintBar(
+  paintBarNormal(
     ctx: CanvasRenderingContext2D,
     barIndex: number,
     barHeight: number,
@@ -447,7 +460,13 @@ class BarPaintHandler extends VisPaintHandler {
     var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     var y = h - barHeight;
 
-    ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
+    // ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
+    ctx.drawImage(
+      this._bar, 
+      0, y, 
+      1, h - y, 
+      x, y, 
+      x2 - x + 1, h - y);
 
     if (this._vis._peaks) {
       const peakY = h - peakHeight;
@@ -468,7 +487,14 @@ class BarPaintHandler extends VisPaintHandler {
     var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     var y = h - barHeight;
 
-    ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
+    // ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
+    ctx.drawImage(
+      this._bar, 
+      0, 0,
+      this._bar.width, h - y,
+      x, y, 
+      x2 - x + 1, h - y
+      );
 
     if (this._vis._peaks) {
       const peakY = h - peakHeight;
