@@ -319,7 +319,9 @@ const PIXEL_DENSITY = 1;
 const BAR_PEAK_DROP_RATE = 0.01;
 type  PaintBarFunction = (
   ctx: CanvasRenderingContext2D,
-  barIndex: number,
+  // barIndex: number,
+  x1: number,
+  x2: number,
   barHeight: number,
   peakHeight: number
 ) => void;
@@ -438,9 +440,14 @@ class BarPaintHandler extends VisPaintHandler {
       }
       this._barPeaks[j] = barPeak;
 
+      var x1 = Math.round(this._barWidth * j);
+      var x2 = Math.round(this._barWidth * (j + 1)) - 2;
+  
       this.paintBar(
         ctx,
-        j /* * xOffset */,
+        // j /* * xOffset */,
+        x1,
+        x2,
         amplitude * heightMultiplier,
         barPeak * heightMultiplier
       );
@@ -449,15 +456,17 @@ class BarPaintHandler extends VisPaintHandler {
 
   paintBarNormal(
     ctx: CanvasRenderingContext2D,
-    barIndex: number,
+    // barIndex: number,
+    x: number,
+    x2: number,
     barHeight: number,
     peakHeight: number
   ) {
-    const w = ctx.canvas.width;
+    // const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    var x = Math.round(this._barWidth * barIndex);
-    var r = this._barWidth - 2;
-    var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
+    // var x = Math.round(this._barWidth * barIndex);
+    // var r = this._barWidth - 2;
+    // var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     var y = h - barHeight;
 
     // ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
@@ -476,15 +485,17 @@ class BarPaintHandler extends VisPaintHandler {
 
   paintBarFire(
     ctx: CanvasRenderingContext2D,
-    barIndex: number,
+    // barIndex: number,
+    x: number,
+    x2: number,
     barHeight: number,
     peakHeight: number
   ) {
-    const w = ctx.canvas.width;
+    // const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    var x = Math.round(this._barWidth * barIndex);
-    var r = this._barWidth - 2;
-    var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
+    // var x = Math.round(this._barWidth * barIndex);
+    // var r = this._barWidth - 2;
+    // var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     var y = h - barHeight;
 
     // ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
