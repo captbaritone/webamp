@@ -58,7 +58,15 @@ export default class ButtonElement extends GuiObj {
         this.setAction(value);
         break;
       case "onclick":
-        this._onClick = value;
+        if(value.startsWith('visEffects.next()')){
+          this.setAction('VIS_Next');
+        }
+        else if(value.startsWith('visEffects.previous()')){
+          this.setAction('VIS_Prev');
+        }
+        else {
+          this._onClick = value;
+        }
         break;
       case "uptooltip":
         this._upTooltip = value;
