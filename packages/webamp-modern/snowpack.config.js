@@ -11,6 +11,7 @@ module.exports = {
   exclude: ["*.tmp", "extracted-*"],
   plugins: [
     /* ... */
+    ["./snowpack-maki-plugin.js", {/* pluginOptions */ }],
   ],
   packageOptions: {
     /* ... */
