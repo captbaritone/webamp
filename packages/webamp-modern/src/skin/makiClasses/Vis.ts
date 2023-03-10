@@ -586,31 +586,89 @@ class BarPaintHandler extends VisPaintHandler {
 registerPainter('1', BarPaintHandler)
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
+// Return the average value in a slice of dataArray
+function sliceAverage(
+  dataArray: Uint8Array,
+  sliceWidth: number,
+  sliceNumber: number
+): number {
+  const start = sliceWidth * sliceNumber;
+  const end = start + sliceWidth;
+  let sum = 0;
+  for (let i = start; i < end; i++) {
+    sum += dataArray[i];
+  }
+  return sum / sliceWidth;
+}
 
 class WavePaintHandler extends VisPaintHandler {
+  _analyser: AnalyserNode;
+  _bufferLength: number;
+  _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
+
+  constructor(vis: Vis) {
+    super(vis);
+    this._analyser = this._vis._uiRoot.audio.getAnalyser();
+    this._bufferLength = this._analyser.fftSize;
+    // this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
+    this._dataArray = new Uint8Array(this._bufferLength);
+  }
   prepare() {
-    this._ctx = this._vis._canvas.getContext('2d')
+    const vis = this._vis;
+    const groupId = vis._gammagroup;
+    const gammaGroup = this._vis._uiRoot._getGammaGroup(groupId);
+
+    this._ctx = vis._canvas.getContext('2d');
+    // Just use one of the viscolors for now
+    this._ctx.strokeStyle = gammaGroup.transformColor(vis._colorOsc[1])
   }
 
   paintFrame() {
     if(!this._ctx) return;
+    this._analyser.getByteTimeDomainData(this._dataArray);
     const ctx = this._ctx
     const width = ctx.canvas.width;
     const height = ctx.canvas.height;
     ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth = 5;
-    for (var i = 0; i < 30; i += 1) {
-      var r = Math.floor(Math.random() * 255);
-      var g = Math.floor(Math.random() * 255);
-      var b = Math.floor(Math.random() * 255);
+    ctx.lineWidth = PIXEL_DENSITY;
 
-      ctx.beginPath();
-      ctx.moveTo(Math.random() * width, Math.random() * height);
-      ctx.lineTo(Math.random() * width, Math.random() * height);
-      ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",1)";
-      ctx.stroke();
+    // Since dataArray has more values than we have pixels to display, we
+    // have to average several dataArray values per pixel. We call these
+    // groups slices.
+    //
+    // We use the  2x scale here since we only want to plot values for
+    // "real" pixels.
+    const sliceWidth = Math.floor(this._bufferLength / width) * PIXEL_DENSITY;
+
+    ctx.beginPath();
+    // Iterate over the width of the canvas in "real" pixels.
+    for (let j = 0; j <= width; j++) {
+      const amplitude = sliceAverage(this._dataArray, sliceWidth, j);
+      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+      const y = (1 - percentAmplitude) * height; // flip y
+      const x = j * PIXEL_DENSITY;
+
+      // Canvas coordinates are in the middle of the pixel by default.
+      // When we want to draw pixel perfect lines, we will need to
+      // account for that here
+      if (x === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
     }
+    ctx.stroke();
+    // for (var i = 0; i < 30; i += 1) {
+    //   var r = Math.floor(Math.random() * 255);
+    //   var g = Math.floor(Math.random() * 255);
+    //   var b = Math.floor(Math.random() * 255);
+
+    //   ctx.moveTo(Math.random() * width, Math.random() * height);
+    //   ctx.lineTo(Math.random() * width, Math.random() * height);
+    //   ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",1)";
+    //   ctx.stroke();
+    // }
   }
 }
 registerPainter('2', WavePaintHandler)
