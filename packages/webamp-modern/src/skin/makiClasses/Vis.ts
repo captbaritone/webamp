@@ -586,6 +586,7 @@ class BarPaintHandler extends VisPaintHandler {
 registerPainter('1', BarPaintHandler)
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
+type PaintWavFunction = (x:number, y: number) => void;
 // Return the average value in a slice of dataArray
 function sliceAverage(
   dataArray: Uint8Array,
@@ -604,8 +605,11 @@ function sliceAverage(
 class WavePaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
   _bufferLength: number;
+  _lastX:number = 0;
+  _lastY:number = 0;
   _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
+  paintWav : PaintWavFunction;
 
   constructor(vis: Vis) {
     super(vis);
@@ -622,6 +626,14 @@ class WavePaintHandler extends VisPaintHandler {
     this._ctx = vis._canvas.getContext('2d');
     // Just use one of the viscolors for now
     this._ctx.strokeStyle = gammaGroup.transformColor(vis._colorOsc[1])
+
+    if(this._vis._oscStyle=='dots'){
+      this.paintWav = this.paintWavDot.bind(this)
+    } else if(this._vis._oscStyle=='solid'){
+      this.paintWav = this.paintWavSolid.bind(this)
+    } else {
+      this.paintWav = this.paintWavLine.bind(this)
+    }
   }
 
   paintFrame() {
@@ -652,11 +664,12 @@ class WavePaintHandler extends VisPaintHandler {
       // Canvas coordinates are in the middle of the pixel by default.
       // When we want to draw pixel perfect lines, we will need to
       // account for that here
-      if (x === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
+      // if (x === 0) {
+      //   ctx.moveTo(x, y);
+      // } else {
+      //   ctx.lineTo(x, y);
+      // }
+      this.paintWav(x,y)
     }
     ctx.stroke();
     // for (var i = 0; i < 30; i += 1) {
@@ -669,6 +682,28 @@ class WavePaintHandler extends VisPaintHandler {
     //   ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",1)";
     //   ctx.stroke();
     // }
+  }
+  paintWavLine(x:number, y: number){
+    if (x === 0) {
+      this._ctx.moveTo(x, y);
+    } else {
+      this._ctx.lineTo(x, y);
+    }
+  }
+  
+  paintWavDot(x:number, y: number){
+    // if(x % 4 != 0) return;
+    if(Math.hypot(this._lastX - x, this._lastY - y) < 4) 
+      return;
+    this._ctx.moveTo(x, y+1);
+    this._ctx.lineTo(x, y);    
+    this._lastX = x;
+    this._lastY = y;
+  }
+  
+  paintWavSolid(x:number, y: number){
+    this._ctx.moveTo(x, this._ctx.canvas.height / 2);
+    this._ctx.lineTo(x, y);
   }
 }
 registerPainter('2', WavePaintHandler)
