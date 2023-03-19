@@ -35,7 +35,9 @@ async function main() {
   const option: Options = {
     skin: skinPath,
     tracks: [
-      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+      "assets/440-square.wav",
+      "assets/winampvis-MAX.wav",
+      "assets/winampvis.wav",
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
     ],

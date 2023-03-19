@@ -73,6 +73,9 @@ export default class Vis extends GuiObj {
     while (this._colorBands.length < 16) {
       this._colorBands.push("255,255,255");
     }
+    while (this._colorOsc.length < 5) {
+      this._colorOsc.push("255,255,255");
+    }
     this._painter = new NoVisualizerHandler(this);
     this._uiRoot.audio.on("statchanged", this.audioStatusChanged);
     this._uiRoot.on("colorthemechanged", this._colorThemeChanged);
@@ -624,6 +627,8 @@ class WavePaintHandler extends VisPaintHandler {
   _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
   _pixelRatio : number; // 1 or 2 
+  // Off-screen canvas for drawing perfect pixel (no blured lines)
+  _bar: HTMLCanvasElement = document.createElement("canvas");
   paintWav : PaintWavFunction;
   _datafetched:boolean = false;
 
@@ -641,6 +646,16 @@ class WavePaintHandler extends VisPaintHandler {
     const vis = this._vis;
     const groupId = vis._gammagroup;
     const gammaGroup = this._vis._uiRoot._getGammaGroup(groupId);
+
+    //? paint bar
+    this._bar.width = 1;
+    this._bar.height = 5;
+    var ctx = this._bar.getContext("2d");
+    for (let y = 0; y < 5; y++) {
+      ctx.fillStyle = gammaGroup.transformColor(vis._colorOsc[y]);
+      console.log('ctx.fillStyle:', ctx.fillStyle)
+      ctx.fillRect(0, y, 1, y+1);      
+    }
 
     this._ctx = vis._canvas.getContext('2d');
     // Just use one of the viscolors for now
@@ -687,8 +702,8 @@ class WavePaintHandler extends VisPaintHandler {
     ctx.beginPath();
     // Iterate over the width of the canvas in "real" pixels.
     for (let j = 0; j <= width; j++) {
-      const amplitude = sliceAverage(this._dataArray, sliceWidth, j);
-      // const amplitude = slice1st(this._dataArray, sliceWidth, j);
+      // const amplitude = sliceAverage(this._dataArray, sliceWidth, j);
+      const amplitude = slice1st(this._dataArray, sliceWidth, j);
       // const percentAmplitude = amplitude / 255; // dataArray gives us bytes
       // const y = (1 - percentAmplitude) * height; // flip y
       const[ y, colorIndex] = this.rangeByAmplitude(amplitude)
@@ -742,11 +757,33 @@ class WavePaintHandler extends VisPaintHandler {
     return [15, 4]
   }
   paintWavLine(x:number, y: number, colorIndex: number){
-    if (x === 0) {
-      this._ctx.moveTo(x, y);
-    } else {
-      this._ctx.lineTo(x, y);
+    if (x === 0) 
+      this._lastY = y;
+
+    let bottom = this._lastY;
+    let top = y;
+
+    if (bottom<top){
+      const temp = top;
+      top = bottom;
+      bottom = temp;
     }
+    const h = bottom - top + 1;
+    
+      // this._ctx.moveTo(x, y);
+    // } else {
+    //   this._ctx.lineTo(x, y);
+    // }
+    // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+    this._ctx.drawImage(
+      this._bar,
+      0, colorIndex,  // sx,sy
+      1,1,            // sw,sh
+
+      x,top,  //dx,dy
+      1,h   //dw,dh
+    );
+    this._lastY = y;
   }
   
   paintWavDot(x:number, y: number, colorIndex: number){
