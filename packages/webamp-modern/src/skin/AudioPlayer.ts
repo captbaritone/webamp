@@ -76,8 +76,10 @@ export class AudioPlayer {
 
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
-    this._analyser.fftSize = 2048;
+    // this._analyser.fftSize = 2048;
     // this._analyser.fftSize = 32;
+    this._analyser.fftSize = 512; //? to get same VIS to winamp osciloscpoe
+    // this._analyser.fftSize = 1024;
     // don't smooth audio analysis
     this._analyser.smoothingTimeConstant = 0.0;
 

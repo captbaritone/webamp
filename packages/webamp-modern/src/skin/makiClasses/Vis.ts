@@ -586,7 +586,7 @@ class BarPaintHandler extends VisPaintHandler {
 registerPainter('1', BarPaintHandler)
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
-type PaintWavFunction = (x:number, y: number) => void;
+type PaintWavFunction = (x:number, y: number, colorIndex: number) => void;
 // Return the average value in a slice of dataArray
 function sliceAverage(
   dataArray: Uint8Array,
@@ -602,6 +602,20 @@ function sliceAverage(
   return sum / sliceWidth;
 }
 
+function slice1st(
+  dataArray: Uint8Array,
+  sliceWidth: number,
+  sliceNumber: number
+): number {
+  const start = sliceWidth * sliceNumber;
+  // const end = start + sliceWidth;
+  // let sum = 0;
+  // for (let i = start; i < end; i++) {
+  //   sum += dataArray[i];
+  // }
+  return dataArray[start];
+}
+
 class WavePaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
   _bufferLength: number;
@@ -609,7 +623,9 @@ class WavePaintHandler extends VisPaintHandler {
   _lastY:number = 0;
   _dataArray: Uint8Array;
   _ctx : CanvasRenderingContext2D;
+  _pixelRatio : number; // 1 or 2 
   paintWav : PaintWavFunction;
+  _datafetched:boolean = false;
 
   constructor(vis: Vis) {
     super(vis);
@@ -617,6 +633,9 @@ class WavePaintHandler extends VisPaintHandler {
     this._bufferLength = this._analyser.fftSize;
     // this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     this._dataArray = new Uint8Array(this._bufferLength);
+
+    //* see https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes
+    this._pixelRatio = window.devicePixelRatio || 1;
   }
   prepare() {
     const vis = this._vis;
@@ -634,16 +653,27 @@ class WavePaintHandler extends VisPaintHandler {
     } else {
       this.paintWav = this.paintWavLine.bind(this)
     }
+    this._datafetched = false;
   }
 
   paintFrame() {
     if(!this._ctx) return;
     this._analyser.getByteTimeDomainData(this._dataArray);
+    // this._analyser.getFloatTimeDomainData(this._dataArray);
+    const bandwidth = this._dataArray.length;
+
+    //* to save and see in excel (bar chart)
+    if(!this._datafetched ){
+      // console.log(JSON.stringify(Array.from(this._dataArray)))
+      this._datafetched = true;
+    }
     const ctx = this._ctx
-    const width = ctx.canvas.width;
+    // const width = ctx.canvas.width;
+    let width = ctx.canvas.width;
     const height = ctx.canvas.height;
     ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth = PIXEL_DENSITY;
+    // ctx.lineWidth = PIXEL_DENSITY;
+
 
     // Since dataArray has more values than we have pixels to display, we
     // have to average several dataArray values per pixel. We call these
@@ -651,14 +681,17 @@ class WavePaintHandler extends VisPaintHandler {
     //
     // We use the  2x scale here since we only want to plot values for
     // "real" pixels.
-    const sliceWidth = Math.floor(this._bufferLength / width) * PIXEL_DENSITY;
+    // width = 64;
+    const sliceWidth = Math.floor(/* this._bufferLength */ bandwidth / width);
 
     ctx.beginPath();
     // Iterate over the width of the canvas in "real" pixels.
     for (let j = 0; j <= width; j++) {
       const amplitude = sliceAverage(this._dataArray, sliceWidth, j);
-      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
-      const y = (1 - percentAmplitude) * height; // flip y
+      // const amplitude = slice1st(this._dataArray, sliceWidth, j);
+      // const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+      // const y = (1 - percentAmplitude) * height; // flip y
+      const[ y, colorIndex] = this.rangeByAmplitude(amplitude)
       const x = j * PIXEL_DENSITY;
 
       // Canvas coordinates are in the middle of the pixel by default.
@@ -669,7 +702,7 @@ class WavePaintHandler extends VisPaintHandler {
       // } else {
       //   ctx.lineTo(x, y);
       // }
-      this.paintWav(x,y)
+      this.paintWav(x,y, colorIndex)
     }
     ctx.stroke();
     // for (var i = 0; i < 30; i += 1) {
@@ -683,7 +716,32 @@ class WavePaintHandler extends VisPaintHandler {
     //   ctx.stroke();
     // }
   }
-  paintWavLine(x:number, y: number){
+  
+  /**
+   * 
+   * @param amplitude 0..255
+   * @returns xy.Y(top to bottom), colorOscIndex 
+   */
+  rangeByAmplitude(amplitude:number): [number,number]{
+    if(amplitude>=176){return [0, 3]}
+    if(amplitude>=168){return [1, 3]}
+    if(amplitude>=160){return [2, 2]}
+    if(amplitude>=152){return [3, 2]}
+    if(amplitude>=144){return [4, 1]}
+    if(amplitude>=136){return [5, 1]}
+    if(amplitude>=128){return [6, 0]}
+    if(amplitude>=120){return [7, 0]}
+    if(amplitude>=112){return [8, 1]}
+    if(amplitude>=104){return [9, 1]}
+    if(amplitude>=96){return [10, 2]}
+    if(amplitude>=88){return [11, 2]}
+    if(amplitude>=80){return [12, 3]}
+    if(amplitude>=72){return [13, 3]}
+    if(amplitude>=64){return [14, 4]}
+    // if(amplitude>=56){return [15, 4]}
+    return [15, 4]
+  }
+  paintWavLine(x:number, y: number, colorIndex: number){
     if (x === 0) {
       this._ctx.moveTo(x, y);
     } else {
@@ -691,7 +749,7 @@ class WavePaintHandler extends VisPaintHandler {
     }
   }
   
-  paintWavDot(x:number, y: number){
+  paintWavDot(x:number, y: number, colorIndex: number){
     // if(x % 4 != 0) return;
     if(Math.hypot(this._lastX - x, this._lastY - y) < 4) 
       return;
@@ -701,7 +759,7 @@ class WavePaintHandler extends VisPaintHandler {
     this._lastY = y;
   }
   
-  paintWavSolid(x:number, y: number){
+  paintWavSolid(x:number, y: number, colorIndex: number){
     this._ctx.moveTo(x, this._ctx.canvas.height / 2);
     this._ctx.lineTo(x, y);
   }
