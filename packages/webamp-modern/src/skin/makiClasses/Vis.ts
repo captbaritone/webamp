@@ -675,6 +675,7 @@ class WavePaintHandler extends VisPaintHandler {
     if(!this._ctx) return;
     this._analyser.getByteTimeDomainData(this._dataArray);
     // this._analyser.getFloatTimeDomainData(this._dataArray);
+    this._dataArray =this._dataArray.slice(0, 576)
     const bandwidth = this._dataArray.length;
 
     //* to save and see in excel (bar chart)
