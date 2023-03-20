@@ -739,21 +739,22 @@ class WavePaintHandler extends VisPaintHandler {
    * @returns xy.Y(top to bottom), colorOscIndex 
    */
   rangeByAmplitude(amplitude:number): [number,number]{
-    if(amplitude>=176){return [0, 3]}
-    if(amplitude>=168){return [1, 3]}
-    if(amplitude>=160){return [2, 2]}
-    if(amplitude>=152){return [3, 2]}
-    if(amplitude>=144){return [4, 1]}
-    if(amplitude>=136){return [5, 1]}
-    if(amplitude>=128){return [6, 0]}
-    if(amplitude>=120){return [7, 0]}
-    if(amplitude>=112){return [8, 1]}
-    if(amplitude>=104){return [9, 1]}
-    if(amplitude>=96){return [10, 2]}
-    if(amplitude>=88){return [11, 2]}
-    if(amplitude>=80){return [12, 3]}
-    if(amplitude>=72){return [13, 3]}
-    if(amplitude>=64){return [14, 4]}
+    //odjasdjflasjdf;lasjdf;asjd;fjasd;fsajdf
+    if(amplitude>=184){return [0, 3]}
+    if(amplitude>=176){return [1, 3]}
+    if(amplitude>=168){return [2, 2]}
+    if(amplitude>=160){return [3, 2]}
+    if(amplitude>=152){return [4, 1]}
+    if(amplitude>=144){return [5, 1]}
+    if(amplitude>=136){return [6, 0]}
+    if(amplitude>=128){return [7, 0]}
+    if(amplitude>=120){return [8, 1]}
+    if(amplitude>=112){return [9, 1]}
+    if(amplitude>=104){return [10, 2]}
+    if(amplitude>=96){return [11, 2]}
+    if(amplitude>=88){return [12, 3]}
+    if(amplitude>=80){return [13, 3]}
+    if(amplitude>=72){return [14, 4]}
     // if(amplitude>=56){return [15, 4]}
     return [15, 4]
   }
