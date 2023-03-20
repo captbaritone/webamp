@@ -764,22 +764,14 @@ class WavePaintHandler extends VisPaintHandler {
     let top = y;
 
     if (bottom<top){
-      const temp = top;
-      top = bottom;
-      bottom = temp;
+      [bottom, top] = [top, bottom]
     }
     const h = bottom - top + 1;
-    
-      // this._ctx.moveTo(x, y);
-    // } else {
-    //   this._ctx.lineTo(x, y);
-    // }
-    // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+
     this._ctx.drawImage(
       this._bar,
       0, colorIndex,  // sx,sy
       1,1,            // sw,sh
-
       x,top,  //dx,dy
       1,h   //dw,dh
     );
@@ -787,18 +779,29 @@ class WavePaintHandler extends VisPaintHandler {
   }
   
   paintWavDot(x:number, y: number, colorIndex: number){
-    // if(x % 4 != 0) return;
-    if(Math.hypot(this._lastX - x, this._lastY - y) < 4) 
-      return;
-    this._ctx.moveTo(x, y+1);
-    this._ctx.lineTo(x, y);    
-    this._lastX = x;
-    this._lastY = y;
+    this._ctx.drawImage(
+      this._bar,
+      0, colorIndex,  // sx,sy
+      1,1,            // sw,sh
+      x,y,  //dx,dy
+      1,1   //dw,dh
+    );
   }
   
   paintWavSolid(x:number, y: number, colorIndex: number){
-    this._ctx.moveTo(x, this._ctx.canvas.height / 2);
-    this._ctx.lineTo(x, y);
+    let top = 7;
+    let bottom = y;
+    if (bottom < top ){
+      [bottom, top] = [top, bottom]
+    }
+    const h = bottom - top + 1;
+    this._ctx.drawImage(
+      this._bar,
+      0, colorIndex,  // sx,sy
+      1,1,            // sw,sh
+      x,top,  //dx,dy
+      1,h   //dw,dh
+    );
   }
 }
 registerPainter('2', WavePaintHandler)
