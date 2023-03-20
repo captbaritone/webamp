@@ -22,7 +22,7 @@
         coloring="fire"
         bandwidth="thin"
         mode="2"
-        oscstyle="solid"
+        oscstyle="lines"
         
     />
     <!-- Timer -->
