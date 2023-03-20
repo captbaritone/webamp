@@ -790,10 +790,13 @@ class WavePaintHandler extends VisPaintHandler {
   }
   
   paintWavSolid(x:number, y: number, colorIndex: number){
-    let top = 7;
-    let bottom = y;
-    if (bottom < top ){
-      [bottom, top] = [top, bottom]
+    var top, bottom;
+    if (y >= 7){
+      top = 7
+      bottom = y;
+    } else {
+      top = y;
+      bottom = 6;
     }
     const h = bottom - top + 1;
     this._ctx.drawImage(
