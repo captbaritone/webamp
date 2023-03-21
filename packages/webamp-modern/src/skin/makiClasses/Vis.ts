@@ -777,22 +777,33 @@ class WavePaintHandler extends VisPaintHandler {
     if (x === 0)
       this._lastY = y;
 
-    let bottom = this._lastY;
     let top = y;
+    let bottom = this._lastY;
+    this._lastY = y;
 
     if (bottom < top) {
       [bottom, top] = [top, bottom]
     }
-    const h = bottom - top + 1;
+    // const h = bottom - top + 1;
 
-    this._ctx.drawImage(
-      this._bar,
-      0, colorIndex,  // sx,sy
-      1, 1,            // sw,sh
-      x, top,  //dx,dy
-      1, h   //dw,dh
-    );
-    this._lastY = y;
+    for (y = top; y <= bottom; y++) {
+      this._ctx.drawImage(
+        this._bar,
+        0, colorIndex,  // sx,sy
+        1, 1,            // sw,sh
+        x, y,  //dx,dy
+        1, 1   //dw,dh
+      );
+    }
+    //? below is same as above, but stretching a pixel; which also render a "rainbow"
+    // this._ctx.drawImage(
+    //   this._bar,
+    //   0, colorIndex,  // sx,sy
+    //   1, 1,            // sw,sh
+    //   x, top,  //dx,dy
+    //   1, h   //dw,dh
+    // );
+    
   }
 
   paintWavDot(x: number, y: number, colorIndex: number) {
@@ -814,7 +825,7 @@ class WavePaintHandler extends VisPaintHandler {
       top = y;
       bottom = 7;
     }
-    const h = bottom - top + 1;
+    // const h = bottom - top + 1;
     for (y = top; y <= bottom; y++) {
       this._ctx.drawImage(
         this._bar,
