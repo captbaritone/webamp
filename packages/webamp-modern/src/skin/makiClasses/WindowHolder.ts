@@ -16,7 +16,7 @@ export default class WindowHolder extends Group {
     switch (key) {
       case "hold":
         this._hold = value.toLowerCase();
-        this._buildConent()
+        this._buildConent();
         break;
       default:
         return false;
@@ -30,16 +30,16 @@ export default class WindowHolder extends Group {
   getcontent(): GuiObj {
     return this._heldObj;
   }
-  _buildConent(){
-    const id = this._uiRoot.guid2alias(this._hold)
+  _buildConent() {
+    const id = this._uiRoot.guid2alias(this._hold);
     switch (id) {
-      case 'avs':
+      case "avs":
         const gui = new Avs(this._uiRoot);
-        const spec = new XmlElement("dummy", { fitparent: '1' });
-        gui.setXmlAttributes(spec.attributes)
+        const spec = new XmlElement("dummy", { fitparent: "1" });
+        gui.setXmlAttributes(spec.attributes);
         this.addChild(gui);
         this._heldObj = gui;
-        break
+        break;
     }
   }
   getcomponentname(): string {

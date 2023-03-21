@@ -321,23 +321,23 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   setDisplayTime() {
-    if(this._uiRoot.audio._isStop){
-      switch(this._timeroffstyle){
-        case 0 :
-          this.setDisplayValue("  : ")
+    if (this._uiRoot.audio._isStop) {
+      switch (this._timeroffstyle) {
+        case 0:
+          this.setDisplayValue("  : ");
           break;
         case 1:
-          this.setDisplayValue( "00:00")
+          this.setDisplayValue("00:00");
           break;
         case 2:
-          this.setDisplayValue( "")
+          this.setDisplayValue("");
           break;
       }
       return;
     }
     this.setDisplayValue(
       // this.styledTime(
-        integerToTime(this._uiRoot.audio.getCurrentTime())
+      integerToTime(this._uiRoot.audio.getCurrentTime())
       // )
     );
   }

@@ -79,7 +79,7 @@ export class AudioPlayer {
     // this._analyser.fftSize = 2048;
     // this._analyser.fftSize = 32;
     // this._analyser.fftSize = 512; //? to get same VIS to winamp osciloscpoe
-    this._analyser.fftSize = 1024;  //? exactly identical to winamp VIS. truncated later in VIS
+    this._analyser.fftSize = 1024; //? exactly identical to winamp VIS. truncated later in VIS
     // don't smooth audio analysis
     this._analyser.smoothingTimeConstant = 0.0;
 
@@ -174,11 +174,11 @@ export class AudioPlayer {
    * This method should only the called directly by the audio
    * purpose: call to update text only when the second is different (not per-250ms)
    */
-  doTimeUpdate(){
+  doTimeUpdate() {
     const i = this._audio.currentTime << 0;
-    if(i != this._last_itime){
+    if (i != this._last_itime) {
       this._last_itime = i;
-      this.trigger('timeupdate')
+      this.trigger("timeupdate");
       // console.log('ITEIMER:', this.getCurrentTime())
     }
   }
@@ -402,7 +402,7 @@ export class AudioPlayer {
     //   this._audio.removeEventListener("timeupdate", handler);
     // };
     // return dispose;
-    return this.on("timeupdate", cb)
+    return this.on("timeupdate", cb);
   }
 
   onSeek(cb: () => void): () => void {

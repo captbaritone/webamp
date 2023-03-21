@@ -95,7 +95,7 @@ export class UIRoot {
     return this._id;
   }
 
-  guid2alias(guid:string):string{    
+  guid2alias(guid: string): string {
     const knownContainerGuids = {
       "{0000000a-000c-0010-ff7b-01014263450c}": "vis", // AVS {visualization}
       "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl", // playlist editor
@@ -105,10 +105,10 @@ export class UIRoot {
       "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl", // download??
       "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video", // independent video window
     };
-    if(guid.includes(':')){
-      guid = guid.split(':')[1]
+    if (guid.includes(":")) {
+      guid = guid.split(":")[1];
     }
-    guid = guid.toLowerCase()
+    guid = guid.toLowerCase();
     return knownContainerGuids[guid] || guid;
   }
 
@@ -539,9 +539,9 @@ export class UIRoot {
       case "vis_next":
       case "vis_prev":
       case "vis_f5":
-        if(this._avss.length){
-          for(const avs of this._avss) {
-            avs.dispatchAction(action, param, actionTarget)
+        if (this._avss.length) {
+          for (const avs of this._avss) {
+            avs.dispatchAction(action, param, actionTarget);
           }
         }
         break;

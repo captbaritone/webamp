@@ -58,13 +58,11 @@ export default class ButtonElement extends GuiObj {
         this.setAction(value);
         break;
       case "onclick":
-        if(value.startsWith('visEffects.next()')){
-          this.setAction('VIS_Next');
-        }
-        else if(value.startsWith('visEffects.previous()')){
-          this.setAction('VIS_Prev');
-        }
-        else {
+        if (value.startsWith("visEffects.next()")) {
+          this.setAction("VIS_Next");
+        } else if (value.startsWith("visEffects.previous()")) {
+          this.setAction("VIS_Prev");
+        } else {
           this._onClick = value;
         }
         break;

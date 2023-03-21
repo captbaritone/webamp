@@ -254,7 +254,7 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
         node.attributes.action = action;
       } else if (tag.endsWith("button")) {
         action = tag.substring(0, tag.length - 6);
-        if(action){
+        if (action) {
           //avoid action='' in which may is misleading and drive to conflict
           node.attributes.action = action;
         }

@@ -971,16 +971,16 @@ export default class SkinEngineWAL extends SkinEngine {
   }
 
   async component(node: XmlElement, parent: any) {
-    const id = this._uiRoot.guid2alias(node.attributes.param)
+    const id = this._uiRoot.guid2alias(node.attributes.param);
     switch (id) {
-      case 'vis':
+      case "vis":
         // const gui = new Avs(this._uiRoot);
         // // const spec = new XmlElement("dummy", { fitparent: '1' });
         // gui.setXmlAttributes(spec.attributes)
         // this.addChild(gui);
         // this._heldObj = gui;
         return this.newGui(Avs, node, parent);
-        break
+        break;
     }
     //TODO: parse dynamic element by guid value
     if (
