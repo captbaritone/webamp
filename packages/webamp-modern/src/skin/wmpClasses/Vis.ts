@@ -1,8 +1,9 @@
 import { Edges } from "../Clippath";
-import MakiVis from "../makiClasses/Vis";
+// import MakiVis from "../makiClasses/Vis";
+import Avs from "../makiClasses/Avs";
 
 // https://docs.microsoft.com/en-us/windows/win32/wmp/view-element
-export default class VisZ extends MakiVis {
+export default class VisZ extends Avs {
   _clippingColor: string;
   _clippingImage: string;
 

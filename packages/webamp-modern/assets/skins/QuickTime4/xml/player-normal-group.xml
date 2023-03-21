@@ -1,0 +1,1174 @@
+<!-- player-normal-group.xml defines the layout of the Winamp Player Window. -->
+
+<!-- Playback buttons -->
+<groupdef id="player.normal.playbuttons" name="Player buttons">
+
+  <!-- Button Backgrounds -->
+
+  <!-- Playback Button Status -->
+
+  <!-- PREVIOUS -->
+  <button
+    id="Previous"
+    action="PREV"
+    x="0" y="0"
+    image="player.button.previous"
+    downImage="player.button.previous.pressed"
+    hoverImage="player.button.previous.hover"
+    tooltip="Previous"
+    rectrgn="1"
+  />
+
+  <!-- PLAY -->
+  <button
+    id="Play"
+    action="PLAY"
+    x="147" y="7"
+    image="player.button.play"
+    downImage="player.button.play.pressed"
+    tooltip="Play"
+    rectrgn="1"
+  />
+
+  <!-- PAUSE -->
+  <button
+    id="Pause"
+    action="PAUSE"
+    x="200" y="11"
+    image="player.button.pause"
+    downImage="player.button.pause.pressed"
+    hoverImage="player.button.pause.hover"
+    tooltip="Pause"
+    rectrgn="1"
+  />
+
+  <!-- STOP -->
+  <button
+    id="Stop"
+    action="STOP"
+    x="90" y="0"
+    image="player.button.stop"
+    downImage="player.button.stop.pressed"
+    hoverImage="player.button.stop.hover"
+    tooltip="Stop"
+    rectrgn="1"
+  />
+
+  <!-- NEXT -->
+  <!-- <layer
+    id="Next.bg"
+    x="120" y="0"
+    image="player.button.next.bg"
+  />
+  <layer
+    id="Next.button.bg"
+    x="120" y="0"
+    image="player.button.next"
+  />
+  <button
+    id="Next"
+    action="NEXT"
+    x="120" y="0"
+    image="player.button.next"
+    downImage="player.button.next.pressed"
+    hoverImage="player.button.next.hover"
+    tooltip="Next"
+    rectrgn="1"
+  /> -->
+
+  <button
+    id="drawer.button.close"
+    x="310" y="11"
+    image="drawer.button.close"
+    downImage="drawer.button.open"
+    tooltip="Close Configuration Drawer"
+    rectrgn="1"
+  />
+  <button
+    id="drawer.button.open"
+    x="310" y="11"
+    image="drawer.button.open"
+    downImage="drawer.button.close"
+    tooltip="Open Configuration Drawer"
+    rectrgn="1"
+  />
+
+</groupdef>
+
+
+<groupdef id="player.normal.songinfo" name="Songinfo">
+
+  <!-- Bitrate -->
+
+  <!-- Frequency -->
+
+  <!-- mono/stereo -->
+
+  <!-- EQ on/off -->
+  <button
+    id="eqonoff_led"
+    Image="player.songinfo.eq.off"
+    activeImage="player.songinfo.eq.on"
+    action="EQ_TOGGLE"
+    x="93" y="0"
+    rectrgn="1"
+  />
+
+  <!-- shuffle/repeat -->
+  <togglebutton
+    id="ShuffleDisplay"
+    x="91" y="10"
+    image="player.songinfo.shuffle.off"
+    downImage="player.songinfo.shuffle.off"
+    activeImage="player.songinfo.shuffle.on"
+    tooltip="Toggle Playlist Shuffling"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"
+    rectrgn="1"
+  />
+  <NStatesButton
+    id="RepeatDisplay"
+    x="76" y="10"
+    nstates="3"
+    image="player.songinfo.repeat"
+    downImage="player.songinfo.repeat"
+    activeImage="player.songinfo.repeat"
+    hoverImage="player.songinfo.repeat"
+    tooltip="Toggle Playlist/Song Repeating"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat"
+    cfgvals="0;1;-1"
+    rectrgn="1"
+  />
+
+  <!-- <script id="songinfo.script" file="scripts/songinfo.maki" /> -->
+</groupdef>
+
+<groupdef id="player.normal.display.beatvisualization" name="BeatVisualization">
+  <AnimatedLayer
+    x="5" y="0"
+    w="76" h="50"
+    id="beatleft"
+    image="player.display.beat.left"
+    move="0"
+    autoplay="0"
+    autoreplay="0"
+    ghost="1"
+  />
+  <AnimatedLayer
+    x="86" y="0"
+    w="76" h="50"
+    id="beatright"
+    image="player.display.beat.right"
+    move="0"
+    autoplay="0"
+    autoreplay="0"
+    ghost="1"
+  />
+  <layer
+    x="0" y="0"
+    image="player.display.beat.textoverlay"
+  />
+  <layer
+    id="beatdisplayoverlay"
+    x="0" y="0"
+    image="player.display.beat.displayoverlay"
+  />
+  <button
+    id="beatvisualization"
+    x="0" y="0"
+    w="153" h="31"
+    tooltip="Toggle Beat Visualization"
+    rectrgn="1"
+    ghost="0"
+  />
+  <togglebutton
+    id="beatvisualization2"
+    x="82" y="12"
+    w="2" h="2"
+    tooltip="Toggle Beat Visualization"
+    rectrgn="1"
+    ghost="0"
+  />
+
+</groupdef>
+
+
+<!-- DISPLAY -->
+<groupdef id="player.normal.display" name="Display" relatw="1" w="-49">
+
+  <layer
+    id="display.background.left"
+    x="0" y="0"
+    ghost="1"
+    image="player.display.bg.left"
+  />
+  <layer
+    id="display.background.center"
+    x="60" y="0"
+    ghost="1"
+    relatw="1"
+    w="-120"
+    image="player.display.bg.center"
+  />
+  <layer
+    id="display.background.right"
+    x="-60" y="0"
+    ghost="1"
+    relatx="1"
+    image="player.display.bg.right"
+  />
+  <layer
+    id="display.left"
+    x="0" y="0"
+    ghost="1"
+    image="player.display.left"
+  />
+  <layer
+    id="display.center"
+    x="60" y="0"
+    ghost="1"
+    relatw="1"
+    w="-120"
+    tile="1"
+    image="player.display.center"
+  />
+  <layer
+    id="display.right"
+    x="-60" y="0"
+    ghost="1"
+    relatx="1"
+    image="player.display.right"
+  />
+  <layer
+    id="display.st.left"
+    x="0" y="44"
+    ghost="1"
+    image="player.display.songticker.bg.left"
+  />
+  <layer
+    id="display.st.center"
+    x="60" y="44"
+    ghost="1"
+    relatw="1"
+    w="-120"
+    tile="1"
+    image="player.display.songticker.bg.center"
+  />
+  <layer
+    id="display.st.right"
+    x="-60" y="44"
+    ghost="1"
+    relatx="1"
+    image="player.display.songticker.bg.right"
+  />
+
+  <!-- Timer -->
+  <text
+    id="timer"
+    display="time"
+    x="14" y="8"
+    w="70" h="20"
+    font="player.BIGNUM"
+    align="left"
+    timecolonwidth="5"
+    timeroffstyle="1"
+    fontsize="13"
+    color="font.display"
+  />
+
+
+  <!-- Playback Status -->
+  <status
+    id="status"
+    x="19" y="15"
+    w="10" h="23"
+    stopBitmap="player.status.stop"
+    playBitmap="player.status.play"
+    pauseBitmap="player.status.pause"
+  />
+
+
+
+  <!-- Visualization -->
+  <layer
+    id="visualization.background"
+    x="-99" y="12"
+    relatx="1"
+    image="player.visualization.background"
+  />
+
+  <vis
+    id="visual"
+    x="-24" y="6" w="57" h="16"
+    relatx="1"
+    gammagroup="DisplayVis"
+    bandwidth="thin"
+    colorallbands="0,0,0"
+    peaks="0"
+  />
+  <layer id="vis.mask" image="player.vis.mask" x="-24" y="4" w="57" h="20" relatx="1" ghost="1"/>
+
+  <!-- <layer id="main.vis.trigger" x="-93" y="13" w="72" h="25" relatx="1" rectrgn="1"/> -->
+
+  <!-- <script file="scripts/visualizer.maki" /> -->
+
+
+  <!-- <layer
+    id="visualization.overlay"
+    x="-99" y="12"
+    relatx="1"
+    image="player.visualization.overlay"
+    ghost="1"
+  /> -->
+
+  <!-- Songticker -->
+  
+
+  <!-- Songticker overlay -->
+
+
+  <!-- the songinfo -->
+  <!-- <group id="player.normal.songinfo" x="96" y="17" /> -->
+
+  <group id="player.normal.display.beatvisualization" x="200" y="11" visible="0"/>
+
+  <layer
+    id="display.left"
+    x="0" y="0"
+    ghost="1"
+    image="player.display.left"
+    alpha="13"
+  />
+
+  <layer
+    id="display.center"
+    x="60" y="0"
+    ghost="1"
+    relatw="1"
+    w="-120"
+    tile="1"
+    image="player.display.center"
+    alpha="13"
+  />
+
+  <layer
+    id="display.right.overlay2"
+    x="-60" y="0"
+    ghost="1"
+    relatx="1"
+    image="player.display.right"
+    alpha="13"
+  />
+
+  <!-- <script id="beatvisualization.script" file="scripts/beatvisualization.maki" /> -->
+
+</groupdef>
+
+<groupdef id="player.bar.rightbottom" relatw="1" w="0" relath="1" h="0">
+
+  <layer
+    id="player.main.resizer"
+    x="-17" y="108"
+    relatx="1"
+    image="player.resizer"
+    resize="right"
+    sysregion="1"
+    rectrgn="1"
+  />
+
+  <layer
+    x="-31" y="101"
+    relatx="1"
+    image="player.button.bolt.bg"
+    sysregion="1"
+  />
+  <button
+    id="about"
+    action="TOGGLE" param="guid:{D6201408-476A-4308-BF1B-7BACA1124B12}"
+    x="-31" y="101"
+    relatx="1"
+    image="player.button.bolt"
+    downImage="player.button.bolt.pressed"
+    activeImage="player.button.bolt"
+    hoverImage="player.button.bolt.hover"
+    rectrgn="1"
+  />
+
+
+  <!-- Volume -->
+  <layer
+    x="183" y="100"
+    image="player.volume.bg"
+  />
+
+  <layer
+    id="volumebar"
+    x="185" y="115"
+    w="10"
+    image="player.volumebar"
+  />
+
+  <slider
+    id="Volume"
+    action="VOLUME"
+    x="183" y="110"
+    w="86" h="13"
+    thumb="player.button.volume"
+    downThumb="player.button.volume.pressed"
+    hoverThumb="player.button.volume.hover"
+    tooltip="Volume"
+  />
+
+
+  <!-- Mute -->
+  <layer
+    x="160" y="99"
+    image="player.button.mute.bg"
+  />
+  <togglebutton
+    id="mute"
+    x="164" y="104"
+    image="player.button.mute.off"
+    downImage="player.button.mute.on.pressed"
+    hoverImage="player.button.mute.on.hover"
+    activeImage="player.button.mute.on"
+    tooltip="Toggle Mute"
+    rectrgn="1"
+  />
+
+  <!-- <script id="mute.script" file="scripts/mute.maki" /> -->
+
+</groupdef>
+
+
+<groupdef id="buttons.video">
+  <layer
+    x="0" y="0"
+    image="player.button.video.bg.left"
+  />
+  <layer
+    x="97" y="0"
+    relatw="1" w="-169"
+    image="player.button.video.bg.center"
+  />
+  <layer
+    x="-72" y="0"
+    relatx="1"
+    image="player.button.video.bg.right"
+  />
+
+  <button
+    id="button.vid.fs"
+    action="VID_FS"
+    x="3" y="2"
+    image="player.button.video.fs"
+    downImage="player.button.video.fs.pressed"
+    hoverImage="player.button.video.fs.hover"
+    tooltip="Fullscreen"
+    rectrgn="1"
+  />
+
+  <button
+    id="button.vid.1x"
+    action="VID_1X"
+    x="26" y="2"
+    image="player.button.video.s1x"
+    downImage="player.button.video.s1x.pressed"
+    hoverImage="player.button.video.s1x.hover"
+    tooltip="Normal Size"
+    rectrgn="1"
+  />
+
+  <button
+    id="button.vid.2x"
+    action="VID_2X"
+    x="49" y="2"
+    image="player.button.video.s2x"
+    downImage="player.button.video.s2x.pressed"
+    hoverImage="player.button.video.s2x.hover"
+    tooltip="Double Size"
+    rectrgn="1"
+  />
+
+  <button
+    id="button.vid.max"
+    x="73" y="2"
+    image="player.button.video.smax"
+    downImage="player.button.video.smax.pressed"
+    hoverImage="player.button.video.smax.hover"
+    tooltip="Maximize Window"
+    rectrgn="1"
+  />
+  <button
+    id="button.vid.restore"
+    x="73" y="2"
+    image="player.button.video.srestore"
+    downImage="player.button.video.srestore.pressed"
+    hoverImage="player.button.video.srestore.hover"
+    tooltip="Restore Window"
+    rectrgn="1"
+    visible="0"
+  />
+
+  <!--<button
+    id="button.vid.tv"
+    action="VID_TV"
+    x="-65" y="2"
+    relatx="1"
+    image="player.button.video.tv"
+    downImage="player.button.video.tv.pressed"
+    hoverImage="player.button.video.tv.hover"
+    tooltip="Internet TV"
+    rectrgn="1"
+  />-->
+
+  <button
+    id="button.vid.misc"
+    action="VID_Misc"
+    x="-40" y="2"
+    relatx="1"
+    image="player.button.video.misc"
+    downImage="player.button.video.misc.pressed"
+    hoverImage="player.button.video.misc.hover"
+    tooltip="Options"
+    rectrgn="1"
+  />
+
+
+  <text
+    id="wasabi.statusbar.text"
+    x="100" y="2"
+    w="-174" h="12"
+    relatw="1"
+    font="arial"
+    color="drawer.color.text.dark" fontsize="14"
+    display="VID_Info" wrap="0"
+    ghost="1"
+  />
+</groupdef>
+
+
+<groupdef id="buttons.vis">
+  <layer
+    x="0" y="0"
+    image="player.button.vis.bg.left"
+  />
+
+  <button
+    id="button.vid.fs"
+    action="VIS_FS"
+    x="3" y="2"
+    image="player.button.video.fs"
+    downImage="player.button.video.fs.pressed"
+    hoverImage="player.button.video.fs.hover"
+    tooltip="Fullscreen"
+    rectrgn="1"
+  />
+
+  <button
+    id="button.vis.prev"
+    action="VIS_Prev"
+    x="38" y="2"
+    image="player.button.vis.prev"
+    downImage="player.button.vis.prev.pressed"
+    hoverImage="player.button.vis.prev.hover"
+    tooltip="Previous Visualization"
+    rectrgn="1"
+  />
+
+  <button
+    id="button.vis.next"
+    action="VIS_Next"
+    x="84" y="2"
+    image="player.button.vis.next"
+    downImage="player.button.vis.next.pressed"
+    hoverImage="player.button.vis.next.hover"
+    tooltip="Next Visualization"
+    rectrgn="1"
+  />
+
+  <togglebutton
+    id="button.vis.random"
+    cfgattrib="{0000000A-000C-0010-FF7B-01014263450C};Random"
+    x="142" y="2"
+    image="player.button.vis.random"
+    downImage="player.button.vis.random.pressed"
+    hoverImage="player.button.vis.random.hover"
+    tooltip="Toggle Random Visualization"
+    rectrgn="1"
+  />
+  <togglebutton
+    id="led.vis.random"
+    cfgattrib="{0000000A-000C-0010-FF7B-01014263450C};Random"
+    x="200" y="-2"
+    image="player.led.off"
+    downImage="player.led.on"
+    activeImage="player.led.on"
+    rectrgn="1"
+  />
+
+  <layer
+    x="-43" y="0"
+    relatx="1"
+    image="player.button.vis.bg.right"
+  />
+  <button
+    id="button.vis.misc"
+    action="Vis_Menu"
+    x="-40" y="2"
+    relatx="1"
+    image="player.button.video.misc"
+    downImage="player.button.video.misc.pressed"
+    hoverImage="player.button.video.misc.hover"
+    tooltip="Options"
+    rectrgn="1"
+  />
+
+</groupdef>
+
+<groupdef id="buttons.video.detach">
+  <layer
+    x="0" y="0"
+    image="player.button.video.detach.bg"
+  />
+  <button
+    id="button.vid.detach"
+    x="3" y="2"
+    image="player.button.video.detach"
+    downImage="player.button.video.detach.pressed"
+    hoverImage="player.button.video.detach.hover"
+    tooltip="Detach Video"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="buttons.video.switchto">
+  <layer
+    x="0" y="0"
+    image="player.button.video.switchto.bg"
+  />
+  <button
+    id="button.vid.switchto"
+    x="3" y="2"
+    image="player.button.video.switchto"
+    downImage="player.button.video.switchto.pressed"
+    hoverImage="player.button.video.switchto.hover"
+    tooltip="Switch to Visualizer"
+    rectrgn="1"
+  />
+</groupdef>
+
+
+<groupdef id="buttons.vis.detach">
+  <layer
+    x="0" y="0"
+    image="player.button.vis.detach.bg"
+  />
+  <button
+    id="button.vis.detach"
+    x="3" y="2"
+    image="player.button.vis.detach"
+    downImage="player.button.vis.detach.pressed"
+    hoverImage="player.button.vis.detach.hover"
+    tooltip="Detach Visualizations"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="buttons.vis.switchto">
+  <layer
+    x="0" y="0"
+    image="player.button.vis.switchto.bg"
+  />
+  <button
+    id="button.vis.switchto"
+    x="3" y="2"
+    image="player.button.vis.switchto"
+    downImage="player.button.vis.switchto.pressed"
+    hoverImage="player.button.vis.switchto.hover"
+    tooltip="Switch to Video"
+    rectrgn="1"
+  />
+</groupdef>
+
+
+
+<groupdef id="videowindow" rectrgn="1">
+  <windowholder id="myvideownd" fitparent="1" autoclose="1" autoopen="1" autoavailable="0" visible="0" hold="guid:{F0816D7B-FFFC-4343-80F2-E8199AA15CC3}"/>
+  <windowholder id="myviswnd" fitparent="1" autoclose="1" autoopen="1" autoavailable="0" visible="0" hold="guid:avs" autofocus="0"/>
+</groupdef>
+
+<groupdef id="video.group" rectrgn="1">
+  <rect fitparent="1" color="0,0,0" filled="1" />
+  <group id="videowindow" fitparent="1"/>
+</groupdef>
+
+
+<groupdef id="AVSGroup" relatw="1" w="0" h="244" visible="0" background="player.videoavs.middle">
+  <!-- <layer
+    x="0" y="0"
+    image="player.videoavs.topleft"
+    resize="left"
+  />
+  <layer
+    x="10" y="0"
+    ghost="0"
+    relatw="1"
+    w="-20"
+    image="player.videoavs.topmiddle"
+  />
+  <layer
+    x="-10" y="0"
+    relatx="1"
+    image="player.videoavs.topright"
+    resize="right"
+  />
+
+  <layer
+    x="0" y="21"
+    relath="1"
+    h="-47"
+    image="player.videoavs.left"
+    resize="left"
+  />
+  <layer
+    x="4" y="21"
+    ghost="0"
+    relatw="1"
+    w="-8"
+    relath="1"
+    h="-47"
+    image="player.videoavs.middle"
+  />
+  <layer
+    x="-4" y="21"
+    relatx="1"
+    relath="1"
+    h="-47"
+    image="player.videoavs.right"
+    resize="right"
+  />
+
+  <layer
+    x="0" y="-26"
+    ghost="0"
+    image="player.videoavs.bottomleft"
+    relaty="1"
+  />
+  <layer
+    x="10" y="-26"
+    ghost="0"
+    relatw="1"
+    w="-60"
+    relaty="1"
+    image="player.videoavs.bottommiddle"
+  />
+  <layer
+    x="-50" y="-26"
+    ghost="0"
+    relatx="1"
+    relaty="1"
+    image="player.videoavs.bottomright"
+  />
+
+  <layer
+    id="player.button.videoavs.up.bg2"
+    x="-45" y="0"
+    relatx="1"
+    image="player.button.videoavs.up.bg2"
+  /> -->
+
+  <group id="video.group" x="8" y="2" relatw="1" relath="1" w="-16" h="-2"/>
+  <!--
+  <group id="buttons.video" x="10" relatw="1" w="0" relaty="1" y="-21"/>
+  <group id="buttons.vis" x="10" relatw="1" w="0" relaty="1" y="-21"/>
+  <group id="buttons.video.detach" x="5" y="3" visible="0"/>
+  <group id="buttons.vis.detach" x="5" y="3" visible="0"/>
+
+  <group id="buttons.video.switchto" x="-170" y="3" relatx="1" visible="0"/>
+  <group id="buttons.vis.switchto" x="-170" y="3" relatx="1" visible="1"/>
+ -->
+</groupdef>
+
+
+<groupdef id="player.main" relatw="1" w="0" h="114" >
+  <layer id="mousetrap" x="0" y="0" w="0" h="65" relatw="1" move="1" image="player.main"/>
+  <layer id="beach" x="0" y="65" w="0" h="30" relatw="1" ghost="1" image="player.main.beach"/>
+   <!-- <layer
+     id="window.left"
+     x="0" y="0"
+     image="player.main.left"
+     sysregion = "1"
+   />
+   <layer
+     id="window.center"
+     x="180" y="0"
+     w="-270"
+     relatw="1"
+     image="player.main.center"
+     sysregion = "1"
+   />
+   <layer
+     id="window.right"
+     x="-90" y="0"
+     relatx="1"
+     image="player.main.right"
+     sysregion = "1"
+   />
+
+
+   <layer
+     id="window.bg2.left"
+     x="138" y="95"
+     image="player.main.bg2.left"
+     sysregion = "1"
+   />
+
+   <layer
+     id="window.bg2.center"
+     x="198" y="95"
+     w="-288"
+     relatw="1"
+     image="player.main.bg2.center"
+     sysregion = "1"
+   />
+
+   <layer
+     id="window.bg2.right"
+     x="-90" y="95"
+     relatx="1"
+     image="player.main.bg2.right"
+     sysregion = "1"
+   />
+   <layer
+     x="-72" y="107"
+     relatx="1"
+     image="player.main.bg2.textoverlay"
+   />
+   <layer
+     id="window.left.bottom.region"
+     x="0" y="120"
+     image="player.main.left.region"
+     resize="left"
+     sysregion="-2"
+   />
+   <layer
+     id="window.right.bottom.region"
+     x="-6" y="120"
+     relatx="1"
+     image="player.main.right.region"
+     sysregion="-2"
+   /> -->
+
+  <!-- the display -->
+  <group id="player.normal.display" x="5" y="3" />
+
+  <!-- the playback buttons -->
+  <group id="player.normal.playbuttons" x="0" y="29" />
+
+  <!-- the volume / mute / resize / ... -->
+  <group id="player.bar.rightbottom" x="0" y="0" />
+
+
+
+  <!-- SEEK SLIDER -->
+
+  <!-- <layer
+    id="seekbar.left"
+    x="6" y="75"
+    ghost="1"
+    image="player.seekbar.left"
+  />
+  <layer
+    id="seekbar.center"
+    x="16" y="75"
+    ghost="1"
+    relatw="1"
+    w="-121"
+    image="player.seekbar.center"
+  />
+  <layer
+    id="seekbar.right"
+    x="-105" y="75"
+    ghost="1"
+    relatx="1"
+    image="player.seekbar.right"
+  /> -->
+
+  <!-- <ProgressGrid
+    w="-110" h="4" relatw="1"
+    orientation="right"
+    x="10" y="79"
+    middle="player.progressbar.center"
+  /> -->
+
+  <slider
+    id="Seeker"
+    action="SEEK"
+    x="60" y="12"
+    h="9"
+    w="208"
+    thumb="player.button.seek"
+    tooltip="Seeker"
+  />
+  <!-- <slider
+    id="SeekerGhost"
+    action="SEEK"
+    x="6" y="75"
+    h="13"
+    relatw="1"
+    w="-100"
+    thumb="player.button.seek"
+    downThumb="player.button.seek.pressed"
+    hoverThumb="player.button.seek.hover"
+  /> -->
+
+
+
+  <!-- Shuffle / Repeat -->
+  <!-- <layer
+    id="button.repeat.bg"
+    x="-44" y="18"
+    ghost="1"
+    relatx="1"
+    image="player.button.repeat.bg"
+  />
+  <layer
+    id="button.shuffle.bg"
+    x="-44" y="41"
+    ghost="1"
+    relatx="1"
+    image="player.button.shuffle.bg"
+  />
+
+  <NStatesButton
+    id="Repeat"
+    x="-40" y="22"
+    nstates="3"
+    relatx="1"
+    image="player.button.repeat"
+    downImage="player.button.repeat.pressed"
+    hoverImage="player.button.repeat.hover"
+    activeImage="player.button.repeat"
+    tooltip="Toggle Playlist/Song Repeating"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat"
+    cfgvals="0;1;-1"
+    rectrgn="1"
+  />
+  <togglebutton
+    id="Shuffle"
+    x="-40" y="45"
+    relatx="1"
+    image="player.button.shuffle"
+    downImage="player.button.shuffle.pressed"
+    hoverImage="player.button.shuffle.hover"
+    activeImage="player.button.shuffle"
+    tooltip="Toggle Playlist Shuffling"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"
+    rectrgn="1"
+  />
+
+  <NStatesButton
+    id="RepeatLED"
+    x="-19" y="22"
+    relatx="1"
+    nstates="3"
+    autoelements="0"
+    image="player.led.off"
+    downImage="player.led.on"
+    activeImage="player.led.on"
+    tooltip="Toggle Playlist/Song Repeating"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat"
+    cfgvals="0;1;-1"
+    rectrgn="1"
+  />
+  <togglebutton
+    id="ShuffleLED"
+    x="-19" y="45"
+    relatx="1"
+    image="player.led.off"
+    downImage="player.led.on"
+    activeImage="player.led.on"
+    tooltip="Toggle Playlist Shuffling"
+    cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"
+    rectrgn="1"
+  />
+
+
+  <layer
+    id="player.button.videoavs.overlay"
+    x="-43" y="0"
+    ghost="0"
+    relatx="1"
+    image="player.button.videoavs.overlay"
+  />
+
+  <layer
+    id="player.button.mlpl.bg"
+    x="-94" y="69"
+    ghost="0"
+    relatx="1"
+    image="player.button.mlpl.bg"
+  />
+
+
+  <button
+    id="EJECT"
+    action="EJECT"
+    x="-86" y="75"
+    relatx="1"
+    image="player.button.eject"
+    downImage="player.button.eject.pressed"
+    hoverImage="player.button.eject.hover"
+    tooltip="Open file(s)"
+  />
+
+  <layer
+    x="-60" y="75"
+    relatx="1"
+    image="player.button.pl"
+  />
+  <layer
+    x="-34" y="75"
+    relatx="1"
+    image="player.button.ml"
+  />
+
+  <button
+    id="pl"
+    action="TOGGLE" param="guid:pl"
+    x="-60" y="75"
+    relatx="1"
+    image="player.button.pl"
+    downImage="player.button.pl.pressed"
+    hoverImage="player.button.pl.hover"
+    activeImage="player.button.pl.active"
+    tooltip="Playlist Editor"
+  />
+  <button
+    id="ml"
+    action="TOGGLE" param="guid:ml"
+    x="-34" y="75"
+    relatx="1"
+    image="player.button.ml"
+    downImage="player.button.ml.pressed"
+    hoverImage="player.button.ml.hover"
+    activeImage="player.button.ml.active"
+    tooltip="Media Library"
+  />
+
+   <layer
+     x="0" y="0"
+     w="3" h="0"
+     relath="1"
+     resize="left"
+   />
+   <layer
+     x="-5" y="0"
+     w="5" h="-20"
+     relath="1"
+     relatx="1"
+     resize="right"
+   /> -->
+
+  <!-- <script id="seek.script" file="scripts/seek.maki" /> -->
+  <!-- <script id="display.script" file="scripts/display.maki" /> -->
+
+
+</groupdef>
+
+<groupdef id="player.content.dummy.group" name="WinampDummyGroup" relatw="1" relath="1" w="0" h="0">
+  <!-- <group id="player.normal.drawer" x="0" y="-263" relaty="1" sysregion="1" move="1"/> -->
+  <group id="player.normal.drawer" x="0" top="17" h="0" relath="1" sysregion="1" move="1"/>
+  <!-- <group id="player.normal.drawer.shadow" x="0" y="-149" relaty="1" relatw="1" w="0" visible="0" sysregion="1"/> -->
+  <group id="player.main" x="0" y="0" relaty="0" sysregion="1"/>
+  <!-- Moved to parent <group id="AVSGroup" x="0" y="0" sysregion="1"/> -->
+
+ <!--  <layer
+    id="player.button.videoavs.up.bg"
+    x="-45" y="17"
+    relatx="1"
+    image="player.button.videoavs.up.bg"
+  />
+  <button
+    id="videoavs.close"
+    x="-37" y="19"
+    relatx="1"
+    image="player.button.videoavs.up"
+    downImage="player.button.videoavs.up.pressed"
+    hoverImage="player.button.videoavs.up.hover"
+    tooltip="Close Video and Visualization"
+    rectrgn="1"
+  />
+  <button
+    id="videoavs.open"
+    x="-37" y="19"
+    relatx="1"
+    image="player.button.videoavs"
+    downImage="player.button.videoavs.pressed"
+    hoverImage="player.button.videoavs.hover"
+    tooltip="Open Video and Visualization"
+    rectrgn="1"
+  />
+  <layer
+    id="openclosehider"
+    x="-44" y="16"
+    relatx="1"
+    image="player.openclose.overlay"
+  /> -->
+
+  <script id="configtabs.script" file="scripts/configtabs.maki" />
+  <!-- <script id="videoavs.script" file="scripts/videoavs.maki" /> -->
+
+</groupdef>
+
+<groupdef id="player.content.group" name="Winamp">
+  <group id="player.content.dummy.group" x="0" y="0" h="0" relath="1"/>
+  <!-- <script id="mainmenu.script" file="scripts/mainmenu.maki" /> -->
+  <group id="AVSGroup" x="0" y="0" sysregion="1"/>
+</groupdef>
+
+<groupdef id="player.title.group">
+  
+  <layer
+    id="titlebar"
+    w="0" h="20"
+    relatw="1"
+    image="player.main.title"
+  /> 
+  <!-- Songticker -->
+  <Songticker
+    id="Songticker" showlen="1"
+    x="8" y="5"
+    relatw="1"
+    w="0" h="13"
+    leftpadding="5"
+    rightpadding="-5"
+    font="player.songticker.font"
+    align="center"
+    valign="top"
+    rightclickaction="trackmenu"
+    dblclickaction="trackinfo"
+    fontsize="12"
+    color="font.display.songticker"
+    altfont="Arial"
+   />
+  
+  <Text
+    id="Infoticker"
+    x="8" y="43"
+    relatw="1"
+    w="-16" h="23"
+    leftpadding="5"
+    rightpadding="-5"
+    font="player.songticker.font"
+    align="center"
+    valign="top"
+    fontsize="18"
+    color="font.display.songticker"
+    altfont="Arial"
+	visible="0"
+   />
+   <layer id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+</groupdef>
+
+<include file="configdrawer.xml" />

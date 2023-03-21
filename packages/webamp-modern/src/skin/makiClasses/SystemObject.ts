@@ -130,7 +130,7 @@ export default class SystemObject extends BaseObject {
   }
 
   hasvideosupport(): number {
-    return unimplemented(1);
+    return unimplemented(0);
   }
   /* Required for Maki */
   getruntimeversion(): number {
@@ -622,6 +622,7 @@ export default class SystemObject extends BaseObject {
    */
   newdynamiccontainer(container_id: string): Container {
     //TODO
+    return unimplemented(null)
   }
 
   /**

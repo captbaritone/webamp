@@ -1,0 +1,18 @@
+<elements>
+  <bitmap id="winamp.thinger.library.hilited" file="thinger/library-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.library.selected" file="thinger/library-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.library" file="thinger/library-unselected.png" gammagroup="Thinger icons"/> 
+  
+  <bitmap id="winamp.thinger.video.hilited" file="thinger/video-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.video.selected" file="thinger/video-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.video" file="thinger/video-unselected.png" gammagroup="Thinger icons"/> 
+  
+  <bitmap id="winamp.thinger.pledit.hilited" file="thinger/pledit-hover.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.pledit.selected" file="thinger/pledit-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.pledit" file="thinger/pledit-unselected.png" gammagroup="Thinger icons"/> 
+
+  <bitmap id="winamp.thinger.vis.hilited" file="thinger/vis-hilited.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.vis.selected" file="thinger/vis-selected.png" gammagroup="Thinger icons"/> 
+  <bitmap id="winamp.thinger.vis" file="thinger/vis-unselected.png" gammagroup="Thinger icons"/> 
+ 
+</elements>

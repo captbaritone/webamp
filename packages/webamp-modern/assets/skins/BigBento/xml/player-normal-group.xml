@@ -1,0 +1,487 @@
+<!-- Player:Component:Player -->
+
+<groupdef id="player.display.beatvis.content">
+
+	<animatedlayer id="beatvisleft" x="0" y="0" h="28" w="43" image="player.beatvis.left" move="0" autoplay="0" autoreplay="0" ghost="1" />
+	<animatedlayer id="beatvisright" x="44" y="0" h="28" w="43" image="player.beatvis.right" move="0" autoplay="0" autoreplay="0" ghost="1" />
+
+	<togglebutton fitparent="1" rectrgn="1" cfgattrib="{F1036C9C-3919-47ac-8494-366778CF10F9};Enable Beat Visualization" tooltip="Toggle Beat Visualization"/>
+
+</groupdef>
+
+<groupdef id="player.display.beatvis">
+
+	<group id="player.display.beatvis.content" x="0" y="0" w="87" h="28" />
+
+	<script file="scripts/beatvisualization.maki"/>
+
+</groupdef>
+
+<groupdef id="player.display">
+
+	<grid x="0" y="0" h="69" w="0" relatw="1" left="player.display.background.left" middle="player.display.background.center" right="player.display.background.right" move="0"/>
+	<grid x="0" y="0" h="69" w="0" relatw="1" left="player.display.foreground.left" middle="player.display.foreground.center" right="player.display.foreground.right" move="0"/>
+
+	<status
+		id="status"
+		x="-156" y="26.9" relatx="1"
+		w="5" h="6"
+		stopBitmap="player.display.status.stopped"
+		playBitmap="player.display.status.playing"
+		pauseBitmap="player.display.status.paused"
+	/>
+
+	<text id="SongTime"
+		x="7" y="8" h="31" w="102"
+		font="player.bitmapfont.nums" timecolonwidth="6"
+		display="time" align="left" alpha="220"
+	/>
+
+	<SongTicker id="Songticker" 
+		x="70" y="6" h="20" w="-72" relatw="1"
+		showlen="1" rightpadding="-3"
+		rightclickaction="trackmenu" dblclickaction="trackinfo" align="right"
+		color="color.display" size="13" valign="top" antialias="0" 
+	/>
+	<Text id="InfoDisplay" 
+		x="70" y="6" h="20" w="-72" relatw="1" alpha="0"
+		display="SONGTITLE" showlen="1" offsetx="-3" align="right"
+		color="color.display" size="13" valign="top" antialias="0" ghost="1"
+	/>
+
+	<script file="scripts/songticker.maki" param="-7,big"/>
+
+	<!-- Bitrate -->
+	<layer id="Bitrate.label" x="-119" relatx="1" y="26.9" image="player.songinfo.bitrate" move="0" />
+	<text
+		id="Bitrate"
+		x="-151" y="26.9" w="30" h="5" relatx="1" fontsize="5" font="player.bitmapfont.songinfo" align="right"
+	/>
+
+	<!-- Frequency -->
+	<layer id="Frequency.label" x="-78" y="26.9" relatx="1" image="player.songinfo.frequency" move="0" />
+	<text
+		id="Frequency"
+		x="-105" y="26.9" w="25" h="5" relatx="1" fontsize="5" font="player.bitmapfont.songinfo" align="right"
+	/>
+
+	<layer id="monster" x="-52" y="26.9" h="5" w="40" relatx="1" image="player.songinfo.na" move="0" rectrgn="1" dblclickaction="WA5:Prefs" dblclickparam="42" />
+
+	<script file="scripts/songinfo.maki" param="big"/>
+
+	<vis
+		id="main.vis"
+		x="11" y="43.9"
+		w="108" h="16"
+		colorbandpeak="162,193,204"
+		colorband1="82,97,102"
+		colorband2="74,88,93"
+		colorband3="78,92,97"
+		colorband4="83,97,104"
+		colorband5="88,102,107"
+		colorband6="94,107,112"
+		colorband7="100,113,118"
+		colorband8="106,120,125"
+		colorband9="112,121,131"
+		colorband10="117,131,136"
+		colorband11="122,137,142"
+		colorband12="127,141,146"
+		colorband13="131,145,150"
+		colorband14="136,150,155"
+		colorband15="140,154,159"
+		colorband16="145,159,164"
+		colorosc1="82,97,102"
+		colorosc2="83,97,104"
+		colorosc3="106,120,125"
+		colorosc4="127,141,146"
+		colorosc5="145,159,164"
+		gammagroup="DisplayText"
+	/>
+
+	<vis
+		id="main.vis.mirror"
+		x="11" y="60.9"
+		w="108" h="16"
+		colorbandpeak="83,97,104"
+		colorband1="82,97,102"
+		colorband2="74,88,93"
+		colorband3="78,92,97"
+		colorband4="83,97,104"
+		colorband5="88,102,107"
+		colorband6="94,107,112"
+		colorband7="100,113,118"
+		colorband8="106,120,125"
+		colorband9="112,121,131"
+		colorband10="117,131,136"
+		colorband11="122,137,142"
+		colorband12="127,141,146"
+		colorband13="131,145,150"
+		colorband14="136,150,155"
+		colorband15="140,154,159"
+		colorband16="145,159,164"
+		colorosc1="82,97,102"
+		colorosc2="83,97,104"
+		colorosc3="106,120,125"
+		colorosc4="127,141,146"
+		colorosc5="145,159,164"
+		ghost="1"
+		alpha="100"
+		flipv="1"
+		mode="1"
+		gammagroup="DisplayText"
+	/>
+
+	<layer id="main.vis.trigger" x="11" y="42" h="28" w="108" rectrgn="1"/>
+
+	<group id="player.display.beatvis" x="121" y="40.9" w="-281" h="28" relatw="1"/>
+
+	<script file="scripts/visualizer.maki" />
+
+</groupdef>
+
+<groupdef id="player.cbuttons">
+
+	<layer x="3" y="1" image="player.button.previous.placeholder"  move="0"/>
+	<Button id="Prev"
+		x="5" y="3"
+		image="player.button.previous.normal"
+		hoverImage="player.button.previous.hover"
+		downImage="player.button.previous.down"
+		action="PREV" tooltip="Previous Track"
+	/>
+	<layer id="Prev.glow" x="0" y="0" image="player.button.previous.glow" alpha="0" ghost="1"/>
+
+	<Button id="Play"
+		x="32" y="3"
+		image="player.button.play.normal"
+		hoverImage="player.button.play.hover"
+		downImage="player.button.play.down"
+		action="PLAY" tooltip="Play"
+	/>
+	<layer id="Play.glow" x="29" y="0" image="player.button.pps.glow" alpha="0" ghost="1"/>
+
+	<Button id="Pause"
+		x="59" y="3"
+		image="player.button.pause.normal"
+		hoverImage="player.button.pause.hover"
+		downImage="player.button.pause.down"
+		action="PAUSE" tooltip="Pause Playback"
+	/>
+	<layer id="Pause.glow" x="56" y="0" image="player.button.pps.glow" alpha="0" ghost="1"/>
+
+	<Button id="Stop"
+		x="86" y="3"
+		image="player.button.stop.normal"
+		hoverImage="player.button.stop.hover"
+		downImage="player.button.stop.down"
+		action="STOP" tooltip="Stop Playback"
+	/>
+	<layer id="Stop.glow" x="83" y="0" image="player.button.pps.glow" alpha="0" ghost="1"/>
+
+	<Button id="Next"
+		x="113" y="3"
+		image="player.button.next.normal"
+		hoverImage="player.button.next.hover"
+		downImage="player.button.next.down"
+		action="NEXT" tooltip="Next Track"
+	/>
+	<layer id="Next.glow" x="112" y="0" image="player.button.next.glow" alpha="0" ghost="1"/>
+
+	<layer x="-144" y="5" relatx="1" image="player.button.mute.placeholder"  move="0"/>
+	<Button id="Eject"
+		x="-144" y="5" h="18" w="33" relatx="1"
+		image="player.button.eject.normal"
+		hoverImage="player.button.eject.hover"
+		downImage="player.button.eject.down"
+		action="EJECT" tooltip="Open File(s)"
+	/>
+	<layer id="Eject.glow" x="-144" y="4" relatx="1" image="player.button.mute.glow" alpha="0" ghost="1"/>
+
+	<layer x="-106" y="5" relatx="1" image="player.button.shuffle.placeholder"  move="0"/>
+	<NStatesButton
+		id="shuffle"
+		x="-106" y="5" relatx="1"
+		image="player.button.shuffle.normal"
+		hoverimage="player.button.shuffle.hover"
+		downimage="player.button.shuffle.down"
+		rectrgn="1" nstates="2"
+		tooltip="Toggle Playlist Shuffling"
+		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"
+	/>
+	<layer id="shuffle.glow" x="-106" y="4" relatx="1" image="player.button.shuffle.glow" alpha="0" ghost="1"/>
+
+	<NStatesButton
+		id="repeat"
+		x="-68" y="5" relatx="1"
+		image="player.button.repeat.normal"
+		hoverimage="player.button.repeat.hover"
+		downimage="player.button.repeat.down"
+		rectrgn="1" nstates="3"
+		tooltip="Toggle Playlist/Song Repeating"
+		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat"
+		cfgvals="0;1;-1"
+	/>
+	<layer id="repeat.glow" x="-68" y="4" relatx="1" image="player.button.repeat.glow" alpha="0" ghost="1"/>
+
+</groupdef>
+
+<groupdef id="player.layout" wantfocus="1" rectrgn="1">
+
+	<group id="player.display" x="3" w="-4" relatw="1" h="69" y="0"/>
+
+	<!-- Volume -->
+
+	<layer id="player.placeholder.mute" x="-144" y="52" relatx="1" image="player.button.mute.placeholder" move="0"/>
+
+	<button id="mute" x="-144" y="52" w="33" h="18" relatx="1"
+		image="player.button.mute.normal"
+		hoverImage="player.button.mute.hover"
+		downImage="player.button.mute.down"
+		tooltip="Mute Volume"
+	/>
+	<button id="etum" x="-144" y="52" w="33" h="18" relatx="1"
+		image="player.button.demute.normal"
+		hoverImage="player.button.demute.hover"
+		downImage="player.button.demute.down"
+		tooltip="Turn Volume On"
+		visible="0"
+	/>
+
+	<layer id="mute.glow" x="-144" y="51" relatx="1" image="player.button.mute.glow" alpha="0" ghost="1"/>
+	<layer id="mute.active" x="-145" y="46" relatx="1" image="player.button.mute.active" visible="0" ghost="1"/>
+
+	<layer id="player.volume.label" x="-97" y="47" relatx="1" image="player.label.volume" move="0" />
+
+	<grid id="player.volume.bg"
+		x="-101" y="59" h="5" w="97" relatx="1"
+		left="player.slider.background.left"
+		middle="player.slider.background.center"
+		right="player.slider.background.right"
+	/>
+	
+	<grid id="player.volume.fill"
+		x="-99" y="61" h="2" w="95" relatx="1"
+		left="player.slider.light.left"
+		middle="player.slider.light.center"
+		right="player.slider.light.right"
+	/>
+
+	<Slider
+		id="Volume"
+		action="Volume"
+		x="-102" y="57" h="12" w="99" relatx="1"
+		thumb="player.volume.thumb.normal"
+		hoverThumb="player.volume.thumb.hover"
+		downThumb="player.volume.thumb.down"
+		tooltip="Volume"
+	/>
+
+	<script file="scripts/mute.maki" param="95"/>
+	<!-- param = max_w for volume fillbar -->
+
+	<!-- Seek -->
+
+	<grid id="player.seek.bg"
+		x="4" y="79" h="5" w="-8" relatw="1"
+		left="player.slider.background.left"
+		middle="player.slider.background.center"
+		right="player.slider.background.right"
+	/>
+
+	<ProgressGrid id="progressbar"
+		x="6" y="81" h="2" w="-10" relatw="1"
+		orientation="right"
+		left="player.slider.light.left"
+		middle="player.slider.light.center"
+		right="player.slider.light.right"
+		interval="100" 
+	/>
+
+	<Slider
+		id="seeker"
+		action="SEEK"
+		x="3" y="77" h="12" w="-6" relatw="1"
+		thumb="player.posbar.thumb.normal"
+		hoverThumb="player.posbar.thumb.hover"
+		downThumb="player.posbar.thumb.down"
+		ghost="1"
+		visible="0"
+		tooltip="Seeker"
+		interval="100" 
+	/>
+
+	<Slider
+		id="seeker.ghost"
+		action="SEEK"
+		x="3" y="77" h="12" w="-6" relatw="1"
+		thumb="player.posbar.thumb.normal"
+		hoverThumb="player.posbar.thumb.hover"
+		downThumb="player.posbar.thumb.down"
+		tooltip="Seeker"
+		interval="100"  
+	/>
+
+	<script file="scripts/seek.maki"/>
+	
+	<group id="player.cbuttons" x="0" y="93" h="32" w="0" relatw="1"/>
+	<NStatesButton id="shuffle.active" x="-103" y="91" image="player.button.shuffle.active" ghost="1" relatx="1" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"  nstates="2"/>
+	<NStatesButton id="repeat.active" x="-69" y="92" image="player.button.repeat.active" ghost="1" relatx="1" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgvals="0;1;-1"  nstates="3"/>
+
+	<script file="scripts/cbuttons.maki" param="290"/>
+	<!-- Param defines the min_w of the cbuttons group -->
+
+</groupdef>
+
+<!-- Player:Titlebar -->
+
+<groupdef id="player.mainmenu" rectregn="1" rectrgn="1">
+
+	<!-- Note: Most of the items in this group will be placed by script, so don't waste your time -->
+
+	<layer id="menu.text.file" x="0" y="6" h="10" image="window.titlebar.menu.text.file" />
+	<layer id="menu.layer.file.normal" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" visible="1" />
+	<layer id="menu.layer.file.hover" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+	<layer id="menu.layer.file.down" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+
+	<layer id="menu.text.play" x="0" y="6" h="10" image="window.titlebar.menu.text.play" />
+	<layer id="menu.layer.play.normal" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" visible="1" />
+	<layer id="menu.layer.play.hover" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+	<layer id="menu.layer.play.down" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+
+	<layer id="menu.text.options" x="0" y="6" h="10" image="window.titlebar.menu.text.options" />
+	<layer id="menu.layer.options.normal" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" visible="1" />
+	<layer id="menu.layer.options.hover" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+	<layer id="menu.layer.options.down" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+
+	<layer id="menu.text.view" x="0" y="6" h="10" image="window.titlebar.menu.text.view" />
+	<layer id="menu.layer.view.normal" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" visible="1" />
+	<layer id="menu.layer.view.hover" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+	<layer id="menu.layer.view.down" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+
+	<layer id="menu.text.help" x="0" y="6" h="10" image="window.titlebar.menu.text.help" />
+	<layer id="menu.layer.help.normal" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" visible="1" />
+	<layer id="menu.layer.help.hover" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+	<layer id="menu.layer.help.down" x="0" y="0" h="21" w="0" image="window.titlebar.menu.down" visible="0" />
+
+	<Menu id="file.menu" menugroup="main" next="Play.menu" prev="Help.menu" x="0" y="0" h="21" w="0" menu="WA5:File" normal="menu.layer.file.normal" hover="menu.layer.file.hover" down="menu.layer.file.down" />
+	<Menu id="play.menu" menugroup="main" next="Options.menu" prev="File.menu" x="0" y="0" h="21" w="0" menu="WA5:Play" normal="menu.layer.play.normal" hover="menu.layer.play.hover" down="menu.layer.play.down" />
+	<Menu id="options.menu" menugroup="main" next="View.menu" prev="Play.menu" x="0" y="0" h="21" w="0" menu="WA5:Options" normal="menu.layer.options.normal" hover="menu.layer.options.hover" down="menu.layer.options.down" />
+	<Menu id="view.menu" menugroup="main" next="Help.menu" prev="Options.menu" x="0" y="0" h="21" w="0" menu="WA5:Windows" normal="menu.layer.view.normal" hover="menu.layer.view.hover" down="menu.layer.view.down" />
+	<Menu id="help.menu" menugroup="main" next="File.menu" prev="view.menu" x="0" y="0" h="21" w="0" menu="WA5:Help" normal="menu.layer.help.normal" hover="menu.layer.help.hover" down="menu.layer.help.down" />
+
+	<layer id="menu.text.pro" x="0" y="6" h="10" image="window.titlebar.menu.text.pro" />
+	<Button id="GoPro.menu" x="0" y="0" h="21" w="0" image="window.titlebar.menu.normal" hoverimage="window.titlebar.menu.hover" downimage="window.titlebar.menu.down" rectrgn="1" />
+
+	<guiObject fitparent="1" id="menu.hidden.mousetrap" visible="0" move="1"/>
+
+</groupdef> 
+
+<groupdef id="player.titlebar">
+
+	<grid 
+		x="0" y="0" h="23" w="0" relatw="1" regionop="1"
+		left="window.titlebar.grid.left"
+		middle="window.titlebar.grid.middle"
+		right="window.titlebar.grid.right"
+	/>
+
+	<layer x="35" y="7" image="window.titlebar.text.winamp" ghost="1" />
+
+	<guiobject fitparent="1" rectrgn="1" move="1" id="player.mousetrap.maximize"/>
+
+	<layer id="titlebar.resizer.topleft" x="0" y="0" h="3" w="5" rectrgn="1" resize="topleft" />
+	<layer id="titlebar.resizer.top" x="5" y="0" h="3" w="-10" relatw="1" rectrgn="1" resize="top" />
+	<layer id="titlebar.resizer.topright" x="-5" y="0" h="3" w="5" relatx="1" rectrgn="1" resize="topright" />
+	<layer x="0" y="3" h="15" w="5" rectrgn="1" resize="left" />
+	<layer x="-5" y="3" h="15" w="5" relatx="1" rectrgn="1" resize="right" />
+	<layer id="titlebar.resizer.disable" x="0" y="0" h="23" w="0" relatw="1" rectrgn="1" ghost="1" move="0"/>
+
+	<grid 
+		x="0" y="0" h="23" w="97" relatw="0" regionop="1" ghost="1"
+		left="window.titlebar.grid.over.left"
+		middle="window.titlebar.grid.over.middle"
+	/>
+
+	<grid 
+		id="titlebar.grid.right"
+		x="343" y="0" h="23" w="-343" relatw="1" regionop="1" ghost="1"
+		middle="window.titlebar.grid.over.middle"
+		right="window.titlebar.grid.over.right"
+	/>
+
+	<group id="player.mainmenu" x="97" y="1" w="248" h="21" ghost="1"/>
+
+	<button 
+		x="7" y="5" h="13" w="15"
+		action="SYSMENU" 
+		image="window.titlebar.button.sysmenu.normal"
+		hoverImage="window.titlebar.button.sysmenu.hover"
+		downImage="window.titlebar.button.sysmenu.down"
+		tooltip="Main Menu"
+	/>
+
+	<button 
+		x="-84" relatx="1" y="5" h="13" w="17"
+		id="player.button.minimize"
+		action="MINIMIZE"
+		image="window.titlebar.button.minimize.normal"
+		hoverImage="window.titlebar.button.minimize.hover"
+		downImage="window.titlebar.button.minimize.down"
+		tooltip="Minimize Winamp"
+	/>
+
+	<button 
+		x="-64" relatx="1" y="5" h="13" w="17"
+		id="player.titlebar.button.restore"
+		image="window.titlebar.button.restore.normal"
+		hoverImage="window.titlebar.button.restore.hover"
+		downImage="window.titlebar.button.restore.down"
+		tooltip="Restore Winamp"
+	/>
+
+	<button 
+		x="-64" relatx="1" y="5" h="13" w="17"
+		id="player.titlebar.button.maximize"
+		image="window.titlebar.button.maximize.normal"
+		hoverImage="window.titlebar.button.maximize.hover"
+		downImage="window.titlebar.button.maximize.down"
+		tooltip="Maximize Winamp"
+	/>
+
+	<button 
+		x="-44" relatx="1" y="5" h="13" w="17"
+		action="SWITCH" param="shade" 
+		image="window.titlebar.button.shade.normal"
+		hoverImage="window.titlebar.button.shade.hover"
+		downImage="window.titlebar.button.shade.down"
+		tooltip="Windowshade Mode"
+	/>
+
+	<button
+		id="maximize.slam.close" visible="1"
+		x="-24" relatx="1" y="0" h="18" w="24"
+		rectrgn="1"
+		action="CLOSE"
+		tooltip="Exit Winamp"
+	/>
+	<button 
+		x="-24" relatx="1" y="5" h="13" w="17"
+		action="CLOSE"
+		image="window.titlebar.button.close.normal"
+		hoverImage="window.titlebar.button.close.hover"
+		downImage="window.titlebar.button.close.down"
+		tooltip="Exit Winamp"
+	/>
+
+	<!--text id="gen.infotxt" relatx="1" size="11" bold="0" align="right" x="-270" y="5" w="173" text="Winamp Bento v0.9 #107" color="wasabi.titlebar.color" ghost="1" font="Arial" antialias="0"/-->
+
+	<script file="scripts/mainmenu.maki" />
+
+</groupdef>
+
+<groupdef id="window.background.regions">
+	<layer x="0" y="0" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="-1" relatx="1" y="0" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="0" y="-1" relaty="1" h="1" w="1" image="window.background.region" regionop="-2" />
+	<layer x="-1" relatx="1" y="-1" relaty="1" h="1" w="1" image="window.background.region" regionop="-2" />
+</groupdef>

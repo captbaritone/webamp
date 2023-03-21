@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<WinampAbstractionLayer version="0.8">
+
+	<skininfo>
+		<version>2.2</version>
+		<name>MMD3</name>
+		<comment>METRIX METAL DREAM - The legend returns</comment>
+		<author gaybag="Barti Bartman">Sven Kistner (GFX and CODING)</author>
+		<email>kistner@metrix.de</email>
+		<homepage>http://www.metrix.de</homepage>
+		<screenshot>screenshot.png</screenshot>
+	</skininfo>
+
+	<include file="xml/color-presets.xml"/>
+	<include file="xml/player.xml"/>
+	<include file="xml/system-elements.xml"/>
+	<include file="xml/components.xml"/>
+	<include file="xml/system-colors.xml"/>
+	<include file="xml/pledit.xml"/>
+	<include file="xml/colorthemes.xml"/>
+	<include file="xml/video.xml"/>
+
+	<scripts>
+		<script id="volumeabasstreble" file="scripts/volumebasstreble.maki"/>
+		<script id="playertools" file="scripts/playertools.maki"/>
+		<script id="songinfoscript" file="scripts/songinfo.maki"/>
+	</scripts>
+
+</WinampAbstractionLayer>

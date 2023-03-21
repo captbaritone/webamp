@@ -1,0 +1,1252 @@
+<groupdef id="config.tab.eq.on" h="19" autowidthsource="config.text.eq.on">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.on.left"
+    middle="drawer.tab.on.center"
+    right="drawer.tab.on.right"
+  />
+  <text
+    id="config.text.eq.on" ticker="0"
+    default="Equalizer"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="8"
+    font="player.smallfont" move="0"
+    color="drawer.color.text.dark"
+   />
+</groupdef>
+<groupdef id="config.tab.eq.off" h="19" autowidthsource="config.text.eq.off">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.off.left"
+    middle="drawer.tab.off.center"
+    right="drawer.tab.off.right"
+  />
+  <text
+    id="config.text.eq.off" ticker="0"
+    default="Equalizer"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="8"
+    font="player.smallfont" move="0"
+    color="drawer.color.text.dark"
+   />
+   <Layer id="mousetrapTabEQ" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="0"/>
+</groupdef>
+<groupdef id="config.tab.options.on" h="19" autowidthsource="config.text.options.on">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.on.left"
+    middle="drawer.tab.on.center"
+    right="drawer.tab.on.right"
+  />
+  <text
+    id="config.text.options.on" ticker="0"
+    default="Options"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="7"
+    font="player.smallfont"
+    color="drawer.color.text.dark"
+   />
+</groupdef>
+<groupdef id="config.tab.options.off" h="19" autowidthsource="config.text.options.off">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.off.left"
+    middle="drawer.tab.off.center"
+    right="drawer.tab.off.right"
+  />
+  <text
+    id="config.text.options.off" ticker="0"
+    default="Options"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="7"
+    font="player.smallfont"
+    color="drawer.color.text.dark"
+   />
+   <Layer id="mousetrapTabOPTIONS" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="0"/>
+</groupdef>
+<groupdef id="config.tab.colorthemes.on" h="19" autowidthsource="config.text.colorthemes.on">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.on.left"
+    middle="drawer.tab.on.center"
+    right="drawer.tab.on.right"
+  />
+   <text
+    id="config.text.colorthemes.on" ticker="0"
+    default="Color Themes"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="7"
+    font="player.smallfont"
+    color="drawer.color.text.dark"
+   />
+</groupdef>
+<groupdef id="config.tab.colorthemes.off" h="19" autowidthsource="config.text.colorthemes.off">
+  <Grid x="0" y="0" w="0" h="19" relatw="1"
+    left="drawer.tab.off.left"
+    middle="drawer.tab.off.center"
+    right="drawer.tab.off.right"
+  />
+  <text
+    id="config.text.colorthemes.off" ticker="0"
+    default="Color Themes"
+    x="11" y="-5"
+    fontsize="12"
+    w="-24" relatw="1" relath="1" h="7"
+    font="player.smallfont"
+    color="drawer.color.text.dark"
+   />
+   <Layer id="mousetrapTabCOLORTHEMES" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="0"/>
+</groupdef>
+
+<groupdef id="config.tabs" w="330">
+  <group id="config.tab.eq.off" x="0" y="0"/>
+  <group id="config.tab.options.off" x="0" y="0"/>
+  <group id="config.tab.colorthemes.off" x="0" y="0"/>
+  <group id="config.tab.eq.on" x="0" y="0"/>
+  <group id="config.tab.options.on" x="0" y="0"/>
+  <group id="config.tab.colorthemes.on" x="0" y="0"/>
+</groupdef>
+
+<groupdef id="player.config.inner" name="Config Inner" w="326" h="84">
+  <!-- <layer
+     id="drawer.inner.left"
+     x="0" y="0"
+     image="drawer.inner.left"
+   />
+  <layer
+     id="drawer.inner.center"
+     x="10" y="0"
+     relatw="1"
+     w="-30"
+     image="drawer.inner.center"
+   />
+  <layer
+     id="drawer.inner.right"
+     x="-20" y="0"
+     relatx="1"
+     image="drawer.inner.right"
+   /> -->
+  <layer
+     id="drawer.inner.fill"
+     x="0" y="0"
+     relath="1"
+     relatw="1"
+     w="0"
+     h="-54"
+     image="drawer.inner.fill"
+   />
+  <layer
+     id="drawer.inner.bottom"
+     x="0" y="-54"
+     relatw="1"
+     relaty="1"
+     w="0"
+     h="54"
+     image="drawer.inner.bottom"
+   />
+</groupdef>
+
+
+<groupdef id="player.normal.drawer.eq.balance" x="0" y="0">
+  <layer
+     x="5" y="0"
+     image="drawer.eq.balance.bg"
+   />
+   <layer
+     x="7" y="2"
+     image="drawer.eq.balance.txtoverlay.bright"
+   />
+  <slider
+    id="Balance"
+    action="PAN"
+    x="1" y="8"
+    w="77" h="13"
+    thumb="drawer.eq.button.balance"
+    downThumb="drawer.eq.button.balance.pressed"
+    hoverThumb="drawer.eq.button.balance.hover"
+    tooltip="Balance"
+  />
+</groupdef>
+
+<groupdef id="player.normal.drawer.eq.content" name="Drawer EQ Content" w="318" h="89">
+  <layer
+     x="0" y="0"
+     image="drawer.eq.bg"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.eq.txtoverlay.dark"
+   />
+   <layer
+     x="0" y="82"
+     image="drawer.eq.txtoverlay.bright"
+   />
+
+   <layer
+     id="equalizer.band.label"
+     x="135" y="82"
+	 image="drawer.eq.label.iso"
+   />
+
+  <button
+    id="eqonoff"
+    Image="drawer.eq.button.on"
+    downImage="drawer.eq.button.on.pressed"
+    activeImage="drawer.eq.button.on"
+    hoverImage="drawer.eq.button.on.hover"
+    action="EQ_TOGGLE"
+    x="16" y="47"
+    tooltip="EQ on/off"
+  />
+  <button
+    id="eqonoff_led"
+    Image="player.led.off"
+    activeImage="player.led.on"
+    action="EQ_TOGGLE"
+    x="36" y="45"
+  />
+
+  <button
+    id="eqauto"
+    Image="drawer.eq.button.auto"
+    downImage="drawer.eq.button.auto.pressed"
+    activeImage="drawer.eq.button.auto"
+    hoverImage="drawer.eq.button.auto.hover"
+    action="EQ_AUTO"
+    x="16" y="61"
+    tooltip="EQ auto"
+  />
+  <button
+    id="eqonoff_led"
+    Image="player.led.off"
+    activeImage="player.led.on"
+    action="EQ_AUTO"
+    x="49" y="59"
+  />
+
+  <button
+    id="eqpresets"
+    Image="drawer.eq.button.presets"
+    downImage="drawer.eq.button.presets.pressed"
+    hoverImage="drawer.eq.button.presets.hover"
+    action="MENU"
+    param="presets"
+    x="16" y="75"
+    tooltip="Open presets"
+  />
+
+  <slider
+    id="sCrossfade"
+    cfgattrib="{F1239F09-8CC6-4081-8519-C2AE99FCB14C};Crossfade time"
+    high="20"
+    x="14" y="30"
+    w="2" h="2"
+  />
+
+  <togglebutton
+    id="CrossfadeLED"
+    x="27" y="24"
+    Image="player.led.off"
+    activeImage="player.led.on"
+    cfgattrib="{FC3EAF78-C66E-4ED2-A0AA-1494DFCC13FF};Enable crossfading"
+  />
+  <togglebutton
+    id="Crossfade"
+    x="8" y="26"
+    image="drawer.eq.button.crossfade"
+    downImage="drawer.eq.button.crossfade.pressed"
+    activeImage="drawer.eq.button.crossfade"
+    hoverImage="drawer.eq.button.crossfade.hover"
+    tooltip="Toggle Crossfading Between Tracks"
+    cfgattrib="{FC3EAF78-C66E-4ED2-A0AA-1494DFCC13FF};Enable crossfading"
+  />
+
+  <button
+    id="CrossfadeDecrease"
+    Image="drawer.eq.button.crossfade.prev"
+    downImage="drawer.eq.button.crossfade.prev.pressed"
+    hoverImage="drawer.eq.button.crossfade.prev.hover"
+    x="43" y="26"
+    tooltip="Decrease Crossfade Time"
+  />
+  <button
+    id="CrossfadeIncrease"
+    Image="drawer.eq.button.crossfade.next"
+    downImage="drawer.eq.button.crossfade.next.pressed"
+    hoverImage="drawer.eq.button.crossfade.next.hover"
+    x="64" y="26"
+    tooltip="Increase Crossfade Time"
+  />
+
+  <layer
+    image="drawer.eq.crossfade.display"
+    x="51" y="26"
+  />
+
+  <text
+    id="CFDisplay"
+    x="51" y="27" w="12" h="8"
+    font="player.pe.time.font"
+    align="center"
+    valign="top"
+    fontsize="8"
+    color="font.display"
+  />
+
+  <layer
+    id="crossfade.display.overlay"
+    image="drawer.eq.crossfade.display"
+    x="51" y="26"
+    alpha="150"
+  />
+
+  <button
+    id="EQ_p12"
+    x="104" y="6"
+    w="21" h="7"
+    rectrgn="1"
+  />
+
+  <button
+    id="EQ_0"
+    x="104" y="36"
+    w="21" h="7"
+    rectrgn="1"
+  />
+
+  <button
+    id="EQ_m12"
+    x="104" y="66"
+    w="21" h="7"
+    rectrgn="1"
+  />
+
+  <slider
+      id="preamp"
+      action="EQ_BAND" param="preamp"
+      x="82" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+      tooltip="Preamp"
+  />
+
+  <slider
+      id="eq1"
+      action="EQ_BAND" param="1"
+      x="134" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq2"
+      action="EQ_BAND" param="2"
+      x="152" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq3"
+      action="EQ_BAND" param="3"
+      x="170" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq4"
+      action="EQ_BAND" param="4"
+      x="188" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq5"
+      action="EQ_BAND" param="5"
+      x="206" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq6"
+      action="EQ_BAND" param="6"
+      x="224" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq7"
+      action="EQ_BAND" param="7"
+      x="242" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq8"
+      action="EQ_BAND" param="8"
+      x="260" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq9"
+      action="EQ_BAND" param="9"
+      x="278" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <slider
+      id="eq10"
+      action="EQ_BAND" param="10"
+      x="296" y="1"
+      w="13" h="80"
+      orientation="vertical"
+      thumb="player.main.eq.button"
+      hoverthumb="player.main.eq.button.hover"
+      downthumb="player.main.eq.button.pressed"
+  />
+
+  <!-- <script id="eq.script" file="scripts/eq.maki" /> -->
+  <!-- <script id="crossfade.script" file="scripts/crossfade.maki" /> -->
+</groupdef>
+
+
+<groupdef id="player.normal.drawer.eq" name="Drawer EQ Content" w="318" h="89">
+  <group id="player.normal.drawer.eq.content" x="0" y="0"/>
+  <group id="player.normal.drawer.eq.balance" x="0" y="0"/>
+</groupdef>
+
+
+
+
+<groupdef id="player.normal.drawer.options" name="Drawer Options Content" w="314" h="93">
+   <layer
+     x="0" y="0"
+     image="drawer.options.bg"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.bg.display"
+   />
+   <layer
+     x="14" y="6"
+     image="drawer.options.bg2.shadow"
+   />
+   <layer
+     x="14" y="6"
+     image="drawer.options.bg2"
+   />
+
+  <!-- config page target -->
+  <GroupXFade speed="0.5" x="100" y="12" w="200" h="74" id="skin.config.target" />
+
+  <!-- config menu -->
+  <componentbucket id="my.bucket" x="17" y="20" w="81" h="55" spacing="0" leftmargin="0" rightmargin="0" vertical="1" wndtype="skin.config"/>
+
+  <!-- up/down arrows -->
+  <Button
+    cbtarget="bucket" action="cb_prevpage"
+    x="17" y="10"
+    image="drawer.options.button.scroll.up"
+    downImage="drawer.options.button.scroll.up.pressed"
+    hoverImage="drawer.options.button.scroll.up.hover"
+    tooltip="Scroll up"
+    rectrgn="1"
+  />
+  <Button
+    cbtarget="bucket" action="cb_nextpage"
+    x="17" y="76"
+    image="drawer.options.button.scroll.down"
+    downImage="drawer.options.button.scroll.down.pressed"
+    hoverImage="drawer.options.button.scroll.down.hover"
+    tooltip="Scroll down"
+    rectrgn="1"
+  />
+  <!-- <script id="configtarget.script" file="scripts/configtarget.maki" /> -->
+</groupdef>
+
+
+<!-- config menu items -->
+<groupdef id="bucket.entry.1" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.drawers.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.drawers" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.drawers"
+    hoverImage="drawer.options.button.drawers.hover"
+    downImage="drawer.options.button.drawers.pressed"
+    activeImage="drawer.options.button.drawers.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.2" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.menus.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.menus" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.menus"
+    hoverImage="drawer.options.button.menus.hover"
+    downImage="drawer.options.button.menus.pressed"
+    activeImage="drawer.options.button.menus.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.3" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.winshade.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.winshade" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.winshade"
+    hoverImage="drawer.options.button.winshade.hover"
+    downImage="drawer.options.button.winshade.pressed"
+    activeImage="drawer.options.button.winshade.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.4" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.visbutton.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.visbutton" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.visbutton"
+    hoverImage="drawer.options.button.visbutton.hover"
+    downImage="drawer.options.button.visbutton.pressed"
+    activeImage="drawer.options.button.visbutton.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.5" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.notifications.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.notifications" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.notifications"
+    hoverImage="drawer.options.button.notifications.hover"
+    downImage="drawer.options.button.notifications.pressed"
+    activeImage="drawer.options.button.notifications.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.6" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.songticker.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.songticker" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.songticker"
+    hoverImage="drawer.options.button.songticker.hover"
+    downImage="drawer.options.button.songticker.pressed"
+    activeImage="drawer.options.button.songticker.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="bucket.entry.7" windowtype="skin.config" w="81" h="14">
+  <layer
+    x="0" y="0"
+    image="drawer.options.button.misc.shadow"
+  />
+  <togglebutton
+    id="btn"
+    action="switchto;optionsgroup.misc" action_target="skin.config.target"
+    x="0" y="0"
+    image="drawer.options.button.misc"
+    hoverImage="drawer.options.button.misc.hover"
+    downImage="drawer.options.button.misc.pressed"
+    activeImage="drawer.options.button.misc.pressed"
+    rectrgn="1"
+  />
+</groupdef>
+
+<!-- config menu pages -->
+
+<groupdef id="optionsgroup.drawers">
+   <layer
+     x="0" y="0"
+     image="drawer.options.drawers.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.drawers.text"
+   />
+  <togglebutton
+    cfgattrib="{C338B30F-2A04-4b10-871F-4E9D52D62806};Animate Video/Vis Drawer (disabled if opacity = 100%)"
+    x="10" y="2"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{C338B30F-2A04-4b10-871F-4E9D52D62806};Animate Config Drawer"
+    x="10" y="14"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{C338B30F-2A04-4b10-871F-4E9D52D62806};Open Video/Vis from the top"
+    x="10" y="30"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{C338B30F-2A04-4b10-871F-4E9D52D62806};Open Video/Vis from the bottom"
+    x="10" y="41"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{C338B30F-2A04-4b10-871F-4E9D52D62806};Bypass setting to keep in screen"
+    x="10" y="56"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="optionsgroup.menus">
+   <layer
+     x="0" y="0"
+     image="drawer.options.menus.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.menus.text"
+   />
+  <togglebutton
+    cfgattrib="{12ED320E-6813-45ac-9F8E-78EE5B2B5F6D};Show Menus in Main Window"
+    x="10" y="13"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{12ED320E-6813-45ac-9F8E-78EE5B2B5F6D};Show Menus in Playlist Editor"
+    x="10" y="28"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{12ED320E-6813-45ac-9F8E-78EE5B2B5F6D};Show Menus in Media Library"
+    x="10" y="43"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="optionsgroup.winshade">
+   <layer
+     x="0" y="0"
+     image="drawer.options.winshade.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.winshade.text"
+   />
+  <togglebutton
+    cfgattrib="{58F07E21-AE96-4899-B7BC-3640B40029FB};Link Position and Width"
+    x="11" y="13"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{58F07E21-AE96-4899-B7BC-3640B40029FB};Link Position, Unlink Width"
+    x="11" y="28"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{58F07E21-AE96-4899-B7BC-3640B40029FB};Unlink Position and Width"
+    x="11" y="43"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="optionsgroup.visbutton">
+    <layer
+      x="0" y="0"
+      image="drawer.options.visbutton.shadow"
+    />
+    <layer
+      x="0" y="0"
+      image="drawer.options.visbutton.text"
+   />
+  <togglebutton
+    cfgattrib="{D70E3ABF-D2FF-4b82-9A70-4B5DF1A5D942};Open Context Menu"
+    x="25" y="25"
+    image="drawer.options.radio.w140.off"
+    hoverImage="drawer.options.radio.w140.hover"
+    downImage="drawer.options.radio.w140.down"
+    activeImage="drawer.options.radio.w140.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{D70E3ABF-D2FF-4b82-9A70-4B5DF1A5D942};Open Configuration"
+    x="25" y="39"
+    image="drawer.options.radio.w140.off"
+    hoverImage="drawer.options.radio.w140.hover"
+    downImage="drawer.options.radio.w140.down"
+    activeImage="drawer.options.radio.w140.on"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="optionsgroup.notifications">
+   <layer
+     x="0" y="0"
+     image="drawer.options.notifications.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.notifications.text"
+   />
+  <togglebutton
+    cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show always"
+    x="10" y="1"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show with windowshade and when minimized"
+    x="10" y="13"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Show only when minimized"
+    x="10" y="25"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Never show"
+    x="10" y="37"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{1AB968B3-8687-4a35-BA70-FCF6D92FB57F};Disable in fullscreen"
+    x="10" y="54"
+    image="drawer.options.checkbox.w131.off"
+    hoverImage="drawer.options.checkbox.w131.hover"
+    downImage="drawer.options.checkbox.w131.down"
+    activeImage="drawer.options.checkbox.w131.on"
+    rectrgn="1"
+  />
+
+  <Button
+    action="switchto;optionsgroup.notifications.2;subpage" action_target="skin.config.target"
+    x="152" y="55"
+    image="drawer.options.more"
+    downImage="drawer.options.more.down"
+    hoverImage="drawer.options.more.hover"
+    tooltip="more options"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="optionsgroup.notifications.2">
+   <layer
+     id="snotifier_fadein_shadow"
+     x="0" y="0"
+     image="drawer.options.notifications2.fadein.shadow"
+   />
+   <layer
+     id="snotifier_hold_shadow"
+     x="0" y="25"
+     image="drawer.options.notifications2.hold.shadow"
+   />
+   <layer
+     id="snotifier_fadeout_shadow"
+     x="0" y="50"
+     image="drawer.options.notifications2.fadeout.shadow"
+   />
+   <layer
+     id="snotifier_fadein_text"
+     x="0" y="0"
+     image="drawer.options.notifications2.fadein.text"
+   />
+   <layer
+     id="snotifier_hold_text"
+     x="0" y="25"
+     image="drawer.options.notifications2.hold.text"
+   />
+   <layer
+     id="snotifier_fadeout_text"
+     x="0" y="50"
+     image="drawer.options.notifications2.fadeout.text"
+   />
+
+  <slider
+    id="snotifier_fadeintime"
+    cfgattrib="{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications fade in time"
+    high="10000"
+    thumb="drawer.options.slider"
+    downThumb="drawer.options.slider.down"
+    hoverThumb="drawer.options.slider.hover"
+    tooltip="Adjust Fade in time"
+    x="9" y="11"
+    w="115" h="10"
+  />
+
+  <slider
+    id="snotifier_holdtime"
+    cfgattrib="{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications display time"
+    high="10000"
+    thumb="drawer.options.slider"
+    downThumb="drawer.options.slider.down"
+    hoverThumb="drawer.options.slider.hover"
+    tooltip="Adjust Hold time"
+    x="9" y="35"
+    w="115" h="10"
+  />
+
+  <slider
+    id="snotifier_fadeouttime"
+    cfgattrib="{E9C2D926-53CA-400f-9A4D-85E31755A4CF};Notifications fade out time"
+    high="10000"
+    thumb="drawer.options.slider"
+    downThumb="drawer.options.slider.down"
+    hoverThumb="drawer.options.slider.hover"
+    tooltip="Adjust Fade out time"
+    x="9" y="61"
+    w="115" h="10"
+  />
+
+  <text
+    id="tnotifier_fadeintime"
+    x="127" y="13" w="25" h="8"
+    font="player.pe.time.font"
+    align="left"
+    valign="top"
+    fontsize="8"
+    color="font.display"
+    default="10.2s"
+  />
+  <text
+    id="tnotifier_holdtime"
+    x="127" y="38" w="25" h="8"
+    font="player.pe.time.font"
+    align="left"
+    valign="top"
+    fontsize="8"
+    color="font.display"
+    default="10.2s"
+  />
+  <text
+    id="tnotifier_fadeouttime"
+    x="127" y="63" w="25" h="8"
+    font="player.pe.time.font"
+    align="left"
+    valign="top"
+    fontsize="8"
+    color="font.display"
+    default="10.2s"
+  />
+
+  <Button
+    action="switchto;optionsgroup.notifications;subpage" action_target="skin.config.target"
+    x="152" y="55"
+    image="drawer.options.back"
+    downImage="drawer.options.back.down"
+    hoverImage="drawer.options.back.hover"
+    tooltip="back"
+    rectrgn="1"
+  />
+
+  <!-- <script id="notifications_fade_times.script" file="scripts/notifications_fade_times.maki" /> -->
+
+</groupdef>
+
+
+
+<groupdef id="optionsgroup.songticker">
+   <layer
+     x="0" y="0"
+     image="drawer.options.songticker.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.songticker.text"
+   />
+  <togglebutton
+    cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF3};Disable Songticker scrolling"
+    x="11" y="13"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF3};Modern Songticker scrolling"
+    x="11" y="28"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{7061FDE0-0E12-11D8-BB41-0050DA442EF3};Classic Songticker scrolling"
+    x="11" y="43"
+    image="drawer.options.radio.w181.off"
+    hoverImage="drawer.options.radio.w181.hover"
+    downImage="drawer.options.radio.w181.down"
+    activeImage="drawer.options.radio.w181.on"
+    rectrgn="1"
+  />
+
+</groupdef>
+
+<groupdef id="optionsgroup.misc">
+   <layer
+     x="0" y="0"
+     image="drawer.options.misc.shadow"
+   />
+   <layer
+     x="0" y="0"
+     image="drawer.options.misc.text"
+   />
+  <togglebutton
+    cfgattrib="{26E26319-AECA-4433-B8F1-F4A5BF2A9ED5};Detach Vis Window"
+    x="10" y="11"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{26E26319-AECA-4433-B8F1-F4A5BF2A9ED5};Detach Video Window"
+    x="10" y="26"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+  <togglebutton
+    cfgattrib="{26E26319-AECA-4433-B8F1-F4A5BF2A9ED5};Enable Beat Visualization"
+    x="10" y="45"
+    image="drawer.options.checkbox.w181.off"
+    hoverImage="drawer.options.checkbox.w181.hover"
+    downImage="drawer.options.checkbox.w181.down"
+    activeImage="drawer.options.checkbox.w181.on"
+    rectrgn="1"
+  />
+</groupdef>
+
+<groupdef id="player.normal.drawer.colorthemes" name="Drawer ColorThemes Content" w="310" h="98">
+  <layer
+    id="drawer.colorthemes.bg"
+    x="0" y="0"
+    image="drawer.colorthemes.bg"
+  />
+  <layer
+    x="228" y="20"
+    image="drawer.colorthemes.txtoverlay.dark"
+  />
+
+  <layer
+    x="6" y="5"
+    ghost="1"
+    h="80"
+    w="204"
+    tile="1"
+    image="wasabi.list.background"
+  />
+
+  <layer
+    x="197" y="5"
+    image="wasabi.scrollbar.vertical.background.middle"
+    w="13" h="79"
+  />
+  <layer
+    x="197" y="5"
+    image="wasabi.scrollbar.vertical.left"
+  />
+  <layer
+    x="197" y="68"
+    image="wasabi.scrollbar.vertical.right"
+  />
+  <layer
+    x="197" y="22"
+    image="wasabi.scrollbar.vertical.button"
+  />
+
+
+
+  <ColorThemes:List
+    id="colorthemes"
+    x="6" y="5"
+    w="204" h="80"
+    nohscroll="1"
+    nocolheader="1"
+    visible="0"
+  />
+
+  <Button
+    id="Switch"
+    action="colorthemes_switch"
+    action_target="colorthemes"
+    x="250" y="72"
+    image="drawer.button.settheme"
+    downImage="drawer.button.settheme.pressed"
+    hoverImage="drawer.button.settheme.hover"
+    tooltip="Switch to selected ColorTheme"
+  />
+
+  <Button
+    id="Switch"
+    action="colorthemes_previous"
+    action_target="colorthemes"
+    x="217" y="72"
+    image="drawer.button.theme.prev"
+    downImage="drawer.button.theme.prev.pressed"
+    hoverImage="drawer.button.theme.prev.hover"
+    tooltip="Previous ColorTheme"
+  />
+  <Button
+    id="Switch"
+    action="colorthemes_next"
+    action_target="colorthemes"
+    x="229" y="72"
+    image="drawer.button.theme.next"
+    downImage="drawer.button.theme.next.pressed"
+    hoverImage="drawer.button.theme.next.hover"
+    tooltip="Next ColorTheme"
+  />
+
+</groupdef>
+
+
+<groupdef id="player.normal.drawer.content" name="Config Drawer Content" w="326" h="127"  >
+  <group id="player.config.inner" x="0" y="0"/>
+  <!-- <group id="config.tabs" x="10" y="108" /> -->
+  <!-- <group id="player.normal.drawer.eq" x="3" y="15" visible="0"/> -->
+  <!-- <group id="player.normal.drawer.options" x="5" y="13" visible="0"/> -->
+  <!-- <group id="player.normal.drawer.colorthemes" x="8" y="14" visible="0"/> -->
+</groupdef>
+
+<groupdef id="thinger">
+    <layer
+     id="thinger.bg"
+     x="0" y="0"
+     h="50"
+     image="drawer.main.center"
+   />
+
+  <button
+    id="video.toggle"
+    x="13" y="10"
+    image="player.button.video"
+    tooltip="Open Video"
+  />
+
+  <button
+    id="avs.toggle"
+    x="67" y="10"
+    image="player.button.avs"
+    tooltip="Open Visualization"
+  />
+
+</groupdef>
+
+<groupdef id="player.normal.drawer" name="Config Drawer" relatw="1" w="0" h="106" background="wasabi.frame.basetexture">
+
+   <!-- <layer
+     id="drawer.window.center"
+     x="0" y="-634"
+     h="634"
+     relaty="1"
+     image="drawer.main.center"
+   /> -->
+   <layer
+     id="drawer.window.center"
+     x="0" y="0"
+     h="-33"
+     relath="1"
+     image="drawer.main.center"
+   />
+  <!-- <group id="thinger" x="0" y="-134" relaty="1"/> -->
+  <group id="thinger" x="0" y="-84" relaty="1"/>
+   <layer
+     id="drawer.window.bottom"
+     x="0" y="-34"
+     relaty="1"
+     image="drawer.main.bottom"
+     resize="bottom"
+   />
+   
+
+  <group id="player.normal.drawer.content" x="0" y="0" alpha="0"/>
+
+
+   <!-- <layer
+     id="drawer.button.close.bg"
+     x="-80" y="113"
+     relatx="1"
+     image="drawer.button.close.bg"
+   />
+
+  <button
+    id="drawer.button.close"
+    x="-72" y="118"
+    relatx="1"
+    image="drawer.button.close"
+    downImage="drawer.button.close.pressed"
+    hoverImage="drawer.button.close.hover"
+    tooltip="Close Configuration Drawer"
+    rectrgn="1"
+  />
+  <button
+    id="drawer.button.open"
+    x="-72" y="118"
+    relatx="1"
+    image="drawer.button.open"
+    downImage="drawer.button.open.pressed"
+    hoverImage="drawer.button.open.hover"
+    tooltip="Open Configuration Drawer"
+    rectrgn="1"
+  /> -->
+
+   <layer
+     id="drawer.resizer"
+     w="25" h="25"
+     x="-25" y="-25"
+     relatx="1"
+     relaty="1"
+     resize="bottom"
+   />
+   <layer
+     id="drawer.grip.resizer"
+     x="158" y="-20"
+     w="24" h="20"
+     relaty="1"
+     resize="bottom"
+   />
+
+</groupdef>
+
+<groupdef id="player.normal.drawer.shadow" w="0" h="15" relatw="1">
+   <layer
+     x="9" y="0"
+     relatw="1"
+     w="-94"
+     image="drawer.main.shadow.left"
+   />
+   <layer
+     x="-85" y="0"
+     relatx="1"
+     image="drawer.main.shadow.right"
+     ghost="1"
+   />
+</groupdef>

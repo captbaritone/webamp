@@ -13,18 +13,21 @@ import {
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
-import Container from "./skin/makiClasses/Container";
 import Vm from "./skin/VM";
-import BaseObject from "./skin/makiClasses/BaseObject";
 import AUDIO_PLAYER, { AudioPlayer, Track } from "./skin/AudioPlayer";
+import PRIVATE_CONFIG from "./skin/PrivateConfig";
+import ImageManager from "./skin/ImageManager";
+
+import Container from "./skin/makiClasses/Container";
+import BaseObject from "./skin/makiClasses/BaseObject";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit } from "./skin/makiClasses/PlayList";
-import PRIVATE_CONFIG from "./skin/PrivateConfig";
-import ImageManager from "./skin/ImageManager";
 import Config from "./skin/makiClasses/Config";
 import WinampConfig from "./skin/makiClasses/WinampConfig";
+import Avs from "./skin/makiClasses/Avs";
+
 import { SkinEngineClass } from "./skin/SkinEngine";
 import { FileExtractor } from "./skin/FileExtractor";
 import Application from "./skin/makiClasses/Application";
@@ -32,8 +35,10 @@ import Application from "./skin/makiClasses/Application";
 export class UIRoot {
   _id: string;
   _application: Application;
+  _avss: Avs[] = [];
   _config: Config;
   _winampConfig: WinampConfig;
+
   _div: HTMLDivElement = document.createElement("div");
   _imageManager: ImageManager;
   // Just a temporary place to stash things
@@ -88,6 +93,23 @@ export class UIRoot {
 
   getId(): string {
     return this._id;
+  }
+
+  guid2alias(guid: string): string {
+    const knownContainerGuids = {
+      "{0000000a-000c-0010-ff7b-01014263450c}": "vis", // AVS {visualization}
+      "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl", // playlist editor
+      "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "ml", // media library
+      "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "con", // config?
+      "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "lir", // lyric?
+      "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl", // download??
+      "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video", // independent video window
+    };
+    if (guid.includes(":")) {
+      guid = guid.split(":")[1];
+    }
+    guid = guid.toLowerCase();
+    return knownContainerGuids[guid] || guid;
   }
 
   // shortcut of this.Emitter
@@ -513,6 +535,15 @@ export class UIRoot {
         break;
       case "eject":
         this.eject();
+        break;
+      case "vis_next":
+      case "vis_prev":
+      case "vis_f5":
+        if (this._avss.length) {
+          for (const avs of this._avss) {
+            avs.dispatchAction(action, param, actionTarget);
+          }
+        }
         break;
       case "eq_toggle":
         this.eq_toggle();
