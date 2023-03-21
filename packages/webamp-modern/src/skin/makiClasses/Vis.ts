@@ -21,28 +21,28 @@ export class VisPaintHandler {
    * Attemp to build cached bitmaps for later use while render a frame.
    * Purpose: fast rendering in animation loop
    */
-  prepare() {}
+  prepare() { }
 
   /**
    * Called once per frame rendiring
    */
-  paintFrame() {}
+  paintFrame() { }
 
   /**
    * Attemp to cleanup cached bitmaps
    */
-  dispose() {}
+  dispose() { }
 
   /**
    * called if it is an AVS.
    * @param action vis_prev | vis_next | vis_f5 (fullscreen) |
    */
-  doAction(action:string, param:string){}
+  doAction(action: string, param: string) { }
 }
 
 // type VisPaintHandlerClass = {new(vis: Vis): VisPaintHandler;};
 type VisPaintHandlerClass = typeof VisPaintHandler;
-const VISPAINTERS: {[key:string]: VisPaintHandlerClass} = {}; 
+const VISPAINTERS: { [key: string]: VisPaintHandlerClass } = {};
 export function registerPainter(key: string, painterclass: VisPaintHandlerClass) {
   VISPAINTERS[key] = painterclass;
 }
@@ -202,7 +202,7 @@ export default class Vis extends GuiObj {
   setmode(mode: string) {
     this._mode = mode;
     const painterClass = VISPAINTERS[mode] || VISPAINTERS['0'] /* NoVisualizerHandler */;
-    this._setPainter( painterClass )
+    this._setPainter(painterClass)
     // return 
     // switch (mode) {
     //   case '1':
@@ -221,7 +221,7 @@ export default class Vis extends GuiObj {
   }
 
   getmode(): number {
-    return parseInt('0'+ this._mode); // so we support non numeral use. eg: 'butterchurn'
+    return parseInt('0' + this._mode); // so we support non numeral use. eg: 'butterchurn'
   }
 
   nextmode() {
@@ -300,7 +300,7 @@ export default class Vis extends GuiObj {
 
   draw() {
     super.draw();
-    this._canvas.setAttribute('id', this.getId()+'-canvas');
+    this._canvas.setAttribute('id', this.getId() + '-canvas');
     this._div.appendChild(this._canvas);
   }
 }
@@ -320,8 +320,8 @@ registerPainter('0', NoVisualizerHandler)
 const NUM_BARS = 20;
 const PIXEL_DENSITY = 1;
 const BAR_PEAK_DROP_RATE = 0.01;
-type  PaintFrameFunction = () => void;
-type  PaintBarFunction = (
+type PaintFrameFunction = () => void;
+type PaintBarFunction = (
   ctx: CanvasRenderingContext2D,
   // barIndex: number,
   x1: number,
@@ -330,7 +330,7 @@ type  PaintBarFunction = (
   peakHeight: number
 ) => void;
 
-function octaveBucketsForBufferLength(bufferLength: number, barCount:number=NUM_BARS): number[] {
+function octaveBucketsForBufferLength(bufferLength: number, barCount: number = NUM_BARS): number[] {
   const octaveBuckets = new Array(barCount).fill(0);
   const minHz = 200;
   const maxHz = 22050;
@@ -364,9 +364,9 @@ class BarPaintHandler extends VisPaintHandler {
   _bufferLength: number;
   _octaveBuckets: number[];
   _dataArray: Uint8Array;
-  _ctx : CanvasRenderingContext2D;
-  paintBar : PaintBarFunction;
-  paintFrame : PaintFrameFunction;
+  _ctx: CanvasRenderingContext2D;
+  paintBar: PaintBarFunction;
+  paintFrame: PaintFrameFunction;
 
   constructor(vis: Vis) {
     super(vis);
@@ -407,7 +407,7 @@ class BarPaintHandler extends VisPaintHandler {
     ctx.imageSmoothingEnabled = false;
     this._ctx = this._vis._canvas.getContext('2d')
 
-    if(this._vis._bandwidth=='wide'){
+    if (this._vis._bandwidth == 'wide') {
       this.paintFrame = this.paintFrameWide.bind(this)
       this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     } else {
@@ -418,8 +418,8 @@ class BarPaintHandler extends VisPaintHandler {
       this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength, w);
       this.paintFrame = this.paintFrameThin.bind(this);
     }
-    
-    if(this._vis._coloring=='fire'){
+
+    if (this._vis._coloring == 'fire') {
       this.paintBar = this.paintBarFire.bind(this)
     } else {
       this.paintBar = this.paintBarNormal.bind(this)
@@ -427,7 +427,7 @@ class BarPaintHandler extends VisPaintHandler {
   }
 
   paintFrameWide() {
-    if(!this._ctx) return;
+    if (!this._ctx) return;
     const ctx = this._ctx
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
@@ -460,7 +460,7 @@ class BarPaintHandler extends VisPaintHandler {
 
       var x1 = Math.round(this._barWidth * j);
       var x2 = Math.round(this._barWidth * (j + 1)) - 2;
-  
+
       this.paintBar(
         ctx,
         // j /* * xOffset */,
@@ -476,7 +476,7 @@ class BarPaintHandler extends VisPaintHandler {
    * drawing 1pixel width bars
    */
   paintFrameThin() {
-    if(!this._ctx) return;
+    if (!this._ctx) return;
     const ctx = this._ctx
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
@@ -510,7 +510,7 @@ class BarPaintHandler extends VisPaintHandler {
 
       // var x1 = Math.round(this._barWidth * j);
       // var x2 = Math.round(this._barWidth * (j + 1)) - 2;
-  
+
       this.paintBar(
         ctx,
         // j /* * xOffset */,
@@ -539,10 +539,10 @@ class BarPaintHandler extends VisPaintHandler {
 
     // ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
     ctx.drawImage(
-      this._bar, 
-      0, y, 
-      1, h - y, 
-      x, y, 
+      this._bar,
+      0, y,
+      1, h - y,
+      x, y,
       x2 - x + 1, h - y);
 
     if (this._vis._peaks) {
@@ -568,20 +568,20 @@ class BarPaintHandler extends VisPaintHandler {
 
     // ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
     ctx.drawImage(
-      this._bar, 
+      this._bar,
       0, 0,
       this._bar.width, h - y,
-      x, y, 
+      x, y,
       x2 - x + 1, h - y
-      );
+    );
 
     if (this._vis._peaks) {
       const peakY = h - peakHeight;
       ctx.drawImage(
-        this._peak, 
-        0, 0, 
-        1, 1, 
-        x, peakY, 
+        this._peak,
+        0, 0,
+        1, 1,
+        x, peakY,
         x2 - x + 1, 1);
     }
   }
@@ -589,7 +589,7 @@ class BarPaintHandler extends VisPaintHandler {
 registerPainter('1', BarPaintHandler)
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
-type PaintWavFunction = (x:number, y: number, colorIndex: number) => void;
+type PaintWavFunction = (x: number, y: number, colorIndex: number) => void;
 // Return the average value in a slice of dataArray
 function sliceAverage(
   dataArray: Uint8Array,
@@ -622,15 +622,16 @@ function slice1st(
 class WavePaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
   _bufferLength: number;
-  _lastX:number = 0;
-  _lastY:number = 0;
+  _lastX: number = 0;
+  _lastY: number = 0;
   _dataArray: Uint8Array;
-  _ctx : CanvasRenderingContext2D;
-  _pixelRatio : number; // 1 or 2 
+  _ctx: CanvasRenderingContext2D;
+  _pixelRatio: number; // 1 or 2 
   // Off-screen canvas for drawing perfect pixel (no blured lines)
   _bar: HTMLCanvasElement = document.createElement("canvas");
-  paintWav : PaintWavFunction;
-  _datafetched:boolean = false;
+  paintWav: PaintWavFunction;
+  _datafetched: boolean = false;
+  _colors: string[];
 
   constructor(vis: Vis) {
     super(vis);
@@ -650,20 +651,34 @@ class WavePaintHandler extends VisPaintHandler {
     //? paint bar
     this._bar.width = 1;
     this._bar.height = 5;
+    this._bar.setAttribute('width', '1')
+    this._bar.setAttribute('height', '5')
     var ctx = this._bar.getContext("2d");
     for (let y = 0; y < 5; y++) {
       ctx.fillStyle = gammaGroup.transformColor(vis._colorOsc[y]);
       console.log('ctx.fillStyle:', ctx.fillStyle)
       ctx.fillRect(0, y, 1, y+1);      
     }
+    // const imgData = ctx.getImageData(0, 0, 1, 5);
+    // for (var y = 0; y < 5; y++) {
+    //   const [red, green, blue] = gammaGroup.transformColor2rgb(vis._colorOsc[y]);
+    //   const i = y * 4;
+    //   imgData.data[i] = red;
+    //   imgData.data[i + 1] = green;
+    //   imgData.data[i + 2] = blue;
+    //   imgData.data[i + 3] = 255;
+    // }
+    // // Write the image back to the canvas
+    // ctx.putImageData(imgData, 0, 0);
+
 
     this._ctx = vis._canvas.getContext('2d');
     // Just use one of the viscolors for now
     this._ctx.strokeStyle = gammaGroup.transformColor(vis._colorOsc[1])
 
-    if(this._vis._oscStyle=='dots'){
+    if (this._vis._oscStyle == 'dots') {
       this.paintWav = this.paintWavDot.bind(this)
-    } else if(this._vis._oscStyle=='solid'){
+    } else if (this._vis._oscStyle == 'solid') {
       this.paintWav = this.paintWavSolid.bind(this)
     } else {
       this.paintWav = this.paintWavLine.bind(this)
@@ -672,14 +687,14 @@ class WavePaintHandler extends VisPaintHandler {
   }
 
   paintFrame() {
-    if(!this._ctx) return;
+    if (!this._ctx) return;
     this._analyser.getByteTimeDomainData(this._dataArray);
     // this._analyser.getFloatTimeDomainData(this._dataArray);
-    this._dataArray =this._dataArray.slice(0, 576)
+    this._dataArray = this._dataArray.slice(0, 576)
     const bandwidth = this._dataArray.length;
 
     //* to save and see in excel (bar chart)
-    if(!this._datafetched ){
+    if (!this._datafetched) {
       // console.log(JSON.stringify(Array.from(this._dataArray)))
       this._datafetched = true;
     }
@@ -707,7 +722,7 @@ class WavePaintHandler extends VisPaintHandler {
       const amplitude = slice1st(this._dataArray, sliceWidth, j);
       // const percentAmplitude = amplitude / 255; // dataArray gives us bytes
       // const y = (1 - percentAmplitude) * height; // flip y
-      const[ y, colorIndex] = this.rangeByAmplitude(amplitude)
+      const [y, colorIndex] = this.rangeByAmplitude(amplitude)
       const x = j * PIXEL_DENSITY;
 
       // Canvas coordinates are in the middle of the pixel by default.
@@ -718,7 +733,7 @@ class WavePaintHandler extends VisPaintHandler {
       // } else {
       //   ctx.lineTo(x, y);
       // }
-      this.paintWav(x,y, colorIndex)
+      this.paintWav(x, y, colorIndex)
     }
     ctx.stroke();
     // for (var i = 0; i < 30; i += 1) {
@@ -732,40 +747,40 @@ class WavePaintHandler extends VisPaintHandler {
     //   ctx.stroke();
     // }
   }
-  
+
   /**
    * 
    * @param amplitude 0..255
    * @returns xy.Y(top to bottom), colorOscIndex 
    */
-  rangeByAmplitude(amplitude:number): [number,number]{
+  rangeByAmplitude(amplitude: number): [number, number] {
     //odjasdjflasjdf;lasjdf;asjd;fjasd;fsajdf
-    if(amplitude>=184){return [0, 3]}
-    if(amplitude>=176){return [1, 3]}
-    if(amplitude>=168){return [2, 2]}
-    if(amplitude>=160){return [3, 2]}
-    if(amplitude>=152){return [4, 1]}
-    if(amplitude>=144){return [5, 1]}
-    if(amplitude>=136){return [6, 0]}
-    if(amplitude>=128){return [7, 0]}
-    if(amplitude>=120){return [8, 1]}
-    if(amplitude>=112){return [9, 1]}
-    if(amplitude>=104){return [10, 2]}
-    if(amplitude>=96){return [11, 2]}
-    if(amplitude>=88){return [12, 3]}
-    if(amplitude>=80){return [13, 3]}
-    if(amplitude>=72){return [14, 4]}
+    if (amplitude >= 184) { return [0, 3] }
+    if (amplitude >= 176) { return [1, 3] }
+    if (amplitude >= 168) { return [2, 2] }
+    if (amplitude >= 160) { return [3, 2] }
+    if (amplitude >= 152) { return [4, 1] }
+    if (amplitude >= 144) { return [5, 1] }
+    if (amplitude >= 136) { return [6, 0] }
+    if (amplitude >= 128) { return [7, 0] }
+    if (amplitude >= 120) { return [8, 1] }
+    if (amplitude >= 112) { return [9, 1] }
+    if (amplitude >= 104) { return [10, 2] }
+    if (amplitude >= 96) { return [11, 2] }
+    if (amplitude >= 88) { return [12, 3] }
+    if (amplitude >= 80) { return [13, 3] }
+    if (amplitude >= 72) { return [14, 4] }
     // if(amplitude>=56){return [15, 4]}
     return [15, 4]
   }
-  paintWavLine(x:number, y: number, colorIndex: number){
-    if (x === 0) 
+  paintWavLine(x: number, y: number, colorIndex: number) {
+    if (x === 0)
       this._lastY = y;
 
     let bottom = this._lastY;
     let top = y;
 
-    if (bottom<top){
+    if (bottom < top) {
       [bottom, top] = [top, bottom]
     }
     const h = bottom - top + 1;
@@ -773,26 +788,26 @@ class WavePaintHandler extends VisPaintHandler {
     this._ctx.drawImage(
       this._bar,
       0, colorIndex,  // sx,sy
-      1,1,            // sw,sh
-      x,top,  //dx,dy
-      1,h   //dw,dh
+      1, 1,            // sw,sh
+      x, top,  //dx,dy
+      1, h   //dw,dh
     );
     this._lastY = y;
   }
-  
-  paintWavDot(x:number, y: number, colorIndex: number){
+
+  paintWavDot(x: number, y: number, colorIndex: number) {
     this._ctx.drawImage(
       this._bar,
       0, colorIndex,  // sx,sy
-      1,1,            // sw,sh
-      x,y,  //dx,dy
-      1,1   //dw,dh
+      1, 1,            // sw,sh
+      x, y,  //dx,dy
+      1, 1   //dw,dh
     );
   }
-  
-  paintWavSolid(x:number, y: number, colorIndex: number){
+
+  paintWavSolid(x: number, y: number, colorIndex: number) {
     var top, bottom;
-    if (y >= 8){
+    if (y >= 8) {
       top = 8
       bottom = y;
     } else {
@@ -800,13 +815,23 @@ class WavePaintHandler extends VisPaintHandler {
       bottom = 7;
     }
     const h = bottom - top + 1;
-    this._ctx.drawImage(
-      this._bar,
-      0, colorIndex,  // sx,sy
-      1,1,            // sw,sh
-      x,top,  //dx,dy
-      1,h   //dw,dh
-    );
+    for (y = top; y <= bottom; y++) {
+      this._ctx.drawImage(
+        this._bar,
+        0, colorIndex,  // sx,sy
+        1, 1,            // sw,sh
+        x, y,  //dx,dy
+        1, 1   //dw,dh
+      );
+    }
+    //? below is same as above, but stretching a pixel; which also render a "rainbow"
+    // this._ctx.drawImage(
+    //   this._bar,
+    //   0, colorIndex,  // sx,sy
+    //   1, 1,            // sw,sh
+    //   x, top,  //dx,dy
+    //   1, h   //dw,dh
+    // );
   }
 }
 registerPainter('2', WavePaintHandler)

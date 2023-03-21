@@ -92,9 +92,9 @@ export default class GammaGroup {
     return canvas.toDataURL();
   }
 
-  transformColor(color: string): string {
+  transformColor2rgb(color: string): [number,number,number] {
     const [r, g, b] = this._value.split(",").map((v) => {
-      return Number(v) / 4096 + 1.0;
+    return Number(v) / 4096 + 1.0;
     });
     let [red, green, blue] = color.split(",").map((v) => parseInt(v));
     if (this._gray != 0) {
@@ -109,7 +109,12 @@ export default class GammaGroup {
     red = clamp((red + brightness) * mult * r, 0, 255); // red
     green = clamp((green + brightness) * mult * g, 0, 255); // green
     blue = clamp((blue + brightness) * mult * b, 0, 255); // blue
-
+    
+    return [red,green,blue]
+  }
+    
+  transformColor(color: string): string {
+    const [red,green,blue] = this.transformColor2rgb(color)
     return `rgb(${red}, ${green}, ${blue})`;
   }
 }
