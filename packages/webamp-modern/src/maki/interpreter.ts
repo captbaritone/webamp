@@ -33,7 +33,7 @@ function validateMaki(program: ParsedMaki) {
   */
 }
 
-export function interpret(
+export async function interpret(
   start: number,
   program: ParsedMaki,
   stack: Variable[],
@@ -49,7 +49,7 @@ export function interpret(
     uiRoot
   );
   interpreter.stack = stack;
-  return interpreter.interpret(start);
+  return await interpreter.interpret(start);
 }
 
 function validateVariable(v: Variable) {
@@ -100,7 +100,7 @@ class Interpreter {
     this.stack.push(variable);
   }
 
-  interpret(start: number) {
+  async interpret(start: number) {
     for (const v of this.variables) {
       validateVariable(v);
     }
@@ -397,13 +397,17 @@ class Interpreter {
           // let value = obj.value[methodName](...methodArgs);
           let result = null;
           try {
-            result = obj.value[methodName](...methodArgs);
-            // const afunction = obj.value[methodName];
-            // if(afunction.constructor.name === 'AsyncFunction'){
-            //   result = await afunction(...methodArgs);
-            // } else {
-            //   result = afunction(...methodArgs);
-            // }
+            // result = obj.value[methodName](...methodArgs);
+            let afunction = obj.value[methodName];
+            if(afunction.constructor.name === 'AsyncFunction'){
+              console.log('calling fun type:',afunction.constructor.name, `@${klass.name}.${methodName}`)
+              // result = await afunction(...methodArgs);
+              result = await obj.value[methodName](...methodArgs);
+            } else {
+              // afunction = afunction.bind(obj)
+              // result = afunction(...methodArgs);
+              result = obj.value[methodName](...methodArgs);
+            }
           } catch (err) {
             const args = JSON.stringify(methodArgs)
               .replace("[", "")

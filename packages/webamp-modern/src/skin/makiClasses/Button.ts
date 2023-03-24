@@ -21,6 +21,8 @@ export default class Button extends AudioEventedGui {
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e: MouseEvent) => {
       if (e.button == 0) {
+        e.stopPropagation();
+        e.preventDefault();
         this.leftclick();
       }
     });

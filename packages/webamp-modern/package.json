@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "snowpack dev",
+    "m": "node listen-m.js",
     "build": "snowpack build",
     "minify": "snowpack build --config ./snowpack.x2nie.config.mjs",
     "serve": "http-server ./build",
@@ -28,6 +29,7 @@
     "babel-jest": "^28.1.0",
     "eslint": "^7.30.0",
     "eslint-plugin-rulesdir": "^0.2.0",
+    "execa": "^5.1.1",
     "jest": "^28.1.0",
     "puppeteer": "^14.1.1",
     "snowpack": "^3.8.8",
@@ -38,6 +40,8 @@
   "prettier": {},
   "dependencies": {
     "@rgrove/parse-xml": "^3.0.0",
+    "butterchurn": "^2.6.7",
+    "butterchurn-presets": "^2.4.7",
     "id3-parser": "^2.0.0",
     "jszip": "^3.7.0"
   }

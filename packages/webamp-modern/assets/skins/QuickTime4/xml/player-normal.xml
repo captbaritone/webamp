@@ -1,0 +1,49 @@
+<!-- player-normal.xml creates the layout of the Winamp Player Window. -->
+
+<include file="player-normal-group.xml" />
+
+<layout
+  id="normal"
+  minimum_w="340"
+  minimum_h="123"
+  h="123"
+  w="340"
+  droptarget="pldr"
+  snapadjustbottom="116"
+  linkwidth="shade" 
+  >
+
+  <!-- 
+  <Wasabi:MainFrame:NoStatus
+    x="0" y="0" w="0" h="0" relatw="1" relath="1"
+    content="player.content.group"
+    padtitleleft="10"
+    padtitleright="25"
+    shade="shade"
+  />
+  <sendparams target="window.titlebar.title" default="WINAMP"/>
+  <sendparams target="mousetrap" dblClickAction="SWITCH;shade"/>
+  <sendparams target="window.top.left;window.top;window.top.right;window.left;window.right;window.bottom.left.top;window.bottom.left;window.bottom.left.bottom;window.bottom.top;window.bottom;window.bottom.bottom;window.bottom.right.top;window.bottom.right;window.bottom.right.bottom;" resize="0"/>
+  <hideobject target="close;close.inactive"/>
+   -->
+
+
+  <group id="player.title.group" x="0" y="0" h="20" w="0" relatw="1"/>
+  <group id="player.content.group" x="0" y="20" h="-20" relath="1" w="0" relatw="1"/>
+
+
+<button
+  id="Close"
+  action="CLOSE"
+  x="-17" y="4"
+  relatx="1"
+  image="wasabi.button.exit.inactive"
+  downImage="wasabi.button.exit.pressed"
+  tooltip="Exit Winamp"
+/>
+
+
+</layout>
+
+
+

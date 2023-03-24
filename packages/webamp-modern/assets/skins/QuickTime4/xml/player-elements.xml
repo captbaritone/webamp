@@ -1,0 +1,45 @@
+<elements>
+
+<!-- Player Backgrounds/Overlays -->
+  <bitmap id="player.main.title" file="window/normal.png" x="0" y="0" h="20" w="340" gammagroup="Backgrounds"/>
+  <bitmap id="player.main"       file="window/normal.png" x="0" y="20" h="65" w="340" gammagroup="Backgrounds"/>
+  <bitmap id="player.main.beach" file="window/normal.png" x="0" y="85" h="30" w="340" gammagroup="Backgrounds"/>
+ 
+  <bitmap id="player.vis.mask" file="window/normal-pressed.png" x="272" y="27" h="20" w="57" gammagroup="Buttons"/>
+<!-- Drawer Background -->
+  <bitmap id="drawer.main.bottom" file="window/drawer.png" x="0" y="100" h="34" w="340" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.main.center" file="window/drawer.png" x="0" y="0"   h="50" w="340" gammagroup="Backgrounds"/>
+<!-- Drawer InnerBackground -->
+  <!-- <bitmap id="drawer.inner.left" file="window/dardk-drawer.png" x="0" y="4" h="119" w="10" gammagroup="Backgrounds"/> -->
+  <!-- <bitmap id="drawer.inner.center" file="window/dardk-drawer.png" x="68" y="4" h="119" w="10" gammagroup="Backgrounds"/> -->
+  <!-- <bitmap id="drawer.inner.right" file="window/dardk-drawer.png" x="186" y="4" h="119" w="20" gammagroup="Backgrounds"/> -->
+
+  <bitmap id="drawer.inner.fill"   file="window/dark-drawer.png" x="7" y="25" h="1" w="326" gammagroup="Backgrounds"/>
+  <bitmap id="drawer.inner.bottom" file="window/dark-drawer.png" x="7" y="0" h="54" w="326" gammagroup="Backgrounds"/>
+
+<!-- Drawer Elements -->
+  <bitmap id="drawer.button.open"  file="window/normal.png"         x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+  <bitmap id="drawer.button.close" file="window/normal-pressed.png" x="310" y="60" h="20" w="20" gammagroup="Buttons"/>
+
+<!-- Playback buttons -->
+
+  <bitmap id="player.button.play"         file="window/normal.png"         x="147" y="56" h="45" w="45" gammagroup="Buttons"/>
+  <bitmap id="player.button.play.pressed" file="window/normal-pressed.png" x="147" y="56" h="45" w="45" gammagroup="Buttons"/>
+
+  <bitmap id="player.button.pause"         file="window/normal.png"         x="200" y="60" h="30" w="30" gammagroup="Buttons"/>
+  <bitmap id="player.button.pause.pressed" file="window/normal-pressed.png" x="200" y="60" h="30" w="30" gammagroup="Buttons"/>
+
+<!-- Seek -->
+  <bitmap id="player.button.seek" file="window/normal-pressed.png" x="69" y="32" h="9" w="7" gammagroup="Buttons"/>
+
+<!-- VIDEO/AVS -->
+  <bitmap id="player.button.avs0" file="thinger/vis-selected.png" x="0" y="0" gammagroup="Buttons2"/>
+  <bitmap id="player.button.video0" file="thinger/video-selected.png" x="0" y="0" gammagroup="Buttons2"/>
+
+  <bitmap id="player.button.video" file="thinger/quicktime.png" x="0" y="0" gammagroup="Buttons2"/>
+  <bitmap id="player.button.avs" file="thinger/vis.png" x="0" y="0" gammagroup="Buttons2"/>
+
+  <bitmap id="player.videoavs.middle" file="window/videoavs.png" x="0" y="20" h="244" w="340" gammagroup="Backgrounds"/>
+ 
+
+</elements>
