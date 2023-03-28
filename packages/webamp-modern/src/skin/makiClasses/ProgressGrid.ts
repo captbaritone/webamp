@@ -4,7 +4,7 @@ import { px } from "../../utils";
 
 export default class ProgressGrid extends Grid {
   static GUID = "OFFICIALLY-NO-GUID";
-  _disposeDisplaySubscription: () => void | null = null;
+  _disposeDisplaySubscription: Function;
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
