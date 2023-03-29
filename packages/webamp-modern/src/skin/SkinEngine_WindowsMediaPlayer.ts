@@ -6,7 +6,8 @@ import { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
 import EqVis from "./makiClasses/EqVis";
 import PlayListGui from "./makiClasses/PlayListGui";
-import Vis from "./makiClasses/Vis";
+// import Vis from "./makiClasses/Vis";
+// import Avs from "./makiClasses/Avs";
 import { GROUP_PHASE, RESOURCE_PHASE } from "./SkinEngine_WAL";
 import { registerSkinEngine, SkinEngine } from "./SkinEngine";
 import ButtonElement from "./wmpClasses/ButtonElement";
@@ -253,7 +254,10 @@ export default class WindowsMediaPlayer_SkinEngine extends SkinEngine {
         node.attributes.action = action;
       } else if (tag.endsWith("button")) {
         action = tag.substring(0, tag.length - 6);
-        node.attributes.action = action;
+        if (action) {
+          //avoid action='' in which may is misleading and drive to conflict
+          node.attributes.action = action;
+        }
       }
       switch (action) {
         case "play":

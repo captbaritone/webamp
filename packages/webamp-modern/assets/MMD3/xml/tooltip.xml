@@ -1,6 +1,0 @@
-<container id="tooltip" name="TOoltip" default_x="0" default_y="0" default_visible="1">
-	<layout id="normal">
-		<group id="wasabi.tooltip" w="300" h="25"/>
-	</layout>
-</container>
-

@@ -161,6 +161,8 @@ export default class Layout extends Group {
 
   init() {
     super.init();
+  }
+  afterInited() {
     this._invalidateSize();
     this._uiRoot.vm.dispatch(this, "onstartup");
   }

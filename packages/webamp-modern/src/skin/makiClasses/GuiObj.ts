@@ -172,7 +172,7 @@ export default class GuiObj extends XmlObj {
         break;
       // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
       case "alpha":
-        this._alpha = num(value);
+        this.setalpha(num(value));
       case "sysregion":
         this._sysregion = num(value);
         break;
@@ -256,6 +256,7 @@ export default class GuiObj extends XmlObj {
 
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
+      // e.preventDefault();
       console.log("mouse-down!");
       this.onLeftButtonDown(
         e.offsetX + this.getleft(),
@@ -263,6 +264,8 @@ export default class GuiObj extends XmlObj {
       );
 
       const mouseUpHandler = (e: MouseEvent) => {
+        // e.stopPropagation();
+        // e.preventDefault();
         console.log("mouse-up!");
         this.onLeftButtonUp(
           e.offsetX + this.getleft(),
@@ -544,11 +547,13 @@ export default class GuiObj extends XmlObj {
   onLeftButtonDown(x: number, y: number) {
     assert(
       x >= this.getleft(),
-      "Expected click to be to the right of the component's left"
+      "Expected click to be to the right of the component's left." +
+        ` x:${x} left:${this.getleft()}`
     );
     assert(
       y >= this.gettop(),
-      "Expected click to be below the component's top"
+      "Expected click to be below the component's top." +
+        ` y:${y} top:${this.gettop()}`
     );
     this.getparentlayout().bringtofront();
     this._uiRoot.vm.dispatch(this, "onleftbuttondown", [
