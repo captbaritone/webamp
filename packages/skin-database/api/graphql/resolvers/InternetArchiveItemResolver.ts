@@ -8,29 +8,49 @@ export default class InternetArchiveItemResolver {
   constructor(model: IaItemModel) {
     this._model = model;
   }
-  /** @gqlField */
+  /**
+   * The Internet Archive's unique identifier for this item
+   * @gqlField
+   */
   identifier(): string {
     return this._model.getIdentifier();
   }
-  /** @gqlField */
+  /**
+   * The URL where this item can be viewed on the Internet Archive
+   * @gqlField
+   */
   url(): string {
     return this._model.getUrl();
   }
-  /** @gqlField */
+  /**
+   * URL to get the Internet Archive's metadata for this item in JSON form.
+   * @gqlField
+   */
   metadata_url(): string {
     return this._model.getMetadataUrl();
   }
 
-  /** @gqlField */
+  /**
+   * The date and time that we last scraped this item's metadata.
+   * **Note:** This field is temporary and will be removed in the future.
+   * The date format is just what we get from the database, and it's ambiguous.
+   * @gqlField
+   */
   last_metadata_scrape_date_UNSTABLE(): string | null {
     return this._model.getMetadataTimestamp();
   }
 
-  /** @gqlField */
+  /**
+   * Our cached version of the metadata avaliable at \`metadata_url\` (above)
+   * @gqlField
+   */
   raw_metadata_json(): string | null {
     return this._model.getMetadataJSON();
   }
-  /** @gqlField */
+  /**
+   * The skin that this item contains
+   * @gqlField
+   */
   async skin(): Promise<ISkin | null> {
     const skin = await this._model.getSkin();
     if (skin == null) {

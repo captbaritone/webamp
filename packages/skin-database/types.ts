@@ -5,7 +5,10 @@ export type TweetStatus =
   | "UNREVIEWED"
   | "NSFW";
 
-/** @gqlEnum */
+/**
+ * The judgement made about a skin by a moderator
+ * @gqlEnum
+ */
 export type Rating = "APPROVED" | "REJECTED" | "NSFW";
 
 export type SkinType = "MODERN" | "CLASSIC";

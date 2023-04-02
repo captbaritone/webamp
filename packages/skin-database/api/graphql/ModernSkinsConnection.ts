@@ -3,7 +3,9 @@ import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
 
-/** @gqlType */
+/**
+ * A collection of "modern" Winamp skins
+ * @gqlType */
 export default class ModernSkinsConnection {
   _first: number;
   _offset: number;
@@ -16,14 +18,18 @@ export default class ModernSkinsConnection {
     return query;
   }
 
-  /** @gqlField */
+  /**
+   * The total number of skins matching the filter
+   * @gqlField */
   async count(): Promise<Int> {
     const count = await this._getQuery().count("*", { as: "count" });
     return Number(count[0].count);
   }
 
-  /** @gqlField */
-  async nodes(_args: never, ctx): Promise<ModernSkinResolver[]> {
+  /**
+   * The list of skins
+   * @gqlField */
+  async nodes(_args: never, ctx): Promise<Array<ModernSkinResolver | null>> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)

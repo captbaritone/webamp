@@ -21,8 +21,8 @@ export default class ReviewResolver {
   }
 
   /**
-   * The user who made the review (if known). **Note:** In the early days we
-   * didn't track this, so many will be null.
+   * The user who made the review (if known). **Note:** In the early days we didn't
+   * track this, so many will be null.
    * @gqlField
    */
   reviewer(): string {

@@ -29,6 +29,7 @@ const index = client.initIndex("Skins");
 class RootResolver extends MutationResolver {
   /**
    * Get a globally unique object by its ID.
+   *
    * https://graphql.org/learn/global-object-identification/
    * @gqlField
    */
@@ -84,6 +85,7 @@ class RootResolver extends MutationResolver {
 
   /**
    * Get an archive.org item by its identifier. You can find this in the URL:
+   *
    * https://archive.org/details/<identifier>/
    * @gqlField
    */
@@ -100,6 +102,7 @@ class RootResolver extends MutationResolver {
 
   /**
    * Fetch archive file by it's MD5 hash
+   *
    * Get information about a file found within a skin's wsz/wal/zip archive.
    * @gqlField
    */
@@ -127,7 +130,7 @@ class RootResolver extends MutationResolver {
       offset = 0,
     }: { query: string; first?: Int; offset?: Int },
     { ctx }
-  ): Promise<ISkin[]> {
+  ): Promise<Array<ISkin | null>> {
     if (first > 1000) {
       throw new Error("Can only query 1000 records via search.");
     }
@@ -146,7 +149,11 @@ class RootResolver extends MutationResolver {
     );
   }
 
-  /** @gqlField */
+  /**
+   * All classic skins in the database
+   *
+   * **Note:** We don't currently support combining sorting and filtering.
+   * @gqlField */
   skins({
     first = 10,
     offset = 0,
@@ -164,7 +171,9 @@ class RootResolver extends MutationResolver {
     return new SkinsConnection(first, offset, sort, filter);
   }
 
-  /** @gqlField */
+  /**
+   * All modern skins in the database
+   * @gqlField */
   async modern_skins({
     first = 10,
     offset = 0,
@@ -178,7 +187,9 @@ class RootResolver extends MutationResolver {
     return new ModernSkinsConnection(first, offset);
   }
 
-  /** @gqlField */
+  /**
+   * A random skin that needs to be reviewed
+   * @gqlField */
   async skin_to_review(_args: never, { ctx }): Promise<ISkin | null> {
     if (!ctx.authed()) {
       return null;
@@ -218,19 +229,22 @@ class RootResolver extends MutationResolver {
   /**
    * Get the status of a batch of uploads by md5s
    * @gqlField
+   * @deprecated Prefer `upload_statuses` instead, were we operate on ids.
    */
   async upload_statuses_by_md5(
     { md5s }: { md5s: string[] },
     { ctx }
-  ): Promise<SkinUpload[]> {
+  ): Promise<Array<SkinUpload | null>> {
     return this._upload_statuses({ keyName: "skin_md5", keys: md5s }, ctx);
   }
 
-  /** @gqlField */
+  /**
+   * Get the status of a batch of uploads by ids
+   * @gqlField */
   async upload_statuses(
     { ids }: { ids: string[] },
     { ctx }
-  ): Promise<SkinUpload[]> {
+  ): Promise<Array<SkinUpload | null>> {
     return this._upload_statuses({ keyName: "id", keys: ids }, ctx);
   }
 
@@ -256,27 +270,39 @@ class RootResolver extends MutationResolver {
     );
   }
 
-  /** @gqlField */
+  /**
+   * A namespace for statistics about the database
+   * @gqlField */
   statistics(): DatabaseStatisticsResolver {
     return new DatabaseStatisticsResolver();
   }
 }
 
-/** @gqlType */
+/**
+ * Information about an attempt to upload a skin to the Museum.
+ * @gqlType
+ */
 type SkinUpload = {
   /** @gqlField */
   id: string;
   /** @gqlField */
   status: SkinUploadStatus;
-  /** @gqlField */
+  /**
+   * Skin that was uploaded. **Note:** This is null if the skin has not yet been
+   * fully processed. (status == ARCHIVED)
+   * @gqlField
+   */
   skin: ISkin | null;
-  /** @gqlField */
+  /**
+   * Md5 hash given when requesting the upload URL.
+   * @gqlField
+   */
   upload_md5: string;
 };
 
 /** @gqlEnum */
 type SkinsSortOption =
-  /*
+  /**
 the Museum's (https://skins.webamp.org) special sorting rules.
 
 Roughly speaking, it's:
@@ -314,6 +340,7 @@ Only the skins that have been tweeted
 
 /**
  * The current status of a pending upload.
+ *
  * **Note:** Expect more values here as we try to be more transparent about
  * the status of a pending uploads.
  * @gqlEnum

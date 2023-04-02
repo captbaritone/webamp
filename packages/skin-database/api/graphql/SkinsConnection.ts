@@ -36,7 +36,10 @@ async function getSkinMuseumPageFromCache(first: number, offset: number) {
   return skins;
 }
 
-/** @gqlType */
+/**
+ * A collection of classic Winamp skins
+ * @gqlType
+ */
 export default class SkinsConnection {
   _first: number;
   _offset: number;
@@ -76,7 +79,10 @@ export default class SkinsConnection {
     return query;
   }
 
-  /** @gqlField */
+  /**
+   * The total number of skins matching the filter
+   * @gqlField
+   */
   async count(): Promise<Int> {
     if (this._sort === "MUSEUM") {
       // This is the common case, so serve it from cache.
@@ -86,8 +92,11 @@ export default class SkinsConnection {
     return Number(count[0].count);
   }
 
-  /** @gqlField */
-  async nodes(args: never, ctx): Promise<ISkin[]> {
+  /**
+   * The list of skins
+   * @gqlField
+   */
+  async nodes(args: never, ctx): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(

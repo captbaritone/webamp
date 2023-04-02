@@ -449,40 +449,41 @@ type User {
 }
 
 enum SkinsSortOption {
-  """
-  the Museum's (https://skins.webamp.org) special sorting rules.
+  # TODO: Add this back once Grats supports descriptions
+  # """
+  # the Museum's (https://skins.webamp.org) special sorting rules.
 
-  Roughly speaking, it's:
+  # Roughly speaking, it's:
 
-  1. The four classic default skins
-  2. Tweeted skins first (sorted by the number of likes/retweets)
-  3. Approved, but not tweeted yet, skins
-  4. Unreviwed skins
-  5. Rejected skins
-  6. NSFW skins
-  """
+  # 1. The four classic default skins
+  # 2. Tweeted skins first (sorted by the number of likes/retweets)
+  # 3. Approved, but not tweeted yet, skins
+  # 4. Unreviwed skins
+  # 5. Rejected skins
+  # 6. NSFW skins
+  # """
   MUSEUM
 }
 
 enum SkinsFilterOption {
-  """
-  Only the skins that have been approved for tweeting
-  """
+  # """
+  # Only the skins that have been approved for tweeting
+  # """
   APPROVED
 
-  """
-  Only the skins that have been rejected for tweeting
-  """
+  # """
+  # Only the skins that have been rejected for tweeting
+  # """
   REJECTED
 
-  """
-  Only the skins that have been marked NSFW
-  """
+  # """
+  # Only the skins that have been marked NSFW
+  # """
   NSFW
 
-  """
-  Only the skins that have been tweeted
-  """
+  # """
+  # Only the skins that have been tweeted
+  # """
   TWEETED
 }
 
@@ -493,32 +494,32 @@ The current status of a pending upload.
 the status of a pending uploads.
 """
 enum SkinUploadStatus {
-  """
-  The user has requested a URL, but the skin has not yet been processed.
-  """
+  # """
+  # The user has requested a URL, but the skin has not yet been processed.
+  # """
   URL_REQUESTED
 
-  """
-  The user has notified us that the skin has been uploaded, but we haven't yet
-  processed it.
-  """
+  # """
+  # The user has notified us that the skin has been uploaded, but we haven't yet
+  # processed it.
+  # """
   UPLOAD_REPORTED
 
-  """
-  An error occured processing the skin. Usually this is a transient error, and
-  the skin will be retried at a later time.
-  """
+  # """
+  # An error occured processing the skin. Usually this is a transient error, and
+  # the skin will be retried at a later time.
+  # """
   ERRORED
 
-  """
-  An error occured processing the skin, but it was the fault of the server. It
-  will be processed at a later date.
-  """
+  # """
+  # An error occured processing the skin, but it was the fault of the server. It
+  # will be processed at a later date.
+  # """
   DELAYED
 
-  """
-  The skin has been successfully added to the Museum.
-  """
+  # """
+  # The skin has been successfully added to the Museum.
+  # """
   ARCHIVED
 }
 

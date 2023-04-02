@@ -6,7 +6,10 @@ import TweetResolver from "./resolvers/TweetResolver";
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";
 
-/** @gqlType */
+/**
+ * A collection of tweets made by the @winampskins bot
+ * @gqlType
+ */
 export default class TweetsConnection {
   _first: number;
   _offset: number;
@@ -41,7 +44,7 @@ export default class TweetsConnection {
    * The list of tweets
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<TweetResolver[]> {
+  async nodes(args: never, ctx): Promise<Array<TweetResolver | null>> {
     const tweets = await this._getQuery()
       .select()
       .limit(this._first)
