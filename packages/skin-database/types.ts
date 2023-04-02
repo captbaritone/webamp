@@ -5,6 +5,9 @@ export type TweetStatus =
   | "UNREVIEWED"
   | "NSFW";
 
+/** @gqlEnum */
+export type Rating = "APPROVED" | "REJECTED" | "NSFW";
+
 export type SkinType = "MODERN" | "CLASSIC";
 
 export type SkinRow = {
@@ -32,7 +35,7 @@ export type InstagramPostRow = {
 
 export type ReviewRow = {
   skin_md5: string;
-  review: "APPROVED" | "REJECTED" | "NSFW";
+  review: Rating;
   reviewer: string;
 };
 

@@ -1,34 +1,46 @@
+import { Int } from "grats";
 import * as Skins from "../../../data/skins";
 
+/** @gqlType DatabaseStatistics */
 export default class DatabaseStatisticsResolver {
-  unique_classic_skins_count(): Promise<number> {
+  /** @gqlField */
+  unique_classic_skins_count(): Promise<Int> {
     return Skins.getClassicSkinCount();
   }
-  tweeted_skins_count(): Promise<number> {
+  /** @gqlField */
+  tweeted_skins_count(): Promise<Int> {
     return Skins.getTweetedSkinCount();
   }
-  approved_skins_count(): Promise<number> {
+  /** @gqlField */
+  approved_skins_count(): Promise<Int> {
     return Skins.getApprovedSkinCount();
   }
-  rejected_skins_count(): Promise<number> {
+  /** @gqlField */
+  rejected_skins_count(): Promise<Int> {
     return Skins.getRejectedSkinCount();
   }
-  nsfw_skins_count(): Promise<number> {
+  /** @gqlField */
+  nsfw_skins_count(): Promise<Int> {
     return Skins.getNsfwSkinCount();
   }
-  unreviewed_skins_count(): Promise<number> {
+  /** @gqlField */
+  unreviewed_skins_count(): Promise<Int> {
     return Skins.getUnreviewedSkinCount();
   }
-  tweetable_skins_count(): Promise<number> {
+  /** @gqlField */
+  tweetable_skins_count(): Promise<Int> {
     return Skins.getTweetableSkinCount();
   }
-  uploads_pending_processing_count(): Promise<number> {
+  /** @gqlField */
+  uploads_pending_processing_count(): Promise<Int> {
     return Skins.getUploadsAwaitingProcessingCount();
   }
-  uploads_in_error_state_count(): Promise<number> {
+  /** @gqlField */
+  uploads_in_error_state_count(): Promise<Int> {
     return Skins.getUploadsErroredCount();
   }
-  web_uploads_count(): Promise<number> {
+  /** @gqlField */
+  web_uploads_count(): Promise<Int> {
     return Skins.getWebUploadsCount();
   }
 }

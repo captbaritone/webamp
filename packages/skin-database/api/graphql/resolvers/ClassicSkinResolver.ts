@@ -1,49 +1,100 @@
-import CommonSkinResolver from "./CommonSkinResolver";
+import CommonSkinResolver, { ISkin } from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import path from "path";
+import { ID, Int } from "grats";
+import TweetResolver from "./TweetResolver";
+import ArchiveFileResolver from "./ArchiveFileResolver";
+import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 
+/** @gqlType ClassicSkin */
 export default class ClassicSkinResolver
   extends CommonSkinResolver
-  implements NodeResolver
+  implements NodeResolver, ISkin
 {
   __typename = "ClassicSkin";
-  async id() {
+  /**
+   * @gqlField
+   * @killsParentOnException
+   */
+  id(): ID {
     return toId(this.__typename, this.md5());
   }
-  async filename(normalize_extension = false) {
+  /** @gqlField */
+  async filename({
+    normalize_extension = false,
+  }: {
+    normalize_extension?: boolean;
+  }): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
       return path.parse(filename).name + ".wsz";
     }
     return filename;
   }
-  museum_url() {
+
+  /** @gqlField */
+  md5(): string {
+    return super.md5();
+  }
+  /** @gqlField */
+  download_url(): string {
+    return super.download_url();
+  }
+  /** @gqlField */
+  tweeted(): Promise<boolean> {
+    return super.tweeted();
+  }
+
+  /** @gqlField */
+  tweets(): Promise<TweetResolver[]> {
+    return super.tweets();
+  }
+
+  /** @gqlField */
+  archive_files(): Promise<ArchiveFileResolver[]> {
+    return super.archive_files();
+  }
+
+  /** @gqlField */
+  internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
+    return super.internet_archive_item();
+  }
+  /** @gqlField */
+  museum_url(): string {
     return this._model.getMuseumUrl();
   }
-  webamp_url() {
+  /** @gqlField */
+  webamp_url(): string {
     return this._model.getWebampUrl();
   }
-  screenshot_url() {
+  /** @gqlField */
+  screenshot_url(): string {
     return this._model.getScreenshotUrl();
   }
-  readme_text() {
+  /** @gqlField */
+  readme_text(): Promise<string | null> {
     return this._model.getReadme();
   }
-  nsfw() {
+  /** @gqlField */
+  nsfw(): Promise<boolean> {
     return this._model.getIsNsfw();
   }
-  average_color() {
+  /** @gqlField */
+  average_color(): string {
     return this._model.getAverageColor();
   }
+  /** @gqlField */
   has_media_library(): Promise<boolean> {
     return this._model.hasMediaLibrary();
   }
-  async reviews() {
+  /** @gqlField */
+  async reviews(): Promise<ReviewResolver[]> {
     const reviews = await this._model.getReviews();
     return reviews.map((row) => new ReviewResolver(row));
   }
-  async last_algolia_index_update_date() {
+  /** @gqlField */
+  async last_algolia_index_update_date(): Promise<string | null> {
     const updates = await this._model.getAlgoliaIndexUpdates(1);
     if (updates.length < 1) {
       return null;
@@ -51,7 +102,8 @@ export default class ClassicSkinResolver
     const update = updates[0];
     return new Date(update.update_timestamp * 1000).toISOString();
   }
-  transparent_pixels(): Promise<number> {
+  /** @gqlField */
+  transparent_pixels(): Promise<Int> {
     return this._model.transparentPixels();
   }
 }

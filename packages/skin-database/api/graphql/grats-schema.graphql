@@ -1,0 +1,257 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+directive @exported(filename: String!, functionName: String!) on FIELD_DEFINITION
+
+directive @methodName(name: String!) on FIELD_DEFINITION
+
+type ArchiveFile {
+  date: String
+  file_md5: String
+  filename: String
+  is_directory: Boolean
+  size: Int
+  skin: Skin
+  text_content: String
+  url: String
+}
+
+type ClassicSkin implements Node & Skin {
+  archive_files: [ArchiveFile!]
+  average_color: String
+  download_url: String
+  filename(normalize_extension: Boolean = false): String
+  has_media_library: Boolean
+  id: ID!
+  internet_archive_item: InternetArchiveItem
+  last_algolia_index_update_date: String
+  md5: String
+  museum_url: String
+  nsfw: Boolean
+  readme_text: String
+  reviews: [Review!]
+  screenshot_url: String
+  transparent_pixels: Int
+  tweeted: Boolean
+  tweets: [Tweet!]
+  webamp_url: String
+}
+
+type DatabaseStatistics {
+  approved_skins_count: Int
+  nsfw_skins_count: Int
+  rejected_skins_count: Int
+  tweetable_skins_count: Int
+  tweeted_skins_count: Int
+  unique_classic_skins_count: Int
+  unreviewed_skins_count: Int
+  uploads_in_error_state_count: Int
+  uploads_pending_processing_count: Int
+  web_uploads_count: Int
+}
+
+type InternetArchiveItem {
+  identifier: String
+  last_metadata_scrape_date_UNSTABLE: String
+  metadata_url: String
+  raw_metadata_json: String
+  skin: Skin
+  url: String
+}
+
+type ModernSkin implements Node & Skin {
+  archive_files: [ArchiveFile!]
+  average_color: String
+  download_url: String
+  filename(normalize_extension: Boolean = false): String
+  id: ID!
+  internet_archive_item: InternetArchiveItem
+  md5: String
+  museum_url: String
+  nsfw: Boolean
+  readme_text: String
+  reviews: [Review!]
+  screenshot_url: String
+  tweeted: Boolean
+  tweets: [Tweet!]
+  webamp_url: String
+}
+
+type ModernSkinsConnection {
+  count: Int
+  nodes: [ModernSkin!]
+}
+
+type Mutation {
+  approve_skin(md5: String!): Boolean
+  mark_skin_nsfw(md5: String!): Boolean
+  reject_skin(md5: String!): Boolean
+  request_nsfw_review_for_skin(md5: String!): Boolean
+  send_feedback(email: String, message: String, url: String): Boolean
+  upload: UploadMutations
+}
+
+"""
+A globally unique object. The `id` here is intended only for use within
+GraphQL.
+https://graphql.org/learn/global-object-identification/
+"""
+interface Node {
+  id: ID!
+}
+
+type Query {
+  """
+  Fetch archive file by it's MD5 hash
+  Get information about a file found within a skin's wsz/wal/zip archive.
+  """
+  fetch_archive_file_by_md5(md5: String!): ArchiveFile
+  """
+  Get an archive.org item by its identifier. You can find this in the URL:
+  https://archive.org/details/<identifier>/
+  """
+  fetch_internet_archive_item_by_identifier(identifier: String!): InternetArchiveItem
+  """Get a skin by its MD5 hash"""
+  fetch_skin_by_md5(md5: String!): Skin
+  """Get a tweet by its URL"""
+  fetch_tweet_by_url(url: String!): Tweet
+  """The currently authenticated user, if any."""
+  me: User
+  modern_skins(first: Int = 10, offset: Int = 0): ModernSkinsConnection
+  """
+  Get a globally unique object by its ID.
+  https://graphql.org/learn/global-object-identification/
+  """
+  node(id: ID!): Node
+  """
+  Search the database using the Algolia search index used by the Museum.
+  
+  Useful for locating a particular skin.
+  """
+  search_skins(first: Int = 10, offset: Int = 0, query: String!): [Skin!]
+  skin_to_review: Skin
+  skins(filter: SkinsFilterOption, first: Int = 10, offset: Int = 0, sort: SkinsSortOption): SkinsConnection
+  statistics: DatabaseStatistics
+  """Tweets tweeted by @winampskins"""
+  tweets(first: Int = 10, offset: Int = 0, sort: TweetsSortOption): TweetsConnection
+  upload_statuses(ids: [String!]!): [SkinUpload!]
+  """Get the status of a batch of uploads by md5s"""
+  upload_statuses_by_md5(md5s: [String!]!): [SkinUpload!]
+}
+
+enum Rating {
+  APPROVED
+  NSFW
+  REJECTED
+}
+
+"""
+A review of a skin. Done either on the Museum's Tinder-style
+reivew page, or via the Discord bot.
+"""
+type Review {
+  """The rating that the user gave the skin"""
+  rating: Rating
+  """
+  The user who made the review (if known). **Note:** In the early days we
+  didn't track this, so many will be null.
+  """
+  reviewer: String
+  """The skin that was reviewed"""
+  skin: Skin
+}
+
+interface Skin {
+  archive_files: [ArchiveFile!]
+  average_color: String @deprecated(reason: "Needed for migration to new skin model")
+  download_url: String
+  filename(normalize_extension: Boolean = false): String
+  id: ID!
+  internet_archive_item: InternetArchiveItem
+  md5: String
+  museum_url: String @deprecated(reason: "Needed for migration to new skin model")
+  nsfw: Boolean @deprecated(reason: "Needed for migration to new skin model")
+  readme_text: String @deprecated(reason: "Needed for migration to new skin model")
+  reviews: [Review!]
+  screenshot_url: String @deprecated(reason: "Needed for migration to new skin model")
+  tweeted: Boolean
+  tweets: [Tweet!]
+  webamp_url: String @deprecated(reason: "Needed for migration to new skin model")
+}
+
+type SkinUpload {
+  id: String
+  skin: Skin
+  status: SkinUploadStatus
+  upload_md5: String
+}
+
+"""
+The current status of a pending upload.
+**Note:** Expect more values here as we try to be more transparent about
+the status of a pending uploads.
+"""
+enum SkinUploadStatus {
+  ARCHIVED
+  DELAYED
+  ERRORED
+  UPLOAD_REPORTED
+  URL_REQUESTED
+}
+
+type SkinsConnection {
+  count: Int
+  nodes: [Skin!]
+}
+
+enum SkinsFilterOption {
+  APPROVED
+  NSFW
+  REJECTED
+  TWEETED
+}
+
+enum SkinsSortOption {
+  MUSEUM
+}
+
+type Tweet {
+  likes: Int
+  retweets: Int
+  skin: Skin
+  url: String
+}
+
+type TweetsConnection {
+  """The total number of tweets"""
+  count: Int
+  """The list of tweets"""
+  nodes: [Tweet!]
+}
+
+enum TweetsSortOption {
+  LIKES
+  RETWEETS
+}
+
+type UploadMutations {
+  get_upload_urls(files: [UploadUrlRequest!]!): [UploadUrl!]
+  report_skin_uploaded(id: String!, md5: String!): Boolean
+}
+
+type UploadUrl {
+  id: String
+  md5: String
+  url: String
+}
+
+input UploadUrlRequest {
+  filename: String!
+  md5: String!
+}
+
+type User {
+  username: String
+}

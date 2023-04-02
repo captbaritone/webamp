@@ -5,11 +5,24 @@ import * as Skins from "../../../data/skins";
 import { processUserUploads } from "../../processUserUploads";
 
 // We don't use a resolver here, just return the value directly.
-type UploadUrl = { id: string; url: string; md5: string };
+/** @gqlType */
+type UploadUrl = {
+  /** @gqlField */
+  id: string;
+  /** @gqlField */
+  url: string;
+  /** @gqlField */
+  md5: string;
+};
 
+/** @gqlInput */
+type UploadUrlRequest = { filename: string; md5: string };
+
+/** @gqlType UploadMutations */
 class UploadMutationResolver {
+  /** @gqlField */
   async get_upload_urls(
-    { files }: { files: { filename: string; md5: string }[] },
+    { files }: { files: UploadUrlRequest[] },
     { ctx }
   ): Promise<UploadUrl[]> {
     const missing: UploadUrl[] = [];
@@ -28,7 +41,11 @@ class UploadMutationResolver {
     return missing;
   }
 
-  async report_skin_uploaded({ id, md5 }, req) {
+  /** @gqlField */
+  async report_skin_uploaded(
+    { id, md5 }: { id: string; md5: string },
+    req
+  ): Promise<boolean> {
     // TODO: Validate md5 and id;
     await Skins.recordUserUploadComplete(md5, id);
     // Don't await, just kick off the task.
@@ -47,11 +64,17 @@ function requireAuthed(handler) {
   };
 }
 
+/** @gqlType Mutation */
 export default class MutationResolver {
-  async upload() {
+  /** @gqlField */
+  async upload(): Promise<UploadMutationResolver> {
     return new UploadMutationResolver();
   }
-  async send_feedback({ message, email, url }, req) {
+  /** @gqlField */
+  async send_feedback(
+    { message, email, url }: { message?: string; email?: string; url?: string },
+    req
+  ): Promise<boolean> {
     req.notify({
       type: "GOT_FEEDBACK",
       url,
@@ -61,7 +84,12 @@ export default class MutationResolver {
     return true;
   }
 
-  reject_skin = requireAuthed(async ({ md5 }, req) => {
+  /** @gqlField */
+  reject_skin(args: { md5: string }, req): Promise<boolean> {
+    return this._reject_skin(args, req);
+  }
+
+  _reject_skin = requireAuthed(async ({ md5 }, req) => {
     req.log(`Rejecting skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5Assert(req.ctx, md5);
     if (skin == null) {
@@ -72,7 +100,12 @@ export default class MutationResolver {
     return true;
   });
 
-  approve_skin = requireAuthed(async ({ md5 }, req) => {
+  /** @gqlField */
+  approve_skin(args: { md5: string }, req): Promise<boolean> {
+    return this._approve_skin(args, req);
+  }
+
+  _approve_skin = requireAuthed(async ({ md5 }, req) => {
     req.log(`Approving skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
@@ -83,7 +116,12 @@ export default class MutationResolver {
     return true;
   });
 
-  mark_skin_nsfw = requireAuthed(async ({ md5 }, req) => {
+  /** @gqlField */
+  mark_skin_nsfw(args: { md5: string }, req): Promise<boolean> {
+    return this._mark_skin_nsfw(args, req);
+  }
+
+  _mark_skin_nsfw = requireAuthed(async ({ md5 }, req) => {
     req.log(`Approving skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
@@ -94,7 +132,11 @@ export default class MutationResolver {
     return true;
   });
 
-  async request_nsfw_review_for_skin({ md5 }, req) {
+  /** @gqlField */
+  async request_nsfw_review_for_skin(
+    { md5 }: { md5: string },
+    req
+  ): Promise<boolean> {
     req.log(`Reporting skin with hash "${md5}"`);
     // Blow up if there is no skin with this hash
     await SkinModel.fromMd5Assert(req.ctx, md5);

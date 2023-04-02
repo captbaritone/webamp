@@ -1,5 +1,7 @@
+/** @gqlType User */
 export default class UserResolver {
-  username(_args, { ctx }) {
+  /** @gqlField */
+  username(_args: never, { ctx }): string {
     return ctx.username;
   }
 }

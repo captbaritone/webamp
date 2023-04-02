@@ -1,7 +1,9 @@
+import { Int } from "grats";
 import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
 
+/** @gqlType */
 export default class ModernSkinsConnection {
   _first: number;
   _offset: number;
@@ -14,12 +16,14 @@ export default class ModernSkinsConnection {
     return query;
   }
 
-  async count() {
+  /** @gqlField */
+  async count(): Promise<Int> {
     const count = await this._getQuery().count("*", { as: "count" });
-    return count[0].count;
+    return Number(count[0].count);
   }
 
-  async nodes(_args, ctx) {
+  /** @gqlField */
+  async nodes(_args: never, ctx): Promise<ModernSkinResolver[]> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)

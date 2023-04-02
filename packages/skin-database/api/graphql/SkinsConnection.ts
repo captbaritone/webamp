@@ -3,6 +3,8 @@ import * as Skins from "../../data/skins";
 import { knex } from "../../db";
 import SkinResolver from "./resolvers/SkinResolver";
 import LRU from "lru-cache";
+import { Int } from "grats";
+import { ISkin } from "./resolvers/CommonSkinResolver";
 
 const options = {
   max: 100,
@@ -34,12 +36,13 @@ async function getSkinMuseumPageFromCache(first: number, offset: number) {
   return skins;
 }
 
+/** @gqlType */
 export default class SkinsConnection {
   _first: number;
   _offset: number;
-  _sort: string;
-  _filter: string;
-  constructor(first: number, offset: number, sort: string, filter: string) {
+  _sort?: string;
+  _filter?: string;
+  constructor(first: number, offset: number, sort?: string, filter?: string) {
     this._first = first;
     this._offset = offset;
     this._filter = filter;
@@ -73,16 +76,18 @@ export default class SkinsConnection {
     return query;
   }
 
-  async count() {
+  /** @gqlField */
+  async count(): Promise<Int> {
     if (this._sort === "MUSEUM") {
       // This is the common case, so serve it from cache.
       return getMuseumSkinCountFromCache();
     }
     const count = await this._getQuery().count("*", { as: "count" });
-    return count[0].count;
+    return Number(count[0].count);
   }
 
-  async nodes(args, ctx) {
+  /** @gqlField */
+  async nodes(args: never, ctx): Promise<ISkin[]> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(

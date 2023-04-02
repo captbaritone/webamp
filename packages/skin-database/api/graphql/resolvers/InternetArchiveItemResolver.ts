@@ -1,29 +1,37 @@
 import IaItemModel from "../../../data/IaItemModel";
+import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
 
+/** @gqlType InternetArchiveItem */
 export default class InternetArchiveItemResolver {
   _model: IaItemModel;
   constructor(model: IaItemModel) {
     this._model = model;
   }
-  identifier() {
+  /** @gqlField */
+  identifier(): string {
     return this._model.getIdentifier();
   }
-  url() {
+  /** @gqlField */
+  url(): string {
     return this._model.getUrl();
   }
-  metadata_url() {
+  /** @gqlField */
+  metadata_url(): string {
     return this._model.getMetadataUrl();
   }
 
-  last_metadata_scrape_date_UNSTABLE() {
+  /** @gqlField */
+  last_metadata_scrape_date_UNSTABLE(): string | null {
     return this._model.getMetadataTimestamp();
   }
 
-  raw_metadata_json() {
+  /** @gqlField */
+  raw_metadata_json(): string | null {
     return this._model.getMetadataJSON();
   }
-  async skin() {
+  /** @gqlField */
+  async skin(): Promise<ISkin | null> {
     const skin = await this._model.getSkin();
     if (skin == null) {
       return null;

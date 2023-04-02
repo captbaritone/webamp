@@ -1,5 +1,18 @@
+import { ID } from "grats";
+
+/**
+ * A globally unique object. The `id` here is intended only for use within
+ * GraphQL.
+ * https://graphql.org/learn/global-object-identification/
+ *
+ * @gqlInterface Node
+ */
 export interface NodeResolver {
-  id({ id }): Promise<string>;
+  /**
+   * @gqlField
+   * @killsParentOnException
+   */
+  id(): ID;
   __typename: string;
 }
 

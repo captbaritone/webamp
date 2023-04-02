@@ -1,12 +1,17 @@
+import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
 import TweetResolver from "./resolvers/TweetResolver";
 
+/** @gqlEnum */
+export type TweetsSortOption = "LIKES" | "RETWEETS";
+
+/** @gqlType */
 export default class TweetsConnection {
   _first: number;
   _offset: number;
-  _sort: string;
-  constructor(first: number, offset: number, sort: string) {
+  _sort?: TweetsSortOption;
+  constructor(first: number, offset: number, sort?: TweetsSortOption) {
     this._first = first;
     this._offset = offset;
     this._sort = sort;
@@ -23,12 +28,20 @@ export default class TweetsConnection {
     return query;
   }
 
-  async count() {
+  /**
+   * The total number of tweets
+   * @gqlField
+   */
+  async count(): Promise<Int> {
     const count = await this._getQuery().count("*", { as: "count" });
-    return count[0].count;
+    return Number(count[0].count);
   }
 
-  async nodes(args, ctx) {
+  /**
+   * The list of tweets
+   * @gqlField
+   */
+  async nodes(args: never, ctx): Promise<TweetResolver[]> {
     const tweets = await this._getQuery()
       .select()
       .limit(this._first)

@@ -599,28 +599,28 @@ type Mutation {
 
   **Note:** Requires being logged in
   """
-  reject_skin(md5: String): Boolean
+  reject_skin(md5: String!): Boolean
 
   """
   Approve skin for tweeting
 
   **Note:** Requires being logged in
   """
-  approve_skin(md5: String): Boolean
+  approve_skin(md5: String!): Boolean
 
   """
   Mark a skin as NSFW
 
   **Note:** Requires being logged in
   """
-  mark_skin_nsfw(md5: String): Boolean
+  mark_skin_nsfw(md5: String!): Boolean
 
   """
   Request that an admin check if this skin is NSFW.
   Unlike other review mutaiton endpoints, this one does not require being logged
   in.
   """
-  request_nsfw_review_for_skin(md5: String): Boolean
+  request_nsfw_review_for_skin(md5: String!): Boolean
 }
 
 """
@@ -695,7 +695,7 @@ type Query {
 
   https://graphql.org/learn/global-object-identification/
   """
-  node(id: ID): Node
+  node(id: ID!): Node
 
   """
   The currently authenticated user, if any.
