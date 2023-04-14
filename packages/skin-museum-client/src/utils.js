@@ -76,7 +76,7 @@ export function uniqueId() {
 
 export function filenameIsReadme(filename) {
   return (
-    filename.match(/\.txt$/) &&
+    filename.match(/\.txt$/i) &&
     ![
       "genex.txt",
       "genexinfo.txt",
