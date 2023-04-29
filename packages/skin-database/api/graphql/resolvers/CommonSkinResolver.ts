@@ -111,7 +111,7 @@ export interface ISkin {
   average_color(): string | null;
 }
 
-export default class CommonSkinResolver {
+export default abstract class CommonSkinResolver {
   _model: SkinModel;
   constructor(model: SkinModel) {
     this._model = model;
