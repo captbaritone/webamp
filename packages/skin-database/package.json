@@ -28,7 +28,7 @@
     "express-graphql": "^0.12.0",
     "express-sitemap-xml": "^2.0.0",
     "graphql": "14.7.0",
-    "grats": "^0.0.0-main-44ac2e23",
+    "grats": "^0.0.0-main-8de1c8ac",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
@@ -56,8 +56,7 @@
     "cli": "ts-node --transpile-only ./cli.ts",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
-    "grats": "grats --output=./api/graphql/grats-schema.graphql",
-    "grats-progress": "yarn grats && graphql-schema-diff --fail-on-all-changes --sort-schema api/graphql/schema.graphql api/graphql/grats-schema.graphql"
+    "grats": "grats --output=./api/graphql/schema.graphql"
   },
   "prettier": {},
   "devDependencies": {
