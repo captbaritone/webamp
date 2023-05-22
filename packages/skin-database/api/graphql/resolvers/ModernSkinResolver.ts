@@ -7,6 +7,7 @@ import ReviewResolver from "./ReviewResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import TweetResolver from "./TweetResolver";
+import { XMLParser } from "fast-xml-parser";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -109,11 +110,45 @@ export default class ModernSkinResolver
     return null;
   }
 
-  /**
-   * @gqlField
-   * @deprecated Needed for migration */
-  screenshot_url(): string | null {
-    return null;
+  /** @gqlField */
+  async screenshot_url(): Promise<string | null> {
+    const archiveFiles = await this._model.getArchiveFiles();
+    const skinXml = archiveFiles.find((f) =>
+      f.getFileName().match(/skin\.xml$/i)
+    );
+
+    if (skinXml == null) {
+      return null;
+    }
+    const xmlContent = await skinXml.getTextContent();
+    if (xmlContent == null) {
+      return null;
+    }
+
+    const parser = new XMLParser();
+    const parsedXml = parser.parse(xmlContent);
+    const screenshotPath =
+      parsedXml?.WinampAbstractionLayer?.skininfo?.screenshot;
+    if (screenshotPath == null) {
+      return null;
+    }
+
+    const screenshotFile = archiveFiles.find((f) => {
+      const fileName = f.getFileName().toLowerCase();
+      const normalizedScreenshotPath = screenshotPath.toLowerCase();
+      return (
+        fileName === normalizedScreenshotPath ||
+        fileName === `/${normalizedScreenshotPath}` ||
+        fileName === `\\${normalizedScreenshotPath}`
+      );
+    });
+
+    console.log({ screenshotFile });
+    if (screenshotFile == null) {
+      return null;
+    }
+
+    return screenshotFile.getUrl();
   }
   /**
    * @gqlField

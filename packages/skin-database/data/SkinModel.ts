@@ -350,15 +350,14 @@ export default class SkinModel {
       return 0;
     }
     const text = await region.getTextContent();
-    if(text == null) {
+    if (text == null) {
       return 0;
     }
     try {
-
-    return getTransparentAreaSize(text);
-    } catch(e) {
-      console.error(`Failed: ${this.getMd5()}`)
-      return 0
+      return getTransparentAreaSize(text);
+    } catch (e) {
+      console.error(`Failed: ${this.getMd5()}`);
+      return 0;
     }
   }
 

@@ -169,7 +169,7 @@ export async function identifierExists(identifier: string): Promise<boolean> {
 }
 
 async function getNewIdentifier(filename: string): Promise<string> {
-  // The internet archvie has a max identifier length of 80 chars.
+  // The internet archive has a max identifier length of 80 chars.
   const identifierBase = `winampskins_${sanitize(
     path.parse(filename).name
   )}`.slice(0, 76);
@@ -222,6 +222,14 @@ export async function syncToArchive(handler: DiscordEventHandler) {
   await Parallel.map(
     unarchived,
     async ({ md5 }) => {
+      if (
+        md5 === "513fdd06bf39391e52f3ac5b233dd147" ||
+        md5 === "91477bec2b599bc5085f87f0fca3a4d5"
+      ) {
+        // The internet archive claims this one is corrupt for some reason.
+        console.warn(`Skipping this skin. It's known to not upload correctly.`);
+        return null;
+      }
       const skin = await SkinModel.fromMd5Assert(ctx, md5);
       try {
         console.log(`Attempting to upload ${md5}`);
@@ -231,18 +239,14 @@ export async function syncToArchive(handler: DiscordEventHandler) {
       } catch (e) {
         console.log("Archive failed...");
         errorCount++;
-        // The internet archive claims this one is corrupt for some reason.
-        if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
-          console.warn(`This skin is known to not upload correctly.`);
-        }
         if (/error checking archive/.test(e.message)) {
-          console.log(`Corrupt archvie: ${skin.getMd5()}`);
+          console.log(`Corrupt archive: ${skin.getMd5()}`);
         } else if (
           /archive files are not allowed to contain encrypted content/.test(
             e.message
           )
         ) {
-          console.log(`Corrupt archvie (encrypted): ${skin.getMd5()}`);
+          console.log(`Corrupt archive (encrypted): ${skin.getMd5()}`);
         } else if (/case alias may already exist/.test(e.message)) {
           console.log(
             `Invalid name (case alias): ${skin.getMd5()} with ${e.message}`

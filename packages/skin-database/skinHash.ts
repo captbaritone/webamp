@@ -13,7 +13,10 @@ type FileData = {
 };
 
 function mightBeText(filename: string): boolean {
-  return !/\.(bmp|pdf|png|zip|wsz|cur|ani|jpg|jpeg|db|gif|avs|psd|psp|ico|ttf|milk|bak|maki|m|doc|tmp|_bm|ai|log|uue|)$/i.test(
+  if (/skin\.xml/i.test(filename)) {
+    return true;
+  }
+  return !/\.(bmp|pdf|png|zip|wsz|cur|ani|jpg|jpeg|db|gif|avs|psd|psp|ico|ttf|milk|bak|maki|m|doc|tmp|_bm|ai|log|uue|xml)$/i.test(
     filename
   );
 }
@@ -21,7 +24,8 @@ function mightBeText(filename: string): boolean {
 async function getFileData(file: JSZip.JSZipObject): Promise<FileData | null> {
   try {
     let textContent: string | null = null;
-    if (mightBeText(file.name)) {
+    const extractText = mightBeText(file.name);
+    if (extractText) {
       textContent = await file.async("text");
     }
     const blob = await file.async("nodebuffer");
@@ -56,19 +60,24 @@ export async function setHashesForSkin(skin: SkinModel): Promise<void> {
   const hashes = await getSkinFileData(skin);
   const rows = hashes
     .filter(notEmpty)
-    .map(({ fileName, md5, date, isDirectory }) => {
-      return {
-        skin_md5: skin.getMd5(),
-        file_name: fileName,
-        file_md5: md5, // TODO: Consider using an id into file_info table
-        file_date: date,
-        // text_content: textContent,
-        // uncompressed_size: uncompressedSize,
-        is_directory: isDirectory,
-      };
-    });
+    .map(
+      ({ fileName, md5, date, isDirectory, textContent, uncompressedSize }) => {
+        return {
+          skin_md5: skin.getMd5(),
+          file_name: fileName,
+          file_md5: md5, // TODO: Consider using an id into file_info table
+          file_date: date,
+          text_content: textContent,
+          uncompressed_size: uncompressedSize,
+          is_directory: isDirectory,
+        };
+      }
+    );
   await knex("archive_files").where("skin_md5", skin.getMd5()).delete();
-  await knex("archive_files").insert(rows);
+  // Avoid bulk insert because size can be large
+  for (const row of rows) {
+    await knex("archive_files").insert(row);
+  }
 
   const fileInfoRows = hashes
     .filter(notEmpty)

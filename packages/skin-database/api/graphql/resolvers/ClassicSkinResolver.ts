@@ -95,7 +95,7 @@ export default class ClassicSkinResolver
   /**
    * URL of a screenshot of the skin
    * @gqlField */
-  screenshot_url(): string {
+  async screenshot_url(): Promise<string> {
     return this._model.getScreenshotUrl();
   }
   /**

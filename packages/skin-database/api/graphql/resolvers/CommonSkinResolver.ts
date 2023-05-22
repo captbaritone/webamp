@@ -90,10 +90,8 @@ export interface ISkin {
    */
   webamp_url(): string | null;
 
-  /**
-   * @gqlField
-   * @deprecated Needed for migration */
-  screenshot_url(): string | null;
+  /** @gqlField */
+  screenshot_url(): Promise<string | null>;
 
   /**
    * @gqlField

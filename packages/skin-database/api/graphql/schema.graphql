@@ -192,7 +192,7 @@ type ModernSkin implements Node & Skin {
   reivew page, or via the Discord bot.
   """
   reviews: [Review]
-  screenshot_url: String @deprecated(reason: "Needed for migration")
+  screenshot_url: String
   """Has the skin been tweeted?"""
   tweeted: Boolean
   """List of @winampskins tweets that mentioned the skin."""
@@ -358,7 +358,7 @@ interface Skin {
   reivew page, or via the Discord bot.
   """
   reviews: [Review]
-  screenshot_url: String @deprecated(reason: "Needed for migration")
+  screenshot_url: String
   """Has the skin been tweeted?"""
   tweeted: Boolean
   """List of @winampskins tweets that mentioned the skin."""

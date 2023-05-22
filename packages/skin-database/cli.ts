@@ -74,7 +74,7 @@ program
   .command("share")
   .description(
     "Share a skin on Twitter and Instagram. If no md5 is " +
-    "given, random approved skins are shared."
+      "given, random approved skins are shared."
   )
   .argument("[md5]", "md5 of the skin to share")
   .option("-t, --twitter", "Share on Twitter")
@@ -107,7 +107,7 @@ program
   .option(
     "--delete",
     "Delete a skin from the database, including its S3 files " +
-    "CloudFlare cache and seach index entries."
+      "CloudFlare cache and seach index entries."
   )
   .option(
     "--hide",
@@ -116,7 +116,7 @@ program
   .option(
     "--delete-local",
     "Delete a skin from the database only, NOT including its S3 files " +
-    "CloudFlare cache and seach index entries."
+      "CloudFlare cache and seach index entries."
   )
   .option("--index", "Update the seach index for a skin.")
   .option(
@@ -195,18 +195,18 @@ program
   .option(
     "--fetch-metadata <count>",
     "Fetch missing metadata for <count> items from the Internet " +
-    "Archive. Currently it only fetches missing metadata. In the " +
-    "future it could refresh stale metadata."
+      "Archive. Currently it only fetches missing metadata. In the " +
+      "future it could refresh stale metadata."
   )
   .option(
     "--fetch-items",
     "Seach the Internet Archive for items that we don't know about" +
-    "and add them to our database."
+      "and add them to our database."
   )
   .option(
     "--update-metadata <count>",
     "Find <count> items in our database that have incorrect or incomplete " +
-    "metadata, and update the Internet Archive"
+      "metadata, and update the Internet Archive"
   )
   .option(
     "--upload-new",
@@ -240,7 +240,7 @@ program
   .command("stats")
   .description(
     "Report information about skins in the database. " +
-    "Identical to `!stats` in Discord."
+      "Identical to `!stats` in Discord."
   )
   .action(async () => {
     console.table([await Skins.getStats()]);
@@ -286,17 +286,17 @@ program
   .option(
     "--likes",
     "Scrape @winampskins tweets for like and retweet counts, " +
-    "and update the database."
+      "and update the database."
   )
   .option(
     "--milestones",
     "Check the most recent @winampskins tweets to see if they have " +
-    "passed a milestone. If so, notify the Discord channel."
+      "passed a milestone. If so, notify the Discord channel."
   )
   .option(
     "--followers",
     "Check if @winampskins has passed a follower count milestone. " +
-    "If so, notify the Discord channel."
+      "If so, notify the Discord channel."
   )
   .action(async ({ likes, milestones, followers }) => {
     if (likes) {
@@ -325,7 +325,7 @@ program
   .option(
     "--upload-ia-screenshot <md5>",
     "Upload a screenshot of a skin to the skin's Internet Archive itme. " +
-    "[[Warning!]] This might result in multiple screenshots on the item."
+      "[[Warning!]] This might result in multiple screenshots on the item."
   )
   .option(
     "--upload-missing-screenshots",
@@ -377,7 +377,7 @@ program
         [500]
       );
       const md5s = rows.map((row) => row.md5);
-      console.log(md5s.length)
+      console.log(md5s.length);
       console.log(await Skins.updateSearchIndexs(ctx, md5s));
     }
     if (refreshContentHash) {
@@ -401,17 +401,22 @@ program
       const skinRows = await knex("skins")
         .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
         .leftJoin("file_info", "file_info.file_md5", "archive_files.file_md5")
-        .where("skin_type", 1)
+        .where("skin_type", "in", [1, 2])
         .where((builder) => {
           return builder.where("file_info.file_md5", null);
         })
-        .limit(90000)
+        .limit(1000)
         .groupBy("skins.md5")
         .select();
       console.log(`Found ${skinRows.length} skins to update`);
       const skins = skinRows.map((row) => new SkinModel(ctx, row));
       for (const skin of skins) {
-        await setHashesForSkin(skin);
+        console.log("Working on", skin.getMd5(), await skin.getFileName());
+        try {
+          await setHashesForSkin(skin);
+        } catch (e) {
+          console.error(e);
+        }
         // await Skins.setContentHash(skin.getMd5());
         process.stdout.write(".");
       }
@@ -429,15 +434,15 @@ program
   });
 
 async function main() {
-  process.on('unhandledRejection', (reason, promise) => {
-    console.error("Unhanded rejection")
-    console.error(reason, promise)
+  process.on("unhandledRejection", (reason, promise) => {
+    console.error("Unhanded rejection");
+    console.error(reason, promise);
   });
   try {
     await program.parseAsync(process.argv);
   } finally {
     knex.destroy();
-    console.log("CLOSING THE LOGGER")
+    console.log("CLOSING THE LOGGER");
     logger.close();
   }
 }

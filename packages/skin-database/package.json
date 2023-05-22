@@ -27,6 +27,7 @@
     "express-fileupload": "^1.1.7-alpha.3",
     "express-graphql": "^0.12.0",
     "express-sitemap-xml": "^2.0.0",
+    "fast-xml-parser": "^4.2.2",
     "graphql": "14.7.0",
     "grats": "^0.0.0-main-8de1c8ac",
     "imagemin": "^7.0.0",
@@ -49,7 +50,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "ts-node --transpile-only api/server.ts",
-    "dev": "NODE_ENV=development ts-node --transpile-only api/server.ts",
+    "dev": "NODE_ENV=production ts-node --transpile-only api/server.ts",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
