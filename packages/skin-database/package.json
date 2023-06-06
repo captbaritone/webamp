@@ -27,7 +27,7 @@
     "express-fileupload": "^1.1.7-alpha.3",
     "express-graphql": "^0.12.0",
     "express-sitemap-xml": "^2.0.0",
-    "fast-xml-parser": "^4.2.2",
+    "fast-xml-parser": "^4.2.4",
     "graphql": "14.7.0",
     "grats": "^0.0.0-main-8de1c8ac",
     "imagemin": "^7.0.0",
