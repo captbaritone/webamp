@@ -113,18 +113,18 @@ class Interpreter {
       }
 
       switch (command.opcode) {
-        // push
+        // push 0x01
         case 1: {
           const offsetIntoVariables = command.arg;
           this.push(this.variables[offsetIntoVariables]);
           break;
         }
-        // pop
+        // pop 0x02
         case 2: {
           this.stack.pop();
           break;
         }
-        // popTo
+        // popTo 0x03
         case 3: {
           const a = this.stack.pop();
           const offsetIntoVariables = command.arg;
@@ -144,7 +144,7 @@ class Interpreter {
           current.value = a.value;
           break;
         }
-        // ==
+        // == 0x08
         case 8: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -165,7 +165,7 @@ class Interpreter {
           this.push(result);
           break;
         }
-        // !=
+        // != 0x09
         case 9: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -186,7 +186,7 @@ class Interpreter {
           this.push(result);
           break;
         }
-        // >
+        // > 0x0a
         case 10: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -218,7 +218,7 @@ class Interpreter {
           this.push(V.newInt(b.value > a.value));
           break;
         }
-        // >=
+        // >= 0x0b
         case 11: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -252,7 +252,7 @@ class Interpreter {
           this.push(V.newInt(b.value >= a.value));
           break;
         }
-        // <
+        // < 0x0c
         case 12: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -285,7 +285,7 @@ class Interpreter {
           this.push(V.newInt(b.value < a.value));
           break;
         }
-        // <=
+        // <= 0x0d
         case 13: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -318,7 +318,7 @@ class Interpreter {
           this.push(V.newInt(b.value <= a.value));
           break;
         }
-        // jumpIf
+        // jumpIf 0x10
         case 16: {
           const value = this.stack.pop();
           // This seems backwards. Seems like we're doing a "jump if not"
@@ -328,7 +328,7 @@ class Interpreter {
           ip = command.arg - 1;
           break;
         }
-        // jumpIfNot
+        // jumpIfNot 0x11
         case 17: {
           const value = this.stack.pop();
           // This seems backwards. Same as above
@@ -338,13 +338,13 @@ class Interpreter {
           ip = command.arg - 1;
           break;
         }
-        // jump
+        // jump 0x12
         case 18: {
           ip = command.arg - 1;
           break;
         }
-        // call
-        // strangeCall (seems to behave just like regular call)
+        // call 0x18
+        // strangeCall (seems to behave just like regular call)  0x70
         case 24:
         case 112: {
           const methodOffset = command.arg;
@@ -399,8 +399,12 @@ class Interpreter {
           try {
             // result = obj.value[methodName](...methodArgs);
             let afunction = obj.value[methodName];
-            if(afunction.constructor.name === 'AsyncFunction'){
-              console.log('calling fun type:',afunction.constructor.name, `@${klass.name}.${methodName}`)
+            if (afunction.constructor.name === "AsyncFunction") {
+              console.log(
+                "calling fun type:",
+                afunction.constructor.name,
+                `@${klass.name}.${methodName}`
+              );
               // result = await afunction(...methodArgs);
               result = await obj.value[methodName](...methodArgs);
             } else {
@@ -452,7 +456,7 @@ class Interpreter {
           this.push({ type: returnType, value: result } as any);
           break;
         }
-        // callGlobal
+        // callGlobal 0x19
         case 25: {
           this.callStack.push(ip);
           const offset = command.arg;
@@ -460,19 +464,19 @@ class Interpreter {
           ip = offset - 1; // -1 because we ++ after the switch
           break;
         }
-        // return
+        // return 0x21
         case 33: {
           ip = this.callStack.pop();
           // TODO: Stack protection?
           break;
         }
-        // complete
+        // complete 0x28
         case 40: {
           // noop for now
           // assume(false, "OPCODE: complete");
           break;
         }
-        // mov
+        // mov 0x30
         case 48: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -502,7 +506,7 @@ class Interpreter {
           this.push(a);
           break;
         }
-        // postinc
+        // postinc 0x38
         case 56: {
           const a = this.stack.pop();
           switch (a.type) {
@@ -517,7 +521,7 @@ class Interpreter {
           this.push({ type: a.type, value: aValue });
           break;
         }
-        // postdec
+        // postdec 0x39
         case 57: {
           const a = this.stack.pop();
           switch (a.type) {
@@ -532,7 +536,7 @@ class Interpreter {
           this.push({ type: a.type, value: aValue });
           break;
         }
-        // preinc
+        // preinc 0x3a
         case 58: {
           const a = this.stack.pop();
           switch (a.type) {
@@ -546,7 +550,7 @@ class Interpreter {
           this.push(a);
           break;
         }
-        // predec
+        // predec 0x3b
         case 59: {
           const a = this.stack.pop();
           switch (a.type) {
@@ -560,7 +564,7 @@ class Interpreter {
           this.push(a);
           break;
         }
-        // + (add)
+        // + (add) 0x40
         case 64: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -600,7 +604,7 @@ class Interpreter {
           this.push({ type: a.type, value: b_value + a_value });
           break;
         }
-        // - (subtract)
+        // - (subtract) 0x41
         case 65: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -622,7 +626,7 @@ class Interpreter {
           this.push({ type: a.type, value: b.value - a.value });
           break;
         }
-        // * (multiply)
+        // * (multiply) 0x42
         case 66: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -644,7 +648,7 @@ class Interpreter {
           this.push({ type: a.type, value: b.value * a.value });
           break;
         }
-        // / (divide)
+        // / (divide) 0x43
         case 67: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -665,7 +669,7 @@ class Interpreter {
           this.push({ type: a.type, value: b.value / a.value });
           break;
         }
-        // % (mod)
+        // % (mod) 0x44
         case 68: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -693,23 +697,23 @@ class Interpreter {
           }
           break;
         }
-        // & (binary and)
+        // & (binary and) 0x48
         case 72: {
           assume(false, "Unimplimented & operator");
           break;
         }
-        // | (binary or)
+        // | (binary or) 0x49
         case 73: {
           assume(false, "Unimplimented | operator");
           break;
         }
-        // ! (not)
+        // ! (not) 0x4a
         case 74: {
           const a = this.stack.pop();
           this.push(V.newInt(!a.value));
           break;
         }
-        // - (negative)
+        // - (negative) 0x4c
         case 76: {
           const a = this.stack.pop();
           switch (a.type) {
@@ -722,7 +726,7 @@ class Interpreter {
           this.push({ type: a.type, value: -a.value });
           break;
         }
-        // logAnd (&&)
+        // logAnd (&&) 0x50
         case 80: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -746,7 +750,7 @@ class Interpreter {
           }
           break;
         }
-        // logOr ||
+        // logOr || 0x51
         case 81: {
           const a = this.stack.pop();
           const b = this.stack.pop();
@@ -772,17 +776,58 @@ class Interpreter {
           }
           break;
         }
-        // <<
+        // << 0x58
         case 88: {
-          assume(false, "Unimplimented << operator");
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          switch (a.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOLEAN":
+            case "NULL":
+              throw new Error("Tried to left shift non-numbers.88a");
+          }
+          switch (b.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOLEAN":
+              throw new Error("Tried to left shift non-numbers.88b");
+            // Need to coerce LHS if not int, RHS is always int (enforced by compiler)
+            case "FLOAT":
+            case "DOUBLE":
+            case "INT":
+              this.push({ type: a.type, value: b.value << a.value });
+              break;
+          }
           break;
         }
-        // >>
+        // >> 0x59
         case 89: {
-          assume(false, "Unimplimented >> operator");
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          switch (a.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOLEAN":
+            case "NULL":
+              throw new Error("Tried to right shift non-numbers.89a");
+          }
+          switch (b.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOLEAN":
+              throw new Error("Tried to right shift non-numbers.89b");
+            // Need to coerce LHS if not int, RHS is always int (enforced by compiler)
+            case "FLOAT":
+            case "DOUBLE":
+            case "INT":
+              this.push({ type: a.type, value: b.value >> a.value });
+              break;
+          }
+          break;
           break;
         }
-        // new
+        // new 0x60
         case 96: {
           const classesOffset = command.arg;
           const guid = this.classes[classesOffset];
@@ -791,7 +836,7 @@ class Interpreter {
           this.push({ type: "OBJECT", value: klassInst });
           break;
         }
-        // delete
+        // delete 0x61
         case 97: {
           const aValue = this.stack.pop();
           // TODO: Cleanup the object?
