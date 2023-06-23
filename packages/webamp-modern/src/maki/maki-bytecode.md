@@ -8,15 +8,15 @@ A Maki binary file consists of several sections in a fixed order. There are seve
 
 The sections are:
 
-1. Header
-2. Types/Classes
-3. Methods
-4. Variables
-5. Strings
-6. Bindings
-7. Code
-8. Filepaths (debug)
-9. Instruction Line Numbers (debug)
+1. [Header](#1-header)
+2. [Types/Classes](#2-typesclasses)
+3. [Methods](#3-methods)
+4. [Variables](#4-variables)
+5. [Strings](#5-strings)
+6. [Bindings](#6-bindings)
+7. [Code](#7-code)
+8. [Filepaths (debug)](#8-filepaths-debug)
+9. [Instruction Line Numbers (debug)](#9-instruction-line-numbers-debug)
 
 _Note: All numbers are little endian._
 
