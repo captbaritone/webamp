@@ -1,14 +1,24 @@
 # Maki Bytecode
 
-Maki is a custom scripting language implemented to support user-defined user interfaces for "modern" Winamp skins. Maki compiles to a custom bytecode which gets interpreterd by Winamp's skin engine. Neither the compiler nor the interpreter are open source, but as part of my [Webamp](https://webamp.org/) project, I reverse engineered the bytecode, and wrote a JavaScript interpreter for it. This document is an attempt to document what I've learned about the Maki bytecode, its structure, and interpretation in the hopes that it may prove useful if someone else wants to write a Maki interpreter, compiler, or simply better understand how modern Winamp skins work.
+Maki is a custom scripting language implemented to support user-defined user interfaces for "modern" Winamp skins. Maki compiles to a custom bytecode which gets interpreted by Winamp's skin engine. Neither the compiler nor the interpreter are open source, nor is the binary format documented. But, as part of the [Webamp](https://webamp.org/) project, I reverse engineered the bytecode, and wrote a JavaScript interpreter for it. This document is an attempt to document what I've learned about the Maki bytecode, its structure, and interpretation, in the hopes that it may prove useful if someone else wants to write a Maki interpreter, compiler, or simply better understand how modern Winamp skins work.
 
 ## Structure of a `.maki` file
 
-The bytecode contained in a .maki file takes the following form (I think. I'm still trying to grock it). These are my notes trying to write down what I understand so far. Most of this was infered from reading the decompiler mentioned above.
+A Maki binary file consists of several sections in a fixed order. There are seven sections which are always present. If the binary was compiled with the `\debug` flag enabled, there are two additional sections containing metadata not strictly needed for execution. There are no section headers, so the only way to know where one section ends and the next begins is to read them sequentially.
 
-The goal of this document is to give one enough information to implement a Maki virtual machine.
+The sections are:
 
-Note: All numbers are little endian.
+1. Header
+2. Types/Classes
+3. Methods
+4. Variables
+5. Strings
+6. Bindings
+7. Code
+8. Filepaths (debug)
+9. Instruction Line Numbers (debug)
+
+_Note: All numbers are little endian._
 
 ### 1. Header
 
@@ -40,7 +50,7 @@ In essence, this section contains an array of GUIDs using an encoding.
 
 ### 3. Methods
 
-This section contains a table of method declarations. Later sections of the bytecode, like call opcodes, will reference methods via their offset into this table.
+This section contains a table of method declarations. Later sections of the bytecode, like `call` opcodes, will reference methods via their offset into this table.
 
 Note that some methods are not user-callable, but are conceptually more similar event listeners. For example, the `System.onScriptLoaded()` method is called by the system when the script is loaded. We'll learn more about these in the "bindings" section below.
 
@@ -56,7 +66,7 @@ For each method:
 
 This section contains a table of variable declarations. Later sections of the bytecode, like call opcodes, will reference variables via their offset into this table.
 
-These operate kinda like registers in that the compiler flattens all assignments out into a fixed size flat list. I'm not sure if the compiler tries to apply any optimizatinons to reuse them, or if there is simply a 1-1 mapping. Note that Maki does not support recursion or lambdas, so this flat list is sufficient.
+These operate kinda like registers in that the compiler flattens all assignments out into a fixed size flat list. I'm not sure if the compiler tries to apply any optimizations to reuse them, or if there is simply a 1-1 mapping. Note that Maki does not support recursion or lambdas, so this flat list is sufficient.
 
 1. A u32 indicating the length of the array/table.
 
@@ -64,9 +74,9 @@ For each variable:
 
 1. u8 type offset
    - For object types (see flag below) this is an offset into the types table indicating the type of this variable.
-   - For subtypes (see flag below) we use the offset into the variables table instead. I suspect this is a bug in our code.
+   - For subtypes (see flag below) we use the offset into the variables table instead.
    - For primitives: 2 = int, 3 = float, 4 = double, 5 = boolean, and 6 = string.
-2. A u8 (boolean) indicating if this is an object (true) or pimitive (false).
+2. A u8 (boolean) indicating if this is an object (true) or primitive (false).
 3. A u16 indicating the subclass. We currently use this as just a boolean flag. Maybe this has more meaning if its 16 bits? Maybe we should really only be reading the first 8 bits?
 4. Two u16s (A and B) indicating the initial value of the variable if it is a boolean or primitive. If it's a boolean, then A is the value. If it's an int, A is the value.
 5. Two mystery u16s (or maybe a u32??)
@@ -129,7 +139,7 @@ For each file path:
 
 1. A string encoded as a u32 indicating the length of the string, followed by that many ascii (utf-8?) bytes.
 
-### 9. Instructon Line Numbers (debug)
+### 9. Instruction Line Numbers (debug)
 
 _This section is only present if the file was compiled with the `/debug` flag._
 
@@ -155,7 +165,7 @@ These are the opcodes as far as I've been able to determine.
 - **Consumes** The number of values popped off the stack by this opcode.
 - **Leaves** The number of values pushed onto the stack by this opcode.
 
-The VM is pretty simple. It maintains a value stack as well as a call stack. Operations push, pop and manipulate values on the value stack, while global function calls may push code offsets onto the call stack, which get popped off and jumpped to by the `return` opcode. Note that Maki does not track call frames, all values are stored in the variables table. Recursion can lead to unepxected results.
+The VM is pretty simple. It maintains a value stack as well as a call stack. Operations push, pop and manipulate values on the value stack, while global function calls may push code offsets onto the call stack, which get popped off and jumped to by the `return` opcode. Note that Maki does not track call frames, all values are stored in the variables table. Recursion can lead to unexpected results.
 
 Conceptually it looks like the values on the value stack are actually expected to always be pointers into the variables table, rather than values directly. This allows opcodes like `mov` to operate on stack values. Push two references onto the stack and then move the value pointed to by the first reference into the location pointed to by the second reference.
 
@@ -179,7 +189,7 @@ Conceptually it looks like the values on the value stack are actually expected t
 | 0x21   | return       | -         |          |        | Pops a code location off the _call stack_ (not the value stack) and jumps to it.                                                                        |
 | 0x28   | complete     | -         |          |        | Unsure what this does. Currently a noop in our implementation                                                                                           |
 | 0x30   | mov          | -         | 2        | 1      | Pops the top value off the stack and assigns it to the second value on the stack. Pushes the top(?) value back onto the stack.                          |
-| 0x38   | postinc      | -         | 1        | 1      | Pushes a new value onto the stack that is one greatter than the top value on the stack.                                                                 |
+| 0x38   | postinc      | -         | 1        | 1      | Pushes a new value onto the stack that is one greater than the top value on the stack.                                                                 |
 | 0x39   | postdev      | -         | 1        | 1      | Pushes a new value onto the stack that is one less than the top value on the stack.                                                                     |
 | 0x3a   | preinc       | -         | 1        | 1      | Increments the top value on the stack.                                                                                                                  |
 | 0x3b   | predec       | -         | 1        | 1      | Decrements the top value on the stack.                                                                                                                  |
@@ -190,8 +200,8 @@ Conceptually it looks like the values on the value stack are actually expected t
 | 0x44   | mod          | -         | 2        | 1      | Divides the second value on the stack by the top value on the stack. Leaves the remainder on the stack.                                                 |
 | 0x48   | binary and   | -         | 2        | 1      | Performs a binary "and" on the top two values on the stack. Leaves the result on the stack.                                                             |
 | 0x49   | binary or    | -         | 2        | 1      | Performs a binary "or" on the top two values on the stack. Leaves the result on the stack.                                                              |
-| 0x41   | not          | -         | 1        | 1      | Interts the trutiness of the top value on teh stack, `!`. Leaves the result on the stack.                                                               |
-| 0x4a   | ???          |           |          |        | Unknown. Seen in dissasembled VM.                                                                                                                       |
+| 0x41   | not          | -         | 1        | 1      | Inverts the truthiness of the top value on teh stack, `!`. Leaves the result on the stack.                                                               |
+| 0x4a   | ???          |           |          |        | Unknown. Seen in disassembled VM.                                                                                                                       |
 | 0x4b   | bitwise not  | -         | 1        | 1      | Takes the bitwise not of the top value on the stack. Leaves the result on the stack. (Compiler cannot parse ~, so not sure how this ever gets emitted). |
 | 0x4c   | neg          | -         | 1        | 1      | Negates the top value on the stack. Leaves the result on the stack.                                                                                     |
 | 0x50   | logical and  | -         | 2        | 1      | Performs a logical "and" on the top two values on the stack. Leaves the result on the stack.                                                            |
@@ -200,7 +210,7 @@ Conceptually it looks like the values on the value stack are actually expected t
 | 0x58   | left shift   | -         | 2        | 1      | Shifts the second value on the stack left by the top value on the stack. Leaves the result on the stack.                                                |
 | 0x60   | new          | type      | 0        | 1      | Creates a new object of the given type. Pushes the new object onto the stack.                                                                           |
 | 0x68   | ???          |           |          |        | Unknown. Seen in `volume_06c50f380955d272ad14002ad6b6eb5b_bc79897771fd3dfa3d0b2de19fcf8af6.maki`                                                        |
-| 0x70   | ???          |           |          |        | Unknown. Seen in dissasembled VM.                                                                                                                       |
+| 0x70   | ???          |           |          |        | Unknown. Seen in disassembled VM.                                                                                                                       |
 | 0x97   | delete       | -         | 1        |        | Pops a value off the stack and deletes it.                                                                                                              |
 
 ## Compiler Flags
@@ -272,41 +282,50 @@ var# |         Code Pointer |                                    What
 
 While we understand the structure of `.maki` files well enough to write a VM for them that appears to work, there is still a few mysteries which would be gratifying to solve.
 
-- [ ] What is the significance of the "FG" magic string?
-- [ ] What are the version numbers created by different versions of the compiler? Does Winamp use these in any way?
-- [ ] What is the 32 bit "something" after the version number?
-- [ ] If a variable is a subtype, should it's type really be a pointer into the `variables` table? Or should it be a pointer into the `types` table?
-- [ ] Why is the variable subclass flag 16 bits. Something more going on here?
-- [ ] Is our decoding of initial ints and doubles correct?
-  - [ ] Try to create a u16 or u32 Int and see if it decodes correctly.
-  - [ ] Try to create a large double and see if it decodes correctly.
-- [ ] What are unint 3 and 4 in the variable declaration?
-- [ ] What is the "system" flag in the variable declaration?
-- [ ] Parse GUIDs more intentionally such that they can serialize directly without having to be reformatted.
-- [ ] Why are method class offsets encoded so weird. I would expect just u32s, but they are u16s with the most significant 8 bits being something else.
-- [ ] Are method names encoded as ascii or utf-8? (We currently parse as utf-8, but I'm not sure if that is correct.)
-- [ ] What is opcdoe 112 and why does it have an extra byte?
-- [ ] What is stack protection?
-- Check how constant strings are encoded
-- Check how method names are encoded (is it even possible to reference a non-ascii method?)
-- Document startup code
-- Document recursion behavior
-- Point to test script
-- Could we look at the compiler in Ghidra and see what the cli flags are?
+- [ ] __Header__
+  - [ ] What is the significance of the "FG" magic string?
+  - [ ] What are the version numbers created by different versions of the compiler? Does Winamp use these in any way?
+  - [ ] What is the 32 bit "something" after the version number?
 
-Opcode questions:
+- [ ] __Methods__
+  - [ ] Why do we need the `0xff` bitmask when reading the class offset?
+  - [ ] What is the second u16?
 
-- [ ] Does does `complete` 0x28 do?
-- [ ] What's the difference between call and "strange call"
-- [ ] Does 0x30 mov actually "move" or is it actually copy? What happens to the old value?
-  - [ ] What does mov mean for newly created scalars like numbers that are the result of add?
-  - [ ] How can this with with the 0x60 "new" opcode?
-- [ ] Is 0x30 pushing the right value back onto the stack? Right now is't pushing the first value back on, but should it be the second?
-- [ ] Does our implementation of 0x38 postinc actually work? Does creating a new value break mov?
-- [ ] Can add operate on strings?
-- [ ] Add tests for left and right shift and document
-- [ ] Validate what "delete" does
-- [ ] Test ~ bitwise compliment
+- [ ] __Variables__
+  - [ ] If a variable is a subtype, should it's type really be a pointer into the `variables` table? Or should it be a pointer into the `types` table?
+  - [ ] Why is the variable subclass flag 16 bits. Something more going on here?
+  - [ ] Is our decoding of initial ints and doubles correct?
+    - [ ] Try to create a u16 or u32 Int and see if it decodes correctly.
+    - [ ] Try to create a large double and see if it decodes correctly.
+  - [ ] What are unint 3 and 4 in the variable declaration?
+  - [ ] Clarify the encoding of floats and doubles in the variable declaration.
+  - [ ] What is the "system" flag in the variable declaration? What does it drive?
+  - [ ] What is the "global" flag in the variable declaration? What does it drive?
+
+- [ ] __Code__
+  - [ ] Update our code to reflect the right immediate types for each opcode
+  - [ ] What is opcode 112 and why does it have an extra byte?
+  - [ ] What is stack protection?
+  - [ ] Document stack protection
+  - [ ] Rigorously read recompiled interpreter to find all opcodes
+  - [ ] Opcode questions
+    - [ ] What is opcode 0x4a?
+    - [ ] What is opcode 0x68?
+    - [ ] What is opcode 0x70?
+    - [ ] What does `complete` 0x28 do?
+    - [ ] Does 0x30 mov actually "move" or is it actually copy? What happens to the old value?
+    - [ ] What's the difference between call and "strange call"
+      - [ ] What does mov mean for newly created scalars like numbers that are the result of add?
+    - [ ] Is 0x30 pushing the right value back onto the stack? Right now is't pushing the first value back on, but should it be the second?
+      - [ ] How can this with with the 0x60 "new" opcode?
+    - [ ] Does our implementation of 0x38 postinc actually work? Does creating a new value break mov?
+    - [ ] Can add operate on strings?
+  - [ ] Validate what "delete" does
+  - [ ] Is it possible to actually get the compiler to emit a ~ bitwise compliment instruction?
+  - [ ] Add tests for left and right shift and document
+
+- [ ] Document startup code. The compiler injects some startup code that tests the VM version number and does some other stuff. Would be good to document what we know about that code.
+- [ ] Could we look at the compiler in Ghidra and see what the cli flags are?
 
 ## Thanks
 
