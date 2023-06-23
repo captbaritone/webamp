@@ -77,7 +77,7 @@ For each variable:
 
 Strings from the code are initialized as values in the variables table. Each string encodes its value and an offset into the variables table where it should be initialized.
 
-1. A 32 bit number defines how many strigns there are.
+1. A 32 bit number defines how many strings there are.
 
 For each string:
 
