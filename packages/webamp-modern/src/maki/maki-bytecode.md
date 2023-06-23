@@ -167,7 +167,14 @@ These are the opcodes as far as I've been able to determine.
 
 The VM is pretty simple. It maintains a value stack as well as a call stack. Operations push, pop and manipulate values on the value stack, while global function calls may push code offsets onto the call stack, which get popped off and jumped to by the `return` opcode. Note that Maki does not track call frames, all values are stored in the variables table. Recursion can lead to unexpected results.
 
-Conceptually it looks like the values on the value stack are actually expected to always be pointers into the variables table, rather than values directly. This allows opcodes like `mov` to operate on stack values. Push two references onto the stack and then move the value pointed to by the first reference into the location pointed to by the second reference.
+One big question I have is what exactly gets stored on the value stack? My current belief is that all values are modeled in the interpreter as a wrapper object that indicates the _type_ of the value, as well as its actual type. These wrapper objects are heap allocated and both the stack and the variables table contain pointers to them.
+
+Instructions which create new values (like `add`) will create a new wrapper object and push it onto the stack. Instructions which write to the variables table (like `mov`) do so by mutating the wrapper object they get from the stack.
+
+There are a few things which make me suspect this is not quite right:
+
+1. How does memory get freed? You can't free it on `pop` since it may be referenced in the variables table.
+2. How does the `delete` opcode work? Does it just remove the variable from the variables table, or does it actually free the memory?
 
 | Opcode | Name         | Immediate | Consumes | Leaves | Notes                                                                                                                                                   |
 | ------ | ------------ | --------- | -------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
