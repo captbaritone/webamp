@@ -111,8 +111,41 @@ These bytes of code consist of individual opcodes. Each opcode consists of:
    - If the opcode has a code offset immediate, a u32 command offset relative to the current position. Note that for some reason we find we need to add 5 to this number. Perhaps it's actually relative to the `pc` which is expected to always point at the next instruction?
    - If the opcode has a variable immediate, a u32 variable offset into the variables table.
    - If the opcode has a method immediate, a u32 method offset into the methods table.
+   - If the opcode has a type immediate, a u32 method offset into the types table.
 3. In some cases, a u32 that is used for stack protection?
 4. If the opcode is 112 (0x70), then an additional u8 whose significance I do not understand.
+
+If the file was _not_ compiled with the `/debug` flag, then this should be the end of the file (EOF). If the file _was_ compiled with the `/debug` flag, then there is additional debug data sections to follow
+
+### 8. Filepaths (debug)
+
+_This section is only present if the file was compiled with the `/debug` flag._
+
+This section contains a list of files that were included in the compilation of this script. This is used to generate debug information when the script is run.
+
+1. A u32 indicating how many file paths there are.
+
+For each file path:
+
+1. A string encoded as a u32 indicating the length of the string, followed by that many ascii (utf-8?) bytes.
+
+### 9. Instructon Line Numbers (debug)
+
+_This section is only present if the file was compiled with the `/debug` flag._
+
+This section contains a list of line numbers for a subset of the instructions.
+
+1. A 32 bit number defines how many instructions are given line numbers.
+
+For each instruction:
+
+1. A u32 indicating the offset into the code section of the instruction.
+2. A u32 indicating the file as an offset into the file paths section.
+3. A u32 indicating the line number.
+
+### 10. End of File
+
+After reading all the above sections, we should be at the end of the file, having consumed all bytes.
 
 ## Opcodes
 
@@ -124,25 +157,116 @@ These are the opcodes as far as I've been able to determine.
 
 The VM is pretty simple. It maintains a value stack as well as a call stack. Operations push, pop and manipulate values on the value stack, while global function calls may push code offsets onto the call stack, which get popped off and jumpped to by the `return` opcode. Note that Maki does not track call frames, all values are stored in the variables table. Recursion can lead to unepxected results.
 
-| Opcode | Name               | Immediate | Consumes | Leaves | Notes                                                                                                |
-| ------ | ------------------ | --------- | -------- | ------ | ---------------------------------------------------------------------------------------------------- |
-| 0x01   | push               | variable  |          | 1      | Pushes the value of the variable onto the stack.                                                     |
-| 0x02   | pop                | -         | 1        |        | Pops the top value off the stack and discards it.                                                    |
-| 0x03   | pop to             | variable  | 1        |        | Pops the top value off the stack and assigns it to a variable.                                       |
-| 0x08   | equal (`==`)       | -         | 2        | 1      |                                                                                                      |
-| 0x09   | not equal (`!=`)   | -         | 2        | 1      |                                                                                                      |
-| 0x0a   | greater than (`>`) | -         | 2        | 1      |                                                                                                      |
-| 0x0b   | less than (`>=`)   | -         | 2        | 1      |                                                                                                      |
-| 0x0c   | less than (`<`)    | -         | 2        | 1      |                                                                                                      |
-| 0x0d   | less than (`<=`)   | -         | 2        | 1      |                                                                                                      |
-| 0x10   | jump if not        | offset    | 1        |        | If value on the stack is falsy, jumps to the given code offset. (Note: Decompiler swaps these names) |
-| 0x11   | jump if            | offset    | 1        |        | If value on the stack is truthy, jumps to the given code offset.                                     |
-| 0x12   | jump               | offset    |          |        | Jumps to the given code offset.                                                                      |
-| 0x18   | call               | method    | args + 1 | 1      | Pops the args off the stack, and then the object. Calls the method on that object with those args.   |
-| 0x19   | call global        | offset    |          |        | Pushes the current program counter onto a call stack and jumps to the provided code offset.          |
-| 0x1a   | return             | -         |          |        | Pops a code location off the _call stack_ (not the value stack) and jumps to it.                     |
+Conceptually it looks like the values on the value stack are actually expected to always be pointers into the variables table, rather than values directly. This allows opcodes like `mov` to operate on stack values. Push two references onto the stack and then move the value pointed to by the first reference into the location pointed to by the second reference.
 
-TODO: Complete lis of opcodes.
+| Opcode | Name         | Immediate | Consumes | Leaves | Notes                                                                                                                                                   |
+| ------ | ------------ | --------- | -------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0x00   | noop         | -         |          |        | Does nothing. Emits a debug warning. "Opcode 0 - NOP encountered, please check!"                                                                        |
+| 0x01   | push         | variable  |          | 1      | Pushes the value of the variable onto the stack.                                                                                                        |
+| 0x02   | pop          | -         | 1        |        | Pops the top value off the stack and discards it.                                                                                                       |
+| 0x03   | pop to       | variable  | 1        |        | Pops the top value off the stack and assigns it to a variable.                                                                                          |
+| 0x08   | equal        | -         | 2        | 1      |                                                                                                                                                         |
+| 0x09   | not equal    | -         | 2        | 1      |                                                                                                                                                         |
+| 0x0a   | greater than | -         | 2        | 1      |                                                                                                                                                         |
+| 0x0b   | less than eq | -         | 2        | 1      |                                                                                                                                                         |
+| 0x0c   | less than    | -         | 2        | 1      |                                                                                                                                                         |
+| 0x0d   | less than eq | -         | 2        | 1      |                                                                                                                                                         |
+| 0x10   | jump if not  | offset    | 1        |        | If value on the stack is falsy, jumps to the given code offset. (Note: Decompiler swaps these names)                                                    |
+| 0x11   | jump if      | offset    | 1        |        | If value on the stack is truthy, jumps to the given code offset.                                                                                        |
+| 0x12   | jump         | offset    |          |        | Jumps to the given code offset.                                                                                                                         |
+| 0x18   | call         | method    | args + 1 | 1      | Pops the args off the stack, and then the object. Calls the method on that object with those args.                                                      |
+| 0x19   | call global  | offset    |          |        | Pushes the current program counter onto a call stack and jumps to the provided code offset.                                                             |
+| 0x21   | return       | -         |          |        | Pops a code location off the _call stack_ (not the value stack) and jumps to it.                                                                        |
+| 0x28   | complete     | -         |          |        | Unsure what this does. Currently a noop in our implementation                                                                                           |
+| 0x30   | mov          | -         | 2        | 1      | Pops the top value off the stack and assigns it to the second value on the stack. Pushes the top(?) value back onto the stack.                          |
+| 0x38   | postinc      | -         | 1        | 1      | Pushes a new value onto the stack that is one greatter than the top value on the stack.                                                                 |
+| 0x39   | postdev      | -         | 1        | 1      | Pushes a new value onto the stack that is one less than the top value on the stack.                                                                     |
+| 0x3a   | preinc       | -         | 1        | 1      | Increments the top value on the stack.                                                                                                                  |
+| 0x3b   | predec       | -         | 1        | 1      | Decrements the top value on the stack.                                                                                                                  |
+| 0x40   | add          | -         | 2        | 1      | Sums the top two values on the stack. Leaves the sum on the stack.                                                                                      |
+| 0x41   | sub          | -         | 2        | 1      | Subtract the top value on the stack from the second value on the stack. Leaves the difference on the stack.                                             |
+| 0x42   | mul          | -         | 2        | 1      | Multiplies the top two values on the stack. Leaves the product on the stack.                                                                            |
+| 0x43   | div          | -         | 2        | 1      | Divides the second value on the stack by the top value on the stack. Leaves the quotient on the stack.                                                  |
+| 0x44   | mod          | -         | 2        | 1      | Divides the second value on the stack by the top value on the stack. Leaves the remainder on the stack.                                                 |
+| 0x48   | binary and   | -         | 2        | 1      | Performs a binary "and" on the top two values on the stack. Leaves the result on the stack.                                                             |
+| 0x49   | binary or    | -         | 2        | 1      | Performs a binary "or" on the top two values on the stack. Leaves the result on the stack.                                                              |
+| 0x41   | not          | -         | 1        | 1      | Interts the trutiness of the top value on teh stack, `!`. Leaves the result on the stack.                                                               |
+| 0x4a   | ???          |           |          |        | Unknown. Seen in dissasembled VM.                                                                                                                       |
+| 0x4b   | bitwise not  | -         | 1        | 1      | Takes the bitwise not of the top value on the stack. Leaves the result on the stack. (Compiler cannot parse ~, so not sure how this ever gets emitted). |
+| 0x4c   | neg          | -         | 1        | 1      | Negates the top value on the stack. Leaves the result on the stack.                                                                                     |
+| 0x50   | logical and  | -         | 2        | 1      | Performs a logical "and" on the top two values on the stack. Leaves the result on the stack.                                                            |
+| 0x51   | logical or   | -         | 2        | 1      | Performs a logical "or" on the top two values on the stack. Leaves the result on the stack.                                                             |
+| 0x58   | left shift   | -         | 2        | 1      | Shifts the second value on the stack left by the top value on the stack. Leaves the result on the stack.                                                |
+| 0x58   | left shift   | -         | 2        | 1      | Shifts the second value on the stack left by the top value on the stack. Leaves the result on the stack.                                                |
+| 0x60   | new          | type      | 0        | 1      | Creates a new object of the given type. Pushes the new object onto the stack.                                                                           |
+| 0x68   | ???          |           |          |        | Unknown. Seen in `volume_06c50f380955d272ad14002ad6b6eb5b_bc79897771fd3dfa3d0b2de19fcf8af6.maki`                                                        |
+| 0x70   | ???          |           |          |        | Unknown. Seen in dissasembled VM.                                                                                                                       |
+| 0x97   | delete       | -         | 1        |        | Pops a value off the stack and deletes it.                                                                                                              |
+
+## Compiler Flags
+
+The Maki compiler supports CLI flags, but I'm not aware of any official documentation. Below is my best understanding of what they do:
+
+- `/outpath` - Sets the output path for the compiled `.maki` file.
+- `/pause` - Causes the compiler to pause after writing the `.maki` file but before exiting. Presumably this is to allow for debugging of the compiler itself.
+- `/df` | `/debugfile` - drops a `debug.syn` file containing an ascii table representation of the compiled output in the current working directory. See "Debug File" below for more information.
+- `/d` | `/debug` - Adds additional debug metadata to the compiled `.maki` file.
+- `/dumpsym` - Not sure what this does. No observable effect.
+
+### Debug File
+
+Here is a minimal example of what the `/debugfile` flag produces.
+
+Input `.m` file:
+
+```maki
+#include "lib/std.mi"
+
+System.onScriptLoaded()
+{
+	Int c = 155 + 255;
+}
+```
+
+Output `debug.syn` file:
+
+```
+-- Variables Table ---------------------------------------------------
+var# |                Class |                                    What
+----------------------------------------------------------------------
+0000 |               System |                                   System*
+0001 |                  Int |                                     NULL
+0002 |                  Int |                     __deprecated_runtime
+0003 |               Double |                                        v
+0004 |                  Int |                                        2
+0005 |                  Int |                                    65535
+0006 |                  Int |                                        1
+0007 |               String |                           "runtimecheck"
+0008 |                  Int |                                        0
+0009 |                  Int |                                     last
+000A |                  Int |                                      now
+000B |                  Int |                                     5000
+000C |               String |                  "This script requires "
+000D |               String |        "Winamp 5.66 (skin version 1.36)"
+000E |               String |                                  "Error"
+000F |               String |                                       ""
+0010 |               String |                                        s
+0011 |               String |                                  "DEBUG"
+0012 |                  Int |                                        s
+0013 |                  Int |                                      155
+0014 |                  Int |                                      255
+0015 |                  Int |                                        c
+-- Events Table ------------------------------------------------------
+var# |         Code Pointer |                                    What
+----------------------------------------------------------------------
+0000 |                 0153 |                                      S.o
+-- User Functions Table ----------------------------------------------
+               Code Pointer |                                    What
+----------------------------------------------------------------------
+                       0000 |                             versionCheck
+                       00F2 |                                    debug
+                       011D |                                 debugInt
+```
 
 ## Unanswered Questions
 
@@ -165,6 +289,24 @@ While we understand the structure of `.maki` files well enough to write a VM for
 - [ ] What is stack protection?
 - Check how constant strings are encoded
 - Check how method names are encoded (is it even possible to reference a non-ascii method?)
+- Document startup code
+- Document recursion behavior
+- Point to test script
+- Could we look at the compiler in Ghidra and see what the cli flags are?
+
+Opcode questions:
+
+- [ ] Does does `complete` 0x28 do?
+- [ ] What's the difference between call and "strange call"
+- [ ] Does 0x30 mov actually "move" or is it actually copy? What happens to the old value?
+  - [ ] What does mov mean for newly created scalars like numbers that are the result of add?
+  - [ ] How can this with with the 0x60 "new" opcode?
+- [ ] Is 0x30 pushing the right value back onto the stack? Right now is't pushing the first value back on, but should it be the second?
+- [ ] Does our implementation of 0x38 postinc actually work? Does creating a new value break mov?
+- [ ] Can add operate on strings?
+- [ ] Add tests for left and right shift and document
+- [ ] Validate what "delete" does
+- [ ] Test ~ bitwise compliment
 
 ## Thanks
 
