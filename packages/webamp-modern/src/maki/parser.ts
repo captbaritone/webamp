@@ -3,6 +3,8 @@ import { DataType, Variable, VariableObject } from "./v";
 import MakiFile from "./MakiFile";
 import { getReturnType } from "./objects";
 import { assert } from "../utils";
+import * as fs from "fs";
+import * as path from "path";
 
 export type Command = {
   opcode: number;
@@ -55,13 +57,57 @@ export function parse(data: ArrayBuffer, maki_id: string): ParsedMaki {
   const classes = readClasses(makiFile);
   const methods = readMethods(makiFile, classes);
   const variables = readVariables({ makiFile, classes });
-  readConstants({ makiFile, variables });
+  readStrings({ makiFile, variables });
   const bindings = readBindings(makiFile, variables);
   const commands = decodeCode({ makiFile });
 
   // TODO: Assert that we are at the end of the maki file
   if (!makiFile.isEof()) {
-    console.warn("EOF not reached!");
+    // File section
+    const filePaths = [];
+    const length = makiFile.readUInt32LE();
+    for (let i = 0; i < length; i++) {
+      const strLen = makiFile.readUInt32LE();
+      const str = makiFile.readStringOfLength(strLen);
+      filePaths.push(str);
+    }
+
+    // Mystry section!
+    const mysteryLength = makiFile.readUInt32LE();
+    for (let i = 0; i < mysteryLength; i++) {
+      const x = makiFile.readUInt32LE();
+      const commandAtOffset = commands.find((c) => {
+        return c.offset === x;
+      });
+
+      const fileIndex = makiFile.readUInt32LE();
+      const z = makiFile.readUInt32LE();
+
+      const fileName = filePaths[fileIndex].replace("\\", "/");
+      /*
+      const file = fs.readFileSync(
+        path.join(
+          __dirname,
+          "__tests__",
+          "fixtures",
+          "TestBedSkin",
+          "scripts",
+          "debug",
+          fileName
+        ),
+        "utf8"
+      );
+
+      const lines = file.split("\n");
+
+      console.log(x, filePaths[fileIndex], lines[z + 1]);
+      console.log(commandAtOffset);
+      */
+    }
+
+    if (!makiFile.isEof()) {
+      throw new Error("EOF not reached!");
+    }
   }
 
   // Map binary offsets to command indexes.
@@ -167,7 +213,7 @@ function opcodeToArgType(opcode: number) {
     case "line":
       return "COMMAND_OFFSET";
     case "var":
-    case "objFunc":
+    case "objFunc": // TODO: This is actually an offset into the methods table
     case "obj":
       return "VARIABLE_OFFSET";
     default:
@@ -233,12 +279,13 @@ function readVariables({ makiFile, classes }) {
     const subClass = makiFile.readUInt16LE();
     const uinit1 = makiFile.readUInt16LE();
     const uinit2 = makiFile.readUInt16LE();
-    makiFile.readUInt16LE(); // uinit3
-    makiFile.readUInt16LE(); //uinit4
+    const uint3 = makiFile.readUInt16LE(); // uinit3
+    const uint4 = makiFile.readUInt16LE(); //uinit4
     const global = makiFile.readUInt8();
     makiFile.readUInt8(); // system
 
     if (subClass) {
+      // Is this right? Shouldn't we be expecting an offset into the types table?
       const variable = variables[typeOffset] as VariableObject;
       if (variable == null) {
         throw new Error("Invalid type");
@@ -306,6 +353,8 @@ function readVariables({ makiFile, classes }) {
         global,
         type: typeName,
         value,
+        uint3,
+        uint4,
       };
       variables.push(variable);
     }
@@ -313,7 +362,7 @@ function readVariables({ makiFile, classes }) {
   return variables;
 }
 
-function readConstants({ makiFile, variables }) {
+function readStrings({ makiFile, variables }) {
   let count = makiFile.readUInt32LE();
   while (count--) {
     const i = makiFile.readUInt32LE();
@@ -356,9 +405,11 @@ function decodeCode({ makiFile }) {
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
 function parseComand({ start, makiFile, length }) {
+  const _pos = makiFile.getPosition();
   const pos = makiFile.getPosition() - start;
   const opcode = makiFile.readUInt8();
   const command = {
+    _pos,
     offset: pos,
     start,
     opcode,
@@ -384,6 +435,23 @@ function parseComand({ start, makiFile, length }) {
   }
 
   command.arg = arg;
+
+  /*
+
+            if (opcode == 0x18) {
+              uVar8 = *next_pc;
+              DAT_07752880 = iVar3 + 5;
+              pc = (uint *)((int)pc + 5);
+              iVar3 = FUN_076737d9();
+              FUN_076abcd1(&DAT_077581f8,iVar3 + uVar8);
+              if ((*pc & 0xffff0000) == 0xffff0000) {
+                pc = pc + 1;
+                DAT_07752880 = DAT_07752880 + 4;
+              }
+              goto LAB_07674760;
+            }
+   
+   */
 
   // From perl: look forward for a stack protection block
   // (why do I have to look FORWARD. stupid nullsoft)

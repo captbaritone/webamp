@@ -1,0 +1,4620 @@
+{
+  "classes": [
+    "516549714a510d87b5a6e391e7f33532",
+    "d6f50f6449b793fa66baf193983eaeef",
+    "e90dc47b4ae7840d0b042cb0fcf775d2",
+    "b2023ab54ba1434d6359aebec6f30375",
+    "87c6577849fee743cc09f98556fd2a53",
+    "3860366542a7461b3fd875aa73bf6766",
+    "f4787af44ef7b2bb4be7fb9c8da8bea9",
+    "3a370c02439f3cbf8886f184361ecf5b",
+    "5d0c5bb64b1f7de1168d0fa741199459",
+    "4ee3e1994becc636bc78cd97b028869c",
+    "45be95e5419120725fbb5c93fd17f1f9",
+    "60906d4e482e537e94cc04b072568861",
+    "403abcc04bd66f22c810a48b47259329",
+    "97aa3e4d4fa8f4d0f20a7b818349452a",
+    "64e4bbfa49d981f45ba8c0b0fdbcc32e",
+    "62b65e3f408d375e8176ea8d771bb94a",
+    "ce4f97be4e1977b098d45699276cc933",
+    "a8c2200d4b2a51eb4b5d7fba714c5dc6",
+    "8d1eba38483e489e1f8d60b905c4c543",
+    "0f08c9404b23af39c4b8f38059bb7e8f",
+    "efaa867241fa310ea985dcb74bcb5b52",
+    "7dfd32444e7c3751ae8240bf33dc3a5f",
+    "5ab9fa1545579a7d5765c8aba97cc6a6",
+    "698eddcd4fec8f1e44f9129b45ff09f9",
+    "6b64cd274c4b5a26a7e6598c3a49f60c",
+    "6dcb05e448c28ac4f04993b14af50e91",
+    "b4dccfff4bcc81fe0f721b96ff0fbed5",
+    "01e28ce111d5b059dee49f970a76516f",
+    "80f0f8bd42a61ba5363293a04a8d0ca0",
+    "9b2e341b40fa6c981b0c858b0594e86e",
+    "36d59b714af803fd020595977a26dbb7",
+    "7fd5f21048dfacc45154a0a676dc6c57",
+    "b5baa5354dcb05b318e6c1ad96688fd2",
+    "6129fec14d51dab7ca016591db701b0c",
+    "d59514f745e8ed364e3f0f98d92c52a0",
+    "9b3b4b82420e667a4179fc8f029c8015",
+    "c7ed319947985319b1606398aa8c295a",
+    "e2bbc14d417384f6ebb2b3bd5055662f",
+    "73c00594401b961f24671b9b6541ac27"
+  ],
+  "methods": [
+    {
+      "name": "getruntimeversion",
+      "typeOffset": 1,
+      "returnType": "DOUBLE"
+    },
+    {
+      "name": "getskinname",
+      "typeOffset": 1,
+      "returnType": "STRING"
+    },
+    {
+      "name": "getprivateint",
+      "typeOffset": 1,
+      "returnType": "INT"
+    },
+    {
+      "name": "gettimeofday",
+      "typeOffset": 1,
+      "returnType": "INT"
+    },
+    {
+      "name": "setprivateint",
+      "typeOffset": 1,
+      "returnType": "NULL"
+    },
+    {
+      "name": "messagebox",
+      "typeOffset": 1,
+      "returnType": "INT"
+    },
+    {
+      "name": "integertostring",
+      "typeOffset": 1,
+      "returnType": "STRING"
+    },
+    {
+      "name": "additem",
+      "typeOffset": 33,
+      "returnType": "INT"
+    },
+    {
+      "name": "getlastaddeditempos",
+      "typeOffset": 33,
+      "returnType": "INT"
+    },
+    {
+      "name": "setsubitem",
+      "typeOffset": 33,
+      "returnType": "NULL"
+    },
+    {
+      "name": "onscriptloaded",
+      "typeOffset": 1,
+      "returnType": "NULL"
+    },
+    {
+      "name": "getscriptgroup",
+      "typeOffset": 1,
+      "returnType": "OBJECT"
+    },
+    {
+      "name": "getobject",
+      "typeOffset": 10,
+      "returnType": "OBJECT"
+    },
+    {
+      "name": "islayout",
+      "typeOffset": 10,
+      "returnType": "BOOLEAN"
+    }
+  ],
+  "variables": [
+    {
+      "type": "OBJECT",
+      "value": null,
+      "global": 1,
+      "guid": "d6f50f6449b793fa66baf193983eaeef",
+      "events": [
+        0
+      ],
+      "index": 0
+    },
+    {
+      "global": 1,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 1
+    },
+    {
+      "global": 1,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 2
+    },
+    {
+      "global": 0,
+      "type": "DOUBLE",
+      "value": 5.877471754111438e-39,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 3
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 2,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 4
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 65535,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 5
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 1,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 6
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "runtimecheck",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 7
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 8
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 9
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 10
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 5000,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 11
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "This script requires ",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 12
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Winamp 5.66 (skin version 1.36)",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 13
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Error",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 14
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 15
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": null,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 16
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "DEBUG",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 17
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 18
+    },
+    {
+      "type": "OBJECT",
+      "value": null,
+      "global": 1,
+      "guid": "6129fec14d51dab7ca016591db701b0c",
+      "index": 19
+    },
+    {
+      "global": 0,
+      "type": "BOOLEAN",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 20
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": null,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 21
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": null,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 22
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": null,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 23
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "SUCCESS",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 24
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "FAILURE",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 25
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 26
+    },
+    {
+      "type": "OBJECT",
+      "value": null,
+      "global": 0,
+      "guid": "45be95e5419120725fbb5c93fd17f1f9",
+      "index": 27
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Null",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 28
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "results",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 29
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "1 + 1 == 2",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 30
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Summing two integers results in an integer",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 31
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 3,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 32
+    },
+    {
+      "global": 0,
+      "type": "DOUBLE",
+      "value": 1.5,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 33
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "3 / 2 == 1.5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 34
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Division of two integers results in a float",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 35
+    },
+    {
+      "global": 0,
+      "type": "DOUBLE",
+      "value": 2.5,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 36
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "1 + 1.5 == 2.5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 37
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Summing an integer and a float results in a float",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 38
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "1.5 + 1 == 2.5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 39
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Summing a float and an integer results in a float",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 40
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Hello",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 41
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": " world",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 42
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Hello world",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 43
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "String concatenation",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 44
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "String concatenation works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 45
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 1024,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 46
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 4096,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 47
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "1024 << 2 == 4096",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 48
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Left shift works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 49
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 256,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 50
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "1024 >> 2 == 256",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 51
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Right shift works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 52
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 5,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 53
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "-5 == -5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 54
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Unary negative",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 55
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 56
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "5++ == 5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 57
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Postfix increment works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 58
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 6,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 59
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "(incrementMe += 1) == 6",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 60
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Plus equals works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 61
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 4,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 62
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "(incrementMe -= 1) == 4",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 63
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Minus equals works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 64
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "(incrementMe /= 2) == 2.5",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 65
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Divide equals works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 66
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "++5 == 6",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 67
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Prefix increment works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 68
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 10,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 69
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 70
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 71
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "x == y",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 72
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Assignment works",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 73
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 100,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 74
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 75
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "z == 10",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 76
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "Assignment returns a value",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 77
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "x == 10",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 78
+    },
+    {
+      "type": "OBJECT",
+      "value": null,
+      "global": 0,
+      "guid": "45be95e5419120725fbb5c93fd17f1f9",
+      "index": 79
+    },
+    {
+      "type": "OBJECT",
+      "value": null,
+      "global": 0,
+      "guid": "45be95e5419120725fbb5c93fd17f1f9",
+      "index": 80
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "myGroup.isLayout() == 1",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 81
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "isLayout works on original value",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 82
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "myOtherGroup.isLayout() == 1",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 83
+    },
+    {
+      "global": 0,
+      "type": "STRING",
+      "value": "isLayout works on moved value",
+      "uint3": 0,
+      "uint4": 0,
+      "index": 84
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 7,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 85
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 8,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 86
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 9,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 87
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 12345,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 88
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 89
+    },
+    {
+      "global": 0,
+      "type": "DOUBLE",
+      "value": 12345,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 90
+    },
+    {
+      "global": 0,
+      "type": "DOUBLE",
+      "value": 5.877471754111438e-39,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 91
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 155,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 92
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 255,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 93
+    },
+    {
+      "global": 0,
+      "type": "INT",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 94
+    },
+    {
+      "global": 0,
+      "type": "BOOLEAN",
+      "value": 0,
+      "uint3": 0,
+      "uint4": 0,
+      "index": 95
+    }
+  ],
+  "bindings": [
+    {
+      "variableOffset": 0,
+      "binaryOffset": 481,
+      "methodOffset": 10,
+      "commandOffset": 121
+    }
+  ],
+  "commands": [
+    {
+      "_pos": 3404,
+      "offset": 0,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 3,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3409,
+      "offset": 5,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3414,
+      "offset": 10,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3419,
+      "offset": 15,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3420,
+      "offset": 16,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3421,
+      "offset": 17,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 3,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3426,
+      "offset": 22,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3431,
+      "offset": 27,
+      "start": 3404,
+      "opcode": 12,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "le"
+    },
+    {
+      "_pos": 3432,
+      "offset": 28,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 3,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3437,
+      "offset": 33,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 5,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3442,
+      "offset": 38,
+      "start": 3404,
+      "opcode": 10,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "gt"
+    },
+    {
+      "_pos": 3443,
+      "offset": 39,
+      "start": 3404,
+      "opcode": 81,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "logOr"
+    },
+    {
+      "_pos": 3444,
+      "offset": 40,
+      "start": 3404,
+      "opcode": 16,
+      "arg": 62,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jumpIf"
+    },
+    {
+      "_pos": 3449,
+      "offset": 45,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 2,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3454,
+      "offset": 50,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3459,
+      "offset": 55,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3460,
+      "offset": 56,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3461,
+      "offset": 57,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 9,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3466,
+      "offset": 62,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3471,
+      "offset": 67,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3476,
+      "offset": 72,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 7,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3481,
+      "offset": 77,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3486,
+      "offset": 82,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3491,
+      "offset": 87,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 2,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3496,
+      "offset": 92,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3497,
+      "offset": 93,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3498,
+      "offset": 94,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 10,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3503,
+      "offset": 99,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3508,
+      "offset": 104,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 3,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3513,
+      "offset": 109,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3514,
+      "offset": 110,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3515,
+      "offset": 111,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 10,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3520,
+      "offset": 116,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 9,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3525,
+      "offset": 121,
+      "start": 3404,
+      "opcode": 65,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "sub"
+    },
+    {
+      "_pos": 3526,
+      "offset": 122,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 11,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3531,
+      "offset": 127,
+      "start": 3404,
+      "opcode": 12,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "le"
+    },
+    {
+      "_pos": 3532,
+      "offset": 128,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 9,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3537,
+      "offset": 133,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 10,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3542,
+      "offset": 138,
+      "start": 3404,
+      "opcode": 12,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "le"
+    },
+    {
+      "_pos": 3543,
+      "offset": 139,
+      "start": 3404,
+      "opcode": 80,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "logAnd"
+    },
+    {
+      "_pos": 3544,
+      "offset": 140,
+      "start": 3404,
+      "opcode": 16,
+      "arg": 43,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jumpIf"
+    },
+    {
+      "_pos": 3549,
+      "offset": 145,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3554,
+      "offset": 150,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3555,
+      "offset": 151,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3560,
+      "offset": 156,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3565,
+      "offset": 161,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 3,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3570,
+      "offset": 166,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 7,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3575,
+      "offset": 171,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3580,
+      "offset": 176,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3585,
+      "offset": 181,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3590,
+      "offset": 186,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3591,
+      "offset": 187,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3596,
+      "offset": 192,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 15,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3601,
+      "offset": 197,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3606,
+      "offset": 202,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 14,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3611,
+      "offset": 207,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 12,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3616,
+      "offset": 212,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 13,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3621,
+      "offset": 217,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 3622,
+      "offset": 218,
+      "start": 3404,
+      "opcode": 24,
+      "arg": 5,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "call"
+    },
+    {
+      "_pos": 3627,
+      "offset": 223,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3628,
+      "offset": 224,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3633,
+      "offset": 229,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3634,
+      "offset": 230,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3639,
+      "offset": 235,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3640,
+      "offset": 236,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3645,
+      "offset": 241,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3646,
+      "offset": 242,
+      "start": 3404,
+      "opcode": 3,
+      "arg": 16,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "popTo"
+    },
+    {
+      "_pos": 3651,
+      "offset": 247,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3656,
+      "offset": 252,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 15,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3661,
+      "offset": 257,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3666,
+      "offset": 262,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 17,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3671,
+      "offset": 267,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 16,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3676,
+      "offset": 272,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 5,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3682,
+      "offset": 278,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3683,
+      "offset": 279,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3688,
+      "offset": 284,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3689,
+      "offset": 285,
+      "start": 3404,
+      "opcode": 3,
+      "arg": 18,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "popTo"
+    },
+    {
+      "_pos": 3694,
+      "offset": 290,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3699,
+      "offset": 295,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 15,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3704,
+      "offset": 300,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3709,
+      "offset": 305,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 17,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3714,
+      "offset": 310,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3719,
+      "offset": 315,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 18,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3724,
+      "offset": 320,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3730,
+      "offset": 326,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 5,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3736,
+      "offset": 332,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3737,
+      "offset": 333,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3742,
+      "offset": 338,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3743,
+      "offset": 339,
+      "start": 3404,
+      "opcode": 3,
+      "arg": 20,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "popTo"
+    },
+    {
+      "_pos": 3748,
+      "offset": 344,
+      "start": 3404,
+      "opcode": 3,
+      "arg": 21,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "popTo"
+    },
+    {
+      "_pos": 3753,
+      "offset": 349,
+      "start": 3404,
+      "opcode": 3,
+      "arg": 22,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "popTo"
+    },
+    {
+      "_pos": 3758,
+      "offset": 354,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 20,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3763,
+      "offset": 359,
+      "start": 3404,
+      "opcode": 16,
+      "arg": 98,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jumpIf"
+    },
+    {
+      "_pos": 3768,
+      "offset": 364,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3773,
+      "offset": 369,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 24,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3778,
+      "offset": 374,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 7,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3784,
+      "offset": 380,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3785,
+      "offset": 381,
+      "start": 3404,
+      "opcode": 18,
+      "arg": 102,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jump"
+    },
+    {
+      "_pos": 3790,
+      "offset": 386,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3795,
+      "offset": 391,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 25,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3800,
+      "offset": 396,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 7,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3806,
+      "offset": 402,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3807,
+      "offset": 403,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 26,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3812,
+      "offset": 408,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3817,
+      "offset": 413,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3823,
+      "offset": 419,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3824,
+      "offset": 420,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3825,
+      "offset": 421,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3830,
+      "offset": 426,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 21,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3835,
+      "offset": 431,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3840,
+      "offset": 436,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 26,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3845,
+      "offset": 441,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 9,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3851,
+      "offset": 447,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3852,
+      "offset": 448,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3857,
+      "offset": 453,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 22,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3862,
+      "offset": 458,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3867,
+      "offset": 463,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 26,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3872,
+      "offset": 468,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 9,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3878,
+      "offset": 474,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3879,
+      "offset": 475,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3884,
+      "offset": 480,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3885,
+      "offset": 481,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 0,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 3890,
+      "offset": 486,
+      "start": 3404,
+      "opcode": 17,
+      "arg": 125,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jumpIfNot"
+    },
+    {
+      "_pos": 3895,
+      "offset": 491,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3900,
+      "offset": 496,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 3901,
+      "offset": 497,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 27,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3906,
+      "offset": 502,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3911,
+      "offset": 507,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 11,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3917,
+      "offset": 513,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3918,
+      "offset": 514,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3919,
+      "offset": 515,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 27,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3924,
+      "offset": 520,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3929,
+      "offset": 525,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 3930,
+      "offset": 526,
+      "start": 3404,
+      "opcode": 16,
+      "arg": 141,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "jumpIf"
+    },
+    {
+      "_pos": 3935,
+      "offset": 531,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3940,
+      "offset": 536,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 28,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3945,
+      "offset": 541,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 8,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3950,
+      "offset": 546,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 28,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3955,
+      "offset": 551,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 28,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3960,
+      "offset": 556,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 5,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3966,
+      "offset": 562,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3967,
+      "offset": 563,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 19,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3972,
+      "offset": 568,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 27,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3977,
+      "offset": 573,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 29,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3982,
+      "offset": 578,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 12,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 3988,
+      "offset": 584,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 3989,
+      "offset": 585,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 3990,
+      "offset": 586,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 31,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 3995,
+      "offset": 591,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 30,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4000,
+      "offset": 596,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4005,
+      "offset": 601,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4010,
+      "offset": 606,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4011,
+      "offset": 607,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4016,
+      "offset": 612,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4017,
+      "offset": 613,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4022,
+      "offset": 618,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4023,
+      "offset": 619,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 35,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4028,
+      "offset": 624,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 34,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4033,
+      "offset": 629,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 32,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4038,
+      "offset": 634,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4043,
+      "offset": 639,
+      "start": 3404,
+      "opcode": 67,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "div"
+    },
+    {
+      "_pos": 4044,
+      "offset": 640,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 33,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4049,
+      "offset": 645,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4050,
+      "offset": 646,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4055,
+      "offset": 651,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4056,
+      "offset": 652,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 38,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4061,
+      "offset": 657,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 37,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4066,
+      "offset": 662,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4071,
+      "offset": 667,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 33,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4076,
+      "offset": 672,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4077,
+      "offset": 673,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 36,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4082,
+      "offset": 678,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4083,
+      "offset": 679,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4088,
+      "offset": 684,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4089,
+      "offset": 685,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 40,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4094,
+      "offset": 690,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 39,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4099,
+      "offset": 695,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 33,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4104,
+      "offset": 700,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4109,
+      "offset": 705,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4110,
+      "offset": 706,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 36,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4115,
+      "offset": 711,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4116,
+      "offset": 712,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4121,
+      "offset": 717,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4122,
+      "offset": 718,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 45,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4127,
+      "offset": 723,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 44,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4132,
+      "offset": 728,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 41,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4137,
+      "offset": 733,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 42,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4142,
+      "offset": 738,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4143,
+      "offset": 739,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 43,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4148,
+      "offset": 744,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4149,
+      "offset": 745,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4154,
+      "offset": 750,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4155,
+      "offset": 751,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 49,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4160,
+      "offset": 756,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 48,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4165,
+      "offset": 761,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 46,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4170,
+      "offset": 766,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4175,
+      "offset": 771,
+      "start": 3404,
+      "opcode": 88,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "lshift"
+    },
+    {
+      "_pos": 4176,
+      "offset": 772,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 47,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4181,
+      "offset": 777,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4182,
+      "offset": 778,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4187,
+      "offset": 783,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4188,
+      "offset": 784,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 52,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4193,
+      "offset": 789,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 51,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4198,
+      "offset": 794,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 46,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4203,
+      "offset": 799,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4208,
+      "offset": 804,
+      "start": 3404,
+      "opcode": 89,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "rshift"
+    },
+    {
+      "_pos": 4209,
+      "offset": 805,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 50,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4214,
+      "offset": 810,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4215,
+      "offset": 811,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4220,
+      "offset": 816,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4221,
+      "offset": 817,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 55,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4226,
+      "offset": 822,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 54,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4231,
+      "offset": 827,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4236,
+      "offset": 832,
+      "start": 3404,
+      "opcode": 76,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "negative"
+    },
+    {
+      "_pos": 4237,
+      "offset": 833,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4242,
+      "offset": 838,
+      "start": 3404,
+      "opcode": 76,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "negative"
+    },
+    {
+      "_pos": 4243,
+      "offset": 839,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4244,
+      "offset": 840,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4249,
+      "offset": 845,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4250,
+      "offset": 846,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4255,
+      "offset": 851,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4260,
+      "offset": 856,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4261,
+      "offset": 857,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4262,
+      "offset": 858,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 58,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4267,
+      "offset": 863,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 57,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4272,
+      "offset": 868,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4277,
+      "offset": 873,
+      "start": 3404,
+      "opcode": 56,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "postinc"
+    },
+    {
+      "_pos": 4278,
+      "offset": 874,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4283,
+      "offset": 879,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4284,
+      "offset": 880,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4289,
+      "offset": 885,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4290,
+      "offset": 886,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4295,
+      "offset": 891,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4300,
+      "offset": 896,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4301,
+      "offset": 897,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4302,
+      "offset": 898,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 61,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4307,
+      "offset": 903,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 60,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4312,
+      "offset": 908,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4317,
+      "offset": 913,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4322,
+      "offset": 918,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4327,
+      "offset": 923,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4328,
+      "offset": 924,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4329,
+      "offset": 925,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 59,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4334,
+      "offset": 930,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4335,
+      "offset": 931,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4340,
+      "offset": 936,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4341,
+      "offset": 937,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4346,
+      "offset": 942,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4351,
+      "offset": 947,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4352,
+      "offset": 948,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4353,
+      "offset": 949,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 64,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4358,
+      "offset": 954,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 63,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4363,
+      "offset": 959,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4368,
+      "offset": 964,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4373,
+      "offset": 969,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4378,
+      "offset": 974,
+      "start": 3404,
+      "opcode": 65,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "sub"
+    },
+    {
+      "_pos": 4379,
+      "offset": 975,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4380,
+      "offset": 976,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 62,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4385,
+      "offset": 981,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4386,
+      "offset": 982,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4391,
+      "offset": 987,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4392,
+      "offset": 988,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4397,
+      "offset": 993,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4402,
+      "offset": 998,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4403,
+      "offset": 999,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4404,
+      "offset": 1000,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 66,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4409,
+      "offset": 1005,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 65,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4414,
+      "offset": 1010,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4419,
+      "offset": 1015,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4424,
+      "offset": 1020,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4429,
+      "offset": 1025,
+      "start": 3404,
+      "opcode": 67,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "div"
+    },
+    {
+      "_pos": 4430,
+      "offset": 1026,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4431,
+      "offset": 1027,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 36,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4436,
+      "offset": 1032,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4437,
+      "offset": 1033,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4442,
+      "offset": 1038,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4443,
+      "offset": 1039,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 66,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4448,
+      "offset": 1044,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 65,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4453,
+      "offset": 1049,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4458,
+      "offset": 1054,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 36,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4463,
+      "offset": 1059,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4464,
+      "offset": 1060,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4469,
+      "offset": 1065,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4470,
+      "offset": 1066,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4475,
+      "offset": 1071,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4480,
+      "offset": 1076,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4481,
+      "offset": 1077,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4482,
+      "offset": 1078,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 68,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4487,
+      "offset": 1083,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 67,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4492,
+      "offset": 1088,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 56,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4497,
+      "offset": 1093,
+      "start": 3404,
+      "opcode": 58,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "preinc"
+    },
+    {
+      "_pos": 4498,
+      "offset": 1094,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 59,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4503,
+      "offset": 1099,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4504,
+      "offset": 1100,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4509,
+      "offset": 1105,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4510,
+      "offset": 1106,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 70,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4515,
+      "offset": 1111,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 69,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4520,
+      "offset": 1116,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4521,
+      "offset": 1117,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4522,
+      "offset": 1118,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 71,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4527,
+      "offset": 1123,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 70,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4532,
+      "offset": 1128,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4533,
+      "offset": 1129,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4534,
+      "offset": 1130,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 73,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4539,
+      "offset": 1135,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 72,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4544,
+      "offset": 1140,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 70,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4549,
+      "offset": 1145,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 71,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4554,
+      "offset": 1150,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4555,
+      "offset": 1151,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4560,
+      "offset": 1156,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4561,
+      "offset": 1157,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 75,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4566,
+      "offset": 1162,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 70,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4571,
+      "offset": 1167,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 74,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4576,
+      "offset": 1172,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4577,
+      "offset": 1173,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4578,
+      "offset": 1174,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4579,
+      "offset": 1175,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 77,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4584,
+      "offset": 1180,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 76,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4589,
+      "offset": 1185,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 75,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4594,
+      "offset": 1190,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 74,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4599,
+      "offset": 1195,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4600,
+      "offset": 1196,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4605,
+      "offset": 1201,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4606,
+      "offset": 1202,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 77,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4611,
+      "offset": 1207,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 78,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4616,
+      "offset": 1212,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 70,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4621,
+      "offset": 1217,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 74,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4626,
+      "offset": 1222,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4627,
+      "offset": 1223,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4632,
+      "offset": 1228,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4633,
+      "offset": 1229,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 79,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4638,
+      "offset": 1234,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 0,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4643,
+      "offset": 1239,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 11,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 4649,
+      "offset": 1245,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4650,
+      "offset": 1246,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4651,
+      "offset": 1247,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 80,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4656,
+      "offset": 1252,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 79,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4661,
+      "offset": 1257,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4662,
+      "offset": 1258,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4663,
+      "offset": 1259,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 82,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4668,
+      "offset": 1264,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 81,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4673,
+      "offset": 1269,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 79,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4678,
+      "offset": 1274,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 13,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 4684,
+      "offset": 1280,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4689,
+      "offset": 1285,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4690,
+      "offset": 1286,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4695,
+      "offset": 1291,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4696,
+      "offset": 1292,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 84,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4701,
+      "offset": 1297,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 83,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4706,
+      "offset": 1302,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 80,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4711,
+      "offset": 1307,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 13,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 4717,
+      "offset": 1313,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4722,
+      "offset": 1318,
+      "start": 3404,
+      "opcode": 8,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "eq"
+    },
+    {
+      "_pos": 4723,
+      "offset": 1319,
+      "start": 3404,
+      "opcode": 25,
+      "arg": 88,
+      "argType": "COMMAND_OFFSET",
+      "opcodeName": "callGlobal"
+    },
+    {
+      "_pos": 4728,
+      "offset": 1324,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4729,
+      "offset": 1325,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 6,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4734,
+      "offset": 1330,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 4,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4739,
+      "offset": 1335,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4740,
+      "offset": 1336,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 32,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4745,
+      "offset": 1341,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4746,
+      "offset": 1342,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 62,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4751,
+      "offset": 1347,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4752,
+      "offset": 1348,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 53,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4757,
+      "offset": 1353,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4758,
+      "offset": 1354,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 59,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4763,
+      "offset": 1359,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4764,
+      "offset": 1360,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 85,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4769,
+      "offset": 1365,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4770,
+      "offset": 1366,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 86,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4775,
+      "offset": 1371,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4776,
+      "offset": 1372,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 87,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4781,
+      "offset": 1377,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4782,
+      "offset": 1378,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 69,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4787,
+      "offset": 1383,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4788,
+      "offset": 1384,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4789,
+      "offset": 1385,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 89,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4794,
+      "offset": 1390,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 88,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4799,
+      "offset": 1395,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4800,
+      "offset": 1396,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4801,
+      "offset": 1397,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 89,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4806,
+      "offset": 1402,
+      "start": 3404,
+      "opcode": 56,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "postinc"
+    },
+    {
+      "_pos": 4807,
+      "offset": 1403,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4808,
+      "offset": 1404,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 91,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4813,
+      "offset": 1409,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 90,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4818,
+      "offset": 1414,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4819,
+      "offset": 1415,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4820,
+      "offset": 1416,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 94,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4825,
+      "offset": 1421,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 92,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4830,
+      "offset": 1426,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 93,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4835,
+      "offset": 1431,
+      "start": 3404,
+      "opcode": 64,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "add"
+    },
+    {
+      "_pos": 4836,
+      "offset": 1432,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4837,
+      "offset": 1433,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4838,
+      "offset": 1434,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 95,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4843,
+      "offset": 1439,
+      "start": 3404,
+      "opcode": 96,
+      "arg": 10,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "new"
+    },
+    {
+      "_pos": 4848,
+      "offset": 1444,
+      "start": 3404,
+      "opcode": 112,
+      "arg": 13,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "strangeCall"
+    },
+    {
+      "_pos": 4854,
+      "offset": 1450,
+      "start": 3404,
+      "opcode": 48,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "mov"
+    },
+    {
+      "_pos": 4855,
+      "offset": 1451,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4856,
+      "offset": 1452,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4861,
+      "offset": 1457,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 4862,
+      "offset": 1458,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4863,
+      "offset": 1459,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4868,
+      "offset": 1464,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 4869,
+      "offset": 1465,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4870,
+      "offset": 1466,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4875,
+      "offset": 1471,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 4876,
+      "offset": 1472,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4877,
+      "offset": 1473,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4882,
+      "offset": 1478,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 4883,
+      "offset": 1479,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4884,
+      "offset": 1480,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4889,
+      "offset": 1485,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    },
+    {
+      "_pos": 4890,
+      "offset": 1486,
+      "start": 3404,
+      "opcode": 2,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "pop"
+    },
+    {
+      "_pos": 4891,
+      "offset": 1487,
+      "start": 3404,
+      "opcode": 1,
+      "arg": 1,
+      "argType": "VARIABLE_OFFSET",
+      "opcodeName": "push"
+    },
+    {
+      "_pos": 4896,
+      "offset": 1492,
+      "start": 3404,
+      "opcode": 33,
+      "arg": null,
+      "argType": "NONE",
+      "opcodeName": "ret"
+    }
+  ],
+  "version": 1027
+}

@@ -102,7 +102,7 @@ program
  */
 program
   .command("skin")
-  .description("Operate on a skngle skin from the database.")
+  .description("Operate on a single skin from the database.")
   .argument("<md5>", "md5 of the skin to operate on")
   .option(
     "--delete",

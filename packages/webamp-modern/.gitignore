@@ -1,3 +1,4 @@
 build/
 temp/
 extracted-*/
+src/maki/__tests__/extracted_maki

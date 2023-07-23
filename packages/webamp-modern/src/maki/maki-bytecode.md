@@ -24,7 +24,7 @@ _Note: All numbers are little endian._
 
 This first section contains metadata about the file.
 
-1. Two bytes containing the "magic" string "FG". This signifies/validates that this is a `.maki` file. Not sure what the significance of "FG" is.
+1. Two bytes containing the "magic" string "FG". This signifies/validates that this is a `.maki` file. I believe these letters are the initials of Francis Gastellu, the original author of Winamp's skin engine.
 2. A u16 version number (which we currently ignore)
 3. Some u32 bit something. We ignore this. Perhaps this is more version information?
 

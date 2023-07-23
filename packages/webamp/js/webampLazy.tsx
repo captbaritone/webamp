@@ -12,6 +12,7 @@ import {
   PartialState,
   Options,
   MediaStatus,
+  Band,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -33,6 +34,7 @@ import {
   SET_Z_INDEX,
   CLOSE_REQUESTED,
   ENABLE_MILKDROP,
+  SET_BAND_VALUE,
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -378,6 +380,23 @@ class Webamp {
       Selectors.getLineColorsImage(this.store.getState()),
     ]);
     return;
+  }
+
+  /**
+   * Set the EQ band to a value between 0 and 100.
+   * Valid EQ Bands are: 60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000
+   */
+  setEqBand(band: Band, value: number): void {
+    // Note: We use the raw action rather than the action creator to avoid applying snapping.
+    this.store.dispatch({ type: SET_BAND_VALUE, band, value });
+  }
+
+  /**
+   * Set the preamp to a value between 0 and 100.
+   */
+  setPreamp(value: number): void {
+    // Note: We use the raw action rather than the action creator to avoid applying snapping.
+    this.store.dispatch({ type: SET_BAND_VALUE, band: "preamp", value });
   }
 
   /**
