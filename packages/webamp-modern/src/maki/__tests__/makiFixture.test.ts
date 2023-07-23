@@ -3,6 +3,7 @@ import path from "path";
 import { parse } from "../parser";
 import { interpret } from "../interpreter";
 import { MockSystem, classResolver } from "./MockSystem";
+import { COMMANDS } from "../constants";
 
 /**
  * Loads a specially crafted Maki script that can be used to test the behavior
@@ -34,6 +35,23 @@ const scriptPath = path.join(
 describe(`Maki test harness`, () => {
   const maki = fs.readFileSync(scriptPath);
   const script = parse(maki);
+
+  for (const instruction of script.commands) {
+    const command = COMMANDS[instruction.opcode];
+    if (command == null) {
+      console.log(instruction);
+      throw new Error("Ooops!");
+    }
+    instruction.opcodeName = command.name;
+  }
+
+  for (let i = 0; i < script.variables.length; i++) {
+    const variable = script.variables[i];
+    variable.index = i;
+  }
+
+  fs.writeFileSync("./script_dump.json", JSON.stringify(script, null, 2));
+
   const initialVariable = script.variables[0];
   if (initialVariable.type !== "OBJECT") {
     throw new Error("First variable was not SystemObject.");

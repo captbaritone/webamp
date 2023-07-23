@@ -47,6 +47,9 @@ class MockGroup {
     }
     return this.list;
   }
+  islayout() {
+    return true;
+  }
 }
 
 class MockGuiList {

@@ -1,0 +1,35 @@
+-- Variables Table ---------------------------------------------------
+var# |                Class |                                    What 
+----------------------------------------------------------------------
+0000 |               System |                                   System*
+0001 |                  Int |                                     NULL
+0002 |                  Int |                     __deprecated_runtime
+0003 |               Double |                                        v
+0004 |                  Int |                                        2
+0005 |                  Int |                                    65535
+0006 |                  Int |                                        1
+0007 |               String |                           "runtimecheck"
+0008 |                  Int |                                        0
+0009 |                  Int |                                     last
+000A |                  Int |                                      now
+000B |                  Int |                                     5000
+000C |               String |                  "This script requires "
+000D |               String |        "Winamp 5.66 (skin version 1.36)"
+000E |               String |                                  "Error"
+000F |               String |                                       ""
+0010 |               String |                                        s
+0011 |               String |                                  "DEBUG"
+0012 |                  Int |                                        s
+0013 |                  Int |                                      155
+0014 |                  Int |                                      255
+0015 |                  Int |                                        c
+-- Events Table ------------------------------------------------------
+var# |         Code Pointer |                                    What 
+----------------------------------------------------------------------
+0000 |                 0153 |                                      S.o
+-- User Functions Table ----------------------------------------------
+               Code Pointer |                                    What 
+----------------------------------------------------------------------
+                       0000 |                             versionCheck
+                       00F2 |                                    debug
+                       011D |                                 debugInt
