@@ -24,9 +24,10 @@ _Note: All numbers are little endian._
 
 This first section contains metadata about the file.
 
-1. Two bytes containing the "magic" string "FG". This signifies/validates that this is a `.maki` file. Not sure what the significance of "FG" is.
-2. A u16 version number (which we currently ignore)
-3. Some u32 bit something. We ignore this. Perhaps this is more version information?
+1. Two bytes containing the "magic" string "FG". This signifies/validates that this is a `.maki` file. I believe these letters are the initials of Francis Gastellu, the original author of Winamp's skin engine.
+2. A u16, which seems to always be 1027. I'm not sure what the significance is.
+3. A u32 version number. I've observed only 21, 22 and 23. We use this later to decide how to parse variables.
+   - _Note:_ I've only found one script with a version of 21, and it does not yet parse with the format described here.
 
 ### 2. Types/Classes
 
@@ -81,7 +82,8 @@ For each variable:
 4. Two u16s (A and B) indicating the initial value of the variable if it is a boolean or primitive. If it's a boolean, then A is the value. If it's an int, A is the value.
 5. Two mystery u16s (or maybe a u32??)
 6. A u8 boolean representing "global"
-7. A u8 boolean representing "system" (no idea what this is used for)
+7. If the version number extracted from the header is greater than 22 (i.e. 23)
+   - A u8 boolean representing "system" (no idea what this is used for)
 
 ### 5. Strings
 
@@ -299,14 +301,13 @@ While we understand the structure of `.maki` files well enough to write a VM for
 
 - [ ] **Header**
 
-  - [ ] What is the significance of the "FG" magic string?
   - [ ] What are the version numbers created by different versions of the compiler? Does Winamp use these in any way?
-  - [ ] What is the 32 bit "something" after the version number?
 
 - [ ] **Methods**
 
   - [ ] Why do we need the `0xff` bitmask when reading the class offset?
   - [ ] What is the second u16?
+  - [ ] Version 21 seems to have zero methods?
 
 - [ ] **Variables**
 
@@ -345,6 +346,7 @@ While we understand the structure of `.maki` files well enough to write a VM for
 
 - [ ] Document startup code. The compiler injects some startup code that tests the VM version number and does some other stuff. Would be good to document what we know about that code.
 - [ ] Could we look at the compiler in Ghidra and see what the cli flags are?
+- [ ] Which compiler versions emit which version number?
 
 ## Thanks
 
