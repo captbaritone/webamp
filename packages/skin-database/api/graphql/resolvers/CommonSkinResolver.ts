@@ -3,7 +3,7 @@ import SkinModel from "../../../data/SkinModel";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ReviewResolver from "./ReviewResolver";
-import TweetResolver from "./TweetResolver";
+import TweetModel from "../../../data/TweetModel";
 
 /**
  * A Winamp skin. Could be modern or classic.
@@ -57,7 +57,7 @@ export interface ISkin {
    * List of @winampskins tweets that mentioned the skin.
    * @gqlField
    */
-  tweets(): Promise<Array<TweetResolver | null>>;
+  tweets(): Promise<Array<TweetModel | null>>;
 
   /**
    * List of files contained within the skin's .wsz archive
@@ -124,9 +124,8 @@ export default abstract class CommonSkinResolver {
   tweeted(): Promise<boolean> {
     return this._model.tweeted();
   }
-  async tweets(): Promise<Array<TweetResolver | null>> {
-    const tweets = await this._model.getTweets();
-    return tweets.map((tweetModel) => new TweetResolver(tweetModel));
+  async tweets(): Promise<Array<TweetModel | null>> {
+    return this._model.getTweets();
   }
   async archive_files(): Promise<Array<ArchiveFileResolver | null>> {
     const files = await this._model.getArchiveFiles();

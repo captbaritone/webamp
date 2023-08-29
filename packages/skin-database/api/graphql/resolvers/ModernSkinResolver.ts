@@ -6,8 +6,8 @@ import { ID } from "grats";
 import ReviewResolver from "./ReviewResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ArchiveFileResolver from "./ArchiveFileResolver";
-import TweetResolver from "./TweetResolver";
 import { XMLParser } from "fast-xml-parser";
+import TweetModel from "../../../data/TweetModel";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -71,7 +71,7 @@ export default class ModernSkinResolver
   /**
    * List of @winampskins tweets that mentioned the skin.
    * @gqlField */
-  async tweets(): Promise<Array<TweetResolver | null>> {
+  async tweets(): Promise<Array<TweetModel | null>> {
     return super.tweets();
   }
 

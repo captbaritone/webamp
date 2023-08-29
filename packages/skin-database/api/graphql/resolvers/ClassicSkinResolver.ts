@@ -3,9 +3,9 @@ import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import path from "path";
 import { ID, Int } from "grats";
-import TweetResolver from "./TweetResolver";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
+import TweetModel from "../../../data/TweetModel";
 
 /**
  * A classic Winamp skin
@@ -63,7 +63,7 @@ export default class ClassicSkinResolver
   /**
    * List of @winampskins tweets that mentioned the skin.
    * @gqlField */
-  tweets(): Promise<Array<TweetResolver | null>> {
+  tweets(): Promise<Array<TweetModel | null>> {
     return super.tweets();
   }
 

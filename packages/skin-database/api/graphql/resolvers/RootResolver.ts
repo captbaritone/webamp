@@ -2,7 +2,6 @@ import IaItemModel from "../../../data/IaItemModel";
 import SkinModel from "../../../data/SkinModel";
 import TweetModel from "../../../data/TweetModel";
 import SkinResolver from "../resolvers/SkinResolver";
-import TweetResolver from "../resolvers/TweetResolver";
 import UserResolver from "../resolvers/UserResolver";
 import SkinsConnection from "../SkinsConnection";
 import TweetsConnection, { TweetsSortOption } from "../TweetsConnection";
@@ -75,12 +74,8 @@ class RootResolver extends MutationResolver {
   async fetch_tweet_by_url(
     { url }: { url: string },
     { ctx }
-  ): Promise<TweetResolver | null> {
-    const tweet = await TweetModel.fromAnything(ctx, url);
-    if (tweet == null) {
-      return null;
-    }
-    return new TweetResolver(tweet);
+  ): Promise<TweetModel | null> {
+    return TweetModel.fromAnything(ctx, url);
   }
 
   /**

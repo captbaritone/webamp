@@ -37,14 +37,20 @@ export default class Media {
     // Via: https://stackoverflow.com/a/43395068/1263117
     // TODO #leak
     if (this._context.state === "suspended") {
-      const resume = async () => {
+      console.log("Suspended on init");
+      const resume = async (e) => {
+        console.log("Resuming", e);
         await this._context.resume();
+        console.log("Resuming");
 
         if (this._context.state === "running") {
+          console.log("Runnign!");
           // TODO: Add this to the disposable
           document.body.removeEventListener("touchend", resume, false);
           document.body.removeEventListener("click", resume, false);
           document.body.removeEventListener("keydown", resume, false);
+        } else {
+          console.log("Not running");
         }
       };
 

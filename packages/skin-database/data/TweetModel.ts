@@ -4,11 +4,18 @@ import DataLoader from "dataloader";
 import { knex } from "../db";
 import { TWEET_SNOWFLAKE_REGEX } from "../utils";
 import SkinModel from "./SkinModel";
+import { Int } from "grats";
+import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
+import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 
 export type TweetDebugData = {
   row: TweetRow;
 };
 
+/**
+ * A tweet made by @winampskins mentioning a Winamp skin
+ * @gqlType Tweet
+ */
 export default class TweetModel {
   constructor(readonly ctx: UserContext, readonly row: TweetRow) {}
 
@@ -49,19 +56,46 @@ export default class TweetModel {
     return this.row.tweet_id || null;
   }
 
+  /**
+   * URL of the tweet. **Note:** Early on in the bot's life we just recorded
+   * _which_ skins were tweeted, not any info about the actual tweet. This means we
+   * don't always know the URL of the tweet.
+   * @gqlField url
+   */
   getUrl(): string | null {
     const tweetId = this.getTweetId();
     return tweetId ? `https://twitter.com/winampskins/status/${tweetId}` : null;
   }
-  getLikes(): number {
+  /**
+   * Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)
+   * @gqlField likes
+   */
+  getLikes(): Int {
     return this.row.likes ?? 0;
   }
-  getRetweets(): number {
+
+  /**
+   * Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)
+   * @gqlField retweets
+   */
+  getRetweets(): Int {
     return this.row.retweets ?? 0;
   }
 
   async getSkin(): Promise<SkinModel> {
     return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
+  }
+
+  /**
+   * The skin featured in this Tweet
+   * @gqlField
+   */
+  async skin(): Promise<ISkin | null> {
+    const skin = await this.getSkin();
+    if (skin == null) {
+      return null;
+    }
+    return SkinResolver.fromModel(skin);
   }
 
   async debug(): Promise<TweetDebugData> {

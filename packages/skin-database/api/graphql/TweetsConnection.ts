@@ -1,7 +1,6 @@
 import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
-import TweetResolver from "./resolvers/TweetResolver";
 
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";
@@ -44,13 +43,7 @@ export default class TweetsConnection {
    * The list of tweets
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<Array<TweetResolver | null>> {
-    const tweets = await this._getQuery()
-      .select()
-      .limit(this._first)
-      .offset(this._offset);
-    return tweets.map((tweet) => {
-      return new TweetResolver(new TweetModel(ctx, tweet));
-    });
+  async nodes(args: never, ctx): Promise<Array<TweetModel | null>> {
+    return this._getQuery().select().limit(this._first).offset(this._offset);
   }
 }
