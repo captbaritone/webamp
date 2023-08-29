@@ -5,7 +5,6 @@ import SkinResolver from "../resolvers/SkinResolver";
 import UserResolver from "../resolvers/UserResolver";
 import SkinsConnection from "../SkinsConnection";
 import TweetsConnection, { TweetsSortOption } from "../TweetsConnection";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import * as Skins from "../../../data/skins";
 import { ID, Int } from "grats";
 
@@ -86,12 +85,8 @@ class RootResolver extends MutationResolver {
   async fetch_internet_archive_item_by_identifier(
     { identifier }: { identifier: string },
     { ctx }
-  ): Promise<InternetArchiveItemResolver | null> {
-    const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
-    if (iaItem == null) {
-      return null;
-    }
-    return new InternetArchiveItemResolver(iaItem);
+  ): Promise<IaItemModel | null> {
+    return IaItemModel.fromIdentifier(ctx, identifier);
   }
 
   /**

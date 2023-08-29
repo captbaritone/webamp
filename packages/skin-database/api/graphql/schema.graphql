@@ -144,23 +144,23 @@ type DatabaseStatistics {
 
 type InternetArchiveItem {
   """The Internet Archive's unique identifier for this item"""
-  identifier: String
+  identifier: String @methodName(name: "getIdentifier")
   """
   The date and time that we last scraped this item's metadata.
   **Note:** This field is temporary and will be removed in the future.
   The date format is just what we get from the database, and it's ambiguous.
   """
-  last_metadata_scrape_date_UNSTABLE: String
+  last_metadata_scrape_date_UNSTABLE: String @methodName(name: "getMetadataTimestamp")
   """URL to get the Internet Archive's metadata for this item in JSON form."""
-  metadata_url: String
+  metadata_url: String @methodName(name: "getMetadataUrl")
   """
-  Our cached version of the metadata avaliable at \`metadata_url\` (above)
+  Our cached version of the metadata available at \`metadata_url\` (above)
   """
-  raw_metadata_json: String
+  raw_metadata_json: String @methodName(name: "getMetadataJSON")
   """The skin that this item contains"""
   skin: Skin
   """The URL where this item can be viewed on the Internet Archive"""
-  url: String
+  url: String @methodName(name: "getUrl")
 }
 
 """
@@ -365,7 +365,7 @@ interface Skin {
   readme_text: String @deprecated(reason: "Needed for migration")
   """
   Times that the skin has been reviewed either on the Museum's Tinder-style
-  reivew page, or via the Discord bot.
+  review page, or via the Discord bot.
   """
   reviews: [Review]
   screenshot_url: String

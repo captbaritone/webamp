@@ -1,9 +1,9 @@
 import { ID } from "grats";
 import SkinModel from "../../../data/SkinModel";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ReviewResolver from "./ReviewResolver";
 import TweetModel from "../../../data/TweetModel";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
+import IaItemModel from "../../../data/IaItemModel";
 
 /**
  * A Winamp skin. Could be modern or classic.
@@ -69,11 +69,11 @@ export interface ISkin {
    * The skin's "item" at archive.org
    * @gqlField
    */
-  internet_archive_item(): Promise<InternetArchiveItemResolver | null>;
+  internet_archive_item(): Promise<IaItemModel | null>;
 
   /**
    * Times that the skin has been reviewed either on the Museum's Tinder-style
-   * reivew page, or via the Discord bot.
+   * review page, or via the Discord bot.
    * @gqlField
    */
   reviews(): Promise<Array<ReviewResolver | null>>;
@@ -130,12 +130,8 @@ export default abstract class CommonSkinResolver {
   async archive_files(): Promise<Array<ArchiveFileModel | null>> {
     return this._model.getArchiveFiles();
   }
-  async internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
-    const item = await this._model.getIaItem();
-    if (item == null) {
-      return null;
-    }
-    return new InternetArchiveItemResolver(item);
+  async internet_archive_item(): Promise<IaItemModel | null> {
+    return this._model.getIaItem();
   }
 
   async reviews(): Promise<Array<ReviewResolver | null>> {

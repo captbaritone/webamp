@@ -3,9 +3,9 @@ import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import path from "path";
 import { ID, Int } from "grats";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import TweetModel from "../../../data/TweetModel";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
+import IaItemModel from "../../../data/IaItemModel";
 
 /**
  * A classic Winamp skin
@@ -77,7 +77,7 @@ export default class ClassicSkinResolver
   /**
    * The skin's "item" at archive.org
    * @gqlField */
-  internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
+  internet_archive_item(): Promise<IaItemModel | null> {
     return super.internet_archive_item();
   }
   /**

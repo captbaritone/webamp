@@ -4,10 +4,10 @@ import { NodeResolver, toId } from "./NodeResolver";
 import path from "path";
 import { ID } from "grats";
 import ReviewResolver from "./ReviewResolver";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import { XMLParser } from "fast-xml-parser";
 import TweetModel from "../../../data/TweetModel";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
+import IaItemModel from "../../../data/IaItemModel";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -85,7 +85,7 @@ export default class ModernSkinResolver
   /**
    * The skin's "item" at archive.org
    * @gqlField */
-  async internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
+  async internet_archive_item(): Promise<IaItemModel | null> {
     return super.internet_archive_item();
   }
 
