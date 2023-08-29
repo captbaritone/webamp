@@ -13,29 +13,29 @@ type ArchiveFile {
   The date on the file inside the archive. Given in simplified extended ISO
   format (ISO 8601).
   """
-  date: String
+  date: String @methodName(name: "getIsoDate")
   """The md5 hash of the file within the archive"""
-  file_md5: String
+  file_md5: String @methodName(name: "getFileMd5")
   """Filename of the file within the archive"""
-  filename: String
+  filename: String @methodName(name: "getFileName")
   """Is the file a directory?"""
-  is_directory: Boolean
+  is_directory: Boolean @methodName(name: "getIsDirectory")
   """
   The uncompressed size of the file in bytes.
   
   **Note:** Will be `null` for directories
   """
-  size: Int
+  size: Int @methodName(name: "getFileSize")
   """The skin in which this file was found"""
   skin: Skin
   """The content of the file, if it's a text file"""
-  text_content: String
+  text_content: String @methodName(name: "getTextContent")
   """
   A URL to download the file. **Note:** This is powered by a little
   serverless Cloudflare function which tries to exctact the file on the fly.
   It may not work for all files.
   """
-  url: String
+  url: String @methodName(name: "getUrl")
 }
 
 """A classic Winamp skin"""

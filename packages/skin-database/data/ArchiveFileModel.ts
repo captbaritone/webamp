@@ -4,11 +4,18 @@ import DataLoader from "dataloader";
 import { knex } from "../db";
 import SkinModel from "./SkinModel";
 import FileInfoModel from "./FileInfoModel";
+import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
+import SkinResolver from "../api/graphql/resolvers/SkinResolver";
+import { Int } from "grats";
 
 export type ArchiveFileDebugData = {
   row: ArchiveFileRow;
 };
 
+/**
+ * A file found within a Winamp Skin's .wsz archive
+ * @gqlType ArchiveFile
+ */
 export default class ArchiveFileModel {
   constructor(readonly ctx: UserContext, readonly row: ArchiveFileRow) {}
 
@@ -38,10 +45,18 @@ export default class ArchiveFileModel {
     return this.row.skin_md5;
   }
 
+  /**
+   * The md5 hash of the file within the archive
+   * @gqlField file_md5
+   */
   getFileMd5(): string {
     return this.row.file_md5;
   }
 
+  /**
+   * Filename of the file within the archive
+   * @gqlField filename
+   */
   getFileName(): string {
     return this.row.file_name;
   }
@@ -50,8 +65,22 @@ export default class ArchiveFileModel {
     return new Date(this.row.file_date);
   }
 
-  // Null if directory
-  async getFileSize(): Promise<number | null> {
+  /**
+   * The date on the file inside the archive. Given in simplified extended ISO
+   * format (ISO 8601).
+   * @gqlField date
+   */
+  getIsoDate(): string {
+    return this.getFileDate().toISOString();
+  }
+
+  /**
+   * The uncompressed size of the file in bytes.
+   *
+   * **Note:** Will be `null` for directories
+   * @gqlField size
+   */
+  async getFileSize(): Promise<Int | null> {
     const info = await this._getFileInfo();
     if (info == null) {
       return null;
@@ -59,6 +88,10 @@ export default class ArchiveFileModel {
     return info.getFileSize();
   }
 
+  /**
+   * The content of the file, if it's a text file
+   * @gqlField text_content
+   */
   async getTextContent(): Promise<string | null> {
     const info = await this._getFileInfo();
     if (info == null) {
@@ -67,10 +100,20 @@ export default class ArchiveFileModel {
     return info.getTextContent();
   }
 
+  /**
+   * Is the file a directory?
+   * @gqlField is_directory
+   */
   getIsDirectory(): boolean {
     return Boolean(this.row.is_directory);
   }
 
+  /**
+   * A URL to download the file. **Note:** This is powered by a little
+   * serverless Cloudflare function which tries to exctact the file on the fly.
+   * It may not work for all files.
+   * @gqlField url
+   */
   getUrl(): string {
     const filename = encodeURIComponent(this.getFileName());
     return `https://zip-worker.jordan1320.workers.dev/zip/${this.getMd5()}/${filename}`;
@@ -78,6 +121,15 @@ export default class ArchiveFileModel {
 
   async getSkin(): Promise<SkinModel> {
     return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
+  }
+
+  /**
+   * The skin in which this file was found
+   * @gqlField skin
+   */
+  async skin(): Promise<ISkin | null> {
+    const model = await SkinModel.fromMd5Assert(this.ctx, this.getMd5());
+    return SkinResolver.fromModel(model);
   }
 
   // Let's try to keep this as an implementation detail

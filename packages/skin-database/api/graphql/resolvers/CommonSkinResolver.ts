@@ -1,9 +1,9 @@
 import { ID } from "grats";
 import SkinModel from "../../../data/SkinModel";
-import ArchiveFileResolver from "./ArchiveFileResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ReviewResolver from "./ReviewResolver";
 import TweetModel from "../../../data/TweetModel";
+import ArchiveFileModel from "../../../data/ArchiveFileModel";
 
 /**
  * A Winamp skin. Could be modern or classic.
@@ -63,7 +63,7 @@ export interface ISkin {
    * List of files contained within the skin's .wsz archive
    * @gqlField
    */
-  archive_files(): Promise<Array<ArchiveFileResolver | null>>;
+  archive_files(): Promise<Array<ArchiveFileModel | null>>;
 
   /**
    * The skin's "item" at archive.org
@@ -127,9 +127,8 @@ export default abstract class CommonSkinResolver {
   async tweets(): Promise<Array<TweetModel | null>> {
     return this._model.getTweets();
   }
-  async archive_files(): Promise<Array<ArchiveFileResolver | null>> {
-    const files = await this._model.getArchiveFiles();
-    return files.map((file) => new ArchiveFileResolver(file));
+  async archive_files(): Promise<Array<ArchiveFileModel | null>> {
+    return this._model.getArchiveFiles();
   }
   async internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
     const item = await this._model.getIaItem();

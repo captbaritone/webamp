@@ -5,9 +5,9 @@ import path from "path";
 import { ID } from "grats";
 import ReviewResolver from "./ReviewResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
-import ArchiveFileResolver from "./ArchiveFileResolver";
 import { XMLParser } from "fast-xml-parser";
 import TweetModel from "../../../data/TweetModel";
+import ArchiveFileModel from "../../../data/ArchiveFileModel";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -78,7 +78,7 @@ export default class ModernSkinResolver
   /**
    * List of files contained within the skin's .wsz archive
    * @gqlField */
-  async archive_files(): Promise<Array<ArchiveFileResolver | null>> {
+  async archive_files(): Promise<Array<ArchiveFileModel | null>> {
     return super.archive_files();
   }
 

@@ -13,7 +13,6 @@ import algoliasearch from "algoliasearch";
 import MutationResolver from "./MutationResolver";
 import { knex } from "../../../db";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
-import ArchiveFileResolver from "./ArchiveFileResolver";
 import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
 import { fromId, NodeResolver } from "./NodeResolver";
 import ModernSkinsConnection from "../ModernSkinsConnection";
@@ -104,12 +103,8 @@ class RootResolver extends MutationResolver {
   async fetch_archive_file_by_md5(
     { md5 }: { md5: string },
     { ctx }
-  ): Promise<ArchiveFileResolver | null> {
-    const archiveFile = await ArchiveFileModel.fromFileMd5(ctx, md5);
-    if (archiveFile == null) {
-      return null;
-    }
-    return new ArchiveFileResolver(archiveFile);
+  ): Promise<ArchiveFileModel | null> {
+    return ArchiveFileModel.fromFileMd5(ctx, md5);
   }
 
   /**

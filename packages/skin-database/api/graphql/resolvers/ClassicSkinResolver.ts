@@ -3,9 +3,9 @@ import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import path from "path";
 import { ID, Int } from "grats";
-import ArchiveFileResolver from "./ArchiveFileResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import TweetModel from "../../../data/TweetModel";
+import ArchiveFileModel from "../../../data/ArchiveFileModel";
 
 /**
  * A classic Winamp skin
@@ -70,7 +70,7 @@ export default class ClassicSkinResolver
   /**
    * List of files contained within the skin's .wsz archive
    * @gqlField */
-  archive_files(): Promise<Array<ArchiveFileResolver | null>> {
+  archive_files(): Promise<Array<ArchiveFileModel | null>> {
     return super.archive_files();
   }
 
