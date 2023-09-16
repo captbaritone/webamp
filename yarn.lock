@@ -14783,10 +14783,10 @@ graphql@14.7.0, graphql@15.3.0, graphql@^16.6.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
   integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
 
-grats@^0.0.0-main-8de1c8ac:
-  version "0.0.0-main-8de1c8ac"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-8de1c8ac.tgz#ddd0eb60c290951e76307028143b24a3f8608ea4"
-  integrity sha512-lP/CpAU/6qE/Cn7+MUPbQT100kzuxh5rJ2fAiDbtAzxvG3MFhtXySy8Cz6sFt0eBjHv77a2G3J3Ua6+xoM6GnA==
+grats@0.0.0-main-b47472ff:
+  version "0.0.0-main-b47472ff"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-b47472ff.tgz#ca8d7f9bad66fcf7011090c681207105c4542f13"
+  integrity sha512-k+O8Jh3rqhCp80lZcYrXY5oWEf4FzwAtvLuTQtFskKPU8y6V/mlzL6per643uFSnisv7lmFrxY+8aBIbUDEFfg==
   dependencies:
     "@graphql-tools/utils" "^9.2.1"
     commander "^10.0.0"

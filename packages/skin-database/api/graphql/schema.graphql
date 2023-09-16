@@ -41,11 +41,11 @@ type ArchiveFile {
 """A classic Winamp skin"""
 type ClassicSkin implements Node & Skin {
   """List of files contained within the skin's .wsz archive"""
-  archive_files: [ArchiveFile]
+  archive_files: [ArchiveFile] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "archive_files")
   """String representation (rgb usually) of the skin's average color"""
-  average_color: String
+  average_color: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "average_color")
   """URL to download the skin"""
-  download_url: String
+  download_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "download_url")
   """
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
@@ -56,41 +56,43 @@ type ClassicSkin implements Node & Skin {
     Otherwise, the original user-uploaded file extension will be used.
     """
     normalize_extension: Boolean = false
-  ): String
+  ): String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "filename")
   """Does the skin include sprite sheets for the media library?"""
   has_media_library: Boolean
   """GraphQL ID of the skin"""
-  id: ID!
+  id: ID! @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "id")
   """The skin's "item" at archive.org"""
-  internet_archive_item: InternetArchiveItem
+  internet_archive_item: InternetArchiveItem @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "internet_archive_item")
   """
   The date on which this skin was last updated in the Algolia search index.
   Given in simplified extended ISO format (ISO 8601).
   """
   last_algolia_index_update_date: String
   """MD5 hash of the skin's file"""
-  md5: String
+  md5: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "md5")
   """URL of the skin on the Winamp Skin Museum"""
-  museum_url: String
-  """Has the skin been flagged as "not safe for wrok"?"""
-  nsfw: Boolean
+  museum_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "museum_url")
+  """
+  Has the skin been flagged as "not safe for work"?"
+  """
+  nsfw: Boolean @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "nsfw")
   """Text of the readme file extracted from the skin"""
-  readme_text: String
+  readme_text: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "readme_text")
   """
   Times that the skin has been reviewed either on the Museum's Tinder-style
-  reivew page, or via the Discord bot.
+  review page, or via the Discord bot.
   """
-  reviews: [Review]
+  reviews: [Review] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "reviews")
   """URL of a screenshot of the skin"""
-  screenshot_url: String
+  screenshot_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "screenshot_url")
   """The number of transparent pixels rendered by the skin."""
   transparent_pixels: Int
   """Has the skin been tweeted?"""
-  tweeted: Boolean
+  tweeted: Boolean @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "tweeted")
   """List of @winampskins tweets that mentioned the skin."""
-  tweets: [Tweet]
+  tweets: [Tweet] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "tweets")
   """URL of webamp.org with the skin loaded"""
-  webamp_url: String
+  webamp_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "webamp_url")
 }
 
 """Statistics about the contents of the Museum's database."""
@@ -116,13 +118,9 @@ type DatabaseStatistics {
   **Note:** Generally skins that have been marked NSFW are also marked as rejected.
   """
   rejected_skins_count: Int
-  """
-  The number of skins that have been approved for tweeting, but not yet tweeted.
-  """
+  """The number of skins that have been approved for tweeting, but not yet tweeted."""
   tweetable_skins_count: Int
-  """
-  The number of skins in the Museum that have been tweeted by @winampskins
-  """
+  """The number of skins in the Museum that have been tweeted by @winampskins"""
   tweeted_skins_count: Int
   """The total number of classic skins in the Museum's database"""
   unique_classic_skins_count: Int
@@ -136,9 +134,7 @@ type DatabaseStatistics {
   pipeline gets stuck.
   """
   uploads_pending_processing_count: Int
-  """
-  Number of skins that have been uploaded to the Museum via the web interface.
-  """
+  """Number of skins that have been uploaded to the Museum via the web interface."""
   web_uploads_count: Int
 }
 
@@ -153,9 +149,7 @@ type InternetArchiveItem {
   last_metadata_scrape_date_UNSTABLE: String @methodName(name: "getMetadataTimestamp")
   """URL to get the Internet Archive's metadata for this item in JSON form."""
   metadata_url: String @methodName(name: "getMetadataUrl")
-  """
-  Our cached version of the metadata available at \`metadata_url\` (above)
-  """
+  """Our cached version of the metadata available at \`metadata_url\` (above)"""
   raw_metadata_json: String @methodName(name: "getMetadataJSON")
   """The skin that this item contains"""
   skin: Skin
@@ -171,10 +165,11 @@ which are currently called just `Skin` in this schema.
 """
 type ModernSkin implements Node & Skin {
   """List of files contained within the skin's .wsz archive"""
-  archive_files: [ArchiveFile]
-  average_color: String @deprecated(reason: "Needed for migration")
+  archive_files: [ArchiveFile] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "archive_files")
+  """String representation (rgb usually) of the skin's average color"""
+  average_color: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "average_color")
   """URL to download the skin"""
-  download_url: String
+  download_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "download_url")
   """
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
@@ -185,27 +180,34 @@ type ModernSkin implements Node & Skin {
     Otherwise, the original user-uploaded file extension will be used.
     """
     normalize_extension: Boolean = false
-  ): String
+  ): String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "filename")
   """GraphQL ID of the skin"""
-  id: ID!
+  id: ID! @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "id")
   """The skin's "item" at archive.org"""
-  internet_archive_item: InternetArchiveItem
+  internet_archive_item: InternetArchiveItem @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "internet_archive_item")
   """MD5 hash of the skin's file"""
-  md5: String
-  museum_url: String @deprecated(reason: "Needed for migration")
-  nsfw: Boolean @deprecated(reason: "Needed for migration")
-  readme_text: String @deprecated(reason: "Needed for migration")
+  md5: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "md5")
+  """URL of the skin on the Winamp Skin Museum"""
+  museum_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "museum_url")
+  """
+  Has the skin been flagged as "not safe for work"?"
+  """
+  nsfw: Boolean @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "nsfw")
+  """Text of the readme file extracted from the skin"""
+  readme_text: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "readme_text")
   """
   Times that the skin has been reviewed either on the Museum's Tinder-style
-  reivew page, or via the Discord bot.
+  review page, or via the Discord bot.
   """
-  reviews: [Review]
-  screenshot_url: String
+  reviews: [Review] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "reviews")
+  """URL of a screenshot of the skin"""
+  screenshot_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "screenshot_url")
   """Has the skin been tweeted?"""
-  tweeted: Boolean
+  tweeted: Boolean @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "tweeted")
   """List of @winampskins tweets that mentioned the skin."""
-  tweets: [Tweet]
-  webamp_url: String @deprecated(reason: "Needed for migration")
+  tweets: [Tweet] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "tweets")
+  """URL of webamp.org with the skin loaded"""
+  webamp_url: String @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/CommonSkinResolver.js", functionName: "webamp_url")
 }
 
 """A collection of "modern" Winamp skins"""
@@ -241,9 +243,7 @@ type Mutation {
   in.
   """
   request_nsfw_review_for_skin(md5: String!): Boolean
-  """
-  Send a message to the admin of the site. Currently this appears in Discord.
-  """
+  """Send a message to the admin of the site. Currently this appears in Discord."""
   send_feedback(email: String, message: String!, url: String): Boolean
   """Mutations for the upload flow"""
   upload: UploadMutations
@@ -340,7 +340,8 @@ A Winamp skin. Could be modern or classic.
 interface Skin {
   """List of files contained within the skin's .wsz archive"""
   archive_files: [ArchiveFile]
-  average_color: String @deprecated(reason: "Needed for migration")
+  """String representation (rgb usually) of the skin's average color"""
+  average_color: String
   """URL to download the skin"""
   download_url: String
   """
@@ -360,20 +361,46 @@ interface Skin {
   internet_archive_item: InternetArchiveItem
   """MD5 hash of the skin's file"""
   md5: String
-  museum_url: String @deprecated(reason: "Needed for migration")
-  nsfw: Boolean @deprecated(reason: "Needed for migration")
-  readme_text: String @deprecated(reason: "Needed for migration")
+  """URL of the skin on the Winamp Skin Museum"""
+  museum_url: String
+  """
+  Has the skin been flagged as "not safe for work"?"
+  """
+  nsfw: Boolean
+  """Text of the readme file extracted from the skin"""
+  readme_text: String
   """
   Times that the skin has been reviewed either on the Museum's Tinder-style
   review page, or via the Discord bot.
   """
   reviews: [Review]
+  """URL of a screenshot of the skin"""
   screenshot_url: String
   """Has the skin been tweeted?"""
   tweeted: Boolean
   """List of @winampskins tweets that mentioned the skin."""
   tweets: [Tweet]
-  webamp_url: String @deprecated(reason: "Needed for migration")
+  """URL of webamp.org with the skin loaded"""
+  webamp_url: String
+}
+
+"""A collection of classic Winamp skins"""
+type SkinsConnection {
+  """The total number of skins matching the filter"""
+  count: Int
+  """The list of skins"""
+  nodes: [Skin]
+}
+
+enum SkinsFilterOption {
+  APPROVED
+  NSFW
+  REJECTED
+  TWEETED
+}
+
+enum SkinsSortOption {
+  MUSEUM
 }
 
 """Information about an attempt to upload a skin to the Museum."""
@@ -403,34 +430,11 @@ enum SkinUploadStatus {
   URL_REQUESTED
 }
 
-"""A collection of classic Winamp skins"""
-type SkinsConnection {
-  """The total number of skins matching the filter"""
-  count: Int
-  """The list of skins"""
-  nodes: [Skin]
-}
-
-enum SkinsFilterOption {
-  APPROVED
-  NSFW
-  REJECTED
-  TWEETED
-}
-
-enum SkinsSortOption {
-  MUSEUM
-}
-
 """A tweet made by @winampskins mentioning a Winamp skin"""
 type Tweet {
-  """
-  Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)
-  """
+  """Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)"""
   likes: Int @methodName(name: "getLikes")
-  """
-  Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)
-  """
+  """Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)"""
   retweets: Int @methodName(name: "getRetweets")
   """The skin featured in this Tweet"""
   skin: Skin
