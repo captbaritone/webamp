@@ -220,6 +220,13 @@ class Webamp {
   }
 
   /**
+   * Set volume from 0 - 100
+   */
+  setVolume(volume: number): void {
+    this.store.dispatch(Actions.setVolume(volume));
+  }  
+
+  /**
    * Seek backward n seconds in the curent track
    */
   seekBackward(seconds: number) {
