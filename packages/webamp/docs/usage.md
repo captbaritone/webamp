@@ -323,7 +323,7 @@ webamp.stop();
 
 Sets the volume from 0 - 100.
 
-**Since** -
+**Since** unreleased
 
 ```JavaScript
 webamp.setVolume(50);
@@ -415,7 +415,7 @@ webamp.onClose(() => {
 
 Toggles the visibility of the Equalizer window.
 
-**Since** -
+**Since** unreleased
 
 ```JavaScript
 webamp.toggleEqualizer()
@@ -425,7 +425,7 @@ webamp.toggleEqualizer()
 
 Toggles the visibility of the Playlist window.
 
-**Since** -
+**Since** unreleased
 
 ```JavaScript
 webamp.togglePlaylist()
@@ -435,7 +435,7 @@ webamp.togglePlaylist()
 
 Updates Webamp window positions by vertically stacking visible windows, setting origin to 0,0 in browser view.
 
-**Since** -
+**Since** unreleased
 
 ```JavaScript
 webamp.stackWindows()
@@ -445,7 +445,7 @@ webamp.stackWindows()
 
 Centers Webamp windows in current browser view by scroll position.
 
-**Since** -
+**Since** unreleased
 
 ```JavaScript
 webamp.centerWindowsInView()
