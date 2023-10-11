@@ -323,6 +323,35 @@ class Webamp {
   }
 
   /**
+   * Toggles the visibility of the equalizer
+   */
+  toggleEqualizer(): void {
+    this.store.dispatch(Actions.toggleWindow("equalizer"));
+  }  
+
+  /**
+   * Toggles the visibility of the playlist
+   */
+  togglePlaylist(): void {
+    this.store.dispatch(Actions.toggleWindow("playlist"));
+  }    
+
+  /**
+   * Updates Webamp window positions by vertically stacking visible windows,
+   * setting origin to 0,0 in browser view
+   */
+  stackWindows(): void {
+    this.store.dispatch(Actions.stackWindows());
+  }  
+
+  /**
+   * Centers Webamp windows in current browser view by scroll position
+   */
+  centerWindowsInView(): void {
+    this.store.dispatch(Actions.centerWindowsInView());
+  }   
+  
+  /**
    * A callback which will be called when a new track starts loading.
    *
    * This can happen on startup when the first track starts buffering, or when a subsequent track starts playing.
