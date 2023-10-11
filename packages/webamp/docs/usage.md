@@ -319,6 +319,16 @@ Stop the currently playing audio. Equivilant to pressing the "stop" button.
 webamp.stop();
 ```
 
+### `setVolume(volume): void`
+
+Sets the volume from 0 - 100.
+
+**Since** -
+
+```JavaScript
+webamp.setVolume(50);
+```
+
 ### `renderWhenReady(domNode: HTMLElement): Promise<void>`
 
 Webamp will wait until it has fetched the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
@@ -399,6 +409,46 @@ webamp.onClose(() => {
         webamp.reopen();
     });
 })
+```
+
+### `toggleEqualizer(): void`
+
+Toggles the visibility of the Equalizer window.
+
+**Since** -
+
+```JavaScript
+webamp.toggleEqualizer()
+```
+
+### `togglePlaylist(): void`
+
+Toggles the visibility of the Playlist window.
+
+**Since** -
+
+```JavaScript
+webamp.togglePlaylist()
+```
+
+### `stackWindows(): void`
+
+Updates Webamp window positions by vertically stacking visible windows, setting origin to 0,0 in browser view.
+
+**Since** -
+
+```JavaScript
+webamp.stackWindows()
+```
+
+### `centerWindowsInView(): void`
+
+Centers Webamp windows in current browser view by scroll position.
+
+**Since** -
+
+```JavaScript
+webamp.centerWindowsInView()
 ```
 
 ### `onMinimize(cb: () => void): () => void`
