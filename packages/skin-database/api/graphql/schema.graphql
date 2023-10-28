@@ -116,9 +116,13 @@ type DatabaseStatistics {
   **Note:** Generally skins that have been marked NSFW are also marked as rejected.
   """
   rejected_skins_count: Int
-  """The number of skins that have been approved for tweeting, but not yet tweeted."""
+  """
+  The number of skins that have been approved for tweeting, but not yet tweeted.
+  """
   tweetable_skins_count: Int
-  """The number of skins in the Museum that have been tweeted by @winampskins"""
+  """
+  The number of skins in the Museum that have been tweeted by @winampskins
+  """
   tweeted_skins_count: Int
   """The total number of classic skins in the Museum's database"""
   unique_classic_skins_count: Int
@@ -132,7 +136,9 @@ type DatabaseStatistics {
   pipeline gets stuck.
   """
   uploads_pending_processing_count: Int
-  """Number of skins that have been uploaded to the Museum via the web interface."""
+  """
+  Number of skins that have been uploaded to the Museum via the web interface.
+  """
   web_uploads_count: Int
 }
 
@@ -147,7 +153,9 @@ type InternetArchiveItem {
   last_metadata_scrape_date_UNSTABLE: String
   """URL to get the Internet Archive's metadata for this item in JSON form."""
   metadata_url: String
-  """Our cached version of the metadata avaliable at \`metadata_url\` (above)"""
+  """
+  Our cached version of the metadata avaliable at \`metadata_url\` (above)
+  """
   raw_metadata_json: String
   """The skin that this item contains"""
   skin: Skin
@@ -233,7 +241,9 @@ type Mutation {
   in.
   """
   request_nsfw_review_for_skin(md5: String!): Boolean
-  """Send a message to the admin of the site. Currently this appears in Discord."""
+  """
+  Send a message to the admin of the site. Currently this appears in Discord.
+  """
   send_feedback(email: String, message: String!, url: String): Boolean
   """Mutations for the upload flow"""
   upload: UploadMutations
@@ -366,25 +376,6 @@ interface Skin {
   webamp_url: String @deprecated(reason: "Needed for migration")
 }
 
-"""A collection of classic Winamp skins"""
-type SkinsConnection {
-  """The total number of skins matching the filter"""
-  count: Int
-  """The list of skins"""
-  nodes: [Skin]
-}
-
-enum SkinsFilterOption {
-  APPROVED
-  NSFW
-  REJECTED
-  TWEETED
-}
-
-enum SkinsSortOption {
-  MUSEUM
-}
-
 """Information about an attempt to upload a skin to the Museum."""
 type SkinUpload {
   id: String
@@ -412,11 +403,34 @@ enum SkinUploadStatus {
   URL_REQUESTED
 }
 
+"""A collection of classic Winamp skins"""
+type SkinsConnection {
+  """The total number of skins matching the filter"""
+  count: Int
+  """The list of skins"""
+  nodes: [Skin]
+}
+
+enum SkinsFilterOption {
+  APPROVED
+  NSFW
+  REJECTED
+  TWEETED
+}
+
+enum SkinsSortOption {
+  MUSEUM
+}
+
 """A tweet made by @winampskins mentioning a Winamp skin"""
 type Tweet {
-  """Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)"""
+  """
+  Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)
+  """
   likes: Int
-  """Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)"""
+  """
+  Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)
+  """
   retweets: Int
   """The skin featured in this Tweet"""
   skin: Skin

@@ -14778,15 +14778,22 @@ graphql-ws@^5.4.1:
   resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.11.1.tgz"
   integrity sha512-AlOO/Gt0fXuSHXe/Weo6o3rIQVnH5MW7ophzeYzL+vYNlkf0NbWRJ6IIFgtSLcv9JpTlQdxSpB3t0SnM47/BHA==
 
-graphql@14.7.0, graphql@15.3.0, graphql@^16.6.0:
-  version "15.3.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
-  integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
+graphql@14.7.0:
+  version "14.7.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
+  integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
+  dependencies:
+    iterall "^1.2.2"
 
-grats@^0.0.0-main-8de1c8ac:
-  version "0.0.0-main-8de1c8ac"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-8de1c8ac.tgz#ddd0eb60c290951e76307028143b24a3f8608ea4"
-  integrity sha512-lP/CpAU/6qE/Cn7+MUPbQT100kzuxh5rJ2fAiDbtAzxvG3MFhtXySy8Cz6sFt0eBjHv77a2G3J3Ua6+xoM6GnA==
+graphql@^16.6.0:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
+
+grats@0.0.0-main-ded5e481:
+  version "0.0.0-main-ded5e481"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-ded5e481.tgz#19f7545aef96c4b5ddb7567532de9e1e96eca018"
+  integrity sha512-WrL/irmHE9fETYdlC0kqAunlZNSn9ufebBZQYS+ORiI3/o6B2VeZ+KF64GFEjuxsoW3L29z1IZNCs+2Td2ro4Q==
   dependencies:
     "@graphql-tools/utils" "^9.2.1"
     commander "^10.0.0"
@@ -16505,6 +16512,11 @@ isurl@^1.0.0-alpha5:
   dependencies:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
+
+iterall@^1.2.2:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
+  integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
 jake@^10.8.5:
   version "10.8.5"
