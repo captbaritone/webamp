@@ -1,3 +1,4 @@
+import SkinResolver from "./SkinResolver";
 import SkinModel from "../../../data/SkinModel";
 import CommonSkinResolver, { ISkin } from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
@@ -8,6 +9,7 @@ import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import TweetResolver from "./TweetResolver";
 import { XMLParser } from "fast-xml-parser";
+import RootResolver from "./RootResolver";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -167,5 +169,25 @@ export default class ModernSkinResolver
    * @deprecated Needed for migration */
   average_color(): string | null {
     return null;
+  }
+}
+
+/**
+ * Get a skin by its MD5 hash
+ * @gqlField
+ */
+export async function fetch_skin_by_md5(
+  _: RootResolver,
+  { md5 }: { md5: string },
+  { ctx }
+): Promise<ISkin | null> {
+  const skin = await SkinModel.fromMd5(ctx, md5);
+  if (skin == null) {
+    return null;
+  }
+  if (skin.getSkinType() === "MODERN") {
+    return new ModernSkinResolver(skin);
+  } else {
+    return SkinResolver.fromModel(skin);
   }
 }

@@ -2,6 +2,7 @@ import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
 import TweetResolver from "./resolvers/TweetResolver";
+import RootResolver from "./resolvers/RootResolver";
 
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";
@@ -53,4 +54,26 @@ export default class TweetsConnection {
       return new TweetResolver(new TweetModel(ctx, tweet));
     });
   }
+}
+
+/**
+ * Tweets tweeted by @winampskins
+ * @gqlField
+ */
+export async function tweets(
+  _: RootResolver,
+  {
+    first = 10,
+    offset = 0,
+    sort,
+  }: {
+    first?: Int;
+    offset?: Int;
+    sort?: TweetsSortOption;
+  }
+): Promise<TweetsConnection> {
+  if (first > 1000) {
+    throw new Error("Maximum limit is 1000");
+  }
+  return new TweetsConnection(first, offset, sort);
 }

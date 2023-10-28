@@ -2,6 +2,7 @@ import { Int } from "grats";
 import TweetModel from "../../../data/TweetModel";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
+import RootResolver from "./RootResolver";
 
 /**
  * A tweet made by @winampskins mentioning a Winamp skin
@@ -47,4 +48,20 @@ export default class TweetResolver {
     }
     return SkinResolver.fromModel(skin);
   }
+}
+
+/**
+ * Get a tweet by its URL
+ * @gqlField
+ */
+export async function fetch_tweet_by_url(
+  _: RootResolver,
+  { url }: { url: string },
+  { ctx }
+): Promise<TweetResolver | null> {
+  const tweet = await TweetModel.fromAnything(ctx, url);
+  if (tweet == null) {
+    return null;
+  }
+  return new TweetResolver(tweet);
 }

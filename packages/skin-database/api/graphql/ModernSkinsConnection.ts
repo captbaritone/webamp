@@ -2,6 +2,8 @@ import { Int } from "grats";
 import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
+import { Root } from "aws-sdk/clients/organizations";
+import RootResolver from "./resolvers/RootResolver";
 
 /**
  * A collection of "modern" Winamp skins
@@ -38,4 +40,23 @@ export default class ModernSkinsConnection {
       return new ModernSkinResolver(new SkinModel(ctx, skin));
     });
   }
+}
+
+/**
+ * All modern skins in the database
+ * @gqlField */
+export async function modern_skins(
+  _: RootResolver,
+  {
+    first = 10,
+    offset = 0,
+  }: {
+    first?: Int;
+    offset?: Int;
+  }
+): Promise<ModernSkinsConnection> {
+  if (first > 1000) {
+    throw new Error("Maximum limit is 1000");
+  }
+  return new ModernSkinsConnection(first, offset);
 }

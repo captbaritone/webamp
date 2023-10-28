@@ -3,6 +3,7 @@ import ArchiveFileModel from "../../../data/ArchiveFileModel";
 import SkinModel from "../../../data/SkinModel";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
+import RootResolver from "./RootResolver";
 
 /**
  * A file found within a Winamp Skin's .wsz archive
@@ -78,4 +79,22 @@ export default class ArchiveFileResolver {
   date(): string {
     return this._model.getFileDate().toISOString();
   }
+}
+
+/**
+ * Fetch archive file by it's MD5 hash
+ *
+ * Get information about a file found within a skin's wsz/wal/zip archive.
+ * @gqlField
+ */
+export async function fetch_archive_file_by_md5(
+  _: RootResolver,
+  { md5 }: { md5: string },
+  { ctx }
+): Promise<ArchiveFileResolver | null> {
+  const archiveFile = await ArchiveFileModel.fromFileMd5(ctx, md5);
+  if (archiveFile == null) {
+    return null;
+  }
+  return new ArchiveFileResolver(archiveFile);
 }

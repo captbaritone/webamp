@@ -264,49 +264,49 @@ type Query {
   
   Get information about a file found within a skin's wsz/wal/zip archive.
   """
-  fetch_archive_file_by_md5(md5: String!): ArchiveFile
+  fetch_archive_file_by_md5(md5: String!): ArchiveFile @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/ArchiveFileResolver.js", functionName: "fetch_archive_file_by_md5")
   """
   Get an archive.org item by its identifier. You can find this in the URL:
   
   https://archive.org/details/<identifier>/
   """
-  fetch_internet_archive_item_by_identifier(identifier: String!): InternetArchiveItem
+  fetch_internet_archive_item_by_identifier(identifier: String!): InternetArchiveItem @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/InternetArchiveItemResolver.js", functionName: "fetch_internet_archive_item_by_identifier")
   """Get a skin by its MD5 hash"""
-  fetch_skin_by_md5(md5: String!): Skin
+  fetch_skin_by_md5(md5: String!): Skin @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/ModernSkinResolver.js", functionName: "fetch_skin_by_md5")
   """Get a tweet by its URL"""
-  fetch_tweet_by_url(url: String!): Tweet
+  fetch_tweet_by_url(url: String!): Tweet @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/TweetResolver.js", functionName: "fetch_tweet_by_url")
   """The currently authenticated user, if any."""
-  me: User
+  me: User @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/UserResolver.js", functionName: "me")
   """All modern skins in the database"""
-  modern_skins(first: Int = 10, offset: Int = 0): ModernSkinsConnection
+  modern_skins(first: Int = 10, offset: Int = 0): ModernSkinsConnection @exported(filename: "../../../../packages/skin-database/dist/api/graphql/ModernSkinsConnection.js", functionName: "modern_skins")
   """
   Get a globally unique object by its ID.
   
   https://graphql.org/learn/global-object-identification/
   """
-  node(id: ID!): Node
+  node(id: ID!): Node @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/NodeResolver.js", functionName: "node")
   """
   Search the database using the Algolia search index used by the Museum.
   
   Useful for locating a particular skin.
   """
-  search_skins(first: Int = 10, offset: Int = 0, query: String!): [Skin]
+  search_skins(first: Int = 10, offset: Int = 0, query: String!): [Skin] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/SkinResolver.js", functionName: "search_skins")
   """A random skin that needs to be reviewed"""
-  skin_to_review: Skin
+  skin_to_review: Skin @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/SkinResolver.js", functionName: "skin_to_review")
   """
   All classic skins in the database
   
   **Note:** We don't currently support combining sorting and filtering.
   """
-  skins(filter: SkinsFilterOption, first: Int = 10, offset: Int = 0, sort: SkinsSortOption): SkinsConnection
+  skins(filter: SkinsFilterOption, first: Int = 10, offset: Int = 0, sort: SkinsSortOption): SkinsConnection @exported(filename: "../../../../packages/skin-database/dist/api/graphql/SkinsConnection.js", functionName: "skins")
   """A namespace for statistics about the database"""
-  statistics: DatabaseStatistics
+  statistics: DatabaseStatistics @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/DatabaseStatisticsResolver.js", functionName: "statistics")
   """Tweets tweeted by @winampskins"""
-  tweets(first: Int = 10, offset: Int = 0, sort: TweetsSortOption): TweetsConnection
+  tweets(first: Int = 10, offset: Int = 0, sort: TweetsSortOption): TweetsConnection @exported(filename: "../../../../packages/skin-database/dist/api/graphql/TweetsConnection.js", functionName: "tweets")
   """Get the status of a batch of uploads by ids"""
-  upload_statuses(ids: [String!]!): [SkinUpload]
+  upload_statuses(ids: [String!]!): [SkinUpload] @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/SkinUploadResolver.js", functionName: "upload_statuses")
   """Get the status of a batch of uploads by md5s"""
-  upload_statuses_by_md5(md5s: [String!]!): [SkinUpload] @deprecated(reason: "Prefer `upload_statuses` instead, were we operate on ids.")
+  upload_statuses_by_md5(md5s: [String!]!): [SkinUpload] @deprecated(reason: "Prefer `upload_statuses` instead, were we operate on ids.") @exported(filename: "../../../../packages/skin-database/dist/api/graphql/resolvers/SkinUploadResolver.js", functionName: "upload_statuses_by_md5")
 }
 
 """The judgement made about a skin by a moderator"""

@@ -1,5 +1,6 @@
 import { Int } from "grats";
 import * as Skins from "../../../data/skins";
+import RootResolver from "./RootResolver";
 
 /**
  * Statistics about the contents of the Museum's database.
@@ -87,4 +88,11 @@ export default class DatabaseStatisticsResolver {
   web_uploads_count(): Promise<Int> {
     return Skins.getWebUploadsCount();
   }
+}
+
+/**
+ * A namespace for statistics about the database
+ * @gqlField */
+export function statistics(_: RootResolver): DatabaseStatisticsResolver {
+  return new DatabaseStatisticsResolver();
 }
