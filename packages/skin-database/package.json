@@ -39,7 +39,7 @@
     "node-fetch": "^2.6.7",
     "polygon-clipping": "^0.15.3",
     "puppeteer": "^13.3.2",
-    "sharp": "^0.31.3",
+    "sharp": "^0.32.6",
     "sqlite3": "^5.1.2",
     "temp": "^0.9.0",
     "ts-node": "^10.5.0",
