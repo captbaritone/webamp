@@ -3,6 +3,7 @@ import { ID } from "grats";
 import SkinModel from "../../../data/SkinModel";
 import SkinResolver from "../resolvers/SkinResolver";
 import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * A globally unique object. The `id` here is intended only for use within
@@ -29,7 +30,7 @@ export interface NodeResolver {
 export async function node(
   _: RootResolver,
   { id }: { id: ID },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<NodeResolver | null> {
   const { graphqlType, id: localId } = fromId(id);
   // TODO Use typeResolver

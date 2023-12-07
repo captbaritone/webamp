@@ -28,8 +28,7 @@
     "express-graphql": "^0.12.0",
     "express-sitemap-xml": "^2.0.0",
     "fast-xml-parser": "^4.2.2",
-    "graphql": "14.7.0",
-    "grats": "0.0.0-main-ded5e481",
+    "graphql": "16.6.0",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
@@ -65,6 +64,7 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "grats": "0.0.0-main-bfb182a3",
     "supertest": "^6.0.1",
     "typescript": "^3.8.3"
   },

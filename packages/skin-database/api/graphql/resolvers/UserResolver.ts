@@ -1,9 +1,10 @@
+import { GqlCtx } from "../GqlCtx";
 import RootResolver from "./RootResolver";
 
 /** @gqlType User */
 export default class UserResolver {
   /** @gqlField */
-  username(_args: never, { ctx }): string {
+  username(_args: unknown, { ctx }: GqlCtx): string | null {
     return ctx.username;
   }
 }

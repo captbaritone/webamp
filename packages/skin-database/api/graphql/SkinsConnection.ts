@@ -6,6 +6,7 @@ import LRU from "lru-cache";
 import { Int } from "grats";
 import { ISkin } from "./resolvers/CommonSkinResolver";
 import RootResolver from "./resolvers/RootResolver";
+import { GqlCtx } from "./GqlCtx";
 
 const options = {
   max: 100,
@@ -97,7 +98,7 @@ export default class SkinsConnection {
    * The list of skins
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<Array<ISkin | null>> {
+  async nodes(args: unknown, ctx: GqlCtx): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(

@@ -4,6 +4,7 @@ import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
 import { Root } from "aws-sdk/clients/organizations";
 import RootResolver from "./resolvers/RootResolver";
+import { GqlCtx } from "./GqlCtx";
 
 /**
  * A collection of "modern" Winamp skins
@@ -31,7 +32,10 @@ export default class ModernSkinsConnection {
   /**
    * The list of skins
    * @gqlField */
-  async nodes(_args: never, ctx): Promise<Array<ModernSkinResolver | null>> {
+  async nodes(
+    _args: unknown,
+    ctx: GqlCtx
+  ): Promise<Array<ModernSkinResolver | null>> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)

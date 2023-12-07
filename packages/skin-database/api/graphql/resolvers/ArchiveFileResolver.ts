@@ -4,6 +4,7 @@ import SkinModel from "../../../data/SkinModel";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
 import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * A file found within a Winamp Skin's .wsz archive
@@ -66,7 +67,7 @@ export default class ArchiveFileResolver {
    * The skin in which this file was found
    * @gqlField
    */
-  async skin(_: never, { ctx }): Promise<ISkin | null> {
+  async skin(_: unknown, { ctx }: GqlCtx): Promise<ISkin | null> {
     const model = await SkinModel.fromMd5Assert(ctx, this._model.getMd5());
     return SkinResolver.fromModel(model);
   }
@@ -90,7 +91,7 @@ export default class ArchiveFileResolver {
 export async function fetch_archive_file_by_md5(
   _: RootResolver,
   { md5 }: { md5: string },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<ArchiveFileResolver | null> {
   const archiveFile = await ArchiveFileModel.fromFileMd5(ctx, md5);
   if (archiveFile == null) {

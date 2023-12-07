@@ -1,6 +1,7 @@
 {
   "grats": {
-    "nullableByDefault": true
+    "nullableByDefault": true,
+    "EXPERIMENTAL_codegenPath": "./api/graphql/schema.ts"
   },
   "compilerOptions": {
     "module": "commonjs",

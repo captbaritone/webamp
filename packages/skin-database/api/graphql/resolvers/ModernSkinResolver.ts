@@ -10,6 +10,7 @@ import ArchiveFileResolver from "./ArchiveFileResolver";
 import TweetResolver from "./TweetResolver";
 import { XMLParser } from "fast-xml-parser";
 import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -179,7 +180,7 @@ export default class ModernSkinResolver
 export async function fetch_skin_by_md5(
   _: RootResolver,
   { md5 }: { md5: string },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<ISkin | null> {
   const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {

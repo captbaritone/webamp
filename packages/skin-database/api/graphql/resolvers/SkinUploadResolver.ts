@@ -3,6 +3,7 @@ import SkinResolver from "../resolvers/SkinResolver";
 import { knex } from "../../../db";
 import { ISkin } from "./CommonSkinResolver";
 import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * Information about an attempt to upload a skin to the Museum.
@@ -58,7 +59,7 @@ type SkinUploadStatus =
 export async function upload_statuses_by_md5(
   _: RootResolver,
   { md5s }: { md5s: string[] },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<Array<SkinUpload | null>> {
   return _upload_statuses({ keyName: "skin_md5", keys: md5s }, ctx);
 }
@@ -69,7 +70,7 @@ export async function upload_statuses_by_md5(
 export async function upload_statuses(
   _: RootResolver,
   { ids }: { ids: string[] },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<Array<SkinUpload | null>> {
   return _upload_statuses({ keyName: "id", keys: ids }, ctx);
 }

@@ -3,6 +3,7 @@ import TweetModel from "../../../data/TweetModel";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
 import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * A tweet made by @winampskins mentioning a Winamp skin
@@ -57,7 +58,7 @@ export default class TweetResolver {
 export async function fetch_tweet_by_url(
   _: RootResolver,
   { url }: { url: string },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<TweetResolver | null> {
   const tweet = await TweetModel.fromAnything(ctx, url);
   if (tweet == null) {

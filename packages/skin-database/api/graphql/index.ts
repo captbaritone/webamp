@@ -1,14 +1,8 @@
 import { Router } from "express";
 import { graphqlHTTP } from "express-graphql";
 
-import RootResolver from "./resolvers/RootResolver";
 import DEFAULT_QUERY from "./defaultQuery";
-import { buildSchema } from "graphql";
-import fs from "fs";
-import path from "path";
-
-const schemaPath = path.join(__dirname, "./schema.graphql");
-const schema = buildSchema(fs.readFileSync(schemaPath, "utf8"));
+import { schema } from "./schema";
 
 const router = Router();
 
@@ -44,8 +38,7 @@ const extensions = ({
 router.use(
   "/",
   graphqlHTTP({
-    schema: schema,
-    rootValue: new RootResolver(),
+    schema,
     graphiql: {
       defaultQuery: DEFAULT_QUERY,
     },

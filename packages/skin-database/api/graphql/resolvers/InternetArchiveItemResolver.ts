@@ -1,4 +1,5 @@
 import IaItemModel from "../../../data/IaItemModel";
+import { GqlCtx } from "../GqlCtx";
 import { ISkin } from "./CommonSkinResolver";
 import RootResolver from "./RootResolver";
 import SkinResolver from "./SkinResolver";
@@ -70,7 +71,7 @@ export default class InternetArchiveItemResolver {
 export async function fetch_internet_archive_item_by_identifier(
   _: RootResolver,
   { identifier }: { identifier: string },
-  { ctx }
+  { ctx }: GqlCtx
 ): Promise<InternetArchiveItemResolver | null> {
   const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
   if (iaItem == null) {
