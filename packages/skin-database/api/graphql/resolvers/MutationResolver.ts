@@ -18,7 +18,11 @@ export type MutationResolver = unknown;
  * @gqlField */
 export async function send_feedback(
   _: MutationResolver,
-  { message, email, url }: { message: string; email?: string; url?: string },
+  {
+    message,
+    email,
+    url,
+  }: { message: string; email?: string | null; url?: string | null },
   req: GqlCtx
 ): Promise<boolean> {
   req.notify({

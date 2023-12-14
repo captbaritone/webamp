@@ -33,7 +33,7 @@ export default class ModernSkinResolver
   }: {
     /** If true, the the correct file extension (.wsz or .wal) will be .
       Otherwise, the original user-uploaded file extension will be used. */
-    normalize_extension?: boolean;
+    normalize_extension?: boolean | null;
   }): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
@@ -72,7 +72,7 @@ export default class ModernSkinResolver
     return super.tweeted();
   }
   /**
-   * List of @winampskins tweets that mentioned the skin.
+   * List of `@winampskins` tweets that mentioned the skin.
    * @gqlField */
   async tweets(): Promise<Array<TweetResolver | null>> {
     return super.tweets();

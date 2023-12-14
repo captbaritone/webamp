@@ -1,7 +1,8 @@
 {
   "grats": {
     "nullableByDefault": true,
-    "EXPERIMENTAL_codegenPath": "./api/graphql/schema.ts"
+    "tsSchema": "./api/graphql/schema.ts",
+    "graphqlSchema": "./api/graphql/schema.graphql"
   },
   "compilerOptions": {
     "module": "commonjs",

@@ -45,9 +45,14 @@ async function getSkinMuseumPageFromCache(first: number, offset: number) {
 export default class SkinsConnection {
   _first: number;
   _offset: number;
-  _sort?: string;
-  _filter?: string;
-  constructor(first: number, offset: number, sort?: string, filter?: string) {
+  _sort?: string | null;
+  _filter?: string | null;
+  constructor(
+    first: number,
+    offset: number,
+    sort?: string | null,
+    filter?: string | null
+  ) {
     this._first = first;
     this._offset = offset;
     this._filter = filter;
@@ -137,10 +142,10 @@ export function skins(
     sort,
     filter,
   }: {
-    first?: Int;
-    offset?: Int;
-    sort?: SkinsSortOption;
-    filter?: SkinsFilterOption;
+    first: Int;
+    offset: Int;
+    sort?: SkinsSortOption | null;
+    filter?: SkinsFilterOption | null;
   }
 ): SkinsConnection {
   if (first > 1000) {

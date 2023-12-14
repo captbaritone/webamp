@@ -55,8 +55,8 @@ export async function modern_skins(
     first = 10,
     offset = 0,
   }: {
-    first?: Int;
-    offset?: Int;
+    first: Int;
+    offset: Int;
   }
 ): Promise<ModernSkinsConnection> {
   if (first > 1000) {

@@ -6,7 +6,7 @@ import RootResolver from "./RootResolver";
 import { GqlCtx } from "../GqlCtx";
 
 /**
- * A tweet made by @winampskins mentioning a Winamp skin
+ * A tweet made by `@winampskins` mentioning a Winamp skin
  * @gqlType Tweet
  */
 export default class TweetResolver {

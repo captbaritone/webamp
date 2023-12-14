@@ -43,11 +43,7 @@ export default class SkinResolver {
  */
 export async function search_skins(
   _: RootResolver,
-  {
-    query,
-    first = 10,
-    offset = 0,
-  }: { query: string; first?: Int; offset?: Int },
+  { query, first = 10, offset = 0 }: { query: string; first: Int; offset: Int },
   { ctx }: GqlCtx
 ): Promise<Array<ISkin | null>> {
   if (first > 1000) {

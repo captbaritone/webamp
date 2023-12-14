@@ -2912,14 +2912,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@graphql-tools/utils@^9.2.1":
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-9.2.1.tgz#1b3df0ef166cfa3eae706e3518b17d5922721c57"
-  integrity sha512-WUw506Ql6xzmOORlriNrD6Ugx+HjVgYxt9KCXD9mHAak+eaXSwuGGPyE60hy9xaDEoXKBsG7SkG69ybitaVl6A==
-  dependencies:
-    "@graphql-typed-document-node/core" "^3.1.1"
-    tslib "^2.4.0"
-
 "@graphql-tools/wrap@9.2.1":
   version "9.2.1"
   resolved "https://registry.npmjs.org/@graphql-tools/wrap/-/wrap-9.2.1.tgz"
@@ -2930,11 +2922,6 @@
     "@graphql-tools/utils" "8.12.0"
     tslib "^2.4.0"
     value-or-promise "1.0.11"
-
-"@graphql-typed-document-node/core@^3.1.1":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
-  integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
@@ -14788,15 +14775,14 @@ graphql@^16.6.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
   integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
-grats@0.0.0-main-bfb182a3:
-  version "0.0.0-main-bfb182a3"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-bfb182a3.tgz#c566889fce58016d24b976c3274d0dda143366c6"
-  integrity sha512-cFsUXkmqo5TsbV51danyyH3pFLWduTMSg6RNwskEOofgV/+GiKFdbmaLWsgI2B5/RcBkzPjdDGRN5B8u99pR7g==
+grats@0.0.0-main-d4d43d4b:
+  version "0.0.0-main-d4d43d4b"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-d4d43d4b.tgz#5e81c5558568251b9e026aeb77782198a8647a6d"
+  integrity sha512-SvxKQ5VV5W4tcxPHWutt5JSt2MUFbeWydKuiloPIIhzibiMMwNdCoPIO1E8YnQN//tCEsRdFqeV29zu/tENQeQ==
   dependencies:
-    "@graphql-tools/utils" "^9.2.1"
     commander "^10.0.0"
     graphql "^16.6.0"
-    typescript "^4.9.5"
+    typescript "^5.0.2"
 
 gulp-eslint@^3.0.1:
   version "3.0.1"
@@ -26062,6 +26048,11 @@ typescript@^4.9.5:
   version "4.9.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+
+typescript@^5.0.2:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 uid-safe@2.1.5:
   version "2.1.5"

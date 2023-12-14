@@ -15,7 +15,7 @@ export default class DatabaseStatisticsResolver {
     return Skins.getClassicSkinCount();
   }
   /**
-   * The number of skins in the Museum that have been tweeted by @winampskins
+   * The number of skins in the Museum that have been tweeted by `@winampskins`
    * @gqlField
    */
   tweeted_skins_count(): Promise<Int> {

@@ -56,7 +56,7 @@
     "cli": "ts-node --transpile-only ./cli.ts",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
-    "grats": "grats --output=./api/graphql/schema.graphql"
+    "grats": "grats"
   },
   "prettier": {},
   "devDependencies": {
@@ -64,11 +64,11 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
-    "grats": "0.0.0-main-bfb182a3",
     "supertest": "^6.0.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "grats": "0.0.0-main-d4d43d4b"
   },
   "resolutions": {
-    "graphql": "15.3.0"
+    "graphql": "16.6.0"
   }
 }

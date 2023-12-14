@@ -9,14 +9,14 @@ import { GqlCtx } from "./GqlCtx";
 export type TweetsSortOption = "LIKES" | "RETWEETS";
 
 /**
- * A collection of tweets made by the @winampskins bot
+ * A collection of tweets made by the `@winampskins` bot
  * @gqlType
  */
 export default class TweetsConnection {
   _first: number;
   _offset: number;
-  _sort?: TweetsSortOption;
-  constructor(first: number, offset: number, sort?: TweetsSortOption) {
+  _sort?: TweetsSortOption | null;
+  constructor(first: number, offset: number, sort?: TweetsSortOption | null) {
     this._first = first;
     this._offset = offset;
     this._sort = sort;
@@ -61,7 +61,7 @@ export default class TweetsConnection {
 }
 
 /**
- * Tweets tweeted by @winampskins
+ * Tweets tweeted by `@winampskins`
  * @gqlField
  */
 export async function tweets(
@@ -71,9 +71,9 @@ export async function tweets(
     offset = 0,
     sort,
   }: {
-    first?: Int;
-    offset?: Int;
-    sort?: TweetsSortOption;
+    first: Int;
+    offset: Int;
+    sort?: TweetsSortOption | null;
   }
 ): Promise<TweetsConnection> {
   if (first > 1000) {
