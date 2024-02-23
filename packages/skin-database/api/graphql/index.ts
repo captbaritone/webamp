@@ -2,7 +2,7 @@ import { Router } from "express";
 import { graphqlHTTP } from "express-graphql";
 
 import DEFAULT_QUERY from "./defaultQuery";
-import { schema } from "./schema";
+import { getSchema } from "./schema";
 
 const router = Router();
 
@@ -38,7 +38,7 @@ const extensions = ({
 router.use(
   "/",
   graphqlHTTP({
-    schema,
+    schema: getSchema(),
     graphiql: {
       defaultQuery: DEFAULT_QUERY,
     },

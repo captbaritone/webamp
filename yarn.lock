@@ -14765,20 +14765,15 @@ graphql-ws@^5.4.1:
   resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.11.1.tgz"
   integrity sha512-AlOO/Gt0fXuSHXe/Weo6o3rIQVnH5MW7ophzeYzL+vYNlkf0NbWRJ6IIFgtSLcv9JpTlQdxSpB3t0SnM47/BHA==
 
-graphql@16.6.0:
+graphql@16.6.0, graphql@^16.6.0:
   version "16.6.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.6.0.tgz#c2dcffa4649db149f6282af726c8c83f1c7c5fdb"
   integrity sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==
 
-graphql@^16.6.0:
-  version "16.8.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
-  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
-
-grats@0.0.0-main-d4d43d4b:
-  version "0.0.0-main-d4d43d4b"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.0-main-d4d43d4b.tgz#5e81c5558568251b9e026aeb77782198a8647a6d"
-  integrity sha512-SvxKQ5VV5W4tcxPHWutt5JSt2MUFbeWydKuiloPIIhzibiMMwNdCoPIO1E8YnQN//tCEsRdFqeV29zu/tENQeQ==
+grats@^0.0.22:
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.22.tgz#a391122dbd0c0de84ee3f2cadca4bbbe11fa129c"
+  integrity sha512-CqP0/M1GIa9l24o+fkazIzbAQrtDGaLWFV731M9/q0j7ehL5/hjF6PqvxkNYMefA20R73ygtxyr7XW3ebSH0Zw==
   dependencies:
     commander "^10.0.0"
     graphql "^16.6.0"
