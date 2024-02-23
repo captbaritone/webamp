@@ -1,10 +1,11 @@
 import { Rating, ReviewRow } from "../../../types";
+import { GqlCtx } from "../GqlCtx";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
 
 /**
  * A review of a skin. Done either on the Museum's Tinder-style
- * reivew page, or via the Discord bot.
+ * review page, or via the Discord bot.
  * @gqlType Review */
 export default class ReviewResolver {
   _model: ReviewRow;
@@ -16,7 +17,7 @@ export default class ReviewResolver {
    * The skin that was reviewed
    * @gqlField
    */
-  skin(args: never, { ctx }): Promise<ISkin | null> {
+  skin(args: unknown, { ctx }: GqlCtx): Promise<ISkin | null> {
     return SkinResolver.fromMd5(ctx, this._model.skin_md5);
   }
 

@@ -1,5 +1,10 @@
 import { ID } from "grats";
 
+import SkinModel from "../../../data/SkinModel";
+import SkinResolver from "../resolvers/SkinResolver";
+import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
+
 /**
  * A globally unique object. The `id` here is intended only for use within
  * GraphQL.
@@ -14,6 +19,32 @@ export interface NodeResolver {
    */
   id(): ID;
   __typename: string;
+}
+
+/**
+ * Get a globally unique object by its ID.
+ *
+ * https://graphql.org/learn/global-object-identification/
+ * @gqlField
+ */
+export async function node(
+  _: RootResolver,
+  { id }: { id: ID },
+  { ctx }: GqlCtx
+): Promise<NodeResolver | null> {
+  const { graphqlType, id: localId } = fromId(id);
+  // TODO Use typeResolver
+  switch (graphqlType) {
+    case "ClassicSkin":
+    case "ModernSkin": {
+      const skin = await SkinModel.fromMd5(ctx, localId);
+      if (skin == null) {
+        return null;
+      }
+      return SkinResolver.fromModel(skin);
+    }
+  }
+  return null;
 }
 
 export function toId(graphqlType: string, id: string) {

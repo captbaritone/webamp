@@ -1,3 +1,4 @@
+import SkinResolver from "./SkinResolver";
 import SkinModel from "../../../data/SkinModel";
 import CommonSkinResolver, { ISkin } from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
@@ -8,6 +9,8 @@ import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import TweetResolver from "./TweetResolver";
 import { XMLParser } from "fast-xml-parser";
+import RootResolver from "./RootResolver";
+import { GqlCtx } from "../GqlCtx";
 
 /**
  * A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
@@ -30,7 +33,7 @@ export default class ModernSkinResolver
   }: {
     /** If true, the the correct file extension (.wsz or .wal) will be .
       Otherwise, the original user-uploaded file extension will be used. */
-    normalize_extension?: boolean;
+    normalize_extension?: boolean | null;
   }): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
@@ -69,7 +72,7 @@ export default class ModernSkinResolver
     return super.tweeted();
   }
   /**
-   * List of @winampskins tweets that mentioned the skin.
+   * List of `@winampskins` tweets that mentioned the skin.
    * @gqlField */
   async tweets(): Promise<Array<TweetResolver | null>> {
     return super.tweets();
@@ -167,5 +170,25 @@ export default class ModernSkinResolver
    * @deprecated Needed for migration */
   average_color(): string | null {
     return null;
+  }
+}
+
+/**
+ * Get a skin by its MD5 hash
+ * @gqlField
+ */
+export async function fetch_skin_by_md5(
+  _: RootResolver,
+  { md5 }: { md5: string },
+  { ctx }: GqlCtx
+): Promise<ISkin | null> {
+  const skin = await SkinModel.fromMd5(ctx, md5);
+  if (skin == null) {
+    return null;
+  }
+  if (skin.getSkinType() === "MODERN") {
+    return new ModernSkinResolver(skin);
+  } else {
+    return SkinResolver.fromModel(skin);
   }
 }

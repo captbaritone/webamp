@@ -3,3 +3,4 @@
 **/build/
 **/dist/
 *.min.js
+packages/skin-database/api/graphql/schema.ts

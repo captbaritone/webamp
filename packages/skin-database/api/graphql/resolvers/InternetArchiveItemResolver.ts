@@ -1,5 +1,7 @@
 import IaItemModel from "../../../data/IaItemModel";
+import { GqlCtx } from "../GqlCtx";
 import { ISkin } from "./CommonSkinResolver";
+import RootResolver from "./RootResolver";
 import SkinResolver from "./SkinResolver";
 
 /** @gqlType InternetArchiveItem */
@@ -58,4 +60,22 @@ export default class InternetArchiveItemResolver {
     }
     return SkinResolver.fromModel(skin);
   }
+}
+
+/**
+ * Get an archive.org item by its identifier. You can find this in the URL:
+ *
+ * https://archive.org/details/<identifier>/
+ * @gqlField
+ */
+export async function fetch_internet_archive_item_by_identifier(
+  _: RootResolver,
+  { identifier }: { identifier: string },
+  { ctx }: GqlCtx
+): Promise<InternetArchiveItemResolver | null> {
+  const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
+  if (iaItem == null) {
+    return null;
+  }
+  return new InternetArchiveItemResolver(iaItem);
 }

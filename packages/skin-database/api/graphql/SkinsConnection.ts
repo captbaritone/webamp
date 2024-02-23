@@ -5,6 +5,8 @@ import SkinResolver from "./resolvers/SkinResolver";
 import LRU from "lru-cache";
 import { Int } from "grats";
 import { ISkin } from "./resolvers/CommonSkinResolver";
+import RootResolver from "./resolvers/RootResolver";
+import { GqlCtx } from "./GqlCtx";
 
 const options = {
   max: 100,
@@ -43,9 +45,14 @@ async function getSkinMuseumPageFromCache(first: number, offset: number) {
 export default class SkinsConnection {
   _first: number;
   _offset: number;
-  _sort?: string;
-  _filter?: string;
-  constructor(first: number, offset: number, sort?: string, filter?: string) {
+  _sort?: string | null;
+  _filter?: string | null;
+  constructor(
+    first: number,
+    offset: number,
+    sort?: string | null,
+    filter?: string | null
+  ) {
     this._first = first;
     this._offset = offset;
     this._filter = filter;
@@ -96,7 +103,7 @@ export default class SkinsConnection {
    * The list of skins
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<Array<ISkin | null>> {
+  async nodes(args: unknown, ctx: GqlCtx): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(
@@ -121,3 +128,66 @@ export default class SkinsConnection {
     });
   }
 }
+
+/**
+ * All classic skins in the database
+ *
+ * **Note:** We don't currently support combining sorting and filtering.
+ * @gqlField */
+export function skins(
+  _: RootResolver,
+  {
+    first = 10,
+    offset = 0,
+    sort,
+    filter,
+  }: {
+    first: Int;
+    offset: Int;
+    sort?: SkinsSortOption | null;
+    filter?: SkinsFilterOption | null;
+  }
+): SkinsConnection {
+  if (first > 1000) {
+    throw new Error("Maximum limit is 1000");
+  }
+  return new SkinsConnection(first, offset, sort, filter);
+}
+
+/** @gqlEnum */
+type SkinsSortOption =
+  /**
+the Museum's (https://skins.webamp.org) special sorting rules.
+
+Roughly speaking, it's:
+
+1. The four classic default skins
+2. Tweeted skins first (sorted by the number of likes/retweets)
+3. Approved, but not tweeted yet, skins
+4. Unreviwed skins
+5. Rejected skins
+6. NSFW skins
+*/
+  "MUSEUM";
+
+/** @gqlEnum */
+type SkinsFilterOption =
+  /*
+Only the skins that have been approved for tweeting
+*/
+  | "APPROVED"
+
+  /*
+Only the skins that have been rejected for tweeting
+*/
+  | "REJECTED"
+
+  /*
+Only the skins that have been marked NSFW
+*/
+  | "NSFW"
+
+  /*
+Only the skins that have been tweeted
+*/
+  | "TWEETED";

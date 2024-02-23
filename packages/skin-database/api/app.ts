@@ -21,7 +21,12 @@ export type ApiAction =
   | { type: "CLASSIC_SKIN_UPLOADED"; md5: string }
   | { type: "MODERN_SKIN_UPLOADED"; md5: string }
   | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string }
-  | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
+  | {
+      type: "GOT_FEEDBACK";
+      message: string;
+      email?: string | null;
+      url?: string | null;
+    }
   | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
   | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
   | {
@@ -181,7 +186,7 @@ const allowList = [
   /http:\/\/localhost:3000/,
   /http:\/\/localhost:3001/,
   /netlify.app/,
-  /https:\/\/dustinbrett.com/
+  /https:\/\/dustinbrett.com/,
 ];
 
 const corsOptions: CorsOptions = {

@@ -2,6 +2,9 @@ import { Int } from "grats";
 import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
+import { Root } from "aws-sdk/clients/organizations";
+import RootResolver from "./resolvers/RootResolver";
+import { GqlCtx } from "./GqlCtx";
 
 /**
  * A collection of "modern" Winamp skins
@@ -29,7 +32,10 @@ export default class ModernSkinsConnection {
   /**
    * The list of skins
    * @gqlField */
-  async nodes(_args: never, ctx): Promise<Array<ModernSkinResolver | null>> {
+  async nodes(
+    _args: unknown,
+    ctx: GqlCtx
+  ): Promise<Array<ModernSkinResolver | null>> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)
@@ -38,4 +44,23 @@ export default class ModernSkinsConnection {
       return new ModernSkinResolver(new SkinModel(ctx, skin));
     });
   }
+}
+
+/**
+ * All modern skins in the database
+ * @gqlField */
+export async function modern_skins(
+  _: RootResolver,
+  {
+    first = 10,
+    offset = 0,
+  }: {
+    first: Int;
+    offset: Int;
+  }
+): Promise<ModernSkinsConnection> {
+  if (first > 1000) {
+    throw new Error("Maximum limit is 1000");
+  }
+  return new ModernSkinsConnection(first, offset);
 }
