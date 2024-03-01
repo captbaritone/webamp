@@ -1,3 +1,8 @@
+import { TextEncoder, TextDecoder } from "util";
+// https://github.com/inrupt/solid-client-authn-js/issues/1676#issuecomment-917016646
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // In the real app, these are set via .env
 process.env.LOCAL_FILE_CACHE = "";
 process.env.CLOUDFLARE_PURGE_AUTH_KEY = "";
