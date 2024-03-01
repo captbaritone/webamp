@@ -15,7 +15,6 @@ import ArchiveFileModel from "../../../data/ArchiveFileModel";
 import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
 import { fromId, NodeResolver } from "./NodeResolver";
 import ModernSkinsConnection from "../ModernSkinsConnection";
-import ModernSkinResolver from "./ModernSkinResolver";
 import { ISkin } from "./CommonSkinResolver";
 
 // These keys are already in the web client, so they are not secret at all.
