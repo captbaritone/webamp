@@ -19,12 +19,6 @@
       }
     ],
     // TODO: Can TypeScript just do this for us?
-    [
-      "@babel/preset-react",
-      {
-        "runtime": "automatic"
-      }
-    ],
     "@babel/preset-typescript"
   ],
   "plugins": [

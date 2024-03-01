@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`can serialize the initial state 1`] = `
-Object {
-  "display": Object {
+{
+  "display": {
     "doubled": false,
     "llama": false,
     "marqueeStep": 0,
-    "skinColors": Array [
+    "skinColors": [
       "rgb(0,0,0)",
       "rgb(24,33,41)",
       "rgb(239,49,16)",
@@ -34,18 +34,18 @@ Object {
     ],
     "skinCursors": null,
     "skinGenLetterWidths": null,
-    "skinImages": Object {
+    "skinImages": {
       "EQ_GRAPH_LINE_COLORS": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAATCAYAAABRC2cZAAAAR0lEQVQYV2O4rCT9n+F9kOJ/hvfViv8ZHkzSQCE2afxneH/HEJm49Nr0PwOYWPLIAkp0PjL4z1B41uQ/Q9QGnf8MWrPEIAQANWYwvnlToNIAAAAASUVORK5CYII=",
       "EQ_PREAMP_LINE": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHEAAAABCAYAAADpXEERAAAAE0lEQVQoU2Pcdfruf4ZRMKRDAAD1lwNjTqcaUQAAAABJRU5ErkJggg==",
     },
     "skinPlaylistStyle": null,
-    "skinRegion": Object {},
+    "skinRegion": {},
     "visualizerStyle": 0,
   },
-  "equalizer": Object {
+  "equalizer": {
     "auto": false,
     "on": true,
-    "sliders": Object {
+    "sliders": {
       "1000": 50,
       "12000": 50,
       "14000": 50,
@@ -59,51 +59,51 @@ Object {
       "preamp": 50,
     },
   },
-  "media": Object {
+  "media": {
     "balance": 0,
     "repeat": false,
     "shuffle": false,
     "volume": 78,
   },
   "version": 1,
-  "windows": Object {
+  "windows": {
     "focused": "main",
-    "genWindows": Object {
-      "equalizer": Object {
+    "genWindows": {
+      "equalizer": {
         "hidden": false,
         "open": true,
-        "position": Object {
+        "position": {
           "x": 0,
           "y": 0,
         },
         "shade": false,
-        "size": Array [
+        "size": [
           0,
           0,
         ],
       },
-      "main": Object {
+      "main": {
         "hidden": false,
         "open": true,
-        "position": Object {
+        "position": {
           "x": 0,
           "y": 0,
         },
         "shade": false,
-        "size": Array [
+        "size": [
           0,
           0,
         ],
       },
-      "playlist": Object {
+      "playlist": {
         "hidden": false,
         "open": true,
-        "position": Object {
+        "position": {
           "x": 0,
           "y": 0,
         },
         "shade": false,
-        "size": Array [
+        "size": [
           0,
           0,
         ],
