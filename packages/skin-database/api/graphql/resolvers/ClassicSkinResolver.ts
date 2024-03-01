@@ -12,6 +12,10 @@ export default class ClassicSkinResolver implements NodeResolver, ISkin {
   _model: SkinModel;
   __typename = "ClassicSkin";
 
+  constructor(model: SkinModel) {
+    this._model = model;
+  }
+
   md5(): string {
     return this._model.getMd5();
   }

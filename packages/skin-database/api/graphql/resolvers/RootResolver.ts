@@ -58,11 +58,7 @@ class RootResolver extends MutationResolver {
     if (skin == null) {
       return null;
     }
-    if (skin.getSkinType() === "MODERN") {
-      return new ModernSkinResolver(skin);
-    } else {
-      return SkinResolver.fromModel(skin);
-    }
+    return SkinResolver.fromModel(skin);
   }
 
   /**
