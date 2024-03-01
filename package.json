@@ -22,7 +22,7 @@
     "@swc/jest": "^0.2.24",
     "@typescript-eslint/parser": "^5.13.0",
     "assert": "^2.0.0",
-    "eslint": "^8.14.0",
+    "eslint": "^8.57.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
