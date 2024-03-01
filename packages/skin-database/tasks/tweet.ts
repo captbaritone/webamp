@@ -14,7 +14,7 @@ const temp = _temp.track();
 export async function tweet(
   discordClient: Client,
   anything: string | null
-): Promise<string> {
+): Promise<string | undefined> {
   const ctx = new UserContext();
   const tweetBotChannel = await discordClient.channels.fetch(
     TWEET_BOT_CHANNEL_ID
@@ -112,15 +112,18 @@ async function sendTweet(skin: SkinModel): Promise<string> {
   fs.writeFileSync(tempFile, screenshotBuffer);
   const t = getTwitterClient();
 
-  const { media_id_string } = await new Promise((resolve, reject) => {
-    t.postMediaChunked({ file_path: tempFile }, (err, data) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(data);
-    });
-  });
+  const promise: Promise<{ media_id_string: string }> = new Promise(
+    (resolve, reject) => {
+      t.postMediaChunked({ file_path: tempFile }, (err, data) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(data as { media_id_string: string });
+      });
+    }
+  );
+  const { media_id_string } = await promise;
 
   const params = {
     status: `${filename}\n\n${skin.getMuseumUrl()}`,

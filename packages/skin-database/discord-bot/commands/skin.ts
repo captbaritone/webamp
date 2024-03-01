@@ -16,6 +16,9 @@ async function handler(message: Message, args: [string]) {
     message.channel.send(`Could not find a skin matching ${anything}`);
     return;
   }
+  if (message.channel.type !== "text" && message.channel.type !== "dm") {
+    throw new Error("This command can only be used in a server");
+  }
   await Utils.postSkin({
     md5: skin.getMd5(),
     dest: message.channel,

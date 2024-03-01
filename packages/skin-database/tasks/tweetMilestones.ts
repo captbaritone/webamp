@@ -63,7 +63,7 @@ export async function popularTweets(handler: DiscordEventHandler) {
 
   const tweets = await getTweets(twitterClient);
 
-  const current = await KeyValue.get(KEY);
+  const current = (await KeyValue.get(KEY)) as { [bracket: string]: string[] };
 
   for (const tweet of tweets) {
     let notified = false;

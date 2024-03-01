@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { graphqlHTTP } from "express-graphql";
 
 import RootResolver from "./resolvers/RootResolver";
@@ -59,7 +59,7 @@ router.use(
       };
     },
     extensions,
-  })
+  }) as RequestHandler
 );
 
 export default router;
