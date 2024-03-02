@@ -182,7 +182,7 @@ export function getSchema(): GraphQLSchema {
         }
     });
     const SkinType: GraphQLInterfaceType = new GraphQLInterfaceType({
-        description: "A Winamp skin. Could be modern or classic.\n\n**Note**: At some point in the future, this might be renamed to `Skin`.",
+        description: "A Winamp skin. Could be modern or classic.",
         name: "Skin",
         fields() {
             return {

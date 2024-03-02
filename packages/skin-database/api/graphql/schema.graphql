@@ -46,11 +46,7 @@ interface Node {
   id: ID!
 }
 
-"""
-A Winamp skin. Could be modern or classic.
-
-**Note**: At some point in the future, this might be renamed to `Skin`.
-"""
+"""A Winamp skin. Could be modern or classic."""
 interface Skin {
   """List of files contained within the skin's .wsz archive"""
   archive_files: [ArchiveFile]

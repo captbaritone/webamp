@@ -7,8 +7,6 @@ import IaItemModel from "../../../data/IaItemModel";
 
 /**
  * A Winamp skin. Could be modern or classic.
- *
- * **Note**: At some point in the future, this might be renamed to `Skin`.
  * @gqlInterface Skin
  */
 export interface ISkin {
