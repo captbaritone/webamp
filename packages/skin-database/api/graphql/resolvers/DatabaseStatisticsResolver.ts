@@ -1,6 +1,6 @@
 import { Int } from "grats";
 import * as Skins from "../../../data/skins";
-import { Query } from "./RootResolver";
+import { Query } from "./QueryResolver";
 
 /**
  * Statistics about the contents of the Museum's database.

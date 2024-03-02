@@ -1,5 +1,5 @@
 import { ID } from "grats";
-import { Query } from "./RootResolver";
+import { Query } from "./QueryResolver";
 import { Ctx } from "..";
 import SkinModel from "../../../data/SkinModel";
 import SkinResolver from "./SkinResolver";

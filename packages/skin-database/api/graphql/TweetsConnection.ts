@@ -1,7 +1,7 @@
 import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
-import { Query } from "./resolvers/RootResolver";
+import { Query } from "./resolvers/QueryResolver";
 
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";

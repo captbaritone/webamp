@@ -7,7 +7,7 @@ import { fetchMetadata, fetchTasks } from "../services/internetArchive";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Ctx } from "../api/graphql";
-import { Query } from "../api/graphql/resolvers/RootResolver";
+import { Query } from "../api/graphql/resolvers/QueryResolver";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 

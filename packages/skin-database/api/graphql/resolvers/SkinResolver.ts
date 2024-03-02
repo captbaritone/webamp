@@ -5,7 +5,7 @@ import UserContext from "../../../data/UserContext";
 import ClassicSkinResolver from "./ClassicSkinResolver";
 import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
-import { Query } from "./RootResolver";
+import { Query } from "./QueryResolver";
 import algoliasearch from "algoliasearch";
 import * as Skins from "../../../data/skins";
 

@@ -1,59 +1,10 @@
-import SkinModel from "../../../data/SkinModel";
-import SkinResolver from "../resolvers/SkinResolver";
-import SkinsConnection from "../SkinsConnection";
-import { Int } from "grats";
-
-import { knex } from "../../../db";
-import ModernSkinsConnection from "../ModernSkinsConnection";
-import { ISkin } from "./CommonSkinResolver";
 import { Ctx } from "..";
-
-/** @gqlType Query */
-export type Query = unknown;
-
-/**
- * All classic skins in the database
- *
- * **Note:** We don't currently support combining sorting and filtering.
- * @gqlField */
-export function skins(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-    sort,
-    filter,
-  }: {
-    first?: Int;
-    offset?: Int;
-    sort?: SkinsSortOption | null;
-    filter?: SkinsFilterOption | null;
-  }
-): SkinsConnection {
-  if (first > 1000) {
-    throw new Error("Maximum limit is 1000");
-  }
-  return new SkinsConnection(first, offset, sort, filter);
-}
-
-/**
- * All modern skins in the database
- * @gqlField */
-export async function modern_skins(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-  }: {
-    first?: Int;
-    offset?: Int;
-  }
-): Promise<ModernSkinsConnection> {
-  if (first > 1000) {
-    throw new Error("Maximum limit is 1000");
-  }
-  return new ModernSkinsConnection(first, offset);
-}
+import SkinModel from "../../../data/SkinModel";
+import UserContext from "../../../data/UserContext";
+import { knex } from "../../../db";
+import { ISkin } from "./CommonSkinResolver";
+import { Query } from "./QueryResolver";
+import SkinResolver from "./SkinResolver";
 
 /**
  * Get the status of a batch of uploads by md5s
@@ -80,7 +31,7 @@ export async function upload_statuses(
 }
 
 // Shared implementation for upload_statuses and upload_statuses_by_md5
-async function _upload_statuses({ keyName, keys }, ctx) {
+async function _upload_statuses({ keyName, keys }, ctx: UserContext) {
   const skins = await knex("skin_uploads")
     .whereIn(keyName, keys)
     .orderBy("id", "desc")
@@ -122,44 +73,6 @@ type SkinUpload = {
   upload_md5: string;
 };
 
-/** @gqlEnum */
-type SkinsSortOption =
-  /**
-the Museum's (https://skins.webamp.org) special sorting rules.
-
-Roughly speaking, it's:
-
-1. The four classic default skins
-2. Tweeted skins first (sorted by the number of likes/retweets)
-3. Approved, but not tweeted yet, skins
-4. Unreviwed skins
-5. Rejected skins
-6. NSFW skins
-*/
-  "MUSEUM";
-
-/** @gqlEnum */
-type SkinsFilterOption =
-  /*
-Only the skins that have been approved for tweeting
-*/
-  | "APPROVED"
-
-  /*
-Only the skins that have been rejected for tweeting
-*/
-  | "REJECTED"
-
-  /*
-Only the skins that have been marked NSFW
-*/
-  | "NSFW"
-
-  /*
-Only the skins that have been tweeted
-*/
-  | "TWEETED";
-
 /**
  * The current status of a pending upload.
  *
@@ -171,13 +84,13 @@ type SkinUploadStatus =
   /** The user has requested a URL, but the skin has not yet been processed. */
   | "URL_REQUESTED"
   /** The user has notified us that the skin has been uploaded, but we haven't yet
-  processed it. */
+    processed it. */
   | "UPLOAD_REPORTED"
   /** An error occured processing the skin. Usually this is a transient error, and
-  the skin will be retried at a later time. */
+    the skin will be retried at a later time. */
   | "ERRORED"
   /** An error occured processing the skin, but it was the fault of the server. It
-  will be processed at a later date. */
+    will be processed at a later date. */
   | "DELAYED"
   /** The skin has been successfully added to the Museum.
    * @deprecated

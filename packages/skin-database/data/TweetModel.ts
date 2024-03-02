@@ -8,7 +8,7 @@ import { Int } from "grats";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Ctx } from "../api/graphql";
-import { Query } from "../api/graphql/resolvers/RootResolver";
+import { Query } from "../api/graphql/resolvers/QueryResolver";
 
 export type TweetDebugData = {
   row: TweetRow;

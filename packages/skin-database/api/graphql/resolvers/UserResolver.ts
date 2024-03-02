@@ -1,5 +1,5 @@
 import { Ctx } from "..";
-import { Query } from "./RootResolver";
+import { Query } from "./QueryResolver";
 
 /** @gqlType User */
 export default class UserResolver {
