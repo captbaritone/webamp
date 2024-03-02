@@ -7,6 +7,8 @@ import FileInfoModel from "./FileInfoModel";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Int } from "grats";
+import { Ctx } from "../api/graphql";
+import { Query } from "../api/graphql/resolvers/RootResolver";
 
 export type ArchiveFileDebugData = {
   row: ArchiveFileRow;
@@ -142,6 +144,20 @@ export default class ArchiveFileModel {
       row: this.row,
     };
   }
+}
+
+/**
+ * Fetch archive file by it's MD5 hash
+ *
+ * Get information about a file found within a skin's wsz/wal/zip archive.
+ * @gqlField
+ */
+export async function fetch_archive_file_by_md5(
+  _: Query,
+  { md5 }: { md5: string },
+  { ctx }: Ctx
+): Promise<ArchiveFileModel | null> {
+  return ArchiveFileModel.fromFileMd5(ctx, md5);
 }
 
 const getArchiveFilesLoader = ctxWeakMapMemoize<

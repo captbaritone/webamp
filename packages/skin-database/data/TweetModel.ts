@@ -7,6 +7,8 @@ import SkinModel from "./SkinModel";
 import { Int } from "grats";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
+import { Ctx } from "../api/graphql";
+import { Query } from "../api/graphql/resolvers/RootResolver";
 
 export type TweetDebugData = {
   row: TweetRow;
@@ -103,6 +105,18 @@ export default class TweetModel {
       row: this.row,
     };
   }
+}
+
+/**
+ * Get a tweet by its URL
+ * @gqlField
+ */
+export async function fetch_tweet_by_url(
+  _: Query,
+  { url }: { url: string },
+  { ctx }: Ctx
+): Promise<TweetModel | null> {
+  return TweetModel.fromAnything(ctx, url);
 }
 
 const getTweetsLoader = ctxWeakMapMemoize<DataLoader<string, TweetRow[]>>(

@@ -67,7 +67,7 @@ interface Skin {
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
     """
-    normalize_extension: Boolean = false
+    normalize_extension: Boolean! = false
   ): String
   """GraphQL ID of the skin"""
   id: ID!
@@ -152,7 +152,7 @@ type ClassicSkin implements Node & Skin {
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
     """
-    normalize_extension: Boolean = false
+    normalize_extension: Boolean! = false
   ): String
   """Does the skin include sprite sheets for the media library?"""
   has_media_library: Boolean
@@ -282,7 +282,7 @@ type ModernSkin implements Node & Skin {
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
     """
-    normalize_extension: Boolean = false
+    normalize_extension: Boolean! = false
   ): String
   """GraphQL ID of the skin"""
   id: ID!

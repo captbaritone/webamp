@@ -1,143 +1,15 @@
-import IaItemModel from "../../../data/IaItemModel";
 import SkinModel from "../../../data/SkinModel";
-import TweetModel from "../../../data/TweetModel";
 import SkinResolver from "../resolvers/SkinResolver";
-import UserResolver from "../resolvers/UserResolver";
 import SkinsConnection from "../SkinsConnection";
-import TweetsConnection, { TweetsSortOption } from "../TweetsConnection";
-import * as Skins from "../../../data/skins";
-import { ID, Int } from "grats";
+import { Int } from "grats";
 
-import algoliasearch from "algoliasearch";
 import { knex } from "../../../db";
-import ArchiveFileModel from "../../../data/ArchiveFileModel";
-import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
-import { fromId, NodeResolver } from "./NodeResolver";
 import ModernSkinsConnection from "../ModernSkinsConnection";
 import { ISkin } from "./CommonSkinResolver";
 import { Ctx } from "..";
 
-// These keys are already in the web client, so they are not secret at all.
-const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
-const index = client.initIndex("Skins");
-
 /** @gqlType Query */
-type Query = unknown;
-
-/**
- * Get a globally unique object by its ID.
- *
- * https://graphql.org/learn/global-object-identification/
- * @gqlField
- */
-export async function node(
-  _: Query,
-  { id }: { id: ID },
-  { ctx }: Ctx
-): Promise<NodeResolver | null> {
-  const { graphqlType, id: localId } = fromId(id);
-  // TODO Use typeResolver
-  switch (graphqlType) {
-    case "ClassicSkin":
-    case "ModernSkin": {
-      const skin = await SkinModel.fromMd5(ctx, localId);
-      if (skin == null) {
-        return null;
-      }
-      return SkinResolver.fromModel(skin);
-    }
-  }
-  return null;
-}
-
-/**
- * Get a skin by its MD5 hash
- * @gqlField
- */
-export async function fetch_skin_by_md5(
-  _: Query,
-  { md5 }: { md5: string },
-  { ctx }: Ctx
-): Promise<ISkin | null> {
-  const skin = await SkinModel.fromMd5(ctx, md5);
-  if (skin == null) {
-    return null;
-  }
-  return SkinResolver.fromModel(skin);
-}
-
-/**
- * Get a tweet by its URL
- * @gqlField
- */
-export async function fetch_tweet_by_url(
-  _: Query,
-  { url }: { url: string },
-  { ctx }: Ctx
-): Promise<TweetModel | null> {
-  return TweetModel.fromAnything(ctx, url);
-}
-
-/**
- * Get an archive.org item by its identifier. You can find this in the URL:
- *
- * https://archive.org/details/<identifier>/
- * @gqlField
- */
-export async function fetch_internet_archive_item_by_identifier(
-  _: Query,
-  { identifier }: { identifier: string },
-  { ctx }: Ctx
-): Promise<IaItemModel | null> {
-  return IaItemModel.fromIdentifier(ctx, identifier);
-}
-
-/**
- * Fetch archive file by it's MD5 hash
- *
- * Get information about a file found within a skin's wsz/wal/zip archive.
- * @gqlField
- */
-export async function fetch_archive_file_by_md5(
-  _: Query,
-  { md5 }: { md5: string },
-  { ctx }: Ctx
-): Promise<ArchiveFileModel | null> {
-  return ArchiveFileModel.fromFileMd5(ctx, md5);
-}
-
-/**
- * Search the database using the Algolia search index used by the Museum.
- *
- * Useful for locating a particular skin.
- * @gqlField
- */
-export async function search_skins(
-  _: Query,
-  {
-    query,
-    first = 10,
-    offset = 0,
-  }: { query: string; first?: Int; offset?: Int },
-  { ctx }: Ctx
-): Promise<Array<ISkin | null>> {
-  if (first > 1000) {
-    throw new Error("Can only query 1000 records via search.");
-  }
-
-  const results: { hits: { md5: string }[] } = await index.search(query, {
-    attributesToRetrieve: ["md5"],
-    length: first,
-    offset,
-  });
-
-  return Promise.all(
-    results.hits.map(async (hit) => {
-      const model = await SkinModel.fromMd5Assert(ctx, hit.md5);
-      return SkinResolver.fromModel(model);
-    })
-  );
-}
+export type Query = unknown;
 
 /**
  * All classic skins in the database
@@ -184,52 +56,6 @@ export async function modern_skins(
 }
 
 /**
- * A random skin that needs to be reviewed
- * @gqlField */
-export async function skin_to_review(
-  _: Query,
-  _args: unknown,
-  { ctx }: Ctx
-): Promise<ISkin | null> {
-  if (!ctx.authed()) {
-    return null;
-  }
-  const { md5 } = await Skins.getSkinToReview();
-  const model = await SkinModel.fromMd5Assert(ctx, md5);
-  return SkinResolver.fromModel(model);
-}
-
-/**
- * Tweets tweeted by @winampskins
- * @gqlField
- */
-export async function tweets(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-    sort,
-  }: {
-    first?: Int;
-    offset?: Int;
-    sort?: TweetsSortOption | null;
-  }
-): Promise<TweetsConnection> {
-  if (first > 1000) {
-    throw new Error("Maximum limit is 1000");
-  }
-  return new TweetsConnection(first, offset, sort);
-}
-
-/**
- * The currently authenticated user, if any.
- * @gqlField
- */
-export function me(_: Query): UserResolver | null {
-  return new UserResolver();
-}
-
-/**
  * Get the status of a batch of uploads by md5s
  * @gqlField
  * @deprecated Prefer `upload_statuses` instead, were we operate on ids.
@@ -272,13 +98,6 @@ async function _upload_statuses({ keyName, keys }, ctx) {
       return { id, skin, status, upload_md5: skin_md5 };
     })
   );
-}
-
-/**
- * A namespace for statistics about the database
- * @gqlField */
-export function statistics(_: Query): DatabaseStatisticsResolver {
-  return new DatabaseStatisticsResolver();
 }
 
 /**
