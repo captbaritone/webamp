@@ -31,7 +31,8 @@
     "events": "^3.3.0",
     "jest": "^27.5.1",
     "prettier": "^2.3.2",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "typescript": "^5.3.3"
   },
   "prettier": {
     "trailingComma": "es5"

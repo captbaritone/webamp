@@ -105,7 +105,7 @@
     "puppeteer": "^22.2.0",
     "react-test-renderer": "^17.0.1",
     "style-loader": "^0.23.1",
-    "typescript": "^3.7.2",
+    "typescript": "^5.3.3",
     "url-loader": "^1.1.2"
   },
   "jest": {

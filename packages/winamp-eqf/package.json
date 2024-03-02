@@ -21,6 +21,7 @@
   "author": "Jordan Eldgredge",
   "license": "ISC",
   "devDependencies": {
-    "buffer-to-arraybuffer": "0.0.4"
+    "buffer-to-arraybuffer": "0.0.4",
+    "typescript": "^5.3.3"
   }
 }
