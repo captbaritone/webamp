@@ -21,8 +21,7 @@
     "express-graphql": "^0.12.0",
     "express-sitemap-xml": "^2.0.0",
     "fast-xml-parser": "^4.2.2",
-    "graphql": "14.7.0",
-    "grats": "0.0.0-main-b47472ff",
+    "graphql": "^16.8.1",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
@@ -50,13 +49,13 @@
     "cli": "ts-node --transpile-only ./cli.ts",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
-    "grats": "grats --output=./api/graphql/schema.graphql"
+    "grats": "grats"
   },
   "prettier": {},
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
-    "@types/cookie-session": "^2.0.48",
     "@types/body-parser": "^1.19.5",
+    "@types/cookie-session": "^2.0.48",
     "@types/cors": "^2.8.17",
     "@types/express": "4.17.9",
     "@types/express-fileupload": "^1.4.4",
@@ -66,10 +65,11 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
+    "grats": "^0.0.23",
     "supertest": "^6.0.1",
     "typescript": "^5.3.3"
   },
   "resolutions": {
-    "graphql": "15.3.0"
+    "graphql": "16.8.1"
   }
 }

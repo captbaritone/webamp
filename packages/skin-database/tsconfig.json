@@ -1,8 +1,11 @@
 {
   "grats": {
-    "nullableByDefault": true
+    "nullableByDefault": true,
+    "graphqlSchema": "./api/graphql/schema.graphql",
+    "tsSchema": "./api/graphql/schema.ts"
   },
   "compilerOptions": {
+    "plugins": [{ "name": "grats-ts-plugin" }],
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",

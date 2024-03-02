@@ -12,8 +12,8 @@ export type TweetsSortOption = "LIKES" | "RETWEETS";
 export default class TweetsConnection {
   _first: number;
   _offset: number;
-  _sort?: TweetsSortOption;
-  constructor(first: number, offset: number, sort?: TweetsSortOption) {
+  _sort?: TweetsSortOption | null;
+  constructor(first: number, offset: number, sort?: TweetsSortOption | null) {
     this._first = first;
     this._offset = offset;
     this._sort = sort;
@@ -43,7 +43,7 @@ export default class TweetsConnection {
    * The list of tweets
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<Array<TweetModel | null>> {
+  async nodes(): Promise<Array<TweetModel | null>> {
     return this._getQuery().select().limit(this._first).offset(this._offset);
   }
 }

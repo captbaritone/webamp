@@ -231,7 +231,7 @@ describe("Query.skins", () => {
 });
 
 // TODO: Upgrade Grats
-test.skip("Query.fetch_skin_by_md5 (debug data)", async () => {
+test("Query.fetch_skin_by_md5 (debug data)", async () => {
   const { data } = await graphQLRequest(
     gql`
       query MyQuery($md5: String!) {
