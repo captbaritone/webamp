@@ -31,12 +31,12 @@ import { statistics as queryStatisticsResolver } from "./resolvers/DatabaseStati
 import { tweets as queryTweetsResolver } from "./TweetsConnection";
 import { upload_statuses as queryUpload_statusesResolver } from "./resolvers/SkinUpload";
 import { upload_statuses_by_md5 as queryUpload_statuses_by_md5Resolver } from "./resolvers/SkinUpload";
-import { approve_skin as mutationApprove_skinResolver } from "./resolvers/MutationResolver";
-import { mark_skin_nsfw as mutationMark_skin_nsfwResolver } from "./resolvers/MutationResolver";
-import { reject_skin as mutationReject_skinResolver } from "./resolvers/MutationResolver";
-import { request_nsfw_review_for_skin as mutationRequest_nsfw_review_for_skinResolver } from "./resolvers/MutationResolver";
-import { send_feedback as mutationSend_feedbackResolver } from "./resolvers/MutationResolver";
-import { upload as mutationUploadResolver } from "./resolvers/MutationResolver";
+import { approve_skin as mutationApprove_skinResolver } from "./resolvers/ReviewMutations";
+import { mark_skin_nsfw as mutationMark_skin_nsfwResolver } from "./resolvers/ReviewMutations";
+import { reject_skin as mutationReject_skinResolver } from "./resolvers/ReviewMutations";
+import { request_nsfw_review_for_skin as mutationRequest_nsfw_review_for_skinResolver } from "./resolvers/ReviewMutations";
+import { send_feedback as mutationSend_feedbackResolver } from "./resolvers/FeedbackMutation";
+import { upload as mutationUploadResolver } from "./resolvers/UploadMutation";
 import { archive_files as classicSkinArchive_filesResolver } from "./resolvers/CommonSkinResolver";
 import { average_color as classicSkinAverage_colorResolver } from "./resolvers/CommonSkinResolver";
 import { download_url as classicSkinDownload_urlResolver } from "./resolvers/CommonSkinResolver";
@@ -966,7 +966,7 @@ export function getSchema(): GraphQLSchema {
         fields() {
             return {
                 get_upload_urls: {
-                    description: "Get a (possibly incompelte) list of UploadUrls for each of the files. If an\nUploadUrl is not returned for a given hash, it means the file is already in\nthe collection.",
+                    description: "Get a (possibly incomplete) list of UploadUrls for each of the files. If an\nUploadUrl is not returned for a given hash, it means the file is already in\nthe collection.",
                     name: "get_upload_urls",
                     type: new GraphQLList(UploadUrlType),
                     args: {
@@ -1041,7 +1041,7 @@ export function getSchema(): GraphQLSchema {
                     }
                 },
                 request_nsfw_review_for_skin: {
-                    description: "Request that an admin check if this skin is NSFW.\nUnlike other review mutaiton endpoints, this one does not require being logged\nin.",
+                    description: "Request that an admin check if this skin is NSFW.\nUnlike other review mutation endpoints, this one does not require being logged\nin.",
                     name: "request_nsfw_review_for_skin",
                     type: GraphQLBoolean,
                     args: {

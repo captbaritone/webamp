@@ -342,7 +342,7 @@ type Mutation {
   reject_skin(md5: String!): Boolean
   """
   Request that an admin check if this skin is NSFW.
-  Unlike other review mutaiton endpoints, this one does not require being logged
+  Unlike other review mutation endpoints, this one does not require being logged
   in.
   """
   request_nsfw_review_for_skin(md5: String!): Boolean
@@ -482,7 +482,7 @@ Mutations for the upload flow
 """
 type UploadMutations {
   """
-  Get a (possibly incompelte) list of UploadUrls for each of the files. If an
+  Get a (possibly incomplete) list of UploadUrls for each of the files. If an
   UploadUrl is not returned for a given hash, it means the file is already in
   the collection.
   """
