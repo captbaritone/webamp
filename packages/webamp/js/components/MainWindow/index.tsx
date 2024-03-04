@@ -9,6 +9,7 @@ import MiniTime from "../MiniTime";
 import ClickedDiv from "../ClickedDiv";
 import ContextMenuTarget from "../ContextMenuTarget";
 import Visualizer from "../Visualizer";
+import Vis from "../Vis";
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
 import Close from "./Close";
@@ -106,10 +107,11 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
           />
           <Time />
         </div>
-        <Visualizer
+        {/* <Visualizer
           // @ts-ignore Visualizer is not typed yet
           analyser={analyser}
-        />
+        /> */}
+        <Vis analyser={analyser} />
         <div className="media-info">
           <Marquee />
           <Kbps />
