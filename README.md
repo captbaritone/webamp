@@ -63,7 +63,7 @@ An incomplete list of websites using Webamp:
 
 ## Thanks
 
-- [Butterchurn](https://github.com/jberg/butterchurn), the amazing Mikdrop 2 WebGL implementation. Built and integrated into Webamp by: [jberg](https://github.com/jberg)
+- [Butterchurn](https://github.com/jberg/butterchurn), the amazing Milkdrop 2 WebGL implementation. Built and integrated into Webamp by: [jberg](https://github.com/jberg)
 - Research and feature prototyping: @PAEz
 - Beta feedback, catching many small UI inconsistencies: [LuigiHann](https://twitter.com/LuigiHann)
 - Beta feedback and insider answers to obscure Winamp questions: [Darren Owen](https://twitter.com/The_DoctorO)
