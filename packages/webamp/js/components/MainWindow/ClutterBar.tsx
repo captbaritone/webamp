@@ -35,7 +35,10 @@ const ClutterBar = memo(() => {
         id="button-d"
         className={classnames({ selected: doubled })}
         onPointerUp={handleMouseUp}
-        onPointerDown={handleMouseDown}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          handleMouseDown();
+        }}
       />
       <div id="button-v" />
     </div>
