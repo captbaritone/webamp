@@ -70,6 +70,12 @@ function ResizeTarget(props: Props) {
     setMouseDown(true);
   };
 
-  return <div onPointerDown={handleMouseDown} {...passThroughProps} />;
+  return (
+    <div
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
+      {...passThroughProps}
+    />
+  );
 }
 export default memo(ResizeTarget);
