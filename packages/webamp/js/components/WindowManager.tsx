@@ -177,10 +177,7 @@ export default function WindowManager({ windows: propsWindows }: Props) {
         <div
           key={w.key}
           onBlur={onBlur}
-          onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-            handleMouseDown(w.key, e);
-          }}
-          onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
+          onPointerDown={(e: React.MouseEvent<HTMLDivElement>) => {
             handleMouseDown(w.key, e);
           }}
           style={{

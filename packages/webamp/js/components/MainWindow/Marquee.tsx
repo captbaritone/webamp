@@ -137,8 +137,7 @@ const Marquee = React.memo(() => {
     <div
       id="marquee"
       className="text"
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
+      onPointerDown={handleMouseDown}
       title="Song Title"
     >
       <div
