@@ -36,4 +36,4 @@ status = 301
 force = true
 
 [build.environment]
-NODE_VERSION = "20"
+NODE_VERSION = "20.9.0"
