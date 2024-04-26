@@ -2,7 +2,8 @@
   "grats": {
     "nullableByDefault": true,
     "graphqlSchema": "./api/graphql/schema.graphql",
-    "tsSchema": "./api/graphql/schema.ts"
+    "tsSchema": "./api/graphql/schema.ts",
+    "strictSemanticNullability": true
   },
   "compilerOptions": {
     "plugins": [{ "name": "grats-ts-plugin" }],

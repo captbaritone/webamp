@@ -52,7 +52,13 @@ import { screenshot_url as classicSkinScreenshot_urlResolver } from "./resolvers
 import { tweeted as classicSkinTweetedResolver } from "./resolvers/CommonSkinResolver";
 import { tweets as classicSkinTweetsResolver } from "./resolvers/CommonSkinResolver";
 import { webamp_url as classicSkinWebamp_urlResolver } from "./resolvers/CommonSkinResolver";
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLInterfaceType, GraphQLList, GraphQLNonNull, GraphQLID, GraphQLEnumType, GraphQLInputObjectType } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLInterfaceType, GraphQLList, GraphQLNonNull, GraphQLID, GraphQLEnumType, defaultFieldResolver, GraphQLInputObjectType } from "graphql";
+async function assertNonNull<T>(value: T | Promise<T>): Promise<T> {
+    const awaited = await value;
+    if (awaited == null)
+        throw new Error("Cannot return null for semantically non-nullable field.");
+    return awaited;
+}
 export function getSchema(): GraphQLSchema {
     const InternetArchiveItemType: GraphQLObjectType = new GraphQLObjectType({
         name: "InternetArchiveItem",
@@ -63,7 +69,7 @@ export function getSchema(): GraphQLSchema {
                     name: "identifier",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getIdentifier(source, args, context, info);
+                        return assertNonNull(source.getIdentifier(source, args, context, info));
                     }
                 },
                 last_metadata_scrape_date_UNSTABLE: {
@@ -79,7 +85,7 @@ export function getSchema(): GraphQLSchema {
                     name: "metadata_url",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getMetadataUrl(source, args, context, info);
+                        return assertNonNull(source.getMetadataUrl(source, args, context, info));
                     }
                 },
                 raw_metadata_json: {
@@ -100,7 +106,7 @@ export function getSchema(): GraphQLSchema {
                     name: "url",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getUrl(source, args, context, info);
+                        return assertNonNull(source.getUrl(source, args, context, info));
                     }
                 }
             };
@@ -129,12 +135,18 @@ export function getSchema(): GraphQLSchema {
                 rating: {
                     description: "The rating that the user gave the skin",
                     name: "rating",
-                    type: RatingType
+                    type: RatingType,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 reviewer: {
                     description: "The user who made the review (if known). **Note:** In the early days we didn't\ntrack this, so many will be null.",
                     name: "reviewer",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 skin: {
                     description: "The skin that was reviewed",
@@ -154,7 +166,7 @@ export function getSchema(): GraphQLSchema {
                     name: "likes",
                     type: GraphQLInt,
                     resolve(source, args, context, info) {
-                        return source.getLikes(source, args, context, info);
+                        return assertNonNull(source.getLikes(source, args, context, info));
                     }
                 },
                 retweets: {
@@ -162,7 +174,7 @@ export function getSchema(): GraphQLSchema {
                     name: "retweets",
                     type: GraphQLInt,
                     resolve(source, args, context, info) {
-                        return source.getRetweets(source, args, context, info);
+                        return assertNonNull(source.getRetweets(source, args, context, info));
                     }
                 },
                 skin: {
@@ -282,7 +294,7 @@ export function getSchema(): GraphQLSchema {
                     name: "date",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getIsoDate(source, args, context, info);
+                        return assertNonNull(source.getIsoDate(source, args, context, info));
                     }
                 },
                 file_md5: {
@@ -290,7 +302,7 @@ export function getSchema(): GraphQLSchema {
                     name: "file_md5",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getFileMd5(source, args, context, info);
+                        return assertNonNull(source.getFileMd5(source, args, context, info));
                     }
                 },
                 filename: {
@@ -298,7 +310,7 @@ export function getSchema(): GraphQLSchema {
                     name: "filename",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getFileName(source, args, context, info);
+                        return assertNonNull(source.getFileName(source, args, context, info));
                     }
                 },
                 is_directory: {
@@ -306,7 +318,7 @@ export function getSchema(): GraphQLSchema {
                     name: "is_directory",
                     type: GraphQLBoolean,
                     resolve(source, args, context, info) {
-                        return source.getIsDirectory(source, args, context, info);
+                        return assertNonNull(source.getIsDirectory(source, args, context, info));
                     }
                 },
                 size: {
@@ -335,7 +347,7 @@ export function getSchema(): GraphQLSchema {
                     name: "url",
                     type: GraphQLString,
                     resolve(source, args, context, info) {
-                        return source.getUrl(source, args, context, info);
+                        return assertNonNull(source.getUrl(source, args, context, info));
                     }
                 }
             };
@@ -374,7 +386,7 @@ export function getSchema(): GraphQLSchema {
                     name: "archive_files",
                     type: new GraphQLList(ArchiveFileType),
                     resolve(source) {
-                        return modernSkinArchive_filesResolver(source);
+                        return assertNonNull(modernSkinArchive_filesResolver(source));
                     }
                 },
                 average_color: {
@@ -390,7 +402,7 @@ export function getSchema(): GraphQLSchema {
                     name: "download_url",
                     type: GraphQLString,
                     resolve(source) {
-                        return modernSkinDownload_urlResolver(source);
+                        return assertNonNull(modernSkinDownload_urlResolver(source));
                     }
                 },
                 filename: {
@@ -406,7 +418,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args) {
-                        return modernSkinFilenameResolver(source, args);
+                        return assertNonNull(modernSkinFilenameResolver(source, args));
                     }
                 },
                 id: {
@@ -430,7 +442,7 @@ export function getSchema(): GraphQLSchema {
                     name: "md5",
                     type: GraphQLString,
                     resolve(source) {
-                        return modernSkinMd5Resolver(source);
+                        return assertNonNull(modernSkinMd5Resolver(source));
                     }
                 },
                 museum_url: {
@@ -462,7 +474,7 @@ export function getSchema(): GraphQLSchema {
                     name: "reviews",
                     type: new GraphQLList(ReviewType),
                     resolve(source) {
-                        return modernSkinReviewsResolver(source);
+                        return assertNonNull(modernSkinReviewsResolver(source));
                     }
                 },
                 screenshot_url: {
@@ -478,7 +490,7 @@ export function getSchema(): GraphQLSchema {
                     name: "tweeted",
                     type: GraphQLBoolean,
                     resolve(source) {
-                        return modernSkinTweetedResolver(source);
+                        return assertNonNull(modernSkinTweetedResolver(source));
                     }
                 },
                 tweets: {
@@ -486,7 +498,7 @@ export function getSchema(): GraphQLSchema {
                     name: "tweets",
                     type: new GraphQLList(TweetType),
                     resolve(source) {
-                        return modernSkinTweetsResolver(source);
+                        return assertNonNull(modernSkinTweetsResolver(source));
                     }
                 },
                 webamp_url: {
@@ -511,12 +523,18 @@ export function getSchema(): GraphQLSchema {
                 count: {
                     description: "The total number of skins matching the filter",
                     name: "count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 nodes: {
                     description: "The list of skins",
                     name: "nodes",
-                    type: new GraphQLList(ModernSkinType)
+                    type: new GraphQLList(ModernSkinType),
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -529,12 +547,18 @@ export function getSchema(): GraphQLSchema {
                 count: {
                     description: "The total number of skins matching the filter",
                     name: "count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 nodes: {
                     description: "The list of skins",
                     name: "nodes",
-                    type: new GraphQLList(SkinType)
+                    type: new GraphQLList(SkinType),
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -572,52 +596,82 @@ export function getSchema(): GraphQLSchema {
                 approved_skins_count: {
                     description: "The number of skins that have been approved for tweeting. This includes both\ntweeted and untweeted skins.\n\n**Note:** Skins can be both approved and rejected by different users.",
                     name: "approved_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 nsfw_skins_count: {
                     description: "The number of skins that have been marked as NSFW.\n\n**Note:** Skins can be approved and rejected by different users.\n**Note:** Generally skins that have been marked NSFW are also marked as rejected.",
                     name: "nsfw_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 rejected_skins_count: {
                     description: "The number of skins that have been rejected for tweeting.\n\n**Note:** Skins can be both approved and rejected by different users.\n**Note:** Generally skins that have been marked NSFW are also marked as rejected.",
                     name: "rejected_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 tweetable_skins_count: {
                     description: "The number of skins that have been approved for tweeting, but not yet tweeted.",
                     name: "tweetable_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 tweeted_skins_count: {
                     description: "The number of skins in the Museum that have been tweeted by",
                     name: "tweeted_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 unique_classic_skins_count: {
                     description: "The total number of classic skins in the Museum's database",
                     name: "unique_classic_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 unreviewed_skins_count: {
                     description: "The number of skins that have never been reviewed.",
                     name: "unreviewed_skins_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 uploads_in_error_state_count: {
                     description: "Skins uploads that have errored during processing.",
                     name: "uploads_in_error_state_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 uploads_pending_processing_count: {
                     description: "Skins uplaods awaiting processing. This can happen when there are a large\nnumber of skin uplaods at the same time, or when the skin uploading processing\npipeline gets stuck.",
                     name: "uploads_pending_processing_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 web_uploads_count: {
                     description: "Number of skins that have been uploaded to the Museum via the web interface.",
                     name: "web_uploads_count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -630,12 +684,18 @@ export function getSchema(): GraphQLSchema {
                 count: {
                     description: "The total number of tweets",
                     name: "count",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 nodes: {
                     description: "The list of tweets",
                     name: "nodes",
-                    type: new GraphQLList(TweetType)
+                    type: new GraphQLList(TweetType),
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -679,7 +739,10 @@ export function getSchema(): GraphQLSchema {
             return {
                 id: {
                     name: "id",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 skin: {
                     description: "Skin that was uploaded. **Note:** This is null if the skin has not yet been\nfully processed. (status == ARCHIVED)",
@@ -688,12 +751,18 @@ export function getSchema(): GraphQLSchema {
                 },
                 status: {
                     name: "status",
-                    type: SkinUploadStatusType
+                    type: SkinUploadStatusType,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 upload_md5: {
                     description: "Md5 hash given when requesting the upload URL.",
                     name: "upload_md5",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -783,7 +852,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args) {
-                        return queryModern_skinsResolver(source, args);
+                        return assertNonNull(queryModern_skinsResolver(source, args));
                     }
                 },
                 node: {
@@ -821,7 +890,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return querySearch_skinsResolver(source, args, context);
+                        return assertNonNull(querySearch_skinsResolver(source, args, context));
                     }
                 },
                 skin_to_review: {
@@ -857,7 +926,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args) {
-                        return querySkinsResolver(source, args);
+                        return assertNonNull(querySkinsResolver(source, args));
                     }
                 },
                 statistics: {
@@ -865,7 +934,7 @@ export function getSchema(): GraphQLSchema {
                     name: "statistics",
                     type: DatabaseStatisticsType,
                     resolve(source) {
-                        return queryStatisticsResolver(source);
+                        return assertNonNull(queryStatisticsResolver(source));
                     }
                 },
                 tweets: {
@@ -889,7 +958,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args) {
-                        return queryTweetsResolver(source, args);
+                        return assertNonNull(queryTweetsResolver(source, args));
                     }
                 },
                 upload_statuses: {
@@ -903,7 +972,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return queryUpload_statusesResolver(source, args, context);
+                        return assertNonNull(queryUpload_statusesResolver(source, args, context));
                     }
                 },
                 upload_statuses_by_md5: {
@@ -918,7 +987,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return queryUpload_statuses_by_md5Resolver(source, args, context);
+                        return assertNonNull(queryUpload_statuses_by_md5Resolver(source, args, context));
                     }
                 }
             };
@@ -931,15 +1000,24 @@ export function getSchema(): GraphQLSchema {
             return {
                 id: {
                     name: "id",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 md5: {
                     name: "md5",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 url: {
                     name: "url",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 }
             };
         }
@@ -974,6 +1052,9 @@ export function getSchema(): GraphQLSchema {
                             name: "files",
                             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(UploadUrlRequestType)))
                         }
+                    },
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
                     }
                 },
                 report_skin_uploaded: {
@@ -989,6 +1070,9 @@ export function getSchema(): GraphQLSchema {
                             name: "md5",
                             type: new GraphQLNonNull(GraphQLString)
                         }
+                    },
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
                     }
                 }
             };
@@ -1009,7 +1093,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return mutationApprove_skinResolver(source, args, context);
+                        return assertNonNull(mutationApprove_skinResolver(source, args, context));
                     }
                 },
                 mark_skin_nsfw: {
@@ -1023,7 +1107,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return mutationMark_skin_nsfwResolver(source, args, context);
+                        return assertNonNull(mutationMark_skin_nsfwResolver(source, args, context));
                     }
                 },
                 reject_skin: {
@@ -1037,7 +1121,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return mutationReject_skinResolver(source, args, context);
+                        return assertNonNull(mutationReject_skinResolver(source, args, context));
                     }
                 },
                 request_nsfw_review_for_skin: {
@@ -1051,7 +1135,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return mutationRequest_nsfw_review_for_skinResolver(source, args, context);
+                        return assertNonNull(mutationRequest_nsfw_review_for_skinResolver(source, args, context));
                     }
                 },
                 send_feedback: {
@@ -1073,7 +1157,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return mutationSend_feedbackResolver(source, args, context);
+                        return assertNonNull(mutationSend_feedbackResolver(source, args, context));
                     }
                 },
                 upload: {
@@ -1081,7 +1165,7 @@ export function getSchema(): GraphQLSchema {
                     name: "upload",
                     type: UploadMutationsType,
                     resolve(source) {
-                        return mutationUploadResolver(source);
+                        return assertNonNull(mutationUploadResolver(source));
                     }
                 }
             };
@@ -1097,7 +1181,7 @@ export function getSchema(): GraphQLSchema {
                     name: "archive_files",
                     type: new GraphQLList(ArchiveFileType),
                     resolve(source) {
-                        return classicSkinArchive_filesResolver(source);
+                        return assertNonNull(classicSkinArchive_filesResolver(source));
                     }
                 },
                 average_color: {
@@ -1113,7 +1197,7 @@ export function getSchema(): GraphQLSchema {
                     name: "download_url",
                     type: GraphQLString,
                     resolve(source) {
-                        return classicSkinDownload_urlResolver(source);
+                        return assertNonNull(classicSkinDownload_urlResolver(source));
                     }
                 },
                 filename: {
@@ -1129,13 +1213,16 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args) {
-                        return classicSkinFilenameResolver(source, args);
+                        return assertNonNull(classicSkinFilenameResolver(source, args));
                     }
                 },
                 has_media_library: {
                     description: "Does the skin include sprite sheets for the media library?",
                     name: "has_media_library",
-                    type: GraphQLBoolean
+                    type: GraphQLBoolean,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 id: {
                     description: "GraphQL ID of the skin",
@@ -1163,7 +1250,7 @@ export function getSchema(): GraphQLSchema {
                     name: "md5",
                     type: GraphQLString,
                     resolve(source) {
-                        return classicSkinMd5Resolver(source);
+                        return assertNonNull(classicSkinMd5Resolver(source));
                     }
                 },
                 museum_url: {
@@ -1195,7 +1282,7 @@ export function getSchema(): GraphQLSchema {
                     name: "reviews",
                     type: new GraphQLList(ReviewType),
                     resolve(source) {
-                        return classicSkinReviewsResolver(source);
+                        return assertNonNull(classicSkinReviewsResolver(source));
                     }
                 },
                 screenshot_url: {
@@ -1209,14 +1296,17 @@ export function getSchema(): GraphQLSchema {
                 transparent_pixels: {
                     description: "The number of transparent pixels rendered by the skin.",
                     name: "transparent_pixels",
-                    type: GraphQLInt
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
                 },
                 tweeted: {
                     description: "Has the skin been tweeted?",
                     name: "tweeted",
                     type: GraphQLBoolean,
                     resolve(source) {
-                        return classicSkinTweetedResolver(source);
+                        return assertNonNull(classicSkinTweetedResolver(source));
                     }
                 },
                 tweets: {
@@ -1224,7 +1314,7 @@ export function getSchema(): GraphQLSchema {
                     name: "tweets",
                     type: new GraphQLList(TweetType),
                     resolve(source) {
-                        return classicSkinTweetsResolver(source);
+                        return assertNonNull(classicSkinTweetsResolver(source));
                     }
                 },
                 webamp_url: {
