@@ -1,6 +1,7 @@
 ## Upcoming [UNRELEASED] (`webamp@next`)
 
 ### Features
+
 - Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
 - Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance.
 - Configure if "double size mode" should be enabled when constructing a Webamp instance.
@@ -10,6 +11,7 @@
 - Upgrade to React 18, React Redux, 8 and Redux 4.1
 - Bundle with Parcel instead of Webpack
 - Build public Typescript directly from source annotations.
+- We no longer transform object spreads since they have broad support in browsers.
 
 ## 1.5.0 [CURRENT]
 
