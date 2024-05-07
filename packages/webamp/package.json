@@ -35,6 +35,64 @@
       "source": "demo/index.html"
     }
   },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.js"
+      },
+      "import": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.js"
+      },
+      "default": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.js"
+      }
+    },
+    "./min": {
+      "require": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.min.js"
+      },
+      "import": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.min.js"
+      },
+      "default": {
+        "types": "./built/types/js/webamp.d.ts",
+        "default": "./built/webamp.bundle.min.js"
+      }
+    },
+    "./lazy": {
+      "require": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.js"
+      },
+      "import": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.js"
+      },
+      "default": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.js"
+      }
+    },
+    "./lazy/min": {
+      "require": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.min.js"
+      },
+      "import": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.min.js"
+      },
+      "default": {
+        "types": "./built/types/js/webampLazy.d.ts",
+        "default": "./built/webamp.lazy-bundle.min.js"
+      }
+    }
+  },
   "webamp-browser": "built/webamp.bundle.js",
   "webamp-browser-min": "built/webamp.bundle.min.js",
   "webamp-lazy-browser": "built/webamp.lazy-bundle.js",
