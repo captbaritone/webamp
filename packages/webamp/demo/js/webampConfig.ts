@@ -27,6 +27,7 @@ import availableSkins from "./availableSkins";
 
 import { initialTracks, initialState } from "./config";
 import screenshotInitialState from "./screenshotInitialState";
+import { InjectableDependencies } from "../../js/webampLazy.jsx";
 
 const NOISY_ACTION_TYPES = new Set([
   STEP_MARQUEE,
@@ -60,7 +61,7 @@ export async function getWebampConfig(
   screenshot: boolean,
   skinUrl: string | null,
   soundCloudPlaylist: SoundCloud.SoundCloudPlaylist | null
-): Promise<Options & PrivateOptions> {
+): Promise<Options & PrivateOptions & InjectableDependencies> {
   let __butterchurnOptions;
   let windowLayout: WindowLayout | undefined;
   if (isButterchurnSupported()) {

@@ -40,8 +40,6 @@ import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
 
 export interface PrivateOptions {
-  requireJSZip(): Promise<any>; // TODO: Type JSZip
-  requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   __initialState?: PartialState;
   __customMiddlewares?: Middleware[];
   __butterchurnOptions?: ButterchurnOptions;
@@ -49,12 +47,17 @@ export interface PrivateOptions {
   __customMediaClass?: typeof Media; // This should have the same interface as Media
 }
 
+export interface InjectableDependencies {
+  requireJSZip: () => Promise<any>; // TODO: Type JSZip
+  requireMusicMetadata: () => Promise<any>; // TODO: Type music-metadata-browser
+}
+
 class Webamp {
   static VERSION = "1.5.0";
   _actionEmitter: Emitter;
   _root: ReactDOM.Root | null;
   _disposable: Disposable;
-  options: Options & PrivateOptions; // TODO: Make this _private
+  options: Options & PrivateOptions & InjectableDependencies; // TODO: Make this _private
   media: Media; // TODO: Make this _private
   store: Store; // TODO: Make this _private
 
@@ -74,7 +77,7 @@ class Webamp {
     return supportsAudioApi && supportsCanvas && supportsPromises;
   }
 
-  constructor(options: Options & PrivateOptions) {
+  constructor(options: Options & PrivateOptions & InjectableDependencies) {
     this._root = null;
     this._disposable = new Disposable();
     this._actionEmitter = new Emitter();
