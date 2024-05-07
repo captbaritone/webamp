@@ -1,4 +1,8 @@
-import { createStore, applyMiddleware } from "redux";
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  Middleware as ReduxMiddleware,
+} from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
@@ -7,20 +11,27 @@ import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
-import { Extras, Dispatch, Action, Middleware, PartialState } from "./types";
+import {
+  Extras,
+  Dispatch,
+  Action,
+  PartialState,
+  Middleware,
+  Store,
+} from "./types";
 
 // TODO: Move to demo
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });
 
-export default function (
+export default function createWebampStore(
   media: Media,
   actionEmitter: Emitter,
   customMiddlewares: Middleware[] = [],
   stateOverrides: PartialState | undefined,
   extras: Extras
-) {
+): Store {
   let initialState;
   if (stateOverrides) {
     initialState = merge(
@@ -34,21 +45,17 @@ export default function (
     return next(action);
   };
 
-  const enhancer = compose(
-    applyMiddleware(
-      ...[
-        thunk.withExtraArgument(extras),
-        mediaMiddleware(media),
-        emitterMiddleware,
-        ...customMiddlewares,
-      ].filter(Boolean)
-    )
-  );
+  const middlewares: Middleware[] = [
+    thunk.withExtraArgument(extras),
+    mediaMiddleware(media),
+    emitterMiddleware,
+    ...customMiddlewares,
+  ];
 
-  // The Redux types are a bit confused, and don't realize that passing an
-  // undefined initialState is allowed.
-  const store = initialState
-    ? createStore(reducer, initialState, enhancer)
-    : createStore(reducer, enhancer);
-  return store;
+  // @ts-expect-error Typing of these is too hard to get right, so we cheat
+  const coercedMiddlewares: ReduxMiddleware[] = middlewares;
+
+  const enhancer = compose(applyMiddleware(...coercedMiddlewares));
+
+  return createStore(reducer, initialState, enhancer);
 }

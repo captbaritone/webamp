@@ -1,5 +1,5 @@
 import { AppState, Action } from "../types";
-import { combineReducers } from "redux";
+import { Reducer, combineReducers } from "redux";
 
 import playlist from "./playlist";
 import windows from "./windows";
@@ -12,7 +12,7 @@ import settings from "./settings";
 import tracks from "./tracks";
 import milkdrop from "./milkdrop";
 
-const reducer = combineReducers<AppState, Action>({
+const reducer: Reducer<AppState, Action, never> = combineReducers({
   userInput,
   windows,
   display,
