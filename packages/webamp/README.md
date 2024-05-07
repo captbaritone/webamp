@@ -39,17 +39,20 @@ To update snapshots run
 
 1. Update the version number in `package.json`
 2. Rename the "Next" title at the top of `CHANGELOG.md` to the new version number and ensure it is up to date
-3. Update the static `VERSION` property of the `Webamp` class in `webamplazy.tsx`
+3. Update the static `VERSION` property of the `Webamp` class in `webampLazy.tsx`
 4. Git commit
-5. `npm publish`
-6. Git tag the commit (e.g. `1.4.2` or `1.4.3-beta.3`)
-6. Push tag to GitHub `git push origin <TAG_NAME>`
-7. Update all the examples to use the new version:
-  * `minimal/index.html`
-  * `minimalMilkdrop/index.html`
-  * `webpack/package.json`
-  * `webpackLazyLoad/package.json`
-  * https://codesandbox.io/s/y0xypox60z
+5. `cd packages/webamp`
+6. `npm publish`
+7. Git tag the commit (e.g. `1.4.2` or `1.4.3-beta.3`)
+8. Push tag to GitHub `git push origin <TAG_NAME>`
+9. Update all the examples to use the new version:
+
+- `minimal/index.html`
+- `minimalMilkdrop/index.html`
+- `webpack/package.json`
+- `webpackLazyLoad/package.json`
+- https://codesandbox.io/s/y0xypox60z
+
 8. Commit and push
 
 ## Reference
