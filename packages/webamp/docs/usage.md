@@ -90,6 +90,8 @@ const track = {
     defaultName: 'My Song',
 
     // Optional. Data to be used _instead_ of trying to fetch ID3 tags.
+    // **WARNING** If you omit this data, Webamp will fetch the first
+    // few bytes of this file on load to try to read its id3 tags.
     metaData: {
         artist: 'Jordan Eldredge',
         title: "Jordan's Song"
@@ -97,6 +99,8 @@ const track = {
 
     // Optional. Duration (in seconds) to be used instead of
     // fetching enough of the file to measure its length.
+    // **WARNING** If you omit this property, Webamp will fetch the first
+    // few bytes of this file on load to try to determine its duration.
     duration: 95
 };
 ```
@@ -110,6 +114,8 @@ The `Winamp` class has the following _static_ methods:
 Returns a true if the current browser supports the features that Webamp depends upon. It is recommended to check this before you attempt to instantiate an instance of `Winamp`.
 
 ```JavaScript
+import Webamp from 'webamp';
+
 if(Winamp.browserIsSupported()) {
     new Winamp({/* ... */});
     // ...
@@ -438,6 +444,39 @@ When you are done with a Webamp instance, call this method and Webamp will attem
 
 ```JavaScript
 webamp.dispose();
+```
+
+## Optimizing Bundle Size
+
+**Since** UNRELEASED
+
+By default the Webamp import/bundle includes a few heavy dependencies. `JSZip` for extracting user defined skin files and `music-metadata-browser` for reading ID3 tags. If you are using the default skin and supply metadata and duration for all your preloaded tracks, neither of these dependencies are needed for initial load and can instead be lazily loaded only when they are needed. To do this, you can import from `webamp/lazy` instead of `webamp`.
+
+First you'll need to install the dependencies in your project:
+
+```bash
+npm install jszip music-metadata-browser@^0.6.1
+```
+
+The "lazy" version of Webamp will require that you inject functions for lazily importing these dependencies.
+
+```ts
+import Webamp from "webamp/lazy";
+
+const webamp = new Webamp({
+  initialTracks: [
+    {
+      url: "https://example.com/track1.mp3",
+      metaData: {
+        artist: "Jordan Eldredge",
+        title: "Jordan's Song",
+      },
+      duration: 95,
+    },
+  ],
+  requireJSZip: () => import("jszip/dist/jszip"),
+  requireMusicMetadata: () => import("music-metadata-browser/dist/index"),
+});
 ```
 
 ## Notes
