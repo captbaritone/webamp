@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <div id="app" style="height: 100vh">
+      <!-- Webamp will attempt to center itself within this div -->
+    </div>
+    <script src="https://unpkg.com/webamp@0.0.0-next-6d0ec37b/built/webamp.bundle.min.js"></script>
+    <script>
+      const Webamp = window.Webamp;
+      const webamp = new Webamp({
+        windowLayout: {
+          main: {
+            position: { top: 0, left: 0 },
+            shadeMode: true,
+            closed: false,
+          },
+          equalizer: {
+            position: { top: 230, left: 0 },
+            shadeMode: true,
+            closed: false,
+          },
+          playlist: {
+            position: { top: 28, left: 0 },
+            shadeMode: false,
+            size: { extraHeight: 3, extraWidth: 11 },
+            closed: false,
+          },
+        },
+        enableDoubleSizeMode: true,
+      });
+
+      // Returns a promise indicating when it's done loading.
+      webamp.renderWhenReady(document.getElementById("app"));
+    </script>
+  </body>
+</html>

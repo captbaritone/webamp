@@ -3,9 +3,14 @@
 ### Features
 
 - Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
-- Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance.
-- Configure if "double size mode" should be enabled when constructing a Webamp instance.
+- Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance. See `windowLayout` in the [Usage](./docs/usage.md) docs for more information.
+- Configure if "double size mode" should be enabled when constructing a Webamp instance. See `enableDoubleSizeMode` in the [Usage](./docs/usage.md) docs for more information.
 - Optically allow users to lazily load heavy dependencies like JSZip and music-metadata-browser with the `webamp/lazy` entry point.
+- Include source maps for non-minified bundles.
+
+### Bug Fixes
+
+- Fix bug where track position slider could get stuck on mobile. [PR](https://github.com/captbaritone/webamp/pull/1253)
 
 ### Internal Improvements:
 
