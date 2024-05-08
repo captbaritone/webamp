@@ -39,20 +39,6 @@
     ".": {
       "require": {
         "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.js"
-      },
-      "import": {
-        "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.js"
-      },
-      "default": {
-        "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.js"
-      }
-    },
-    "./min": {
-      "require": {
-        "types": "./built/types/js/webamp.d.ts",
         "default": "./built/webamp.bundle.min.js"
       },
       "import": {
@@ -65,20 +51,6 @@
       }
     },
     "./lazy": {
-      "require": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.js"
-      },
-      "import": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.js"
-      },
-      "default": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.js"
-      }
-    },
-    "./lazy/min": {
       "require": {
         "types": "./built/types/js/webampLazy.d.ts",
         "default": "./built/webamp.lazy-bundle.min.js"
