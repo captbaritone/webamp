@@ -67,7 +67,7 @@ export async function getWebampConfig(
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden = skinUrl != null || screenshot;
 
-    __butterchurnOptions = undefined; // getButterchurnOptions(startWithMilkdropHidden);
+    __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
     if (
       startWithMilkdropHidden ||
@@ -112,25 +112,7 @@ export async function getWebampConfig(
       ? SoundCloud.tracksFromPlaylist(soundCloudPlaylist)
       : initialTracks,
     availableSkins,
-    windowLayout: {
-      main: {
-        position: { top: 0, left: 0 },
-        shadeMode: true,
-        closed: false,
-      },
-      equalizer: {
-        position: { top: 230, left: 0 },
-        shadeMode: true,
-        closed: false,
-      },
-      playlist: {
-        position: { top: 28, left: 0 },
-        shadeMode: false,
-        size: { extraHeight: 3, extraWidth: 11 },
-        closed: false,
-      },
-    },
-    enableDoubleSizeMode: true,
+    windowLayout,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
     handleTrackDropEvent: (e) => {
