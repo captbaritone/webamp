@@ -13,22 +13,26 @@
   "targets": {
     "webamp-browser": {
       "source": "js/webamp.ts",
-      "outputFormat": "global",
+      "outputFormat": "esmodule",
+      "isLibrary": true,
       "optimize": false
     },
     "webamp-browser-min": {
       "source": "js/webamp.ts",
-      "outputFormat": "global",
+      "outputFormat": "esmodule",
+      "isLibrary": true,
       "optimize": true
     },
     "webamp-lazy-browser": {
       "source": "js/webampLazy.tsx",
-      "outputFormat": "global",
+      "outputFormat": "esmodule",
+      "isLibrary": true,
       "optimize": false
     },
     "webamp-lazy-browser-min": {
       "source": "js/webampLazy.tsx",
-      "outputFormat": "global",
+      "outputFormat": "esmodule",
+      "isLibrary": true,
       "optimize": true
     },
     "demo-site": {
