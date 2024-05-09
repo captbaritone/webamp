@@ -167,8 +167,10 @@ const options = {
   // - The playlist and milkdrop windows may specify a `size` object with
   //   `extraHeight` and `extraWidth`.
   //
-  // **Note:** After windows are positioned, they are then centered _as a group_ within the
-  // DOM element that Webamp is rendered into.
+  // **Note:** After windows are positioned, they are then centered _as a group_
+  // within the DOM element that Webamp is rendered into.
+  //
+  // **Since** @next
   windowLayout: {
     main: {
       position: { top: 0, left: 0 },
@@ -192,6 +194,8 @@ const options = {
   // Optional. (Default: `false`) Should double size mode be enabled?
   // **Note:** In keeping with the original Winamp, double size mode
   // does not apply to resizable windows like the equalizer or Milkdrop.
+  //
+  // **Since** @next
   enableDoubleSizeMode: true,
 
   // Optional. (Default: `false`) Should global hotkeys be enabled?
