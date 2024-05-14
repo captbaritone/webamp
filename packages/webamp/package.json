@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "0.0.0-next-bd2022a8",
+  "version": "0.0.0-next-17a832d8",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "files": [
     "built",
@@ -14,37 +14,37 @@
     "eager-cjs": {
       "source": "js/webamp.ts",
       "outputFormat": "commonjs",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": false
     },
     "eager-cjs-min": {
       "source": "js/webamp.ts",
       "outputFormat": "commonjs",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": true
     },
     "eager-mjs": {
       "source": "js/webamp.ts",
       "outputFormat": "esmodule",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": false
     },
     "lazy-cjs": {
       "source": "js/webampLazy.tsx",
       "outputFormat": "commonjs",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": false
     },
     "lazy-cjs-min": {
       "source": "js/webampLazy.tsx",
       "outputFormat": "commonjs",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": true
     },
     "lazy-mjs": {
       "source": "js/webampLazy.tsx",
       "outputFormat": "esmodule",
-      "isLibrary": true,
+      "isLibrary": false,
       "optimize": false
     },
     "demo-site": {
@@ -54,8 +54,8 @@
   "exports": {
     ".": {
       "require": "./built/webamp.bundle.min.js",
-      "types": "./built/types/js/webamp.d.ts",
-      "import": "./built/webamp.bundle.min.mjs"
+      "import": "./built/webamp.bundle.min.mjs",
+      "types": "./built/types/js/webamp.d.ts"
     },
     "./lazy": {
       "require": "./built/webamp.lazy-bundle.js",
