@@ -2,38 +2,50 @@
   "name": "webamp",
   "version": "0.0.0-next-bd2022a8",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "built/webamp.bundle.js",
   "files": [
-    "built"
+    "built",
+    "!built/types/demo"
   ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.js",
   "unpkg": "built/webamp.bundle.min.js",
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "targets": {
-    "webamp-browser": {
+    "eager-cjs": {
+      "source": "js/webamp.ts",
+      "outputFormat": "commonjs",
+      "isLibrary": true,
+      "optimize": false
+    },
+    "eager-cjs-min": {
+      "source": "js/webamp.ts",
+      "outputFormat": "commonjs",
+      "isLibrary": true,
+      "optimize": true
+    },
+    "eager-mjs": {
       "source": "js/webamp.ts",
       "outputFormat": "esmodule",
       "isLibrary": true,
       "optimize": false
     },
-    "webamp-browser-min": {
-      "source": "js/webamp.ts",
-      "outputFormat": "esmodule",
+    "lazy-cjs": {
+      "source": "js/webampLazy.tsx",
+      "outputFormat": "commonjs",
+      "isLibrary": true,
+      "optimize": false
+    },
+    "lazy-cjs-min": {
+      "source": "js/webampLazy.tsx",
+      "outputFormat": "commonjs",
       "isLibrary": true,
       "optimize": true
     },
-    "webamp-lazy-browser": {
+    "lazy-mjs": {
       "source": "js/webampLazy.tsx",
       "outputFormat": "esmodule",
       "isLibrary": true,
       "optimize": false
-    },
-    "webamp-lazy-browser-min": {
-      "source": "js/webampLazy.tsx",
-      "outputFormat": "esmodule",
-      "isLibrary": true,
-      "optimize": true
     },
     "demo-site": {
       "source": "demo/index.html"
@@ -41,44 +53,28 @@
   },
   "exports": {
     ".": {
-      "require": {
-        "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.min.js"
-      },
-      "import": {
-        "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.min.js"
-      },
-      "default": {
-        "types": "./built/types/js/webamp.d.ts",
-        "default": "./built/webamp.bundle.min.js"
-      }
+      "require": "./built/webamp.bundle.min.js",
+      "types": "./built/types/js/webamp.d.ts",
+      "import": "./built/webamp.bundle.min.mjs"
     },
     "./lazy": {
-      "require": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.min.js"
-      },
-      "import": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.min.js"
-      },
-      "default": {
-        "types": "./built/types/js/webampLazy.d.ts",
-        "default": "./built/webamp.lazy-bundle.min.js"
-      }
+      "require": "./built/webamp.lazy-bundle.js",
+      "import": "./built/webamp.lazy-bundle.mjs",
+      "types": "./built/types/js/webampLazy.d.ts"
     }
   },
-  "webamp-browser": "built/webamp.bundle.js",
-  "webamp-browser-min": "built/webamp.bundle.min.js",
-  "webamp-lazy-browser": "built/webamp.lazy-bundle.js",
-  "webamp-lazy-browser-min": "built/webamp.lazy-bundle.min.js",
+  "eager-cjs": "built/webamp.bundle.js",
+  "eager-cjs-min": "built/webamp.bundle.min.js",
+  "eager-mjs": "built/webamp.bundle.mjs",
+  "lazy-cjs": "built/webamp.lazy-bundle.js",
+  "lazy-cjs-min": "built/webamp.lazy-bundle.min.js",
+  "lazy-mjs": "built/webamp.lazy-bundle.mjs",
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "parcel build --target demo-site",
-    "build-library": "parcel build --target webamp-browser --target webamp-browser-min --target webamp-lazy-browser --target webamp-lazy-browser-min --target types --reporter @parcel/reporter-bundle-analyzer",
+    "build-library": "parcel build --target eager-cjs --target eager-cjs-min --target eager-mjs --target lazy-cjs --target lazy-cjs-min --target lazy-mjs --target types --reporter @parcel/reporter-bundle-analyzer",
     "prepublishOnly": "npm run build-library && npm run type-check",
     "publish-next": "yarn publish --new-version=\"0.0.0-next-$(git rev-parse --short HEAD)\" --tag next",
     "serve": "http-server ./dist/demo-site",
