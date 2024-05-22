@@ -47,7 +47,11 @@ export default class Vm {
 
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
-  async dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
+  async dispatch(
+    object: BaseObject,
+    event: string,
+    args: Variable[] = []
+  ): number {
     const reversedArgs = [...args].reverse();
     let executed = 0;
     for (const script of this._scripts) {
@@ -83,7 +87,12 @@ export default class Vm {
           }
 
           if (match) {
-            await this.interpret(script, binding.commandOffset, event, reversedArgs);
+            await this.interpret(
+              script,
+              binding.commandOffset,
+              event,
+              reversedArgs
+            );
             // return 1;
             executed++;
           }

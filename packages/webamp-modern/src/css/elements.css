@@ -114,6 +114,16 @@ text wrap {
   font-family: monospace;
   white-space: pre;
 }
+text wrap {
+  margin-left: 2px;
+}
+text wrap[font="TrueType"] {
+  /* needed for titlebar */
+  font-size: 10.5px;
+  line-height: 10px; 
+  vertical-align: var(--valign, center);
+  text-align: var(--align, center);
+}
 text wrap[font="BitmapFont"] {
   display: flex;
   white-space: nowrap;
@@ -121,7 +131,6 @@ text wrap[font="BitmapFont"] {
   /* align-items: center; */
   align-items: var(--valign, center);
   justify-content: var(--align, center);
-  margin-left: 2px;
 }
 text span {
   user-select: none;
@@ -147,6 +156,11 @@ menu {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.popup hr {
+  margin-block-start: 3px;
+  margin-block-end: 3px;
+  border-bottom: none;
 }
 /* frame2 {
   box-shadow: inset 0 0 5px red;
@@ -264,6 +278,7 @@ container:not(:active):not(container:focus-within) .webamp--img.inactivable {
 }
 
 .resizing {
+  position:fixed; 
   border: 1px solid blue;
   background-color: rgba(74, 74, 251, 0.205);
   z-index: 1000;
@@ -311,6 +326,7 @@ menu > .popup{
   width: auto;
   display: inline-block;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  font-size: 10.5px;
 }
 ul.popup-menu-container li {
   display: flex;
@@ -322,7 +338,7 @@ ul.popup-menu-container li > span {
   padding: 4px 0;
 }
 ul.popup-menu-container li:hover > span {
-  background: blue;
+  background: #316ac5;
   color: white;
 }
 
@@ -341,6 +357,7 @@ ul.popup-menu-container li:hover > span {
   min-width: 15px;
   text-align: center;
   font-size: smaller;
+  line-height: 1;
 }
 
 /* nested popup */
@@ -350,4 +367,18 @@ ul.popup-menu-container li:hover > span {
 }
 .popup-menu-container > li:hover > .popup-menu-container{
   display: unset;
+}
+
+/* COMPONENT BUCKET */
+componentbucket[id="component list"] wrapper button {
+  width: 44px;
+  height: 34px;
+  /* border: none; */
+  /* border: 2px solid fuchsia; */
+  margin: 0 1px;
+  position: unset;
+    display: inline-block;
+    /* left: unset; */
+    /* top: unset; */
+    /* background: red; */
 }

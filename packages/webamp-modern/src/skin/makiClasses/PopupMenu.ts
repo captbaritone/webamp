@@ -1,23 +1,36 @@
 import BaseObject from "./BaseObject";
-import { assume } from "../../utils";
+import { assume, px } from "../../utils";
+import {
+  MenuItem,
+  IPopupMenu,
+  generatePopupDiv,
+  extractCaption,
+  ICLoseablePopup,
+  destroyActivePopup,
+  setActivePopup,
+  deactivePopup,
+  IMenuItem,
+} from "./MenuItem";
+import { Skin, UIRoot } from "../../UIRoot";
+import { registerAction } from "./menuWa5actions";
 // import { sleep } from 'deasync';
 // import { deasync } from '@kaciras/deasync';
 // import sp from 'synchronized-promise';
 
 // taken from sp test
-const asyncFunctionBuilder =
-  (success) =>
-  (value, timeouts = 1000) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(function () {
-        if (success) {
-          resolve(value);
-        } else {
-          reject(new TypeError(value));
-        }
-      }, timeouts);
-    });
-  };
+// const asyncFunctionBuilder =
+//   (success) =>
+//   (value, timeouts = 1000) => {
+//     return new Promise((resolve, reject) => {
+//       setTimeout(function () {
+//         if (success) {
+//           resolve(value);
+//         } else {
+//           reject(new TypeError(value));
+//         }
+//       }, timeouts);
+//     });
+//   };
 // const async_sleep = (timeout) => {
 // 	// setTimeout(() => done(null, "wake up!"), timeout);
 //   const done = () => {}
@@ -26,148 +39,103 @@ const asyncFunctionBuilder =
 // const sleep = sp(async_sleep)
 // const sleep = sp(asyncFunctionBuilder(true))
 
-export type MenuItem =
-  | {
-      type: "menuitem";
-      caption: string;
-      id: number;
-      checked: boolean;
-      disabled?: boolean;
-    }
-    | { type: "separator" }
-    | {
-      type: "popup";
-      caption: string;
-      popup: PopupMenu;
-      disabled?: boolean;
-      children?: MenuItem[];
-    };
+function waitPopup(popup: PopupMenu, x = 0, y = 0): Promise<number> {
+  // const closePopup = () => div.remove();
 
- function waitPopup(popup: PopupMenu): Promise<number> {
-   // const closePopup = () => div.remove();
-   
-   // https://stackoverflow.com/questions/54916739/wait-for-click-event-inside-a-for-loop-similar-to-prompt
-   return new Promise(acc => {
+  // https://stackoverflow.com/questions/54916739/wait-for-click-event-inside-a-for-loop-similar-to-prompt
+  return new Promise((acc) => {
     // let result: number = -1;
     const itemClick = (id: number) => {
-      closePopup()
+      closePopup();
       // result = id;
       acc(id);
     };
     const div = generatePopupDiv(popup, itemClick);
+    if (x || y) {
+      div.style.left = px(x);
+      div.style.top = px(y);
+    }
     document.getElementById("web-amp").appendChild(div);
-    const closePopup = () => div.remove()
+    const closePopup = () => {
+      div.remove();
+      popup._successPromise = null;
+    };
+    const outsideClick = (ret: number) => {
+      closePopup();
+      acc(ret);
+    };
+    popup._successPromise = outsideClick;
 
     function handleClick() {
-      document.removeEventListener('click', handleClick);
-      closePopup()
+      document.removeEventListener("click", handleClick);
+      closePopup();
       acc(-1);
     }
-    document.addEventListener('click', handleClick);
+    document.addEventListener("click", handleClick);
   });
   // return 1;
 }
 
-export function generatePopupDiv(popup: PopupMenu, callback: Function): HTMLElement {
-  const root = document.createElement("ul");
-  root.className = 'popup-menu-container'
-  // root.style.zIndex = "1000";
-  // console.log('generating popup:', popup)
-  for (const menu of popup._items) {
-    // const menuitem = document.createElement("li");
-    let item: HTMLElement;
-    // root.appendChild(item);
-    switch (menu.type) {
-      case "menuitem":
-        item = generatePopupItem(menu);
-        item.onclick = (e) => callback(menu.id);
-        break;
-      case "popup":
-        item = generatePopupItem(menu);
-        const subMenu = generatePopupDiv(menu.popup, callback);
-        item.appendChild(subMenu)
-        break;
-      case "separator":
-        item = document.createElement("hr");
-        break;
-    }
-    root.appendChild(item);
-  }
-  return root;
-}
-
-//? one row of popup
-function generatePopupItem(menu: MenuItem): HTMLElement {
-  const item = document.createElement("li");
-
-  //? checkmark
-  const checkMark = document.createElement("span");
-  checkMark.classList.add('checkmark')
-  checkMark.textContent = menu.checked? '✓' : ' ';
-  item.appendChild(checkMark)
-  
-  //? display text
-  const [caption, keystroke] = menu.caption.split('\t')  
-  const label = generateCaption(caption);
-  label.classList.add('caption')
-  item.appendChild(label)
-
-  //? keystroke
-  const shortcut = document.createElement("span");
-  shortcut.classList.add('keystroke')
-  shortcut.textContent = keystroke;
-  item.appendChild(shortcut)
-
-  //? sub-menu sign
-  const chevron = document.createElement("span");
-  chevron.classList.add('chevron')
-  chevron.textContent = menu.type=='popup'? '⮀' : ' ';
-  item.appendChild(chevron)
-  // item.textContent = `${menu.checked? '✓' : ' '} ${menu.caption}`;
-
-  return item;
-}
-
-function generateCaption(caption: string): HTMLElement {
-  const regex = /(&(\w))/gm;
-  const subst = `<u>$2</u>`;
-
-  // The substituted value will be contained in the result variable
-  caption = caption.replace(regex, subst);
-
-  const span = document.createElement("span");
-  span.classList.add('caption')
-  span.innerHTML = caption;
-  return span
-}
-
-export default class PopupMenu extends BaseObject {
+export default class PopupMenu
+  extends BaseObject
+  implements IPopupMenu, ICLoseablePopup
+{
   static GUID = "f4787af44ef7b2bb4be7fb9c8da8bea9";
-  _items: MenuItem[] = [];
+  children: MenuItem[] = [];
+  _uiRoot: UIRoot;
+
+  constructor(uiRoot: UIRoot) {
+    super();
+    this._uiRoot = uiRoot;
+
+    // this._div = document.createElement(
+    //   this.getElTag().toLowerCase().replace("_", "")
+    // );
+  }
+  private _addcommand(
+    cmdText: string,
+    cmd_id: number,
+    checked: boolean = false,
+    disabled: boolean = false,
+    data: { [key: string]: any } = {}
+  ) {
+    this.children.push({
+      type: "menuitem",
+      // caption: cmdText,
+      ...extractCaption(cmdText),
+      id: cmd_id,
+      checked,
+      disabled,
+      data,
+    });
+  }
   addcommand(
     cmdText: string,
     cmd_id: number,
     checked: boolean,
     disabled: boolean
   ) {
-    this._items.push({
-      type: "menuitem",
-      caption: cmdText,
-      id: cmd_id,
-      checked,
-      disabled,
-    });
+    if (cmd_id == 32767) {
+      this._loadSkins();
+      return;
+    }
+    this._addcommand(cmdText, cmd_id, checked, disabled);
   }
   addseparator() {
-    this._items.push({ type: "separator" });
+    this.children.push({ type: "separator" });
   }
   addsubmenu(popup: PopupMenu, submenutext: string) {
-    this._items.push({ type: "popup", popup: popup, caption: submenutext });
+    // this.children.push({ type: "popup", popup: popup, caption: submenutext });
+    this.children.push({
+      type: "popup",
+      popup: popup,
+      ...extractCaption(submenutext),
+    });
     // // TODO:
     // this.addcommand(submenutext, 0, false, false)
   }
   checkcommand(cmd_id: number, check: boolean) {
-    const item = this._items.find((item) => {
+    const item = this.children.find((item) => {
       return item.type === "menuitem" && item.id === cmd_id;
     });
     assume(item != null, `Could not find item with id "${cmd_id}"`);
@@ -177,25 +145,72 @@ export default class PopupMenu extends BaseObject {
     item.checked = check;
   }
   disablecommand(cmd_id: number, disable: boolean) {
-    for (const item of this._items) {
+    for (const item of this.children) {
       if (item.type == "menuitem" && item.id == cmd_id) {
         item.disabled = disable;
         break;
       }
     }
   }
+
   async popatmouse(): Promise<number> {
-    console.log('popAtMouse.start...:')
-    const result = await waitPopup(this)
-    console.log('popAtMouse.return:', result)
+    console.log("popAtMouse.start...:");
+    const mousePos = this._uiRoot._mousePos;
+    // const result = await waitPopup(this, mousePos.x, mousePos.y)
+    const result = await this.popatxy(mousePos.x, mousePos.y);
+    console.log("popAtMouse.return:", result);
     return result;
   }
-  async popatxy(x:number, y:number):Promise<number>{
-    return await waitPopup(this)
+  async popatxy(x: number, y: number): Promise<number> {
+    destroyActivePopup();
+    setActivePopup(this);
+    const ret = await waitPopup(this, x, y);
+    deactivePopup(this);
+    // setActivePopup(this)
+    // this._showButton(this._elDown);
+    // this._div.classList.add("open");
+
+    // ACTIVE_MENU = this;
+    return ret;
+  }
+
+  /**
+   * called by such Menu to close this pupup in favour of
+   * that Menu want to show their own popup (user click that Menu)
+   */
+  doClosePopup() {
+    if (this._successPromise) {
+      this._successPromise(-1);
+    }
+  }
+  _successPromise: Function = null;
+
+  _loadSkins() {
+    let action_id = 32767;
+    this._uiRoot._skins.forEach((skin) => {
+      const name = typeof skin === "string" ? skin : skin.name;
+      const url = typeof skin === "string" ? skin : skin.url;
+      const skin_info: Skin = { name, url };
+      action_id++;
+
+      registerAction(action_id, {
+        //? Skin, checked or not
+        onUpdate: (menu: IMenuItem, uiRoot: UIRoot) => {
+          menu.checked =
+            uiRoot.getSkinName() == menu.caption ||
+            uiRoot.getSkinUrl() == menu.data.url;
+        },
+        onExecute: (uiRoot: UIRoot) => {
+          uiRoot.switchSkin(skin_info);
+          return true;
+        },
+      });
+      this._addcommand(name, action_id, false, false, skin_info);
+    });
   }
 
   // popatmouse(): number {
-  //   const message = this._items.map((item) => {
+  //   const message = this.children.map((item) => {
   //     switch (item.type) {
   //       case "separator":
   //         return "------";
@@ -206,7 +221,7 @@ export default class PopupMenu extends BaseObject {
   //   message.unshift("Pick the number matching your choice:\n");
   //   let choice: number | null = null;
   //   while (
-  //     !this._items.some((item) => item.type === "item" && item.id === choice)
+  //     !this.children.some((item) => item.type === "item" && item.id === choice)
   //   ) {
   //     choice = Number(window.prompt(message.join("\n")));
   //     if (choice == 0) break;
@@ -219,6 +234,15 @@ export default class PopupMenu extends BaseObject {
   //   return this.popatmouse();
   // }
   getnumcommands() {
-    return this._items.length;
+    return this.children.length;
+  }
+
+  hideMenu(cmd_id: number) {
+    for (const item of this.children) {
+      if (item.type == "menuitem" && item.id == cmd_id) {
+        item.invisible = true;
+        break;
+      }
+    }
   }
 }

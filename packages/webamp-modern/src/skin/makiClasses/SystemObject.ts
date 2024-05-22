@@ -622,7 +622,7 @@ export default class SystemObject extends BaseObject {
    */
   newdynamiccontainer(container_id: string): Container {
     //TODO
-    return unimplemented(null)
+    return unimplemented(null);
   }
 
   /**
