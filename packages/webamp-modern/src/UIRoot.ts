@@ -28,9 +28,20 @@ import Config from "./skin/makiClasses/Config";
 import WinampConfig from "./skin/makiClasses/WinampConfig";
 import Avs from "./skin/makiClasses/Avs";
 
+import { getWa5Popup } from "./skin/makiClasses/menuWa5";
+
 import { SkinEngineClass } from "./skin/SkinEngine";
-import { FileExtractor } from "./skin/FileExtractor";
+import { FileExtractor, PathFileExtractor, ZipFileExtractor, } from "./skin/FileExtractor";
 import Application from "./skin/makiClasses/Application";
+
+import {
+  getSkinEngineClass,
+  getSkinEngineClassByContent,
+  SkinEngine,
+} from "./skin/SkinEngine";
+
+
+export type Skin = | string | {name: string, url: string};
 
 export class UIRoot {
   _id: string;
@@ -40,6 +51,7 @@ export class UIRoot {
   _winampConfig: WinampConfig;
 
   _div: HTMLDivElement = document.createElement("div");
+  _mousePos : {x:number,y:number} = {x:0, y:0}
   _imageManager: ImageManager;
   // Just a temporary place to stash things
   _bitmaps: { [id: string]: Bitmap } = {};
@@ -62,6 +74,8 @@ export class UIRoot {
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
   _skinInfo: { [key: string]: string } = {};
+  _skin: Skin = {name:'', url:''};
+  _skins: Skin[] = []
   _skinEngineClass: SkinEngineClass;
   _eventListener: Emitter = new Emitter();
   _additionalCss: string[] = [];
@@ -89,6 +103,7 @@ export class UIRoot {
     this._winampConfig = new WinampConfig(this);
     this.playlist = new PlEdit(this); // must be after _config.
     this.vm = new Vm(this);
+    this.setlistenMouseMove(true)
   }
 
   getId(): string {
@@ -516,7 +531,7 @@ export class UIRoot {
     cssEl.textContent = cssRules.join("\n");
   }
 
-  dispatch(action: string, param: string | null, actionTarget: string | null) {
+  dispatch(action: string, param?: string | null, actionTarget?: string | null) {
     switch (action.toLowerCase()) {
       case "play":
         this.audio.play();
@@ -556,12 +571,38 @@ export class UIRoot {
       case "close":
         this.closeContainer();
         break;
+
+      case "menu":
+        getWa5Popup(param, this).popatmouse()
+        break;
+
+      case "controlmenu":
+        getWa5Popup('ControlMenu', this).popatmouse()
+        break;
+      case "sysmenu":
+        getWa5Popup('Main', this).popatmouse()
+        break;
+      case "pe_add":
+        getWa5Popup('Add', this).popatmouse()
+        break;
+      case "pe_rem":
+        getWa5Popup('Remove', this).popatmouse()
+        break;
+      case "pe_sel":
+        getWa5Popup('Select', this).popatmouse()
+        break;
+      case "pe_misc":
+        getWa5Popup('MiscOpt', this).popatmouse()
+        break;
+      case "pe_list":
+        getWa5Popup('Playlist', this).popatmouse()
+        break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
   }
 
-  getActionState(action: string, param: string, actionTarget: string): boolean {
+  getActionState(action: string, param: string, actionTarget: string=''): boolean {
     if (action != null) {
       switch (action.toLowerCase()) {
         case "eq_toggle":
@@ -653,6 +694,17 @@ export class UIRoot {
     }
   }
 
+  setlistenMouseMove( listen: boolean ){
+    const update = (e:MouseEvent) => {
+      this._mousePos = {
+        // https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y
+        x : e.pageX,
+        y : e.pageY
+      }
+    }
+    window.document[`${listen?'add':'remove'}EventListener`]('mousemove', update);
+  }
+
   //? Zip things ========================
   /* because maki need to load a groupdef outside init() */
   _zip: JSZip;
@@ -700,69 +752,6 @@ export class UIRoot {
     return await this._fileExtractor.getFileAsBlob(filePath);
   }
 
-  // async getFileAsString(filePath: string): Promise<string> {
-  //   if (this._preferZip) {
-  //     return await this.getFileAsStringZip(filePath);
-  //   } else {
-  //     return await this.getFileAsStringPath(filePath);
-  //   }
-  // }
-  // async getFileAsBytes(filePath: string): Promise<ArrayBuffer> {
-  //   if (this._preferZip) {
-  //     return await this.getFileAsBytesZip(filePath);
-  //   } else {
-  //     return await this.getFileAsBytesPath(filePath);
-  //   }
-  // }
-  // async getFileAsBlob(filePath: string): Promise<Blob> {
-  //   if (this._preferZip) {
-  //     return await this.getFileAsBlobZip(filePath);
-  //   } else {
-  //     return await this.getFileAsBlobPath(filePath);
-  //   }
-  // }
-
-  // async getFileAsStringZip(filePath: string): Promise<string> {
-  //   if (!filePath) return null;
-  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-  //   if (!zipObj) return null;
-  //   return await zipObj.async("text");
-  // }
-
-  // async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
-  //   if (!filePath) return null;
-  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-  //   if (!zipObj) return null;
-  //   return await zipObj.async("arraybuffer");
-  // }
-
-  // async getFileAsBlobZip(filePath: string): Promise<Blob> {
-  //   if (!filePath) return null;
-  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-  //   if (!zipObj) return null;
-  //   return await zipObj.async("blob");
-  // }
-
-  // async getFileAsStringPath(filePath: string): Promise<string> {
-  //   const response = await fetch(this._skinPath + filePath);
-  //   return await response.text();
-  // }
-
-  // async getFileAsBytesPath(filePath: string): Promise<ArrayBuffer> {
-  //   const response = await fetch(this._skinPath + filePath);
-  //   return await response.arrayBuffer();
-  // }
-
-  // async getFileAsBlobPath(filePath: string): Promise<Blob> {
-  //   const response = await fetch(this._skinPath + filePath);
-  //   return await response.blob();
-  // }
-
-  // getFileIsExist(filePath: string): boolean {
-  //   const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-  //   return !!zipObj;
-  // }
-
   //? System things ========================
   /* because maki need to be run if not inside any Group @init() */
   addSystemObject(systemObj: SystemObject) {
@@ -782,7 +771,14 @@ export class UIRoot {
   }
 
   setSkinInfo(skinInfo: { [key: string]: string }) {
-    this._skinInfo = skinInfo;
+    const url = this._skinInfo.url
+    this._skinInfo = {...skinInfo, url};
+  }
+  setSkinUrl(url:string){
+    this._skinInfo.url = url;
+  }
+  getSkinUrl(){
+    return this._skinInfo.url
   }
   getSkinInfo(): { [key: string]: string } {
     return this._skinInfo;
@@ -790,6 +786,107 @@ export class UIRoot {
   getSkinName(): string {
     return this.getSkinInfo()["name"];
   }
+
+  // THIS IS A BIG THING, MOVED HERE FROM AN AGNOSTIC SKIN ENGINES
+  async switchSkin(skin: Skin) {
+    //* getting skin engine is complicated:
+    //* SkinEngine is not yet instanciated during looking for a skinEngine.
+    //* If file extension is know then we loop for registered Engines
+    //* But sometime (if its a `.zip` or a path `/`), we need to detect by
+    //* if a file exist, with a name is expected by skinEngine
+
+    const parentDiv = this.getRootDiv().parentElement;
+    this.reset();
+    // this._parent.appendChild(this._uiRoot.getRootDiv());
+    parentDiv.appendChild(this.getRootDiv());
+
+    const name = typeof skin === 'string' ? skin : skin.name;
+    const skinPath = typeof skin === 'string' ? skin : skin.url;
+    this.setSkinUrl(skinPath)
+
+
+    let skinFetched = false;
+    let SkinEngineClass = null;
+
+    //? usually the file extension is explicitly for SkinEngine. eg: `.wal`
+    let SkinEngineClasses = await getSkinEngineClass(skinPath);
+
+    //? when file extension is ambiguous eg. `.zip`, several
+    //? skinEngines are supporting, but only one is actually working with.
+    //? lets detect:
+    if (SkinEngineClasses.length > 1) {
+      await this._loadSkinPathToUiroot(skinPath, null);
+      skinFetched = true;
+      SkinEngineClass = await getSkinEngineClassByContent(
+        SkinEngineClasses,
+        skinPath,
+        this
+      );
+    } else {
+      SkinEngineClass = SkinEngineClasses[0];
+    }
+    if (SkinEngineClass == null) {
+      throw new Error(`Skin not supported`);
+    }
+
+    //? success found a skin-engine
+    this.SkinEngineClass = SkinEngineClass;
+    const parser: SkinEngine = new SkinEngineClass(this);
+    if (!skinFetched)
+      await this._loadSkinPathToUiroot(skinPath, parser);
+    // await parser.parseSkin();
+    await parser.buildUI();
+
+    // loadSkin(this._parent, skinPath);
+  }
+
+  /**
+   * Time to load the skin file
+   * @param skinPath url string
+   * @param uiRoot
+   * @param skinEngine An instance of SkinEngine
+   */
+  private async _loadSkinPathToUiroot(
+    skinPath: string,
+    skinEngine: SkinEngine
+  ) {
+    let response: Response;
+    let fileExtractor: FileExtractor;
+    //? pick one of correct fileExtractor
+
+    if (skinPath.endsWith("/")) {
+      fileExtractor = new PathFileExtractor();
+    } else {
+      response = await fetch(skinPath);
+      if (response.status == 404) {
+        throw new Error(`Skin does not exist`);
+      }
+      if (skinEngine != null) {
+        fileExtractor = skinEngine.getFileExtractor();
+      }
+    }
+    if (fileExtractor == null) {
+      if (response.headers.get("content-type").startsWith("application/")) {
+        fileExtractor = new ZipFileExtractor();
+      } else {
+        fileExtractor = new PathFileExtractor();
+      }
+    }
+
+    await fileExtractor.prepare(skinPath, response);
+    // const skinZipBlob = await response.blob();
+
+    //   const zip = await JSZip.loadAsync(skinZipBlob);
+    //   uiRoot.setZip(zip);
+    // } else {
+    //   uiRoot.setZip(null);
+    //   const slash = skinPath.endsWith("/") ? "" : "/";
+    //   uiRoot.setSkinDir(skinPath + slash);
+    // }
+    this.setFileExtractor(fileExtractor);
+  }
+
+
 
   set SkinEngineClass(Engine: SkinEngineClass) {
     this._skinEngineClass = Engine;

@@ -14,3 +14,12 @@ button.wasabi {
 button.wasabi:active {
     border-image-source: var(--bitmap-studio-button-pressed);
 }
+
+button.center_image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--background-image);
+    background-repeat: no-repeat;
+    background-position: center center;
+}

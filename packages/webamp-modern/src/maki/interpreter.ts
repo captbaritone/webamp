@@ -49,7 +49,13 @@ export async function interpret(
     uiRoot
   );
   interpreter.stack = stack;
-  return await interpreter.interpret(start);
+  try {
+    return await interpreter.interpret(start);
+    // return interpreter.interpret(start);
+  } catch (error) {
+    // console.warn('error while interpret', program.file, error)
+    console.warn(`Stopped executing ${program.maki_id}.\n`, error);
+  }
 }
 
 function validateVariable(v: Variable) {

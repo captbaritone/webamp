@@ -66,6 +66,9 @@ export default class Text extends GuiObj {
       case "default":
         // (str) A static string to be displayed.
         // console.log('THETEXT', value)
+        // if (value.startsWith(':')) {
+        //   value = this._interpolateText(value)
+        // }
         this._text = value;
         this._renderText();
         break;
@@ -348,6 +351,24 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     ]);
   }
 
+  _interpolateText(value: string): string {
+    switch (value.toLowerCase()) {
+      case ":componentname":
+        const layout = this.getparentlayout();
+        if (layout) {
+          //debugger
+          try{
+            // sometime error with wasabi
+            return layout.getcontainer()._name || value;
+          } catch {
+            return value
+          }
+        }
+        break;
+    }
+    return value
+  }
+
   gettext(): string {
     if (this._alternateText) {
       // alternate text is used in Winamp3 to show a hint of a Play button while mouse down.
@@ -542,7 +563,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _getBitmapFontTextWidth(font: BitmapFont): number {
     const charWidth = font._charWidth;
-    return this.gettext().length * charWidth + this._paddingX * 2;
+    return this.gettext().length * charWidth;
   }
 
   _getTrueTypeTextWidth(font: TrueTypeFont): number {
@@ -554,14 +575,22 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
      *
      * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
      */
-    const self = this;
+    // const self = this;
+    let txt = this.gettext();
+    if (this._forceuppercase) {
+      txt = txt.toUpperCase()
+    } else if (this._forcelowercase) {
+      txt = txt.toLowerCase()
+    }
+    const fontFamily = (font && font.getFontFamily()) || '"Liberation Sans", "DejaVu Sans", Arial';
+
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    context.font = `${this._fontSize || 11}px ${
-      (font && font.getFontFamily()) || "Arial"
-    }`;
+    context.font = `${this._bold ? '700' : ''} ${this._fontSize || 11}px ${fontFamily}`;
+
     const metrics = context.measureText(this.gettext());
-    return metrics.width + self._paddingX * 2;
+    
+    return Math.ceil(metrics.width /*+ self._paddingX * 2*/);
   }
 
   draw() {
