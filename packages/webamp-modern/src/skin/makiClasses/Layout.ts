@@ -20,7 +20,7 @@ export default class Layout extends Group {
   static GUID = "60906d4e482e537e94cc04b072568861";
   _resizingDiv: HTMLDivElement = null;
   _resizing: boolean = false;
-  _resizing_start : DOMRect = null;
+  _resizing_start: DOMRect = null;
   _canResize: number = 0; // combination of 4 directions: N/E/W/S
   _scale: number = 1.0;
   _opacity: number = 1.0;
@@ -29,7 +29,7 @@ export default class Layout extends Group {
   _movingStartY: number;
   _moving: boolean = false;
   _snap = { left: 0, top: 0, right: 0, bottom: 0 };
-  _shortcuts: {[key:string]:number} = {};
+  _shortcuts: { [key: string]: number } = {};
 
   constructor(uiRoot: UIRoot) {
     super(uiRoot);
@@ -201,7 +201,7 @@ export default class Layout extends Group {
       // this._resizingDiv.style.height = px(r.height);
       // this._resizingDiv.style.top = px(container.gettop());
       // this._resizingDiv.style.left = px(container.getleft());
-      const {left,top,width,height} = r
+      const { left, top, width, height } = r;
       this._resizingDiv.style.cssText = `
         width: ${px(width)};
         height: ${px(height)};
@@ -217,28 +217,26 @@ export default class Layout extends Group {
         return;
       }
       // console.log(`resizing dx:${dx} dy:${dy}`);
-      let {left,top,width,height, right, bottom} = this._resizing_start
-      if (this._canResize & RIGHT)
-        width = clampW(width + dx);
-      if (this._canResize & BOTTOM)
-        height = (clampH(height + dy));
+      let { left, top, width, height, right, bottom } = this._resizing_start;
+      if (this._canResize & RIGHT) width = clampW(width + dx);
+      if (this._canResize & BOTTOM) height = clampH(height + dy);
 
       if (this._canResize & LEFT) {
-        width = (clampW(width + -dx));
-        let l = (left + dx);
-        if(l+width <= right) {
+        width = clampW(width + -dx);
+        let l = left + dx;
+        if (l + width <= right) {
           left = l;
         } else {
-          left = right - this._minimumWidth
+          left = right - this._minimumWidth;
         }
       }
       if (this._canResize & TOP) {
-        height = (clampH(height + -dy));
-        let t = (top + dy);
-        if(t+height <= bottom) {
+        height = clampH(height + -dy);
+        let t = top + dy;
+        if (t + height <= bottom) {
           top = t;
         } else {
-          top = bottom - this._minimumHeight
+          top = bottom - this._minimumHeight;
         }
       }
       this._resizingDiv.style.cssText = `
@@ -247,7 +245,6 @@ export default class Layout extends Group {
         left: ${px(left)};
         top: ${px(top)};
       `;
-
     } else if (cmd == "final") {
       if (!this._resizing) {
         return;
@@ -296,17 +293,17 @@ export default class Layout extends Group {
   }
 
   // MENU SHORTCUT HANDLER HERE ======================
-  registerShortcuts(popup: PopupMenu){
+  registerShortcuts(popup: PopupMenu) {
     forEachMenuItem(popup, (m: IMenuItem) => {
-      if(m.shortcut){
-        this._shortcuts[m.shortcut] = m.id
+      if (m.shortcut) {
+        this._shortcuts[m.shortcut] = m.id;
       }
-    })
+    });
     // console.log('layout.shortcuts:', this._shortcuts)
   }
 
-  executeShorcut(shortcut:string){
-    const menuId = this._shortcuts[shortcut]
+  executeShorcut(shortcut: string) {
+    const menuId = this._shortcuts[shortcut];
     const action = findAction(menuId);
     // console.log('Layout:', this._name, 'executing shortcut:',shortcut, '@action.id:', menuId, '=:', action )
     const invalidateRequired = action.onExecute(this._uiRoot);

@@ -31,7 +31,11 @@ import Avs from "./skin/makiClasses/Avs";
 import { getWa5Popup } from "./skin/makiClasses/menuWa5";
 
 import { SkinEngineClass } from "./skin/SkinEngine";
-import { FileExtractor, PathFileExtractor, ZipFileExtractor, } from "./skin/FileExtractor";
+import {
+  FileExtractor,
+  PathFileExtractor,
+  ZipFileExtractor,
+} from "./skin/FileExtractor";
 import Application from "./skin/makiClasses/Application";
 
 import {
@@ -40,8 +44,7 @@ import {
   SkinEngine,
 } from "./skin/SkinEngine";
 
-
-export type Skin = | string | {name: string, url: string};
+export type Skin = string | { name: string; url: string };
 
 export class UIRoot {
   _id: string;
@@ -51,7 +54,7 @@ export class UIRoot {
   _winampConfig: WinampConfig;
 
   _div: HTMLDivElement = document.createElement("div");
-  _mousePos : {x:number,y:number} = {x:0, y:0}
+  _mousePos: { x: number; y: number } = { x: 0, y: 0 };
   _imageManager: ImageManager;
   // Just a temporary place to stash things
   _bitmaps: { [id: string]: Bitmap } = {};
@@ -74,8 +77,8 @@ export class UIRoot {
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
   _skinInfo: { [key: string]: string } = {};
-  _skin: Skin = {name:'', url:''};
-  _skins: Skin[] = []
+  _skin: Skin = { name: "", url: "" };
+  _skins: Skin[] = [];
   _skinEngineClass: SkinEngineClass;
   _eventListener: Emitter = new Emitter();
   _additionalCss: string[] = [];
@@ -103,7 +106,7 @@ export class UIRoot {
     this._winampConfig = new WinampConfig(this);
     this.playlist = new PlEdit(this); // must be after _config.
     this.vm = new Vm(this);
-    this.setlistenMouseMove(true)
+    this.setlistenMouseMove(true);
   }
 
   getId(): string {
@@ -531,7 +534,11 @@ export class UIRoot {
     cssEl.textContent = cssRules.join("\n");
   }
 
-  dispatch(action: string, param?: string | null, actionTarget?: string | null) {
+  dispatch(
+    action: string,
+    param?: string | null,
+    actionTarget?: string | null
+  ) {
     switch (action.toLowerCase()) {
       case "play":
         this.audio.play();
@@ -573,36 +580,40 @@ export class UIRoot {
         break;
 
       case "menu":
-        getWa5Popup(param, this).popatmouse()
+        getWa5Popup(param, this).popatmouse();
         break;
 
       case "controlmenu":
-        getWa5Popup('ControlMenu', this).popatmouse()
+        getWa5Popup("ControlMenu", this).popatmouse();
         break;
       case "sysmenu":
-        getWa5Popup('Main', this).popatmouse()
+        getWa5Popup("Main", this).popatmouse();
         break;
       case "pe_add":
-        getWa5Popup('Add', this).popatmouse()
+        getWa5Popup("Add", this).popatmouse();
         break;
       case "pe_rem":
-        getWa5Popup('Remove', this).popatmouse()
+        getWa5Popup("Remove", this).popatmouse();
         break;
       case "pe_sel":
-        getWa5Popup('Select', this).popatmouse()
+        getWa5Popup("Select", this).popatmouse();
         break;
       case "pe_misc":
-        getWa5Popup('MiscOpt', this).popatmouse()
+        getWa5Popup("MiscOpt", this).popatmouse();
         break;
       case "pe_list":
-        getWa5Popup('Playlist', this).popatmouse()
+        getWa5Popup("Playlist", this).popatmouse();
         break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
   }
 
-  getActionState(action: string, param: string, actionTarget: string=''): boolean {
+  getActionState(
+    action: string,
+    param: string,
+    actionTarget: string = ""
+  ): boolean {
     if (action != null) {
       switch (action.toLowerCase()) {
         case "eq_toggle":
@@ -694,15 +705,18 @@ export class UIRoot {
     }
   }
 
-  setlistenMouseMove( listen: boolean ){
-    const update = (e:MouseEvent) => {
+  setlistenMouseMove(listen: boolean) {
+    const update = (e: MouseEvent) => {
       this._mousePos = {
         // https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y
-        x : e.pageX,
-        y : e.pageY
-      }
-    }
-    window.document[`${listen?'add':'remove'}EventListener`]('mousemove', update);
+        x: e.pageX,
+        y: e.pageY,
+      };
+    };
+    window.document[`${listen ? "add" : "remove"}EventListener`](
+      "mousemove",
+      update
+    );
   }
 
   //? Zip things ========================
@@ -771,14 +785,14 @@ export class UIRoot {
   }
 
   setSkinInfo(skinInfo: { [key: string]: string }) {
-    const url = this._skinInfo.url
-    this._skinInfo = {...skinInfo, url};
+    const url = this._skinInfo.url;
+    this._skinInfo = { ...skinInfo, url };
   }
-  setSkinUrl(url:string){
+  setSkinUrl(url: string) {
     this._skinInfo.url = url;
   }
-  getSkinUrl(){
-    return this._skinInfo.url
+  getSkinUrl() {
+    return this._skinInfo.url;
   }
   getSkinInfo(): { [key: string]: string } {
     return this._skinInfo;
@@ -800,10 +814,9 @@ export class UIRoot {
     // this._parent.appendChild(this._uiRoot.getRootDiv());
     parentDiv.appendChild(this.getRootDiv());
 
-    const name = typeof skin === 'string' ? skin : skin.name;
-    const skinPath = typeof skin === 'string' ? skin : skin.url;
-    this.setSkinUrl(skinPath)
-
+    const name = typeof skin === "string" ? skin : skin.name;
+    const skinPath = typeof skin === "string" ? skin : skin.url;
+    this.setSkinUrl(skinPath);
 
     let skinFetched = false;
     let SkinEngineClass = null;
@@ -832,8 +845,7 @@ export class UIRoot {
     //? success found a skin-engine
     this.SkinEngineClass = SkinEngineClass;
     const parser: SkinEngine = new SkinEngineClass(this);
-    if (!skinFetched)
-      await this._loadSkinPathToUiroot(skinPath, parser);
+    if (!skinFetched) await this._loadSkinPathToUiroot(skinPath, parser);
     // await parser.parseSkin();
     await parser.buildUI();
 
@@ -885,8 +897,6 @@ export class UIRoot {
     // }
     this.setFileExtractor(fileExtractor);
   }
-
-
 
   set SkinEngineClass(Engine: SkinEngineClass) {
     this._skinEngineClass = Engine;

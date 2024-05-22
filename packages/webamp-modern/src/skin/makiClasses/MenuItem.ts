@@ -2,7 +2,7 @@ import { installGlobalMouseDown, uninstallGlobalMouseDown } from "./GuiObj";
 
 export interface IPopupMenu {
   children: MenuItem[];
-}  
+}
 
 export type IMenuItem = {
   type: "menuitem";
@@ -10,15 +10,15 @@ export type IMenuItem = {
   id: number;
   checked: boolean;
   disabled?: boolean;
-  shortcut?: string;  // "Ctrl+Alt+Shift+A"
-  keychar?: string;   // 'p' of "&Play"
-  invisible?: boolean;// special case to register shortcut only
-  data?:{[key:string]: any}; // used by skin's popup item
-}
+  shortcut?: string; // "Ctrl+Alt+Shift+A"
+  keychar?: string; // 'p' of "&Play"
+  invisible?: boolean; // special case to register shortcut only
+  data?: { [key: string]: any }; // used by skin's popup item
+};
 
 type IMenuSeparator = {
-  type: "separator"
-}
+  type: "separator";
+};
 
 type IMenuPopup = {
   type: "popup";
@@ -29,7 +29,7 @@ type IMenuPopup = {
   children?: MenuItem[];
 };
 
-export type MenuItem = | IMenuItem | IMenuSeparator | IMenuPopup;
+export type MenuItem = IMenuItem | IMenuSeparator | IMenuPopup;
 
 export interface ICLoseablePopup {
   doClosePopup: Function;
@@ -40,38 +40,39 @@ export interface ICLoseablePopup {
 let ACTIVE_POPUP: ICLoseablePopup = null;
 
 export function destroyActivePopup() {
-  console.log('globalWindowClick')
+  console.log("globalWindowClick");
   if (ACTIVE_POPUP != null) {
-    ACTIVE_POPUP.doClosePopup()
+    ACTIVE_POPUP.doClosePopup();
   }
   // ACTIVE_MENU_GROUP = ''
-  uninstallGlobalClickListener()
+  uninstallGlobalClickListener();
 }
 
 export function setActivePopup(popup: ICLoseablePopup) {
   ACTIVE_POPUP = popup;
-  if(popup){
-    installGlobalClickListener()
+  if (popup) {
+    installGlobalClickListener();
   } else {
-    uninstallGlobalClickListener()
+    uninstallGlobalClickListener();
   }
 }
 
 /**
  * if the active == popup => set null
- * @param popup 
+ * @param popup
  */
 export function deactivePopup(popup: ICLoseablePopup) {
-  if(popup == ACTIVE_POPUP){
-    setActivePopup(null)
+  if (popup == ACTIVE_POPUP) {
+    setActivePopup(null);
   }
 }
 
 let globalClickInstalled = false;
 function installGlobalClickListener() {
-  setTimeout(() => {  // using promise to prevent immediately executing of globalWindowClick 
+  setTimeout(() => {
+    // using promise to prevent immediately executing of globalWindowClick
     if (!globalClickInstalled) {
-      installGlobalMouseDown(destroyActivePopup);  // call globalWindowClick on any GuiObj
+      installGlobalMouseDown(destroyActivePopup); // call globalWindowClick on any GuiObj
       document.addEventListener("mousedown", destroyActivePopup); // call globalWindowClick on document
       globalClickInstalled = true;
     }
@@ -82,40 +83,43 @@ function uninstallGlobalClickListener() {
   if (globalClickInstalled) {
     document.removeEventListener("mousedown", destroyActivePopup);
     globalClickInstalled = false;
-    uninstallGlobalMouseDown(destroyActivePopup)
+    uninstallGlobalMouseDown(destroyActivePopup);
   }
-
 }
 
 // ################## MenuItem Utils ##########################33
 
-export function forEachMenuItem(popup: IPopupMenu, callback:Function){
-  for(const menu of popup.children){
-    if(menu.type=="menuitem"){
-      callback(menu)
-    }
-    else if(menu.type=="popup"){
-      forEachMenuItem(menu.popup, callback)
+export function forEachMenuItem(popup: IPopupMenu, callback: Function) {
+  for (const menu of popup.children) {
+    if (menu.type == "menuitem") {
+      callback(menu);
+    } else if (menu.type == "popup") {
+      forEachMenuItem(menu.popup, callback);
     }
   }
 }
 
 type ExtractedCaptions = {
   caption: string;
-  shortcut?: string;  // "Ctrl+Alt+Shift+A"
-  keychar?: string;   // 'p' of "&Play"
-}
+  shortcut?: string; // "Ctrl+Alt+Shift+A"
+  keychar?: string; // 'p' of "&Play"
+};
 
-export function extractCaption(text:string): ExtractedCaptions{
+export function extractCaption(text: string): ExtractedCaptions {
   // const result:ExtractedCaptions = {caption:text, shortcut:null, keychar:''}
-  const [caption, shortcut] = text.split('\t')  
-  const keychar = caption.includes('&')? caption[caption.indexOf('&')+1].toLowerCase() : ''
-  return {caption, shortcut, keychar};
+  const [caption, shortcut] = text.split("\t");
+  const keychar = caption.includes("&")
+    ? caption[caption.indexOf("&") + 1].toLowerCase()
+    : "";
+  return { caption, shortcut, keychar };
 }
 
-export function generatePopupDiv(popup: IPopupMenu, callback: Function): HTMLElement {
+export function generatePopupDiv(
+  popup: IPopupMenu,
+  callback: Function
+): HTMLElement {
   const root = document.createElement("ul");
-  root.className = 'popup-menu-container'
+  root.className = "popup-menu-container";
   // root.style.zIndex = "1000";
   // console.log('generating popup:', popup)
   for (const menu of popup.children) {
@@ -124,7 +128,7 @@ export function generatePopupDiv(popup: IPopupMenu, callback: Function): HTMLEle
     // root.appendChild(item);
     switch (menu.type) {
       case "menuitem":
-        if(menu.invisible===true){
+        if (menu.invisible === true) {
           continue;
         }
         item = generatePopupItem(menu);
@@ -134,7 +138,7 @@ export function generatePopupDiv(popup: IPopupMenu, callback: Function): HTMLEle
       case "popup":
         item = generatePopupItem(menu);
         const subMenu = generatePopupDiv(menu.popup, callback);
-        item.appendChild(subMenu)
+        item.appendChild(subMenu);
         break;
       case "separator":
         item = document.createElement("hr");
@@ -146,34 +150,34 @@ export function generatePopupDiv(popup: IPopupMenu, callback: Function): HTMLEle
 }
 
 //? one row of popup
-function generatePopupItem(menu: | IMenuItem | IMenuPopup): HTMLElement {
+function generatePopupItem(menu: IMenuItem | IMenuPopup): HTMLElement {
   const item = document.createElement("li");
 
   //? checkmark
   const checkMark = document.createElement("span");
-  checkMark.classList.add('checkmark')
-  checkMark.textContent = menu.checked? '✓' : ' ';
-  item.appendChild(checkMark)
-  
+  checkMark.classList.add("checkmark");
+  checkMark.textContent = menu.checked ? "✓" : " ";
+  item.appendChild(checkMark);
+
   //? display text
   // @ts-ignore
-  // const [caption, keystroke] = menu.caption.split('\t')  
+  // const [caption, keystroke] = menu.caption.split('\t')
   const label = generateCaption(menu.caption);
-  label.classList.add('caption')
-  item.appendChild(label)
+  label.classList.add("caption");
+  item.appendChild(label);
 
   //? keystroke
 
   const shortcut = document.createElement("span");
-  shortcut.classList.add('keystroke')
-  shortcut.textContent = menu.type=='menuitem'? menu.shortcut : '';
-  item.appendChild(shortcut)
+  shortcut.classList.add("keystroke");
+  shortcut.textContent = menu.type == "menuitem" ? menu.shortcut : "";
+  item.appendChild(shortcut);
 
   //? sub-menu sign
   const chevron = document.createElement("span");
-  chevron.classList.add('chevron')
-  chevron.textContent = menu.type=='popup'? '🞂' : ' ';
-  item.appendChild(chevron)
+  chevron.classList.add("chevron");
+  chevron.textContent = menu.type == "popup" ? "🞂" : " ";
+  item.appendChild(chevron);
   // item.textContent = `${menu.checked? '✓' : ' '} ${menu.caption}`;
 
   return item;
@@ -187,7 +191,7 @@ function generateCaption(caption: string): HTMLElement {
   caption = caption.replace(regex, subst);
 
   const span = document.createElement("span");
-  span.classList.add('caption')
+  span.classList.add("caption");
   span.innerHTML = caption;
-  return span
+  return span;
 }

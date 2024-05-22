@@ -357,16 +357,16 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         const layout = this.getparentlayout();
         if (layout) {
           //debugger
-          try{
+          try {
             // sometime error with wasabi
             return layout.getcontainer()._name || value;
           } catch {
-            return value
+            return value;
           }
         }
         break;
     }
-    return value
+    return value;
   }
 
   gettext(): string {
@@ -578,18 +578,22 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     // const self = this;
     let txt = this.gettext();
     if (this._forceuppercase) {
-      txt = txt.toUpperCase()
+      txt = txt.toUpperCase();
     } else if (this._forcelowercase) {
-      txt = txt.toLowerCase()
+      txt = txt.toLowerCase();
     }
-    const fontFamily = (font && font.getFontFamily()) || '"Liberation Sans", "DejaVu Sans", Arial';
+    const fontFamily =
+      (font && font.getFontFamily()) ||
+      '"Liberation Sans", "DejaVu Sans", Arial';
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    context.font = `${this._bold ? '700' : ''} ${this._fontSize || 11}px ${fontFamily}`;
+    context.font = `${this._bold ? "700" : ""} ${
+      this._fontSize || 11
+    }px ${fontFamily}`;
 
     const metrics = context.measureText(this.gettext());
-    
+
     return Math.ceil(metrics.width /*+ self._paddingX * 2*/);
   }
 

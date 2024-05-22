@@ -20,29 +20,29 @@ import { XmlElement } from "@rgrove/parse-xml";
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
 
-const globalMouseDown:Function[] = [];
-export const installGlobalMouseDown = (f:Function) => {
-  if(!globalMouseDown.includes(f)){
-    globalMouseDown.push(f)
+const globalMouseDown: Function[] = [];
+export const installGlobalMouseDown = (f: Function) => {
+  if (!globalMouseDown.includes(f)) {
+    globalMouseDown.push(f);
   }
-}
-export const uninstallGlobalMouseDown = (f:Function) => {
+};
+export const uninstallGlobalMouseDown = (f: Function) => {
   const index = globalMouseDown.indexOf(f);
-  if(index!=-1){
+  if (index != -1) {
     // delete globalMouseDown[index]
-    globalMouseDown.splice(index, 1)
+    globalMouseDown.splice(index, 1);
   }
-}
+};
 
-export const executeGlobalMouseDown = (e:MouseEvent) => {
+export const executeGlobalMouseDown = (e: MouseEvent) => {
   for (let i = 0; i < globalMouseDown.length; i++) {
     // console.log(typeof globalMouseDown[i], '>>', globalMouseDown[i]);
     globalMouseDown[i](e);
   }
   // for (let mousedown of globalMouseDown) {
   //   mousedown(e)
-  // }   
-}
+  // }
+};
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {

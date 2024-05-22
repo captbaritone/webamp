@@ -21,23 +21,23 @@ export class VisPaintHandler {
    * Attemp to build cached bitmaps for later use while render a frame.
    * Purpose: fast rendering in animation loop
    */
-  prepare() { }
+  prepare() {}
 
   /**
    * Called once per frame rendiring
    */
-  paintFrame() { }
+  paintFrame() {}
 
   /**
    * Attemp to cleanup cached bitmaps
    */
-  dispose() { }
+  dispose() {}
 
   /**
    * called if it is an AVS.
    * @param action vis_prev | vis_next | vis_f5 (fullscreen) |
    */
-  doAction(action: string, param: string) { }
+  doAction(action: string, param: string) {}
 }
 
 // type VisPaintHandlerClass = {new(vis: Vis): VisPaintHandler;};
@@ -721,15 +721,19 @@ class WavePaintHandler extends VisPaintHandler {
     }
 
     if (using16temporaryCanvas) {
-      const canvas = this._vis._canvas
-      const visCtx = canvas.getContext('2d');
+      const canvas = this._vis._canvas;
+      const visCtx = canvas.getContext("2d");
       visCtx.clearRect(0, 0, canvas.width, canvas.height);
       visCtx.drawImage(
         this._16h,
-        0, 0, // sx,sy
-        72, 16, // sw,sh
-        0, 0, //dx,dy
-        canvas.width, canvas.height //dw,dh
+        0,
+        0, // sx,sy
+        72,
+        16, // sw,sh
+        0,
+        0, //dx,dy
+        canvas.width,
+        canvas.height //dw,dh
       );
     }
   }
@@ -804,10 +808,14 @@ class WavePaintHandler extends VisPaintHandler {
     for (y = top; y <= bottom; y++) {
       this._ctx.drawImage(
         this._bar,
-        0, colorIndex, // sx,sy
-        1, 1, // sw,sh
-        x, y, //dx,dy
-        1, 1 //dw,dh
+        0,
+        colorIndex, // sx,sy
+        1,
+        1, // sw,sh
+        x,
+        y, //dx,dy
+        1,
+        1 //dw,dh
       );
     }
   }
@@ -815,10 +823,14 @@ class WavePaintHandler extends VisPaintHandler {
   paintWavDot(x: number, y: number, colorIndex: number) {
     this._ctx.drawImage(
       this._bar,
-      0, colorIndex, // sx,sy
-      1, 1, // sw,sh
-      x, y, //dx,dy
-      1, 1 //dw,dh
+      0,
+      colorIndex, // sx,sy
+      1,
+      1, // sw,sh
+      x,
+      y, //dx,dy
+      1,
+      1 //dw,dh
     );
   }
 
@@ -835,10 +847,14 @@ class WavePaintHandler extends VisPaintHandler {
     for (y = top; y <= bottom; y++) {
       this._ctx.drawImage(
         this._bar,
-        0, colorIndex, // sx,sy
-        1, 1, // sw,sh
-        x, y, //dx,dy
-        1, 1 //dw,dh
+        0,
+        colorIndex, // sx,sy
+        1,
+        1, // sw,sh
+        x,
+        y, //dx,dy
+        1,
+        1 //dw,dh
       );
     }
   }

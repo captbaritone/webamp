@@ -3,225 +3,241 @@ import PopupMenu from "./PopupMenu";
 import { MenuItem } from "./MenuItem";
 
 export function getWa5Popup(popupId: string, uiRoot: UIRoot): PopupMenu {
-    if(['PE_Help', 'ML_Help'].includes(popupId)) popupId = 'Help';
-    else if(popupId.toLowerCase()=='presets') popupId = 'EQpresets'
-    const id = `POPUP "${popupId}"`;
-    const res = wa5commonRes.includes(id) ? wa5commonRes : wa5miscRes.includes(id) ? wa5miscRes : wa5controlRes;
-    // const res = wa5commonRes.includes(popupId) ? wa5commonRes : wa5miscRes.includes(popupId) ? popupId : '';
-    const popup =getPopupJson(popupId, res, uiRoot);
-    // console.log('FOUND', popupId, popupJson)
-    // const popup =getPopupMenu(popupId, res);
-    console.log('FOUND', popupId, popup)
-    return popup;
+  if (["PE_Help", "ML_Help"].includes(popupId)) popupId = "Help";
+  else if (popupId.toLowerCase() == "presets") popupId = "EQpresets";
+  const id = `POPUP "${popupId}"`;
+  const res = wa5commonRes.includes(id)
+    ? wa5commonRes
+    : wa5miscRes.includes(id)
+    ? wa5miscRes
+    : wa5controlRes;
+  // const res = wa5commonRes.includes(popupId) ? wa5commonRes : wa5miscRes.includes(popupId) ? popupId : '';
+  const popup = getPopupJson(popupId, res, uiRoot);
+  // console.log('FOUND', popupId, popupJson)
+  // const popup =getPopupMenu(popupId, res);
+  console.log("FOUND", popupId, popup);
+  return popup;
 }
 
-function getPopupJson(popupId: string, res:string, uiRoot: UIRoot): PopupMenu {
-    let root: PopupMenu;
-    // let container = root;
-    // let levelStack = [root];
-    let popup: PopupMenu = null;
-    let popupStack: PopupMenu[] = [];
-    let found = false;
-    // let currentItem = null
+function getPopupJson(popupId: string, res: string, uiRoot: UIRoot): PopupMenu {
+  let root: PopupMenu;
+  // let container = root;
+  // let levelStack = [root];
+  let popup: PopupMenu = null;
+  let popupStack: PopupMenu[] = [];
+  let found = false;
+  // let currentItem = null
 
-    // Looping setiap baris pada string menu
-    for (let line of res.split('\n')) {
-        line = line.trim()
+  // Looping setiap baris pada string menu
+  for (let line of res.split("\n")) {
+    line = line.trim();
 
-        if(!found && !line.startsWith('POPUP'))     // skip until found popup
-            continue;
+    if (!found && !line.startsWith("POPUP"))
+      // skip until found popup
+      continue;
 
-        // Mengabaikan baris yang tidak penting
-        if (!line || line.startsWith('//')) {
-            continue;
-        }
-
-        // Mengambil level pada baris saat ini
-        // const level = line.search(/\S/);
-
-        // Mengecek apakah baris merupakan menu
-        // const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+"([^"]+)"(?:\s*,\s*(\d+))?,\s*(\d+),\s*(\d+)/i);
-        const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i);
-        if (menuMatch) {
-            // console.log('match', menuMatch)
-            // Mengambil informasi menu
-            let [, tag, t1, t2, sid, flags] = menuMatch;
-            const type = tag == 'POPUP' ? 'popup' : (t1 == 'SEPARATOR' || (flags || '').indexOf('MFT_SEPARATOR') >= 0) ? 'separator' : 'menuitem';
-            const id = parseInt(sid)
-
-
-            if(!found) {
-                if(type=='popup' && t2 == popupId)   {
-                    found = true;
-                } else {
-                    continue;    // skip
-                }
-            }
-
-            flags = flags || ''
-            // Membuat objek menu baru
-            // @ts-ignore
-            const menu: MenuItem = {
-                type,
-            };
-            // container.push(menu); // attach to prent
-            switch (menu.type) {
-                case 'popup':
-                    const newPopup = new PopupMenu(uiRoot);
-                    if(popup){  // if it is a sub-popup, attach to parent
-                        popup.addsubmenu(newPopup, t2)
-                    } else {
-                        root = newPopup
-                    }
-                    popup = newPopup;
-                    popupStack.push(popup);
-                    menu.popup = popup;
-                    menu.caption = t2;
-                    // menu.children = [];
-                    // container = menu.children;
-                    if (flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-                    // levelStack.push(container)
-                    break;
-                case 'menuitem':
-                    menu.caption = t2;
-                    menu.id = id;
-                    // if(flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-                    menu.disabled = flags.indexOf('GRAYED') >= 0;
-                    popup.addcommand(t2, id, false, menu.disabled)
-                    break;
-                case 'separator':
-                    popup.addseparator()
-                    break;
-            }
-            // const id = type=='popup'? 65535: type == 'separator' ? 0 : parseInt(sid);
-
-            // console.log('m', newMenu, '>>', flags)
-            // @ts-ignore
-            // menu.flags = flags;
-
-            // console.log('m', menu)
-
-        } else if (['}', 'END'].includes(line.trim())) {
-            // Menutup menu saat ini
-            // levelStack.pop();
-            // container = levelStack[levelStack.length - 1];
-            if(found) { 
-              if(popup == root)
-                    break;
-
-                popupStack.pop();
-                popup = popupStack[popupStack.length - 1];
-            }
-        }
+    // Mengabaikan baris yang tidak penting
+    if (!line || line.startsWith("//")) {
+      continue;
     }
 
-    return root;
+    // Mengambil level pada baris saat ini
+    // const level = line.search(/\S/);
+
+    // Mengecek apakah baris merupakan menu
+    // const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+"([^"]+)"(?:\s*,\s*(\d+))?,\s*(\d+),\s*(\d+)/i);
+    const menuMatch = line.match(
+      /\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i
+    );
+    if (menuMatch) {
+      // console.log('match', menuMatch)
+      // Mengambil informasi menu
+      let [, tag, t1, t2, sid, flags] = menuMatch;
+      const type =
+        tag == "POPUP"
+          ? "popup"
+          : t1 == "SEPARATOR" || (flags || "").indexOf("MFT_SEPARATOR") >= 0
+          ? "separator"
+          : "menuitem";
+      const id = parseInt(sid);
+
+      if (!found) {
+        if (type == "popup" && t2 == popupId) {
+          found = true;
+        } else {
+          continue; // skip
+        }
+      }
+
+      flags = flags || "";
+      // Membuat objek menu baru
+      // @ts-ignore
+      const menu: MenuItem = {
+        type,
+      };
+      // container.push(menu); // attach to prent
+      switch (menu.type) {
+        case "popup":
+          const newPopup = new PopupMenu(uiRoot);
+          if (popup) {
+            // if it is a sub-popup, attach to parent
+            popup.addsubmenu(newPopup, t2);
+          } else {
+            root = newPopup;
+          }
+          popup = newPopup;
+          popupStack.push(popup);
+          menu.popup = popup;
+          menu.caption = t2;
+          // menu.children = [];
+          // container = menu.children;
+          if (flags.indexOf("GRAYED") >= 0) menu.disabled = true;
+          // levelStack.push(container)
+          break;
+        case "menuitem":
+          menu.caption = t2;
+          menu.id = id;
+          // if(flags.indexOf('GRAYED') >= 0) menu.disabled = true;
+          menu.disabled = flags.indexOf("GRAYED") >= 0;
+          popup.addcommand(t2, id, false, menu.disabled);
+          break;
+        case "separator":
+          popup.addseparator();
+          break;
+      }
+      // const id = type=='popup'? 65535: type == 'separator' ? 0 : parseInt(sid);
+
+      // console.log('m', newMenu, '>>', flags)
+      // @ts-ignore
+      // menu.flags = flags;
+
+      // console.log('m', menu)
+    } else if (["}", "END"].includes(line.trim())) {
+      // Menutup menu saat ini
+      // levelStack.pop();
+      // container = levelStack[levelStack.length - 1];
+      if (found) {
+        if (popup == root) break;
+
+        popupStack.pop();
+        popup = popupStack[popupStack.length - 1];
+      }
+    }
+  }
+
+  return root;
 }
 
-function getPopupMenu(popupId: string, res:string, uiRoot: UIRoot): PopupMenu {
-    let root: PopupMenu;
-    // let container = root;
-    // let levelStack = [root];
-    let popup: PopupMenu = null;
-    let popupStack: PopupMenu[] = [];
-    let found = false;
-    // let currentItem = null
+function getPopupMenu(popupId: string, res: string, uiRoot: UIRoot): PopupMenu {
+  let root: PopupMenu;
+  // let container = root;
+  // let levelStack = [root];
+  let popup: PopupMenu = null;
+  let popupStack: PopupMenu[] = [];
+  let found = false;
+  // let currentItem = null
 
-    // Looping setiap baris pada string menu
-    for (let line of res.split('\n')) {
-        line = line.trim()
+  // Looping setiap baris pada string menu
+  for (let line of res.split("\n")) {
+    line = line.trim();
 
-        if(!found && !line.startsWith('POPUP'))     // skip until found popup
-            continue;
+    if (!found && !line.startsWith("POPUP"))
+      // skip until found popup
+      continue;
 
-        // Mengabaikan baris yang tidak penting
-        if (!line || line.startsWith('//')) {
-            continue;
-        }
-
-        // Mengambil level pada baris saat ini
-        // const level = line.search(/\S/);
-
-        // Mengecek apakah baris merupakan menu
-        // const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+"([^"]+)"(?:\s*,\s*(\d+))?,\s*(\d+),\s*(\d+)/i);
-        const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i);
-        if (menuMatch) {
-            // console.log('match', menuMatch)
-            // Mengambil informasi menu
-            let [, tag, t1, t2, sid, flags] = menuMatch;
-            const type = tag == 'POPUP' ? 'popup' : (t1 == 'SEPARATOR' || (flags || '').indexOf('MFT_SEPARATOR') >= 0) ? 'separator' : 'menuitem';
-            const id = parseInt(sid)
-
-
-            if(!found) {
-                if(type=='popup' && t2 == popupId)   {
-                    found = true;
-                } else {
-                    continue;    // skip
-                }
-            }
-
-            flags = flags || ''
-            // Membuat objek menu baru
-            // @ts-ignore
-            const menu: MenuItem = {
-                type,
-            };
-            // container.push(menu); // attach to prent
-            switch (menu.type) {
-                case 'popup':
-                    const newPopup = new PopupMenu(uiRoot);
-                    if(popup){  // if it is a sub-popup, attach to parent
-                        popup.addsubmenu(newPopup, t2)
-                    } else {
-                        root = newPopup
-                    }
-                    popup = newPopup;
-                    popupStack.push(popup);
-                    menu.popup = popup;
-                    menu.caption = t2;
-                    // menu.children = [];
-                    // container = menu.children;
-                    if (flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-                    // levelStack.push(container)
-                    break;
-                case 'menuitem':
-                    menu.caption = t2;
-                    menu.id = id;
-                    // if(flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-                    menu.disabled = flags.indexOf('GRAYED') != -1;
-                    popup.addcommand(t2, id, false, menu.disabled)
-                    if(flags.indexOf('HIDDEN') != -1){
-                      popup.hideMenu(id)
-                    }
-                    break;
-                case 'separator':
-                    popup.addseparator()
-                    break;
-            }
-            // const id = type=='popup'? 65535: type == 'separator' ? 0 : parseInt(sid);
-
-            // console.log('m', newMenu, '>>', flags)
-            // @ts-ignore
-            // menu.flags = flags;
-
-            // console.log('m', menu)
-
-        } else if (['}', 'END'].includes(line.trim())) {
-            // Menutup menu saat ini
-            // levelStack.pop();
-            // container = levelStack[levelStack.length - 1];
-            if(found) { 
-                if(popup == root)
-                    break;
-
-                popupStack.pop();
-                popup = popupStack[popupStack.length - 1];
-            }
-        }
+    // Mengabaikan baris yang tidak penting
+    if (!line || line.startsWith("//")) {
+      continue;
     }
 
-    return root;
+    // Mengambil level pada baris saat ini
+    // const level = line.search(/\S/);
+
+    // Mengecek apakah baris merupakan menu
+    // const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+"([^"]+)"(?:\s*,\s*(\d+))?,\s*(\d+),\s*(\d+)/i);
+    const menuMatch = line.match(
+      /\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i
+    );
+    if (menuMatch) {
+      // console.log('match', menuMatch)
+      // Mengambil informasi menu
+      let [, tag, t1, t2, sid, flags] = menuMatch;
+      const type =
+        tag == "POPUP"
+          ? "popup"
+          : t1 == "SEPARATOR" || (flags || "").indexOf("MFT_SEPARATOR") >= 0
+          ? "separator"
+          : "menuitem";
+      const id = parseInt(sid);
+
+      if (!found) {
+        if (type == "popup" && t2 == popupId) {
+          found = true;
+        } else {
+          continue; // skip
+        }
+      }
+
+      flags = flags || "";
+      // Membuat objek menu baru
+      // @ts-ignore
+      const menu: MenuItem = {
+        type,
+      };
+      // container.push(menu); // attach to prent
+      switch (menu.type) {
+        case "popup":
+          const newPopup = new PopupMenu(uiRoot);
+          if (popup) {
+            // if it is a sub-popup, attach to parent
+            popup.addsubmenu(newPopup, t2);
+          } else {
+            root = newPopup;
+          }
+          popup = newPopup;
+          popupStack.push(popup);
+          menu.popup = popup;
+          menu.caption = t2;
+          // menu.children = [];
+          // container = menu.children;
+          if (flags.indexOf("GRAYED") >= 0) menu.disabled = true;
+          // levelStack.push(container)
+          break;
+        case "menuitem":
+          menu.caption = t2;
+          menu.id = id;
+          // if(flags.indexOf('GRAYED') >= 0) menu.disabled = true;
+          menu.disabled = flags.indexOf("GRAYED") != -1;
+          popup.addcommand(t2, id, false, menu.disabled);
+          if (flags.indexOf("HIDDEN") != -1) {
+            popup.hideMenu(id);
+          }
+          break;
+        case "separator":
+          popup.addseparator();
+          break;
+      }
+      // const id = type=='popup'? 65535: type == 'separator' ? 0 : parseInt(sid);
+
+      // console.log('m', newMenu, '>>', flags)
+      // @ts-ignore
+      // menu.flags = flags;
+
+      // console.log('m', menu)
+    } else if (["}", "END"].includes(line.trim())) {
+      // Menutup menu saat ini
+      // levelStack.pop();
+      // container = levelStack[levelStack.length - 1];
+      if (found) {
+        if (popup == root) break;
+
+        popupStack.pop();
+        popup = popupStack[popupStack.length - 1];
+      }
+    }
+  }
+
+  return root;
 }
 
 const wa5commonRes = `256 MENUEX
@@ -785,7 +801,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
       MENUITEM "Dock/Undock Windows by Dragging",  42237
     }
   }
-}`
+}`;
 
 const ffCustomScaleDialog = `1286 DIALOGEX 0, 0, 165, 70
 STYLE DS_SYSMODAL | DS_SHELLFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -801,4 +817,4 @@ FONT 8, "MS Shell Dlg"
    CONTROL "OK", 1, BUTTON, BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 54, 50, 50, 13 
    CONTROL "Cancel", 2, BUTTON, BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 108, 50, 50, 13 
 }
-`
+`;

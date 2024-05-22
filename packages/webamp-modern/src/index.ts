@@ -109,14 +109,22 @@ async function initializeSkinListMenu() {
     // MODERN
     { filename: "[Winamp] default", download_url: "" },
     { filename: "[Winamp] MMD3", download_url: "assets/skins/MMD3.wal" },
-    { filename: "[Winamp] MMD3+Thinger", download_url: "assets/skins/MMD3+Thinger/" },
+    {
+      filename: "[Winamp] MMD3+Thinger",
+      download_url: "assets/skins/MMD3+Thinger/",
+    },
     // { filename: "[Folder] MMD3", download_url: "assets/skins/extracted/MMD3/" },
     { filename: "[Winamp] BigBento", download_url: "assets/skins/BigBento/" },
-    { filename: "CornerAmp_Redux", download_url: "assets/skins/CornerAmp_Redux.wal" },
+    {
+      filename: "CornerAmp_Redux",
+      download_url: "assets/skins/CornerAmp_Redux.wal",
+    },
 
-    
     // CLASSIC
-    { filename: "[Winamp Classic]", download_url: "assets/skins/base-2.91.wsz" },
+    {
+      filename: "[Winamp Classic]",
+      download_url: "assets/skins/base-2.91.wsz",
+    },
     {
       filename: "[Winamp Classic] MacOSXAqua1-5",
       download_url: "assets/skins/MacOSXAqua1-5.698dd4ab.wsz",
@@ -131,7 +139,10 @@ async function initializeSkinListMenu() {
       filename: "[wmp] Quicksilver WindowsMediaPlayer!",
       download_url: "assets/skins/Quicksilver.wmz",
     },
-    { filename: "[wmp] Windows XP", download_url: "assets/skins/Windows-XP.wmz" },
+    {
+      filename: "[wmp] Windows XP",
+      download_url: "assets/skins/Windows-XP.wmz",
+    },
     {
       filename: "[wmp] Famous Headspace",
       download_url: "assets/skins/Headspace.wmz",
@@ -156,7 +167,10 @@ async function initializeSkinListMenu() {
     },
 
     // K-JOFOL
-    { filename: "[K-Jofol] Default", download_url: "assets/skins/Default.kjofol" },
+    {
+      filename: "[K-Jofol] Default",
+      download_url: "assets/skins/Default.kjofol",
+    },
     {
       filename: "[K-Jofol] Illusion 1.0",
       download_url: "assets/skins/Illusion1-0.kjofol",
@@ -165,7 +179,10 @@ async function initializeSkinListMenu() {
       filename: "[K-Jofol] K-Nine 05r",
       download_url: "assets/skins/K-Nine05r.kjofol",
     },
-    { filename: "[K-Jofol] Limus 2.0", download_url: "assets/skins/Limus2-0.zip" },
+    {
+      filename: "[K-Jofol] Limus 2.0",
+      download_url: "assets/skins/Limus2-0.zip",
+    },
 
     // SONIQUE
     { filename: "[Sonique] Default", download_url: "assets/skins/sonique.sgf" },
@@ -177,17 +194,26 @@ async function initializeSkinListMenu() {
       filename: "[Sonique] Panthom (SkinBuilder)",
       download_url: "assets/skins/phantom.sgf",
     },
-    { filename: "[Sonique] ChainZ and", download_url: "assets/skins/ChainZ-and.sgf" },
+    {
+      filename: "[Sonique] ChainZ and",
+      download_url: "assets/skins/ChainZ-and.sgf",
+    },
 
     // COWON JET-AUDIO
     {
       filename: "[JetAudio] Small Bar",
       download_url: "assets/skins/DefaultBar_s.jsk",
     },
-    { filename: "[Cowon JetAudio] Gold", download_url: "assets/skins/Gold.uib" },
+    {
+      filename: "[Cowon JetAudio] Gold",
+      download_url: "assets/skins/Gold.uib",
+    },
 
     // AIMP
-    { filename: "[AIMP] Flo-4K", download_url: "assets/skins/AIMP-Flo-4K.acs5" },
+    {
+      filename: "[AIMP] Flo-4K",
+      download_url: "assets/skins/AIMP-Flo-4K.acs5",
+    },
   ];
 
   const skins = [...internalSkins, ...bankskin1];

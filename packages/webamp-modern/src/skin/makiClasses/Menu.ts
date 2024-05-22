@@ -6,10 +6,15 @@ import Group from "./Group";
 import Layer from "./Layer";
 import { getWa5Popup } from "./menuWa5";
 import PopupMenu from "./PopupMenu";
-import { ICLoseablePopup, destroyActivePopup, generatePopupDiv, setActivePopup } from "./MenuItem";
+import {
+  ICLoseablePopup,
+  destroyActivePopup,
+  generatePopupDiv,
+  setActivePopup,
+} from "./MenuItem";
 import { findAction, updateActions } from "./menuWa5actions";
 
-let ACTIVE_MENU_GROUP: string = ''
+let ACTIVE_MENU_GROUP: string = "";
 // let ACTIVE_MENU: Menu = null;
 
 /*function destroyActivePopup() {
@@ -148,21 +153,20 @@ export default class Menu extends Group implements ICLoseablePopup {
     //? toggle dropdown visibility
     if (ACTIVE_MENU_GROUP != this._menuGroupId) {
       ACTIVE_MENU_GROUP = this._menuGroupId;
-      destroyActivePopup()
+      destroyActivePopup();
       // setTimeout(() => {
       //   installGlobalMouseDown(globalWindowClick);
       // }, 500);
       // installGlobalClickListener()
-      setActivePopup(this)
-
+      setActivePopup(this);
     } else {
       ACTIVE_MENU_GROUP = null;
       // if (ACTIVE_MENU != null) {
       //   ACTIVE_MENU.doCloseMenu()
       // }
-      destroyActivePopup()
+      destroyActivePopup();
     }
-    this.onEnterArea()
+    this.onEnterArea();
   }
   onEnterArea() {
     // super.onEnterArea();
@@ -170,12 +174,12 @@ export default class Menu extends Group implements ICLoseablePopup {
       // if (ACTIVE_MENU != null) {
       //   ACTIVE_MENU.doCloseMenu()
       // }
-      destroyActivePopup()
+      destroyActivePopup();
       this._showButton(this._elDown);
       this._div.classList.add("open");
 
       // ACTIVE_MENU = this;
-      setActivePopup(this)
+      setActivePopup(this);
     } else {
       this._showButton(this._elHover);
     }
@@ -188,12 +192,11 @@ export default class Menu extends Group implements ICLoseablePopup {
     }
   }
 
-
   setup() {
     super.setup();
     // this.resolveButtonsAction();
     // this._uiRoot.vm.dispatch(this, "onstartup", []);
-    this.getparentlayout().registerShortcuts(this._popup)
+    this.getparentlayout().registerShortcuts(this._popup);
   }
   resolveButtonsAction() {
     //console.log('found img')
@@ -233,12 +236,11 @@ export default class Menu extends Group implements ICLoseablePopup {
     //   this._div.classList.remove("vertical");
     // }
 
-
-    if (this._menuId.startsWith('WA5:')) {
-      const [, popupId] = this._menuId.split(':')
+    if (this._menuId.startsWith("WA5:")) {
+      const [, popupId] = this._menuId.split(":");
       this._popup = getWa5Popup(popupId, this._uiRoot);
-      
-      this.invalidatePopup()
+
+      this.invalidatePopup();
       // function menuClick(id:number){
       //   console.log('menu clicked:', id)
       // }
@@ -251,21 +253,20 @@ export default class Menu extends Group implements ICLoseablePopup {
   invalidatePopup() {
     const self = this;
     if (this._popup) {
-
       // destroy old DOM
-      if(this._popupDiv){
-        this._popupDiv.remove()
+      if (this._popupDiv) {
+        this._popupDiv.remove();
       }
 
       updateActions(this._popup, this._uiRoot); // let winamp5 menus reflect the real config/condition
 
       const menuItemClick = (id: number) => {
-        console.log('menu clicked:', id);
+        console.log("menu clicked:", id);
         const action = findAction(id);
         const invalidateRequired = action.onExecute(self._uiRoot);
-        if(invalidateRequired) self.invalidatePopup();  
-      }
-      
+        if (invalidateRequired) self.invalidatePopup();
+      };
+
       this._popupDiv = generatePopupDiv(this._popup, menuItemClick);
       // } else {
       // this._popupDiv = document.createElement("div");
