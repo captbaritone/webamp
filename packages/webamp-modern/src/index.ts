@@ -75,22 +75,22 @@ async function initializeSkinListMenu() {
   `;
 
   let bankskin1 = [];
-  // try {
-  //   const response = await fetch("https://api.webampskins.org/graphql", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json",
-  //     },
-  //     mode: "cors",
-  //     credentials: "include",
-  //     body: JSON.stringify({ query, variables: {} }),
-  //   });
-  //   const data = await response.json();
-  //   bankskin1 = data.data.modern_skins.nodes;
-  // } catch (e) {
-  //   console.warn('faile to load skins from api.webampskins.org')
-  // }
+  try {
+    const response = await fetch("https://api.webampskins.org/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      mode: "cors",
+      credentials: "include",
+      body: JSON.stringify({ query, variables: {} }),
+    });
+    const data = await response.json();
+    bankskin1 = data.data.modern_skins.nodes;
+  } catch (e) {
+    console.warn('faile to load skins from api.webampskins.org')
+  }
 
   const select = document.createElement("select");
   select.style.position = "absolute";
