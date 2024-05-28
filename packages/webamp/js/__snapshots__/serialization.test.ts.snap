@@ -95,6 +95,19 @@ exports[`can serialize the initial state 1`] = `
           0,
         ],
       },
+      "milkdrop": {
+        "hidden": false,
+        "open": false,
+        "position": {
+          "x": 0,
+          "y": 0,
+        },
+        "shade": false,
+        "size": [
+          0,
+          0,
+        ],
+      },
       "playlist": {
         "hidden": false,
         "open": true,
