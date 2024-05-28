@@ -222,13 +222,28 @@ There are a few things which make me suspect this is not quite right:
 | 0x68   | ???             |           |          |        | Unknown. Seen in `volume_06c50f380955d272ad14002ad6b6eb5b_bc79897771fd3dfa3d0b2de19fcf8af6.maki`                                                        |
 | 0x70   | strange call    | method    | args + 1 | 1      | Pops the args off the stack, and then the object. Calls the method on that object with those args. (Does not expect stack protection)                   |
 
+## Execution Model
+
+Execution of a Maki program is relatively simple. The virtual machine (VM) maintains a program counter (PC), a value stack and a call stack. The PC points to the next instruction to be executed. The value stack is used to store intermediate values during execution. The call stack is used to store the program counter when calling a function.
+
+During the execution of a code block, values are pushed onto and popped off of the stack. As each instruction is executed, the PC is advanced to consume the instruction and its immediates. Maki value are wrapped in an object which tracks the value's type: int, bool, float, double, string, or object. Values on the stack are wrapped in another object which encodes the offset of the variable in the variables table which contains this value (if any), and an ID of the script which created the value.
+
+The callstack is pushed onto when a function is called, and popped off when the function returns. Each stack entry contains a PC and script ID. The `return` opcode pops the top value off the call stack and jumps to that location in that script.
+
 ## Stack Protection
 
-_Disclaimer: I'm not sure I fully understand this yet._
+After the `call` (`0x18`) opcode, there may be a `u32` value for stack protection. If present, the high 16 bits are all ones, and the lower 16 bits specify the number of arguments consumed by the function. If omitted, the method definition is used to determine the number of arguments.
 
-The Maki compiler and VM implement stack protection. This is implemented in the handling of the `call` (`0x18`) opcode but not the `local call` (0x70) opcode. The `call` opcode updates the program counter based on its immediate, however, before returning, it first checks if the value at the new program counter has all 1s in its high bits. If it does, it skips the program counter forward by 4 bytes.
+- Added in [Winamp 5.02](https://help.winamp.com/hc/en-us/articles/8109376746260-Version-History#Winamp_5.02)
+- Improved in [Winamp 5.03](https://help.winamp.com/hc/en-us/articles/8109376746260-Version-History#Winamp_5.03)
 
-I'm not clear what value this provides, but the disassembler I found implied this is to do with "stack protection". I've written up my confusion about this as a [Stack Overflow question](https://stackoverflow.com/questions/76549061/reversing-a-stack-based-interpreter-does-this-code-look-like-stack-protection).
+From `std.mi` above the definition of `Int versionCheck();`:
+
+> This function is called by System.onScriptLoaded() as the first thing it does. Subsequent events check \_\_deprecated_runtime before continuing. If you have no System.onScriptLoaded(), you will have no version check.
+>
+> This is to ensure that runtimes that do not have stack protection (that is wa3, wa5 and wa5.01) do not crash when trying to unexisting functions (with parameters, since parameterless functions would not crash), that is, functions that are meant for a higher version number than that of the runtime the script is running on.
+
+It looks as if at some later date the instruction `strange call` (`0x70`) was added to Maki to replace the `call` (`0x18`) instruction. This new instruction is always followed by a single byte indicting the number of arguments.
 
 ## Compiler Flags
 
@@ -343,6 +358,13 @@ While we understand the structure of `.maki` files well enough to write a VM for
   - [ ] Validate what "delete" does
   - [ ] Is it possible to actually get the compiler to emit a ~ bitwise compliment instruction?
   - [ ] Add tests for left and right shift and document
+
+- [ ] **Suspicions to confirm**
+
+  - [ ] The stack protection value is the number of arguments taken by the function being called
+    - [ ] Conditionally checked based on the result of the bitmask
+    - [ ] Eventually removed all-together
+    - [ ] Bitmask determines if it is checked at all
 
 - [ ] Document startup code. The compiler injects some startup code that tests the VM version number and does some other stuff. Would be good to document what we know about that code.
 - [ ] Could we look at the compiler in Ghidra and see what the cli flags are?
