@@ -185,6 +185,7 @@ async function getSitemapUrls() {
 const allowList = [
   /https:\/\/skins\.webamp\.org/,
   /https:\/\/api\.webamp\.org/,
+  /https:\/\/webamp\.org/,
   /https:\/\/[^.]*\.csb\.app/,
   /https:\/\/winamp-skin-museum\.pages\.dev/,
   /http:\/\/localhost:3000/,
