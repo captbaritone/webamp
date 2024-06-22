@@ -1,4 +1,5 @@
-import { WebampLazy, loadPresets } from "./Webamp";
+import type WebampLazy from "../../js/webampLazy";
+import { loadPresets } from "../../js/actionCreators/milkdrop";
 import { useCallback } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";

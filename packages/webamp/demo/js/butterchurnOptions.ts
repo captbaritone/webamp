@@ -1,4 +1,4 @@
-import { ButterchurnOptions } from "./Webamp";
+import { ButterchurnOptions } from "../../js/types";
 
 const KNOWN_PRESET_URLS_REGEXES = [
   /^https:\/\/unpkg\.com\/butterchurn-presets\/.*\.json$/,

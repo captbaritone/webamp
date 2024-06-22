@@ -25,7 +25,7 @@ import { useTypedSelector, useActionCreator } from "../hooks";
 import Css from "./Css";
 
 // @ts-ignore
-import cssText from "../../css/webamp.css";
+import cssText from "../../css/webamp.css?inline";
 
 interface Props {
   filePickers: FilePicker[];

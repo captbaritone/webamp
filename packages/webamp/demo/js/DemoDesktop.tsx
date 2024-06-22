@@ -1,4 +1,4 @@
-import { WebampLazy } from "./Webamp";
+import WebampLazy from "../../js/webampLazy";
 import { Suspense } from "react";
 import WebampIcon from "./WebampIcon";
 // import Mp3Icon from "./Mp3Icon";
