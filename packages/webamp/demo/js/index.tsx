@@ -5,14 +5,14 @@ import isButterchurnSupported from "butterchurn/dist/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
+import WebampLazy from "../../js/webampLazy";
 import {
-  WebampLazy,
   DISABLE_MARQUEE,
+  SET_DUMMY_VIZ_DATA,
+  SET_EQ_AUTO,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  SET_EQ_AUTO,
-  SET_DUMMY_VIZ_DATA,
-} from "./Webamp";
+} from "../../js/actionTypes";
 
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
