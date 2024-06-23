@@ -41,10 +41,12 @@ export function getPlugins({ minify, outputFile, vite }) {
     // causes it to try to parse the js version as JSON.
     vite ? null : json(),
     // https://www.npmjs.com/package/rollup-plugin-import-css
-    postcss({
-      inject: false,
-      plugins: [atImport, postcssOptimizeDataUriPngs],
-    }),
+    vite
+      ? null
+      : postcss({
+          inject: false,
+          plugins: [atImport, postcssOptimizeDataUriPngs],
+        }),
     // Without this we get: Error: 'default' is not exported by node_modules/react/index.js
     // because react-redux import react as if it were an es6 module, but it is not.
     commonjs(),
@@ -52,7 +54,7 @@ export function getPlugins({ minify, outputFile, vite }) {
     babel({ babelHelpers: "bundled" }),
     minify ? terser() : null,
     // Generate a report so we can see how our bundle size is spent
-    visualizer({ filename: `./${outputFile}.html` }),
+    vite ? null : visualizer({ filename: `./${outputFile}.html` }),
   ].filter(Boolean);
 
   return plugins;
