@@ -15,7 +15,7 @@ import {
 } from "../actionTypes";
 
 import { MEDIA_STATUS } from "../constants";
-import { openMediaFileDialog } from "./";
+import { openMediaFileDialog } from "./files";
 import { GetState, Dispatch, Thunk, Action } from "../types";
 import * as Selectors from "../selectors";
 

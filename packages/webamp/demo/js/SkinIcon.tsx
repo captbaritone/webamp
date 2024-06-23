@@ -1,4 +1,4 @@
-import { WebampLazy } from "./Webamp";
+import WebampLazy from "../../js/webampLazy";
 // @ts-ignore
 import iconSmall from "../images/icons/paint-file-32x32.png";
 import DesktopIcon from "./DesktopIcon";

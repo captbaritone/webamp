@@ -6,20 +6,16 @@ import isButterchurnSupported from "butterchurn/dist/isSupported.min";
 import { loggerMiddleware } from "./eventLogger";
 import * as SoundCloud from "./SoundCloud";
 
+import { Action, Options, AppState, WindowLayout } from "../../js/types";
+
 import {
-  Action,
-  Options,
-  PrivateOptions,
-  WINDOWS,
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,
   SET_BALANCE,
   SET_BAND_VALUE,
-  AppState,
-  WindowLayout,
-} from "./Webamp";
+} from "../../js/actionTypes";
 
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
@@ -27,7 +23,7 @@ import availableSkins from "./availableSkins";
 
 import { initialTracks, initialState } from "./config";
 import screenshotInitialState from "./screenshotInitialState";
-import { InjectableDependencies } from "../../js/webampLazy.jsx";
+import { InjectableDependencies, PrivateOptions } from "../../js/webampLazy";
 
 const NOISY_ACTION_TYPES = new Set([
   STEP_MARQUEE,
