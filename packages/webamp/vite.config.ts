@@ -3,7 +3,7 @@ import { getPlugins } from "./scripts/rollupPlugins.mjs";
 
 export default defineConfig({
   build: {
-    outDir: "../dist",
+    outDir: "../dist/demo-site",
   },
   root: "demo",
   // Used only by the demo site, not the library

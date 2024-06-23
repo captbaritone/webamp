@@ -31,7 +31,7 @@ export function getPlugins({ minify, outputFile, vite }) {
       compilerOptions: {
         jsx: "react-jsx",
         module: "esnext",
-        declarationDir: vite ? "dist/declarations" : undefined,
+        declarationDir: vite ? "dist/demo-site/declarations" : undefined,
         // Without this it complains that files will be overwritten, but I don't
         // think this ever gets used...
         outDir: vite ? undefined : "./tsBuilt",
