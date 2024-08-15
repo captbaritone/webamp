@@ -5,7 +5,7 @@ module.exports = {
   globals: {
     SENTRY_DSN: null,
   },
-  moduleFileExtensions: ["js", "tsx", "ts"],
+  moduleFileExtensions: ["js", "tsx", "ts", "json"],
   moduleNameMapper: {
     "\\.css$": "<rootDir>/js/__mocks__/styleMock.js",
     "\\.wsz$": "<rootDir>/js/__mocks__/fileMock.js",

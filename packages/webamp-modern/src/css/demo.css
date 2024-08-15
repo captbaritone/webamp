@@ -1,7 +1,7 @@
 body {
   margin: 0;
   background-color: rgb(58, 110, 165);
-  background-image: url(img/wallpaper.png);
+  /* background-image: url(img/wallpaper.png); */
   font-family: Arial, Helvetica, sans-serif;
 }
 #experimental {

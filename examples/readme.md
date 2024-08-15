@@ -3,6 +3,9 @@
 This directory contains a number of examples of how to add Webamp to a project.
 
 - [Minimal](./minimal) Stick Webamp in a `<script>` tag, and add a few lines of JavaScript to get Webamp on your page.
+- [Multiple Tracks](./multipleTracks) An example of setting up Webamp with multiple audio tracks.
+- [Multiple Skins](./multipleSkins) An example of setting up Webamp with multiple skins.
+- [Minimal Window Layout](./minimalWindowLayout) An example of configuring the initial layout of windows in Webamp.
 - [Webpack](./webpack) Install Webamp via NPM and bundle it in a Webpack bundle.
 - [Webpack Lazyload](./webpackLazyLoad) **In progress**
 - [Minimal Milkdrop](./minimalMilkdrop) **In progress**

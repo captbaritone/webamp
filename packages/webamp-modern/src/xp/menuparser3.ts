@@ -53,11 +53,10 @@ BEGIN
     BEGIN
         MENUITEM "&About ...",                  IDM_ABOUT,MFT_STRING,MFS_ENABLED
     END
-END`
+END`;
 
-
-// Untuk mengkonversi menu tersebut ke dalam format JSON, 
-// Anda dapat melakukan parsing manual dengan melakukan split string dan looping. 
+// Untuk mengkonversi menu tersebut ke dalam format JSON,
+// Anda dapat melakukan parsing manual dengan melakukan split string dan looping.
 // Berikut ini adalah contoh implementasi menggunakan JavaScript:
 
 // Membuat fungsi untuk parsing string menu ke dalam format JSON
@@ -68,9 +67,9 @@ function parseMenuToJson(menuContent) {
   // let currentItem = null
 
   // Looping setiap baris pada string menu
-  for (let line of menuContent.split('\n')) {
+  for (let line of menuContent.split("\n")) {
     // Mengabaikan baris yang tidak penting
-    if (!line || line.trim().startsWith('//')) {
+    if (!line || line.trim().startsWith("//")) {
       continue;
     }
 
@@ -79,14 +78,21 @@ function parseMenuToJson(menuContent) {
 
     // Mengecek apakah baris merupakan menu
     // const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+"([^"]+)"(?:\s*,\s*(\d+))?,\s*(\d+),\s*(\d+)/i);
-    const menuMatch = line.match(/\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i);
+    const menuMatch = line.match(
+      /\s*(POPUP|MENUITEM)\s+(SEPARATOR|"([^"]*)")(?:\s*,\s*(\w+)[\s,]*(.*))?/i
+    );
     if (menuMatch) {
       // console.log('match', menuMatch)
       // Mengambil informasi menu
       let [, tag, t1, t2, id, flags] = menuMatch;
-      const type = tag == 'POPUP' ? 'popup' : (t1 == 'SEPARATOR' || (flags || '').indexOf('MFT_SEPARATOR') >= 0) ? 'separator' : 'menuitem';
+      const type =
+        tag == "POPUP"
+          ? "popup"
+          : t1 == "SEPARATOR" || (flags || "").indexOf("MFT_SEPARATOR") >= 0
+          ? "separator"
+          : "menuitem";
 
-      flags = flags || ''
+      flags = flags || "";
       // Membuat objek menu baru
       // @ts-ignore
       const menu: MenuItem = {
@@ -104,18 +110,18 @@ function parseMenuToJson(menuContent) {
       };
       container.push(menu); // attach to prent
       switch (menu.type) {
-        case 'popup':
+        case "popup":
           menu.caption = t2;
           menu.children = [];
           container = menu.children;
-          if (flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-          levelStack.push(container)
+          if (flags.indexOf("GRAYED") >= 0) menu.disabled = true;
+          levelStack.push(container);
           break;
-        case 'menuitem':
+        case "menuitem":
           menu.caption = t2;
           menu.id = id;
           // if(flags.indexOf('GRAYED') >= 0) menu.disabled = true;
-          flags.indexOf('GRAYED') >= 0 && (menu.disabled = true)
+          flags.indexOf("GRAYED") >= 0 && (menu.disabled = true);
           break;
 
         default:
@@ -127,7 +133,7 @@ function parseMenuToJson(menuContent) {
       // @ts-ignore
       // menu.flags = flags;
 
-      console.log('m', menu)
+      console.log("m", menu);
 
       // Menambahkan objek menu baru ke dalam parent menu yang sesuai
       // if (level > levelStack[levelStack.length - 1]) {
@@ -142,7 +148,7 @@ function parseMenuToJson(menuContent) {
       //   currentItem.children.push(newMenu);
       //   currentItem = newMenu;
       // }
-    } else if (['}', 'END'].includes(line.trim())) {
+    } else if (["}", "END"].includes(line.trim())) {
       // Menutup menu saat ini
       levelStack.pop();
       container = levelStack[levelStack.length - 1];
@@ -152,8 +158,8 @@ function parseMenuToJson(menuContent) {
   return root;
 }
 
-var m = parseMenuToJson(menuContent)
-console.log(m)
+var m = parseMenuToJson(menuContent);
+console.log(m);
 
-var m = parseMenuToJson(another_sample)
-console.log(m)
+var m = parseMenuToJson(another_sample);
+console.log(m);

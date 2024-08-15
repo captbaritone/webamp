@@ -53,7 +53,7 @@ function PlaylistShade() {
         selected: focused === WINDOWS.PLAYLIST,
       })}
       style={{ width: `${WINDOW_WIDTH + addedWidth}px` }}
-      onMouseDown={() => focusWindow("playlist")}
+      onPointerDown={() => focusWindow("playlist")}
       onDoubleClick={toggleShade}
     >
       <div className="left">

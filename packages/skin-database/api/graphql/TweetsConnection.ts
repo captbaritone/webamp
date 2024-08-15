@@ -1,7 +1,7 @@
 import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
-import TweetResolver from "./resolvers/TweetResolver";
+import { Query } from "./resolvers/QueryResolver";
 
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";
@@ -13,8 +13,8 @@ export type TweetsSortOption = "LIKES" | "RETWEETS";
 export default class TweetsConnection {
   _first: number;
   _offset: number;
-  _sort?: TweetsSortOption;
-  constructor(first: number, offset: number, sort?: TweetsSortOption) {
+  _sort?: TweetsSortOption | null;
+  constructor(first: number, offset: number, sort?: TweetsSortOption | null) {
     this._first = first;
     this._offset = offset;
     this._sort = sort;
@@ -44,13 +44,29 @@ export default class TweetsConnection {
    * The list of tweets
    * @gqlField
    */
-  async nodes(args: never, ctx): Promise<Array<TweetResolver | null>> {
-    const tweets = await this._getQuery()
-      .select()
-      .limit(this._first)
-      .offset(this._offset);
-    return tweets.map((tweet) => {
-      return new TweetResolver(new TweetModel(ctx, tweet));
-    });
+  async nodes(): Promise<Array<TweetModel | null>> {
+    return this._getQuery().select().limit(this._first).offset(this._offset);
   }
+}
+
+/**
+ * Tweets tweeted by @winampskins
+ * @gqlField
+ */
+export async function tweets(
+  _: Query,
+  {
+    first = 10,
+    offset = 0,
+    sort,
+  }: {
+    first?: Int;
+    offset?: Int;
+    sort?: TweetsSortOption | null;
+  }
+): Promise<TweetsConnection> {
+  if (first > 1000) {
+    throw new Error("Maximum limit is 1000");
+  }
+  return new TweetsConnection(first, offset, sort);
 }

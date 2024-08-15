@@ -172,7 +172,6 @@ function putTemp(fileName, buffer) {
         ...acl,
       },
       (err) => {
-        console.log("Hello...");
         if (err) {
           rejectPromise(err);
           return;

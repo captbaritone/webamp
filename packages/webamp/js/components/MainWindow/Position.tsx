@@ -71,8 +71,8 @@ const Position = memo(() => {
       onChange={
         () => {} /* React complains without this, can probably rename onInput to onChange */
       }
-      onMouseUp={seekToPercentComplete}
-      onMouseDown={setPosition}
+      onPointerUp={seekToPercentComplete}
+      onPointerDown={setPosition}
       title="Seeking Bar"
     />
   );

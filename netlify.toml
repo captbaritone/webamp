@@ -1,39 +1,39 @@
 [build]
-  command = "yarn deploy"
-  publish = "packages/webamp/dist/demo-site/"
+command = "yarn deploy"
+publish = "packages/webamp/dist/demo-site/"
 
 # A short URL for listeners of https://changelog.com/podcast/291
 [[redirects]]
-  from = "/changelog"
-  to = "/#%7B\"initialTracks\"%3A%5B%7B\"url\"%3A\"https%3A%2F%2Fcdn.changelog.com%2Fuploads%2Fpodcast%2F291%2Fthe-changelog-291.mp3\"%2C\"metaData\"%3A%7B\"artist\"%3A\"Changelog%20Podcast\"%2C\"title\"%3A\"Winamp2-js\"%7D%7D%5D%7D"
+from = "/changelog"
+to = "/#%7B\"initialTracks\"%3A%5B%7B\"url\"%3A\"https%3A%2F%2Fcdn.changelog.com%2Fuploads%2Fpodcast%2F291%2Fthe-changelog-291.mp3\"%2C\"metaData\"%3A%7B\"artist\"%3A\"Changelog%20Podcast\"%2C\"title\"%3A\"Winamp2-js\"%7D%7D%5D%7D"
 
 # A short URL for LuigiHann's Poolside.fm skin
 [[redirects]]
-  from = "/poolside"
-  to = "/?bg=%2362639f&scPlaylist=1040356177&skinUrl=https://cdn.webampskins.org/skins/1b3138a9ea05e917049a4eab7b73d069.wsz"
+from = "/poolside"
+to = "/?bg=%2362639f&scPlaylist=1040356177&skinUrl=https://cdn.webampskins.org/skins/1b3138a9ea05e917049a4eab7b73d069.wsz"
 
 [[redirects]]
-  from = "/about"
-  to = "https://github.com/captbaritone/webamp"
+from = "/about"
+to = "https://github.com/captbaritone/webamp"
 
 [[redirects]]
-  from = "/wallpapers"
-  to = "https://www.dropbox.com/sh/3lx5ajfvsjeenj5/AADf8AihDeu1KgH1wr_WAsgXa?dl=0&lst="
+from = "/wallpapers"
+to = "https://www.dropbox.com/sh/3lx5ajfvsjeenj5/AADf8AihDeu1KgH1wr_WAsgXa?dl=0&lst="
 
 [[redirects]]
-  from = "/chat"
-  to = "https://discord.gg/fpBPmFkngQ"
+from = "/chat"
+to = "https://discord.gg/fpBPmFkngQ"
 
 [[redirects]]
-  from = "/bot"
-  to = "https://twitter.com/winampskins"
+from = "/bot"
+to = "https://twitter.com/winampskins"
 
 # Redirect domain aliases to primary domain
 [[redirects]]
-  from = "https://webamp.net/*"
-  to = "https://webamp.org/:splat"
-  status = 301
-  force = true
+from = "https://webamp.net/*"
+to = "https://webamp.org/:splat"
+status = 301
+force = true
 
 [build.environment]
-  NODE_VERSION = "16"
+NODE_VERSION = "20.9.0"

@@ -657,11 +657,17 @@ export interface Options {
    */
   availableSkins?: { url: string; name: string }[];
 
+  /**
+   * Configure how the Winamp windows should be laid out on initial render.
+   */
   windowLayout?: WindowLayout;
 
   /**
    * Controls if "double size mode", where the fixed sized windows are rendered
    * at 2x, should be enabled
+   *
+   *  **Note:** In keeping with the original Winamp, double size mode does not
+   *  apply to resizable windows like the equalizer or Milkdrop.
    *
    * Default: `false`
    */
@@ -755,6 +761,9 @@ export type WindowLayout = {
   };
 };
 
+/**
+ * Offset from the top left corner of an imaginary box.
+ */
 export type WindowPosition = { top: number; left: number };
 
 /**

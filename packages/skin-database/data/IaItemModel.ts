@@ -4,6 +4,10 @@ import SkinModel from "./SkinModel";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 import { fetchMetadata, fetchTasks } from "../services/internetArchive";
+import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
+import SkinResolver from "../api/graphql/resolvers/SkinResolver";
+import { Ctx } from "../api/graphql";
+import { Query } from "../api/graphql/resolvers/QueryResolver";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
@@ -11,6 +15,7 @@ export type IaItemDebugData = {
   row: IaItemRow;
 };
 
+/** @gqlType InternetArchiveItem */
 export default class IaItemModel {
   constructor(readonly ctx: UserContext, readonly row: IaItemRow) {}
 
@@ -53,22 +58,52 @@ export default class IaItemModel {
     return skin;
   }
 
+  /**
+   * The skin that this item contains
+   * @gqlField
+   */
+  async skin(): Promise<ISkin | null> {
+    const skin = await this.getSkin();
+    if (skin == null) {
+      return null;
+    }
+    return SkinResolver.fromModel(skin);
+  }
+
   getMd5(): string {
     return this.row.skin_md5;
   }
 
+  /**
+   * The URL where this item can be viewed on the Internet Archive
+   * @gqlField url
+   */
   getUrl(): string {
     return `https://archive.org/details/${this.getIdentifier()}`;
   }
 
+  /**
+   * URL to get the Internet Archive's metadata for this item in JSON form.
+   * @gqlField metadata_url
+   */
   getMetadataUrl(): string {
     return `https://archive.org/metadata/${this.getIdentifier()}`;
   }
 
+  /**
+   * The date and time that we last scraped this item's metadata.
+   * **Note:** This field is temporary and will be removed in the future.
+   * The date format is just what we get from the database, and it's ambiguous.
+   * @gqlField last_metadata_scrape_date_UNSTABLE
+   */
   getMetadataTimestamp(): string | null {
     return this.row.metadata_timestamp;
   }
 
+  /**
+   * The Internet Archive's unique identifier for this item
+   * @gqlField identifier
+   */
   getIdentifier(): string {
     const { identifier } = this.row;
     if (identifier == null) {
@@ -79,6 +114,10 @@ export default class IaItemModel {
     return identifier;
   }
 
+  /**
+   * Our cached version of the metadata available at \`metadata_url\` (above)
+   * @gqlField raw_metadata_json
+   */
   getMetadataJSON(): string | null {
     return this.row.metadata;
   }
@@ -174,6 +213,20 @@ export default class IaItemModel {
       row: this.row,
     };
   }
+}
+
+/**
+ * Get an archive.org item by its identifier. You can find this in the URL:
+ *
+ * https://archive.org/details/<identifier>/
+ * @gqlField
+ */
+export async function fetch_internet_archive_item_by_identifier(
+  _: Query,
+  { identifier }: { identifier: string },
+  { ctx }: Ctx
+): Promise<IaItemModel | null> {
+  return IaItemModel.fromIdentifier(ctx, identifier);
 }
 
 function isNotGeneratedFile(file) {

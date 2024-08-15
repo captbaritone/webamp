@@ -1,3 +1,4 @@
+import { Ctx } from "..";
 import { Rating, ReviewRow } from "../../../types";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
@@ -16,7 +17,7 @@ export default class ReviewResolver {
    * The skin that was reviewed
    * @gqlField
    */
-  skin(args: never, { ctx }): Promise<ISkin | null> {
+  skin(args: unknown, { ctx }: Ctx): Promise<ISkin | null> {
     return SkinResolver.fromMd5(ctx, this._model.skin_md5);
   }
 

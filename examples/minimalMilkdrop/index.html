@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="app" style="height: 100vh">
-        <!-- Webamp will attempt to center itself within this div -->
+      <!-- Webamp will attempt to center itself within this div -->
     </div>
     <script src="https://unpkg.com/webamp@1.5.0/built/webamp.bundle.min.js"></script>
     <script src="https://unpkg.com/butterchurn@2.6.7/lib/butterchurn.min.js"></script>
     <script src="https://unpkg.com/butterchurn-presets@2.4.7/lib/butterchurnPresets.min.js"></script>
     <script>
-        const Webamp = window.Webamp;
-        new Webamp({
-            initialTracks: [{
-                metaData: {
-                    artist: "DJ Mike Llama",
-                    title: "Llama Whippin' Intro"
-                },
-                // NOTE: Your audio file must be served from the same domain as your HTML
-                // file, or served with permissive CORS HTTP headers:
-                // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-                url: "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/mp3/llama-2.91.mp3",
-                duration: 5.322286
-            }],
-            __butterchurnOptions: {
-                importButterchurn: () => Promise.resolve(window.butterchurn),
-                getPresets: () => {
-                    const presets = window.butterchurnPresets.getPresets();
-                    return Object.keys(presets).map((name) => {
-                        return {
-                            name,
-                            butterchurnPresetObject: presets[name]
-                        };
-                    });
-                },
-                butterchurnOpen: true
+      const Webamp = window.Webamp;
+      const webamp = new Webamp({
+        initialTracks: [
+          {
+            metaData: {
+              artist: "DJ Mike Llama",
+              title: "Llama Whippin' Intro",
             },
-            __initialWindowLayout: {
-                main: { position: { x: 0, y: 0 } },
-                equalizer: { position: { x: 0, y: 116 } },
-                playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
-                milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
-            }
-        }).renderWhenReady(document.getElementById('app'));
+            // NOTE: Your audio file must be served from the same domain as your HTML
+            // file, or served with permissive CORS HTTP headers:
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+            url: "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/mp3/llama-2.91.mp3",
+            duration: 5.322286,
+          },
+        ],
+        __butterchurnOptions: {
+          importButterchurn: () => Promise.resolve(window.butterchurn),
+          getPresets: () => {
+            const presets = window.butterchurnPresets.getPresets();
+            return Object.keys(presets).map((name) => {
+              return {
+                name,
+                butterchurnPresetObject: presets[name],
+              };
+            });
+          },
+          butterchurnOpen: true,
+        },
+        __initialWindowLayout: {
+          main: { position: { x: 0, y: 0 } },
+          equalizer: { position: { x: 0, y: 116 } },
+          playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
+          milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] },
+        },
+      });
+      webamp.renderWhenReady(document.getElementById("app"));
     </script>
-</body>
-
+  </body>
 </html>

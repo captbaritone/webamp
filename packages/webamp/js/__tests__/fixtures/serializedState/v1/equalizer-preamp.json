@@ -104,6 +104,19 @@
                     "x": 0,
                     "y": 0
                 }
+            },
+            "milkdrop": {
+                "size": [
+                    0,
+                    0
+                ],
+                "open": false,
+                "hidden": false,
+                "shade": false,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
             }
         },
         "focused": "main"

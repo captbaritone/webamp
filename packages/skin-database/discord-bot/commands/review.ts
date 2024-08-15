@@ -8,6 +8,9 @@ async function reviewSkin(message: Message): Promise<void> {
     throw new Error("No skins to review");
   }
   const { md5 } = skin;
+  if (message.channel.type !== "text" && message.channel.type !== "dm") {
+    throw new Error("This command can only be used in a server");
+  }
   await Utils.postSkin({
     md5,
     title: (filename) => `Review: ${filename}`,

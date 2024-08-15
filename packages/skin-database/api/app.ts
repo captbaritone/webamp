@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
-import express, { Handler } from "express";
+import express, { Handler, RequestHandler, ErrorRequestHandler } from "express";
 import UserContext from "../data/UserContext";
 import cookieSession from "cookie-session";
 import { SECRET } from "../config";
@@ -21,7 +21,12 @@ export type ApiAction =
   | { type: "CLASSIC_SKIN_UPLOADED"; md5: string }
   | { type: "MODERN_SKIN_UPLOADED"; md5: string }
   | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string }
-  | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
+  | {
+      type: "GOT_FEEDBACK";
+      message: string;
+      email?: string | null;
+      url?: string | null;
+    }
   | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
   | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
   | {
@@ -64,7 +69,7 @@ type Options = {
 export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   const app = express();
   if (Sentry) {
-    app.use(Sentry.Handlers.requestHandler());
+    app.use(Sentry.Handlers.requestHandler() as RequestHandler);
   }
 
   app.use(function (req, res, next) {
@@ -76,18 +81,22 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   // This is needed in order to allow `cookieSession({secure: true})` cookies to be sent.
   app.set("trust proxy", "loopback");
 
-  app.use(
-    cookieSession({
-      secure: true,
-      sameSite: "none",
-      httpOnly: false,
-      name: "session",
-      secret: SECRET,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      // @ts-ignore Tests fail if this is missing, but prod is fine.
-      keys: "what",
-    })
-  );
+  function use(handler: RequestHandler) {
+    app.use(handler);
+  }
+
+  const cookieHandler: RequestHandler = cookieSession({
+    secure: true,
+    sameSite: "none",
+    httpOnly: false,
+    name: "session",
+    secret: SECRET,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    // @ts-ignore Tests fail if this is missing, but prod is fine.
+    keys: "what",
+  });
+
+  app.use(cookieHandler);
 
   if (extraMiddleware != null) {
     app.use(extraMiddleware);
@@ -139,7 +148,7 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   app.set("json spaces", 2);
 
   // parse application/json
-  app.use(bodyParser.json());
+  app.use(bodyParser.json() as RequestHandler);
 
   // Configure File Uploads
   const limits = { fileSize: 50 * 1024 * 1024 };
@@ -154,7 +163,7 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
 
   // The error handler must be before any other error middleware and after all controllers
   if (Sentry) {
-    app.use(Sentry.Handlers.errorHandler());
+    app.use(Sentry.Handlers.errorHandler() as ErrorRequestHandler);
   }
 
   // Optional fallthrough error handler
@@ -176,12 +185,13 @@ async function getSitemapUrls() {
 const allowList = [
   /https:\/\/skins\.webamp\.org/,
   /https:\/\/api\.webamp\.org/,
+  /https:\/\/webamp\.org/,
   /https:\/\/[^.]*\.csb\.app/,
   /https:\/\/winamp-skin-museum\.pages\.dev/,
   /http:\/\/localhost:3000/,
   /http:\/\/localhost:3001/,
   /netlify.app/,
-  /https:\/\/dustinbrett.com/
+  /https:\/\/dustinbrett.com/,
 ];
 
 const corsOptions: CorsOptions = {

@@ -230,6 +230,7 @@ describe("Query.skins", () => {
   });
 });
 
+// TODO: Upgrade Grats
 test("Query.fetch_skin_by_md5 (debug data)", async () => {
   const { data } = await graphQLRequest(
     gql`

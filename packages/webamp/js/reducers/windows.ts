@@ -80,6 +80,16 @@ const defaultWindowsState: WindowsState = {
       hotkey: "Alt+E",
       position: { x: 0, y: 0 },
     },
+    [WINDOWS.MILKDROP]: {
+      title: "Milkdrop",
+      size: [0, 0],
+      open: false,
+      shade: false,
+      canResize: true,
+      canShade: false,
+      canDouble: false,
+      position: { x: 0, y: 0 },
+    },
   },
   browserWindowSize: { width: 0, height: 0 },
   windowOrder: [
@@ -101,14 +111,8 @@ const windows = (
         genWindows: {
           ...state.genWindows,
           [WINDOWS.MILKDROP]: {
-            title: "Milkdrop",
-            size: [0, 0],
+            ...state.genWindows[WINDOWS.MILKDROP],
             open: action.open,
-            shade: false,
-            canResize: true,
-            canShade: false,
-            canDouble: false,
-            position: { x: 0, y: 0 },
           },
         },
       };

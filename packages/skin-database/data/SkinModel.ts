@@ -340,7 +340,7 @@ export default class SkinModel {
 
   // Has transparency
   async hasTransparency(): Promise<boolean> {
-    const size = await this.transparentAreaSize();
+    const size = await this.transparentPixels();
     return size > 0;
   }
 

@@ -2,7 +2,7 @@ module.exports = {
   displayName: "test",
   rootDir: "../",
   testRegex: "\\.test\\.(js|ts|tsx)$",
-  moduleFileExtensions: ["js", "tsx", "ts"],
+  moduleFileExtensions: ["js", "tsx", "ts", "json"],
   testPathIgnorePatterns: [
     "/node_modules/",
     "dist",

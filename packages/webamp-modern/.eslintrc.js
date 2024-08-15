@@ -9,6 +9,8 @@ module.exports = {
   extends: [],
   rules: {
     eqeqeq: "off",
-    "rulesdir/proper-maki-types": "warn",
+    // Seems to be incompatible with eslint-typescript
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2486
+    // "rulesdir/proper-maki-types": "warn",
   },
 };

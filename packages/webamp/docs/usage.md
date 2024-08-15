@@ -4,10 +4,15 @@ Here's how to use Webamp in your own project. If you get stuck, or need help, pl
 
 ## Examples
 
-If you would like to look at some examples check out the [examples directory](../examples/) where you will find:
+If you would like to look at some examples check out the [examples directory](../../../examples/) where you will find:
 
-- [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
-- [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an application using Webpack.
+- [Minimal](../../../examples/minimal) Stick Webamp in a `<script>` tag, and add a few lines of JavaScript to get Webamp on your page.
+- [Multiple Tracks](../../../examples/multipleTracks) An example of setting up Webamp with multiple audio tracks.
+- [Multiple Skins](../../../examples/multipleSkins) An example of setting up Webamp with multiple skins.
+- [Minimal Window Layout](../../../examples/minimalWindowLayout) An example of configuring the initial layout of windows in Webamp.
+- [Webpack](../../../examples/webpack) Install Webamp via NPM and bundle it in a Webpack bundle.
+- [Webpack Lazyload](../../../examples/webpackLazyLoad) **In progress**
+- [Minimal Milkdrop](../../../examples/minimalMilkdrop) **In progress**
 
 Each example has a README which explains it in more detail.
 
@@ -90,6 +95,8 @@ const track = {
     defaultName: 'My Song',
 
     // Optional. Data to be used _instead_ of trying to fetch ID3 tags.
+    // **WARNING** If you omit this data, Webamp will fetch the first
+    // few bytes of this file on load to try to read its id3 tags.
     metaData: {
         artist: 'Jordan Eldredge',
         title: "Jordan's Song"
@@ -97,6 +104,8 @@ const track = {
 
     // Optional. Duration (in seconds) to be used instead of
     // fetching enough of the file to measure its length.
+    // **WARNING** If you omit this property, Webamp will fetch the first
+    // few bytes of this file on load to try to determine its duration.
     duration: 95
 };
 ```
@@ -110,6 +119,8 @@ The `Winamp` class has the following _static_ methods:
 Returns a true if the current browser supports the features that Webamp depends upon. It is recommended to check this before you attempt to instantiate an instance of `Winamp`.
 
 ```JavaScript
+import Webamp from 'webamp';
+
 if(Winamp.browserIsSupported()) {
     new Winamp({/* ... */});
     // ...
@@ -122,75 +133,122 @@ if(Winamp.browserIsSupported()) {
 
 The `Winamp` class is constructed with an options object. All are optional.
 
-```JavaScript
+```ts
 const options = {
-    // Optional. An object representing the initial skin to use.
-    // If omitted, the default skin, included in the bundle, will be used.
-    // Note: This URL must be served the with correct CORs headers.
-    initialSkin: {
-        url: './path/to/skin.wsz'
+  // Optional. An object representing the initial skin to use.
+  // If omitted, the default skin, included in the bundle, will be used.
+  // Note: This URL must be served the with correct CORs headers.
+  initialSkin: {
+    url: "./path/to/skin.wsz",
+  },
+
+  // Optional. An array of `track`s (see above) to prepopulate the playlist with.
+  initialTracks: [
+    /* ... */
+  ],
+
+  // Optional. An array of objects representing skins.
+  // These will appear in the "Options" menu under "Skins".
+  // Note: These URLs must be served with the correct CORs headers.
+  availableSkins: [
+    { url: "./green.wsz", name: "Green Dimension V2" },
+    { url: "./osx.wsz", name: "Mac OSX v1.5 (Aqua)" },
+  ],
+
+  // Optional. An object representing the initial layout of the windows.
+  // Valid keys are `main`, `equalizer`, `playlist` and `milkdrop`. All windows
+  // are optional.
+  //
+  // - Each provided window must specify a `position` object with `top` and
+  //   `left` which specify pixel offsets.
+  // - Each provided window, except for
+  // `milkdrop` may specify a `shadeMode` boolean.
+  // - Each provided window may specify a `closed` boolean.
+  // - The playlist and milkdrop windows may specify a `size` object with
+  //   `extraHeight` and `extraWidth`.
+  //
+  // **Note:** After windows are positioned, they are then centered _as a group_
+  // within the DOM element that Webamp is rendered into.
+  //
+  // **Since** @next
+  windowLayout: {
+    main: {
+      position: { top: 0, left: 0 },
+      shadeMode: true,
+      closed: false,
     },
-
-    // Optional. An array of `track`s (see above) to prepopulate the playlist with.
-    initialTracks: [/* ... */],
-
-    // Optional. An array of objects representing skins.
-    // These will appear in the "Options" menu under "Skins".
-    // Note: These URLs must be served with the correct CORs headers.
-    availableSkins: [
-      { url: "./green.wsz", name: "Green Dimension V2" },
-      { url: "./osx.wsz", name: "Mac OSX v1.5 (Aqua)" }
-    ],
-
-    // Optional. (Default: `false`) Should double size mode be enabled?
-    enableDoubleSizeMode: true,
-
-    // Optional. (Default: `false`) Should global hotkeys be enabled?
-    enableHotkeys: true,
-
-    // Optional. (Default: `0`) The zIndex that Webamp should use.
-    zIndex: 99999,
-
-    // Optional. An array of additional file pickers.
-    // These will appear in the "Options" menu under "Play".
-    // In the demo site, This option is used to provide a "Dropbox" file
-    // picker.
-    filePickers: [{
-        // The name that will appear in the context menu.
-        contextMenuName: "My File Picker...",
-        // A function which returns a Promise that resolves to
-        // an array of `track`s (see above)
-        filePicker: () => Promise.resolve([{
-            url: './rick_roll.mp3'
-        }]),
-        // A boolean indicating if this options should be made
-        // available when the user is offline.
-        requiresNetwork: true
-    }],
-
-    // Optional. Provide a custom way to derive `Track` objects from a drop event.
-    // Useful if your website has some DOM representation of a track that you can map to a URL/blob.
-    handleTrackDropEvent: async (e) => {
-        // Return an array of `Track` objects, see documentation below, or `null` to get the default drop behavior.
-        // You may optionally wrap the return value in a promise.
+    equalizer: {
+      position: { top: 0, left: 0 },
+      shadeMode: true,
+      closed: false,
     },
-
-    // Optional. Provide a way to extend the behavior of the button ADD URL.
-    // **Since** 1.4.1
-    handleAddUrlEvent: async () => {
-        // Return an optional array of `Track` objects or null.
+    playlist: {
+      position: { top: 0, left: 0 },
+      shadeMode: true,
+      // Number of additional sprites by which to expand the window.
+      size: { extraHeight: 1, extraHeight: 10 },
+      closed: false,
     },
+  },
 
-    // Optional. Provide a way to extend the behavior of the playlist button LOAD LIST.
-    // **Since** 1.4.1
-    handleLoadListEvent: async () => {
-        // Return an optional array of `Track` objects or null.
+  // Optional. (Default: `false`) Should double size mode be enabled?
+  // **Note:** In keeping with the original Winamp, double size mode
+  // does not apply to resizable windows like the equalizer or Milkdrop.
+  //
+  // **Since** @next
+  enableDoubleSizeMode: true,
+
+  // Optional. (Default: `false`) Should global hotkeys be enabled?
+  enableHotkeys: true,
+
+  // Optional. (Default: `0`) The zIndex that Webamp should use.
+  zIndex: 99999,
+
+  // Optional. An array of additional file pickers.
+  // These will appear in the "Options" menu under "Play".
+  // In the demo site, This option is used to provide a "Dropbox" file
+  // picker.
+  filePickers: [
+    {
+      // The name that will appear in the context menu.
+      contextMenuName: "My File Picker...",
+      // A function which returns a Promise that resolves to
+      // an array of `track`s (see above)
+      filePicker: () =>
+        Promise.resolve([
+          {
+            url: "./rick_roll.mp3",
+          },
+        ]),
+      // A boolean indicating if this options should be made
+      // available when the user is offline.
+      requiresNetwork: true,
     },
+  ],
 
-    // Optional. Provide a way to extend the behavior of the playlist button SAVE LIST.
-    // Where tracks: Track[]
-    // **Since** 1.4.1
-    handleSaveListEvent: (tracks) => {}
+  // Optional. Provide a custom way to derive `Track` objects from a drop event.
+  // Useful if your website has some DOM representation of a track that you can map to a URL/blob.
+  handleTrackDropEvent: async (e) => {
+    // Return an array of `Track` objects, see documentation below, or `null` to get the default drop behavior.
+    // You may optionally wrap the return value in a promise.
+  },
+
+  // Optional. Provide a way to extend the behavior of the button ADD URL.
+  // **Since** 1.4.1
+  handleAddUrlEvent: async () => {
+    // Return an optional array of `Track` objects or null.
+  },
+
+  // Optional. Provide a way to extend the behavior of the playlist button LOAD LIST.
+  // **Since** 1.4.1
+  handleLoadListEvent: async () => {
+    // Return an optional array of `Track` objects or null.
+  },
+
+  // Optional. Provide a way to extend the behavior of the playlist button SAVE LIST.
+  // Where tracks: Track[]
+  // **Since** 1.4.1
+  handleSaveListEvent: (tracks) => {},
 };
 const webamp = new Webamp(options);
 ```
@@ -438,6 +496,39 @@ When you are done with a Webamp instance, call this method and Webamp will attem
 
 ```JavaScript
 webamp.dispose();
+```
+
+## Optimizing Bundle Size
+
+**Since** UNRELEASED
+
+By default the Webamp import/bundle includes a few heavy dependencies. `JSZip` for extracting user defined skin files and `music-metadata-browser` for reading ID3 tags. If you are using the default skin and supply metadata and duration for all your preloaded tracks, neither of these dependencies are needed for initial load and can instead be lazily loaded only when they are needed. To do this, you can import from `webamp/lazy` instead of `webamp`.
+
+First you'll need to install the dependencies in your project:
+
+```bash
+npm install jszip music-metadata-browser@^0.6.1
+```
+
+The "lazy" version of Webamp will require that you inject functions for lazily importing these dependencies.
+
+```ts
+import Webamp from "webamp/lazy";
+
+const webamp = new Webamp({
+  initialTracks: [
+    {
+      url: "https://example.com/track1.mp3",
+      metaData: {
+        artist: "Jordan Eldredge",
+        title: "Jordan's Song",
+      },
+      duration: 95,
+    },
+  ],
+  requireJSZip: () => import("jszip/dist/jszip"),
+  requireMusicMetadata: () => import("music-metadata-browser/dist/index"),
+});
 ```
 
 ## Notes

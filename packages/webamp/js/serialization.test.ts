@@ -5,7 +5,7 @@ import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 import { kebabCase } from "lodash";
 
-import { createStore, applyMiddleware } from "redux";
+import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { LOAD_SERIALIZED_STATE } from "./actionTypes";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
@@ -83,7 +83,7 @@ function testSerialization<T>({
 function getStore() {
   const extras = {};
   const enhancer = applyMiddleware(thunk.withExtraArgument(extras));
-  return createStore(reducer, enhancer);
+  return createStore(reducer, undefined, enhancer);
 }
 
 describe("can serialize", () => {

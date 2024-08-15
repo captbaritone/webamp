@@ -34,8 +34,11 @@ const ClutterBar = memo(() => {
         title={"Toggle Doublesize Mode"}
         id="button-d"
         className={classnames({ selected: doubled })}
-        onMouseUp={handleMouseUp}
-        onMouseDown={handleMouseDown}
+        onPointerUp={handleMouseUp}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          handleMouseDown();
+        }}
       />
       <div id="button-v" />
     </div>

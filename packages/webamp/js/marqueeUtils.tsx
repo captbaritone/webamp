@@ -31,7 +31,7 @@ const formatHz = (hz: number): string =>
   hz < 1000 ? `${hz}HZ` : `${hz / 1000}KHZ`;
 
 // Format a number as a string, ensuring it has a + or - sign
-const ensureSign = (num: number | string): string =>
+const ensureSign = (num: number): string =>
   num > 0 ? `+${num}` : num.toString();
 
 // Round to 1 and exactly 1 decimal point
@@ -41,5 +41,5 @@ const roundToTenths = (num: number): string =>
 export const getEqText = (band: Slider, level: number): string => {
   const db = roundToTenths(((level - 50) / 50) * 12);
   const label = band === "preamp" ? "Preamp" : formatHz(band);
-  return `EQ: ${label} ${ensureSign(db)} DB`;
+  return `EQ: ${label} ${ensureSign(Number(db))} DB`;
 };

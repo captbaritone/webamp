@@ -249,9 +249,9 @@ describe("generateGraph", () => {
       { key: "playlist", x: 0, y: 200, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: { below: "a" },
-      c: { below: "b" },
+      main: {},
+      equalizer: { below: "main" },
+      playlist: { below: "equalizer" },
     });
   });
   it("of disconnected windows", () => {
@@ -260,8 +260,8 @@ describe("generateGraph", () => {
       { key: "equalizer", x: 0, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: {},
+      main: {},
+      equalizer: {},
     });
   });
   it("of windows that touch in y, but the lower one is to the right", () => {
@@ -270,8 +270,8 @@ describe("generateGraph", () => {
       { key: "equalizer", x: 110, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: {},
+      main: {},
+      equalizer: {},
     });
   });
   it("of windows that touch in y, but the lower one is to the left", () => {
@@ -280,8 +280,8 @@ describe("generateGraph", () => {
       { key: "equalizer", x: 0, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: {},
+      main: {},
+      equalizer: {},
     });
   });
   it("of windows that touch in x, but the right one is below", () => {
@@ -290,8 +290,8 @@ describe("generateGraph", () => {
       { key: "equalizer", x: 100, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: {},
+      main: {},
+      equalizer: {},
     });
   });
   it("of windows that touch in x, but the right one is above", () => {
@@ -300,8 +300,8 @@ describe("generateGraph", () => {
       { key: "equalizer", x: 100, y: 0, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
-      a: {},
-      b: {},
+      main: {},
+      equalizer: {},
     });
   });
 });

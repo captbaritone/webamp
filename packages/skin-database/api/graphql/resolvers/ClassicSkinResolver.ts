@@ -1,39 +1,29 @@
-import CommonSkinResolver, { ISkin } from "./CommonSkinResolver";
+import { ISkin } from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import path from "path";
 import { ID, Int } from "grats";
-import TweetResolver from "./TweetResolver";
-import ArchiveFileResolver from "./ArchiveFileResolver";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
+import SkinModel from "../../../data/SkinModel";
 
 /**
  * A classic Winamp skin
  * @gqlType ClassicSkin */
-export default class ClassicSkinResolver
-  extends CommonSkinResolver
-  implements NodeResolver, ISkin
-{
+export default class ClassicSkinResolver implements NodeResolver, ISkin {
+  _model: SkinModel;
   __typename = "ClassicSkin";
-  /**
-   * GraphQL ID of the skin
-   * @gqlField
-   * @killsParentOnException
-   */
+
+  constructor(model: SkinModel) {
+    this._model = model;
+  }
+
+  md5(): string {
+    return this._model.getMd5();
+  }
+
   id(): ID {
     return toId(this.__typename, this.md5());
   }
-  /**
-   * Filename of skin when uploaded to the Museum. Note: In some cases a skin
-   * has been uploaded under multiple names. Here we just pick one.
-   * @gqlField */
-  async filename({
-    normalize_extension = false,
-  }: {
-    /** If true, the the correct file extension (.wsz or .wal) will be .
-    Otherwise, the original user-uploaded file extension will be used. */
-    normalize_extension?: boolean;
-  }): Promise<string> {
+  async filename(normalize_extension?: boolean): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
       return path.parse(filename).name + ".wsz";
@@ -41,78 +31,21 @@ export default class ClassicSkinResolver
     return filename;
   }
 
-  /**
-   * MD5 hash of the skin's file
-   * @gqlField */
-  md5(): string {
-    return super.md5();
-  }
-  /**
-   * URL to download the skin
-   * @gqlField */
-  download_url(): string {
-    return super.download_url();
-  }
-  /**
-   * Has the skin been tweeted?
-   * @gqlField */
-  tweeted(): Promise<boolean> {
-    return super.tweeted();
-  }
-
-  /**
-   * List of @winampskins tweets that mentioned the skin.
-   * @gqlField */
-  tweets(): Promise<Array<TweetResolver | null>> {
-    return super.tweets();
-  }
-
-  /**
-   * List of files contained within the skin's .wsz archive
-   * @gqlField */
-  archive_files(): Promise<Array<ArchiveFileResolver | null>> {
-    return super.archive_files();
-  }
-
-  /**
-   * The skin's "item" at archive.org
-   * @gqlField */
-  internet_archive_item(): Promise<InternetArchiveItemResolver | null> {
-    return super.internet_archive_item();
-  }
-  /**
-   * URL of the skin on the Winamp Skin Museum
-   * @gqlField */
   museum_url(): string {
     return this._model.getMuseumUrl();
   }
-  /**
-   * URL of webamp.org with the skin loaded
-   * @gqlField */
   webamp_url(): string {
     return this._model.getWebampUrl();
   }
-  /**
-   * URL of a screenshot of the skin
-   * @gqlField */
   async screenshot_url(): Promise<string> {
     return this._model.getScreenshotUrl();
   }
-  /**
-   * Text of the readme file extracted from the skin
-   * @gqlField */
   readme_text(): Promise<string | null> {
     return this._model.getReadme();
   }
-  /**
-   * Has the skin been flagged as "not safe for wrok"?
-   * @gqlField */
   nsfw(): Promise<boolean> {
     return this._model.getIsNsfw();
   }
-  /**
-   * String representation (rgb usually) of the skin's average color
-   * @gqlField */
   average_color(): string {
     return this._model.getAverageColor();
   }
@@ -122,10 +55,7 @@ export default class ClassicSkinResolver
   has_media_library(): Promise<boolean> {
     return this._model.hasMediaLibrary();
   }
-  /**
-   * Times that the skin has been reviewed either on the Museum's Tinder-style
-   * reivew page, or via the Discord bot.
-   * @gqlField */
+
   async reviews(): Promise<Array<ReviewResolver | null>> {
     const reviews = await this._model.getReviews();
     return reviews.map((row) => new ReviewResolver(row));

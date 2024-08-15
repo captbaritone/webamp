@@ -1,6 +1,6 @@
 import Webamp from "webamp";
 
-new Webamp({
+const webamp = new Webamp({
   initialTracks: [
     {
       metaData: {
@@ -40,4 +40,6 @@ new Webamp({
     playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
     milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] },
   },
-}).renderWhenReady(document.getElementById("app"));
+});
+
+webamp.renderWhenReady(document.getElementById("app"));

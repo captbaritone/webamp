@@ -82,7 +82,7 @@ async function processGivenUserUploads(
         message: e.message,
       } as const;
       eventHandler(action);
-      throw e
+      throw e;
       console.error(e);
     }
   }

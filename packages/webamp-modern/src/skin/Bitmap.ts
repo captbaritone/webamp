@@ -191,7 +191,7 @@ export default class Bitmap {
 
     const groupId = this.getGammaGroup();
     const gammaGroup = uiRoot._getGammaGroup(groupId);
-    if (gammaGroup._value == "0,0,0") {
+    if (gammaGroup._value == "0,0,0" && gammaGroup._gray == 0) {
       // triple zero meaning no gamma should be applied.
       // return bitmap.getCanvas().toDataURL();
       const url = await this.toDataURL(uiRoot);
