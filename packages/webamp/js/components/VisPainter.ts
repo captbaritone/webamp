@@ -10,6 +10,15 @@ export interface Vis {
 }
 import { out_spectraldata } from "./Vis";
 
+let sapeaks = new Int16Array(76).fill(0);
+let sadata2 = new Float32Array(76).fill(0);
+let sadata = new Int16Array(76).fill(0);
+let safalloff = new Float32Array(76).fill(0);  
+let sample = new Float32Array(76).fill(0);
+let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
+let i: number;
+let uVar12: number;
+
 type ColorTriplet = string;
 
 /**
@@ -239,15 +248,6 @@ export class BarPaintHandler extends VisPaintHandler {
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = this._color;
 
-    this._analyser.getByteFrequencyData(this._dataArray);
-    const heightMultiplier = h / 256;
-
-    let sapeaks = new Float32Array(76).fill(0);
-    let sadata2 = new Float32Array(76).fill(0);
-    let sadata = new Int8Array(76).fill(0);
-    let safalloff = new Float32Array(76).fill(0);  
-    let sample = new Float32Array(76).fill(0);
-
     let maxFreqIndex = 512;
     let logMaxFreqIndex = Math.log10(maxFreqIndex);
     let logMinFreqIndex = 0;
@@ -259,6 +259,9 @@ export class BarPaintHandler extends VisPaintHandler {
 
     let targetSize = 75;
 
+    // This is to roughly emulate the Analyzer in more modern versions of Winamp
+    // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
+    // scale variable can be set to 1.0
     for (let x = 0; x < targetSize; x++) {
         // Linear interpolation between linear and log scaling
         let linearIndex = x / (targetSize - 1) * (maxFreqIndex - 1);
@@ -288,43 +291,56 @@ export class BarPaintHandler extends VisPaintHandler {
     }
 
     for (let x = 0; x < 76; x++) {
-      let i: number;
-      let uVar12: number;
+      // Based on research of looking at Winamp 5.666 and 2.63 executables
+      // Right now it's hard coded to assume we want thick bands
+      // so in the future, should we have a preferences style window
+      // we should be able to change the width of the bands here
 
       i = (i = x & 0xfffffffc);
-        uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 64;
+        uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 48;
       sadata[x] = uVar12;
 
       if (sadata[x] >= 15) {
         sadata[x] = 15;
       }
-      safalloff[i] -= 24 / 16.0;
+      safalloff[x] -= 12 / 16.0;
+      // Possible bar fall off values are
+      // 3, 6, 12, 16, 32
+      // Should there ever be some form of config options,
+      // these should be used
+      // 12 is the default of a fresh new Winamp installation
 
       if (safalloff[x] <= sadata[x]) {
         safalloff[x] = sadata[x];
       }
 
-      if (sapeaks[x] <= (safalloff[x] * 256)) {
+      if (sapeaks[x] <= (Math.round(safalloff[x] * 256))) {
         sapeaks[x] = safalloff[x] * 256;
-        sadata2[i] = 3.0;
+        sadata2[x] = 3.0;
       }
 
-      const barPeak = sapeaks[x] / 256;
-      sapeaks[x] -= sadata2[x];
-      sadata2[x] *= 1.05;
+      barPeak[x] = sapeaks[x]/256;
+
+      sapeaks[x] -= Math.round(sadata2[x]);
+      sadata2[x] *= 1.1;
+      // Possible peak fall off values are
+      // 1.05f, 1.1f, 1.2f, 1.4f, 1.6f
+      // 1.1f is the default of a fresh new Winamp installation
       if (sapeaks[x] <= 0) {
           sapeaks[x] = 0;
       }
 
-      //console.log(safalloff[0]);
+      if (Math.round(barPeak[x]) < 1){
+          barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
+      }
 
       if (!(x == i + 3)) {
         this.paintBar(
           ctx,
           x,
           x,
-          safalloff[x],
-          barPeak
+          Math.round(safalloff[x]),
+          barPeak[x] + 1
         );
       }
     }
