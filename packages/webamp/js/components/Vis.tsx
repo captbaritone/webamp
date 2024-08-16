@@ -175,7 +175,7 @@ export default function Vis({ analyser }: Props) {
     const loop = () => {
       analyser.getByteTimeDomainData(dataArray);
       for (let i = 0; i < dataArray.length; i++) {
-        in_wavedata[i] = (dataArray[i] - 128) / 2;
+        in_wavedata[i] = (dataArray[i] - 128) / 32;
       }
       fft.timeToFrequencyDomain(in_wavedata, out_spectraldata);
       painter.paintFrame();

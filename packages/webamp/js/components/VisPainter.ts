@@ -21,8 +21,6 @@ let uVar12: number;
 
 let colorssmall: string[] = [];
 
-type ColorTriplet = string;
-
 /**
  * Base class of AVS (animation frame renderer engine)
  */
@@ -103,9 +101,6 @@ export class FakeWavePaintHandler extends VisPaintHandler {
   }
 }
 //? =============================== BAR PAINTER ===============================
-const NUM_BARS = 20;
-const PIXEL_DENSITY = 1;
-const BAR_PEAK_DROP_RATE = 0.01;
 type PaintFrameFunction = () => void;
 type PaintBarFunction = (
   ctx: CanvasRenderingContext2D,
@@ -116,43 +111,15 @@ type PaintBarFunction = (
   peakHeight: number
 ) => void;
 
-function octaveBucketsForBufferLength(
-  bufferLength: number,
-  barCount: number = NUM_BARS
-): number[] {
-  const octaveBuckets = new Array(barCount).fill(0);
-  const minHz = 80;
-  const maxHz = 22050;
-  const octaveStep = Math.pow(maxHz / minHz, 1 / barCount);
-
-  octaveBuckets[0] = 0;
-  octaveBuckets[1] = minHz;
-  for (let i = 2; i < barCount - 1; i++) {
-    octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
-  }
-  octaveBuckets[barCount - 1] = maxHz;
-
-  for (let i = 0; i < barCount; i++) {
-    const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
-    octaveBuckets[i] = octaveIdx;
-  }
-
-  return octaveBuckets;
-}
-
 export class BarPaintHandler extends VisPaintHandler {
   _analyser: AnalyserNode;
-  _barWidth: number;
   _color: string = "rgb(255,255,255)";
   _colorPeak: string = "rgb(255,255,255)";
   // Off-screen canvas for pre-rendering a single bar gradient
   _bar: HTMLCanvasElement = document.createElement("canvas");
   _peak: HTMLCanvasElement = document.createElement("canvas");
   _16h: HTMLCanvasElement = document.createElement("canvas"); // non-stretched
-  _barPeaks: number[] = new Array(NUM_BARS).fill(0);
-  _barPeakFrames: number[] = new Array(NUM_BARS).fill(0);
   _bufferLength: number;
-  _octaveBuckets: number[];
   _dataArray: Uint8Array;
   // _ctx: CanvasRenderingContext2D;
   paintBar: PaintBarFunction;
@@ -162,9 +129,7 @@ export class BarPaintHandler extends VisPaintHandler {
     super(vis);
     this._analyser = this._vis.analyser!;
     this._bufferLength = this._analyser.frequencyBinCount;
-    this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     this._dataArray = new Uint8Array(this._bufferLength);
-    this._barWidth = Math.ceil(vis.canvas!.width / NUM_BARS);
 
     colorssmall = [vis.colors[17], vis.colors[14], vis.colors[11], vis.colors[8], vis.colors[4]];
 
@@ -174,14 +139,9 @@ export class BarPaintHandler extends VisPaintHandler {
     this._16h.setAttribute("height", "16");
     if (this._vis.bandwidth === "wide") {
       this.paintFrame = this.paintFrameWide.bind(this);
-      this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     } else {
       // thin
-      this.paintFrame = this.paintFrameThin.bind(this);
-      const w = this._vis.canvas!.width;
-      this._barPeaks = new Array(w).fill(0);
-      this._barPeakFrames = new Array(w).fill(0);
-      this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength, w);
+      this.paintFrame = this.paintFrameWide.bind(this);
     }
 
     if (this._vis.coloring === "fire") {
@@ -244,6 +204,16 @@ export class BarPaintHandler extends VisPaintHandler {
    * 🟫🟫🟫 🟫🟫🟫 🟫🟫🟫
    * 1 bar = multiple pixels
    */
+  /**
+   * ⬜⬜
+   * 🟧
+   * 🟫🟧
+   * 🟫🟫⬜⬜
+   * 🟫🟫🟧
+   * 🟫🟫🟫🟧⬜
+   * 🟫🟫🟫🟫🟧
+   * drawing 1pixel width bars
+   */
   paintFrameWide() {
     if (!this._ctx) return;
     const ctx = this._ctx;
@@ -301,9 +271,13 @@ export class BarPaintHandler extends VisPaintHandler {
       // so in the future, should we have a preferences style window
       // we should be able to change the width of the bands here
 
-      i = (i = x & 0xfffffffc);
-        uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 48;
-      sadata[x] = uVar12;
+      if (this._vis.bandwidth === "wide"){
+        i = (i = x & 0xfffffffc);
+        uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 4;
+        sadata[x] = uVar12;
+      } else {
+        sadata[x] = sample[x];
+      }
 
       if (sadata[x] >= maxHeight) {
         sadata[x] = maxHeight;
@@ -348,79 +322,6 @@ export class BarPaintHandler extends VisPaintHandler {
           barPeak[x] + 1
         );
       }
-    }
-  }
-
-  /**
-   * ⬜⬜
-   * 🟧
-   * 🟫🟧
-   * 🟫🟫⬜⬜
-   * 🟫🟫🟧
-   * 🟫🟫🟫🟧⬜
-   * 🟫🟫🟫🟫🟧
-   * drawing 1pixel width bars
-   */
-  paintFrameThin() {
-    if (!this._ctx) return;
-    const ctx = this._ctx;
-    const w = ctx.canvas.width;
-    const h = ctx.canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = this._color;
-
-    this._analyser.getByteFrequencyData(this._dataArray);
-    const heightMultiplier = h / 256;
-    for (let j = 0; j < w - 1; j++) {
-      // const start = Math.round(j/w * this._dataArray.length);
-      // const end = Math.round((j+1)/w * this._dataArray.length );
-      const start = this._octaveBuckets[j];
-      const end = this._octaveBuckets[j + 1];
-      let amplitude = 0;
-      //let weightingnum = 0;
-      amplitude /= end - start;
-      for (let i = start; i < end; i++) {
-        //weightingnum += 6.6; //adds "weighting" to the analyzer
-      }
-      for (let k = start; k < end; k++) {
-        amplitude = Math.max(
-          amplitude,
-          this._dataArray[k]/* * 3.4 - 600 + weightingnum*/
-        ); //weightingnum used to try to correct the bias of the analyzer, but the last bar
-        //kept being shot up high
-      }
-
-      // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
-      let barPeak =
-        this._barPeaks[j] -
-        BAR_PEAK_DROP_RATE * Math.pow(this._barPeakFrames[j], 2);
-      if (barPeak < amplitude) {
-        barPeak = amplitude;
-        this._barPeakFrames[j] = 0;
-      } else {
-        this._barPeakFrames[j] += 1;
-      }
-      if (barPeak < 10) {
-        barPeak = 10;
-        this._barPeakFrames[j] = 0;
-      }
-      if (barPeak > 255) {
-        barPeak = 255;
-        this._barPeakFrames[j] += 1;
-      }
-      this._barPeaks[j] = barPeak;
-
-      // var x1 = Math.round(this._barWidth * j);
-      // var x2 = Math.round(this._barWidth * (j + 1)) - 2;
-
-      this.paintBar(
-        ctx,
-        // j /* * xOffset */,
-        j,
-        j,
-        Math.round(amplitude * heightMultiplier),
-        Math.round(barPeak * heightMultiplier)
-      );
     }
   }
 
@@ -572,7 +473,6 @@ export class WavePaintHandler extends VisPaintHandler {
     super(vis);
     this._analyser = this._vis.analyser!;
     this._bufferLength = this._analyser.fftSize;
-    // this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
     this._dataArray = new Uint8Array(this._bufferLength);
 
     this._16h.width = 1;
@@ -586,7 +486,7 @@ export class WavePaintHandler extends VisPaintHandler {
     if (this._vis.oscStyle === "dots") {
       this.paintWav = this.paintWavDot.bind(this);
     } else if (this._vis.oscStyle === "solid") {
-      this.paintWav = this.paintWavSolid.bind(this);
+      this.paintWav = this.paintWavLine.bind(this);
     } else {
       this.paintWav = this.paintWavLine.bind(this);
     }
@@ -766,13 +666,23 @@ export class WavePaintHandler extends VisPaintHandler {
     let bottom = this._lastY;
     this._lastY = y;
 
-    if (bottom < top) {
-      [bottom, top] = [top, bottom];
-      if (windowShade){
-        // SORRY NOTHING
+    if (this._vis.oscStyle === "solid"){
+      if (y >= (windowShade ? 2 : 8)) {
+        top = windowShade ? 2 : 8;
+        bottom = y;
       } else {
-        top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
+        top = y;
+        bottom = windowShade ? 2 : 7;
       }
+    } else {
+      if (bottom < top) {
+        [bottom, top] = [top, bottom];
+        if (windowShade){
+          // SORRY NOTHING
+        } else {
+          top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
+        }
+      }      
     }
 
     for (y = top; y <= bottom; y++) {
@@ -804,30 +714,6 @@ export class WavePaintHandler extends VisPaintHandler {
     );
   }
 
-  paintWavSolid(x: number, y: number, colorIndex: number) {
-    let top, bottom;
-    if (y >= 8) {
-      top = 8;
-      bottom = y;
-    } else {
-      top = y;
-      bottom = 7;
-    }
-    // const h = bottom - top + 1;
-    for (y = top; y <= bottom; y++) {
-      this._ctx!.drawImage(
-        this._bar,
-        0,
-        colorIndex, // sx,sy
-        1,
-        1, // sw,sh
-        x, y, //dx,dy, dy is upside down because Winamp3/Winamp5 does it, so we have to emulate it
-        //set to x, y, for Winamp Classic behavior
-        1,
-        1 //dw,dh
-      );
-    }
-  }
 }
 
 export class NoVisualizerHandler extends VisPaintHandler {
