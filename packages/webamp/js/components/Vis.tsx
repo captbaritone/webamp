@@ -32,6 +32,9 @@ const PIXEL_DENSITY = 1;
 const fft = new FFT();
 const samplesIn = 1024; // Example input size
 const samplesOut = 512; // Example output size
+export let renderWidth: number;
+export let renderHeight: number;
+export let windowShade: boolean | undefined;
 fft.init(samplesIn, samplesOut, 1, 1.0, true);
 
 let in_wavedata = new Float32Array(samplesIn); // Fill this with your input data
@@ -84,9 +87,9 @@ export default function Vis({ analyser }: Props) {
   in_wavedata = new Float32Array(dataArray.length);
 
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
-  const windowShade = getWindowShade("main");
-  const renderWidth = windowShade ? 38 : 75;
-  const renderHeight = windowShade ? 5 : 16;
+  windowShade = getWindowShade("main");
+  renderWidth = windowShade ? 38 : 75;
+  renderHeight = windowShade ? 5 : 16;
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;

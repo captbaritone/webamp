@@ -8,7 +8,7 @@ export interface Vis {
   coloring?: "fire" | "line" | "normal";
   peaks?: boolean;
 }
-import { out_spectraldata } from "./Vis";
+import { out_spectraldata, renderHeight, renderWidth, windowShade } from "./Vis";
 
 let sapeaks = new Int16Array(76).fill(0);
 let sadata2 = new Float32Array(76).fill(0);
@@ -18,6 +18,8 @@ let sample = new Float32Array(76).fill(0);
 let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
 let i: number;
 let uVar12: number;
+
+let colorssmall: string[] = [];
 
 type ColorTriplet = string;
 
@@ -164,6 +166,8 @@ export class BarPaintHandler extends VisPaintHandler {
     this._dataArray = new Uint8Array(this._bufferLength);
     this._barWidth = Math.ceil(vis.canvas!.width / NUM_BARS);
 
+    colorssmall = [vis.colors[17], vis.colors[14], vis.colors[11], vis.colors[8], vis.colors[4]];
+
     this._16h.width = 1;
     this._16h.height = 16;
     this._16h.setAttribute("width", "75");
@@ -221,9 +225,9 @@ export class BarPaintHandler extends VisPaintHandler {
     // ctx.fillStyle = grd;
     // ctx.fillRect(0, 0, 1, vis.canvas.height);
     // ctx.imageSmoothingEnabled = false;
-    for (let y = 0; y < 16; y++) {
+    for (let y = 0; y < renderHeight; y++) {
       // ctx.fillStyle = gammaGroup.transformColor(vis._colorBands[15 - y]);
-      ctx.fillStyle = vis.colors[2 - -y];
+      ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - -y];
       ctx.fillRect(0, y, 1, y + 1);
     }
 
@@ -257,7 +261,7 @@ export class BarPaintHandler extends VisPaintHandler {
     // scale = 1.0 -> fully logarithmic scaling
     let scale = 0.95;  // Adjust this value between 0.0 and 1.0
 
-    let targetSize = 75;
+    let targetSize = windowShade ? 40 : 75;
 
     // This is to roughly emulate the Analyzer in more modern versions of Winamp
     // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
@@ -290,7 +294,7 @@ export class BarPaintHandler extends VisPaintHandler {
         }
     }
 
-    for (let x = 0; x < 76; x++) {
+    for (let x = 0; x < 75; x++) {
       // Based on research of looking at Winamp 5.666 and 2.63 executables
       // Right now it's hard coded to assume we want thick bands
       // so in the future, should we have a preferences style window
@@ -300,8 +304,8 @@ export class BarPaintHandler extends VisPaintHandler {
         uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 48;
       sadata[x] = uVar12;
 
-      if (sadata[x] >= 15) {
-        sadata[x] = 15;
+      if (sadata[x] >= renderHeight) {
+        sadata[x] = renderHeight;
       }
       safalloff[x] -= 12 / 16.0;
       // Possible bar fall off values are
@@ -534,20 +538,6 @@ export class BarPaintHandler extends VisPaintHandler {
 //? =============================== OSCILOSCOPE PAINTER ===============================
 
 type PaintWavFunction = (x: number, y: number, colorIndex: number) => void;
-// Return the average value in a slice of dataArray
-function sliceAverage(
-  dataArray: Uint8Array,
-  sliceWidth: number,
-  sliceNumber: number
-): number {
-  const start = sliceWidth * sliceNumber;
-  const end = start + sliceWidth;
-  let sum = 0;
-  for (let i = start; i < end; i++) {
-    sum += dataArray[i];
-  }
-  return sum / sliceWidth;
-}
 
 function slice1st(
   dataArray: Uint8Array,
@@ -643,50 +633,20 @@ export class WavePaintHandler extends VisPaintHandler {
     this._dataArray = this._dataArray.slice(0, 576);
     const bandwidth = this._dataArray.length;
 
-    //* to save and see in excel (bar chart)
-    if (!this._datafetched) {
-      // console.log(JSON.stringify(Array.from(this._dataArray)))
-      this._datafetched = true;
-    }
-
-    const using16temporaryCanvas = this._vis.canvas!.height !== 16;
-
-    if (using16temporaryCanvas) {
-      this._ctx = this._16h.getContext("2d");
-    }
     const width = this._ctx!.canvas.width;
     const height = this._ctx!.canvas.height;
     this._ctx!.clearRect(0, 0, width, height);
 
-    const sliceWidth = Math.floor(/* this._bufferLength */ bandwidth / width);
+    const sliceWidth = Math.floor(bandwidth / width);
 
     // Iterate over the width of the canvas in fixed 75 pixels.
-    for (let j = 0; j <= width; j++) {
-      // const amplitude = sliceAverage(this._dataArray, sliceWidth, j);
+    for (let j = 0; j <= 75; j++) {
       const amplitude = slice1st(this._dataArray, sliceWidth, j);
-      // -4 is set to off center the oscilloscope
+      // +4 is set to off center the oscilloscope
       // because completely centered looks a bit weird
-      const [y, colorIndex] = this.rangeByAmplitude(amplitude+4);
-      const x = j; /* * PIXEL_DENSITY */
+      const [y, colorIndex] = this.rangeByAmplitude(windowShade ? ((amplitude+4)/3)+90 : amplitude+4);
 
-      this.paintWav(x, y, colorIndex);
-    }
-
-    if (using16temporaryCanvas) {
-      const canvas = this._vis.canvas!;
-      const visCtx = canvas.getContext("2d")!;
-      visCtx.clearRect(0, 0, canvas.width, canvas.height);
-      visCtx.drawImage(
-        this._16h,
-        0,
-        0, // sx,sy
-        75,
-        16, // sw,sh
-        0,
-        0, //dx,dy
-        canvas.width,
-        canvas.height //dw,dh
-      );
+      this.paintWav(j, y, colorIndex);
     }
   }
 
@@ -696,57 +656,109 @@ export class WavePaintHandler extends VisPaintHandler {
    * @returns xy.Y(top to bottom), colorOscIndex
    */
   rangeByAmplitude(amplitude: number): [number, number] {
-    //odjasdjflasjdf;lasjdf;asjd;fjasd;fsajdf
-    if (amplitude >= 184) {
-      return [0, 3];
+    // sorry about this mess
+    if (windowShade){
+      if (amplitude >= 184) {
+        return [0, 0];
+      }
+      if (amplitude >= 176) {
+        return [1, 0];
+      }
+      if (amplitude >= 168) {
+        return [2, 0];
+      }
+      if (amplitude >= 160) {
+        return [3, 0];
+      }
+      if (amplitude >= 152) {
+        return [4, 0];
+      }
+      if (amplitude >= 144) {
+        return [5, 0];
+      }
+      if (amplitude >= 136) {
+        return [6, 0];
+      }
+      if (amplitude >= 128) {
+        return [7, 0];
+      }
+      if (amplitude >= 120) {
+        return [8, 0];
+      }
+      if (amplitude >= 112) {
+        return [9, 0];
+      }
+      if (amplitude >= 104) {
+        return [10, 0];
+      }
+      if (amplitude >= 96) {
+        return [11, 0];
+      }
+      if (amplitude >= 88) {
+        return [12, 0];
+      }
+      if (amplitude >= 80) {
+        return [13, 0];
+      }
+      if (amplitude >= 72) {
+        return [14, 0];
+      }
+      return [15, 0];
+    } else {
+      if (amplitude >= 184) {
+        return [0, 3];
+      }
+      if (amplitude >= 176) {
+        return [1, 3];
+      }
+      if (amplitude >= 168) {
+        return [2, 2];
+      }
+      if (amplitude >= 160) {
+        return [3, 2];
+      }
+      if (amplitude >= 152) {
+        return [4, 1];
+      }
+      if (amplitude >= 144) {
+        return [5, 1];
+      }
+      if (amplitude >= 136) {
+        return [6, 0];
+      }
+      if (amplitude >= 128) {
+        return [7, 0];
+      }
+      if (amplitude >= 120) {
+        return [8, 1];
+      }
+      if (amplitude >= 112) {
+        return [9, 1];
+      }
+      if (amplitude >= 104) {
+        return [10, 2];
+      }
+      if (amplitude >= 96) {
+        return [11, 2];
+      }
+      if (amplitude >= 88) {
+        return [12, 3];
+      }
+      if (amplitude >= 80) {
+        return [13, 3];
+      }
+      if (amplitude >= 72) {
+        return [14, 4];
+      }
+      return [15, 4];
     }
-    if (amplitude >= 176) {
-      return [1, 3];
-    }
-    if (amplitude >= 168) {
-      return [2, 2];
-    }
-    if (amplitude >= 160) {
-      return [3, 2];
-    }
-    if (amplitude >= 152) {
-      return [4, 1];
-    }
-    if (amplitude >= 144) {
-      return [5, 1];
-    }
-    if (amplitude >= 136) {
-      return [6, 0];
-    }
-    if (amplitude >= 128) {
-      return [7, 0];
-    }
-    if (amplitude >= 120) {
-      return [8, 1];
-    }
-    if (amplitude >= 112) {
-      return [9, 1];
-    }
-    if (amplitude >= 104) {
-      return [10, 2];
-    }
-    if (amplitude >= 96) {
-      return [11, 2];
-    }
-    if (amplitude >= 88) {
-      return [12, 3];
-    }
-    if (amplitude >= 80) {
-      return [13, 3];
-    }
-    if (amplitude >= 72) {
-      return [14, 4];
-    }
-    // if(amplitude>=56){return [15, 4]}
-    return [15, 4];
   }
 
   paintWavLine(x: number, y: number, colorIndex: number) {
+
+    y = windowShade ? y - 5 : y;
+    
+    y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
     if (x === 0) this._lastY = y;
 
     let top = y;
@@ -755,9 +767,12 @@ export class WavePaintHandler extends VisPaintHandler {
 
     if (bottom < top) {
       [bottom, top] = [top, bottom];
-      top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
+      if (windowShade){
+        // SORRY NOTHING
+      } else {
+        top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
+      }
     }
-    // const h = bottom - top + 1;
 
     for (y = top; y <= bottom; y++) {
       this._ctx!.drawImage(

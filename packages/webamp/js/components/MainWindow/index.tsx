@@ -8,7 +8,6 @@ import MiniTime from "../MiniTime";
 
 import ClickedDiv from "../ClickedDiv";
 import ContextMenuTarget from "../ContextMenuTarget";
-import Visualizer from "../Visualizer";
 import Vis from "../Vis";
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
