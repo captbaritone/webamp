@@ -262,6 +262,7 @@ export class BarPaintHandler extends VisPaintHandler {
     let scale = 0.95;  // Adjust this value between 0.0 and 1.0
 
     let targetSize = windowShade ? 40 : 75;
+    let maxHeight = windowShade ? 5 : 15;
 
     // This is to roughly emulate the Analyzer in more modern versions of Winamp
     // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
@@ -304,8 +305,8 @@ export class BarPaintHandler extends VisPaintHandler {
         uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 48;
       sadata[x] = uVar12;
 
-      if (sadata[x] >= renderHeight) {
-        sadata[x] = renderHeight;
+      if (sadata[x] >= maxHeight) {
+        sadata[x] = maxHeight;
       }
       safalloff[x] -= 12 / 16.0;
       // Possible bar fall off values are
