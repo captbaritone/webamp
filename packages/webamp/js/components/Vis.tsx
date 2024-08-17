@@ -128,7 +128,7 @@ export default function Vis({ analyser }: Props) {
         canvas,
         colors,
         analyser,
-        oscStyle: "dots",
+        oscStyle: "lines",
         bandwidth: "wide",
         coloring: "normal",
         peaks: true,
