@@ -7,8 +7,10 @@ export interface Vis {
   bandwidth?: "wide" | "thin";
   coloring?: "fire" | "line" | "normal";
   peaks?: boolean;
+  safalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
+  sa_peak_falloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
 }
-import { out_spectraldata, renderHeight, renderWidth, windowShade, PIXEL_DENSITY } from "./Vis";
+import { out_spectraldata, renderHeight, renderWidth, windowShade, PIXEL_DENSITY, doubled } from "./Vis";
 
 let sapeaks = new Int16Array(76).fill(0);
 let sadata2 = new Float32Array(76).fill(0);
@@ -18,6 +20,10 @@ let sample = new Float32Array(76).fill(0);
 let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
 let i: number;
 let uVar12: number;
+let falloff: number; 
+let peakfalloff: number;
+
+let pushdown : number = 0;
 
 let logged: boolean = false;
 
@@ -120,6 +126,30 @@ export class BarPaintHandler extends VisPaintHandler {
     } else {
       this.paintBar = this.paintBarNormal.bind(this);
     }
+
+    if (this._vis.safalloff === "slower"){
+      falloff = 3;
+    } else if (this._vis.safalloff === "slow"){
+      falloff = 6;
+    } else if (this._vis.safalloff === "moderate"){
+      falloff = 12;
+    } else if (this._vis.safalloff === "fast"){
+      falloff = 16;
+    } else if (this._vis.safalloff === "faster"){
+      falloff = 32;
+    }
+
+    if (this._vis.sa_peak_falloff === "slower"){
+      peakfalloff = 1.05;
+    } else if (this._vis.sa_peak_falloff === "slow"){
+      peakfalloff = 1.1;
+    } else if (this._vis.sa_peak_falloff === "moderate"){
+      peakfalloff = 1.2;
+    } else if (this._vis.sa_peak_falloff === "fast"){
+      peakfalloff = 1.4;
+    } else if (this._vis.sa_peak_falloff === "faster"){
+      peakfalloff = 1.6;
+    }
   }
 
   prepare() {
@@ -133,6 +163,17 @@ export class BarPaintHandler extends VisPaintHandler {
     ctx.fillStyle = vis.colors[23];
     ctx.fillRect(0, 0, 1, 1);
 
+    // pushes vis down if not double size, winamp does this
+    // BUG: does not take into account if the main window is visible
+    // how can i know the state of individual windows?
+    if (doubled){
+      pushdown = 0;
+    } else if(windowShade){
+      pushdown = 0;
+    } else {
+      pushdown = 2;
+    }
+
     //? paint bar
     this._bar.height = 16;
     this._bar.width = 1;
@@ -143,7 +184,7 @@ export class BarPaintHandler extends VisPaintHandler {
       if (PIXEL_DENSITY === 2 && windowShade){
         ctx.fillStyle = colorssmall2[-y+9]
       } else {
-        ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - -y];
+        ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - pushdown - -y];
       }
       ctx.fillRect(0, y, 1, y + 1);
     }
@@ -257,7 +298,7 @@ export class BarPaintHandler extends VisPaintHandler {
       if (sadata[x] >= maxHeight) {
         sadata[x] = maxHeight;
       }
-      safalloff[x] -= 12 / 16.0;
+      safalloff[x] -= falloff / 16.0;
       // Possible bar fall off values are
       // 3, 6, 12, 16, 32
       // Should there ever be some form of config options,
@@ -276,7 +317,7 @@ export class BarPaintHandler extends VisPaintHandler {
       barPeak[x] = sapeaks[x]/256;
 
       sapeaks[x] -= Math.round(sadata2[x]);
-      sadata2[x] *= 1.1;
+      sadata2[x] *= peakfalloff;
       // Possible peak fall off values are
       // 1.05f, 1.1f, 1.2f, 1.4f, 1.6f
       // 1.1f is the default of a fresh new Winamp installation
@@ -299,8 +340,8 @@ export class BarPaintHandler extends VisPaintHandler {
           ctx,
           x,
           x,
-          Math.round(safalloff[x]),
-          barPeak[x] + 1
+          Math.round(safalloff[x]) - pushdown,
+          barPeak[x] + 1 - pushdown
         );
       }
     }
@@ -452,7 +493,7 @@ export class WavePaintHandler extends VisPaintHandler {
     this._pixelRatio = window.devicePixelRatio || 1;
 
     if (this._vis.oscStyle === "dots") {
-      this.paintWav = this.paintWavDot.bind(this);
+      this.paintWav = this.paintWavLine.bind(this);
     } else if (this._vis.oscStyle === "solid") {
       // does call paintWavLine but there is a check inside
       // that changes the oscstyle accordingly
@@ -624,6 +665,15 @@ export class WavePaintHandler extends VisPaintHandler {
   }
 
   paintWavLine(x: number, y: number, colorIndex: number) {
+    // pushes vis down if not double size, winamp does this
+    // has to exist here for some reason else this doesn't work...
+    if (doubled){
+      pushdown = 0;
+    } else if(windowShade){
+      pushdown = 0;
+    } else {
+      pushdown = 2;
+    }
 
     y = windowShade ? y - 5 : y;
     
@@ -656,6 +706,9 @@ export class WavePaintHandler extends VisPaintHandler {
           bottom = windowShade ? 2 : 7;
         }
       }
+    } else if (this._vis.oscStyle === "dots") {
+      top = y;
+      bottom = y;
     } else {
       if (bottom < top) {
         [bottom, top] = [top, bottom];
@@ -664,7 +717,7 @@ export class WavePaintHandler extends VisPaintHandler {
         } else {
           top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
         }
-      }      
+      }
     }
 
     for (y = top; y <= bottom; y++) {
@@ -674,35 +727,13 @@ export class WavePaintHandler extends VisPaintHandler {
         colorIndex, // sx,sy
         1,
         1, // sw,sh
-        x, y, //dx,dy, dy is upside down because Winamp3/Winamp5 does it, so we have to emulate it
+        x, y + pushdown, //dx,dy, dy is upside down because Winamp3/Winamp5 does it, so we have to emulate it
         //set to x, y, for Winamp Classic behavior
         1,
         1 //dw,dh
       );
     }
   }
-
-  paintWavDot(x: number, y: number, colorIndex: number) {
-    y = windowShade ? y - 5 : y;
-    
-    if (windowShade && PIXEL_DENSITY === 2){
-      y = y < 0 ? 0 : (y > 10 - 1 ? 10 - 1 : y);
-    } else {
-      y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
-    }
-    this._ctx!.drawImage(
-      this._bar,
-      0,
-      colorIndex, // sx,sy
-      1,
-      1, // sw,sh
-      x, y, //dx,dy, dy is upside down because Winamp3/Winamp5 does it, so we have to emulate it
-      //set to x, y, for Winamp Classic behavior
-      1,
-      1 //dw,dh
-    );
-  }
-
 }
 
 export class NoVisualizerHandler extends VisPaintHandler {
@@ -712,13 +743,6 @@ export class NoVisualizerHandler extends VisPaintHandler {
   }
 
   paintFrame() {
-    if (!this._ctx) return;
-    const ctx = this._ctx;
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.cleared = true;
-  }
-
-  dispose() {
     if (!this._ctx) return;
     const ctx = this._ctx;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);

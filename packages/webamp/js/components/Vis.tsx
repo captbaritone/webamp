@@ -79,7 +79,7 @@ export default function Vis({ analyser }: Props) {
   const mode = useTypedSelector(Selectors.getVisualizerStyle);
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
-  const doubled = useTypedSelector(Selectors.getDoubled);
+  doubled = useTypedSelector(Selectors.getDoubled);
   const dummyVizData = useTypedSelector(Selectors.getDummyVizData);
 
   const dataArray = new Uint8Array(1024);
@@ -89,6 +89,8 @@ export default function Vis({ analyser }: Props) {
 
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
   windowShade = getWindowShade("main");
+  // BUG: windowshade does not take into account if the main window is visible (small vis is in pledit)
+  // how can i know the state of individual windows?
   renderWidth = windowShade ? 38 : 75;
   renderHeight = windowShade ? 5 : 16;
   PIXEL_DENSITY = (doubled && windowShade) ? 2 : 1;
@@ -126,10 +128,12 @@ export default function Vis({ analyser }: Props) {
         canvas,
         colors,
         analyser,
-        oscStyle: "lines",
+        oscStyle: "dots",
         bandwidth: "wide",
         coloring: "normal",
         peaks: true,
+        safalloff: "moderate",
+        sa_peak_falloff: "slow",
       };
 
       // uninteruptable painting requires _painter to be always available
