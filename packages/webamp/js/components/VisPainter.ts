@@ -9,6 +9,7 @@ export interface Vis {
   peaks?: boolean;
   safalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   sa_peak_falloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
+  sa?: "analyzer" | "oscilloscope" | "none";
 }
 import { out_spectraldata, renderHeight, renderWidth, windowShade, PIXEL_DENSITY, doubled } from "./Vis";
 
@@ -248,12 +249,12 @@ export class BarPaintHandler extends VisPaintHandler {
 
     // This is to roughly emulate the Analyzer in more modern versions of Winamp.
     // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
-    // scale variable can be set to 1.0
+    // scale variable can be set to 0.0
 
     // This factor controls the scaling from linear to logarithmic.
     // scale = 0.0 -> fully linear scaling
     // scale = 1.0 -> fully logarithmic scaling
-    let scale = 0.95;  // Adjust this value between 0.0 and 1.0
+    let scale = 0.91;  // Adjust this value between 0.0 and 1.0
     for (let x = 0; x < targetSize; x++) {
         // Linear interpolation between linear and log scaling
         let linearIndex = x / (targetSize - 1) * (maxFreqIndex - 1);

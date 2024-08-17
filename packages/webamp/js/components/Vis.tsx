@@ -76,7 +76,7 @@ export default function Vis({ analyser }: Props) {
     analyser.fftSize = 1024;
   }, [analyser, analyser.fftSize]);
   const colors = useTypedSelector(Selectors.getSkinColors);
-  const mode = useTypedSelector(Selectors.getVisualizerStyle);
+  let mode = useTypedSelector(Selectors.getVisualizerStyle);
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
   doubled = useTypedSelector(Selectors.getDoubled);
@@ -134,6 +134,7 @@ export default function Vis({ analyser }: Props) {
         peaks: true,
         safalloff: "moderate",
         sa_peak_falloff: "slow",
+        sa: "analyzer",
       };
 
       // uninteruptable painting requires _painter to be always available
@@ -141,11 +142,22 @@ export default function Vis({ analyser }: Props) {
       const newPainter = new PainterType(_vis);
       setPainter(newPainter);
 
-      // this.audioStatusChanged(); // stop loop of old painter, preparing new painter.
-
-      // if (oldPainter) {
-      //   oldPainter.dispose();
-      // }
+      // not sure it'll achieve the desired effect...
+      // i tried to set the vis mode here, but it didnt quite work out the way i imagined
+/*       switch (_vis.sa) {
+        case "analyzer":
+          mode = VISUALIZERS.BAR;
+          break;
+        case "oscilloscope":
+          mode = VISUALIZERS.OSCILLOSCOPE;
+          // _setPainter(BarPaintHandlerFake);
+          break;
+        case "none":
+          mode = VISUALIZERS.NONE;
+          break;
+        default:
+          mode = VISUALIZERS.NONE;
+      } */
     };
     // console.log(" vis mode:", mode);
     switch (mode) {
