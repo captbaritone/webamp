@@ -20,14 +20,13 @@ import {
   BarPaintHandler,
   WavePaintHandler,
   NoVisualizerHandler,
-  FakeBarPaintHandler,
 } from "./VisPainter";
 
 type Props = {
   analyser: AnalyserNode;
 };
 
-const PIXEL_DENSITY = 1;
+export let PIXEL_DENSITY = 1;
 
 const fft = new FFT();
 const samplesIn = 1024; // Example input size
@@ -35,6 +34,7 @@ const samplesOut = 512; // Example output size
 export let renderWidth: number;
 export let renderHeight: number;
 export let windowShade: boolean | undefined;
+export let doubled: boolean | undefined;
 fft.init(samplesIn, samplesOut, 1, 1.0, true);
 
 let in_wavedata = new Float32Array(samplesIn); // Fill this with your input data
@@ -79,6 +79,7 @@ export default function Vis({ analyser }: Props) {
   const mode = useTypedSelector(Selectors.getVisualizerStyle);
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
+  const doubled = useTypedSelector(Selectors.getDoubled);
   const dummyVizData = useTypedSelector(Selectors.getDummyVizData);
 
   const dataArray = new Uint8Array(1024);
@@ -90,6 +91,7 @@ export default function Vis({ analyser }: Props) {
   windowShade = getWindowShade("main");
   renderWidth = windowShade ? 38 : 75;
   renderHeight = windowShade ? 5 : 16;
+  PIXEL_DENSITY = (doubled && windowShade) ? 2 : 1;
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;
@@ -133,7 +135,6 @@ export default function Vis({ analyser }: Props) {
       // uninteruptable painting requires _painter to be always available
       // const oldPainter = painter;
       const newPainter = new PainterType(_vis);
-      newPainter.prepare();
       setPainter(newPainter);
 
       // this.audioStatusChanged(); // stop loop of old painter, preparing new painter.
@@ -173,6 +174,7 @@ export default function Vis({ analyser }: Props) {
     let animationRequest: number | null = null;
   
     const loop = () => {
+      painter.prepare();
       analyser.getByteTimeDomainData(dataArray);
       for (let i = 0; i < dataArray.length; i++) {
         in_wavedata[i] = (dataArray[i] - 128) / 32;
@@ -196,6 +198,10 @@ export default function Vis({ analyser }: Props) {
       }
     };
   }, [audioStatus, canvas, painter]);
+
+  if (audioStatus === MEDIA_STATUS.STOPPED) {
+    return null;
+  }
   // @ts-ignore
 
   // @ts-ignore

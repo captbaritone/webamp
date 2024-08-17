@@ -8,7 +8,7 @@ export interface Vis {
   coloring?: "fire" | "line" | "normal";
   peaks?: boolean;
 }
-import { out_spectraldata, renderHeight, renderWidth, windowShade } from "./Vis";
+import { out_spectraldata, renderHeight, renderWidth, windowShade, PIXEL_DENSITY } from "./Vis";
 
 let sapeaks = new Int16Array(76).fill(0);
 let sadata2 = new Float32Array(76).fill(0);
@@ -19,10 +19,13 @@ let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else
 let i: number;
 let uVar12: number;
 
+let logged: boolean = false;
+
 let colorssmall: string[] = [];
+let colorssmall2: string[] = [];
 
 /**
- * Base class of AVS (animation frame renderer engine)
+ * Base class of Visualizer (animation frame renderer engine)
  */
 export class VisPaintHandler {
   _vis: Vis;
@@ -35,76 +38,26 @@ export class VisPaintHandler {
   }
 
   /**
-   * Attemp to build cached bitmaps for later use while render a frame.
+   * Attempt to build cached bitmaps for later use while rendering a frame.
    * Purpose: fast rendering in animation loop
    */
   prepare() {}
 
   /**
-   * Called once per frame rendiring
+   * Called once per frame rendering
    */
   paintFrame() {}
 
   /**
-   * Attemp to cleanup cached bitmaps
+   * Attempt to cleanup cached bitmaps
    */
   dispose() {}
-
-  /**
-   * called if it is an AVS.
-   * @param action vis_prev | vis_next | vis_f5 (fullscreen) |
-   */
-  doAction(action: string, param: string) {}
 }
 
-//? =============================== VIS.TEST PAINTER (fake) ===============================
-export class FakeBarPaintHandler extends VisPaintHandler {
-  prepare() {}
-
-  paintFrame() {
-    if (!this._ctx) return;
-    const ctx = this._ctx;
-    const width = ctx.canvas.width;
-    const height = ctx.canvas.height;
-    ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth = 5;
-    for (let i = 0; i < 30; i += 1) {
-      const r = Math.floor(Math.random() * 255);
-      const g = Math.floor(Math.random() * 255);
-      const b = Math.floor(Math.random() * 255);
-
-      ctx.beginPath();
-      ctx.moveTo(Math.random() * width, Math.random() * height);
-      ctx.lineTo(Math.random() * width, Math.random() * height);
-      ctx.strokeStyle = `rgba(${r},${g},${b},1)`;
-      ctx.stroke();
-    }
-  }
-}
-export class FakeWavePaintHandler extends VisPaintHandler {
-  prepare() {}
-
-  paintFrame() {
-    if (!this._ctx) return;
-    const ctx = this._ctx;
-    const width = ctx.canvas.width;
-    const height = ctx.canvas.height;
-    ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "#fff";
-    for (let i = 0; i < 30; i += 1) {
-      ctx.beginPath();
-      ctx.moveTo(Math.random() * width, Math.random() * height);
-      ctx.lineTo(Math.random() * width, Math.random() * height);
-      ctx.stroke();
-    }
-  }
-}
 //? =============================== BAR PAINTER ===============================
 type PaintFrameFunction = () => void;
 type PaintBarFunction = (
   ctx: CanvasRenderingContext2D,
-  // barIndex: number,
   x1: number,
   x2: number,
   barHeight: number,
@@ -131,7 +84,21 @@ export class BarPaintHandler extends VisPaintHandler {
     this._bufferLength = this._analyser.frequencyBinCount;
     this._dataArray = new Uint8Array(this._bufferLength);
 
-    colorssmall = [vis.colors[17], vis.colors[14], vis.colors[11], vis.colors[8], vis.colors[4]];
+    colorssmall = [vis.colors[17], 
+                  vis.colors[14], 
+                  vis.colors[11], 
+                  vis.colors[8], 
+                  vis.colors[4]];
+    colorssmall2 = [vis.colors[17], 
+                    vis.colors[16], 
+                    vis.colors[14], 
+                    vis.colors[13], 
+                    vis.colors[11],
+                    vis.colors[10],
+                    vis.colors[8],
+                    vis.colors[7],
+                    vis.colors[5],
+                    vis.colors[4],];
 
     this._16h.width = 1;
     this._16h.height = 16;
@@ -141,6 +108,8 @@ export class BarPaintHandler extends VisPaintHandler {
       this.paintFrame = this.paintFrameWide.bind(this);
     } else {
       // thin
+      // does call paintFrameWide but there is a check inside
+      // that changes the bandwidth accordingly
       this.paintFrame = this.paintFrameWide.bind(this);
     }
 
@@ -156,15 +125,11 @@ export class BarPaintHandler extends VisPaintHandler {
   prepare() {
     const vis = this._vis;
     if (!vis.canvas) return;
-    // const groupId = vis._gammagroup;
-    // const gammaGroup = this._vis._uiRoot._getGammaGroup(groupId);
-    // this._barWidth = Math.ceil(vis.canvas.width / NUM_BARS);
 
     //? paint peak
     this._peak.height = 1;
     this._peak.width = 1;
     let ctx = this._peak.getContext("2d")!;
-    // ctx.fillStyle = gammaGroup.transformColor(vis._colorBandPeak);
     ctx.fillStyle = vis.colors[23];
     ctx.fillRect(0, 0, 1, 1);
 
@@ -174,20 +139,12 @@ export class BarPaintHandler extends VisPaintHandler {
     this._bar.setAttribute("width", "1");
     this._bar.setAttribute("height", "16");
     ctx = this._bar.getContext("2d")!;
-    // const grd = ctx.createLinearGradient(0, 0, 0, vis.canvas.height);
-    // for (let i = 0; i < vis._colorBands.length; i++) {
-    //   grd.addColorStop(
-    //     (1 / (vis._colorBands.length - 1)) * i,
-    //     gammaGroup.transformColor(vis._colorBands[i])
-    //   );
-    // }
-    // ctx.strokeStyle = this._color;
-    // ctx.fillStyle = grd;
-    // ctx.fillRect(0, 0, 1, vis.canvas.height);
-    // ctx.imageSmoothingEnabled = false;
-    for (let y = 0; y < renderHeight; y++) {
-      // ctx.fillStyle = gammaGroup.transformColor(vis._colorBands[15 - y]);
-      ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - -y];
+    for (let y = 0; y < 16; y++) {
+      if (PIXEL_DENSITY === 2 && windowShade){
+        ctx.fillStyle = colorssmall2[-y+9]
+      } else {
+        ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - -y];
+      }
       ctx.fillRect(0, y, 1, y + 1);
     }
 
@@ -226,17 +183,36 @@ export class BarPaintHandler extends VisPaintHandler {
     let logMaxFreqIndex = Math.log10(maxFreqIndex);
     let logMinFreqIndex = 0;
 
+    let targetSize: number;
+    let maxHeight: number;
+    let maxWidth: number;
+    if (PIXEL_DENSITY === 2){
+      targetSize = 75;
+      maxHeight = 10;
+    } else {
+      targetSize = windowShade ? 40 : 75;  
+      maxHeight = windowShade ? 5 : 15;    
+    }
+
+    if (windowShade){
+      if (PIXEL_DENSITY === 2){
+        maxWidth = 75; // this is not 37*2, but if this was 74, we'd be missing a pixel
+        // someone here at Nullsoft screwed up...? or thought 74 didn't look good, I don't know.
+      } else {
+        maxWidth = 37;
+      }
+    } else {
+      maxWidth = 75;
+    }
+
+    // This is to roughly emulate the Analyzer in more modern versions of Winamp.
+    // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
+    // scale variable can be set to 1.0
+
     // This factor controls the scaling from linear to logarithmic.
     // scale = 0.0 -> fully linear scaling
     // scale = 1.0 -> fully logarithmic scaling
     let scale = 0.95;  // Adjust this value between 0.0 and 1.0
-
-    let targetSize = windowShade ? 40 : 75;
-    let maxHeight = windowShade ? 5 : 15;
-
-    // This is to roughly emulate the Analyzer in more modern versions of Winamp
-    // 2.x and early 5.x versions had a completely linear(?) FFT, if so desired the
-    // scale variable can be set to 1.0
     for (let x = 0; x < targetSize; x++) {
         // Linear interpolation between linear and log scaling
         let linearIndex = x / (targetSize - 1) * (maxFreqIndex - 1);
@@ -265,12 +241,11 @@ export class BarPaintHandler extends VisPaintHandler {
         }
     }
 
-    for (let x = 0; x < 75; x++) {
+    for (let x = 0; x < maxWidth; x++) {
       // Based on research of looking at Winamp 5.666 and 2.63 executables
-      // Right now it's hard coded to assume we want thick bands
-      // so in the future, should we have a preferences style window
-      // we should be able to change the width of the bands here
 
+      // if our bandwidth is "wide", chunk every 5 instances of the bars,
+      // add them together and display them
       if (this._vis.bandwidth === "wide"){
         i = (i = x & 0xfffffffc);
         uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 4;
@@ -309,10 +284,16 @@ export class BarPaintHandler extends VisPaintHandler {
           sapeaks[x] = 0;
       }
 
-      if (Math.round(barPeak[x]) < 1){
+      if (windowShade){
+        // SORRY NOTHING
+        // ironically enough the peaks do appear at the bottom here
+      } else {
+        if (Math.round(barPeak[x]) < 1){
           barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
+        }
       }
 
+      // skip rendering if x is 4
       if (!(x == i + 3)) {
         this.paintBar(
           ctx,
@@ -339,15 +320,9 @@ export class BarPaintHandler extends VisPaintHandler {
     barHeight: number,
     peakHeight: number
   ) {
-    // const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    // var x = Math.round(this._barWidth * barIndex);
-    // var r = this._barWidth - 2;
-    // var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     const y = h - barHeight;
-    // var y = barHeight;
 
-    // ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
     ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
 
     if (this._vis.peaks) {
@@ -370,14 +345,9 @@ export class BarPaintHandler extends VisPaintHandler {
     barHeight: number,
     peakHeight: number
   ) {
-    // const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    // var x = Math.round(this._barWidth * barIndex);
-    // var r = this._barWidth - 2;
-    // var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     let y = h - barHeight;
 
-    // ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
     ctx.drawImage(
       this._bar,
       0,
@@ -410,14 +380,14 @@ export class BarPaintHandler extends VisPaintHandler {
     barHeight: number,
     peakHeight: number
   ) {
-    // const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    // var x = Math.round(this._barWidth * barIndex);
-    // var r = this._barWidth - 2;
-    // var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     let y = h - barHeight;
 
-    // ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
+    if(!logged) {
+      console.log("FIXME: Line drawing is currently Fire mode!");
+      logged = true;
+    }
+
     ctx.drawImage(
       this._bar,
       0, // sx
@@ -466,8 +436,6 @@ export class WavePaintHandler extends VisPaintHandler {
   _bar: HTMLCanvasElement = document.createElement("canvas");
   _16h: HTMLCanvasElement = document.createElement("canvas"); // non-stretched
   paintWav: PaintWavFunction;
-  _datafetched: boolean = false;
-  // _colors2: string[];
 
   constructor(vis: Vis) {
     super(vis);
@@ -486,6 +454,8 @@ export class WavePaintHandler extends VisPaintHandler {
     if (this._vis.oscStyle === "dots") {
       this.paintWav = this.paintWavDot.bind(this);
     } else if (this._vis.oscStyle === "solid") {
+      // does call paintWavLine but there is a check inside
+      // that changes the oscstyle accordingly
       this.paintWav = this.paintWavLine.bind(this);
     } else {
       this.paintWav = this.paintWavLine.bind(this);
@@ -498,8 +468,6 @@ export class WavePaintHandler extends VisPaintHandler {
       return;
     }
     const vis = this._vis;
-    // const groupId = vis._gammagroup;
-    // const gammaGroup = this._vis._uiRoot._getGammaGroup(groupId);
 
     //? paint bar
     this._bar.width = 1;
@@ -509,13 +477,11 @@ export class WavePaintHandler extends VisPaintHandler {
     const ctx = this._bar.getContext("2d");
     if (ctx) {
       for (let y = 0; y < 5; y++) {
-        // ctx.fillStyle = gammaGroup.transformColor(vis._colorOsc[y]);
         ctx.fillStyle = vis.colors[18 + y];
         ctx.fillRect(0, y, 1, y + 1);
       }
     }
 
-    // this._ctx = vis.canvas.getContext("2d");
     this._ctx.imageSmoothingEnabled = false;
     // @ts-ignore
     this._ctx.mozImageSmoothingEnabled = false;
@@ -523,14 +489,11 @@ export class WavePaintHandler extends VisPaintHandler {
     this._ctx.webkitImageSmoothingEnabled = false;
     // @ts-ignore
     this._ctx.msImageSmoothingEnabled = false;
-
-    this._datafetched = false;
   }
 
   paintFrame() {
     if (!this._ctx) return;
     this._analyser.getByteTimeDomainData(this._dataArray);
-    // this._analyser.getFloatTimeDomainData(this._dataArray);
     this._dataArray = this._dataArray.slice(0, 576);
     const bandwidth = this._dataArray.length;
 
@@ -540,13 +503,18 @@ export class WavePaintHandler extends VisPaintHandler {
 
     const sliceWidth = Math.floor(bandwidth / width);
 
+    let y: number;
+    let colorIndex: number;
     // Iterate over the width of the canvas in fixed 75 pixels.
     for (let j = 0; j <= 75; j++) {
       const amplitude = slice1st(this._dataArray, sliceWidth, j);
       // +4 is set to off center the oscilloscope
       // because completely centered looks a bit weird
-      const [y, colorIndex] = this.rangeByAmplitude(windowShade ? ((amplitude+4)/3)+90 : amplitude+4);
-
+      if (PIXEL_DENSITY === 2){
+        [y, colorIndex] = this.rangeByAmplitude(((amplitude+4)/2)+48);
+      } else {
+        [y, colorIndex] = this.rangeByAmplitude(windowShade ? ((amplitude+4)/3)+90 : amplitude+4);
+      }
       this.paintWav(j, y, colorIndex);
     }
   }
@@ -659,7 +627,11 @@ export class WavePaintHandler extends VisPaintHandler {
 
     y = windowShade ? y - 5 : y;
     
-    y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
+    if (windowShade && PIXEL_DENSITY === 2){
+      y = y < 0 ? 0 : (y > 10 - 1 ? 10 - 1 : y);
+    } else {
+      y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
+    }
     if (x === 0) this._lastY = y;
 
     let top = y;
@@ -667,12 +639,22 @@ export class WavePaintHandler extends VisPaintHandler {
     this._lastY = y;
 
     if (this._vis.oscStyle === "solid"){
-      if (y >= (windowShade ? 2 : 8)) {
-        top = windowShade ? 2 : 8;
-        bottom = y;
+      if (PIXEL_DENSITY === 2){
+        if (y >= (windowShade ? 5 : 8)) {
+          top = windowShade ? 5 : 8;
+          bottom = y;
+        } else {
+          top = y;
+          bottom = windowShade ? 5 : 7;
+        }
       } else {
-        top = y;
-        bottom = windowShade ? 2 : 7;
+        if (y >= (windowShade ? 2 : 8)) {
+          top = windowShade ? 2 : 8;
+          bottom = y;
+        } else {
+          top = y;
+          bottom = windowShade ? 2 : 7;
+        }
       }
     } else {
       if (bottom < top) {
@@ -701,6 +683,13 @@ export class WavePaintHandler extends VisPaintHandler {
   }
 
   paintWavDot(x: number, y: number, colorIndex: number) {
+    y = windowShade ? y - 5 : y;
+    
+    if (windowShade && PIXEL_DENSITY === 2){
+      y = y < 0 ? 0 : (y > 10 - 1 ? 10 - 1 : y);
+    } else {
+      y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
+    }
     this._ctx!.drawImage(
       this._bar,
       0,
@@ -723,6 +712,13 @@ export class NoVisualizerHandler extends VisPaintHandler {
   }
 
   paintFrame() {
+    if (!this._ctx) return;
+    const ctx = this._ctx;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.cleared = true;
+  }
+
+  dispose() {
     if (!this._ctx) return;
     const ctx = this._ctx;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
