@@ -106,12 +106,6 @@
   },
   "homepage": "https://github.com/captbaritone/webamp/",
   "devDependencies": {
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/preset-env": "^7.25.3",
-    "@babel/preset-typescript": "^7.24.7",
     "@parcel/reporter-bundle-analyzer": "^2.8.2",
     "@types/classnames": "^2.2.6",
     "@types/fscreen": "^1.0.1",
