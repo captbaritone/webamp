@@ -11,25 +11,28 @@ export interface Vis {
   sa_peak_falloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   sa?: "analyzer" | "oscilloscope" | "none";
 }
-import { out_spectraldata, renderHeight, renderWidth, windowShade, PIXEL_DENSITY, doubled } from "./Vis";
+import { range } from "lodash";
+import {
+  out_spectraldata,
+  renderHeight,
+  renderWidth,
+  windowShade,
+  PIXEL_DENSITY,
+  doubled,
+} from "./Vis";
 
 let sapeaks = new Int16Array(76).fill(0);
 let sadata2 = new Float32Array(76).fill(0);
 let sadata = new Int16Array(76).fill(0);
-let safalloff = new Float32Array(76).fill(0);  
+let safalloff = new Float32Array(76).fill(0);
 let sample = new Float32Array(76).fill(0);
 let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
 let i: number;
 let uVar12: number;
-let falloff: number; 
+let falloff: number;
 let peakfalloff: number;
 
-let pushdown : number = 0;
-
-let logged: boolean = false;
-
-let colorssmall: string[] = [];
-let colorssmall2: string[] = [];
+let pushdown: number = 0;
 
 /**
  * Base class of Visualizer (animation frame renderer engine)
@@ -41,7 +44,6 @@ export class VisPaintHandler {
   constructor(vis: Vis) {
     this._vis = vis;
     this._ctx = vis.canvas!.getContext("2d");
-    // this.prepare();
   }
 
   /**
@@ -81,7 +83,9 @@ export class BarPaintHandler extends VisPaintHandler {
   _16h: HTMLCanvasElement = document.createElement("canvas"); // non-stretched
   _bufferLength: number;
   _dataArray: Uint8Array;
-  // _ctx: CanvasRenderingContext2D;
+  logged: boolean = false;
+  colorssmall: string[];
+  colorssmall2: string[];
   paintBar: PaintBarFunction;
   paintFrame: PaintFrameFunction;
 
@@ -91,21 +95,27 @@ export class BarPaintHandler extends VisPaintHandler {
     this._bufferLength = this._analyser.frequencyBinCount;
     this._dataArray = new Uint8Array(this._bufferLength);
 
-    colorssmall = [vis.colors[17], 
-                  vis.colors[14], 
-                  vis.colors[11], 
-                  vis.colors[8], 
-                  vis.colors[4]];
-    colorssmall2 = [vis.colors[17], 
-                    vis.colors[16], 
-                    vis.colors[14], 
-                    vis.colors[13], 
-                    vis.colors[11],
-                    vis.colors[10],
-                    vis.colors[8],
-                    vis.colors[7],
-                    vis.colors[5],
-                    vis.colors[4],];
+    this.colorssmall = [
+      vis.colors[17],
+      vis.colors[14],
+      vis.colors[11],
+      vis.colors[8],
+      vis.colors[4],
+    ];
+    this.colorssmall2 = [
+      vis.colors[17],
+      vis.colors[16],
+      vis.colors[14],
+      vis.colors[13],
+      vis.colors[11],
+      vis.colors[10],
+      vis.colors[8],
+      vis.colors[7],
+      vis.colors[5],
+      vis.colors[4],
+    ];
+
+    this.logged;
 
     this._16h.width = 1;
     this._16h.height = 16;
@@ -128,27 +138,27 @@ export class BarPaintHandler extends VisPaintHandler {
       this.paintBar = this.paintBarNormal.bind(this);
     }
 
-    if (this._vis.safalloff === "slower"){
+    if (this._vis.safalloff === "slower") {
       falloff = 3;
-    } else if (this._vis.safalloff === "slow"){
+    } else if (this._vis.safalloff === "slow") {
       falloff = 6;
-    } else if (this._vis.safalloff === "moderate"){
+    } else if (this._vis.safalloff === "moderate") {
       falloff = 12;
-    } else if (this._vis.safalloff === "fast"){
+    } else if (this._vis.safalloff === "fast") {
       falloff = 16;
-    } else if (this._vis.safalloff === "faster"){
+    } else if (this._vis.safalloff === "faster") {
       falloff = 32;
     }
 
-    if (this._vis.sa_peak_falloff === "slower"){
+    if (this._vis.sa_peak_falloff === "slower") {
       peakfalloff = 1.05;
-    } else if (this._vis.sa_peak_falloff === "slow"){
+    } else if (this._vis.sa_peak_falloff === "slow") {
       peakfalloff = 1.1;
-    } else if (this._vis.sa_peak_falloff === "moderate"){
+    } else if (this._vis.sa_peak_falloff === "moderate") {
       peakfalloff = 1.2;
-    } else if (this._vis.sa_peak_falloff === "fast"){
+    } else if (this._vis.sa_peak_falloff === "fast") {
       peakfalloff = 1.4;
-    } else if (this._vis.sa_peak_falloff === "faster"){
+    } else if (this._vis.sa_peak_falloff === "faster") {
       peakfalloff = 1.6;
     }
   }
@@ -167,9 +177,9 @@ export class BarPaintHandler extends VisPaintHandler {
     // pushes vis down if not double size, winamp does this
     // BUG: does not take into account if the main window is visible
     // how can i know the state of individual windows?
-    if (doubled){
+    if (doubled) {
       pushdown = 0;
-    } else if(windowShade){
+    } else if (windowShade) {
       pushdown = 0;
     } else {
       pushdown = 2;
@@ -182,15 +192,15 @@ export class BarPaintHandler extends VisPaintHandler {
     this._bar.setAttribute("height", "16");
     ctx = this._bar.getContext("2d")!;
     for (let y = 0; y < 16; y++) {
-      if (PIXEL_DENSITY === 2 && windowShade){
-        ctx.fillStyle = colorssmall2[-y+9]
+      if (PIXEL_DENSITY === 2 && windowShade) {
+        ctx.fillStyle = this.colorssmall2[-y + 9];
       } else {
-        ctx.fillStyle = windowShade ? colorssmall[-y+4] : vis.colors[2 - pushdown - -y];
+        ctx.fillStyle = windowShade
+          ? this.colorssmall[-y + 4]
+          : vis.colors[2 - pushdown - -y];
       }
       ctx.fillRect(0, y, 1, y + 1);
     }
-
-    // this._ctx = this._vis.canvas.getContext("2d");
   }
 
   /**
@@ -228,16 +238,16 @@ export class BarPaintHandler extends VisPaintHandler {
     let targetSize: number;
     let maxHeight: number;
     let maxWidth: number;
-    if (PIXEL_DENSITY === 2){
+    if (PIXEL_DENSITY === 2) {
       targetSize = 75;
       maxHeight = 10;
     } else {
-      targetSize = windowShade ? 40 : 75;  
-      maxHeight = windowShade ? 5 : 15;    
+      targetSize = windowShade ? 40 : 75;
+      maxHeight = windowShade ? 5 : 15;
     }
 
-    if (windowShade){
-      if (PIXEL_DENSITY === 2){
+    if (windowShade) {
+      if (PIXEL_DENSITY === 2) {
         maxWidth = 75; // this is not 37*2, but if this was 74, we'd be missing a pixel
         // someone here at Nullsoft screwed up...? or thought 74 didn't look good, I don't know.
       } else {
@@ -254,33 +264,36 @@ export class BarPaintHandler extends VisPaintHandler {
     // This factor controls the scaling from linear to logarithmic.
     // scale = 0.0 -> fully linear scaling
     // scale = 1.0 -> fully logarithmic scaling
-    let scale = 0.91;  // Adjust this value between 0.0 and 1.0
+    let scale = 0.91; // Adjust this value between 0.0 and 1.0
     for (let x = 0; x < targetSize; x++) {
-        // Linear interpolation between linear and log scaling
-        let linearIndex = x / (targetSize - 1) * (maxFreqIndex - 1);
-        let logScaledIndex = logMinFreqIndex + (logMaxFreqIndex - logMinFreqIndex) * x / (targetSize - 1);
-        let logIndex = Math.pow(10, logScaledIndex);
-        
-        // Interpolating between linear and logarithmic scaling
-        let scaledIndex = (1.0 - scale) * linearIndex + scale * logIndex;
+      // Linear interpolation between linear and log scaling
+      let linearIndex = (x / (targetSize - 1)) * (maxFreqIndex - 1);
+      let logScaledIndex =
+        logMinFreqIndex +
+        ((logMaxFreqIndex - logMinFreqIndex) * x) / (targetSize - 1);
+      let logIndex = Math.pow(10, logScaledIndex);
 
-        let index1 = Math.floor(scaledIndex);
-        let index2 = Math.ceil(scaledIndex);
+      // Interpolating between linear and logarithmic scaling
+      let scaledIndex = (1.0 - scale) * linearIndex + scale * logIndex;
 
-        if (index1 >= maxFreqIndex) {
-            index1 = maxFreqIndex - 1;
-        }
-        if (index2 >= maxFreqIndex) {
-            index2 = maxFreqIndex - 1;
-        }
+      let index1 = Math.floor(scaledIndex);
+      let index2 = Math.ceil(scaledIndex);
 
-        if (index1 == index2) {
-            sample[x] = out_spectraldata[index1];
-        } else {
-            let frac2 = scaledIndex - index1;
-            let frac1 = 1.0 - frac2;
-            sample[x] = (frac1 * out_spectraldata[index1] + frac2 * out_spectraldata[index2]);
-        }
+      if (index1 >= maxFreqIndex) {
+        index1 = maxFreqIndex - 1;
+      }
+      if (index2 >= maxFreqIndex) {
+        index2 = maxFreqIndex - 1;
+      }
+
+      if (index1 == index2) {
+        sample[x] = out_spectraldata[index1];
+      } else {
+        let frac2 = scaledIndex - index1;
+        let frac1 = 1.0 - frac2;
+        sample[x] =
+          frac1 * out_spectraldata[index1] + frac2 * out_spectraldata[index2];
+      }
     }
 
     for (let x = 0; x < maxWidth; x++) {
@@ -288,9 +301,10 @@ export class BarPaintHandler extends VisPaintHandler {
 
       // if our bandwidth is "wide", chunk every 5 instances of the bars,
       // add them together and display them
-      if (this._vis.bandwidth === "wide"){
-        i = (i = x & 0xfffffffc);
-        uVar12 = (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 4;
+      if (this._vis.bandwidth === "wide") {
+        i = i = x & 0xfffffffc;
+        uVar12 =
+          (sample[i + 3] + sample[i + 2] + sample[i + 1] + sample[i]) / 4;
         sadata[x] = uVar12;
       } else {
         sadata[x] = sample[x];
@@ -310,12 +324,12 @@ export class BarPaintHandler extends VisPaintHandler {
         safalloff[x] = sadata[x];
       }
 
-      if (sapeaks[x] <= (Math.round(safalloff[x] * 256))) {
+      if (sapeaks[x] <= Math.round(safalloff[x] * 256)) {
         sapeaks[x] = safalloff[x] * 256;
         sadata2[x] = 3.0;
       }
 
-      barPeak[x] = sapeaks[x]/256;
+      barPeak[x] = sapeaks[x] / 256;
 
       sapeaks[x] -= Math.round(sadata2[x]);
       sadata2[x] *= peakfalloff;
@@ -323,14 +337,14 @@ export class BarPaintHandler extends VisPaintHandler {
       // 1.05f, 1.1f, 1.2f, 1.4f, 1.6f
       // 1.1f is the default of a fresh new Winamp installation
       if (sapeaks[x] <= 0) {
-          sapeaks[x] = 0;
+        sapeaks[x] = 0;
       }
 
-      if (windowShade){
+      if (windowShade) {
         // SORRY NOTHING
         // ironically enough the peaks do appear at the bottom here
       } else {
-        if (Math.round(barPeak[x]) < 1){
+        if (Math.round(barPeak[x]) < 1) {
           barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
         }
       }
@@ -356,7 +370,6 @@ export class BarPaintHandler extends VisPaintHandler {
    */
   paintBarNormal(
     ctx: CanvasRenderingContext2D,
-    // barIndex: number,
     x: number,
     x2: number,
     barHeight: number,
@@ -381,7 +394,6 @@ export class BarPaintHandler extends VisPaintHandler {
    */
   paintBarFire(
     ctx: CanvasRenderingContext2D,
-    // barIndex: number,
     x: number,
     x2: number,
     barHeight: number,
@@ -416,7 +428,6 @@ export class BarPaintHandler extends VisPaintHandler {
    */
   paintBarLine(
     ctx: CanvasRenderingContext2D,
-    // barIndex: number,
     x: number,
     x2: number,
     barHeight: number,
@@ -425,9 +436,9 @@ export class BarPaintHandler extends VisPaintHandler {
     const h = ctx.canvas.height;
     let y = h - barHeight;
 
-    if(!logged) {
+    if (!this.logged) {
       console.log("FIXME: Line drawing is currently Fire mode!");
-      logged = true;
+      this.logged = true;
     }
 
     ctx.drawImage(
@@ -451,7 +462,7 @@ export class BarPaintHandler extends VisPaintHandler {
 
 //? =============================== OSCILOSCOPE PAINTER ===============================
 
-type PaintWavFunction = (x: number, y: number, colorIndex: number) => void;
+type PaintWavFunction = (x: number, y: number) => void;
 
 function slice1st(
   dataArray: Uint8Array,
@@ -459,11 +470,6 @@ function slice1st(
   sliceNumber: number
 ): number {
   const start = sliceWidth * sliceNumber;
-  // const end = start + sliceWidth;
-  // let sum = 0;
-  // for (let i = start; i < end; i++) {
-  //   sum += dataArray[i];
-  // }
   return dataArray[start];
 }
 
@@ -550,147 +556,72 @@ export class WavePaintHandler extends VisPaintHandler {
     // Iterate over the width of the canvas in fixed 75 pixels.
     for (let j = 0; j <= 75; j++) {
       const amplitude = slice1st(this._dataArray, sliceWidth, j);
-      // +4 is set to off center the oscilloscope
-      // because completely centered looks a bit weird
-      if (PIXEL_DENSITY === 2){
-        [y, colorIndex] = this.rangeByAmplitude(((amplitude+4)/2)+48);
-      } else {
-        [y, colorIndex] = this.rangeByAmplitude(windowShade ? ((amplitude+4)/3)+90 : amplitude+4);
-      }
-      this.paintWav(j, y, colorIndex);
+      this.paintWav(j, amplitude);
     }
   }
 
   /**
    *
-   * @param amplitude 0..255
-   * @returns xy.Y(top to bottom), colorOscIndex
+   * @param y 0..5
+   * @returns value in use for coloring stuff in
    */
-  rangeByAmplitude(amplitude: number): [number, number] {
-    // sorry about this mess
-    if (windowShade){
-      if (amplitude >= 184) {
-        return [0, 0];
-      }
-      if (amplitude >= 176) {
-        return [1, 0];
-      }
-      if (amplitude >= 168) {
-        return [2, 0];
-      }
-      if (amplitude >= 160) {
-        return [3, 0];
-      }
-      if (amplitude >= 152) {
-        return [4, 0];
-      }
-      if (amplitude >= 144) {
-        return [5, 0];
-      }
-      if (amplitude >= 136) {
-        return [6, 0];
-      }
-      if (amplitude >= 128) {
-        return [7, 0];
-      }
-      if (amplitude >= 120) {
-        return [8, 0];
-      }
-      if (amplitude >= 112) {
-        return [9, 0];
-      }
-      if (amplitude >= 104) {
-        return [10, 0];
-      }
-      if (amplitude >= 96) {
-        return [11, 0];
-      }
-      if (amplitude >= 88) {
-        return [12, 0];
-      }
-      if (amplitude >= 80) {
-        return [13, 0];
-      }
-      if (amplitude >= 72) {
-        return [14, 0];
-      }
-      return [15, 0];
+  colorIndex(y: number): number {
+    if (windowShade) {
+      return 0;
     } else {
-      if (amplitude >= 184) {
-        return [0, 3];
-      }
-      if (amplitude >= 176) {
-        return [1, 3];
-      }
-      if (amplitude >= 168) {
-        return [2, 2];
-      }
-      if (amplitude >= 160) {
-        return [3, 2];
-      }
-      if (amplitude >= 152) {
-        return [4, 1];
-      }
-      if (amplitude >= 144) {
-        return [5, 1];
-      }
-      if (amplitude >= 136) {
-        return [6, 0];
-      }
-      if (amplitude >= 128) {
-        return [7, 0];
-      }
-      if (amplitude >= 120) {
-        return [8, 1];
-      }
-      if (amplitude >= 112) {
-        return [9, 1];
-      }
-      if (amplitude >= 104) {
-        return [10, 2];
-      }
-      if (amplitude >= 96) {
-        return [11, 2];
-      }
-      if (amplitude >= 88) {
-        return [12, 3];
-      }
-      if (amplitude >= 80) {
-        return [13, 3];
-      }
-      if (amplitude >= 72) {
-        return [14, 4];
-      }
-      return [15, 4];
+      if (y >= 14) return 4;
+      if (y >= 12) return 3;
+      if (y >= 10) return 2;
+      if (y >= 8) return 1;
+      if (y >= 6) return 0;
+      if (y >= 4) return 1;
+      if (y >= 2) return 2;
+      if (y >= 0) return 3;
+      return 3;
     }
   }
 
-  paintWavLine(x: number, y: number, colorIndex: number) {
+  paintWavLine(x: number, y: number) {
     // pushes vis down if not double size, winamp does this
     // has to exist here for some reason else this doesn't work...
-    if (doubled){
+    if (doubled) {
       pushdown = 0;
-    } else if(windowShade){
+    } else if (windowShade) {
       pushdown = 0;
     } else {
       pushdown = 2;
     }
 
-    y = windowShade ? y - 5 : y;
-    
-    if (windowShade && PIXEL_DENSITY === 2){
-      y = y < 0 ? 0 : (y > 10 - 1 ? 10 - 1 : y);
+    // rounds y down to the nearest int
+    // before that even happens, y is scaled down and then doubled again (could've done * 8 
+    // but i feel this makes more sense to me)
+    // y is then adjusted downward to be in the center of the scope
+    y = Math.round((y / 16) * 2) - 9;
+
+    // adjusts the center point of y if we are in windowshade mode, and if PIXEL_DENSITY is 2
+    // where it's adjusted further to give you the fullest view possible in that small window
+    // else we leave y as is
+    let yadjust: number;
+    if (PIXEL_DENSITY == 2) yadjust = 3;
+    else yadjust = 5;
+    y = windowShade ? y - yadjust : y;
+
+    // limits y to be within a certain range, here it would be 0..10 if both windowshade and PIXEL_DENSITY apply
+    // else we limit y to 0..15 or 0..3, depending on renderHeight
+    if (windowShade && PIXEL_DENSITY === 2) {
+      y = y < 0 ? 0 : y > 10 - 1 ? 10 - 1 : y;
     } else {
-      y = y < 0 ? 0 : (y > renderHeight - 1 ? renderHeight - 1 : y);
+      y = y < 0 ? 0 : y > renderHeight - 1 ? renderHeight - 1 : y;
     }
+    let v = y;
     if (x === 0) this._lastY = y;
 
     let top = y;
     let bottom = this._lastY;
     this._lastY = y;
 
-    if (this._vis.oscStyle === "solid"){
-      if (PIXEL_DENSITY === 2){
+    if (this._vis.oscStyle === "solid") {
+      if (PIXEL_DENSITY === 2) {
         if (y >= (windowShade ? 5 : 8)) {
           top = windowShade ? 5 : 8;
           bottom = y;
@@ -713,8 +644,9 @@ export class WavePaintHandler extends VisPaintHandler {
     } else {
       if (bottom < top) {
         [bottom, top] = [top, bottom];
-        if (windowShade){
+        if (windowShade) {
           // SORRY NOTHING
+          // really just removes the smoother line descending thing that's present in the Main Window
         } else {
           top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
         }
@@ -725,11 +657,11 @@ export class WavePaintHandler extends VisPaintHandler {
       this._ctx!.drawImage(
         this._bar,
         0,
-        colorIndex, // sx,sy
+        this.colorIndex(v), // sx,sy
         1,
         1, // sw,sh
-        x, y + pushdown, //dx,dy, dy is upside down because Winamp3/Winamp5 does it, so we have to emulate it
-        //set to x, y, for Winamp Classic behavior
+        x,
+        y + pushdown,
         1,
         1 //dw,dh
       );

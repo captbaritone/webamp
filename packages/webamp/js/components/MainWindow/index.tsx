@@ -106,10 +106,6 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
           />
           <Time />
         </div>
-        {/* <Visualizer
-          // @ts-ignore Visualizer is not typed yet
-          analyser={analyser}
-        /> */}
         <Vis analyser={analyser} />
         <div className="media-info">
           <Marquee />

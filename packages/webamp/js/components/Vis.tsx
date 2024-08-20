@@ -29,16 +29,16 @@ type Props = {
 export let PIXEL_DENSITY = 1;
 
 const fft = new FFT();
-const samplesIn = 1024; // Example input size
-const samplesOut = 512; // Example output size
+const SAMPLESIN = 1024; // Example input size
+const SAMPLESOUT = 512; // Example output size
 export let renderWidth: number;
 export let renderHeight: number;
 export let windowShade: boolean | undefined;
 export let doubled: boolean | undefined;
-fft.init(samplesIn, samplesOut, 1, 1.0, true);
+fft.init(SAMPLESIN, SAMPLESOUT, 1, 1.0, true);
 
-let in_wavedata = new Float32Array(samplesIn); // Fill this with your input data
-export let out_spectraldata = new Float32Array(samplesOut);
+let in_wavedata = new Float32Array(SAMPLESIN); // Fill this with your input data
+export let out_spectraldata = new Float32Array(SAMPLESOUT);
 
 // Pre-render the background grid
 function preRenderBg(
@@ -76,7 +76,7 @@ export default function Vis({ analyser }: Props) {
     analyser.fftSize = 1024;
   }, [analyser, analyser.fftSize]);
   const colors = useTypedSelector(Selectors.getSkinColors);
-  let mode = useTypedSelector(Selectors.getVisualizerStyle);
+  const mode = useTypedSelector(Selectors.getVisualizerStyle);
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
   doubled = useTypedSelector(Selectors.getDoubled);
@@ -93,7 +93,7 @@ export default function Vis({ analyser }: Props) {
   // how can i know the state of individual windows?
   renderWidth = windowShade ? 38 : 75;
   renderHeight = windowShade ? 5 : 16;
-  PIXEL_DENSITY = (doubled && windowShade) ? 2 : 1;
+  PIXEL_DENSITY = doubled && windowShade ? 2 : 1;
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;
@@ -109,17 +109,9 @@ export default function Vis({ analyser }: Props) {
   }, [colors, height, width, windowShade]);
 
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
-  // const vis: IVis = {
-  //   canvas,
-  //   analyser
-  // }
 
   //? painter administration
   const [painter, setPainter] = useState<VisPaintHandler | null>(null);
-  // const _vis: IVis = useMemo(() => {
-  //   if (!canvas) return { colors, analyser };
-  //   return { canvas, colors, analyser };
-  // }, [analyser, canvas, colors]);
 
   useEffect(() => {
     if (!canvas) return;
@@ -136,37 +128,15 @@ export default function Vis({ analyser }: Props) {
         sa_peak_falloff: "slow",
         sa: "analyzer",
       };
-
-      // uninteruptable painting requires _painter to be always available
-      // const oldPainter = painter;
       const newPainter = new PainterType(_vis);
       setPainter(newPainter);
-
-      // not sure it'll achieve the desired effect...
-      // i tried to set the vis mode here, but it didnt quite work out the way i imagined
-/*       switch (_vis.sa) {
-        case "analyzer":
-          mode = VISUALIZERS.BAR;
-          break;
-        case "oscilloscope":
-          mode = VISUALIZERS.OSCILLOSCOPE;
-          // _setPainter(BarPaintHandlerFake);
-          break;
-        case "none":
-          mode = VISUALIZERS.NONE;
-          break;
-        default:
-          mode = VISUALIZERS.NONE;
-      } */
     };
-    // console.log(" vis mode:", mode);
     switch (mode) {
       case VISUALIZERS.OSCILLOSCOPE:
         _setPainter(WavePaintHandler);
         break;
       case VISUALIZERS.BAR:
         _setPainter(BarPaintHandler);
-        // _setPainter(BarPaintHandlerFake);
         break;
       case VISUALIZERS.NONE:
         _setPainter(NoVisualizerHandler);
@@ -180,15 +150,15 @@ export default function Vis({ analyser }: Props) {
     if (canvas == null || painter == null) {
       return;
     }
-  
+
     const canvasCtx = canvas.getContext("2d");
     if (canvasCtx == null) {
       return;
     }
     canvasCtx.imageSmoothingEnabled = false;
-  
+
     let animationRequest: number | null = null;
-  
+
     const loop = () => {
       painter.prepare();
       analyser.getByteTimeDomainData(dataArray);
@@ -199,7 +169,7 @@ export default function Vis({ analyser }: Props) {
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };
-  
+
     if (audioStatus === MEDIA_STATUS.PLAYING) {
       loop();
     } else if (animationRequest !== null) {
@@ -207,7 +177,7 @@ export default function Vis({ analyser }: Props) {
       window.cancelAnimationFrame(animationRequest);
       animationRequest = null;
     }
-  
+
     return () => {
       if (animationRequest !== null) {
         window.cancelAnimationFrame(animationRequest);
