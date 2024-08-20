@@ -17,7 +17,7 @@ export default class ReviewResolver {
    * The skin that was reviewed
    * @gqlField
    */
-  skin(args: unknown, { ctx }: Ctx): Promise<ISkin | null> {
+  skin({ ctx }: Ctx): Promise<ISkin | null> {
     return SkinResolver.fromMd5(ctx, this._model.skin_md5);
   }
 

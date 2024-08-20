@@ -31,10 +31,7 @@ export default class ModernSkinsConnection {
   /**
    * The list of skins
    * @gqlField */
-  async nodes(
-    _args: unknown,
-    { ctx }: Ctx
-  ): Promise<Array<ModernSkinResolver | null>> {
+  async nodes({ ctx }: Ctx): Promise<Array<ModernSkinResolver | null>> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)

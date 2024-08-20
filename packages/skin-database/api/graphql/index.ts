@@ -4,6 +4,7 @@ import { graphqlHTTP } from "express-graphql";
 import DEFAULT_QUERY from "./defaultQuery";
 import { getSchema } from "./schema";
 
+/** @gqlContext */
 export type Ctx = Express.Request;
 
 const router = Router();

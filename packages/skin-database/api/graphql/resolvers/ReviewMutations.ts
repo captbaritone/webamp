@@ -20,13 +20,13 @@ function requireAuthed(handler) {
  * @gqlField */
 export function reject_skin(
   _: Mutation,
-  args: { md5: string },
+  md5: string,
   req: Ctx
 ): Promise<boolean> {
-  return _reject_skin(args, req);
+  return _reject_skin(md5, req);
 }
 
-const _reject_skin = requireAuthed(async ({ md5 }, req: Ctx) => {
+const _reject_skin = requireAuthed(async (md5: string, req: Ctx) => {
   req.log(`Rejecting skin with hash "${md5}"`);
   const skin = await SkinModel.fromMd5Assert(req.ctx, md5);
   if (skin == null) {
@@ -44,13 +44,13 @@ const _reject_skin = requireAuthed(async ({ md5 }, req: Ctx) => {
  * @gqlField */
 export function approve_skin(
   _: Mutation,
-  args: { md5: string },
+  md5: string,
   req: Ctx
 ): Promise<boolean> {
-  return _approve_skin(args, req);
+  return _approve_skin(md5, req);
 }
 
-const _approve_skin = requireAuthed(async ({ md5 }, req: Ctx) => {
+const _approve_skin = requireAuthed(async (md5: string, req: Ctx) => {
   req.log(`Approving skin with hash "${md5}"`);
   const skin = await SkinModel.fromMd5(req.ctx, md5);
   if (skin == null) {
@@ -68,13 +68,13 @@ const _approve_skin = requireAuthed(async ({ md5 }, req: Ctx) => {
  * @gqlField */
 export function mark_skin_nsfw(
   _: Mutation,
-  args: { md5: string },
+  md5: string,
   req: Ctx
 ): Promise<boolean> {
-  return _mark_skin_nsfw(args, req);
+  return _mark_skin_nsfw(md5, req);
 }
 
-const _mark_skin_nsfw = requireAuthed(async ({ md5 }, req: Ctx) => {
+const _mark_skin_nsfw = requireAuthed(async (md5: string, req: Ctx) => {
   req.log(`Approving skin with hash "${md5}"`);
   const skin = await SkinModel.fromMd5(req.ctx, md5);
   if (skin == null) {

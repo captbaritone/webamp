@@ -14851,19 +14851,19 @@ graphql-ws@5.12.1:
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.12.1.tgz#c62d5ac54dbd409cc6520b0b39de374b3d59d0dd"
   integrity sha512-umt4f5NnMK46ChM2coO36PTFhHouBrK9stWWBczERguwYrGnPNxJ9dimU6IyOBfOkC6Izhkg4H8+F51W/8CYDg==
 
-graphql@^16.6.0, graphql@^16.8.1:
+graphql@16.8.1, graphql@^16.8.1, graphql@^16.9.0:
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
   integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
-grats@^0.0.25:
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.25.tgz#c2f872d3843d67f7c5ed957775bd2c58b476cc07"
-  integrity sha512-kwI4BHauMXIZc4iigVUFyZIqW12fKrBojGvX9ZrJxnvf1CYMkc+WgH2NfLozLcu2EmbGNX5Ss/TeWJH6xP8wHg==
+grats@^0.0.28:
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.28.tgz#232fa29cc4387607950e2e408e18c26582586e1b"
+  integrity sha512-rNsUJv2V2CtjFrMsfYWHz/0v5ndv2zfaEWj5NdzUzEsezQsCu8CTkKFTyz9DIUZfeU32YaScj2a96Q6yXGFpiQ==
   dependencies:
     commander "^10.0.0"
-    graphql "^16.6.0"
-    typescript "^5.0.2"
+    graphql "^16.9.0"
+    typescript "5.5.4"
 
 gulp-eslint@^3.0.1:
   version "3.0.1"
@@ -27415,6 +27415,11 @@ typescript@4.3.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.4.tgz#3f85b986945bcf31071decdd96cf8bfa65f9dcbc"
   integrity sha512-uauPG7XZn9F/mo+7MrsRjyvbxFpzemRjKEZXS4AK83oP2KKOJPvb+9cO/gmnv8arWZvhnjVOXz7B49m1l0e9Ew==
 
+typescript@5.5.4:
+  version "5.5.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.4.tgz#d9852d6c82bad2d2eda4fd74a5762a8f5909e9ba"
+  integrity sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==
+
 typescript@^3.8.3, typescript@^3.9.10:
   version "3.9.10"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.10.tgz#70f3910ac7a51ed6bef79da7800690b19bf778b8"
@@ -27425,7 +27430,7 @@ typescript@^4.1.5, typescript@^4.4.3:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
-typescript@^5.0.2, typescript@^5.3.3:
+typescript@^5.3.3:
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.3.tgz#5c6fedd4c87bee01cd7a528a30145521f8e0feff"
   integrity sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==

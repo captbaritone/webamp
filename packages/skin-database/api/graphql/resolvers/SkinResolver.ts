@@ -86,7 +86,6 @@ export async function search_skins(
  * @gqlField */
 export async function skin_to_review(
   _: Query,
-  _args: unknown,
   { ctx }: Ctx
 ): Promise<ISkin | null> {
   if (!ctx.authed()) {

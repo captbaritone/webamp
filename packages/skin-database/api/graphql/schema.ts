@@ -68,32 +68,32 @@ export function getSchema(): GraphQLSchema {
                     description: "The Internet Archive's unique identifier for this item",
                     name: "identifier",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getIdentifier(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getIdentifier());
                     }
                 },
                 last_metadata_scrape_date_UNSTABLE: {
                     description: "The date and time that we last scraped this item's metadata.\n**Note:** This field is temporary and will be removed in the future.\nThe date format is just what we get from the database, and it's ambiguous.",
                     name: "last_metadata_scrape_date_UNSTABLE",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return source.getMetadataTimestamp(source, args, context, info);
+                    resolve(source) {
+                        return source.getMetadataTimestamp();
                     }
                 },
                 metadata_url: {
                     description: "URL to get the Internet Archive's metadata for this item in JSON form.",
                     name: "metadata_url",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getMetadataUrl(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getMetadataUrl());
                     }
                 },
                 raw_metadata_json: {
                     description: "Our cached version of the metadata available at \\`metadata_url\\` (above)",
                     name: "raw_metadata_json",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return source.getMetadataJSON(source, args, context, info);
+                    resolve(source) {
+                        return source.getMetadataJSON();
                     }
                 },
                 skin: {
@@ -105,8 +105,8 @@ export function getSchema(): GraphQLSchema {
                     description: "The URL where this item can be viewed on the Internet Archive",
                     name: "url",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getUrl(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getUrl());
                     }
                 }
             };
@@ -151,7 +151,10 @@ export function getSchema(): GraphQLSchema {
                 skin: {
                     description: "The skin that was reviewed",
                     name: "skin",
-                    type: SkinType
+                    type: SkinType,
+                    resolve(source, _args, context) {
+                        return source.skin(context);
+                    }
                 }
             };
         }
@@ -165,16 +168,16 @@ export function getSchema(): GraphQLSchema {
                     description: "Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)",
                     name: "likes",
                     type: GraphQLInt,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getLikes(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getLikes());
                     }
                 },
                 retweets: {
                     description: "Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)",
                     name: "retweets",
                     type: GraphQLInt,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getRetweets(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getRetweets());
                     }
                 },
                 skin: {
@@ -186,8 +189,8 @@ export function getSchema(): GraphQLSchema {
                     description: "URL of the tweet. **Note:** Early on in the bot's life we just recorded\n_which_ skins were tweeted, not any info about the actual tweet. This means we\ndon't always know the URL of the tweet.",
                     name: "url",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return source.getUrl(source, args, context, info);
+                    resolve(source) {
+                        return source.getUrl();
                     }
                 }
             };
@@ -293,40 +296,40 @@ export function getSchema(): GraphQLSchema {
                     description: "The date on the file inside the archive. Given in simplified extended ISO\nformat (ISO 8601).",
                     name: "date",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getIsoDate(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getIsoDate());
                     }
                 },
                 file_md5: {
                     description: "The md5 hash of the file within the archive",
                     name: "file_md5",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getFileMd5(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getFileMd5());
                     }
                 },
                 filename: {
                     description: "Filename of the file within the archive",
                     name: "filename",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getFileName(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getFileName());
                     }
                 },
                 is_directory: {
                     description: "Is the file a directory?",
                     name: "is_directory",
                     type: GraphQLBoolean,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getIsDirectory(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getIsDirectory());
                     }
                 },
                 size: {
                     description: "The uncompressed size of the file in bytes.\n\n**Note:** Will be `null` for directories",
                     name: "size",
                     type: GraphQLInt,
-                    resolve(source, args, context, info) {
-                        return source.getFileSize(source, args, context, info);
+                    resolve(source) {
+                        return source.getFileSize();
                     }
                 },
                 skin: {
@@ -338,16 +341,16 @@ export function getSchema(): GraphQLSchema {
                     description: "The content of the file, if it's a text file",
                     name: "text_content",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return source.getTextContent(source, args, context, info);
+                    resolve(source) {
+                        return source.getTextContent();
                     }
                 },
                 url: {
                     description: "A URL to download the file. **Note:** This is powered by a little\nserverless Cloudflare function which tries to exctact the file on the fly.\nIt may not work for all files.",
                     name: "url",
                     type: GraphQLString,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(source.getUrl(source, args, context, info));
+                    resolve(source) {
+                        return assertNonNull(source.getUrl());
                     }
                 }
             };
@@ -359,7 +362,10 @@ export function getSchema(): GraphQLSchema {
             return {
                 username: {
                     name: "username",
-                    type: GraphQLString
+                    type: GraphQLString,
+                    resolve(source, _args, context) {
+                        return source.username(context);
+                    }
                 }
             };
         }
@@ -532,8 +538,8 @@ export function getSchema(): GraphQLSchema {
                     description: "The list of skins",
                     name: "nodes",
                     type: new GraphQLList(ModernSkinType),
-                    resolve(source, args, context, info) {
-                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    resolve(source, _args, context) {
+                        return assertNonNull(source.nodes(context));
                     }
                 }
             };
@@ -556,8 +562,8 @@ export function getSchema(): GraphQLSchema {
                     description: "The list of skins",
                     name: "nodes",
                     type: new GraphQLList(SkinType),
-                    resolve(source, args, context, info) {
-                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    resolve(source, _args, context) {
+                        return assertNonNull(source.nodes(context));
                     }
                 }
             };
@@ -897,8 +903,8 @@ export function getSchema(): GraphQLSchema {
                     description: "A random skin that needs to be reviewed",
                     name: "skin_to_review",
                     type: SkinType,
-                    resolve(source, args, context) {
-                        return querySkin_to_reviewResolver(source, args, context);
+                    resolve(source, _args, context) {
+                        return querySkin_to_reviewResolver(source, context);
                     }
                 },
                 skins: {

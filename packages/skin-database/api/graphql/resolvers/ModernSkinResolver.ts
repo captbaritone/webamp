@@ -13,7 +13,7 @@ import { XMLParser } from "fast-xml-parser";
  * @gqlType ModernSkin */
 export default class ModernSkinResolver implements NodeResolver, ISkin {
   _model: SkinModel;
-  __typename = "ModernSkin";
+  __typename = "ModernSkin" as const;
 
   constructor(model: SkinModel) {
     this._model = model;

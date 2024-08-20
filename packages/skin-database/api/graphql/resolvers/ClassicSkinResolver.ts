@@ -10,7 +10,7 @@ import SkinModel from "../../../data/SkinModel";
  * @gqlType ClassicSkin */
 export default class ClassicSkinResolver implements NodeResolver, ISkin {
   _model: SkinModel;
-  __typename = "ClassicSkin";
+  __typename = "ClassicSkin" as const;
 
   constructor(model: SkinModel) {
     this._model = model;

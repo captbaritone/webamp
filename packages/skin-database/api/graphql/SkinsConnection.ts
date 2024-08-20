@@ -103,7 +103,7 @@ export default class SkinsConnection {
    * The list of skins
    * @gqlField
    */
-  async nodes(args: unknown, { ctx }: Ctx): Promise<Array<ISkin | null>> {
+  async nodes({ ctx }: Ctx): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(
