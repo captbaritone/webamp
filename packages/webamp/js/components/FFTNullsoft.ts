@@ -2,91 +2,77 @@
 // Taken from https://github.com/WACUP/vis_classic/tree/master/FFTNullsoft
 
 export class FFT {
-  private mSamplesIn: number;
-  private NFREQ: number;
-  private bitrevtable: number[] | null = null;
-  private envelope: Float32Array | null = null;
-  private equalize: Float32Array | null = null;
-  private temp1: Float32Array | null = null;
-  private temp2: Float32Array | null = null;
-  private cossintable: Float32Array[] | null = null;
+  private bitrevtable: number[];
+  private envelope: Float32Array | null;
+  private equalize: Float32Array | null;
+  private temp1: Float32Array;
+  private temp2: Float32Array;
+  private cossintable: Float32Array[];
+
+  // Constants
+  private static readonly TWO_PI = 6.2831853; // 2 * Math.PI
+  private static readonly HALF_PI = 1.5707963268; // Math.PI / 2
 
   constructor() {
-    this.mSamplesIn = 0;
-    this.NFREQ = 0;
+    // Assuming these are your hardcoded values:
+    const samplesIn = 1024; // hardcoded value
+    const samplesOut = 512; // hardcoded value
+    const bEqualize = true; // hardcoded value
+    const envelopePower = 1.0; // hardcoded value
+    const mode = false; // hardcoded value
+
+    const NFREQ = samplesOut * 2;
+
+    // Initialize the tables and arrays with hardcoded values
+    this.bitrevtable = this.initBitRevTable(NFREQ);
+    this.cossintable = this.initCosSinTable(NFREQ);
+
+    this.envelope = envelopePower > 0 ? this.initEnvelopeTable(samplesIn, envelopePower) : null;
+    this.equalize = bEqualize ? this.initEqualizeTable(NFREQ, mode) : null;
+
+    this.temp1 = new Float32Array(NFREQ);
+    this.temp2 = new Float32Array(NFREQ);
   }
 
-  public init(
-    samplesIn: number,
-    samplesOut: number,
-    bEqualize = 1,
-    envelopePower = 1.0,
-    mode = false
-  ): void {
-    this.mSamplesIn = samplesIn;
-    this.NFREQ = samplesOut * 2;
+  private initEqualizeTable(NFREQ: number, mode: boolean): Float32Array {
+    const equalize = new Float32Array(NFREQ / 2);
+    let bias = 0.04; // FFT.INITIAL_BIAS
 
-    this.initBitRevTable();
-    this.initCosSinTable();
-
-    if (envelopePower > 0) {
-      this.initEnvelopeTable(envelopePower);
+    for (let i = 0; i < NFREQ / 2; i++) {
+      const inv_half_nfreq = (9.0 - bias) / (NFREQ / 2);
+      equalize[i] = Math.log10(1.0 + bias + (i + 1) * inv_half_nfreq);
+      bias /= 1.0025; // FFT.BIAS_DECAY_RATE
     }
 
-    if (bEqualize) {
-      this.initEqualizeTable(mode);
-    }
-
-    this.temp1 = new Float32Array(this.NFREQ);
-    this.temp2 = new Float32Array(this.NFREQ);
+    return equalize;
   }
 
-  private initEqualizeTable(mode: boolean): void {
-    this.equalize = new Float32Array(this.NFREQ / 2);
-    let bias = 0.04;
+  private initEnvelopeTable(samplesIn: number, power: number): Float32Array {
+    const mult = (1.0 / samplesIn) * FFT.TWO_PI;
+    const envelope = new Float32Array(samplesIn);
 
-    for (let i = 0; i < this.NFREQ / 2; i++) {
-      const inv_half_nfreq = (9.0 - bias) / (this.NFREQ / 2);
-      this.equalize[i] = Math.log10(1.0 + bias + (i + 1) * inv_half_nfreq);
-
-      bias /= 1.0025;
+    for (let i = 0; i < samplesIn; i++) {
+      envelope[i] = Math.pow(0.5 + 0.5 * Math.sin(i * mult - FFT.HALF_PI), power);
     }
+
+    return envelope;
   }
 
-  private initEnvelopeTable(power: number): void {
-    const mult = (1.0 / this.mSamplesIn) * 6.2831853;
+  private initBitRevTable(NFREQ: number): number[] {
+    const bitrevtable = new Array(NFREQ);
 
-    this.envelope = new Float32Array(this.mSamplesIn);
-
-    if (power == 1.0) {
-      for (let i = 0; i < this.mSamplesIn; i++) {
-        this.envelope[i] = 0.5 + 0.5 * Math.sin(i * mult - 1.5707963268);
-      }
-    } else {
-      for (let i = 0; i < this.mSamplesIn; i++) {
-        this.envelope[i] = Math.pow(
-          0.5 + 0.5 * Math.sin(i * mult - 1.5707963268),
-          power
-        );
-      }
-    }
-  }
-
-  private initBitRevTable(): void {
-    this.bitrevtable = new Array(this.NFREQ);
-
-    for (let i = 0; i < this.NFREQ; i++) {
-      this.bitrevtable[i] = i;
+    for (let i = 0; i < NFREQ; i++) {
+      bitrevtable[i] = i;
     }
 
-    for (let i = 0, j = 0; i < this.NFREQ; i++) {
+    for (let i = 0, j = 0; i < NFREQ; i++) {
       if (j > i) {
-        const temp = this.bitrevtable[i];
-        this.bitrevtable[i] = this.bitrevtable[j];
-        this.bitrevtable[j] = temp;
+        const temp = bitrevtable[i];
+        bitrevtable[i] = bitrevtable[j];
+        bitrevtable[j] = temp;
       }
 
-      let m = this.NFREQ >> 1;
+      let m = NFREQ >> 1;
       while (m >= 1 && j >= m) {
         j -= m;
         m >>= 1;
@@ -94,36 +80,25 @@ export class FFT {
 
       j += m;
     }
+
+    return bitrevtable;
   }
 
-  private initCosSinTable(): void {
+  private initCosSinTable(NFREQ: number): Float32Array[] {
+    const cossintable: Float32Array[] = [];
     let dftsize = 2;
-    let tabsize = 0;
-    while (dftsize <= this.NFREQ) {
-      ++tabsize;
-      dftsize <<= 1;
-    }
 
-    this.cossintable = new Array(tabsize);
-    dftsize = 2;
-    let i = 0;
-
-    while (dftsize <= this.NFREQ) {
+    while (dftsize <= NFREQ) {
       const theta = (-2.0 * Math.PI) / dftsize;
-      this.cossintable[i] = new Float32Array(2);
-      this.cossintable[i][0] = Math.cos(theta);
-      this.cossintable[i][1] = Math.sin(theta);
-      ++i;
+      cossintable.push(new Float32Array([Math.cos(theta), Math.sin(theta)]));
       dftsize <<= 1;
     }
+
+    return cossintable;
   }
 
-  public timeToFrequencyDomain(
-    inWavedata: Float32Array,
-    outSpectraldata: Float32Array
-  ): void {
-    if (!this.bitrevtable || !this.temp1 || !this.temp2 || !this.cossintable)
-      return;
+  public timeToFrequencyDomain(inWavedata: Float32Array, outSpectraldata: Float32Array): void {
+    if (!this.temp1 || !this.temp2 || !this.cossintable) return;
     // Converts time-domain samples from inWavedata[]
     //   into frequency-domain samples in outSpectraldata[].
     // The array lengths are the two parameters to Init().
@@ -168,34 +143,23 @@ export class FFT {
     //if (!cossintable) return;
 
     // 1. set up input to the fft
-    if (this.envelope) {
-      for (let i = 0; i < this.NFREQ; i++) {
-        const idx = this.bitrevtable[i];
-        if (idx < this.mSamplesIn) {
-          this.temp1[i] = inWavedata[idx] * this.envelope[idx];
-        } else {
-          this.temp1[i] = 0;
-        }
-      }
-    } else {
-      for (let i = 0; i < this.NFREQ; i++) {
-        const idx = this.bitrevtable[i];
-        if (idx < this.mSamplesIn) {
-          this.temp1[i] = inWavedata[idx];
-        } else {
-          this.temp1[i] = 0;
-        }
+    for (let i = 0; i < this.temp1.length; i++) {
+      const idx = this.bitrevtable[i];
+      if (idx < inWavedata.length) {
+        this.temp1[i] = inWavedata[idx] * (this.envelope ? this.envelope[idx] : 1);
+      } else {
+        this.temp1[i] = 0;
       }
     }
     this.temp2.fill(0);
 
-    // 2. perform FFT
+    // 2. Perform FFT
     let real = this.temp1;
     let imag = this.temp2;
     let dftsize = 2;
     let t = 0;
 
-    while (dftsize <= this.NFREQ) {
+    while (dftsize <= this.temp1.length) {
       const wpr = this.cossintable[t][0];
       const wpi = this.cossintable[t][1];
       let wr = 1.0;
@@ -203,7 +167,7 @@ export class FFT {
       const hdftsize = dftsize >> 1;
 
       for (let m = 0; m < hdftsize; m += 1) {
-        for (let i = m; i < this.NFREQ; i += dftsize) {
+        for (let i = m; i < this.temp1.length; i += dftsize) {
           const j = i + hdftsize;
           const tempr = wr * real[j] - wi * imag[j];
           const tempi = wr * imag[j] + wi * real[j];
@@ -223,19 +187,8 @@ export class FFT {
     }
 
     // 3. take the magnitude & equalize it (on a log10 scale) for output
-    if (this.equalize) {
-      for (let i = 0; i < this.NFREQ / 2; i++) {
-        outSpectraldata[i] =
-          this.equalize[i] * Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
-      }
-    } else {
-      for (let i = 0; i < this.NFREQ / 2; i++) {
-        outSpectraldata[i] = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
-      }
+    for (let i = 0; i < outSpectraldata.length; i++) {
+      outSpectraldata[i] = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]) * (this.equalize ? this.equalize[i] : 1);
     }
-  }
-
-  public getNumFreq(): number {
-    return this.NFREQ;
   }
 }

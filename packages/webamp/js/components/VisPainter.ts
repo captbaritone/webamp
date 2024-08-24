@@ -2,7 +2,6 @@ export interface Vis {
   canvas?: HTMLCanvasElement;
   colors: string[];
   analyser?: AnalyserNode;
-  audioContext?: AudioContext; //butterchurn need it
   oscStyle?: "dots" | "solid" | "lines";
   bandwidth?: "wide" | "thin";
   coloring?: "fire" | "line" | "normal";
@@ -11,11 +10,9 @@ export interface Vis {
   sa_peak_falloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   sa?: "analyzer" | "oscilloscope" | "none";
 }
-import { range } from "lodash";
+import { FFT } from "./FFTNullsoft";
 import {
-  outSpectraldata,
   renderHeight,
-  renderWidth,
   windowShade,
   PIXEL_DENSITY,
   doubled,
@@ -61,6 +58,26 @@ export class VisPaintHandler {
    * Attempt to cleanup cached bitmaps
    */
   dispose() {}
+}
+
+const SAMPLESIN = 1024;
+const SAMPLESOUT = 512;
+const fft = new FFT();
+let inWaveData = new Float32Array(SAMPLESIN);
+let outSpectralData = new Float32Array(SAMPLESOUT);
+
+/**
+ * Feeds audio data to the FFT.
+ * @param analyser The AnalyserNode used to get the audio data.
+ */
+export function processFFT(analyser: AnalyserNode): void {
+  const dataArray = new Uint8Array(SAMPLESIN);
+  
+  analyser.getByteTimeDomainData(dataArray);
+  for (let i = 0; i < dataArray.length; i++) {
+    inWaveData[i] = (dataArray[i] - 128) / 28;
+  }
+  fft.timeToFrequencyDomain(inWaveData, outSpectralData);
 }
 
 //? =============================== BAR PAINTER ===============================
@@ -287,12 +304,12 @@ export class BarPaintHandler extends VisPaintHandler {
       }
 
       if (index1 == index2) {
-        sample[x] = outSpectraldata[index1];
+        sample[x] = outSpectralData[index1];
       } else {
         let frac2 = scaledIndex - index1;
         let frac1 = 1.0 - frac2;
         sample[x] =
-          frac1 * outSpectraldata[index1] + frac2 * outSpectraldata[index2];
+          frac1 * outSpectralData[index1] + frac2 * outSpectralData[index2];
       }
     }
 

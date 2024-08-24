@@ -8,7 +8,6 @@ import React, {
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
-import { FFT } from "./FFTNullsoft";
 import { useTypedSelector, useActionCreator } from "../hooks";
 // import { usePaintOscilloscopeFrame } from "./useOscilloscopeVisualizer";
 // import { usePaintBarFrame, usePaintBar } from "./useBarVisualizer";
@@ -20,6 +19,7 @@ import {
   BarPaintHandler,
   WavePaintHandler,
   NoVisualizerHandler,
+  processFFT,
 } from "./VisPainter";
 
 type Props = {
@@ -27,18 +27,9 @@ type Props = {
 };
 
 export let PIXEL_DENSITY = 1;
-
-const fft = new FFT();
-const SAMPLESIN = 1024;
-const SAMPLESOUT = 512;
-export let renderWidth: number;
 export let renderHeight: number;
 export let windowShade: boolean | undefined;
 export let doubled: boolean | undefined;
-fft.init(SAMPLESIN, SAMPLESOUT, 1, 1.0, true);
-
-let inWavedata = new Float32Array(SAMPLESIN);
-export let outSpectraldata = new Float32Array(SAMPLESOUT);
 
 // Pre-render the background grid
 function preRenderBg(
@@ -85,13 +76,11 @@ export default function Vis({ analyser }: Props) {
   const dataArray = new Uint8Array(1024);
   analyser.getByteTimeDomainData(dataArray);
 
-  inWavedata = new Float32Array(dataArray.length);
-
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
   windowShade = getWindowShade("main");
   // BUG: windowshade does not take into account if the main window is visible (small vis is in pledit)
   // how can i know the state of individual windows?
-  renderWidth = windowShade ? 38 : 75;
+  const renderWidth = windowShade ? 38 : 75;
   renderHeight = windowShade ? 5 : 16;
   PIXEL_DENSITY = doubled && windowShade ? 2 : 1;
 
@@ -161,11 +150,7 @@ export default function Vis({ analyser }: Props) {
 
     const loop = () => {
       painter.prepare();
-      analyser.getByteTimeDomainData(dataArray);
-      for (let i = 0; i < dataArray.length; i++) {
-        inWavedata[i] = (dataArray[i] - 128) / 28;
-      }
-      fft.timeToFrequencyDomain(inWavedata, outSpectraldata);
+      processFFT(analyser);
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };
