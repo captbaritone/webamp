@@ -13,7 +13,7 @@ export interface Vis {
 }
 import { range } from "lodash";
 import {
-  out_spectraldata,
+  outSpectraldata,
   renderHeight,
   renderWidth,
   windowShade,
@@ -287,12 +287,12 @@ export class BarPaintHandler extends VisPaintHandler {
       }
 
       if (index1 == index2) {
-        sample[x] = out_spectraldata[index1];
+        sample[x] = outSpectraldata[index1];
       } else {
         let frac2 = scaledIndex - index1;
         let frac1 = 1.0 - frac2;
         sample[x] =
-          frac1 * out_spectraldata[index1] + frac2 * out_spectraldata[index2];
+          frac1 * outSpectraldata[index1] + frac2 * outSpectraldata[index2];
       }
     }
 

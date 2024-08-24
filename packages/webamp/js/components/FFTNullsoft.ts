@@ -17,14 +17,14 @@ export class FFT {
   }
 
   public init(
-    samples_in: number,
-    samples_out: number,
+    samplesIn: number,
+    samplesOut: number,
     bEqualize = 1,
     envelopePower = 1.0,
     mode = false
   ): void {
-    this.mSamplesIn = samples_in;
-    this.NFREQ = samples_out * 2;
+    this.mSamplesIn = samplesIn;
+    this.NFREQ = samplesOut * 2;
 
     this.initBitRevTable();
     this.initCosSinTable();
@@ -119,13 +119,13 @@ export class FFT {
   }
 
   public timeToFrequencyDomain(
-    in_wavedata: Float32Array,
-    out_spectraldata: Float32Array
+    inWavedata: Float32Array,
+    outSpectraldata: Float32Array
   ): void {
     if (!this.bitrevtable || !this.temp1 || !this.temp2 || !this.cossintable)
       return;
-    // Converts time-domain samples from in_wavedata[]
-    //   into frequency-domain samples in out_spectraldata[].
+    // Converts time-domain samples from inWavedata[]
+    //   into frequency-domain samples in outSpectraldata[].
     // The array lengths are the two parameters to Init().
 
     // The last sample of the output data will represent the frequency
@@ -172,7 +172,7 @@ export class FFT {
       for (let i = 0; i < this.NFREQ; i++) {
         const idx = this.bitrevtable[i];
         if (idx < this.mSamplesIn) {
-          this.temp1[i] = in_wavedata[idx] * this.envelope[idx];
+          this.temp1[i] = inWavedata[idx] * this.envelope[idx];
         } else {
           this.temp1[i] = 0;
         }
@@ -181,7 +181,7 @@ export class FFT {
       for (let i = 0; i < this.NFREQ; i++) {
         const idx = this.bitrevtable[i];
         if (idx < this.mSamplesIn) {
-          this.temp1[i] = in_wavedata[idx];
+          this.temp1[i] = inWavedata[idx];
         } else {
           this.temp1[i] = 0;
         }
@@ -225,12 +225,12 @@ export class FFT {
     // 3. take the magnitude & equalize it (on a log10 scale) for output
     if (this.equalize) {
       for (let i = 0; i < this.NFREQ / 2; i++) {
-        out_spectraldata[i] =
+        outSpectraldata[i] =
           this.equalize[i] * Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
       }
     } else {
       for (let i = 0; i < this.NFREQ / 2; i++) {
-        out_spectraldata[i] = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
+        outSpectraldata[i] = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]);
       }
     }
   }

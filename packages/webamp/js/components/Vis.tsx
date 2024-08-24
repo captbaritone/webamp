@@ -29,16 +29,16 @@ type Props = {
 export let PIXEL_DENSITY = 1;
 
 const fft = new FFT();
-const SAMPLESIN = 1024; // Example input size
-const SAMPLESOUT = 512; // Example output size
+const SAMPLESIN = 1024;
+const SAMPLESOUT = 512;
 export let renderWidth: number;
 export let renderHeight: number;
 export let windowShade: boolean | undefined;
 export let doubled: boolean | undefined;
 fft.init(SAMPLESIN, SAMPLESOUT, 1, 1.0, true);
 
-let in_wavedata = new Float32Array(SAMPLESIN); // Fill this with your input data
-export let out_spectraldata = new Float32Array(SAMPLESOUT);
+let inWavedata = new Float32Array(SAMPLESIN);
+export let outSpectraldata = new Float32Array(SAMPLESOUT);
 
 // Pre-render the background grid
 function preRenderBg(
@@ -85,7 +85,7 @@ export default function Vis({ analyser }: Props) {
   const dataArray = new Uint8Array(1024);
   analyser.getByteTimeDomainData(dataArray);
 
-  in_wavedata = new Float32Array(dataArray.length);
+  inWavedata = new Float32Array(dataArray.length);
 
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
   windowShade = getWindowShade("main");
@@ -163,9 +163,9 @@ export default function Vis({ analyser }: Props) {
       painter.prepare();
       analyser.getByteTimeDomainData(dataArray);
       for (let i = 0; i < dataArray.length; i++) {
-        in_wavedata[i] = (dataArray[i] - 128) / 32;
+        inWavedata[i] = (dataArray[i] - 128) / 28;
       }
-      fft.timeToFrequencyDomain(in_wavedata, out_spectraldata);
+      fft.timeToFrequencyDomain(inWavedata, outSpectraldata);
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };
