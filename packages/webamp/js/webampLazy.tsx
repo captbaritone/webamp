@@ -280,9 +280,14 @@ class Webamp {
   }
 
   /**
-   * Play a specific track by index
+   * Set the current track a specific track in the playlist by zero-based index.
+   *
+   * Note: If Webamp is currently playing, the track will begin playing. If
+   * Webamp is not playing, the track will not start playing. You can use
+   * `webamp.pause()` before calling this method or `webamp.play()` after
+   * calling this method to control whether the track starts playing.
    */
-  playTrack(index: number): void {
+  setCurrentTrack(index: number): void {
     this.store.dispatch(Actions.playTrack(index));
   }
 
