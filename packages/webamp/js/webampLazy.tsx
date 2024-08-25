@@ -12,6 +12,7 @@ import {
   PartialState,
   Options,
   MediaStatus,
+  PlaylistTrack,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -230,14 +231,14 @@ class Webamp {
   }
 
   /**
-   * Seek backward n seconds in the curent track
+   * Seek backward n seconds in the current track
    */
   seekBackward(seconds: number) {
     this.store.dispatch(Actions.seekBackward(seconds));
   }
 
   /**
-   * Seek forward n seconds in the curent track
+   * Seek forward n seconds in the current track
    */
   seekForward(seconds: number) {
     this.store.dispatch(Actions.seekForward(seconds));
@@ -248,6 +249,20 @@ class Webamp {
    */
   seekToTime(seconds: number) {
     this.store.dispatch(Actions.seekToTime(seconds));
+  }
+
+  /**
+   * Check if shuffle is enabled
+   */
+  isShuffleEnabled(): boolean {
+    return Selectors.getShuffle(this.store.getState());
+  }
+
+  /**
+   * Check if repeat is enabled
+   */
+  isRepeatEnabled(): boolean {
+    return Selectors.getRepeat(this.store.getState());
   }
 
   /**
@@ -265,6 +280,13 @@ class Webamp {
   }
 
   /**
+   * Play a specific track by index
+   */
+  playTrack(index: number): void {
+    this.store.dispatch(Actions.playTrack(index));
+  }
+
+  /**
    * Add an array of `Track`s to the end of the playlist.
    */
   appendTracks(tracks: Track[]): void {
@@ -279,6 +301,13 @@ class Webamp {
    */
   setTracksToPlay(tracks: Track[]): void {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  /**
+   * Get the current playlist in order.
+   */
+  getPlaylistTracks(): PlaylistTrack[] {
+    return Selectors.getPlaylistTracks(this.store.getState());
   }
 
   /**
@@ -326,13 +355,49 @@ class Webamp {
   }
 
   /**
+   * A callback which will be called whenever a the current track changes.
+   *
+   * The callback is passed the current track and the zero-based index of the
+   * current track's position within the playlist.
+   *
+   * Note: This is different from the `onTrackDidChange` callback which is only
+   * called when a new track first starts loading.
+   *
+   * @returns An "unsubscribe" function. Useful if at some point in the future
+   * you want to stop listening to these events.
+   */
+  onCurrentTrackDidChange(
+    cb: (currentTrack: PlaylistTrack, trackIndex: number) => void
+  ): () => void {
+    let previousTrack: PlaylistTrack | null = null;
+    return this.store.subscribe(() => {
+      const state = this.store.getState();
+      const currentTrack = Selectors.getCurrentTrack(state);
+      if (currentTrack == null || currentTrack === previousTrack) {
+        return;
+      }
+      previousTrack = currentTrack;
+      const trackIndex = Selectors.getCurrentTrackIndex(state);
+      cb(currentTrack, trackIndex);
+    });
+  }
+
+  /**
    * A callback which will be called when a new track starts loading.
    *
-   * This can happen on startup when the first track starts buffering, or when a subsequent track starts playing.
-   * The callback will be called with an object `({url: 'https://example.com/track.mp3'})` containing the URL of the track.
+   * This can happen on startup when the first track starts buffering, or when a
+   * subsequent track starts playing.  The callback will be called with an
+   * object `({url: 'https://example.com/track.mp3'})` containing the URL of the
+   * track.
+   *
    * Note: If the user drags in a track, the URL may be an ObjectURL.
    *
-   * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
+   * Note: This is different from the `onCurrentTrackDidChange` callback which
+   * is called every time a track changes. This callback is only called when a
+   * new track starts loading.
+   *
+   * @returns An "unsubscribe" function. Useful if at some point in the future
+   * you want to stop listening to these events.
    */
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
