@@ -367,16 +367,17 @@ class Webamp {
    * you want to stop listening to these events.
    */
   onCurrentTrackDidChange(
-    cb: (currentTrack: PlaylistTrack, trackIndex: number) => void
+    cb: (currentTrack: PlaylistTrack | null, trackIndex: number) => void
   ): () => void {
-    let previousTrack: PlaylistTrack | null = null;
+    let previousTrackId: number | null = null;
     return this.store.subscribe(() => {
       const state = this.store.getState();
       const currentTrack = Selectors.getCurrentTrack(state);
-      if (currentTrack == null || currentTrack === previousTrack) {
+      const currentTrackId = currentTrack?.id || null;
+      if (currentTrackId === previousTrackId) {
         return;
       }
-      previousTrack = currentTrack;
+      previousTrackId = currentTrackId;
       const trackIndex = Selectors.getCurrentTrackIndex(state);
       cb(currentTrack, trackIndex);
     });
