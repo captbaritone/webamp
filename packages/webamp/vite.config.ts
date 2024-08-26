@@ -11,7 +11,6 @@ export default defineConfig({
   optimizeDeps: {
     include: ["winamp-eqf"],
   },
-  rollup: {},
   plugins: [
     ...getPlugins({ minify: true, outputFile: "foo", vite: true }),
     /*

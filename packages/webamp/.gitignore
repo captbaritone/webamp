@@ -1,6 +1,5 @@
 **/node_modules
 
-/dist
 /built
 /demo/built
 /coverage

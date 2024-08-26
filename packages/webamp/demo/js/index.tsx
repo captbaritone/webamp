@@ -1,3 +1,4 @@
+import React from "react";
 import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom/client";
 // @ts-ignore
@@ -87,6 +88,7 @@ async function main() {
   }
   let soundcloudPlaylist = null;
   if (soundcloudPlaylistId != null) {
+    // @ts-ignore
     soundcloudPlaylist = await SoundCloud.getPlaylist(soundcloudPlaylistId);
   }
   const config = await getWebampConfig(screenshot, skinUrl, soundcloudPlaylist);
