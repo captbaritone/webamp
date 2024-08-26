@@ -8,9 +8,9 @@
     <div id="app" style="height: 100vh">
       <!-- Webamp will attempt to center itself within this div -->
     </div>
-    <!--<script src="../../packages/webamp/built/webamp.bundle.min.js"></script>-->
-    <script type="module">
-      import Webamp from "../../packages/webamp/built/webamp.bundle.mjs";
+    <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js"></script>
+    <script>
+      const Webamp = window.Webamp;
       const webamp = new Webamp({
         initialTracks: [
           {
