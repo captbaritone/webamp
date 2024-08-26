@@ -9,8 +9,6 @@ import React, {
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
-// import { usePaintOscilloscopeFrame } from "./useOscilloscopeVisualizer";
-// import { usePaintBarFrame, usePaintBar } from "./useBarVisualizer";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 import {
@@ -19,7 +17,6 @@ import {
   BarPaintHandler,
   WavePaintHandler,
   NoVisualizerHandler,
-  processFFT,
 } from "./VisPainter";
 
 type Props = {
@@ -28,8 +25,9 @@ type Props = {
 
 export let PIXEL_DENSITY = 1;
 export let renderHeight: number;
-export let windowShade: boolean | undefined;
 export let doubled: boolean | undefined;
+export let smallVis: boolean | undefined;
+export let isMWOpen: boolean | undefined;
 
 // Pre-render the background grid
 function preRenderBg(
@@ -70,19 +68,17 @@ export default function Vis({ analyser }: Props) {
   const mode = useTypedSelector(Selectors.getVisualizerStyle);
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
+  const getWindowOpen = useTypedSelector(Selectors.getWindowOpen);
+  isMWOpen = getWindowOpen("main");
   doubled = useTypedSelector(Selectors.getDoubled);
   const dummyVizData = useTypedSelector(Selectors.getDummyVizData);
-
-  const dataArray = new Uint8Array(1024);
-  analyser.getByteTimeDomainData(dataArray);
-
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
-  windowShade = getWindowShade("main");
-  // BUG: windowshade does not take into account if the main window is visible (small vis is in pledit)
-  // how can i know the state of individual windows?
-  const renderWidth = windowShade ? 38 : 75;
-  renderHeight = windowShade ? 5 : 16;
-  PIXEL_DENSITY = doubled && windowShade ? 2 : 1;
+  const windowShade = getWindowShade("main");
+
+  smallVis = windowShade && isMWOpen;
+  const renderWidth = 75;
+  renderHeight = smallVis ? 5 : 16;
+  PIXEL_DENSITY = doubled && smallVis ? 2 : 1;
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;
@@ -113,8 +109,8 @@ export default function Vis({ analyser }: Props) {
         bandwidth: "wide",
         coloring: "normal",
         peaks: true,
-        safalloff: "moderate",
-        sa_peak_falloff: "slow",
+        saFalloff: "moderate",
+        saPeakFalloff: "slow",
         sa: "analyzer",
       };
       const newPainter = new PainterType(_vis);
@@ -150,7 +146,6 @@ export default function Vis({ analyser }: Props) {
 
     const loop = () => {
       painter.prepare();
-      processFFT(analyser);
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };

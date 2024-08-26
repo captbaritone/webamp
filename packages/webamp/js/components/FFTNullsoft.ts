@@ -27,7 +27,10 @@ export class FFT {
     this.bitrevtable = this.initBitRevTable(NFREQ);
     this.cossintable = this.initCosSinTable(NFREQ);
 
-    this.envelope = envelopePower > 0 ? this.initEnvelopeTable(samplesIn, envelopePower) : null;
+    this.envelope =
+      envelopePower > 0
+        ? this.initEnvelopeTable(samplesIn, envelopePower)
+        : null;
     this.equalize = bEqualize ? this.initEqualizeTable(NFREQ, mode) : null;
 
     this.temp1 = new Float32Array(NFREQ);
@@ -52,7 +55,10 @@ export class FFT {
     const envelope = new Float32Array(samplesIn);
 
     for (let i = 0; i < samplesIn; i++) {
-      envelope[i] = Math.pow(0.5 + 0.5 * Math.sin(i * mult - FFT.HALF_PI), power);
+      envelope[i] = Math.pow(
+        0.5 + 0.5 * Math.sin(i * mult - FFT.HALF_PI),
+        power
+      );
     }
 
     return envelope;
@@ -97,7 +103,10 @@ export class FFT {
     return cossintable;
   }
 
-  public timeToFrequencyDomain(inWavedata: Float32Array, outSpectraldata: Float32Array): void {
+  public timeToFrequencyDomain(
+    inWavedata: Float32Array,
+    outSpectraldata: Float32Array
+  ): void {
     if (!this.temp1 || !this.temp2 || !this.cossintable) return;
     // Converts time-domain samples from inWavedata[]
     //   into frequency-domain samples in outSpectraldata[].
@@ -146,7 +155,8 @@ export class FFT {
     for (let i = 0; i < this.temp1.length; i++) {
       const idx = this.bitrevtable[i];
       if (idx < inWavedata.length) {
-        this.temp1[i] = inWavedata[idx] * (this.envelope ? this.envelope[idx] : 1);
+        this.temp1[i] =
+          inWavedata[idx] * (this.envelope ? this.envelope[idx] : 1);
       } else {
         this.temp1[i] = 0;
       }
@@ -188,7 +198,9 @@ export class FFT {
 
     // 3. take the magnitude & equalize it (on a log10 scale) for output
     for (let i = 0; i < outSpectraldata.length; i++) {
-      outSpectraldata[i] = Math.sqrt(real[i] * real[i] + imag[i] * imag[i]) * (this.equalize ? this.equalize[i] : 1);
+      outSpectraldata[i] =
+        Math.sqrt(real[i] * real[i] + imag[i] * imag[i]) *
+        (this.equalize ? this.equalize[i] : 1);
     }
   }
 }
