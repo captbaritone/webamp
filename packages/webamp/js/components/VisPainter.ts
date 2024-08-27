@@ -680,6 +680,11 @@ export class WavePaintHandler extends VisPaintHandler {
           top = y;
           bottom = smallVis ? 5 : 7;
         }
+        if (x === 0 && smallVis) {
+          // why? i dont know!!
+          top = y;
+          bottom = y;
+        }
       } else {
         if (y >= (smallVis ? 2 : 8)) {
           top = smallVis ? 2 : 8;
@@ -687,6 +692,11 @@ export class WavePaintHandler extends VisPaintHandler {
         } else {
           top = y;
           bottom = smallVis ? 2 : 7;
+        }
+        if (x === 0 && smallVis) {
+          // why? i dont know!!
+          top = y;
+          bottom = y;
         }
       }
     } else if (this._vis.oscStyle === "dots") {
