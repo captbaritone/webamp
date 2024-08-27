@@ -76,7 +76,12 @@ export default function Vis({ analyser }: Props) {
   const windowShade = getWindowShade("main");
 
   smallVis = windowShade && isMWOpen;
-  const renderWidth = 75;
+  const renderWidth = 76;
+  const renderWidthBG = doubled
+    ? renderWidth
+    : windowShade
+    ? 38
+    : renderWidth * PIXEL_DENSITY;
   renderHeight = smallVis ? 5 : 16;
   PIXEL_DENSITY = doubled && smallVis ? 2 : 1;
 
@@ -85,7 +90,7 @@ export default function Vis({ analyser }: Props) {
 
   const bgCanvas = useMemo(() => {
     return preRenderBg(
-      width,
+      renderWidthBG,
       height,
       colors[0],
       colors[1],
@@ -145,6 +150,11 @@ export default function Vis({ analyser }: Props) {
     let animationRequest: number | null = null;
 
     const loop = () => {
+      if (mode === VISUALIZERS.NONE) {
+        canvasCtx.clearRect(0, 0, renderWidthBG, height);
+      } else {
+        canvasCtx.drawImage(bgCanvas, 0, 0);
+      }
       painter.prepare();
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
@@ -163,7 +173,7 @@ export default function Vis({ analyser }: Props) {
         window.cancelAnimationFrame(animationRequest);
       }
     };
-  }, [audioStatus, canvas, painter]);
+  }, [audioStatus, canvas, painter, bgCanvas]);
 
   if (audioStatus === MEDIA_STATUS.STOPPED) {
     return null;

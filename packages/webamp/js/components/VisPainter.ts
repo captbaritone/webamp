@@ -248,7 +248,6 @@ export class BarPaintHandler extends VisPaintHandler {
     const ctx = this._ctx;
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = this._color;
 
     let maxFreqIndex = 512;
@@ -337,6 +336,12 @@ export class BarPaintHandler extends VisPaintHandler {
       if (saData[x] >= maxHeight) {
         saData[x] = maxHeight;
       }
+
+      // prevents saPeaks going out of bounds when switching to windowshade mode
+      if (saPeaks[x] >= maxHeight * 256) {
+        saPeaks[x] = maxHeight * 256;
+      }
+
       saFalloff[x] -= falloff / 16.0;
       // Possible bar fall off values are
       // 3, 6, 12, 16, 32
@@ -571,7 +576,6 @@ export class WavePaintHandler extends VisPaintHandler {
 
     const width = this._ctx!.canvas.width;
     const height = this._ctx!.canvas.height;
-    this._ctx!.clearRect(0, 0, width, height);
 
     // width would technically be correct, but if the main window is
     // in windowshade mode, it is set to 150, making sliceWidth look
@@ -739,7 +743,6 @@ export class NoVisualizerHandler extends VisPaintHandler {
   paintFrame() {
     if (!this._ctx) return;
     const ctx = this._ctx;
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.cleared = true;
   }
 }
