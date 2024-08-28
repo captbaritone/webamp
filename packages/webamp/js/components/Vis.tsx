@@ -77,11 +77,12 @@ export default function Vis({ analyser }: Props) {
 
   smallVis = windowShade && isMWOpen;
   const renderWidth = 76;
-  const renderWidthBG = doubled
-    ? renderWidth
-    : windowShade
-    ? 38
+  const renderWidthBG = !isMWOpen 
+  ? renderWidth 
+  : windowShade 
+    ? (doubled ? renderWidth : 38)
     : renderWidth * PIXEL_DENSITY;
+
   renderHeight = smallVis ? 5 : 16;
   PIXEL_DENSITY = doubled && smallVis ? 2 : 1;
 
