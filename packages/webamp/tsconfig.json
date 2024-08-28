@@ -18,5 +18,5 @@
     "module": "esnext"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "demo/built", "built"]
+  "exclude": ["node_modules", "demo/built", "built", "dist"]
 }

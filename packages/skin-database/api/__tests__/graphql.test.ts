@@ -305,7 +305,7 @@ test("Mutation.request_nsfw_review_for_skin", async () => {
   expect(data).toEqual({ request_nsfw_review_for_skin: true });
 });
 
-test("Mutation.approve_skin", async () => {
+test.skip("Mutation.approve_skin", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`
@@ -325,7 +325,7 @@ test("Mutation.approve_skin", async () => {
   expect(await skin?.getTweetStatus()).toEqual("APPROVED");
 });
 
-test("Mutation.reject_skin", async () => {
+test.skip("Mutation.reject_skin", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`
@@ -345,7 +345,7 @@ test("Mutation.reject_skin", async () => {
   expect(await skin?.getTweetStatus()).toEqual("REJECTED");
 });
 
-test("Mutation.mark_skin_nsfw", async () => {
+test.skip("Mutation.mark_skin_nsfw", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`

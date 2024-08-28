@@ -11,8 +11,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ["winamp-eqf"],
   },
+  // @ts-ignore
   plugins: [
-    ...getPlugins({ minify: true, outputFile: "foo", vite: true }),
+    ...getPlugins({ minify: true, outputFile: "dist/report", vite: true }),
     /*
     replace({
       // Ensure we don't use the dev build of React

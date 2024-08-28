@@ -12,9 +12,6 @@ import { babel } from "@rollup/plugin-babel";
 import nodePolyfills from "rollup-plugin-polyfill-node";
 import path from "node:path";
 
-/**
- * @return {import('rollup').InputOptions}
- */
 export function getPlugins({ minify, outputFile, vite }) {
   const plugins = [
     replace({
