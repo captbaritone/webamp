@@ -3,7 +3,7 @@ import { getPlugins } from "./scripts/rollupPlugins.mjs";
 
 export default defineConfig({
   build: {
-    outDir: "../dist",
+    outDir: "../dist/demo-site",
   },
   root: "demo",
   // Used only by the demo site, not the library
@@ -13,7 +13,11 @@ export default defineConfig({
   },
   // @ts-ignore
   plugins: [
-    ...getPlugins({ minify: true, outputFile: "dist/report", vite: true }),
+    ...getPlugins({
+      minify: true,
+      outputFile: "dist/demo-site/report",
+      vite: true,
+    }),
     /*
     replace({
       // Ensure we don't use the dev build of React
