@@ -9,28 +9,13 @@ export interface Vis {
   saFalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   saPeakFalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   sa?: "analyzer" | "oscilloscope" | "none";
+  renderHeight?: number;
+  smallVis?: boolean;
+  pixelDensity?: number;
+  doubled?: boolean;
+  isMWOpen?: boolean;
 }
 import { FFT } from "./FFTNullsoft";
-import {
-  renderHeight,
-  smallVis,
-  PIXEL_DENSITY,
-  doubled,
-  isMWOpen,
-} from "./Vis";
-
-let saPeaks = new Int16Array(76).fill(0);
-let saData2 = new Float32Array(76).fill(0);
-let saData = new Int16Array(76).fill(0);
-let saFalloff = new Float32Array(76).fill(0);
-let sample = new Float32Array(76).fill(0);
-let barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
-let chunk: number;
-let uVar12: number;
-let falloff: number;
-let peakFalloff: number;
-
-let pushDown: number = 0;
 
 /**
  * Base class of Visualizer (animation frame renderer engine)
@@ -61,18 +46,18 @@ export class VisPaintHandler {
   dispose() {}
 }
 
-const SAMPLESIN = 1024;
-const SAMPLESOUT = 512;
-const inWaveData = new Float32Array(SAMPLESIN);
-const outSpectralData = new Float32Array(SAMPLESOUT);
-
 /**
  * Feeds audio data to the FFT.
  * @param analyser The AnalyserNode used to get the audio data.
  * @param fft The FFTNullsoft instance from the PaintHandler.
  */
-function processFFT(analyser: AnalyserNode, fft: FFT): void {
-  const dataArray = new Uint8Array(SAMPLESIN);
+function processFFT(
+  analyser: AnalyserNode,
+  fft: FFT,
+  inWaveData: Float32Array,
+  outSpectralData: Float32Array
+): void {
+  const dataArray = new Uint8Array(1024);
 
   analyser.getByteTimeDomainData(dataArray);
   for (let i = 0; i < dataArray.length; i++) {
@@ -92,6 +77,21 @@ type PaintBarFunction = (
 ) => void;
 
 export class BarPaintHandler extends VisPaintHandler {
+  private saPeaks: Int16Array;
+  private saData2: Float32Array;
+  private saData: Int16Array;
+  private saFalloff: Float32Array;
+  private sample: Float32Array;
+  private barPeak: Int16Array;
+  private chunk: number;
+  private uVar12: number;
+  private falloff: number;
+  private peakFalloff: number;
+  private pushDown: number;
+
+  private inWaveData = new Float32Array(1024);
+  private outSpectralData = new Float32Array(512);
+
   _analyser: AnalyserNode;
   _fft: FFT;
   _color: string = "rgb(255,255,255)";
@@ -105,6 +105,11 @@ export class BarPaintHandler extends VisPaintHandler {
   logged: boolean = false;
   colorssmall: string[];
   colorssmall2: string[];
+  _renderHeight: number;
+  _smallVis: boolean;
+  _pixelDensity: number;
+  _doubled: boolean;
+  _isMWOpen: boolean;
   paintBar: PaintBarFunction;
   paintFrame: PaintFrameFunction;
 
@@ -114,6 +119,12 @@ export class BarPaintHandler extends VisPaintHandler {
     this._fft = new FFT();
     this._bufferLength = this._analyser.frequencyBinCount;
     this._dataArray = new Uint8Array(this._bufferLength);
+
+    this._renderHeight = vis.renderHeight!;
+    this._smallVis = vis.smallVis!;
+    this._pixelDensity = vis.pixelDensity!;
+    this._doubled = vis.doubled!;
+    this._isMWOpen = vis.isMWOpen!;
 
     this.colorssmall = [
       vis.colors[17],
@@ -141,52 +152,87 @@ export class BarPaintHandler extends VisPaintHandler {
     this._16h.height = 16;
     this._16h.setAttribute("width", "75");
     this._16h.setAttribute("height", "16");
-    if (this._vis.bandwidth === "wide") {
-      this.paintFrame = this.paintFrameWide.bind(this);
-    } else {
-      // thin
-      // does call paintFrameWide but there is a check inside
-      // that changes the bandwidth accordingly
-      this.paintFrame = this.paintFrameWide.bind(this);
+
+    // draws the analyzer and handles changing the bandwidth correctly
+    this.paintFrame = this.paintAnalyzer.bind(this);
+
+    this.saPeaks = new Int16Array(76).fill(0);
+    this.saData2 = new Float32Array(76).fill(0);
+    this.saData = new Int16Array(76).fill(0);
+    this.saFalloff = new Float32Array(76).fill(0);
+    this.sample = new Float32Array(76).fill(0);
+    this.barPeak = new Int16Array(76).fill(0); // Needs to be specified as Int16 else the peaks don't behave as they should
+    this.chunk = 0;
+    this.uVar12 = 0;
+    this.pushDown = 0;
+
+    this.inWaveData;
+    this.outSpectralData;
+
+    switch (this._vis.coloring) {
+      case "fire":
+        this.paintBar = this.paintBarFire.bind(this);
+        break;
+      case "line":
+        this.paintBar = this.paintBarLine.bind(this);
+        break;
+      default:
+        this.paintBar = this.paintBarNormal.bind(this);
+        break;
     }
 
-    if (this._vis.coloring === "fire") {
-      this.paintBar = this.paintBarFire.bind(this);
-    } else if (this._vis.coloring === "line") {
-      this.paintBar = this.paintBarLine.bind(this);
-    } else {
-      this.paintBar = this.paintBarNormal.bind(this);
+    switch (this._vis.saFalloff) {
+      case "slower":
+        this.falloff = 3;
+        break;
+      case "slow":
+        this.falloff = 6;
+        break;
+      case "moderate":
+        this.falloff = 12;
+        break;
+      case "fast":
+        this.falloff = 16;
+        break;
+      case "faster":
+        this.falloff = 32;
+        break;
+      default:
+        this.falloff = 12;
+        break;
     }
 
-    if (this._vis.saFalloff === "slower") {
-      falloff = 3;
-    } else if (this._vis.saFalloff === "slow") {
-      falloff = 6;
-    } else if (this._vis.saFalloff === "moderate") {
-      falloff = 12;
-    } else if (this._vis.saFalloff === "fast") {
-      falloff = 16;
-    } else if (this._vis.saFalloff === "faster") {
-      falloff = 32;
-    }
-
-    if (this._vis.saPeakFalloff === "slower") {
-      peakFalloff = 1.05;
-    } else if (this._vis.saPeakFalloff === "slow") {
-      peakFalloff = 1.1;
-    } else if (this._vis.saPeakFalloff === "moderate") {
-      peakFalloff = 1.2;
-    } else if (this._vis.saPeakFalloff === "fast") {
-      peakFalloff = 1.4;
-    } else if (this._vis.saPeakFalloff === "faster") {
-      peakFalloff = 1.6;
+    switch (this._vis.saPeakFalloff) {
+      case "slower":
+        this.peakFalloff = 1.05;
+        break;
+      case "slow":
+        this.peakFalloff = 1.1;
+        break;
+      case "moderate":
+        this.peakFalloff = 1.2;
+        break;
+      case "fast":
+        this.peakFalloff = 1.4;
+        break;
+      case "faster":
+        this.peakFalloff = 1.6;
+        break;
+      default:
+        this.peakFalloff = 1.1;
+        break;
     }
   }
 
   prepare() {
     const vis = this._vis;
     if (!vis.canvas) return;
-    processFFT(this._analyser, this._fft);
+    processFFT(
+      this._analyser,
+      this._fft,
+      this.inWaveData,
+      this.outSpectralData
+    );
 
     //? paint peak
     this._peak.height = 1;
@@ -195,14 +241,14 @@ export class BarPaintHandler extends VisPaintHandler {
     ctx.fillStyle = vis.colors[23];
     ctx.fillRect(0, 0, 1, 1);
 
-    if (smallVis) {
-      pushDown = 0;
-    } else if (doubled && !isMWOpen) {
-      pushDown = 2;
-    } else if (doubled) {
-      pushDown = 0;
+    if (this._vis.smallVis) {
+      this.pushDown = 0;
+    } else if (this._vis.doubled && !this._vis.isMWOpen) {
+      this.pushDown = 2;
+    } else if (this._vis.doubled) {
+      this.pushDown = 0;
     } else {
-      pushDown = 2;
+      this.pushDown = 2;
     }
 
     //? paint bar
@@ -212,12 +258,12 @@ export class BarPaintHandler extends VisPaintHandler {
     this._bar.setAttribute("height", "16");
     ctx = this._bar.getContext("2d")!;
     for (let y = 0; y < 16; y++) {
-      if (PIXEL_DENSITY === 2 && smallVis) {
+      if (this._vis.pixelDensity === 2 && this._vis.smallVis) {
         ctx.fillStyle = this.colorssmall2[-y + 9];
       } else {
-        ctx.fillStyle = smallVis
+        ctx.fillStyle = this._vis.smallVis
           ? this.colorssmall[-y + 4]
-          : vis.colors[2 - pushDown - -y];
+          : vis.colors[2 - this.pushDown - -y];
       }
       ctx.fillRect(0, y, 1, y + 1);
     }
@@ -243,7 +289,7 @@ export class BarPaintHandler extends VisPaintHandler {
    * 🟫🟫🟫🟫🟧
    * drawing 1pixel width bars
    */
-  paintFrameWide() {
+  paintAnalyzer() {
     if (!this._ctx) return;
     const ctx = this._ctx;
     const w = ctx.canvas.width;
@@ -257,16 +303,16 @@ export class BarPaintHandler extends VisPaintHandler {
     let targetSize: number;
     let maxHeight: number;
     let maxWidth: number;
-    if (PIXEL_DENSITY === 2) {
+    if (this._vis.pixelDensity === 2) {
       targetSize = 75;
       maxHeight = 10;
     } else {
-      targetSize = smallVis ? 40 : 75;
-      maxHeight = smallVis ? 5 : 15;
+      targetSize = this._vis.smallVis ? 40 : 75;
+      maxHeight = this._vis.smallVis ? 5 : 15;
     }
 
-    if (smallVis) {
-      if (PIXEL_DENSITY === 2) {
+    if (this._vis.smallVis) {
+      if (this._vis.pixelDensity === 2) {
         maxWidth = 75; // this is not 37*2, but if this was 74, we'd be missing a pixel
         // someone here at Nullsoft screwed up...? or thought 74 didn't look good, I don't know.
       } else {
@@ -306,12 +352,13 @@ export class BarPaintHandler extends VisPaintHandler {
       }
 
       if (index1 == index2) {
-        sample[x] = outSpectralData[index1];
+        this.sample[x] = this.outSpectralData[index1];
       } else {
         let frac2 = scaledIndex - index1;
         let frac1 = 1.0 - frac2;
-        sample[x] =
-          frac1 * outSpectralData[index1] + frac2 * outSpectralData[index2];
+        this.sample[x] =
+          frac1 * this.outSpectralData[index1] +
+          frac2 * this.outSpectralData[index2];
       }
     }
 
@@ -321,71 +368,71 @@ export class BarPaintHandler extends VisPaintHandler {
       // if our bandwidth is "wide", chunk every 5 instances of the bars,
       // add them together and display them
       if (this._vis.bandwidth === "wide") {
-        chunk = chunk = x & 0xfffffffc;
-        uVar12 =
-          (sample[chunk + 3] +
-            sample[chunk + 2] +
-            sample[chunk + 1] +
-            sample[chunk]) /
+        this.chunk = this.chunk = x & 0xfffffffc;
+        this.uVar12 =
+          (this.sample[this.chunk + 3] +
+            this.sample[this.chunk + 2] +
+            this.sample[this.chunk + 1] +
+            this.sample[this.chunk]) /
           4;
-        saData[x] = uVar12;
+        this.saData[x] = this.uVar12;
       } else {
-        saData[x] = sample[x];
+        this.saData[x] = this.sample[x];
       }
 
-      if (saData[x] >= maxHeight) {
-        saData[x] = maxHeight;
+      if (this.saData[x] >= maxHeight) {
+        this.saData[x] = maxHeight;
       }
 
-      // prevents saPeaks going out of bounds when switching to windowshade mode
-      if (saPeaks[x] >= maxHeight * 256) {
-        saPeaks[x] = maxHeight * 256;
+      // prevents saPeaks going out of bounds when switching to windowShade mode
+      if (this.saPeaks[x] >= maxHeight * 256) {
+        this.saPeaks[x] = maxHeight * 256;
       }
 
-      saFalloff[x] -= falloff / 16.0;
+      this.saFalloff[x] -= this.falloff / 16.0;
       // Possible bar fall off values are
       // 3, 6, 12, 16, 32
       // Should there ever be some form of config options,
       // these should be used
       // 12 is the default of a fresh new Winamp installation
 
-      if (saFalloff[x] <= saData[x]) {
-        saFalloff[x] = saData[x];
+      if (this.saFalloff[x] <= this.saData[x]) {
+        this.saFalloff[x] = this.saData[x];
       }
 
-      if (saPeaks[x] <= Math.round(saFalloff[x] * 256)) {
-        saPeaks[x] = saFalloff[x] * 256;
-        saData2[x] = 3.0;
+      if (this.saPeaks[x] <= Math.round(this.saFalloff[x] * 256)) {
+        this.saPeaks[x] = this.saFalloff[x] * 256;
+        this.saData2[x] = 3.0;
       }
 
-      barPeak[x] = saPeaks[x] / 256;
+      this.barPeak[x] = this.saPeaks[x] / 256;
 
-      saPeaks[x] -= Math.round(saData2[x]);
-      saData2[x] *= peakFalloff;
+      this.saPeaks[x] -= Math.round(this.saData2[x]);
+      this.saData2[x] *= this.peakFalloff;
       // Possible peak fall off values are
       // 1.05f, 1.1f, 1.2f, 1.4f, 1.6f
       // 1.1f is the default of a fresh new Winamp installation
-      if (saPeaks[x] <= 0) {
-        saPeaks[x] = 0;
+      if (this.saPeaks[x] <= 0) {
+        this.saPeaks[x] = 0;
       }
 
-      if (smallVis) {
+      if (this._vis.smallVis) {
         // SORRY NOTHING
         // ironically enough the peaks do appear at the bottom here
       } else {
-        if (Math.round(barPeak[x]) < 1) {
-          barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
+        if (Math.round(this.barPeak[x]) < 1) {
+          this.barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
         }
       }
 
       // skip rendering if x is 4
-      if (!(x == chunk + 3)) {
+      if (!(x == this.chunk + 3)) {
         this.paintBar(
           ctx,
           x,
           x,
-          Math.round(saFalloff[x]) - pushDown,
-          barPeak[x] + 1 - pushDown
+          Math.round(this.saFalloff[x]) - this.pushDown,
+          this.barPeak[x] + 1 - this.pushDown
         );
       }
     }
@@ -503,6 +550,8 @@ function slice1st(
 }
 
 export class WavePaintHandler extends VisPaintHandler {
+  private pushDown: number;
+
   _analyser: AnalyserNode;
   _bufferLength: number;
   _lastX: number = 0;
@@ -528,15 +577,10 @@ export class WavePaintHandler extends VisPaintHandler {
     //* see https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes
     this._pixelRatio = window.devicePixelRatio || 1;
 
-    if (this._vis.oscStyle === "dots") {
-      this.paintWav = this.paintWavLine.bind(this);
-    } else if (this._vis.oscStyle === "solid") {
-      // does call paintWavLine but there is a check inside
-      // that changes the oscstyle accordingly
-      this.paintWav = this.paintWavLine.bind(this);
-    } else {
-      this.paintWav = this.paintWavLine.bind(this);
-    }
+    // draws the oscilloscope and handles overly complex operations
+    // in relation to oscilloscope style and main window states
+    this.paintWav = this.paintOscilloscope.bind(this);
+    this.pushDown = 0;
   }
 
   prepare() {
@@ -595,7 +639,7 @@ export class WavePaintHandler extends VisPaintHandler {
    * @returns value in use for coloring stuff in
    */
   colorIndex(y: number): number {
-    if (smallVis) {
+    if (this._vis.smallVis) {
       return 0;
     } else {
       if (y >= 14) return 4;
@@ -610,32 +654,31 @@ export class WavePaintHandler extends VisPaintHandler {
     }
   }
 
-  paintWavLine(x: number, y: number) {
-    // we skip rendering of the oscilloscope if we are in windowshade mode
+  paintOscilloscope(x: number, y: number) {
+    // we skip rendering of the oscilloscope if we are in windowShade mode
     // previously the renderWidth variable in Vis.tsx scaled down the width
     // of the canvas, but i didn't really like the idea since we squished
     // down the result of y to fit within 35/75 pixels, winamp doesn't
     // squish it's audio data down in the x axis, resulting in only
     // getting a small portion of what we hear, they did it, so do we
-    if (smallVis && doubled) {
+    if (this._vis.smallVis && this._vis.doubled) {
       if (x >= 75) {
         // SORRY NOTHING
         return;
       }
-    } else if (x >= (smallVis ? 38 : 75)) {
+    } else if (x >= (this._vis.smallVis ? 38 : 75)) {
       // SORRY NOTHING
       return;
     }
     // pushes vis down if not double size, winamp does this
-    // has to exist here for some reason else this doesn't work...
-    if (smallVis) {
-      pushDown = 0;
-    } else if (doubled && !isMWOpen) {
-      pushDown = 2;
-    } else if (doubled) {
-      pushDown = 0;
+    if (this._vis.smallVis) {
+      this.pushDown = 0;
+    } else if (this._vis.doubled && !this._vis.isMWOpen) {
+      this.pushDown = 2;
+    } else if (this._vis.doubled) {
+      this.pushDown = 0;
     } else {
-      pushDown = 2;
+      this.pushDown = 2;
     }
 
     // rounds y down to the nearest int
@@ -644,29 +687,34 @@ export class WavePaintHandler extends VisPaintHandler {
     // y is then adjusted downward to be in the center of the scope
     y = Math.round((y / 16) * 2) - 9;
 
-    // adjusts the center point of y if we are in windowshade mode, and if PIXEL_DENSITY is 2
+    // adjusts the center point of y if we are in windowShade mode, and if pixelDensity is 2
     // where it's adjusted further to give you the fullest view possible in that small window
     // else we leave y as is
     let yadjust: number;
-    if (PIXEL_DENSITY == 2) yadjust = 3;
+    if (this._vis.pixelDensity == 2) yadjust = 3;
     else yadjust = 5;
-    y = smallVis ? y - yadjust : y;
+    y = this._vis.smallVis ? y - yadjust : y;
 
     // scales down the already scaled down result of y to 0..10 or 0..5, depending on
-    // if PIXEL_DENSITY returns 2, this serves the purpose of avoiding full sending
+    // if pixelDensity returns 2, this serves the purpose of avoiding full sending
     // y to that really tiny space we have there
-    if (smallVis && PIXEL_DENSITY === 2) {
+    if (this._vis.smallVis && this._vis.pixelDensity === 2) {
       y = Math.round(((y + 11) / 16) * 10) - 5;
-    } else if (smallVis) {
+    } else if (this._vis.smallVis) {
       y = Math.round(((y + 11) / 16) * 5) - 2;
     }
 
-    // clamp y to be within a certain range, here it would be 0..10 if both windowshade and PIXEL_DENSITY apply
+    // clamp y to be within a certain range, here it would be 0..10 if both windowShade and pixelDensity apply
     // else we clamp y to 0..15 or 0..3, depending on renderHeight
-    if (smallVis && PIXEL_DENSITY === 2) {
+    if (this._vis.smallVis && this._vis.pixelDensity === 2) {
       y = y < 0 ? 0 : y > 10 - 1 ? 10 - 1 : y;
     } else {
-      y = y < 0 ? 0 : y > renderHeight - 1 ? renderHeight - 1 : y;
+      y =
+        y < 0
+          ? 0
+          : y > this._vis.renderHeight - 1
+          ? this._vis.renderHeight - 1
+          : y;
     }
     let v = y;
     if (x === 0) this._lastY = y;
@@ -676,28 +724,28 @@ export class WavePaintHandler extends VisPaintHandler {
     this._lastY = y;
 
     if (this._vis.oscStyle === "solid") {
-      if (PIXEL_DENSITY === 2) {
-        if (y >= (smallVis ? 5 : 8)) {
-          top = smallVis ? 5 : 8;
+      if (this._vis.pixelDensity === 2) {
+        if (y >= (this._vis.smallVis ? 5 : 8)) {
+          top = this._vis.smallVis ? 5 : 8;
           bottom = y;
         } else {
           top = y;
-          bottom = smallVis ? 5 : 7;
+          bottom = this._vis.smallVis ? 5 : 7;
         }
-        if (x === 0 && smallVis) {
+        if (x === 0 && this._vis.smallVis) {
           // why? i dont know!!
           top = y;
           bottom = y;
         }
       } else {
-        if (y >= (smallVis ? 2 : 8)) {
-          top = smallVis ? 2 : 8;
+        if (y >= (this._vis.smallVis ? 2 : 8)) {
+          top = this._vis.smallVis ? 2 : 8;
           bottom = y;
         } else {
           top = y;
-          bottom = smallVis ? 2 : 7;
+          bottom = this._vis.smallVis ? 2 : 7;
         }
-        if (x === 0 && smallVis) {
+        if (x === 0 && this._vis.smallVis) {
           // why? i dont know!!
           top = y;
           bottom = y;
@@ -709,7 +757,7 @@ export class WavePaintHandler extends VisPaintHandler {
     } else {
       if (bottom < top) {
         [bottom, top] = [top, bottom];
-        if (smallVis) {
+        if (this._vis.smallVis) {
           // SORRY NOTHING
           // really just removes the smoother line descending thing that's present in the Main Window
         } else {
@@ -726,7 +774,7 @@ export class WavePaintHandler extends VisPaintHandler {
         1,
         1, // sw,sh
         x,
-        y + pushDown,
+        y + this.pushDown,
         1,
         1 //dw,dh
       );
