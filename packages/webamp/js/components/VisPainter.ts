@@ -1,5 +1,5 @@
 export interface Vis {
-  canvas?: HTMLCanvasElement;
+  canvas: HTMLCanvasElement;
   colors: string[];
   analyser?: AnalyserNode;
   oscStyle?: "dots" | "solid" | "lines";
@@ -226,7 +226,6 @@ export class BarPaintHandler extends VisPaintHandler {
 
   prepare() {
     const vis = this._vis;
-    if (!vis.canvas) return;
     processFFT(
       this._analyser,
       this._fft,
@@ -584,10 +583,6 @@ export class WavePaintHandler extends VisPaintHandler {
   }
 
   prepare() {
-    if (!this._ctx) {
-      console.log("ctx not set!");
-      return;
-    }
     const vis = this._vis;
 
     //? paint bar
@@ -602,7 +597,8 @@ export class WavePaintHandler extends VisPaintHandler {
         ctx.fillRect(0, y, 1, y + 1);
       }
     }
-
+    
+    // @ts-ignore
     this._ctx.imageSmoothingEnabled = false;
     // @ts-ignore
     this._ctx.mozImageSmoothingEnabled = false;
