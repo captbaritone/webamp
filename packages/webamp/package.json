@@ -31,7 +31,7 @@
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "build-library": "node ./scripts/rollup.mjs",
     "prepublishOnly": "npm run build-library && npm run type-check",
     "publish-next": "yarn publish --new-version=\"0.0.0-next-$(git rev-parse --short HEAD)\" --tag next",

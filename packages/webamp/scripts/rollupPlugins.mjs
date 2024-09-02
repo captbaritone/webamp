@@ -40,10 +40,12 @@ export function getPlugins({ minify, outputFile, vite }) {
     // causes it to try to parse the js version as JSON.
     vite ? null : json(),
     // https://www.npmjs.com/package/rollup-plugin-import-css
-    postcss({
-      inject: false,
-      plugins: [atImport, postcssOptimizeDataUriPngs],
-    }),
+    vite
+      ? null
+      : postcss({
+          inject: false,
+          plugins: [atImport, postcssOptimizeDataUriPngs],
+        }),
     // Without this we get: Error: 'default' is not exported by node_modules/react/index.js
     // because react-redux import react as if it were an es6 module, but it is not.
     commonjs(),
