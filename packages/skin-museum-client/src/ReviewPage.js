@@ -128,22 +128,22 @@ export default function ReviewPage() {
     };
   });
 
-  function swiped(dir, skin) {
-    switch (dir) {
-      case "left":
-        reject(skin);
-        break;
-      case "right":
-        approve(skin);
-        break;
-      default:
-    }
-    console.log({ dir, skin });
-  }
+  // function _swiped(dir, skin) {
+  //   switch (dir) {
+  //     case "left":
+  //       reject(skin);
+  //       break;
+  //     case "right":
+  //       approve(skin);
+  //       break;
+  //     default:
+  //   }
+  //   console.log({ dir, skin });
+  // }
 
-  function outOfFrame(skin) {
-    console.log("out of frame", { skin });
-  }
+  // function _outOfFrame(skin) {
+  //   console.log("out of frame", { skin });
+  // }
   if (skins.length === 0) {
     return <h2 style={{ color: "white" }}>Loading...</h2>;
   }
