@@ -38,7 +38,7 @@ jobs:
           CI: true
       - name: Upload Screenshot Diffs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: image_diffs
           path: packages/webamp/js/__tests__/__image_snapshots__/__diff_output__/
@@ -48,7 +48,7 @@ jobs:
           yarn workspace webamp integration-tests -u
       - name: Upload New Screenshots
         if: failure()
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: new_images
           path: packages/webamp/js/__tests__/__image_snapshots__/
