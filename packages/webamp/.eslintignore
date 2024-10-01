@@ -1,6 +1,5 @@
 *.min.js
 built/
-dist/
 coverage/
 **/node_modules/
 examples/webpack/bundle.js

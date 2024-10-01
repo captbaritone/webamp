@@ -40,11 +40,17 @@
           },
           butterchurnOpen: true,
         },
-        __initialWindowLayout: {
-          main: { position: { x: 0, y: 0 } },
-          equalizer: { position: { x: 0, y: 116 } },
-          playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
-          milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] },
+        windowLayout: {
+          main: { position: { top: 0, left: 0 } },
+          equalizer: { position: { top: 116, left: 0 } },
+          playlist: {
+            position: { top: 232, left: 0 },
+            size: { extraWidth: 0, extraHeight: 4 },
+          },
+          milkdrop: {
+            position: { top: 0, left: 275 },
+            size: { extraHeight: 12, extraWidth: 7 },
+          },
         },
       });
       webamp.renderWhenReady(document.getElementById("app"));

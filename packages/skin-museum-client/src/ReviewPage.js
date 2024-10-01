@@ -1,6 +1,6 @@
 import * as Utils from "./utils";
 import { gql } from "./utils";
-import TinderCard from "react-tinder-card";
+// import TinderCard from "react-tinder-card";
 import { API_URL } from "./constants";
 import React, { useState, useEffect } from "react";
 
@@ -128,22 +128,22 @@ export default function ReviewPage() {
     };
   });
 
-  function swiped(dir, skin) {
-    switch (dir) {
-      case "left":
-        reject(skin);
-        break;
-      case "right":
-        approve(skin);
-        break;
-      default:
-    }
-    console.log({ dir, skin });
-  }
+  // function _swiped(dir, skin) {
+  //   switch (dir) {
+  //     case "left":
+  //       reject(skin);
+  //       break;
+  //     case "right":
+  //       approve(skin);
+  //       break;
+  //     default:
+  //   }
+  //   console.log({ dir, skin });
+  // }
 
-  function outOfFrame(skin) {
-    console.log("out of frame", { skin });
-  }
+  // function _outOfFrame(skin) {
+  //   console.log("out of frame", { skin });
+  // }
   if (skins.length === 0) {
     return <h2 style={{ color: "white" }}>Loading...</h2>;
   }
@@ -164,24 +164,25 @@ export default function ReviewPage() {
           NSFW.
         </p>
         {reverseSkins.map((skin) => {
-          return (
-            <TinderCard
-              className="tinder-card"
-              key={skin.md5}
-              onSwipe={(dir) => swiped(dir, skin)}
-              onCardLeftScreen={() => outOfFrame(skin)}
-              preventSwipe={["up", "down"]}
-            >
-              <img
-                style={{
-                  width: "100%",
-                  imageRendering: "pixelated",
-                }}
-                src={Utils.screenshotUrlFromHash(skin.md5)}
-                alt={skin.filename}
-              />
-            </TinderCard>
-          );
+          return <div>FIXME: Add TinderCard here</div>;
+          // return (
+          //   <TinderCard
+          //     className="tinder-card"
+          //     key={skin.md5}
+          //     onSwipe={(dir) => swiped(dir, skin)}
+          //     onCardLeftScreen={() => outOfFrame(skin)}
+          //     preventSwipe={["up", "down"]}
+          //   >
+          //     <img
+          //       style={{
+          //         width: "100%",
+          //         imageRendering: "pixelated",
+          //       }}
+          //       src={Utils.screenshotUrlFromHash(skin.md5)}
+          //       alt={skin.filename}
+          //     />
+          //   </TinderCard>
+          // );
         })}
         <br />
       </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom/client";
 // @ts-ignore
@@ -5,14 +6,14 @@ import isButterchurnSupported from "butterchurn/dist/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
+import WebampLazy from "../../js/webampLazy";
 import {
-  WebampLazy,
   DISABLE_MARQUEE,
+  SET_DUMMY_VIZ_DATA,
+  SET_EQ_AUTO,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  SET_EQ_AUTO,
-  SET_DUMMY_VIZ_DATA,
-} from "./Webamp";
+} from "../../js/actionTypes";
 
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
@@ -87,6 +88,7 @@ async function main() {
   }
   let soundcloudPlaylist = null;
   if (soundcloudPlaylistId != null) {
+    // @ts-ignore
     soundcloudPlaylist = await SoundCloud.getPlaylist(soundcloudPlaylistId);
   }
   const config = await getWebampConfig(screenshot, skinUrl, soundcloudPlaylist);

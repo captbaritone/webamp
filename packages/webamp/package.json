@@ -11,42 +11,6 @@
   "unpkg": "built/webamp.bundle.min.js",
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "targets": {
-    "eager-cjs": {
-      "source": "js/webamp.ts",
-      "outputFormat": "commonjs",
-      "isLibrary": false,
-      "optimize": false
-    },
-    "eager-cjs-min": {
-      "source": "js/webamp.ts",
-      "outputFormat": "commonjs",
-      "isLibrary": false,
-      "optimize": true
-    },
-    "eager-mjs": {
-      "source": "js/webamp.ts",
-      "outputFormat": "esmodule",
-      "isLibrary": false,
-      "optimize": false
-    },
-    "lazy-cjs": {
-      "source": "js/webampLazy.tsx",
-      "outputFormat": "commonjs",
-      "isLibrary": false,
-      "optimize": false
-    },
-    "lazy-cjs-min": {
-      "source": "js/webampLazy.tsx",
-      "outputFormat": "commonjs",
-      "isLibrary": false,
-      "optimize": true
-    },
-    "lazy-mjs": {
-      "source": "js/webampLazy.tsx",
-      "outputFormat": "esmodule",
-      "isLibrary": false,
-      "optimize": false
-    },
     "demo-site": {
       "source": "demo/index.html"
     }
@@ -63,22 +27,16 @@
       "types": "./built/types/js/webampLazy.d.ts"
     }
   },
-  "eager-cjs": "built/webamp.bundle.js",
-  "eager-cjs-min": "built/webamp.bundle.min.js",
-  "eager-mjs": "built/webamp.bundle.mjs",
-  "lazy-cjs": "built/webamp.lazy-bundle.js",
-  "lazy-cjs-min": "built/webamp.lazy-bundle.min.js",
-  "lazy-mjs": "built/webamp.lazy-bundle.mjs",
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
-    "build": "parcel build --target demo-site",
-    "build-library": "parcel build --target eager-cjs --target eager-cjs-min --target eager-mjs --target lazy-cjs --target lazy-cjs-min --target lazy-mjs --target types --reporter @parcel/reporter-bundle-analyzer",
+    "build": "vite build --emptyOutDir",
+    "build-library": "node ./scripts/rollup.mjs",
     "prepublishOnly": "npm run build-library && npm run type-check",
     "publish-next": "yarn publish --new-version=\"0.0.0-next-$(git rev-parse --short HEAD)\" --tag next",
     "serve": "http-server ./dist/demo-site",
-    "start": "parcel demo/index.html",
+    "start": "vite",
     "test": "jest --config=config/jest.unit.js",
     "tdd": "jest --config=config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
@@ -107,6 +65,13 @@
   "homepage": "https://github.com/captbaritone/webamp/",
   "devDependencies": {
     "@parcel/reporter-bundle-analyzer": "^2.8.2",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/classnames": "^2.2.6",
     "@types/fscreen": "^1.0.1",
     "@types/invariant": "^2.2.29",
@@ -132,11 +97,17 @@
     "jest-puppeteer": "^10.0.1",
     "parcel": "^2.8.2",
     "postcss": "^8.4.21",
+    "postcss-import": "^16.1.0",
     "puppeteer": "^22.2.0",
     "react-test-renderer": "^17.0.1",
+    "rollup": "^4.18.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-visualizer": "^5.12.0",
     "style-loader": "^0.23.1",
     "typescript": "^5.3.3",
-    "url-loader": "^1.1.2"
+    "url-loader": "^1.1.2",
+    "vite": "^5.2.12"
   },
   "jest": {
     "globalSetup": "jest-environment-puppeteer/setup",

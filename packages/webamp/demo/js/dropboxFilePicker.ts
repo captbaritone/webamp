@@ -1,4 +1,4 @@
-import { FilePicker } from "./Webamp";
+import { FilePicker } from "../../js/types";
 
 interface DropboxFile {
   link: string;
