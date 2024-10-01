@@ -106,7 +106,7 @@ describe(".me", () => {
   });
 });
 
-test.skip("/auth", async () => {
+test("/auth", async () => {
   const { body } = await request(app)
     .get("/auth")
     .expect(302)
@@ -117,7 +117,7 @@ test.skip("/auth", async () => {
   expect(body).toEqual({});
 });
 
-describe.skip("/auth/discord", () => {
+describe("/auth/discord", () => {
   test("valid code", async () => {
     const response = await request(app)
       .get("/auth/discord")
@@ -305,7 +305,7 @@ test("Mutation.request_nsfw_review_for_skin", async () => {
   expect(data).toEqual({ request_nsfw_review_for_skin: true });
 });
 
-test.skip("Mutation.approve_skin", async () => {
+test("Mutation.approve_skin", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`
@@ -325,7 +325,7 @@ test.skip("Mutation.approve_skin", async () => {
   expect(await skin?.getTweetStatus()).toEqual("APPROVED");
 });
 
-test.skip("Mutation.reject_skin", async () => {
+test("Mutation.reject_skin", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`
@@ -345,7 +345,7 @@ test.skip("Mutation.reject_skin", async () => {
   expect(await skin?.getTweetStatus()).toEqual("REJECTED");
 });
 
-test.skip("Mutation.mark_skin_nsfw", async () => {
+test("Mutation.mark_skin_nsfw", async () => {
   const ctx = new UserContext();
   const { data } = await graphQLRequest(
     gql`
