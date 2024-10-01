@@ -75,7 +75,7 @@ export function mark_skin_nsfw(
 }
 
 const _mark_skin_nsfw = requireAuthed(async (md5: string, req: Ctx) => {
-  req.log(`Approving skin with hash "${md5}"`);
+  req.log(`Marking skin with hash "${md5}" NSFW`);
   const skin = await SkinModel.fromMd5(req.ctx, md5);
   if (skin == null) {
     return false;

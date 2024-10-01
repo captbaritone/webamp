@@ -14846,6 +14846,11 @@ graphql-depth-limit@^1.1.0:
   dependencies:
     arrify "^1.0.1"
 
+graphql-http@^1.22.1:
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.22.1.tgz#3857ac75366e55db189cfe09ade9cc4c4f2cfd09"
+  integrity sha512-4Jor+LRbA7SfSaw7dfDUs2UBzvWg3cKrykfHRgKsOIvQaLuf+QOcG2t3Mx5N9GzSNJcuqMqJWz0ta5+BryEmXg==
+
 graphql-ws@5.12.1:
   version "5.12.1"
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.12.1.tgz#c62d5ac54dbd409cc6520b0b39de374b3d59d0dd"
@@ -14856,13 +14861,14 @@ graphql@16.8.1, graphql@^16.8.1, graphql@^16.9.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
   integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
-grats@^0.0.28:
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.28.tgz#232fa29cc4387607950e2e408e18c26582586e1b"
-  integrity sha512-rNsUJv2V2CtjFrMsfYWHz/0v5ndv2zfaEWj5NdzUzEsezQsCu8CTkKFTyz9DIUZfeU32YaScj2a96Q6yXGFpiQ==
+grats@^0.0.29:
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/grats/-/grats-0.0.29.tgz#9efe40da41a90c35c75f7ee4617290623a4318a9"
+  integrity sha512-6A77DUF+FHeVEWPUr2DENA9M3iCrR7/TbGQdmJGW7mXs6a5QhnDigq8PkQQdliVzE6KIj86SokkRWS4rAljlPg==
   dependencies:
     commander "^10.0.0"
     graphql "^16.9.0"
+    semver "^7.5.4"
     typescript "5.5.4"
 
 gulp-eslint@^3.0.1:

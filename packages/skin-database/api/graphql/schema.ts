@@ -1099,7 +1099,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return assertNonNull(mutationApprove_skinResolver(source, args, context));
+                        return assertNonNull(mutationApprove_skinResolver(source, args.md5, context));
                     }
                 },
                 mark_skin_nsfw: {
@@ -1113,7 +1113,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return assertNonNull(mutationMark_skin_nsfwResolver(source, args, context));
+                        return assertNonNull(mutationMark_skin_nsfwResolver(source, args.md5, context));
                     }
                 },
                 reject_skin: {
@@ -1127,7 +1127,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return assertNonNull(mutationReject_skinResolver(source, args, context));
+                        return assertNonNull(mutationReject_skinResolver(source, args.md5, context));
                     }
                 },
                 request_nsfw_review_for_skin: {
