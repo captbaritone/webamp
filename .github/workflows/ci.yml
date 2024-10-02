@@ -66,8 +66,8 @@ jobs:
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile --ignore-scripts
-      - name: Build latest (main) version
-        if: github.ref == 'refs/heads/main'
+      - name: Build latest (master) version
+        if: github.ref == 'refs/heads/master'
         run: |
           yarn workspace webamp build-library
           echo "Setting version to 0.0.0-next-${{ env.GIT_HASH }}"
@@ -78,9 +78,9 @@ jobs:
         if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         run: exit 1 # TODO: Script to update version number in webampLazy.tsx
       - name: Publish to npm
-        if: github.ref == 'refs/heads/main' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         run: |
           npm publish webamp ${TAG}
         env:
-          TAG: ${{ github.ref == 'refs/heads/main' && '--tag=main' || ((contains(github.ref_name, '-rc.') && '--tag=dev') || '' )}}
+          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
