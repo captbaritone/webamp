@@ -63,13 +63,13 @@ jobs:
         with:
           node-version: 20.x
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --ignore-scripts
+        run: yarn install --frozen-lockfile
       - name: Build latest (master) version
         if: github.ref == 'refs/heads/master'
         run: |
           yarn workspace webamp build-library
-          echo "Setting version to 0.0.0-next-${{ env.GIT_HASH }}"
-          npm version -w webamp 0.0.0-next-${{ env.GIT_HASH }} --no-git-tag-version
+          echo "Setting version to 0.0.0-next-${{ github.sha }}"
+          npm version -w webamp 0.0.0-next-${{ github.sha }} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version
