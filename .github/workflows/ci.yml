@@ -70,6 +70,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           yarn workspace webamp build-library
+          echo "Setting version to 0.0.0-next-${{ env.GIT_HASH }}"
+          npm version -w webamp 0.0.0-next-${{ env.GIT_HASH }} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version
