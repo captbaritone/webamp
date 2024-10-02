@@ -42,5 +42,6 @@
       "config/jest.*.js"
     ]
   },
-  "dependencies": {}
+  "dependencies": {},
+  "version": "0.0.0-next-87012d8d"
 }
