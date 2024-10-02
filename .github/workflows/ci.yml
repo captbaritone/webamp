@@ -69,7 +69,7 @@ jobs:
         run: |
           yarn workspace webamp build-library
           echo "Setting version to 0.0.0-next-${{ github.sha }}"
-          npm version -w webamp 0.0.0-next-${{ github.sha }} --no-git-tag-version
+          yarn workspace webamp version --new-version 0.0.0-next-${{ github.sha }} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version
