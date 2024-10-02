@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile --ignore-scripts
       - name: Build
         run: |
           yarn workspace ani-cursor build
@@ -52,3 +52,33 @@ jobs:
         with:
           name: new_images
           path: packages/webamp/js/__tests__/__image_snapshots__/
+  main-release:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.repository == 'captbaritone/webamp'
+    needs: [build-and-test]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+          registry-url: https://registry.npmjs.org/
+          cache: "yarn"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+      - name: Build latest (main) version
+        if: github.ref == 'refs/heads/main'
+        run: |
+          yarn workspace webamp build-library
+        env:
+          RELEASE_COMMIT_SHA: ${{ github.sha }}
+      - name: Build release version
+        if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        run: exit 1 # TODO: Script to update version number in webampLazy.tsx
+      - name: Publish to npm
+        if: github.ref == 'refs/heads/main' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        run: |
+          npm publish webamp ${TAG}
+        env:
+          TAG: ${{ github.ref == 'refs/heads/main' && '--tag=main' || ((contains(github.ref_name, '-rc.') && '--tag=dev') || '' )}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
