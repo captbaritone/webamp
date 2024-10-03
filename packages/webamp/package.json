@@ -4,7 +4,9 @@
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "files": [
     "built",
-    "!built/types/demo"
+    "!built/types/demo",
+    "!built/*.html",
+    "!built/tsBuilt"
   ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.js",
@@ -23,7 +25,7 @@
     },
     "./lazy": {
       "require": "./built/webamp.lazy-bundle.js",
-      "import": "./built/webamp.lazy-bundle.mjs",
+      "import": "./built/webamp.lazy-bundle.min.mjs",
       "types": "./built/types/js/webampLazy.d.ts"
     }
   },

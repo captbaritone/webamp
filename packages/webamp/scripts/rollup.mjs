@@ -61,7 +61,7 @@ const BUNDLES = [
     input: "js/webamp.ts",
     minify: true,
     output: {
-      file: "built/webamp.bundle.mjs",
+      file: "built/webamp.bundle.min.mjs",
       format: "module",
     },
   },
