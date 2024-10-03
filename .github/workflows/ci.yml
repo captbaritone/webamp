@@ -3,8 +3,35 @@ name: CI
 on: [push]
 
 jobs:
+  yarn-install:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache root and workspace node_modules
+        uses: actions/cache@v3
+        with:
+          # Cache the root node_modules and each workspace node_modules
+          path: |
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ runner.os }}-node-
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
   build-and-test:
     runs-on: ubuntu-latest
+    needs: yarn-install
 
     strategy:
       matrix:
@@ -12,12 +39,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Cache root and workspace node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ runner.os }}-node-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      # - name: Install Dependencies
+      #   run: yarn install --frozen-lockfile
       - name: Build
         run: |
           yarn workspace ani-cursor build
