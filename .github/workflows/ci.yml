@@ -76,9 +76,10 @@ jobs:
         if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         run: exit 1 # TODO: Script to update version number in webampLazy.tsx
       - name: Publish to npm
+        working-directory: ./packages/webamp
         if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         run: |
-          npm publish webamp ${TAG}
+          npm publish ${TAG}
         env:
           TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
