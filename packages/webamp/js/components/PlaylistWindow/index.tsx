@@ -7,7 +7,7 @@ import * as Selectors from "../../selectors";
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
-import Visualizer from "../Visualizer";
+import Vis from "../Vis";
 import PlaylistShade from "./PlaylistShade";
 import AddMenu from "./AddMenu";
 import RemoveMenu from "./RemoveMenu";
@@ -140,10 +140,7 @@ function PlaylistWindow({ analyser }: Props) {
               <div className="playlist-visualizer">
                 {activateVisualizer && (
                   <div className="visualizer-wrapper">
-                    <Visualizer
-                      // @ts-ignore Visualizer is not yet typed
-                      analyser={analyser}
-                    />
+                    <Vis analyser={analyser} />
                   </div>
                 )}
               </div>
