@@ -9,7 +9,7 @@ import replace from "@rollup/plugin-replace";
 import postcssOptimizeDataUriPngs from "./postcss-optimize-data-uri-pngs.js";
 import atImport from "postcss-import";
 import { babel } from "@rollup/plugin-babel";
-import nodePolyfills from "rollup-plugin-node-polyfills";
+import nodePolyfills from "rollup-plugin-polyfill-node";
 import path from "node:path";
 
 export function getPlugins({ minify, outputFile, vite }) {
