@@ -6,7 +6,6 @@ import LRU from "lru-cache";
 import { Int } from "grats";
 import { ISkin } from "./resolvers/CommonSkinResolver";
 import { Ctx } from ".";
-import { Query } from "./resolvers/QueryResolver";
 
 const options = {
   max: 100,
@@ -171,21 +170,18 @@ Only the skins that have been tweeted
  * All classic skins in the database
  *
  * **Note:** We don't currently support combining sorting and filtering.
- * @gqlField */
-export function skins(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-    sort,
-    filter,
-  }: {
-    first?: Int;
-    offset?: Int;
-    sort?: SkinsSortOption | null;
-    filter?: SkinsFilterOption | null;
-  }
-): SkinsConnection {
+ * @gqlQueryField */
+export function skins({
+  first = 10,
+  offset = 0,
+  sort,
+  filter,
+}: {
+  first?: Int;
+  offset?: Int;
+  sort?: SkinsSortOption | null;
+  filter?: SkinsFilterOption | null;
+}): SkinsConnection {
   if (first > 1000) {
     throw new Error("Maximum limit is 1000");
   }

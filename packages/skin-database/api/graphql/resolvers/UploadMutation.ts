@@ -4,7 +4,6 @@ import * as S3 from "../../../s3";
 import * as Skins from "../../../data/skins";
 import { processUserUploads } from "../../processUserUploads";
 import { Ctx } from "..";
-import { Mutation } from "./MutationResolver";
 
 // We don't use a resolver here, just return the value directly.
 /**
@@ -83,7 +82,7 @@ class UploadMutationResolver {
 
 /**
  * Mutations for the upload flow
- * @gqlField */
-export async function upload(_: Mutation): Promise<UploadMutationResolver> {
+ * @gqlMutationField */
+export async function upload(): Promise<UploadMutationResolver> {
   return new UploadMutationResolver();
 }

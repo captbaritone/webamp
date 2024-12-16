@@ -3,16 +3,14 @@ import SkinModel from "../../../data/SkinModel";
 import UserContext from "../../../data/UserContext";
 import { knex } from "../../../db";
 import { ISkin } from "./CommonSkinResolver";
-import { Query } from "./QueryResolver";
 import SkinResolver from "./SkinResolver";
 
 /**
  * Get the status of a batch of uploads by md5s
- * @gqlField
+ * @gqlQueryField
  * @deprecated Prefer `upload_statuses` instead, were we operate on ids.
  */
 export async function upload_statuses_by_md5(
-  _: Query,
   { md5s }: { md5s: string[] },
   { ctx }: Ctx
 ): Promise<Array<SkinUpload | null>> {
@@ -21,10 +19,9 @@ export async function upload_statuses_by_md5(
 
 /**
  * Get the status of a batch of uploads by ids
- * @gqlField */
+ * @gqlQueryField */
 export async function upload_statuses(
-  _: Query,
-  { ids }: { ids: string[] },
+  ids: string[],
   { ctx }: Ctx
 ): Promise<Array<SkinUpload | null>> {
   return _upload_statuses({ keyName: "id", keys: ids }, ctx);

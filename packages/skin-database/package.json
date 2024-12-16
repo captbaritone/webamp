@@ -23,7 +23,7 @@
     "fast-xml-parser": "^4.2.2",
     "graphql": "^16.8.1",
     "graphql-http": "^1.22.1",
-    "grats": "^0.0.29",
+    "grats": "^0.0.30",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",

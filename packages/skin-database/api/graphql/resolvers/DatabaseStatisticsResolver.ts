@@ -1,6 +1,5 @@
 import { Int } from "grats";
 import * as Skins from "../../../data/skins";
-import { Query } from "./QueryResolver";
 
 /**
  * Statistics about the contents of the Museum's database.
@@ -92,7 +91,7 @@ export default class DatabaseStatisticsResolver {
 
 /**
  * A namespace for statistics about the database
- * @gqlField */
-export function statistics(_: Query): DatabaseStatisticsResolver {
+ * @gqlQueryField */
+export function statistics(): DatabaseStatisticsResolver {
   return new DatabaseStatisticsResolver();
 }

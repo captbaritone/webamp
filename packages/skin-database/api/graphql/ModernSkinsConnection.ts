@@ -3,7 +3,6 @@ import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
 import { Ctx } from ".";
-import { Query } from "./resolvers/QueryResolver";
 
 /**
  * A collection of "modern" Winamp skins
@@ -44,16 +43,10 @@ export default class ModernSkinsConnection {
 
 /**
  * All modern skins in the database
- * @gqlField */
+ * @gqlQueryField */
 export async function modern_skins(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-  }: {
-    first?: Int;
-    offset?: Int;
-  }
+  first: Int = 10,
+  offset: Int = 0
 ): Promise<ModernSkinsConnection> {
   if (first > 1000) {
     throw new Error("Maximum limit is 1000");

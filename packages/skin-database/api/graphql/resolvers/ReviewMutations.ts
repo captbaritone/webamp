@@ -1,7 +1,6 @@
 import SkinModel from "../../../data/SkinModel";
 import * as Skins from "../../../data/skins";
 import { Ctx } from "..";
-import { Mutation } from "./MutationResolver";
 
 function requireAuthed(handler) {
   return (args, req: Ctx) => {
@@ -17,12 +16,8 @@ function requireAuthed(handler) {
  * Reject skin for tweeting
  *
  * **Note:** Requires being logged in
- * @gqlField */
-export function reject_skin(
-  _: Mutation,
-  md5: string,
-  req: Ctx
-): Promise<boolean> {
+ * @gqlMutationField */
+export function reject_skin(md5: string, req: Ctx): Promise<boolean> {
   return _reject_skin(md5, req);
 }
 
@@ -41,12 +36,8 @@ const _reject_skin = requireAuthed(async (md5: string, req: Ctx) => {
  * Approve skin for tweeting
  *
  * **Note:** Requires being logged in
- * @gqlField */
-export function approve_skin(
-  _: Mutation,
-  md5: string,
-  req: Ctx
-): Promise<boolean> {
+ * @gqlMutationField */
+export function approve_skin(md5: string, req: Ctx): Promise<boolean> {
   return _approve_skin(md5, req);
 }
 
@@ -65,12 +56,8 @@ const _approve_skin = requireAuthed(async (md5: string, req: Ctx) => {
  * Mark a skin as NSFW
  *
  * **Note:** Requires being logged in
- * @gqlField */
-export function mark_skin_nsfw(
-  _: Mutation,
-  md5: string,
-  req: Ctx
-): Promise<boolean> {
+ * @gqlMutationField */
+export function mark_skin_nsfw(md5: string, req: Ctx): Promise<boolean> {
   return _mark_skin_nsfw(md5, req);
 }
 
@@ -89,10 +76,9 @@ const _mark_skin_nsfw = requireAuthed(async (md5: string, req: Ctx) => {
  * Request that an admin check if this skin is NSFW.
  * Unlike other review mutation endpoints, this one does not require being logged
  * in.
- * @gqlField */
+ * @gqlMutationField */
 export async function request_nsfw_review_for_skin(
-  _: Mutation,
-  { md5 }: { md5: string },
+  md5: string,
   req: Ctx
 ): Promise<boolean> {
   req.log(`Reporting skin with hash "${md5}"`);

@@ -7,7 +7,6 @@ import { fetchMetadata, fetchTasks } from "../services/internetArchive";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Ctx } from "../api/graphql";
-import { Query } from "../api/graphql/resolvers/QueryResolver";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
@@ -219,11 +218,10 @@ export default class IaItemModel {
  * Get an archive.org item by its identifier. You can find this in the URL:
  *
  * https://archive.org/details/<identifier>/
- * @gqlField
+ * @gqlQueryField
  */
 export async function fetch_internet_archive_item_by_identifier(
-  _: Query,
-  { identifier }: { identifier: string },
+  identifier: string,
   { ctx }: Ctx
 ): Promise<IaItemModel | null> {
   return IaItemModel.fromIdentifier(ctx, identifier);

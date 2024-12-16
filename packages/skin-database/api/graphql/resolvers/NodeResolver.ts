@@ -34,13 +34,9 @@ export function fromId(base64Id: string): { graphqlType: string; id: string } {
  * Get a globally unique object by its ID.
  *
  * https://graphql.org/learn/global-object-identification/
- * @gqlField
+ * @gqlQueryField
  */
-export async function node(
-  _: Query,
-  { id }: { id: ID },
-  { ctx }: Ctx
-): Promise<NodeResolver | null> {
+export async function node(id: ID, { ctx }: Ctx): Promise<NodeResolver | null> {
   const { graphqlType, id: localId } = fromId(id);
   // TODO Use typeResolver
   switch (graphqlType) {

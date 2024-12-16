@@ -8,7 +8,6 @@ import { Int } from "grats";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Ctx } from "../api/graphql";
-import { Query } from "../api/graphql/resolvers/QueryResolver";
 
 export type TweetDebugData = {
   row: TweetRow;
@@ -109,11 +108,10 @@ export default class TweetModel {
 
 /**
  * Get a tweet by its URL
- * @gqlField
+ * @gqlQueryField
  */
 export async function fetch_tweet_by_url(
-  _: Query,
-  { url }: { url: string },
+  url: string,
   { ctx }: Ctx
 ): Promise<TweetModel | null> {
   return TweetModel.fromAnything(ctx, url);

@@ -1,7 +1,6 @@
 import { Int } from "grats";
 import TweetModel from "../../data/TweetModel";
 import { knex } from "../../db";
-import { Query } from "./resolvers/QueryResolver";
 
 /** @gqlEnum */
 export type TweetsSortOption = "LIKES" | "RETWEETS";
@@ -51,20 +50,17 @@ export default class TweetsConnection {
 
 /**
  * Tweets tweeted by @winampskins
- * @gqlField
+ * @gqlQueryField
  */
-export async function tweets(
-  _: Query,
-  {
-    first = 10,
-    offset = 0,
-    sort,
-  }: {
-    first?: Int;
-    offset?: Int;
-    sort?: TweetsSortOption | null;
-  }
-): Promise<TweetsConnection> {
+export async function tweets({
+  first = 10,
+  offset = 0,
+  sort,
+}: {
+  first?: Int;
+  offset?: Int;
+  sort?: TweetsSortOption | null;
+}): Promise<TweetsConnection> {
   if (first > 1000) {
     throw new Error("Maximum limit is 1000");
   }

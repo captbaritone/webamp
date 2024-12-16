@@ -5,7 +5,6 @@ import UserContext from "../../../data/UserContext";
 import ClassicSkinResolver from "./ClassicSkinResolver";
 import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
-import { Query } from "./QueryResolver";
 import algoliasearch from "algoliasearch";
 import * as Skins from "../../../data/skins";
 
@@ -35,11 +34,10 @@ export default class SkinResolver {
 
 /**
  * Get a skin by its MD5 hash
- * @gqlField
+ * @gqlQueryField
  */
 export async function fetch_skin_by_md5(
-  _: Query,
-  { md5 }: { md5: string },
+  md5: string,
   { ctx }: Ctx
 ): Promise<ISkin | null> {
   const skin = await SkinModel.fromMd5(ctx, md5);
@@ -53,10 +51,9 @@ export async function fetch_skin_by_md5(
  * Search the database using the Algolia search index used by the Museum.
  *
  * Useful for locating a particular skin.
- * @gqlField
+ * @gqlQueryField
  */
 export async function search_skins(
-  _: Query,
   {
     query,
     first = 10,
@@ -83,11 +80,8 @@ export async function search_skins(
 }
 /**
  * A random skin that needs to be reviewed
- * @gqlField */
-export async function skin_to_review(
-  _: Query,
-  { ctx }: Ctx
-): Promise<ISkin | null> {
+ * @gqlQueryField */
+export async function skin_to_review({ ctx }: Ctx): Promise<ISkin | null> {
   if (!ctx.authed()) {
     return null;
   }
