@@ -33,6 +33,7 @@ import { program } from "commander";
 import * as config from "./config";
 import { setHashesForSkin } from "./skinHash";
 import * as S3 from "./s3";
+import { generateDescription } from "./services/openAi";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -125,12 +126,19 @@ program
   )
   .option("--reject", 'Give a skin a "rejected" review.')
   .option("--metadata", "Push metadata to the archive.")
+  .option("--ai", "Use AI to generate a text description of the skin.")
   .action(
     async (
       md5,
-      { delete: del, deleteLocal, index, refresh, reject, metadata, hide }
+      { delete: del, deleteLocal, index, refresh, reject, metadata, hide, ai }
     ) => {
       const ctx = new UserContext("CLI");
+      if (ai) {
+        const skin = await SkinModel.fromMd5Assert(ctx, md5);
+        const description = await generateDescription(skin);
+        console.log("Generated description for", skin.getFileName());
+        console.log(description);
+      }
       if (del) {
         await Skins.deleteSkin(md5);
       }
