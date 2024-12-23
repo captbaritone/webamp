@@ -3,8 +3,8 @@
 
 export class FFT {
   private bitrevtable: number[];
-  private envelope: Float32Array | null;
-  private equalize: Float32Array | null;
+  private envelope: Float32Array;
+  private equalize: Float32Array;
   private temp1: Float32Array;
   private temp2: Float32Array;
   private cossintable: Float32Array[];
@@ -27,11 +27,8 @@ export class FFT {
     this.bitrevtable = this.initBitRevTable(NFREQ);
     this.cossintable = this.initCosSinTable(NFREQ);
 
-    this.envelope =
-      envelopePower > 0
-        ? this.initEnvelopeTable(samplesIn, envelopePower)
-        : null;
-    this.equalize = bEqualize ? this.initEqualizeTable(NFREQ, mode) : null;
+    this.envelope = this.initEnvelopeTable(samplesIn, envelopePower);
+    this.equalize = this.initEqualizeTable(NFREQ, mode);
 
     this.temp1 = new Float32Array(NFREQ);
     this.temp2 = new Float32Array(NFREQ);
