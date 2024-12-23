@@ -376,6 +376,7 @@ export class BarPaintHandler extends VisPaintHandler {
           4;
         this.saData[x] = this.uVar12;
       } else {
+        this.chunk = 0;
         this.saData[x] = this.sample[x];
       }
 
@@ -425,7 +426,7 @@ export class BarPaintHandler extends VisPaintHandler {
       }
 
       // skip rendering if x is 4
-      if (!(x == this.chunk + 3)) {
+      if (!(x === this.chunk + 3 && this._vis.bandwidth === "wide")) {
         this.paintBar(
           ctx,
           x,
