@@ -136,10 +136,12 @@ export default function Vis({ analyser }: Props) {
     isMWOpen,
   ]);
 
+  // reacts to changes in doublesize mode
   useEffect(() => {
     if (canvas && painter) {
       const canvasCtx = canvas.getContext("2d");
       if (canvasCtx) {
+        painter.prepare();
         // wipes the canvas clean if playback is paused and doubled is changing
         if (audioStatus === MEDIA_STATUS.PAUSED) {
           canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
@@ -163,7 +165,6 @@ export default function Vis({ analyser }: Props) {
 
     const loop = () => {
       canvasCtx.drawImage(bgCanvas, 0, 0);
-      painter.prepare();
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };
