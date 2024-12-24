@@ -55,7 +55,7 @@ export const VISUALIZERS = {
 
 export const VISUALIZER_ORDER = [
   VISUALIZERS.BAR,
-  VISUALIZERS.OSCILLOSCOPE, // TODO: Verify the order
+  VISUALIZERS.OSCILLOSCOPE, // Order is correct
   VISUALIZERS.NONE,
 ];
 

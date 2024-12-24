@@ -20,7 +20,7 @@ import { FFT } from "./FFTNullsoft";
 /**
  * Base class of Visualizer (animation frame renderer engine)
  */
-export class VisPaintHandler {
+abstract class VisPaintHandler {
   _vis: Vis;
   _ctx: CanvasRenderingContext2D | null;
 
@@ -61,7 +61,7 @@ function processFFT(
 
   analyser.getByteTimeDomainData(dataArray);
   for (let i = 0; i < dataArray.length; i++) {
-    inWaveData[i] = (dataArray[i] - 128) / 28;
+    inWaveData[i] = (dataArray[i] - 128) / 24;
   }
   fft.timeToFrequencyDomain(inWaveData, outSpectralData);
 }
@@ -102,7 +102,6 @@ export class BarPaintHandler extends VisPaintHandler {
   _16h: HTMLCanvasElement = document.createElement("canvas"); // non-stretched
   _bufferLength: number;
   _dataArray: Uint8Array;
-  logged: boolean = false;
   colorssmall: string[];
   colorssmall2: string[];
   _renderHeight: number;
@@ -145,8 +144,6 @@ export class BarPaintHandler extends VisPaintHandler {
       vis.colors[5],
       vis.colors[4],
     ];
-
-    this.logged;
 
     this._16h.width = 1;
     this._16h.height = 16;
@@ -511,11 +508,7 @@ export class BarPaintHandler extends VisPaintHandler {
   ) {
     const h = ctx.canvas.height;
     let y = h - barHeight;
-
-    if (!this.logged) {
-      console.log("FIXME: Line drawing is currently Fire mode!");
-      this.logged = true;
-    }
+    // FIXME: Line drawing is currently Fire mode!
 
     ctx.drawImage(
       this._bar,

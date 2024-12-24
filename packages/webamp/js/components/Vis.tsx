@@ -7,7 +7,6 @@ import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 import {
   Vis as IVis,
-  VisPaintHandler,
   BarPaintHandler,
   WavePaintHandler,
   NoVisualizerHandler,
@@ -106,7 +105,7 @@ export default function Vis({ analyser }: Props) {
       peaks: true,
       saFalloff: "moderate",
       saPeakFalloff: "slow",
-      sa: "analyzer",
+      sa: "analyzer", // unused, but hopefully will be used in the future for providing config options
       renderHeight,
       smallVis,
       pixelDensity,
