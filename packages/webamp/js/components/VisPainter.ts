@@ -223,12 +223,6 @@ export class BarPaintHandler extends VisPaintHandler {
 
   prepare() {
     const vis = this._vis;
-    processFFT(
-      this._analyser,
-      this._fft,
-      this.inWaveData,
-      this.outSpectralData
-    );
 
     //? paint peak
     this._peak.height = 1;
@@ -306,6 +300,13 @@ export class BarPaintHandler extends VisPaintHandler {
       targetSize = this._vis.smallVis ? 40 : 75;
       maxHeight = this._vis.smallVis ? 5 : 15;
     }
+
+    processFFT(
+      this._analyser,
+      this._fft,
+      this.inWaveData,
+      this.outSpectralData
+    );
 
     if (this._vis.smallVis) {
       if (this._vis.pixelDensity === 2) {
