@@ -147,6 +147,10 @@ export default function Vis({ analyser }: Props) {
         }
       }
     }
+    // TODO: Double check expected behavior when pause state changes.
+    // Here we ignore the audioStatus dependency because we don't
+    // want to clear the canvas when the audio is paused.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doubled, canvas, painter]);
 
   useEffect(() => {

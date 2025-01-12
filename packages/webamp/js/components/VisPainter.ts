@@ -1,3 +1,5 @@
+import { FFT } from "./FFTNullsoft";
+
 export interface Vis {
   canvas: HTMLCanvasElement;
   colors: string[];
@@ -9,13 +11,12 @@ export interface Vis {
   saFalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   saPeakFalloff?: "slower" | "slow" | "moderate" | "fast" | "faster";
   sa?: "analyzer" | "oscilloscope" | "none";
-  renderHeight?: number;
+  renderHeight: number;
   smallVis?: boolean;
   pixelDensity?: number;
   doubled?: boolean;
   isMWOpen?: boolean;
 }
-import { FFT } from "./FFTNullsoft";
 
 /**
  * Base class of Visualizer (animation frame renderer engine)
@@ -163,9 +164,6 @@ export class BarPaintHandler extends VisPaintHandler {
     this.uVar12 = 0;
     this.pushDown = 0;
 
-    this.inWaveData;
-    this.outSpectralData;
-
     switch (this._vis.coloring) {
       case "fire":
         this.paintBar = this.paintBarFire.bind(this);
@@ -286,9 +284,9 @@ export class BarPaintHandler extends VisPaintHandler {
     const h = ctx.canvas.height;
     ctx.fillStyle = this._color;
 
-    let maxFreqIndex = 512;
-    let logMaxFreqIndex = Math.log10(maxFreqIndex);
-    let logMinFreqIndex = 0;
+    const maxFreqIndex = 512;
+    const logMaxFreqIndex = Math.log10(maxFreqIndex);
+    const logMinFreqIndex = 0;
 
     let targetSize: number;
     let maxHeight: number;
@@ -326,17 +324,17 @@ export class BarPaintHandler extends VisPaintHandler {
     // This factor controls the scaling from linear to logarithmic.
     // scale = 0.0 -> fully linear scaling
     // scale = 1.0 -> fully logarithmic scaling
-    let scale = 0.91; // Adjust this value between 0.0 and 1.0
+    const scale = 0.91; // Adjust this value between 0.0 and 1.0
     for (let x = 0; x < targetSize; x++) {
       // Linear interpolation between linear and log scaling
-      let linearIndex = (x / (targetSize - 1)) * (maxFreqIndex - 1);
-      let logScaledIndex =
+      const linearIndex = (x / (targetSize - 1)) * (maxFreqIndex - 1);
+      const logScaledIndex =
         logMinFreqIndex +
         ((logMaxFreqIndex - logMinFreqIndex) * x) / (targetSize - 1);
-      let logIndex = Math.pow(10, logScaledIndex);
+      const logIndex = Math.pow(10, logScaledIndex);
 
       // Interpolating between linear and logarithmic scaling
-      let scaledIndex = (1.0 - scale) * linearIndex + scale * logIndex;
+      const scaledIndex = (1.0 - scale) * linearIndex + scale * logIndex;
 
       let index1 = Math.floor(scaledIndex);
       let index2 = Math.ceil(scaledIndex);
@@ -348,11 +346,11 @@ export class BarPaintHandler extends VisPaintHandler {
         index2 = maxFreqIndex - 1;
       }
 
-      if (index1 == index2) {
+      if (index1 === index2) {
         this.sample[x] = this.outSpectralData[index1];
       } else {
-        let frac2 = scaledIndex - index1;
-        let frac1 = 1.0 - frac2;
+        const frac2 = scaledIndex - index1;
+        const frac1 = 1.0 - frac2;
         this.sample[x] =
           frac1 * this.outSpectralData[index1] +
           frac2 * this.outSpectralData[index2];
@@ -417,10 +415,8 @@ export class BarPaintHandler extends VisPaintHandler {
       if (this._vis.smallVis) {
         // SORRY NOTHING
         // ironically enough the peaks do appear at the bottom here
-      } else {
-        if (Math.round(this.barPeak[x]) < 1) {
-          this.barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
-        }
+      } else if (Math.round(this.barPeak[x]) < 1) {
+        this.barPeak[x] = -3; // Push peaks outside the viewable area, this isn't a Modern Skin!
       }
 
       // skip rendering if x is 4
@@ -474,7 +470,7 @@ export class BarPaintHandler extends VisPaintHandler {
     peakHeight: number
   ) {
     const h = ctx.canvas.height;
-    let y = h - barHeight;
+    const y = h - barHeight;
 
     ctx.drawImage(
       this._bar,
@@ -508,7 +504,7 @@ export class BarPaintHandler extends VisPaintHandler {
     peakHeight: number
   ) {
     const h = ctx.canvas.height;
-    let y = h - barHeight;
+    const y = h - barHeight;
     // FIXME: Line drawing is currently Fire mode!
 
     ctx.drawImage(
@@ -592,7 +588,7 @@ export class WavePaintHandler extends VisPaintHandler {
         ctx.fillRect(0, y, 1, y + 1);
       }
     }
-    
+
     // @ts-ignore
     this._ctx.imageSmoothingEnabled = false;
     // @ts-ignore
@@ -632,17 +628,16 @@ export class WavePaintHandler extends VisPaintHandler {
   colorIndex(y: number): number {
     if (this._vis.smallVis) {
       return 0;
-    } else {
-      if (y >= 14) return 4;
-      if (y >= 12) return 3;
-      if (y >= 10) return 2;
-      if (y >= 8) return 1;
-      if (y >= 6) return 0;
-      if (y >= 4) return 1;
-      if (y >= 2) return 2;
-      if (y >= 0) return 3;
-      return 3;
     }
+    if (y >= 14) return 4;
+    if (y >= 12) return 3;
+    if (y >= 10) return 2;
+    if (y >= 8) return 1;
+    if (y >= 6) return 0;
+    if (y >= 4) return 1;
+    if (y >= 2) return 2;
+    if (y >= 0) return 3;
+    return 3;
   }
 
   paintOscilloscope(x: number, y: number) {
@@ -682,7 +677,7 @@ export class WavePaintHandler extends VisPaintHandler {
     // where it's adjusted further to give you the fullest view possible in that small window
     // else we leave y as is
     let yadjust: number;
-    if (this._vis.pixelDensity == 2) yadjust = 3;
+    if (this._vis.pixelDensity === 2) yadjust = 3;
     else yadjust = 5;
     y = this._vis.smallVis ? y - yadjust : y;
 
@@ -707,7 +702,7 @@ export class WavePaintHandler extends VisPaintHandler {
           ? this._vis.renderHeight - 1
           : y;
     }
-    let v = y;
+    const v = y;
     if (x === 0) this._lastY = y;
 
     let top = y;
@@ -745,15 +740,13 @@ export class WavePaintHandler extends VisPaintHandler {
     } else if (this._vis.oscStyle === "dots") {
       top = y;
       bottom = y;
-    } else {
-      if (bottom < top) {
-        [bottom, top] = [top, bottom];
-        if (this._vis.smallVis) {
-          // SORRY NOTHING
-          // really just removes the smoother line descending thing that's present in the Main Window
-        } else {
-          top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
-        }
+    } else if (bottom < top) {
+      [bottom, top] = [top, bottom];
+      if (this._vis.smallVis) {
+        // SORRY NOTHING
+        // really just removes the smoother line descending thing that's present in the Main Window
+      } else {
+        top++; //top++, that emulates Winamp's/WACUP's OSC behavior correctly
       }
     }
 

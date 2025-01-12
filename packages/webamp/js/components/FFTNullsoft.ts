@@ -39,8 +39,8 @@ export class FFT {
     let bias = 0.04; // FFT.INITIAL_BIAS
 
     for (let i = 0; i < NFREQ / 2; i++) {
-      const inv_half_nfreq = (9.0 - bias) / (NFREQ / 2);
-      equalize[i] = Math.log10(1.0 + bias + (i + 1) * inv_half_nfreq);
+      const invHalfNfreq = (9.0 - bias) / (NFREQ / 2);
+      equalize[i] = Math.log10(1.0 + bias + (i + 1) * invHalfNfreq);
       bias /= 1.0025; // FFT.BIAS_DECAY_RATE
     }
 
@@ -161,8 +161,8 @@ export class FFT {
     this.temp2.fill(0);
 
     // 2. Perform FFT
-    let real = this.temp1;
-    let imag = this.temp2;
+    const real = this.temp1;
+    const imag = this.temp2;
     let dftsize = 2;
     let t = 0;
 
