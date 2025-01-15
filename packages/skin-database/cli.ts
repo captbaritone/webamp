@@ -136,8 +136,10 @@ program
       if (ai) {
         const skin = await SkinModel.fromMd5Assert(ctx, md5);
         const description = await generateDescription(skin);
-        console.log("Generated description for", skin.getFileName());
+        console.log("Generated description for", await skin.getFileName());
+        console.log("====================================");
         console.log(description);
+        console.log("====================================");
       }
       if (del) {
         await Skins.deleteSkin(md5);

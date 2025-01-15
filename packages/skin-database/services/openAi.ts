@@ -18,10 +18,12 @@ The description should be concise and descriptive, and should not include any
 personal opinions or judgement. The description should be written in English and
 should be no longer than 200 characters.`;
 
-const prompt2 = `"Identify thematic and stylistic details in this screenshot of a media player.
-Give a comma separated list of tags, and ignore the text."`;
+const prompt2 = `You are a staff digital preservationist working at the Internet Archive.
+You have been tasked with identifying a comma separated list of tags for a Winamp skin to
+be used for indexing purposes. Ignore the names of the tracks in the playlist.`;
 
 export async function generateDescription(skin: SkinModel): Promise<string> {
+  const url = skin.getScreenshotUrl();
   const response = await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
@@ -29,16 +31,13 @@ export async function generateDescription(skin: SkinModel): Promise<string> {
         role: "user",
         content: [
           { type: "text", text: prompt2 },
-          {
-            type: "image_url",
-            image_url: {
-              url: skin.getScreenshotUrl(),
-            },
-          },
+          { type: "image_url", image_url: { url } },
         ],
       },
     ],
   });
-  console.log(response.choices[0].message.content);
-  return "Done";
+  if (typeof response.choices[0].message.content !== "string") {
+    throw new Error("OpenAI response is not a string");
+  }
+  return response.choices[0].message.content;
 }
