@@ -157,6 +157,9 @@ const searchEpic = (actions) =>
             nsfw: hit.nsfw === true || hit.nsfw === 1,
           }));
           return Actions.gotNewMatchingSkins(matchingSkins);
+        }),
+        catchError((e) => {
+          return of(Actions.gotSearchError());
         })
       );
     })

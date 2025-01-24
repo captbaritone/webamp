@@ -18,6 +18,7 @@ const SkinTable = ({
   getSkinData,
   searchQuery,
   loadingSearchQuery,
+  searchResultsError,
 }) => {
   function itemKey({ columnIndex, rowIndex }) {
     const { requestToken, data: skin } = getSkinData({
@@ -90,7 +91,7 @@ const SkinTable = ({
             paddingTop: 40,
           }}
         >
-          No skins matching "{searchQuery}"
+          {searchResultsError ?? `No skins matching "${searchQuery}"`}
         </div>
       )}
     </div>
@@ -103,6 +104,7 @@ const mapStateToProps = (state) => ({
   getSkinData: Selectors.getSkinDataGetter(state),
   searchQuery: Selectors.getSearchQuery(state),
   loadingSearchQuery: Selectors.getLoadingSearchQuery(state),
+  searchResultsError: Selectors.getSearchResultsError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

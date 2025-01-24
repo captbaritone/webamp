@@ -3,6 +3,7 @@ import { CHUNK_SIZE, UPLOAD_PAGE } from "../constants";
 const defaultState = {
   searchQuery: null,
   loadingSearchResults: false,
+  searchResultsError: null,
   selectedSkinPosition: null,
   matchingSkins: null,
   defaultSkins: [],
@@ -216,11 +217,21 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         loadingSearchResults: true,
+        searchResultsError: null,
         searchQuery: action.query,
         selectedSkinHash: null,
         selectedSkinPosition: null,
         focusedSkinFile: null,
       };
+    case "GOT_SEARCH_ERROR": {
+      return {
+        ...state,
+        loadingSearchResults: false,
+        searchResultsError:
+          "Error: We likely exceeded our search quota. Please try again later.",
+        matchingSkins: [],
+      };
+    }
     case "GOT_NEW_MATCHING_SKINS":
       let newSkins = state.skins;
       if (action.skins != null) {
@@ -235,6 +246,7 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         loadingSearchResults: false,
+        searchResultsError: null,
         matchingSkins: action.skins,
         skins: newSkins,
       };

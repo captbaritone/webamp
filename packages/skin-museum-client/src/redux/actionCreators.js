@@ -35,6 +35,10 @@ export function gotNewMatchingSkins(skins) {
   return { type: "GOT_NEW_MATCHING_SKINS", skins };
 }
 
+export function gotSearchError() {
+  return { type: "GOT_SEARCH_ERROR" };
+}
+
 export function gotSkinData(hash, data) {
   return { type: "GOT_SKIN_DATA", hash, data };
 }
