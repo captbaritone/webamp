@@ -3,9 +3,15 @@ import { createHandler } from "graphql-http/lib/use/express";
 
 // import DEFAULT_QUERY from "./defaultQuery";
 import { getSchema } from "./schema";
+import UserContext from "../../data/UserContext.js";
 
 /** @gqlContext */
 export type Ctx = Express.Request;
+
+/** @gqlContext */
+export function getUserContext(ctx: Ctx): UserContext {
+  return ctx.ctx;
+}
 
 const router = Router();
 

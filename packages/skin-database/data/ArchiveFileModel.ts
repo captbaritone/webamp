@@ -153,7 +153,7 @@ export default class ArchiveFileModel {
  */
 export async function fetch_archive_file_by_md5(
   md5: string,
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<ArchiveFileModel | null> {
   return ArchiveFileModel.fromFileMd5(ctx, md5);
 }

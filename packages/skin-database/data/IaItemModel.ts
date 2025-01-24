@@ -222,7 +222,7 @@ export default class IaItemModel {
  */
 export async function fetch_internet_archive_item_by_identifier(
   identifier: string,
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<IaItemModel | null> {
   return IaItemModel.fromIdentifier(ctx, identifier);
 }

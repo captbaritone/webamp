@@ -38,7 +38,7 @@ export default class SkinResolver {
  */
 export async function fetch_skin_by_md5(
   md5: string,
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<ISkin | null> {
   const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
@@ -59,7 +59,7 @@ export async function search_skins(
     first = 10,
     offset = 0,
   }: { query: string; first?: Int; offset?: Int },
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<Array<ISkin | null>> {
   if (first > 1000) {
     throw new Error("Can only query 1000 records via search.");
@@ -81,7 +81,7 @@ export async function search_skins(
 /**
  * A random skin that needs to be reviewed
  * @gqlQueryField */
-export async function skin_to_review({ ctx }: Ctx): Promise<ISkin | null> {
+export async function skin_to_review(ctx: UserContext): Promise<ISkin | null> {
   if (!ctx.authed()) {
     return null;
   }

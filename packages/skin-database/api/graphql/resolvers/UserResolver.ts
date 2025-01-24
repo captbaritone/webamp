@@ -1,9 +1,9 @@
-import { Ctx } from "..";
+import UserContext from "../../../data/UserContext.js";
 
 /** @gqlType User */
 export default class UserResolver {
   /** @gqlField */
-  username({ ctx }: Ctx): string | null {
+  username(ctx: UserContext): string | null {
     return ctx.username;
   }
 }

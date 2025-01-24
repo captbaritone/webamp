@@ -112,7 +112,7 @@ export default class TweetModel {
  */
 export async function fetch_tweet_by_url(
   url: string,
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<TweetModel | null> {
   return TweetModel.fromAnything(ctx, url);
 }

@@ -5,7 +5,7 @@ import SkinResolver from "./resolvers/SkinResolver";
 import LRU from "lru-cache";
 import { Int } from "grats";
 import { ISkin } from "./resolvers/CommonSkinResolver";
-import { Ctx } from ".";
+import UserContext from "../../data/UserContext.js";
 
 const options = {
   max: 100,
@@ -102,7 +102,7 @@ export default class SkinsConnection {
    * The list of skins
    * @gqlField
    */
-  async nodes({ ctx }: Ctx): Promise<Array<ISkin | null>> {
+  async nodes(ctx: UserContext): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
         throw new Error(

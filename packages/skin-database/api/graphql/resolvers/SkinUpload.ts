@@ -1,4 +1,3 @@
-import { Ctx } from "..";
 import SkinModel from "../../../data/SkinModel";
 import UserContext from "../../../data/UserContext";
 import { knex } from "../../../db";
@@ -11,8 +10,8 @@ import SkinResolver from "./SkinResolver";
  * @deprecated Prefer `upload_statuses` instead, were we operate on ids.
  */
 export async function upload_statuses_by_md5(
-  { md5s }: { md5s: string[] },
-  { ctx }: Ctx
+  md5s: string[],
+  ctx: UserContext
 ): Promise<Array<SkinUpload | null>> {
   return _upload_statuses({ keyName: "skin_md5", keys: md5s }, ctx);
 }
@@ -22,7 +21,7 @@ export async function upload_statuses_by_md5(
  * @gqlQueryField */
 export async function upload_statuses(
   ids: string[],
-  { ctx }: Ctx
+  ctx: UserContext
 ): Promise<Array<SkinUpload | null>> {
   return _upload_statuses({ keyName: "id", keys: ids }, ctx);
 }

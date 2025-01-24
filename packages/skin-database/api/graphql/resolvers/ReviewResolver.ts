@@ -1,4 +1,5 @@
 import { Ctx } from "..";
+import UserContext from "../../../data/UserContext.js";
 import { Rating, ReviewRow } from "../../../types";
 import { ISkin } from "./CommonSkinResolver";
 import SkinResolver from "./SkinResolver";
@@ -17,7 +18,7 @@ export default class ReviewResolver {
    * The skin that was reviewed
    * @gqlField
    */
-  skin({ ctx }: Ctx): Promise<ISkin | null> {
+  skin(ctx: UserContext): Promise<ISkin | null> {
     return SkinResolver.fromMd5(ctx, this._model.skin_md5);
   }
 

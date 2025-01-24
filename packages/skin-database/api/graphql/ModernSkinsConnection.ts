@@ -2,7 +2,7 @@ import { Int } from "grats";
 import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
-import { Ctx } from ".";
+import UserContext from "../../data/UserContext.js";
 
 /**
  * A collection of "modern" Winamp skins
@@ -30,7 +30,7 @@ export default class ModernSkinsConnection {
   /**
    * The list of skins
    * @gqlField */
-  async nodes({ ctx }: Ctx): Promise<Array<ModernSkinResolver | null>> {
+  async nodes(ctx: UserContext): Promise<Array<ModernSkinResolver | null>> {
     const skins = await this._getQuery()
       .select()
       .limit(this._first)

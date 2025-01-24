@@ -23,7 +23,6 @@
     "fast-xml-parser": "^4.2.2",
     "graphql": "^16.8.1",
     "graphql-http": "^1.22.1",
-    "grats": "^0.0.30",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
@@ -68,7 +67,7 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
-    "grats": "^0.0.25",
+    "grats": "^0.0.31",
     "supertest": "^6.0.1",
     "typescript": "^5.3.3"
   },

@@ -3,6 +3,7 @@
  * Do not manually edit. Regenerate by running `npx grats`.
  */
 import { defaultFieldResolver, GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLInterfaceType, GraphQLList, GraphQLNonNull, GraphQLID, GraphQLEnumType, GraphQLInputObjectType } from "graphql";
+import { getUserContext as getUserContext } from "./index";
 import { fetch_archive_file_by_md5 as queryFetch_archive_file_by_md5Resolver } from "./../../data/ArchiveFileModel";
 import { fetch_internet_archive_item_by_identifier as queryFetch_internet_archive_item_by_identifierResolver } from "./../../data/IaItemModel";
 import { fetch_skin_by_md5 as queryFetch_skin_by_md5Resolver, search_skins as querySearch_skinsResolver, skin_to_review as querySkin_to_reviewResolver } from "./resolvers/SkinResolver";
@@ -118,7 +119,7 @@ export function getSchema(): GraphQLSchema {
                     name: "skin",
                     type: SkinType,
                     resolve(source, _args, context) {
-                        return source.skin(context);
+                        return source.skin(getUserContext(context));
                     }
                 }
             };
@@ -329,7 +330,7 @@ export function getSchema(): GraphQLSchema {
                     name: "username",
                     type: GraphQLString,
                     resolve(source, _args, context) {
-                        return source.username(context);
+                        return source.username(getUserContext(context));
                     }
                 }
             };
@@ -504,7 +505,7 @@ export function getSchema(): GraphQLSchema {
                     name: "nodes",
                     type: new GraphQLList(ModernSkinType),
                     resolve(source, _args, context) {
-                        return assertNonNull(source.nodes(context));
+                        return assertNonNull(source.nodes(getUserContext(context)));
                     }
                 }
             };
@@ -528,7 +529,7 @@ export function getSchema(): GraphQLSchema {
                     name: "nodes",
                     type: new GraphQLList(SkinType),
                     resolve(source, _args, context) {
-                        return assertNonNull(source.nodes(context));
+                        return assertNonNull(source.nodes(getUserContext(context)));
                     }
                 }
             };
@@ -753,7 +754,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return queryFetch_archive_file_by_md5Resolver(args.md5, context);
+                        return queryFetch_archive_file_by_md5Resolver(args.md5, getUserContext(context));
                     }
                 },
                 fetch_internet_archive_item_by_identifier: {
@@ -767,7 +768,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return queryFetch_internet_archive_item_by_identifierResolver(args.identifier, context);
+                        return queryFetch_internet_archive_item_by_identifierResolver(args.identifier, getUserContext(context));
                     }
                 },
                 fetch_skin_by_md5: {
@@ -781,7 +782,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return queryFetch_skin_by_md5Resolver(args.md5, context);
+                        return queryFetch_skin_by_md5Resolver(args.md5, getUserContext(context));
                     }
                 },
                 fetch_tweet_by_url: {
@@ -795,7 +796,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return queryFetch_tweet_by_urlResolver(args.url, context);
+                        return queryFetch_tweet_by_urlResolver(args.url, getUserContext(context));
                     }
                 },
                 me: {
@@ -837,7 +838,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return queryNodeResolver(args.id, context);
+                        return queryNodeResolver(args.id, getUserContext(context));
                     }
                 },
                 search_skins: {
@@ -861,7 +862,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return assertNonNull(querySearch_skinsResolver(args, context));
+                        return assertNonNull(querySearch_skinsResolver(args, getUserContext(context)));
                     }
                 },
                 skin_to_review: {
@@ -869,7 +870,7 @@ export function getSchema(): GraphQLSchema {
                     name: "skin_to_review",
                     type: SkinType,
                     resolve(_source, _args, context) {
-                        return querySkin_to_reviewResolver(context);
+                        return querySkin_to_reviewResolver(getUserContext(context));
                     }
                 },
                 skins: {
@@ -943,7 +944,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return assertNonNull(queryUpload_statusesResolver(args.ids, context));
+                        return assertNonNull(queryUpload_statusesResolver(args.ids, getUserContext(context)));
                     }
                 },
                 upload_statuses_by_md5: {
@@ -958,7 +959,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return assertNonNull(queryUpload_statuses_by_md5Resolver(args, context));
+                        return assertNonNull(queryUpload_statuses_by_md5Resolver(args.md5s, getUserContext(context)));
                     }
                 }
             };
@@ -1025,7 +1026,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return assertNonNull(source.get_upload_urls(args, context));
+                        return assertNonNull(source.get_upload_urls(args.files, getUserContext(context)));
                     }
                 },
                 report_skin_uploaded: {
@@ -1043,7 +1044,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(source, args, context) {
-                        return assertNonNull(source.report_skin_uploaded(args, context));
+                        return assertNonNull(source.report_skin_uploaded(args.id, args.md5, context));
                     }
                 }
             };

@@ -1,8 +1,7 @@
 import { ID } from "grats";
-import { Query } from "./QueryResolver";
-import { Ctx } from "..";
 import SkinModel from "../../../data/SkinModel";
 import SkinResolver from "./SkinResolver";
+import UserContext from "../../../data/UserContext.js";
 
 /**
  * A globally unique object. The `id` here is intended only for use within
@@ -36,7 +35,10 @@ export function fromId(base64Id: string): { graphqlType: string; id: string } {
  * https://graphql.org/learn/global-object-identification/
  * @gqlQueryField
  */
-export async function node(id: ID, { ctx }: Ctx): Promise<NodeResolver | null> {
+export async function node(
+  id: ID,
+  ctx: UserContext
+): Promise<NodeResolver | null> {
   const { graphqlType, id: localId } = fromId(id);
   // TODO Use typeResolver
   switch (graphqlType) {
