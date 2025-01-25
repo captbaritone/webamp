@@ -19,7 +19,7 @@ import {
   takeWhile,
   mergeAll,
 } from "rxjs/operators";
-import { search, graphqlSearch } from "../algolia";
+import { graphqlSearch } from "../algolia";
 import queryParser from "../queryParser";
 import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
