@@ -1,4 +1,3 @@
-// import Sentry from "@sentry/node";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -25,14 +24,3 @@ app.listen(port, () => {
   console.log(`Explore: http://localhost:${port}/graphql`);
 });
 
-// Initialize Sentry after we start listening. Any crash at start time will appear in the console and we'll notice.
-/*
-Sentry.init({
-  dsn:
-    "https://0e6bc841b4f744b2953a1fe5981effe6@o68382.ingest.sentry.io/5508241",
-
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
-  tracesSampleRate: 1.0,
-});
-*/

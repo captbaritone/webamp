@@ -115,9 +115,26 @@ export default class ArchiveFileModel {
    * It may not work for all files.
    * @gqlField url
    */
-  getUrl(): string {
+  async getUrl(): Promise<string | null> {
+    if (this.getIsDirectory()) {
+      return null;
+    }
+    const ext = await this.skinExt();
     const filename = encodeURIComponent(this.getFileName());
-    return `https://zip-worker.jordan1320.workers.dev/zip/${this.getMd5()}/${filename}`;
+    return `https://zip-worker.jordan1320.workers.dev/zip/${this.getMd5()}.${ext}/${filename}`;
+  }
+
+  async skinExt(): Promise<string> {
+    const skin = await this.getSkin();
+    const type = skin.getSkinType();
+    switch (type) {
+      case "CLASSIC":
+        return "wsz";
+      case "MODERN":
+        return "wal";
+      default:
+        throw new Error(`Unexpected skin type: "${type}".`);
+    }
   }
 
   async getSkin(): Promise<SkinModel> {

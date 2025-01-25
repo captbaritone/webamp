@@ -1,7 +1,7 @@
 import { knex } from "../db";
 
 export default class KeyValue {
-  static async get(key: string): Promise<any> {
+  static async get<T>(key: string): Promise<T | null> {
     const result = await knex("key_value").where({ key }).first("value");
     if (result == null) {
       return null;

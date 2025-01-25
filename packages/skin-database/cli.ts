@@ -34,6 +34,8 @@ import * as config from "./config";
 import { setHashesForSkin } from "./skinHash";
 import * as S3 from "./s3";
 import { generateDescription } from "./services/openAi";
+import KeyValue from "./data/KeyValue";
+import detectRepacks from "./tasks/detectRepacks";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -111,6 +113,12 @@ program
       "CloudFlare cache and seach index entries."
   )
   .option(
+    "--purge",
+    "Purge a skin from the database, including its S3 files " +
+      "CloudFlare cache and seach index entries. " +
+      "Also prevents it from being uploaded again."
+  )
+  .option(
     "--hide",
     "Hide a skin from the museum main page. Useful for removing aparent dupes."
   )
@@ -124,13 +132,25 @@ program
     "--refresh",
     "Retake the screenshot of a skin and update the database."
   )
+  .option("--refresh-archive-files")
   .option("--reject", 'Give a skin a "rejected" review.')
   .option("--metadata", "Push metadata to the archive.")
   .option("--ai", "Use AI to generate a text description of the skin.")
   .action(
     async (
       md5,
-      { delete: del, deleteLocal, index, refresh, reject, metadata, hide, ai }
+      {
+        delete: del,
+        deleteLocal,
+        index,
+        refresh,
+        reject,
+        metadata,
+        hide,
+        purge,
+        refreshArchiveFiles,
+        ai,
+      }
     ) => {
       const ctx = new UserContext("CLI");
       if (ai) {
@@ -140,6 +160,15 @@ program
         console.log("====================================");
         console.log(description);
         console.log("====================================");
+      }
+      if (purge) {
+        // cat purge | xargs -I {} yarn cli skin --purge {}
+        await Skins.deleteSkin(md5);
+        const purgedArr: string[] = (await KeyValue.get("purged")) || [];
+        const purged = new Set(purgedArr);
+        purged.add(md5);
+
+        await KeyValue.set("purged", Array.from(purged));
       }
       if (del) {
         await Skins.deleteSkin(md5);
@@ -164,6 +193,13 @@ program
         const skin = await SkinModel.fromMd5Assert(ctx, md5);
         await SyncToArchive.updateMetadata(skin);
         console.log("Updated Metadata");
+      }
+      if (refreshArchiveFiles) {
+        const skin = await SkinModel.fromMd5Assert(ctx, md5);
+        if (skin == null) {
+          throw new Error("Can't find skin");
+        }
+        await setHashesForSkin(skin);
       }
     }
   );
@@ -352,6 +388,12 @@ program
     "--compute-museum-order",
     "Compute the order in which skins should be displayed in the museum"
   )
+  .option("--foo", "Learn about missing skins")
+  .option(
+    "--winampskinsinfo",
+    "Detect skins that were broken by winampskins.info injecting an ad file"
+  )
+  .option("--test-cloudflare", "Try to upload to cloudflare")
   .action(async (arg) => {
     const {
       uploadIaScreenshot,
@@ -361,7 +403,17 @@ program
       updateSearchIndex,
       configureR2Cors,
       computeMuseumOrder,
+      foo,
+      winampskinsinfo,
+      testCloudflare,
     } = arg;
+    if (testCloudflare) {
+      const buffer = new Buffer("testing", "utf8");
+      await S3.putTemp("hello", buffer);
+    }
+    if (winampskinsinfo) {
+      await detectRepacks();
+    }
     if (computeMuseumOrder) {
       await Skins.computeMuseumOrder();
       console.log("Museum order updated.");
@@ -406,6 +458,23 @@ program
         console.log("Did not upload screenshot");
       }
     }
+    if (foo) {
+      const ctx = new UserContext();
+      const missingModernSkins = await KeyValue.get("missingModernSkins");
+      const missingModernSkinsSet = new Set(missingModernSkins);
+      const skins = {};
+      for (const md5 of missingModernSkins) {
+        const skin = await SkinModel.fromMd5(ctx, md5);
+        if (skin == null) {
+          continue;
+        }
+        missingModernSkinsSet.delete(md5);
+      }
+      await KeyValue.set(
+        "missingModernSkins",
+        Array.from(missingModernSkinsSet)
+      );
+    }
     if (refreshArchiveFiles) {
       const ctx = new UserContext();
       const skinRows = await knex("skins")
@@ -415,13 +484,21 @@ program
         .where((builder) => {
           return builder.where("file_info.file_md5", null);
         })
-        .limit(1000)
+        .limit(2000)
         .groupBy("skins.md5")
         .select();
       console.log(`Found ${skinRows.length} skins to update`);
+      const missingModernSkins = new Set(
+        await KeyValue.get("missingModernSkins")
+      );
       const skins = skinRows.map((row) => new SkinModel(ctx, row));
       for (const skin of skins) {
         console.log("Working on", skin.getMd5(), await skin.getFileName());
+        if (missingModernSkins.has(skin.getMd5())) {
+          console.log("NOT skipping since this one is a missingModernSkin");
+          // continue
+        }
+
         try {
           await setHashesForSkin(skin);
         } catch (e) {

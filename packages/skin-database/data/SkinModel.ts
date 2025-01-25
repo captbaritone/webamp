@@ -20,11 +20,12 @@ import JSZip from "jszip";
 import fs from "fs/promises";
 import path from "path";
 import { getTransparentAreaSize } from "../transparency";
+import KeyValue from "./KeyValue";
 
 export const IS_README = /(file_id\.diz)|(\.txt)$/i;
 // Skinning Updates.txt ?
 export const IS_NOT_README =
-  /(dialogs\.txt)|(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
+  /(dialogs\.txt)|(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)|(winampskins\.info\.txt)|(albumlist\.txt)|(covertag\.txt)|(1001winampskins\.com\.txt)$/i;
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -190,7 +191,12 @@ export default class SkinModel {
     const files = await this.getArchiveFiles();
     const readme = files.find((file) => {
       const filename = file.getFileName();
-      return IS_README.test(filename) && !IS_NOT_README.test(filename);
+      const isReadme = IS_README.test(filename);
+      const isNotReadme = IS_NOT_README.test(filename);
+
+      console.log({ filename, isReadme, isNotReadme, md5: file.getFileMd5() });
+
+      return isReadme && !isNotReadme;
     });
 
     if (readme == null) {
@@ -242,7 +248,17 @@ export default class SkinModel {
     } else {
       const response = await fetch(this.getSkinUrl());
       if (!response.ok) {
-        throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
+        const missingModernSkins =
+          (await KeyValue.get("missingModernSkins")) ?? [];
+        const missingModernSkinsSet = new Set(missingModernSkins);
+        missingModernSkinsSet.add(this.getMd5());
+        await KeyValue.set(
+          "missingModernSkins",
+          Array.from(missingModernSkinsSet)
+        );
+        throw new Error(
+          `Could not fetch skin at "${this.getSkinUrl()}" (Marked in missingModernSkins in the KeyValue store)`
+        );
       }
       return response.buffer();
     }

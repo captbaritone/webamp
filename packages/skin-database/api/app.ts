@@ -1,6 +1,6 @@
 import graphql from "./graphql";
 import cors, { CorsOptions } from "cors";
-import Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
 import express, { RequestHandler, ErrorRequestHandler, Handler } from "express";
@@ -18,13 +18,13 @@ export type ApiAction =
   | { type: "CLASSIC_SKIN_UPLOADED"; md5: string }
   | { type: "MODERN_SKIN_UPLOADED"; md5: string }
   | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string }
+  | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
   | {
-      type: "GOT_FEEDBACK";
-      message: string;
-      email?: string | null;
-      url?: string | null;
+      type: "SYNCED_TO_ARCHIVE";
+      successes: number;
+      errors: number;
+      skips: number;
     }
-  | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
   | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
   | {
       type: "POPULAR_TWEET";
@@ -65,7 +65,9 @@ type Options = {
 export function createApp({ eventHandler, logger, extraMiddleware }: Options) {
   const app = express();
   if (Sentry) {
-    app.use(Sentry.Handlers.requestHandler() as RequestHandler);
+    Sentry.init({
+      dsn: "https://0e6bc841b4f744b2953a1fe5981effe6@o68382.ingest.us.sentry.io/5508241",
+    });
   }
 
   // https://expressjs.com/en/guide/behind-proxies.html

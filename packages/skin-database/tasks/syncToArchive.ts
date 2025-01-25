@@ -153,6 +153,14 @@ const INVALID_IDENTIFIERS = new Set([
   "winampskins_Sakura",
   "winampskins_Sakura3",
   "winampskins_Izumi2",
+  "winampskins_beasley_skin", // Case alias?
+  "winampskins_Episode1_1",
+  "winampskins_ORTV1",
+  "winampskins_bluemetal",
+  "winampskins_Episode1_2",
+  "winampskins_Episode1_3",
+  "winampskins_Episode1_4",
+  "winampskins_Episode1_5"
 ]);
 
 export async function identifierExists(identifier: string): Promise<boolean> {
@@ -218,6 +226,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
 
   let successCount = 0;
   let errorCount = 0;
+  let skipCount = 0;
 
   await Parallel.map(
     unarchived,
@@ -227,6 +236,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
         md5 === "91477bec2b599bc5085f87f0fca3a4d5"
       ) {
         // The internet archive claims this one is corrupt for some reason.
+        skipCount++;
         console.warn(`Skipping this skin. It's known to not upload correctly.`);
         return null;
       }
@@ -262,6 +272,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
     type: "SYNCED_TO_ARCHIVE",
     successes: successCount,
     errors: errorCount,
+    skips: skipCount
   });
   console.log(`Job complete: ${successCount} success, ${errorCount} errors`);
 }
