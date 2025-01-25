@@ -4,10 +4,12 @@ var client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
 
 var index = client.initIndex("Skins");
 
+// Fallback search that uses SQLite. Useful for when we've exceeded the Algolia
+// search quota.
 export async function graphqlSearch(query, options = {}) {
   const queryText = Utils.gql`
    query SearchQuery($query: String!) {
-  search_classic_skins(query: $query) {
+  search_classic_skins(query: $query, first: 500) {
     filename
     md5
     nsfw
