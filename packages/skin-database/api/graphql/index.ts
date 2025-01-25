@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createHandler } from "graphql-http/lib/use/express";
+import { createYoga, YogaInitialContext } from "graphql-yoga";
 
 // import DEFAULT_QUERY from "./defaultQuery";
 import { getSchema } from "./schema";
@@ -15,34 +15,14 @@ export function getUserContext(ctx: Ctx): UserContext {
 
 const router = Router();
 
-router.use(
-  "/",
-  createHandler<Ctx>({
-    schema: getSchema(),
-    context: (req) => {
-      return req.raw;
-    },
-    /*
-    graphiql: {
-      defaultQuery: DEFAULT_QUERY,
-    },*/
-    //  graphqlHTTP({
-    //     schema: getSchema(),
-    //     graphiql: {
-    //       defaultQuery: DEFAULT_QUERY,
-    //     },
-    //     customFormatErrorFn: (error) => {
-    //       console.error(error);
-    //       return {
-    //         message: error.message,
-    //         locations: error.locations,
-    //         stack: error.stack ? error.stack.split("\n") : [],
-    //         path: error.path,
-    //       };
-    //     },
-    //     extensions,
-    //   }) as RequestHandler
-  })
-);
+const yoga = createYoga({
+  schema: getSchema(),
+  context: (ctx: YogaInitialContext) => {
+    return ctx.req;
+  },
+});
+
+// Bind GraphQL Yoga to the graphql endpoint to avoid rendering the playground on any path
+router.use("", yoga);
 
 export default router;

@@ -6,7 +6,7 @@ import { defaultFieldResolver, GraphQLSchema, GraphQLObjectType, GraphQLString, 
 import { getUserContext as getUserContext } from "./index";
 import { fetch_archive_file_by_md5 as queryFetch_archive_file_by_md5Resolver } from "./../../data/ArchiveFileModel";
 import { fetch_internet_archive_item_by_identifier as queryFetch_internet_archive_item_by_identifierResolver } from "./../../data/IaItemModel";
-import { fetch_skin_by_md5 as queryFetch_skin_by_md5Resolver, search_skins as querySearch_skinsResolver, skin_to_review as querySkin_to_reviewResolver } from "./resolvers/SkinResolver";
+import { fetch_skin_by_md5 as queryFetch_skin_by_md5Resolver, search_classic_skins as querySearch_classic_skinsResolver, search_skins as querySearch_skinsResolver, skin_to_review as querySkin_to_reviewResolver } from "./resolvers/SkinResolver";
 import { fetch_tweet_by_url as queryFetch_tweet_by_urlResolver } from "./../../data/TweetModel";
 import { me as queryMeResolver } from "./resolvers/UserResolver";
 import { archive_files as modernSkinArchive_filesResolver, average_color as modernSkinAverage_colorResolver, download_url as modernSkinDownload_urlResolver, filename as modernSkinFilenameResolver, id as modernSkinIdResolver, internet_archive_item as modernSkinInternet_archive_itemResolver, md5 as modernSkinMd5Resolver, museum_url as modernSkinMuseum_urlResolver, nsfw as modernSkinNsfwResolver, readme_text as modernSkinReadme_textResolver, reviews as modernSkinReviewsResolver, screenshot_url as modernSkinScreenshot_urlResolver, tweeted as modernSkinTweetedResolver, tweets as modernSkinTweetsResolver, webamp_url as modernSkinWebamp_urlResolver, archive_files as classicSkinArchive_filesResolver, average_color as classicSkinAverage_colorResolver, download_url as classicSkinDownload_urlResolver, filename as classicSkinFilenameResolver, id as classicSkinIdResolver, internet_archive_item as classicSkinInternet_archive_itemResolver, md5 as classicSkinMd5Resolver, museum_url as classicSkinMuseum_urlResolver, nsfw as classicSkinNsfwResolver, readme_text as classicSkinReadme_textResolver, reviews as classicSkinReviewsResolver, screenshot_url as classicSkinScreenshot_urlResolver, tweeted as classicSkinTweetedResolver, tweets as classicSkinTweetsResolver, webamp_url as classicSkinWebamp_urlResolver } from "./resolvers/CommonSkinResolver";
@@ -511,6 +511,166 @@ export function getSchema(): GraphQLSchema {
             };
         }
     });
+    const ClassicSkinType: GraphQLObjectType = new GraphQLObjectType({
+        name: "ClassicSkin",
+        description: "A classic Winamp skin",
+        fields() {
+            return {
+                archive_files: {
+                    description: "List of files contained within the skin's .wsz archive",
+                    name: "archive_files",
+                    type: new GraphQLList(ArchiveFileType),
+                    resolve(source) {
+                        return assertNonNull(classicSkinArchive_filesResolver(source));
+                    }
+                },
+                average_color: {
+                    description: "String representation (rgb usually) of the skin's average color",
+                    name: "average_color",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return classicSkinAverage_colorResolver(source);
+                    }
+                },
+                download_url: {
+                    description: "URL to download the skin",
+                    name: "download_url",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return assertNonNull(classicSkinDownload_urlResolver(source));
+                    }
+                },
+                filename: {
+                    description: "Filename of skin when uploaded to the Museum. Note: In some cases a skin\nhas been uploaded under multiple names. Here we just pick one.",
+                    name: "filename",
+                    type: GraphQLString,
+                    args: {
+                        normalize_extension: {
+                            description: "If true, the the correct file extension (.wsz or .wal) will be .\nOtherwise, the original user-uploaded file extension will be used.",
+                            name: "normalize_extension",
+                            type: new GraphQLNonNull(GraphQLBoolean),
+                            defaultValue: false
+                        }
+                    },
+                    resolve(source, args) {
+                        return assertNonNull(classicSkinFilenameResolver(source, args));
+                    }
+                },
+                has_media_library: {
+                    description: "Does the skin include sprite sheets for the media library?",
+                    name: "has_media_library",
+                    type: GraphQLBoolean,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
+                },
+                id: {
+                    description: "GraphQL ID of the skin",
+                    name: "id",
+                    type: new GraphQLNonNull(GraphQLID),
+                    resolve(source) {
+                        return classicSkinIdResolver(source);
+                    }
+                },
+                internet_archive_item: {
+                    description: "The skin's \"item\" at archive.org",
+                    name: "internet_archive_item",
+                    type: InternetArchiveItemType,
+                    resolve(source) {
+                        return classicSkinInternet_archive_itemResolver(source);
+                    }
+                },
+                last_algolia_index_update_date: {
+                    description: "The date on which this skin was last updated in the Algolia search index.\nGiven in simplified extended ISO format (ISO 8601).",
+                    name: "last_algolia_index_update_date",
+                    type: GraphQLString
+                },
+                md5: {
+                    description: "MD5 hash of the skin's file",
+                    name: "md5",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return assertNonNull(classicSkinMd5Resolver(source));
+                    }
+                },
+                museum_url: {
+                    description: "URL of the skin on the Winamp Skin Museum",
+                    name: "museum_url",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return classicSkinMuseum_urlResolver(source);
+                    }
+                },
+                nsfw: {
+                    description: "Has the skin been flagged as \"not safe for work\"?\"",
+                    name: "nsfw",
+                    type: GraphQLBoolean,
+                    resolve(source) {
+                        return classicSkinNsfwResolver(source);
+                    }
+                },
+                readme_text: {
+                    description: "Text of the readme file extracted from the skin",
+                    name: "readme_text",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return classicSkinReadme_textResolver(source);
+                    }
+                },
+                reviews: {
+                    description: "Times that the skin has been reviewed either on the Museum's Tinder-style\nreview page, or via the Discord bot.",
+                    name: "reviews",
+                    type: new GraphQLList(ReviewType),
+                    resolve(source) {
+                        return assertNonNull(classicSkinReviewsResolver(source));
+                    }
+                },
+                screenshot_url: {
+                    description: "URL of a screenshot of the skin",
+                    name: "screenshot_url",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return classicSkinScreenshot_urlResolver(source);
+                    }
+                },
+                transparent_pixels: {
+                    description: "The number of transparent pixels rendered by the skin.",
+                    name: "transparent_pixels",
+                    type: GraphQLInt,
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
+                    }
+                },
+                tweeted: {
+                    description: "Has the skin been tweeted?",
+                    name: "tweeted",
+                    type: GraphQLBoolean,
+                    resolve(source) {
+                        return assertNonNull(classicSkinTweetedResolver(source));
+                    }
+                },
+                tweets: {
+                    description: "List of",
+                    name: "tweets",
+                    type: new GraphQLList(TweetType),
+                    resolve(source) {
+                        return assertNonNull(classicSkinTweetsResolver(source));
+                    }
+                },
+                webamp_url: {
+                    description: "URL of webamp.org with the skin loaded",
+                    name: "webamp_url",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return classicSkinWebamp_urlResolver(source);
+                    }
+                }
+            };
+        },
+        interfaces() {
+            return [NodeType, SkinType];
+        }
+    });
     const SkinsConnectionType: GraphQLObjectType = new GraphQLObjectType({
         name: "SkinsConnection",
         description: "A collection of classic Winamp skins",
@@ -841,6 +1001,30 @@ export function getSchema(): GraphQLSchema {
                         return queryNodeResolver(args.id, getUserContext(context));
                     }
                 },
+                search_classic_skins: {
+                    description: "Search the database using the Algolia search index used by the Museum.\n\nUseful for locating a particular skin.",
+                    name: "search_classic_skins",
+                    type: new GraphQLList(ClassicSkinType),
+                    args: {
+                        first: {
+                            name: "first",
+                            type: new GraphQLNonNull(GraphQLInt),
+                            defaultValue: 10
+                        },
+                        offset: {
+                            name: "offset",
+                            type: new GraphQLNonNull(GraphQLInt),
+                            defaultValue: 0
+                        },
+                        query: {
+                            name: "query",
+                            type: new GraphQLNonNull(GraphQLString)
+                        }
+                    },
+                    resolve(_source, args, context) {
+                        return assertNonNull(querySearch_classic_skinsResolver(args.query, args.first, args.offset, getUserContext(context)));
+                    }
+                },
                 search_skins: {
                     description: "Search the database using the Algolia search index used by the Museum.\n\nUseful for locating a particular skin.",
                     name: "search_skins",
@@ -862,7 +1046,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return assertNonNull(querySearch_skinsResolver(args, getUserContext(context)));
+                        return assertNonNull(querySearch_skinsResolver(args.query, args.first, args.offset, getUserContext(context)));
                     }
                 },
                 skin_to_review: {
@@ -1141,166 +1325,6 @@ export function getSchema(): GraphQLSchema {
                     }
                 }
             };
-        }
-    });
-    const ClassicSkinType: GraphQLObjectType = new GraphQLObjectType({
-        name: "ClassicSkin",
-        description: "A classic Winamp skin",
-        fields() {
-            return {
-                archive_files: {
-                    description: "List of files contained within the skin's .wsz archive",
-                    name: "archive_files",
-                    type: new GraphQLList(ArchiveFileType),
-                    resolve(source) {
-                        return assertNonNull(classicSkinArchive_filesResolver(source));
-                    }
-                },
-                average_color: {
-                    description: "String representation (rgb usually) of the skin's average color",
-                    name: "average_color",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return classicSkinAverage_colorResolver(source);
-                    }
-                },
-                download_url: {
-                    description: "URL to download the skin",
-                    name: "download_url",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return assertNonNull(classicSkinDownload_urlResolver(source));
-                    }
-                },
-                filename: {
-                    description: "Filename of skin when uploaded to the Museum. Note: In some cases a skin\nhas been uploaded under multiple names. Here we just pick one.",
-                    name: "filename",
-                    type: GraphQLString,
-                    args: {
-                        normalize_extension: {
-                            description: "If true, the the correct file extension (.wsz or .wal) will be .\nOtherwise, the original user-uploaded file extension will be used.",
-                            name: "normalize_extension",
-                            type: new GraphQLNonNull(GraphQLBoolean),
-                            defaultValue: false
-                        }
-                    },
-                    resolve(source, args) {
-                        return assertNonNull(classicSkinFilenameResolver(source, args));
-                    }
-                },
-                has_media_library: {
-                    description: "Does the skin include sprite sheets for the media library?",
-                    name: "has_media_library",
-                    type: GraphQLBoolean,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(defaultFieldResolver(source, args, context, info));
-                    }
-                },
-                id: {
-                    description: "GraphQL ID of the skin",
-                    name: "id",
-                    type: new GraphQLNonNull(GraphQLID),
-                    resolve(source) {
-                        return classicSkinIdResolver(source);
-                    }
-                },
-                internet_archive_item: {
-                    description: "The skin's \"item\" at archive.org",
-                    name: "internet_archive_item",
-                    type: InternetArchiveItemType,
-                    resolve(source) {
-                        return classicSkinInternet_archive_itemResolver(source);
-                    }
-                },
-                last_algolia_index_update_date: {
-                    description: "The date on which this skin was last updated in the Algolia search index.\nGiven in simplified extended ISO format (ISO 8601).",
-                    name: "last_algolia_index_update_date",
-                    type: GraphQLString
-                },
-                md5: {
-                    description: "MD5 hash of the skin's file",
-                    name: "md5",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return assertNonNull(classicSkinMd5Resolver(source));
-                    }
-                },
-                museum_url: {
-                    description: "URL of the skin on the Winamp Skin Museum",
-                    name: "museum_url",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return classicSkinMuseum_urlResolver(source);
-                    }
-                },
-                nsfw: {
-                    description: "Has the skin been flagged as \"not safe for work\"?\"",
-                    name: "nsfw",
-                    type: GraphQLBoolean,
-                    resolve(source) {
-                        return classicSkinNsfwResolver(source);
-                    }
-                },
-                readme_text: {
-                    description: "Text of the readme file extracted from the skin",
-                    name: "readme_text",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return classicSkinReadme_textResolver(source);
-                    }
-                },
-                reviews: {
-                    description: "Times that the skin has been reviewed either on the Museum's Tinder-style\nreview page, or via the Discord bot.",
-                    name: "reviews",
-                    type: new GraphQLList(ReviewType),
-                    resolve(source) {
-                        return assertNonNull(classicSkinReviewsResolver(source));
-                    }
-                },
-                screenshot_url: {
-                    description: "URL of a screenshot of the skin",
-                    name: "screenshot_url",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return classicSkinScreenshot_urlResolver(source);
-                    }
-                },
-                transparent_pixels: {
-                    description: "The number of transparent pixels rendered by the skin.",
-                    name: "transparent_pixels",
-                    type: GraphQLInt,
-                    resolve(source, args, context, info) {
-                        return assertNonNull(defaultFieldResolver(source, args, context, info));
-                    }
-                },
-                tweeted: {
-                    description: "Has the skin been tweeted?",
-                    name: "tweeted",
-                    type: GraphQLBoolean,
-                    resolve(source) {
-                        return assertNonNull(classicSkinTweetedResolver(source));
-                    }
-                },
-                tweets: {
-                    description: "List of",
-                    name: "tweets",
-                    type: new GraphQLList(TweetType),
-                    resolve(source) {
-                        return assertNonNull(classicSkinTweetsResolver(source));
-                    }
-                },
-                webamp_url: {
-                    description: "URL of webamp.org with the skin loaded",
-                    name: "webamp_url",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return classicSkinWebamp_urlResolver(source);
-                    }
-                }
-            };
-        },
-        interfaces() {
-            return [NodeType, SkinType];
         }
     });
     return new GraphQLSchema({

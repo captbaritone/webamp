@@ -415,6 +415,12 @@ type Query {
   
   Useful for locating a particular skin.
   """
+  search_classic_skins(first: Int! = 10, offset: Int! = 0, query: String!): [ClassicSkin] @semanticNonNull
+  """
+  Search the database using the Algolia search index used by the Museum.
+  
+  Useful for locating a particular skin.
+  """
   search_skins(first: Int! = 10, offset: Int! = 0, query: String!): [Skin] @semanticNonNull
   """A random skin that needs to be reviewed"""
   skin_to_review: Skin

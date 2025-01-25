@@ -1,5 +1,4 @@
 import { Int } from "grats";
-import { Ctx } from "..";
 import SkinModel from "../../../data/SkinModel";
 import UserContext from "../../../data/UserContext";
 import ClassicSkinResolver from "./ClassicSkinResolver";
@@ -7,6 +6,7 @@ import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
 import algoliasearch from "algoliasearch";
 import * as Skins from "../../../data/skins";
+import { knex } from "../../../db";
 
 // These keys are already in the web client, so they are not secret at all.
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
@@ -54,27 +54,59 @@ export async function fetch_skin_by_md5(
  * @gqlQueryField
  */
 export async function search_skins(
-  {
-    query,
-    first = 10,
-    offset = 0,
-  }: { query: string; first?: Int; offset?: Int },
+  query: string,
+  first: Int = 10,
+  offset: Int = 0,
   ctx: UserContext
 ): Promise<Array<ISkin | null>> {
   if (first > 1000) {
     throw new Error("Can only query 1000 records via search.");
   }
 
-  const results: { hits: { md5: string }[] } = await index.search(query, {
-    attributesToRetrieve: ["md5"],
-    length: first,
-    offset,
-  });
+  const skins = await knex("skin_search")
+    .select("skin_md5")
+    .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
+    .where("skins.skin_type", "in", [1, 2])
+    .limit(first)
+    .offset(offset)
+    .whereRaw("skin_search MATCH ?", query);
 
   return Promise.all(
-    results.hits.map(async (hit) => {
-      const model = await SkinModel.fromMd5Assert(ctx, hit.md5);
+    skins.map(async (hit) => {
+      const model = await SkinModel.fromMd5Assert(ctx, hit.skin_md5);
       return SkinResolver.fromModel(model);
+    })
+  );
+}
+
+/**
+ * Search the database using the Algolia search index used by the Museum.
+ *
+ * Useful for locating a particular skin.
+ * @gqlQueryField
+ */
+export async function search_classic_skins(
+  query: string,
+  first: Int = 10,
+  offset: Int = 0,
+  ctx: UserContext
+): Promise<Array<ClassicSkinResolver | null>> {
+  if (first > 1000) {
+    throw new Error("Can only query 1000 records via search.");
+  }
+
+  const skins = await knex("skin_search")
+    .select("skin_md5")
+    .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
+    .where("skins.skin_type", "=", 1)
+    .limit(first)
+    .offset(offset)
+    .whereRaw("skin_search MATCH ?", query);
+
+  return Promise.all(
+    skins.map(async (hit) => {
+      const model = await SkinModel.fromMd5Assert(ctx, hit.skin_md5);
+      return new ClassicSkinResolver(model);
     })
   );
 }
