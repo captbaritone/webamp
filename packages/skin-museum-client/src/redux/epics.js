@@ -19,7 +19,7 @@ import {
   takeWhile,
   mergeAll,
 } from "rxjs/operators";
-import { graphqlSearch } from "../algolia";
+import { algoliaSearch } from "../algolia";
 import queryParser from "../queryParser";
 import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
@@ -148,7 +148,7 @@ const searchEpic = (actions) =>
 
       const [newQuery, options] = queryParser(query);
 
-      return from(graphqlSearch(newQuery, options)).pipe(
+      return from(algoliaSearch(newQuery, options)).pipe(
         map((content) => {
           const matchingSkins = content.hits.map((hit) => ({
             hash: hit.objectID,

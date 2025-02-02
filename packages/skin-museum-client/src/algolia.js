@@ -26,7 +26,7 @@ export async function graphqlSearch(query, options = {}) {
   return { hits };
 }
 
-export function search(query, options = {}) {
+export function algoliaSearch(query, options = {}) {
   return new Promise((resolve, reject) => {
     index.search(
       {
