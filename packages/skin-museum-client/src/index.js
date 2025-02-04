@@ -4,18 +4,29 @@ import { Provider } from "react-redux";
 import { createStore } from "./redux/store";
 import App from "./App";
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
 // import registerServiceWorker from "./registerServiceWorker";
 import { unregister } from "./registerServiceWorker";
 import { SENTRY_DSN } from "./constants";
 
 Sentry.init({
   dsn: SENTRY_DSN,
-  integrations: [new Integrations.BrowserTracing()],
+  integrations: [Sentry.replayIntegration()],
 
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for tracing.
+  // Learn more at
+  // https://docs.sentry.io/platforms/javascript/configuration/options/#traces-sample-rate
   tracesSampleRate: 1.0,
+
+  // // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
+  // tracePropagationTargets: [/^\//, /^https:\/\/yourserver\.io\/api/],
+
+  // Capture Replay for 10% of all sessions,
+  // plus for 100% of sessions with an error
+  // Learn more at
+  // https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
+  // replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
 });
 
 ReactDOM.render(
