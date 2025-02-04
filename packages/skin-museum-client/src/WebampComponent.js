@@ -16,10 +16,8 @@ class WebampComponent extends React.Component {
 
   async _loadWebamp() {
     // TODO: Fix export
-    const mod = await import("webamp");
-    console.log("Module", mod);
+    await import("webamp");
     const Webamp = window.Webamp;
-    console.log("Webamp from window", Webamp);
 
     if (this._disposable.disposed) {
       return;
