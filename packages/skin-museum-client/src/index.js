@@ -10,7 +10,7 @@ import { SENTRY_DSN } from "./constants";
 
 Sentry.init({
   dsn: SENTRY_DSN,
-  integrations: [Sentry.replayIntegration()],
+  integrations: [Sentry.replayIntegration(), Sentry.httpClientIntegration()],
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for tracing.
