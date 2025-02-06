@@ -93,23 +93,34 @@ export function filenameIsReadme(filename) {
 }
 
 // Tools like Prettier can infer that a string is GraphQL if it uses this tagged
-// template liteal.
+// template literal.
 export function gql(strings) {
   return strings[0];
 }
 
 export async function fetchGraphql(query, variables = {}) {
   const url = `${API_URL}/graphql`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    mode: "cors",
-    credentials: "include",
-    body: JSON.stringify({ query, variables }),
-  });
+  let response;
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      mode: "cors",
+      credentials: "include",
+      body: JSON.stringify({ query, variables }),
+    });
+  } catch (error) {
+    console.error("Failed to fetch", {
+      message: error.message,
+      url,
+      query,
+      variables,
+    });
+    throw error;
+  }
   if (response.status === 403) {
     window.location = `${API_URL}/auth`;
   }
