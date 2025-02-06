@@ -127,10 +127,10 @@ export async function fetchGraphql(query, variables = {}) {
   if (!response.ok) {
     const payload = await response.text();
     throw new Error(
-      `GraphQL respose error.
+      `GraphQL response error.
 URL: ${url}
 Status: ${response.status}:
-Respones body:
+Response body:
 ${payload}`
     );
   }
