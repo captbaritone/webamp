@@ -76,6 +76,12 @@ export const getOrderedTracks = createSelector(
   (tracks, trackOrder) => trackOrder.filter((id) => tracks[id])
 );
 
+export const getPlaylistTracks = createSelector(
+  getTracks,
+  getTrackOrder,
+  (tracks, trackOrder) => trackOrder.map((id) => tracks[id]).filter(Boolean)
+);
+
 export const getUserTracks = createSelector(
   getTracks,
   getTrackOrder,
@@ -135,7 +141,7 @@ export const getRunningTimeMessage = createSelector(
     )}`
 );
 
-// TODO: use slectors to get memoization
+// TODO: use selectors to get memoization
 export const getCurrentTrackIndex = (state: AppState): number => {
   const { playlist } = state;
   if (playlist.currentTrack == null) {
