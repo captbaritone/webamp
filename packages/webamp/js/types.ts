@@ -161,13 +161,13 @@ export type SkinData = {
 };
 
 // This is what we actually pass to butterchurn
-type ButterchurnPresetJson = {
+export type ButterchurnPresetJson = {
   name: string;
   butterchurnPresetObject: Object;
 };
 
 // A URL that points to a Butterchurn preset
-interface ButterchurnPresetUrl {
+export interface ButterchurnPresetUrl {
   name: string;
   butterchurnPresetUrl: string;
 }
