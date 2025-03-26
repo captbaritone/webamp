@@ -19,7 +19,7 @@ import {
   takeWhile,
   mergeAll,
 } from "rxjs/operators";
-import { algoliaSearch } from "../algolia";
+import { algoliaSearch, graphqlSearch } from "../algolia";
 import queryParser from "../queryParser";
 import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
@@ -138,6 +138,8 @@ const selectSkinReadmeEpic = (actions, states) =>
     })
   );
 
+const USE_ALGOLIA = false;
+
 const searchEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "SEARCH_QUERY_CHANGED"),
@@ -148,7 +150,11 @@ const searchEpic = (actions) =>
 
       const [newQuery, options] = queryParser(query);
 
-      return from(algoliaSearch(newQuery, options)).pipe(
+      return from(
+        USE_ALGOLIA
+          ? algoliaSearch(newQuery, options)
+          : graphqlSearch(newQuery, options)
+      ).pipe(
         map((content) => {
           const matchingSkins = content.hits.map((hit) => ({
             hash: hit.objectID,
