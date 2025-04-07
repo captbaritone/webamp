@@ -18,6 +18,7 @@ import {
   exhaustMap,
   takeWhile,
   mergeAll,
+  debounceTime,
 } from "rxjs/operators";
 import { algoliaSearch, graphqlSearch } from "../algolia";
 import queryParser from "../queryParser";
@@ -138,11 +139,16 @@ const selectSkinReadmeEpic = (actions, states) =>
     })
   );
 
-const USE_ALGOLIA = false;
+const USE_ALGOLIA = true;
+
+// I'd prefer not to have this, but we keep hitting Algolia's rate limit.
+// This is an attempt to keep the number of requests down.
+const SEARCH_DEBOUNCE_TIME = 300;
 
 const searchEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "SEARCH_QUERY_CHANGED"),
+    debounceTime(SEARCH_DEBOUNCE_TIME),
     switchMap(({ query }) => {
       if (query == null || query.length === 0) {
         return of(Actions.gotNewMatchingSkins(null));
