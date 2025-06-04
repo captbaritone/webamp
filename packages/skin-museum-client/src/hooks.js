@@ -94,11 +94,11 @@ export function useWebampAnimation({ initialPosition }) {
     }
   }, [initialPosition, setCentered, transitionBeginEvents]);
 
-  return {
-    centered,
-    loaded,
-    handleWebampLoaded: () => webampLoadedEvents.next(null),
-  };
+  const handleWebampLoaded = useCallback(() => {
+    webampLoadedEvents.next(null);
+  }, [webampLoadedEvents]);
+
+  return { centered, loaded, handleWebampLoaded };
 }
 
 export function useQuery(query, variables) {
