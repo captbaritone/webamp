@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import DownloadLink from "./DownloadLink";
 import * as Utils from "../utils";
 import LinkInput from "./LinkInput";
 // import { API_URL } from "../constants";
@@ -59,13 +58,13 @@ function Metadata() {
   }
 
   const elements = [
-    <DownloadLink
+    <a
       id="metadata-download-skin"
       href={Utils.skinUrlFromHash(hash)}
       download={fileName}
     >
       Download
-    </DownloadLink>,
+    </a>,
     readmeLink,
     /*
     <button
