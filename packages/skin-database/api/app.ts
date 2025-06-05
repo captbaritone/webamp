@@ -3,7 +3,7 @@ import cors, { CorsOptions } from "cors";
 import Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
-import express, { RequestHandler, ErrorRequestHandler } from "express";
+import express, { RequestHandler, ErrorRequestHandler, Handler } from "express";
 import UserContext from "../data/UserContext";
 import cookieSession from "cookie-session";
 import { SECRET } from "../config";
@@ -59,10 +59,11 @@ declare global {
 
 type Options = {
   eventHandler?: EventHandler;
+  extraMiddleware?: Handler;
   logger?: Logger;
 };
 
-export function createApp({ eventHandler, logger }: Options) {
+export function createApp({ eventHandler, logger, extraMiddleware }: Options) {
   const app = express();
   if (Sentry) {
     app.use(Sentry.Handlers.requestHandler() as RequestHandler);
@@ -89,6 +90,10 @@ export function createApp({ eventHandler, logger }: Options) {
   });
 
   app.use(cookieHandler);
+
+  if (extraMiddleware != null) {
+    app.use(extraMiddleware);
+  }
 
   // Add UserContext to request
   app.use((req, res, next) => {

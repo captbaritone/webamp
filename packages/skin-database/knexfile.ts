@@ -11,7 +11,7 @@ const production = {
   migrations: {
     tableName: "knex_migrations",
     // Use process.cwd() and not __dir since Next runs from a build directory
-    directory: path.join(process.cwd(), "./migrations"),
+    directory: path.join(__dirname, "./migrations"),
   },
 };
 
