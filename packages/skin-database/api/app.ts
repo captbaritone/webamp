@@ -18,7 +18,12 @@ export type ApiAction =
   | { type: "CLASSIC_SKIN_UPLOADED"; md5: string }
   | { type: "MODERN_SKIN_UPLOADED"; md5: string }
   | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string }
-  | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
+  | {
+      type: "GOT_FEEDBACK";
+      message: string;
+      email?: string | null;
+      url?: string | null;
+    }
   | {
       type: "SYNCED_TO_ARCHIVE";
       successes: number;
