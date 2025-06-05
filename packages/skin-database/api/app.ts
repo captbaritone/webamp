@@ -80,10 +80,6 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   // This is needed in order to allow `cookieSession({secure: true})` cookies to be sent.
   app.set("trust proxy", "loopback");
 
-  function use(handler: RequestHandler) {
-    app.use(handler);
-  }
-
   const cookieHandler: RequestHandler = cookieSession({
     secure: true,
     sameSite: "none",
