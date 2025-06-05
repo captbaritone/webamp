@@ -6,11 +6,13 @@ const PAGE_SIZE = 50000;
 
 const BASE_URL = "https://skins.webamp.org";
 
-export async function generateSitemaps(): Promise<{ id: number }[]> {
+export const dynamic = "force-dynamic"; // This ensures the sitemap is always generated fresh
+
+export async function generateSitemaps(): Promise<{ id: string }[]> {
   const count = await Skins.getClassicSkinCount();
-  const maps: { id: number }[] = [];
+  const maps: { id: string }[] = [];
   for (let i = 0; i < Math.ceil(count / PAGE_SIZE); i++) {
-    maps.push({ id: i });
+    maps.push({ id: String(i) });
   }
   return maps;
 }
@@ -21,7 +23,9 @@ export default async function sitemap({
   id: string;
 }): Promise<MetadataRoute.Sitemap> {
   const md5s = await Skins.getAllClassicSkins();
-  const skinUrls = md5s.map(({ md5, fileName }) => `skin/${md5}/${fileName}`);
+  const skinUrls = md5s.map(
+    ({ md5, fileName }) => `/skin/${md5}/${encodeURIComponent(fileName)}`
+  );
   const urls = ["/about", "/", "/upload", ...skinUrls];
   const slice = urls.slice(
     parseInt(id, 10) * PAGE_SIZE,
