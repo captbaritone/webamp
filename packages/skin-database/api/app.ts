@@ -1,6 +1,5 @@
 import router from "./router";
 import graphql from "./graphql";
-import fileUpload from "express-fileupload";
 import cors, { CorsOptions } from "cors";
 import bodyParser from "body-parser";
 import Sentry from "@sentry/node";
@@ -149,10 +148,6 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
 
   // parse application/json
   app.use(bodyParser.json() as RequestHandler);
-
-  // Configure File Uploads
-  const limits = { fileSize: 50 * 1024 * 1024 };
-  app.use(fileUpload({ limits }));
 
   // Configure sitemap
   app.use(expressSitemapXml(getSitemapUrls, "https://skins.webamp.org"));
