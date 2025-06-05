@@ -80,7 +80,7 @@ export async function search_skins(
 }
 
 /**
- * Search the database using the Algolia search index used by the Museum.
+ * Search the database using SQLite's FTS (full text search) index.
  *
  * Useful for locating a particular skin.
  * @gqlQueryField
@@ -94,6 +94,16 @@ export async function search_classic_skins(
   if (first > 1000) {
     throw new Error("Can only query 1000 records via search.");
   }
+
+  // const skins = await knex("skin_search")
+  //   .select("skin_search.skin_md5")
+  //   .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
+  //   .leftJoin("skin_reviews", "skins.md5", "skin_reviews.skin_md5")
+  //   .where("skins.skin_type", "=", 1)
+  //   .orderByRaw("CASE WHEN skin_reviews.review = 'NSFW' THEN 1 ELSE 0 END")
+  //   .limit(first)
+  //   .offset(offset)
+  //   .whereRaw("skin_search MATCH ?", query);
 
   const skins = await knex("skin_search")
     .select("skin_md5")
