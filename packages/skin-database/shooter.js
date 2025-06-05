@@ -31,7 +31,11 @@ export default class Shooter {
     this._log("init()");
     this._log("Going to launch puppeteer");
     this._browser = await puppeteer.launch({
-      args: ["--disable-dev-shm-usage"],
+      args: [
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+      ],
     });
     this._log("Opening new page");
     this._page = await this._browser.newPage();
