@@ -1,7 +1,5 @@
-import router from "./router";
 import graphql from "./graphql";
 import cors, { CorsOptions } from "cors";
-import bodyParser from "body-parser";
 import Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
@@ -139,17 +137,10 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   app.use(cors(corsOptions));
   app.options("*", cors(corsOptions));
 
-  // Configure json output
-  app.set("json spaces", 2);
-
-  // parse application/json
-  app.use(bodyParser.json() as RequestHandler);
-
   // Configure sitemap
   app.use(expressSitemapXml(getSitemapUrls, "https://skins.webamp.org"));
 
   // Add routes
-  app.use("/", router);
   app.use("/graphql", graphql);
 
   // The error handler must be before any other error middleware and after all controllers

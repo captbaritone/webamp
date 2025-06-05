@@ -4,7 +4,6 @@ import request from "supertest"; // supertest is a framework that allows to easi
 import { createApp } from "../app";
 import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
-import * as Auth from "../auth";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
 import { searchIndex } from "../../algolia";
@@ -103,37 +102,6 @@ describe(".me", () => {
       }
     `);
     expect(data).toEqual({ me: { username: null } });
-  });
-});
-
-// TODO: The redirect_uri is different on github
-test("/auth", async () => {
-  const { body } = await request(app).get("/auth").expect(302);
-  // TODO: The redirect_uri is different on github
-  // .expect(
-  //   "Location",
-  //   "https://discord.com/api/oauth2/authorize?client_id=%3CDUMMY_DISCORD_CLIENT_ID%3E&redirect_uri=https%3A%2F%2Fapi.webampskins.org%2Fauth%2Fdiscord&response_type=code&scope=identify%20guilds"
-  // );
-  expect(body).toEqual({});
-});
-
-describe("/auth/discord", () => {
-  test("valid code", async () => {
-    const response = await request(app)
-      .get("/auth/discord")
-      .query({ code: "<A_FAKE_CODE>" })
-      .expect(302);
-    // TODO: The location is different on github
-    // .expect("Location", "https://skins.webamp.org/review/");
-    // TODO: Assert that we get cookie headers. I think that will not work now
-    // because express does not think it's secure in a test env.
-    expect(Auth.auth).toHaveBeenCalledWith("<A_FAKE_CODE>");
-    expect(response.body).toEqual({});
-  });
-  test("missing code", async () => {
-    const { body } = await request(app).get("/auth/discord").expect(400);
-    expect(Auth.auth).not.toHaveBeenCalled();
-    expect(body).toEqual({ message: "Expected to get a code" });
   });
 });
 

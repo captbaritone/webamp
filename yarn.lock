@@ -5925,7 +5925,7 @@
   dependencies:
     "@babel/types" "^7.20.7"
 
-"@types/body-parser@*", "@types/body-parser@^1.19.5":
+"@types/body-parser@*":
   version "1.19.5"
   resolved "https://registry.npmjs.org/@types/body-parser/-/body-parser-1.19.5.tgz"
   integrity sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==
@@ -5937,13 +5937,6 @@
   version "3.5.13"
   resolved "https://registry.npmjs.org/@types/bonjour/-/bonjour-3.5.13.tgz"
   integrity sha512-z9fJ5Im06zvUL548KvYNecEVlA7cVDkGUi6kZusb04mpyEFKCIZJvloCcmpmLaIahDpOQGHaHmG6imtPMmPXGQ==
-  dependencies:
-    "@types/node" "*"
-
-"@types/busboy@*":
-  version "1.5.3"
-  resolved "https://registry.npmjs.org/@types/busboy/-/busboy-1.5.3.tgz"
-  integrity sha512-YMBLFN/xBD8bnqywIlGyYqsNFXu6bsiY7h3Ae0kO17qEuTjsqeyYMRPSUDacIKIquws2Y6KjmxAyNx8xB3xQbw==
   dependencies:
     "@types/node" "*"
 
@@ -6079,14 +6072,6 @@
   version "0.0.50"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.50.tgz"
   integrity sha512-C6N5s2ZFtuZRj54k2/zyRhNDjJwwcViAM3Nbm8zjBpbqAdZ00mr0CFxvSKeO8Y/e03WVFLpQMdHYVfUd6SB+Hw==
-
-"@types/express-fileupload@^1.4.4":
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/@types/express-fileupload/-/express-fileupload-1.5.0.tgz"
-  integrity sha512-Y9v88IC5ItAxkKwfnyIi1y0jSZwTMY4jqXUQLZ3jFhYJlLdRnN919bKBNM8jbVVD2cxywA/uEC1kNNpZQGwx7Q==
-  dependencies:
-    "@types/busboy" "*"
-    "@types/express" "*"
 
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.33":
   version "4.17.43"
@@ -13641,13 +13626,6 @@ express-async-handler@^1.1.4:
   version "1.2.0"
   resolved "https://registry.npmjs.org/express-async-handler/-/express-async-handler-1.2.0.tgz"
   integrity sha512-rCSVtPXRmQSW8rmik/AIb2P0op6l7r1fMW538yyvTMltCO4xQEWMmobfrIxN2V1/mVrgxB8Az3reYF6yUZw37w==
-
-express-fileupload@^1.1.7-alpha.3:
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/express-fileupload/-/express-fileupload-1.5.0.tgz"
-  integrity sha512-jSW3w9evqM37VWkEPkL2Ck5wUo2a8qa03MH+Ou/0ZSTpNlQFBvSLjU12k2nYcHhaMPv4JVvv6+Ac1OuLgUZb7w==
-  dependencies:
-    busboy "^1.6.0"
 
 express-graphql@^0.12.0:
   version "0.12.0"
