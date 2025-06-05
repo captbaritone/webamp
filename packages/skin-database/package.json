@@ -55,9 +55,9 @@
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
     "grats": "grats",
-    "dev:next": "ts-node --transpile-only server.ts",
+    "dev:next": "next dev",
     "build:next": "next build",
-    "start:next": "NODE_ENV=production ts-node --transpile-only server.ts",
+    "start:next": "next start",
     "lint:next": "next lint"
   },
   "prettier": {},

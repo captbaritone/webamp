@@ -26,10 +26,6 @@ const configs = {
   },
   development: {
     ...production,
-    connection: {
-      ...production.connection,
-      filename: path.join(__dirname, "./skins-dev.sqlite3"),
-    },
   },
   production,
 };
