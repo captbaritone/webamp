@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+
+dotenv.config();
 import { parse } from "url";
 import next from "next";
 import { createApp } from "./api/app";

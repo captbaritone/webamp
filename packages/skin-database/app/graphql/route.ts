@@ -15,6 +15,12 @@ const { handleRequest } = createYoga<NextContext>({
   fetchAPI: { Response },
 
   graphiql: true,
+
+  cors: {
+    origin: "*", // Allow all origins for simplicity, adjust as needed
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
+  },
 });
 
 export {
