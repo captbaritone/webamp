@@ -29,10 +29,13 @@
     "lru-cache": "^6.0.0",
     "mastodon-api": "^1.3.0",
     "md5": "^2.2.1",
+    "next": "^15.3.3",
     "node-fetch": "^2.6.7",
     "openai": "^4.68.0",
     "polygon-clipping": "^0.15.3",
     "puppeteer": "^13.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "sharp": "^0.31.3",
     "sqlite3": "^5.1.2",
     "temp": "^0.9.0",
@@ -51,7 +54,11 @@
     "cli": "ts-node --transpile-only ./cli.ts",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
-    "grats": "grats"
+    "grats": "grats",
+    "dev:next": "ts-node --transpile-only server.ts",
+    "build:next": "next build",
+    "start:next": "NODE_ENV=production ts-node --transpile-only server.ts",
+    "lint:next": "next lint"
   },
   "prettier": {},
   "devDependencies": {

@@ -18,6 +18,7 @@ const router = Router();
 const yoga = createYoga({
   schema: getSchema(),
   context: (ctx: YogaInitialContext) => {
+    // @ts-expect-error
     return ctx.req;
   },
 });

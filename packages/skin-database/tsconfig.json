@@ -6,7 +6,14 @@
     "strictSemanticNullability": true
   },
   "compilerOptions": {
-    "plugins": [{ "name": "grats-ts-plugin" }],
+    "plugins": [
+      {
+        "name": "grats-ts-plugin"
+      },
+      {
+        "name": "next"
+      }
+    ],
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -15,9 +22,28 @@
     "allowJs": true,
     "outDir": "dist",
     "strictNullChecks": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["./**/*"],
-  "lib": ["es2015"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "./**/*",
+    ".next/types/**/*.ts"
+  ],
+  "lib": [
+    "es2015"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

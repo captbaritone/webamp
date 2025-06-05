@@ -3,13 +3,15 @@ import path from "path";
 const production = {
   client: "sqlite3",
   connection: {
-    filename: path.join(__dirname, "./skins.sqlite3"),
+    // Use process.cwd() and not __dir since Next runs from a build directory
+    filename: path.join(process.cwd(), "./skins.sqlite3"),
   },
   useNullAsDefault: true,
   debug: false,
   migrations: {
     tableName: "knex_migrations",
-    directory: path.join(__dirname, "./migrations"),
+    // Use process.cwd() and not __dir since Next runs from a build directory
+    directory: path.join(process.cwd(), "./migrations"),
   },
 };
 
