@@ -103,8 +103,8 @@ export async function followerCount(handler: DiscordEventHandler) {
   const user = response.data;
 
   const followerCount = user.followers_count;
-  const current: { count: number } = await KeyValue.get(FOLLOW_COUNT_KEY);
-  const currentNumber = current.count;
+  const current = await KeyValue.get<{ count: number }>(FOLLOW_COUNT_KEY);
+  const currentNumber = current!.count;
 
   const nextMilestone = currentNumber + FOLLOW_COUNT_BRACKET_SIZE;
 

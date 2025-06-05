@@ -249,7 +249,7 @@ export default class SkinModel {
       const response = await fetch(this.getSkinUrl());
       if (!response.ok) {
         const missingModernSkins =
-          (await KeyValue.get("missingModernSkins")) ?? [];
+          (await KeyValue.get<string[]>("missingModernSkins")) ?? [];
         const missingModernSkinsSet = new Set(missingModernSkins);
         missingModernSkinsSet.add(this.getMd5());
         await KeyValue.set(
@@ -410,6 +410,7 @@ export default class SkinModel {
 
   getZip = mem(async (): Promise<JSZip> => {
     const buffer = await this.getBuffer();
+    // @ts-ignore TODO: Is this typing correct?
     return JSZip.loadAsync(buffer);
   });
 

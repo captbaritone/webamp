@@ -35,7 +35,6 @@ import { setHashesForSkin } from "./skinHash";
 import * as S3 from "./s3";
 import { generateDescription } from "./services/openAi";
 import KeyValue from "./data/KeyValue";
-import detectRepacks from "./tasks/detectRepacks";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -389,10 +388,6 @@ program
     "Compute the order in which skins should be displayed in the museum"
   )
   .option("--foo", "Learn about missing skins")
-  .option(
-    "--winampskinsinfo",
-    "Detect skins that were broken by winampskins.info injecting an ad file"
-  )
   .option("--test-cloudflare", "Try to upload to cloudflare")
   .action(async (arg) => {
     const {
@@ -404,15 +399,11 @@ program
       configureR2Cors,
       computeMuseumOrder,
       foo,
-      winampskinsinfo,
       testCloudflare,
     } = arg;
     if (testCloudflare) {
       const buffer = new Buffer("testing", "utf8");
       await S3.putTemp("hello", buffer);
-    }
-    if (winampskinsinfo) {
-      await detectRepacks();
     }
     if (computeMuseumOrder) {
       await Skins.computeMuseumOrder();
@@ -460,10 +451,12 @@ program
     }
     if (foo) {
       const ctx = new UserContext();
-      const missingModernSkins = await KeyValue.get("missingModernSkins");
+      const missingModernSkins = await KeyValue.get<string[]>(
+        "missingModernSkins"
+      );
       const missingModernSkinsSet = new Set(missingModernSkins);
       const skins = {};
-      for (const md5 of missingModernSkins) {
+      for (const md5 of missingModernSkins!) {
         const skin = await SkinModel.fromMd5(ctx, md5);
         if (skin == null) {
           continue;
@@ -489,7 +482,7 @@ program
         .select();
       console.log(`Found ${skinRows.length} skins to update`);
       const missingModernSkins = new Set(
-        await KeyValue.get("missingModernSkins")
+        await KeyValue.get<string[]>("missingModernSkins")
       );
       const skins = skinRows.map((row) => new SkinModel(ctx, row));
       for (const skin of skins) {

@@ -55,6 +55,7 @@
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
     "migrate": "knex migrate:latest",
     "grats": "grats",
+    "typecheck": "tsc --noEmit",
     "dev:next": "next dev",
     "build:next": "next build",
     "start:next": "next start",
