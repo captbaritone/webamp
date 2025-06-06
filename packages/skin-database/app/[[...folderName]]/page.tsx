@@ -1,4 +1,4 @@
-import App from "../../../skin-museum-client/src/App";
+import App from "../App";
 import type { Metadata } from "next";
 
 const DESCRIPTION =
@@ -73,5 +73,5 @@ export async function generateMetadata({ searchParams }): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <App next={true} />;
+  return <App />;
 }

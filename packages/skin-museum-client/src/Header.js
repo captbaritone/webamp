@@ -52,7 +52,7 @@ function useFocusOnSlash() {
   return setInput;
 }
 
-function Header({ next }) {
+function Header({ searchLogo }) {
   const searchQuery = useSelector(Selectors.getSearchQuery);
   const uploadViewOpen = useSelector(Selectors.getUploadViewOpen);
   const setSearchQuery = useActionCreator(Actions.searchQueryChanged);
@@ -89,7 +89,7 @@ function Header({ next }) {
               transition: "opacity ease-in 300ms",
             }}
           >
-            {next || <SearchLogo />}
+            {searchLogo || <SearchLogo />}
           </a>
           <input
             type="search"

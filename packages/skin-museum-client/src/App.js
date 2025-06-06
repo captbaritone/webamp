@@ -64,7 +64,7 @@ function App(props) {
   return (
     <div>
       {props.next || <Head />}
-      <Header next={props.next} />
+      <Header searchLogo={props.searchLogo} />
       <div {...getRootProps()}>
         {props.uploadViewOpen || isDragActive ? (
           <UploadGrid
