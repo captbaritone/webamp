@@ -15,8 +15,8 @@ export async function generateMetadata({ searchParams }): Promise<Metadata> {
         url: `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?query=${encodeURIComponent(
           query
         )}`,
-        width: "1844",
-        height: "1297",
+        width: 1200,
+        height: 600,
       },
     ];
     const title = `Winamp Skin Museum - Search Results for "${query}"`;
@@ -46,8 +46,8 @@ export async function generateMetadata({ searchParams }): Promise<Metadata> {
     {
       alt: "Screenshot of many Winamp skins in a grid.",
       url: "https://skin-museum-og-captbaritone-webamp.vercel.app/api/og",
-      width: "1844",
-      height: "1297",
+      width: 1200,
+      height: 600,
     },
   ];
   const title = "Winamp Skin Museum";
