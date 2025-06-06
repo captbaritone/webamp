@@ -1,7 +1,7 @@
 import * as Skins from "../data/skins";
 import S3 from "../s3";
 import { addSkinFromBuffer } from "../addSkin";
-import { EventHandler } from "./app";
+import { EventHandler } from "./types";
 import DiscordEventHandler from "./DiscordEventHandler";
 
 async function* reportedUploads(): AsyncGenerator<

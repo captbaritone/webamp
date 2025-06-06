@@ -1,18 +1,17 @@
-import { Application } from "express";
 import { knex } from "../../db";
-import request from "supertest"; // supertest is a framework that allows to easily test web apis
-import { createApp } from "../app";
 import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
 import { searchIndex } from "../../algolia";
+import { createYogaInstance } from "../../app/graphql/yoga";
+import { YogaServerInstance } from "graphql-yoga";
 jest.mock("../../s3");
 jest.mock("../../algolia");
 jest.mock("../processUserUploads");
 jest.mock("../auth");
 
-let app: Application;
+let yoga: YogaServerInstance<any, any>;
 const handler = jest.fn();
 const log = jest.fn();
 const logError = jest.fn();
@@ -22,12 +21,9 @@ let username: string | undefined;
 beforeEach(async () => {
   jest.clearAllMocks();
   username = "<MOCKED>";
-  app = createApp({
+  yoga = createYogaInstance({
     eventHandler: handler,
-    extraMiddleware: (req, res, next) => {
-      req.session.username = username;
-      next();
-    },
+    getUserContext: () => new UserContext(username),
     logger: { log, logError },
   });
   await knex.migrate.latest();
@@ -39,9 +35,12 @@ function gql(templateString: TemplateStringsArray): string {
 }
 
 async function graphQLRequest(query: string, variables?: any) {
-  const { body } = await request(app)
-    .post("/graphql")
-    .send({ query, variables: variables ?? {} });
+  const response = await yoga.fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+  });
+  const body = await response.json();
   if (body.errors && body.errors.length) {
     for (const err of body.errors) {
       console.warn(err.message);

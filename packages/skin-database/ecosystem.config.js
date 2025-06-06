@@ -18,7 +18,7 @@ module.exports = {
       name: "skin-database-green",
       script: "yarn",
       interpreter: "bash",
-      args: "start:next",
+      args: "start",
       env: {
         NODE_ENV: "production",
         PORT: 3002,

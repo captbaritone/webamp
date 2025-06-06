@@ -17,3 +17,4 @@ The discord bot allows us to:
 ## Server
 
 This package also includes a GraphQL interface for exploring skins. It is not currently used by anything, but can be useful for inspecting the data.
+sudo systemctl reload apache2
