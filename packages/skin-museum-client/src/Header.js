@@ -4,7 +4,7 @@ import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import { useActionCreator, useWindowSize } from "./hooks";
-import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
+import AlgoliaLogo from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
 import FeedbackIcon from "./components/icons/FeedbackIcon";
 import AboutIcon from "./components/icons/AboutIcon";
@@ -15,7 +15,7 @@ import UploadIcon from "./components/icons/UploadIcon";
 function SearchLogo() {
   const { windowWidth } = useWindowSize();
   if (windowWidth > 500) {
-    return <AlgoliaLogo />;
+    return <AlgoliaLogo.ReactComponent />;
   }
   return (
     <img
@@ -52,7 +52,7 @@ function useFocusOnSlash() {
   return setInput;
 }
 
-function Header() {
+function Header({ next }) {
   const searchQuery = useSelector(Selectors.getSearchQuery);
   const uploadViewOpen = useSelector(Selectors.getUploadViewOpen);
   const setSearchQuery = useActionCreator(Actions.searchQueryChanged);
@@ -89,7 +89,7 @@ function Header() {
               transition: "opacity ease-in 300ms",
             }}
           >
-            <SearchLogo />
+            {next || <SearchLogo />}
           </a>
           <input
             type="search"

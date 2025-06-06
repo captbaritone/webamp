@@ -441,36 +441,6 @@ const uploadAllFilesEpic = (actions, state) =>
     })
   );
 
-const loggingEpic = (actions, state) =>
-  actions.pipe(
-    tap((action) => {
-      // ga('send', 'event', [eventCategory], [eventAction], [eventLabel], [eventValue], [fieldsObject]);
-      switch (action.type) {
-        case "CONCENTS_TO_NSFW":
-        case "DOES_NOT_CONCENT_TO_NSFW":
-        case "CLOSE_UPLOAD_FILES":
-        case "GOT_FILE_MD5":
-        case "ARCHIVED_SKIN":
-        case "TRY_TO_UPLOAD_FILE":
-        case "UPLOAD_FAILED":
-        case "STARTING_FILE_UPLOAD":
-        case "TRY_TO_UPLOAD_ALL_FILES":
-        case "INVALID_FILE_EXTENSION":
-        case "GOT_FILE":
-        case "GOT_MISSING_AND_FOUND_MD5S":
-        case "REQUESTED_RANDOM_SKIN":
-        case "MARK_NSFW":
-        case "INVALID_ARCHIVE":
-        case "SET_SCALE":
-          window.ga("send", "event", "redux", action.type);
-          break;
-        default: {
-        }
-      }
-    }),
-    ignoreElements()
-  );
-
 const urlEpic = (actions, state) => {
   return actions.pipe(
     map(() => Selectors.getUrl(state.value)),
@@ -491,8 +461,6 @@ const urlEpic = (actions, state) => {
       }
 
       const newUrl = proposedUrl.toString();
-
-      window.ga("set", "page", newUrl);
 
       window.history.replaceState({}, Selectors.getPageTitle(state), newUrl);
     }),
@@ -573,7 +541,6 @@ export default combineEpics(
   uploadSingleFileEpic,
   checkIfUploadsAreMissingEpic,
   urlEpic,
-  loggingEpic,
   skinDataEpic,
   markNsfwEpic,
   alertEpic

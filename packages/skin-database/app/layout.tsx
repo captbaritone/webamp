@@ -1,3 +1,6 @@
+import ReduxContextProvider from "./redux";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ReduxContextProvider>{children}</ReduxContextProvider>
+        <GoogleAnalytics gaId="UA-96948-20" />
+      </body>
     </html>
   );
 }
