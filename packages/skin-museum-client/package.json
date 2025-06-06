@@ -19,7 +19,6 @@
     "react-helmet": "^6.1.0",
     "react-redux": "^7.2.1",
     "react-scripts": "^5.0.1",
-    "react-twitter-embed": "^3.0.3",
     "react-window": "^1.8.1",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",

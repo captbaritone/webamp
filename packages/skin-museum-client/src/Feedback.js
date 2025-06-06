@@ -85,13 +85,11 @@ export default function Feedback() {
         </label>
       </p>
 
-      <p>
-        <div style={{ height: 25, textAlign: "right" }}>
-          <button onClick={send} style={{ marginRight: 0 }} disabled={sending}>
-            {sending ? "Sending..." : "Send"}
-          </button>
-        </div>
-      </p>
+      <div style={{ height: 25, textAlign: "right" }}>
+        <button onClick={send} style={{ marginRight: 0 }} disabled={sending}>
+          {sending ? "Sending..." : "Send"}
+        </button>
+      </div>
     </div>
   );
 }

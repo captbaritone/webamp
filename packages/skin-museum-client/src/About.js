@@ -1,5 +1,4 @@
 import React from "react";
-import { TwitterFollowButton } from "react-twitter-embed";
 
 function About() {
   return (
@@ -40,10 +39,6 @@ function About() {
       <p>
         Made by <a href="https://jordaneldredge.com">Jordan Eldredge</a>
       </p>
-      <TwitterFollowButton screenName={"captbaritone"} />
-      <hr />
-      <p>I also made a Winamp skins Twitter bot:</p>
-      <TwitterFollowButton screenName={"winampskins"} />
       <hr />
       <p>
         Want Winamp on your Windows PC, but with supported updates & new
