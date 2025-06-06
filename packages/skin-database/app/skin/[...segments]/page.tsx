@@ -26,7 +26,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   ];
 
   const title = `${fileName} - Winamp Skin Museum`;
-  const description = readme || DESCRIPTION;
+  const description = readme == null ? DESCRIPTION : readme.slice(0, 300);
   return {
     title,
     description,
