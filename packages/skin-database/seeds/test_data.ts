@@ -55,6 +55,7 @@ export async function seed(knex: Knex): Promise<any> {
     {
       skin_md5: "a_fake_md5",
       file_md5: "a_fake_file_md5",
+      file_name: "a_fake_archive_file.bmp",
       file_date: 957771892000,
     },
   ]);

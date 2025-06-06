@@ -7,14 +7,14 @@ Object {
       Object {
         "date": "2000-05-08T07:44:52.000Z",
         "file_md5": "a_fake_file_md5",
-        "filename": null,
+        "filename": "a_fake_archive_file.bmp",
         "is_directory": false,
         "size": null,
         "skin": Object {
           "md5": "a_fake_md5",
         },
         "text_content": null,
-        "url": "https://zip-worker.jordan1320.workers.dev/zip/a_fake_md5/null",
+        "url": "https://zip-worker.jordan1320.workers.dev/zip/a_fake_md5.wsz/a_fake_archive_file.bmp",
       },
     ],
     "average_color": null,
