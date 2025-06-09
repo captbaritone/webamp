@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import Head from "./Head";
 import About from "./About";
 import Feedback from "./Feedback";
 import Header from "./Header";
@@ -63,7 +62,6 @@ function App(props) {
 
   return (
     <div>
-      {props.next || <Head />}
       <Header searchLogo={props.searchLogo} />
       <div {...getRootProps()}>
         {props.uploadViewOpen || isDragActive ? (

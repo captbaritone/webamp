@@ -33,7 +33,6 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^11.1.0",
-    "react-helmet": "^6.1.0",
     "react-window": "^1.8.1",
     "redux-observable": "^1.0.0",
     "rxjs": "^6.3.3",

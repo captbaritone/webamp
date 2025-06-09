@@ -14,5 +14,5 @@ import LegacyApp from "../legacy-client/src/App";
 import SearchLogo from "./SearchLogo";
 
 export default function App() {
-  return <LegacyApp next={true} searchLogo={<SearchLogo />} />;
+  return <LegacyApp searchLogo={<SearchLogo />} />;
 }
