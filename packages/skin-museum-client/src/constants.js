@@ -31,6 +31,9 @@ export const SKIN_CDN = R2_CDN;
 // Uncomment these if something goes wrong
 // export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 // export const SKIN_CDN = "https://cdn.webampskins.org";
+
+// Note: This is a Cloudflare proxy for api.webamp.org which
+// provides some additional caching.
 export const API_URL = "https://api.webampskins.org";
 // export const API_URL = "https://dev.webamp.org";
 export const HEADING_HEIGHT = 46;

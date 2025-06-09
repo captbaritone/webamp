@@ -1,15 +1,10 @@
-import App from "../../App";
-import type { Metadata } from "next";
-import SkinModel from "../../../data/SkinModel";
-import UserContext from "../../../data/UserContext";
+import { Metadata } from "next";
+import SkinModel from "../../../data/SkinModel.js";
+import UserContext from "../../../data/UserContext.js";
 
-const DESCRIPTION =
-  "Infinite scroll through 80k Winamp skins with interactive preview";
-
-export async function generateMetadata({ params }): Promise<Metadata> {
-  const { segments } = await params;
-  const [hash, _fileName] = segments;
-
+export async function generateSkinPageMetadata(
+  hash: string
+): Promise<Metadata> {
   const skin = await SkinModel.fromMd5Assert(new UserContext(), hash);
   const fileName = await skin.getFileName();
   const readme = await skin.getReadme();
@@ -26,7 +21,10 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   ];
 
   const title = `${fileName} - Winamp Skin Museum`;
-  const description = readme == null ? DESCRIPTION : readme.slice(0, 300);
+  const description =
+    readme == null
+      ? `The Winamp Skin "${fileName}" in the Winamp Skin Museum. Explore skins, view details, and interact with previews.`
+      : readme.slice(0, 300);
   return {
     title,
     description,
@@ -49,8 +47,4 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       images,
     },
   };
-}
-
-export default function Page() {
-  return <App />;
 }
