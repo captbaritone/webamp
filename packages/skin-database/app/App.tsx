@@ -10,7 +10,7 @@
 // We should be able to remove this once we root cause the bundling issue.
 import "setimmediate";
 
-import LegacyApp from "../../skin-museum-client/src/App";
+import LegacyApp from "../legacy-client/src/App";
 import SearchLogo from "./SearchLogo";
 
 export default function App() {

@@ -1,6 +1,6 @@
 import App from "../../App";
 import type { Metadata } from "next";
-import { generateSkinPageMetadata } from "./skinMetadata.js";
+import { generateSkinPageMetadata } from "./skinMetadata";
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { hash } = await params;

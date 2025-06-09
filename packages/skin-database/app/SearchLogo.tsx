@@ -1,7 +1,7 @@
 "use client";
-import { useWindowSize } from "../../skin-museum-client/src/hooks";
-import AlgoliaLogo from "../../skin-museum-client/src/searchByAlgoliaDarkbBackground.svg";
-import algoliaLogoSmallUrl from "../../skin-museum-client/src/searchByAlgoliaSmall.png";
+import { useWindowSize } from "../legacy-client/src/hooks";
+import AlgoliaLogo from "../legacy-client/src/searchByAlgoliaDarkbBackground.svg";
+import algoliaLogoSmallUrl from "../legacy-client/src/searchByAlgoliaSmall.png";
 
 export default function SearchLogo() {
   const { windowWidth } = useWindowSize();

@@ -1,6 +1,6 @@
 "use client";
 import { Provider } from "react-redux";
-import { createStore } from "../../skin-museum-client/src/redux/store";
+import { createStore } from "../legacy-client/src/redux/store";
 import { useEffect, useState } from "react";
 
 type Props = {

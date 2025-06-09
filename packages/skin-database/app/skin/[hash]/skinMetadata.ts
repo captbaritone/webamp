@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import SkinModel from "../../../data/SkinModel.js";
-import UserContext from "../../../data/UserContext.js";
+import SkinModel from "../../../data/SkinModel";
+import UserContext from "../../../data/UserContext";
 
 export async function generateSkinPageMetadata(
   hash: string
