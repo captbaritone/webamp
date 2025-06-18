@@ -27,12 +27,13 @@ class Readme extends React.Component {
           </div>
         );
       case "bmp":
-      case "cur":
+      case "cur": {
         const mimeType = `image/${ext}`;
         const url = URL.createObjectURL(
           new Blob([content], { type: mimeType })
         );
         return <img src={url} alt={fileName} />;
+      }
       default:
         return null;
     }

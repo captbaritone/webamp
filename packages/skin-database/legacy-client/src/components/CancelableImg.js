@@ -28,6 +28,5 @@ export default function CancelableImg(props) {
     };
   }, [ref]);
 
-  // eslint-disable-next-line jsx-a11y/alt-text
   return <img {...props} ref={setRef} />;
 }

@@ -6,6 +6,7 @@ export async function upload(fileObj) {
 
   let retries = 10;
 
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const response = await fetch(uploadUrl, {
       method: "PUT",

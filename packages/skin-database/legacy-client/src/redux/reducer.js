@@ -115,6 +115,7 @@ export default function reducer(state = defaultState, action) {
     case "GOT_MISSING_AND_FOUND_MD5S": {
       const foundSet = new Set(action.found);
 
+      // eslint-disable-next-line no-inner-declarations
       function getNewFile(file) {
         if (file.md5 != null) {
           const uploadData = action.missing[file.md5];
@@ -232,7 +233,7 @@ export default function reducer(state = defaultState, action) {
         matchingSkins: [],
       };
     }
-    case "GOT_NEW_MATCHING_SKINS":
+    case "GOT_NEW_MATCHING_SKINS": {
       let newSkins = state.skins;
       if (action.skins != null) {
         newSkins = { ...state.skins };
@@ -250,6 +251,7 @@ export default function reducer(state = defaultState, action) {
         matchingSkins: action.skins,
         skins: newSkins,
       };
+    }
     case "LOADED_SKIN_ZIP":
       return {
         ...state,
