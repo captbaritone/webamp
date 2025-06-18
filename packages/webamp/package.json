@@ -9,8 +9,7 @@
     "!built/tsBuilt"
   ],
   "types": "built/types/js/webamp.d.ts",
-  "browser": "built/webamp.bundle.min.js",
-  "unpkg": "built/webamp.bundle.min.js",
+  "browser": "built/webamp.bundle.min.mjs",
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "targets": {
     "demo-site": {
@@ -21,12 +20,14 @@
     ".": {
       "require": "./built/webamp.bundle.min.js",
       "import": "./built/webamp.bundle.min.mjs",
-      "types": "./built/types/js/webamp.d.ts"
+      "types": "./built/types/js/webamp.d.ts",
+      "default": "./built/webamp.bundle.min.mjs"
     },
     "./lazy": {
       "require": "./built/webamp.lazy-bundle.js",
       "import": "./built/webamp.lazy-bundle.min.mjs",
-      "types": "./built/types/js/webampLazy.d.ts"
+      "types": "./built/types/js/webampLazy.d.ts",
+      "default": "./built/webamp.lazy-bundle.min.mjs"
     }
   },
   "scripts": {
