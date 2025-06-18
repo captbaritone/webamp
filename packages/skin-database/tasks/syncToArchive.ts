@@ -160,7 +160,7 @@ const INVALID_IDENTIFIERS = new Set([
   "winampskins_Episode1_2",
   "winampskins_Episode1_3",
   "winampskins_Episode1_4",
-  "winampskins_Episode1_5"
+  "winampskins_Episode1_5",
 ]);
 
 export async function identifierExists(identifier: string): Promise<boolean> {
@@ -272,7 +272,7 @@ export async function syncToArchive(handler: DiscordEventHandler) {
     type: "SYNCED_TO_ARCHIVE",
     successes: successCount,
     errors: errorCount,
-    skips: skipCount
+    skips: skipCount,
   });
   console.log(`Job complete: ${successCount} success, ${errorCount} errors`);
 }
