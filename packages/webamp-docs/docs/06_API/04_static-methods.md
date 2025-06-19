@@ -4,7 +4,7 @@ The `Winamp` class has the following _static_ methods:
 
 ### `browserIsSupported()`
 
-Returns a true if the current browser supports the features that Webamp depends upon. It is recommended to check this before you attempt to instantiate an instance of `Winamp`.
+Returns a true if the current browser supports the features that Webamp depends upon. It is recommended to check this before you attempt to [construct](02_webamp-constructor.md) an instance of `Winamp`.
 
 ```ts
 import Webamp from "webamp";

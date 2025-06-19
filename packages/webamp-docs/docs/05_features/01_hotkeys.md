@@ -49,6 +49,20 @@ webamp.renderWhenReady(document.getElementById("winamp-container"));
 | Numpad 8  | Volume Up               |
 | Numpad 9  | Seek Forward (5s)       |
 
+## Milkdrop Hotkeys
+
+When Milkdrop visualization is focused, the following additional hotkeys are available:
+
+| Key               | Action                      |
+| ----------------- | --------------------------- |
+| Space             | Next Preset (fade)          |
+| Backspace         | Previous Preset (immediate) |
+| H                 | Next Preset (immediate)     |
+| R                 | Toggle Randomize            |
+| L                 | Toggle Preset Overlay       |
+| T                 | Show Track Title Message    |
+| Scroll Lock / F14 | Toggle Preset Cycling       |
+
 ## Easter Egg
 
-Webamp emulates the original Winamp's Easter egg. If type "nullsoft", letter by letter, pressing `<esc>` after each letter "L" to dismiss the open file dialog, you will toggle Webamp into and out of "Easter Egg Mode". In this mode, a custom skin-defined title bar is shown in the main window.
+Webamp emulates the original Winamp's Easter egg. If you type "nullsoft", letter by letter, pressing `<esc>` after each letter "L" to dismiss the open file dialog, you will toggle Webamp into and out of "Easter Egg Mode". In this mode, a custom skin-defined title bar is shown in the main window.

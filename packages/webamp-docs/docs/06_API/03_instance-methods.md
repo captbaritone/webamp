@@ -1,6 +1,16 @@
 # Instance Methods
 
-The `Webamp` class has the following _instance_ methods:
+Once you have [constructed](02_webamp-constructor.md) a `Webamp` instance, the instance has methods you can use to get the state of the player, control playback, and manage tracks, register event listeners, and more.
+
+```ts
+import Webamp from "webamp";
+
+const webamp = new Webamp({
+  // ... options
+});
+```
+
+The `webamp` instance has the following _instance_ methods:
 
 ### `appendTracks(tracks: Track[]): void`
 
