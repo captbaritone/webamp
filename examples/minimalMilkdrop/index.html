@@ -8,11 +8,52 @@
     <div id="app" style="height: 100vh">
       <!-- Webamp will attempt to center itself within this div -->
     </div>
-    <script src="https://unpkg.com/webamp@1.5.0/built/webamp.bundle.min.js"></script>
-    <script src="https://unpkg.com/butterchurn@2.6.7/lib/butterchurn.min.js"></script>
-    <script src="https://unpkg.com/butterchurn-presets@2.4.7/lib/butterchurnPresets.min.js"></script>
-    <script>
-      const Webamp = window.Webamp;
+    <script type="module">
+      /**
+       * Webamp now includes an ESModule build, so you can import it directly. I
+       * haven't validated full backwards compatibility with all the ways people
+       * can import Webamp, so I haven't shipped this as the default build yet,
+       * but it's on NPM as: `webamp@0.0.0-next-361ce79`.
+       *
+       * Changelog since the version you have can be found here:
+       * https://github.com/captbaritone/webamp/blob/master/packages/webamp/CHANGELOG.md
+       */
+      import Webamp from "https://unpkg.com/webamp@next";
+
+      /**
+       * Butterchurn is not being actively maintained, but it is still works
+       * great. Before it went into maintenance mode Jordan Berg (different
+       * Jordan) cut a beta release of a version with the faster/more secure
+       * eel->Wasm compiler that I wrote, so we use `butterchurn@3.0.0-beta.3`.
+       *
+       * Blog post about the eel->Wasm compiler here:
+       * https://jordaneldredge.com/blog/speeding-up-winamps-music-visualizer-with-webassembly/
+       *
+       * This version is still using AMD modules, so it will write the export to
+       * `window.butterchurn`. This is a pretty chunky files, so you way want to
+       * find a way to lazy load it inside `importButterchurn` below.
+       * Unfortunately, it's not an ES module, so I wasn't able to call
+       * `import()` on it without some kind of bundler.
+       */
+      import "https://unpkg.com/butterchurn@3.0.0-beta.3/dist/butterchurn.min.js";
+      const butterchurn = window.butterchurn;
+
+      /**
+       * This module, `butterchurn-presets@3.0.0-beta.4` contains a curated set
+       * of awesome Butterchurn presets that have been packaged up to work with
+       * the new compiler. This module is also packaged as an AMD module, so
+       * when imported without a bundler it will write the export to `window`. I
+       * think the package was never that thoughtfully built, so the export name
+       * is, confusingly `window.base`. If that's a problem, using a bundler
+       * might help.
+       *
+       * As audio plays, Webamp will randomly cycle through these presets with a
+       * cool transition effect. You can also press "l" while the Milkdrop
+       * window is open to open Milkdrop's preset selection menu.
+       */
+      import "https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.js";
+      const butterchurnPresets = window.base.default;
+
       const webamp = new Webamp({
         initialTracks: [
           {
@@ -28,14 +69,10 @@
           },
         ],
         __butterchurnOptions: {
-          importButterchurn: () => Promise.resolve(window.butterchurn),
+          importButterchurn: () => Promise.resolve(butterchurn),
           getPresets: () => {
-            const presets = window.butterchurnPresets.getPresets();
-            return Object.keys(presets).map((name) => {
-              return {
-                name,
-                butterchurnPresetObject: presets[name],
-              };
+            return Object.entries(butterchurnPresets).map(([name, preset]) => {
+              return { name, butterchurnPresetObject: preset };
             });
           },
           butterchurnOpen: true,

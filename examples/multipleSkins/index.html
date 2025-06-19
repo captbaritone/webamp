@@ -8,9 +8,8 @@
     <div id="app" style="height: 100vh">
       <!-- Webamp will attempt to center itself within this div -->
     </div>
-    <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js"></script>
-    <script>
-      const Webamp = window.Webamp;
+    <script type="module">
+      import Webamp from "https://unpkg.com/webamp@next";
       const webamp = new Webamp({
         // Optional. An array of objects representing skins.
         // These will appear in the "Options" menu under "Skins".

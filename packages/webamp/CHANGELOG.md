@@ -1,5 +1,9 @@
 ## Upcoming [UNRELEASED] (`webamp@next`)
 
+_No changes yet._
+
+## 2.0.0 [CURRENT]
+
 ### Features
 
 - Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
@@ -15,11 +19,11 @@
 ### Internal Improvements:
 
 - Upgrade to React 18, React Redux, 8 and Redux 4.1
-- Bundle with Parcel instead of Webpack
+- Bundle with Rollup instead of Webpack
 - Build public Typescript directly from source annotations.
 - We no longer transform object spreads since they have broad support in browsers.
 
-## 1.5.0 [CURRENT]
+## 1.5.0
 
 ### Features
 
