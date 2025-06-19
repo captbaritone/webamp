@@ -9,7 +9,6 @@
 - Improve skin parsing performance and avoid Chrome console warning by adding `willReadFrequently` to canvas contexts.
 - Define an explicit `IMedia` interface for custom media implementations, which allows for better type checking and documentation.
 - Added new `Webamp` instance methods:
-  - `webamp.onCurrentTrackDidChange`
   - `webamp.isShuffleEnabled`
   - `webamp.isRepeatEnabled`
   - `webamp.setCurrentTrack`

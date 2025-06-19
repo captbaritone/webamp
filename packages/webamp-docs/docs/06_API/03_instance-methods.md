@@ -215,37 +215,10 @@ Returns an "unsubscribe" function.
 
 **Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL)
 
-**Note:** This is different from the `onCurrentTrackDidChange` callback which is called every time a track changes. This callback is only called when a new track starts loading.
-
 ```ts
 const unsubscribe = webamp.onTrackDidChange((track => {
     console.log("New track playing:", track.url);
 });
-
-// If at some point in the future you want to stop listening to these events:
-unsubscribe();
-```
-
-### `onCurrentTrackDidChange(cb: (currentTrack: PlaylistTrack | null, trackIndex: number) => void): () => void`
-
-A callback which will be called whenever a the current track changes.
-
-The callback is passed the current track and the zero-based index of the current track's position within the playlist.
-
-Returns an "unsubscribe" function.
-
-**Note:** This is different from the `onTrackDidChange` callback which is only called when a new track first starts loading.
-
-**Since** 2.1.0
-
-```ts
-const unsubscribe = webamp.onCurrentTrackDidChange(
-  (currentTrack, trackIndex) => {
-    if (currentTrack) {
-      console.log(`Now playing track ${trackIndex + 1}: ${currentTrack.title}`);
-    }
-  }
-);
 
 // If at some point in the future you want to stop listening to these events:
 unsubscribe();

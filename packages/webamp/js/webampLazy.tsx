@@ -355,35 +355,6 @@ class Webamp {
   }
 
   /**
-   * A callback which will be called whenever a the current track changes.
-   *
-   * The callback is passed the current track and the zero-based index of the
-   * current track's position within the playlist.
-   *
-   * Note: This is different from the `onTrackDidChange` callback which is only
-   * called when a new track first starts loading.
-   *
-   * @returns An "unsubscribe" function. Useful if at some point in the future
-   * you want to stop listening to these events.
-   */
-  onCurrentTrackDidChange(
-    cb: (currentTrack: PlaylistTrack | null, trackIndex: number) => void
-  ): () => void {
-    let previousTrackId: number | null = null;
-    return this.store.subscribe(() => {
-      const state = this.store.getState();
-      const currentTrack = Selectors.getCurrentTrack(state);
-      const currentTrackId = currentTrack?.id || null;
-      if (currentTrackId === previousTrackId) {
-        return;
-      }
-      previousTrackId = currentTrackId;
-      const trackIndex = Selectors.getCurrentTrackIndex(state);
-      cb(currentTrack, trackIndex);
-    });
-  }
-
-  /**
    * A callback which will be called when a new track starts loading.
    *
    * This can happen on startup when the first track starts buffering, or when a
@@ -392,10 +363,6 @@ class Webamp {
    * track.
    *
    * Note: If the user drags in a track, the URL may be an ObjectURL.
-   *
-   * Note: This is different from the `onCurrentTrackDidChange` callback which
-   * is called every time a track changes. This callback is only called when a
-   * new track starts loading.
    *
    * @returns An "unsubscribe" function. Useful if at some point in the future
    * you want to stop listening to these events.
