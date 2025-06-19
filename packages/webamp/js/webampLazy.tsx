@@ -33,6 +33,7 @@ import {
   LOADED,
   SET_Z_INDEX,
   CLOSE_REQUESTED,
+  ENABLE_MILKDROP,
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -151,6 +152,10 @@ class Webamp {
     }
 
     if (options.__butterchurnOptions) {
+      this.store.dispatch({
+        type: ENABLE_MILKDROP,
+        open: options.__butterchurnOptions.butterchurnOpen,
+      });
       this.store.dispatch(
         Actions.initializePresets(options.__butterchurnOptions)
       );

@@ -10,6 +10,7 @@ import {
   LOAD_SERIALIZED_STATE,
   BROWSER_WINDOW_SIZE_CHANGED,
   RESET_WINDOW_SIZES,
+  ENABLE_MILKDROP,
 } from "../actionTypes";
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
@@ -82,7 +83,7 @@ const defaultWindowsState: WindowsState = {
     [WINDOWS.MILKDROP]: {
       title: "Milkdrop",
       size: [0, 0],
-      open: true,
+      open: false,
       shade: false,
       canResize: true,
       canShade: false,
@@ -104,6 +105,17 @@ const windows = (
   action: Action
 ): WindowsState => {
   switch (action.type) {
+    case ENABLE_MILKDROP:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [WINDOWS.MILKDROP]: {
+            ...state.genWindows[WINDOWS.MILKDROP],
+            open: action.open,
+          },
+        },
+      };
     case SET_FOCUSED_WINDOW:
       let windowOrder = state.windowOrder;
       if (action.window != null) {

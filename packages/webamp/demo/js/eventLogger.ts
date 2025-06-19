@@ -59,6 +59,8 @@ function logEventFromAction(action: Action): GoogleAnalyticsEvent | null {
       return { category: "Playlist", action: "ReverseList" };
     case "RANDOMIZE_LIST":
       return { category: "Playlist", action: "RandomizeList" };
+    case "ENABLE_MILKDROP":
+      return { category: "Windows", action: "EnableMilkdrop" };
     case "TOGGLE_WINDOW_SHADE_MODE":
       return {
         category: "Windows",
