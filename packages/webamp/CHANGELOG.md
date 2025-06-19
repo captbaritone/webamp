@@ -2,7 +2,13 @@
 
 _No changes yet._
 
-## 2.1.0 [CURRENT]
+## 2.1.1 [CURRENT]
+
+### Bug Fixes
+
+- Avoid opening Milkdrop window when no window layout is provided.
+
+## 2.1.0
 
 ### Bug Fixes
 
