@@ -64,10 +64,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build latest (master) version
+      - name: Set version
         if: github.ref == 'refs/heads/master'
         run: |
-          yarn workspace webamp build-library
           echo "Setting version to 0.0.0-next-${RELEASE_COMMIT_SHA::7}"
           yarn workspace webamp version --new-version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
         env:
@@ -78,6 +77,7 @@ jobs:
       - name: Publish to npm
         working-directory: ./packages/webamp
         if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        # Note: This also triggers a build
         run: |
           npm publish ${TAG}
         env:
