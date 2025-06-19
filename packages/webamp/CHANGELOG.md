@@ -2,7 +2,15 @@
 
 _No changes yet._
 
-## 2.0.0 [CURRENT]
+## 2.0.1 [CURRENT]
+
+### Bug Fixes
+
+Fixed incorrectly built artifacts.
+
+## 2.0.0
+
+_Broken release. Use 2.0.1 instead._
 
 ### Features
 
