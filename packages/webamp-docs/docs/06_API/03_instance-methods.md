@@ -134,6 +134,64 @@ Stop the currently playing audio. Equivilant to pressing the "stop" button.
 webamp.stop();
 ```
 
+### `setVolume(volume: number): void`
+
+Set volume from 0 - 100.
+
+**Since** 1.3.0
+
+```ts
+webamp.setVolume(75);
+```
+
+### `setCurrentTrack(index: number): void`
+
+Set the current track a specific track in the playlist by zero-based index.
+
+Note: If Webamp is currently playing, the track will begin playing. If Webamp is not playing, the track will not start playing. You can use `webamp.pause()` before calling this method or `webamp.play()` after calling this method to control whether the track starts playing.
+
+**Since** 2.1.0
+
+```ts
+// Play the third track in the playlist
+webamp.setCurrentTrack(2);
+```
+
+### `getPlaylistTracks(): PlaylistTrack[]`
+
+Get the current playlist in order.
+
+**Since** 2.1.0
+
+```ts
+const tracks = webamp.getPlaylistTracks();
+console.log(`Playlist has ${tracks.length} tracks`);
+```
+
+### `isShuffleEnabled(): boolean`
+
+Check if shuffle is enabled.
+
+**Since** 2.1.0
+
+```ts
+if (webamp.isShuffleEnabled()) {
+  console.log("Shuffle is enabled");
+}
+```
+
+### `isRepeatEnabled(): boolean`
+
+Check if repeat is enabled.
+
+**Since** 2.1.0
+
+```ts
+if (webamp.isRepeatEnabled()) {
+  console.log("Repeat is enabled");
+}
+```
+
 ### `renderWhenReady(domNode: HTMLElement): Promise<void>`
 
 Webamp will wait until it has fetched the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
@@ -157,10 +215,37 @@ Returns an "unsubscribe" function.
 
 **Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL)
 
+**Note:** This is different from the `onCurrentTrackDidChange` callback which is called every time a track changes. This callback is only called when a new track starts loading.
+
 ```ts
 const unsubscribe = webamp.onTrackDidChange((track => {
     console.log("New track playing:", track.url);
 });
+
+// If at some point in the future you want to stop listening to these events:
+unsubscribe();
+```
+
+### `onCurrentTrackDidChange(cb: (currentTrack: PlaylistTrack | null, trackIndex: number) => void): () => void`
+
+A callback which will be called whenever a the current track changes.
+
+The callback is passed the current track and the zero-based index of the current track's position within the playlist.
+
+Returns an "unsubscribe" function.
+
+**Note:** This is different from the `onTrackDidChange` callback which is only called when a new track first starts loading.
+
+**Since** 2.1.0
+
+```ts
+const unsubscribe = webamp.onCurrentTrackDidChange(
+  (currentTrack, trackIndex) => {
+    if (currentTrack) {
+      console.log(`Now playing track ${trackIndex + 1}: ${currentTrack.title}`);
+    }
+  }
+);
 
 // If at some point in the future you want to stop listening to these events:
 unsubscribe();
