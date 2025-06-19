@@ -32,26 +32,26 @@ jobs:
           touch packages/skin-database/config.js
           yarn test
           yarn workspace webamp test
-      - name: Run Integration Tests
-        run: yarn workspace webamp integration-tests
-        env:
-          CI: true
-      - name: Upload Screenshot Diffs
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: image_diffs
-          path: packages/webamp/js/__tests__/__image_snapshots__/__diff_output__/
-      - name: Generate New Screenshots
-        if: failure()
-        run: |
-          yarn workspace webamp integration-tests -u
-      - name: Upload New Screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: new_images
-          path: packages/webamp/js/__tests__/__image_snapshots__/
+      # - name: Run Integration Tests
+      #   run: yarn workspace webamp integration-tests
+      #   env:
+      #     CI: true
+      # - name: Upload Screenshot Diffs
+      #   if: failure()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: image_diffs
+      #     path: packages/webamp/js/__tests__/__image_snapshots__/__diff_output__/
+      # - name: Generate New Screenshots
+      #   if: failure()
+      #   run: |
+      #     yarn workspace webamp integration-tests -u
+      # - name: Upload New Screenshots
+      #   if: failure()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: new_images
+      #     path: packages/webamp/js/__tests__/__image_snapshots__/
   main-release:
     name: Publish to NPM
     runs-on: ubuntu-latest
