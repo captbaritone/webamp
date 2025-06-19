@@ -9,7 +9,7 @@ import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
-import Media from "./media";
+import { IMedia } from "./media";
 import Emitter from "./emitter";
 import {
   Extras,
@@ -26,7 +26,7 @@ const compose = composeWithDevTools({
 });
 
 export default function createWebampStore(
-  media: Media,
+  media: IMedia,
   actionEmitter: Emitter,
   customMiddlewares: Middleware[] = [],
   stateOverrides: PartialState | undefined,

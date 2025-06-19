@@ -16,7 +16,7 @@ import {
 import getStore from "./store";
 import App from "./components/App";
 import { bindHotkeys } from "./hotkeys";
-import Media from "./media";
+import Media, { IMedia, IMediaClass } from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 
@@ -43,7 +43,7 @@ export interface PrivateOptions {
   __customMiddlewares?: Middleware[];
   __butterchurnOptions?: ButterchurnOptions;
   // This is used by https://winampify.io/ to proxy through to Spotify's API.
-  __customMediaClass?: typeof Media; // This should have the same interface as Media
+  __customMediaClass?: IMediaClass;
 }
 
 export interface InjectableDependencies {
@@ -57,7 +57,7 @@ class Webamp {
   _root: ReactDOM.Root | null;
   _disposable: Disposable;
   options: Options & PrivateOptions & InjectableDependencies; // TODO: Make this _private
-  media: Media; // TODO: Make this _private
+  media: IMedia; // TODO: Make this _private
   store: Store; // TODO: Make this _private
 
   /**

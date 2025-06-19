@@ -1,4 +1,4 @@
-import Media from "./media";
+import { IMedia } from "./media";
 import {
   IS_PLAYING,
   PAUSE,
@@ -23,7 +23,7 @@ import * as Selectors from "./selectors";
 import { MiddlewareStore, Action, Dispatch } from "./types";
 import { objectForEach } from "./utils";
 
-export default (media: Media) => (store: MiddlewareStore) => {
+export default (media: IMedia) => (store: MiddlewareStore) => {
   const {
     media: { volume, balance },
     equalizer: { sliders },

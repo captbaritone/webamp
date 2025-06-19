@@ -20,7 +20,7 @@ import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
-import Media from "../media";
+import Media, { IMedia } from "../media";
 import { useTypedSelector, useActionCreator } from "../hooks";
 import Css from "./Css";
 
@@ -29,7 +29,7 @@ import cssText from "../../css/webamp.css?inline";
 
 interface Props {
   filePickers: FilePicker[];
-  media: Media;
+  media: IMedia;
 }
 
 /**
