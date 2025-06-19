@@ -193,7 +193,6 @@ export interface ButterchurnOptions {
     convertPreset(file: string, endpoint: string): Promise<Object>;
   }>;
   presetConverterEndpoint?: string;
-  butterchurnOpen: boolean;
 }
 
 export interface EqfPreset {
@@ -510,7 +509,6 @@ export type Action =
   | { type: "RESET_WINDOW_SIZES" }
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
   | { type: "LOAD_DEFAULT_SKIN" }
-  | { type: "ENABLE_MILKDROP"; open: boolean }
   | { type: "SCHEDULE_MILKDROP_MESSAGE"; message: string }
   | {
       type: "SET_MILKDROP_DESKTOP";

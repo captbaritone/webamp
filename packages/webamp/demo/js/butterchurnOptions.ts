@@ -99,6 +99,5 @@ export function getButterchurnOptions(
         return { name, butterchurnPresetObject: preset as Object };
       });
     },
-    butterchurnOpen: !startWithMilkdropHidden,
   };
 }
