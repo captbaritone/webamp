@@ -1,5 +1,9 @@
 ## Upcoming [UNRELEASED] (`webamp@next`)
 
+_No changes yet._
+
+## 2.1.0 [CURRENT]
+
 ### Bug Fixes
 
 - Fixed "Generate HTML Playlist" feature, which was accidentally broken in 2.0.0.
@@ -14,7 +18,7 @@
   - `webamp.setCurrentTrack`
   - `webamp.getPlaylistTracks`
 
-## 2.0.1 [CURRENT]
+## 2.0.1
 
 ### Bug Fixes
 
