@@ -1,6 +1,12 @@
 ## Upcoming [UNRELEASED] (`webamp@next`)
 
-_No changes yet._
+### Bug Fixes
+
+- Fixed "Generate HTML Playlist" feature, which was accidentally broken in 2.0.0.
+
+### Improvements
+
+- Improve skin parsing performance and avoid Chrome console warning by adding `willReadFrequently` to canvas contexts.
 
 ## 2.0.1 [CURRENT]
 

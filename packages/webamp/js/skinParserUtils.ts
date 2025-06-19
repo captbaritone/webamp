@@ -81,7 +81,7 @@ export function getSpriteUrisFromImg(
   sprites: Sprite[]
 ): { [spriteName: string]: string } {
   const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", { willReadFrequently: true });
   if (context == null) {
     throw new Error("Failed to get canvas context");
   }
@@ -194,7 +194,7 @@ export async function getGenExColors(
   }
 
   const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", { willReadFrequently: true });
   if (context == null) {
     return null;
   }

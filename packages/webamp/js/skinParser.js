@@ -99,7 +99,7 @@ async function genGenTextSprites(zip) {
   }
 
   const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", { willReadFrequently: true });
   canvas.width = img.width;
   canvas.height = img.height;
   context.drawImage(img, 0, 0);
