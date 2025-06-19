@@ -15,7 +15,7 @@ webamp.appendTracks([
 ```
 
 :::warning
-**The `url` must be served with the [correct CORS headers](../guides/01_cors.md).**
+**The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 :::
 
 ### `setTracksToPlay(tracks: Track[]): void`
@@ -31,7 +31,7 @@ webamp.setTracksToPlay([
 ```
 
 :::warning
-**The `url` must be served with the [correct CORS headers](../guides/01_cors.md).**
+**The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 :::
 
 ### `previousTrack(): void`

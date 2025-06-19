@@ -3,7 +3,7 @@
 Many methods on the webamp instance deal with `Track`s. Here is the shape of a `Track`:
 
 :::warning
-**The `url` must be served with the [correct CORS headers](../guides/01_cors.md).**
+**The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 :::
 
 ```ts

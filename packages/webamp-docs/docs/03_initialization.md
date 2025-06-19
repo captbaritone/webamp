@@ -30,7 +30,7 @@ webamp.renderWhenReady(document.getElementById("winamp-container"));
 ```
 
 :::tip
-See [Webamp Constructor Options](./API/02_webamp-constructor.md) for a list of options you can pass to the Webamp constructor.
+See [Webamp Constructor Options](./06_API/02_webamp-constructor.md) for a list of options you can pass to the Webamp constructor.
 :::
 
 ## Check compatibility

@@ -4,7 +4,7 @@ The `Winamp` class is constructed with an options object. _All config properties
 
 ### `initialTracks`
 
-An array of `track`s to prepopulate the playlist with. **The `url` must be served with the [correct CORS headers](../guides/01_cors.md).**
+An array of `track`s to prepopulate the playlist with. **The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 
 :::warning
 It is highly recommended to provide `metaData` and `duration` for each track, as this will prevent Webamp from needing to fetch the first few bytes of the file to read ID3 tags and duration.
@@ -27,7 +27,7 @@ const options = {
 
 ### `initialSkin`
 
-An object representing the initial skin to use. If omitted, the default skin, included in the bundle, will be used. **The URL must be served with the [correct CORS headers](../guides/01_cors.md).**
+An object representing the initial skin to use. If omitted, the default skin, included in the bundle, will be used. **The URL must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 
 ```ts
 const options = {
@@ -39,7 +39,7 @@ const options = {
 
 ### `availableSkins`
 
-An array of objects representing skins. These will appear in the "Options" menu under "Skins". **The URLs must be served with the [correct CORS headers](../guides/01_cors.md).**
+An array of objects representing skins. These will appear in the "Options" menu under "Skins". **The URLs must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 
 :::tip
 You can find skins to download at the [Winamp Skin Museum](https://skins.webamp.org).
