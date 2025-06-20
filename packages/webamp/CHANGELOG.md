@@ -2,11 +2,12 @@
 
 _No changes yet._
 
-## 2.1.1 [CURRENT]
+## 2.1.2 [CURRENT]
 
 ### Bug Fixes
 
 - Avoid opening Milkdrop window when no window layout is provided.
+- Work around issue where setImmediate was not accessible to JSZip when parsing skins.
 
 ## 2.1.0
 
