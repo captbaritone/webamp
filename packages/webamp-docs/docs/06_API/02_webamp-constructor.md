@@ -237,6 +237,22 @@ const webamp = new Webamp({
 });
 ```
 
+### `enableMediaSession`
+
+Have Webamp attempt to connect to the browser's [Media Session
+API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API).
+**Default:** `false`.
+
+This allows OS/hardware level media controls like play/pause/next/previous
+and lock screen "current track" information to work with Webamp.
+
+```ts
+const webamp = new Webamp({
+  enableMediaSession: true,
+  // ...other config options
+});
+```
+
 ### `__butterchurnOptions`
 
 Webamp's Milkdrop window is powered by the third party library [Butterchurn](https://butterchurnviz.com/). Getting Butterchurn to work with Webamp requires some additional configuration which is still a bit fiddly, but is possible. For a full working example, see the [Butterchurn Example](https://github.com/captbaritone/webamp/tree/master/examples/minimalMilkdrop).

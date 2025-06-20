@@ -5,7 +5,7 @@ By default the Webamp import/bundle includes a few heavy dependencies. `JSZip` f
 First you'll need to install the dependencies in your project:
 
 ```bash
-npm install jszip music-metadata-browser@^0.6.1
+npm install jszip music-metadata-browser@^0.6.6
 ```
 
 The "lazy" version of Webamp will require that you inject functions for lazily importing these dependencies.

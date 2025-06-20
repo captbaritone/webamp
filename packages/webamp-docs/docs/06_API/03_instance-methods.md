@@ -216,8 +216,12 @@ Returns an "unsubscribe" function.
 **Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL)
 
 ```ts
-const unsubscribe = webamp.onTrackDidChange((track => {
-    console.log("New track playing:", track.url);
+const unsubscribe = webamp.onTrackDidChange((track) => {
+  if (track == null) {
+    document.title = "Webamp";
+  } else {
+    document.title = `${track.metaData.title} - ${track.metaData.artist} \u00B7 Webamp`;
+  }
 });
 
 // If at some point in the future you want to stop listening to these events:

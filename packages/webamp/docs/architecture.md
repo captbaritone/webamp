@@ -93,7 +93,7 @@ Moving windows when their neighbors are resized via "double" or "shade" mode tog
 
 1. Computing a graph where each window is a node, and the edges are where those windows are "touching".
 2. Dispatching the passed in action.
-3. Looking at the new sizes, and dispatching another event to move the windows to new locations where the original edeges are all still touching.
+3. Looking at the new sizes, and dispatching another event to move the windows to new locations where the original edges are all still touching.
 
 ## Dropping files
 

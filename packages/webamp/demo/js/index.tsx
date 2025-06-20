@@ -17,7 +17,6 @@ import {
 
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
-import enableMediaSession from "./mediaSession";
 // import { choreograph } from "./choreography";
 
 declare global {
@@ -132,8 +131,6 @@ async function main() {
         ? DEFAULT_DOCUMENT_TITLE
         : `${track.metaData.title} - ${track.metaData.artist} \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
   });
-
-  enableMediaSession(webamp);
 
   // Expose a file input in the DOM for testing.
   const fileInput = document.createElement("input");

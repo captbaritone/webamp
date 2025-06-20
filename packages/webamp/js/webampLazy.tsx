@@ -39,6 +39,7 @@ import Emitter from "./emitter";
 
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
+import enableMediaSession from "./mediaSession.js";
 
 export interface PrivateOptions {
   __initialState?: PartialState;
@@ -99,6 +100,10 @@ class Webamp {
       __butterchurnOptions,
       __customMediaClass,
     } = this.options;
+
+    if (options.enableMediaSession) {
+      enableMediaSession(this);
+    }
 
     // TODO: Make this much cleaner
     let convertPreset = null;

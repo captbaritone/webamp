@@ -716,6 +716,16 @@ export interface Options {
   handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
   handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
   handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
+
+  /**
+   * Have Webamp attempt to connect to the browser's media session API.
+   *
+   * This allows OS/hardware level media controls like play/pause/next/previous
+   * and lock screen "current track" information to work with Webamp.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API
+   */
+  enableMediaSession?: boolean;
 }
 
 /**

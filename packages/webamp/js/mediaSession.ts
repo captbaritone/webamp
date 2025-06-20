@@ -1,4 +1,4 @@
-import type WebampLazy from "../../js/webampLazy";
+import type WebampLazy from "./webampLazy";
 
 export default function enableMediaSession(webamp: WebampLazy) {
   if ("mediaSession" in navigator) {

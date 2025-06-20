@@ -111,6 +111,7 @@ export async function getWebampConfig(
     windowLayout,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
+    enableMediaSession: true,
     handleTrackDropEvent: (e) => {
       const trackJson = e.dataTransfer.getData("text/json");
       if (trackJson == null) {
