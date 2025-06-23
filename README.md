@@ -3,28 +3,16 @@
 
 # Webamp
 
-A reimplementation of Winamp 2.9 in HTML5 and JavaScript with full skin support.
+A reimplementation of Winamp in HTML5 and JavaScript with full skin support.
 As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [4]), and [elsewhere](./packages/webamp/docs/press.md).
 
 [![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/packages/webamp/demo/images/preview.png)](https://webamp.org)
 
 Check out this [Twitter thread](https://twitter.com/captbaritone/status/961274714013319168) for an illustrated list of features. Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not supported](http://caniuse.com/#feat=audio-api).
 
-## Add Webamp to Your Site
+## Read the docs
 
-Here is the **most minimal** example of adding Webamp to a page:
-
-```HTML
-<div id="app"></div>
-<script src="https://unpkg.com/webamp"></script>
-<script>
-    const app = document.getElementById("app")
-    const webamp = new Webamp();
-    webamp.renderWhenReady(app);
-</script>
-```
-
-For more examples, including how to add audio files, check out [`examples/` directory](./examples) and the [API documentation](./packages/webamp/docs/usage.md).
+**The [Webamp Documentation](https://docswebamp.org/docs) site contains detailed instructions showing how to add Webamp to your site and customize it to meet your needs.**
 
 ## About This Repository
 
