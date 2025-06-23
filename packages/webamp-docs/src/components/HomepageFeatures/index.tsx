@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useLayoutEffect, useState, type ReactNode } from "react";
 import styles from "./styles.module.css";
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
@@ -136,7 +136,7 @@ export const initialTracks: URLTrack[] = [
 function WebampComponent(): ReactNode {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref || !Webamp) {
       return;
     }

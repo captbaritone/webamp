@@ -239,8 +239,8 @@ const webamp = new Webamp({
 
 ### `enableMediaSession`
 
-Have Webamp attempt to connect to the browser's [Media Session
-API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API).
+Have Webamp connect to the browser's [Media Session
+API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API), if the browser supports it.
 **Default:** `false`.
 
 This allows OS/hardware level media controls like play/pause/next/previous

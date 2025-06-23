@@ -1,0 +1,25 @@
+# Blog Posts
+
+Over the years that I've been working on Webamp, I've written a number of blog posts on topics related to it.
+
+- [Preserving Winamp skins for posterity at the Internet Archive](https://jordaneldredge.com/notes/ia-skins/)
+- [Rendering “modern” Winamp skins in the browser](https://jordaneldredge.com/notes/webamp-modern/)
+- [100k skins: Reflections on the Winamp Skin Museum’s upload flow](https://jordaneldredge.com/notes/skin-upload/)
+- [The Winamp Skin Museum has a secret debug mode](https://jordaneldredge.com/notes/skin-debug/)
+- [The Winamp Skin Museum is powered by an sqlite3 database](https://jordaneldredge.com/notes/winamp-sqlite/)
+- [Winamp Skin Mosaics](https://jordaneldredge.com/notes/winamp-mosaics/)
+- [The bizarre secrets I found investigating corrupt Winamp skins](https://jordaneldredge.com/notes/corrupted-skins/)
+- [A Winamp Skin Detective Story](https://jordaneldredge.com/notes/winamp-skin-detective-story/)
+- [Disassembling Winamp with Ghidra to find the Maki interpreter](https://jordaneldredge.com/notes/winamp-ghidra/)
+- [Building the @WinampSkins Twitter Bot](https://jordaneldredge.com/blog/building-the-winampskins-twitter-bot/)
+- [Using Machine Learning to Generate Winamp Skins](https://jordaneldredge.com/blog/using-machine-learning-to-generate-winamp-skins/)
+- [Speeding Up Webamp's Music Visualizer with WebAssembly](https://jordaneldredge.com/blog/speeding-up-winamps-music-visualizer-with-webassembly/)
+- [Rendering Animated .ani Cursors in the Browser](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/)
+- [Mainlining Nostalgia: Making the Winamp Skin Museum](https://jordaneldredge.com/blog/winamp-skin-musuem/)
+- [Implementing a Robust Web Audio API Balance Node](https://jordaneldredge.com/blog/implementing-a-robust-web-audio-api-balance-node/)
+- [Making the case for building something useless](https://jordaneldredge.com/blog/making-the-case-for-building-something-useless/)
+- [A Tour of Winamp2-js Features](https://jordaneldredge.com/blog/a-tour-of-winamp2-js-features/)
+- [Crash Safari with the Web Audio API](https://jordaneldredge.com/blog/crash-safari-with-the-web-audio-api/)
+- [How Winamp2-js loads native skins in your browser](https://jordaneldredge.com/blog/how-winamp2-js-loads-native-skins-in-your-browser/)
+- [Surviving Hacker News traffic with the help of free CDNs](https://jordaneldredge.com/blog/surviving-hacker-news-traffic-with-the-help-of-free-cdns/)
+- [I'm glad I factored out jQuery](https://jordaneldredge.com/blog/im-glad-i-factored-out-jquery/)
