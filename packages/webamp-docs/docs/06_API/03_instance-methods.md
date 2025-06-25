@@ -180,6 +180,16 @@ if (webamp.isShuffleEnabled()) {
 }
 ```
 
+### `toggleShuffle(): void`
+
+Toggle shuffle mode between enabled and disabled.
+
+**Since** 2.1.3
+
+```ts
+webamp.toggleShuffle();
+```
+
 ### `isRepeatEnabled(): boolean`
 
 Check if repeat is enabled.
@@ -190,6 +200,16 @@ Check if repeat is enabled.
 if (webamp.isRepeatEnabled()) {
   console.log("Repeat is enabled");
 }
+```
+
+### `toggleRepeat(): void`
+
+Toggle repeat mode between enabled and disabled.
+
+**Since** 2.1.3
+
+```ts
+webamp.toggleRepeat();
 ```
 
 ### `renderWhenReady(domNode: HTMLElement): Promise<void>`

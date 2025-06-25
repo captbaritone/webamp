@@ -2,6 +2,13 @@
 
 ### Improvements
 
+## 2.1.3 [UPCOMING]
+
+### Improvements
+
+- Added new `Webamp` instance methods:
+  - `webamp.toggleShuffle`
+  - `webamp.toggleRepeat`
 - Add new config option `enableMediaSession` to allow Webamp to connect to the browser's Media Session API. This enables OS/hardware level media controls like play/pause/next/previous.
 
 ## 2.1.2 [CURRENT]

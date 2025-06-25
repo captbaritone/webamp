@@ -264,10 +264,24 @@ class Webamp {
   }
 
   /**
+   * Toggle shuffle mode between enabled and disabled.
+   */
+  toggleShuffle(): void {
+    this.store.dispatch(Actions.toggleShuffle());
+  }
+
+  /**
    * Check if repeat is enabled
    */
   isRepeatEnabled(): boolean {
     return Selectors.getRepeat(this.store.getState());
+  }
+
+  /**
+   * Toggle repeat mode between enabled and disabled.
+   */
+  toggleRepeat(): void {
+    this.store.dispatch(Actions.toggleRepeat());
   }
 
   /**
