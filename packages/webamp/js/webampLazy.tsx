@@ -105,7 +105,7 @@ class Webamp {
       enableMediaSession(this);
     }
 
-    // TODO: Make this much cleaner
+    // TODO: Make this much cleaner.
     let convertPreset = null;
     if (__butterchurnOptions != null) {
       const { importConvertPreset, presetConverterEndpoint } =
@@ -122,7 +122,7 @@ class Webamp {
       }
     }
 
-    // TODO: Validate required options
+    // TODO: Validate required options.
 
     this.media = new (__customMediaClass || Media)();
     this.store = getStore(
@@ -134,7 +134,7 @@ class Webamp {
         requireJSZip,
         requireMusicMetadata,
         convertPreset,
-        // @ts-ignore Typescript is drunk
+        // @ts-ignore Typescript is drunk.
         handleTrackDropEvent,
         handleAddUrlEvent,
         handleLoadListEvent,
@@ -208,56 +208,56 @@ class Webamp {
   }
 
   /**
-   * Play the current tack
+   * Play the current track.
    */
   play(): void {
     this.store.dispatch(Actions.play());
   }
 
   /**
-   * Pause the current tack
+   * Pause the current track.
    */
   pause(): void {
     this.store.dispatch(Actions.pause());
   }
 
   /**
-   * Stop the currently playing audio. Equivalent to pressing the "stop" button
+   * Stop the currently playing audio. Equivalent to pressing the "stop" button.
    */
   stop(): void {
     this.store.dispatch(Actions.stop());
   }
 
   /**
-   * Set volume from 0 - 100
+   * Set volume from 0 - 100.
    */
   setVolume(volume: number): void {
     this.store.dispatch(Actions.setVolume(volume));
   }
 
   /**
-   * Seek backward n seconds in the current track
+   * Seek backward n seconds in the current track.
    */
   seekBackward(seconds: number) {
     this.store.dispatch(Actions.seekBackward(seconds));
   }
 
   /**
-   * Seek forward n seconds in the current track
+   * Seek forward n seconds in the current track.
    */
   seekForward(seconds: number) {
     this.store.dispatch(Actions.seekForward(seconds));
   }
 
   /**
-   * Seek to a given time within the current track
+   * Seek to a given time within the current track.
    */
   seekToTime(seconds: number) {
     this.store.dispatch(Actions.seekToTime(seconds));
   }
 
   /**
-   * Check if shuffle is enabled
+   * Check if shuffle is enabled.
    */
   isShuffleEnabled(): boolean {
     return Selectors.getShuffle(this.store.getState());
@@ -271,7 +271,7 @@ class Webamp {
   }
 
   /**
-   * Check if repeat is enabled
+   * Check if repeat is enabled.
    */
   isRepeatEnabled(): boolean {
     return Selectors.getRepeat(this.store.getState());
@@ -285,21 +285,21 @@ class Webamp {
   }
 
   /**
-   * Play the next track
+   * Play the next track.
    */
   nextTrack(): void {
     this.store.dispatch(Actions.next());
   }
 
   /**
-   * Play the previous track
+   * Play the previous track.
    */
   previousTrack(): void {
     this.store.dispatch(Actions.previous());
   }
 
   /**
-   * Set the current track a specific track in the playlist by zero-based index.
+   * Set the current track to a specific track in the playlist by zero-based index.
    *
    * Note: If Webamp is currently playing, the track will begin playing. If
    * Webamp is not playing, the track will not start playing. You can use
@@ -364,7 +364,7 @@ class Webamp {
   }
 
   /**
-   * Equivalent to selection "Close" from Webamp's options menu. Once closed,
+   * Equivalent to selecting "Close" from Webamp's options menu. Once closed,
    * you can open it again with `.reopen()`.
    */
   close(): void {
@@ -393,7 +393,7 @@ class Webamp {
    */
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
-    // TODO #leak
+    // TODO #leak.
     return this.store.subscribe(() => {
       const state = this.store.getState();
       const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
@@ -432,7 +432,7 @@ class Webamp {
    */
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
-    // TODO #leak
+    // TODO #leak.
     await storeHas(this.store, (state) => !state.display.loading);
     // We attempt to pre-resolve these promises before we declare the skin
     // loaded. That's because `<EqGraph>` needs these in order to render fully.
@@ -490,8 +490,8 @@ class Webamp {
    * attempt to clean itself up to avoid memory leaks.
    */
   dispose(): void {
-    // TODO: Clean up store subscription in onTrackDidChange
-    // TODO: Every storeHas call represents a potential race condition
+    // TODO: Clean up store subscription in onTrackDidChange.
+    // TODO: Every storeHas call represents a potential race condition.
     this.media.dispose();
     this._actionEmitter.dispose();
     this._disposable.dispose();
@@ -506,7 +506,7 @@ class Webamp {
   }
 
   __onStateChange(cb: () => void): () => void {
-    // TODO #leak
+    // TODO #leak.
     return this.store.subscribe(cb);
   }
 
@@ -519,7 +519,7 @@ class Webamp {
 }
 
 // Return a promise that resolves when the store matches a predicate.
-// TODO #leak
+// TODO #leak.
 const storeHas = (
   store: Store,
   predicate: (state: AppState) => boolean

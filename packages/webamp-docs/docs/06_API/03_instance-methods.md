@@ -64,7 +64,7 @@ Play the next track.
 webamp.nextTrack();
 ```
 
-### `seekForward(seconds): void`
+### `seekForward(seconds: number): void`
 
 Seek forward n seconds in the current track.
 
@@ -74,7 +74,7 @@ Seek forward n seconds in the current track.
 webamp.seekForward(10);
 ```
 
-### `seekBackward(seconds): void`
+### `seekBackward(seconds: number): void`
 
 Seek backward n seconds in the current track.
 
@@ -84,7 +84,7 @@ Seek backward n seconds in the current track.
 webamp.seekBackward(10);
 ```
 
-### `seekToTime(seconds)`
+### `seekToTime(seconds: number): void`
 
 Seek to a given time within the current track.
 
@@ -94,7 +94,7 @@ Seek to a given time within the current track.
 webamp.seekToTime(15.5);
 ```
 
-### `getMediaStatus()`
+### `getMediaStatus(): MediaStatus | null`
 
 Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
 
@@ -126,7 +126,7 @@ webamp.play();
 
 ### `stop(): void`
 
-Stop the currently playing audio. Equivilant to pressing the "stop" button.
+Stop the currently playing audio. Equivalent to pressing the "stop" button.
 
 **Since** 1.4.0
 
@@ -146,7 +146,7 @@ webamp.setVolume(75);
 
 ### `setCurrentTrack(index: number): void`
 
-Set the current track a specific track in the playlist by zero-based index.
+Set the current track to a specific track in the playlist by zero-based index.
 
 Note: If Webamp is currently playing, the track will begin playing. If Webamp is not playing, the track will not start playing. You can use `webamp.pause()` before calling this method or `webamp.play()` after calling this method to control whether the track starts playing.
 
@@ -233,7 +233,7 @@ A callback which will be called when a new track starts loading. This can happen
 
 Returns an "unsubscribe" function.
 
-**Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL)
+**Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL).
 
 ```ts
 const unsubscribe = webamp.onTrackDidChange((track) => {
@@ -278,7 +278,7 @@ unsubscribe();
 
 ### `close(): void`
 
-Equivalent to selection "Close" from Webamp's options menu. Once closed, you can open it again with `.reopen()`.
+Equivalent to selecting "Close" from Webamp's options menu. Once closed, you can open it again with `.reopen()`.
 
 **Since** 1.4.1
 
@@ -304,7 +304,7 @@ A callback which will be called when Webamp is minimized. Returns an "unsubscrib
 
 ```ts
 const unsubscribe = webamp.onMinimize(() => {
-  console.log("Webamp closed");
+  console.log("Webamp minimized");
 });
 
 // If at some point in the future you want to stop listening to these events:
@@ -313,7 +313,7 @@ unsubscribe();
 
 ### `setSkinFromUrl(url: string): void`
 
-Updates the skin used by the webamp instance. Note that this does not happen immediately. If you want to be notified when the skin load is complete, use `.skinIsLoaded()`, which returns a promise which you can await.
+Updates the skin used by the Webamp instance. Note that this does not happen immediately. If you want to be notified when the skin load is complete, use `.skinIsLoaded()`, which returns a promise which you can await.
 
 **Since** 1.4.1
 
