@@ -30,12 +30,19 @@ import cssText from "../../css/webamp.css?inline";
 interface Props {
   filePickers: FilePicker[];
   media: IMedia;
+  parentDomNode: HTMLElement;
+  onMount?: () => void;
 }
 
 /**
  * Constructs the windows to render
  */
-export default function App({ media, filePickers }: Props) {
+export default function App({
+  media,
+  filePickers,
+  onMount,
+  parentDomNode,
+}: Props) {
   const closed = useTypedSelector(Selectors.getClosed);
   const genWindowsInfo = useTypedSelector(Selectors.getGenWindows);
   const zIndex = useTypedSelector(Selectors.getZIndex);
@@ -58,11 +65,11 @@ export default function App({ media, filePickers }: Props) {
   }, [webampNode, zIndex]);
 
   useLayoutEffect(() => {
-    document.body.appendChild(webampNode);
+    parentDomNode.appendChild(webampNode);
     return () => {
-      document.body.removeChild(webampNode);
+      parentDomNode.removeChild(webampNode);
     };
-  }, [webampNode]);
+  }, [webampNode, parentDomNode]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -94,6 +101,12 @@ export default function App({ media, filePickers }: Props) {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [browserWindowSizeChanged, webampNode]);
+
+  useEffect(() => {
+    if (onMount != null) {
+      onMount();
+    }
+  }, [onMount]);
 
   const renderWindows = useCallback(() => {
     return Utils.objectMap(genWindowsInfo, (w, id) => {

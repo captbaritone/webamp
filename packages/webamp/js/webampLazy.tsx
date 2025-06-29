@@ -101,10 +101,6 @@ class Webamp {
       __customMediaClass,
     } = this.options;
 
-    if (options.enableMediaSession) {
-      enableMediaSession(this);
-    }
-
     // TODO: Make this much cleaner.
     let convertPreset = null;
     if (__butterchurnOptions != null) {
@@ -141,6 +137,10 @@ class Webamp {
         handleSaveListEvent,
       }
     ) as Store;
+
+    if (options.enableMediaSession) {
+      enableMediaSession(this);
+    }
 
     if (enableDoubleSizeMode) {
       this.store.dispatch(Actions.toggleDoubleSizeMode());
@@ -473,11 +473,22 @@ class Webamp {
       }
     });
 
+    let onMount: (() => void) | undefined;
+    const mountPromise = new Promise<void>((resolve) => {
+      onMount = resolve;
+    });
+
     this._root.render(
       <Provider store={this.store}>
-        <App media={this.media} filePickers={this.options.filePickers || []} />
+        <App
+          media={this.media}
+          filePickers={this.options.filePickers || []}
+          onMount={onMount}
+          parentDomNode={document.body}
+        />
       </Provider>
     );
+    await mountPromise;
   }
 
   /**
