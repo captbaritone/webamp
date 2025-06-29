@@ -1,6 +1,6 @@
 # Webamp Constructor
 
-The `Winamp` class is constructed with an options object. _All config properties are optional._
+The `Webamp` class is constructed with an options object. _All config properties are optional._
 
 ```ts
 import Webamp from "webamp";

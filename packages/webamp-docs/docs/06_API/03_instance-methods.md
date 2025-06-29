@@ -221,7 +221,7 @@ If a `domNode` is passed, Webamp will place itself in the center of that DOM nod
 A promise is returned which will resolve after the render is complete.
 
 ```ts
-const container = document.getElementById("winamp-container");
+const container = document.getElementById("webamp-container");
 webamp.renderWhenReady(container).then(() => {
   console.log("rendered webamp!");
 });
@@ -329,7 +329,7 @@ console.log(`The skin loaded in ${Date.now() - start}`);
 
 ### `dispose(): void`
 
-**Note:** _This method is not fully functional. It is currently impossible to clean up a Winamp instance. This method makes an effort, but it still leaks the whole instance. In the future the behavior of this method will improve, so you might as well call it._
+**Note:** _This method is not fully functional. It is currently impossible to clean up a Webamp instance. This method makes an effort, but it still leaks the whole instance. In the future the behavior of this method will improve, so you might as well call it._
 
 When you are done with a Webamp instance, call this method and Webamp will attempt to clean itself up to avoid memory leaks.
 
