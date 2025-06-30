@@ -564,7 +564,21 @@ export type MediaTagRequestStatus =
   | "COMPLETE"
   | "NOT_REQUESTED";
 
+/** The status of the current media. */
 export type MediaStatus = "PLAYING" | "STOPPED" | "PAUSED";
+
+/**
+ * The media status of the player. Similar to MediaStatus but can discriminate
+ * between different reasons for being stopped.
+ */
+export type PlayerMediaStatus =
+  | "PLAYING"
+  | "STOPPED"
+  | "PAUSED"
+  /** We have reached the end of the playlist. */
+  | "ENDED"
+  /** The player is closed. */
+  | "CLOSED";
 
 export type LoadStyle = "BUFFER" | "PLAY" | "NONE";
 

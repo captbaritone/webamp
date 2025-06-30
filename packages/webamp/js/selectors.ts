@@ -8,7 +8,6 @@ import {
   WindowPositions,
   PlaylistStyle,
   TransitionType,
-  MediaStatus,
   TimeMode,
   SkinImages,
   Cursors,
@@ -16,6 +15,8 @@ import {
   GenLetterWidths,
   MilkdropMessage,
   DummyVizData,
+  PlayerMediaStatus,
+  MediaStatus,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -29,6 +30,7 @@ import {
   MEDIA_TAG_REQUEST_STATUS,
   WINDOWS,
   VISUALIZERS,
+  PLAYER_MEDIA_STATUS,
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
@@ -337,10 +339,27 @@ export const getCurrentTrackDisplayName = createSelector(
     return getName(id);
   }
 );
-
-export const getMediaStatus = (state: AppState): MediaStatus => {
+export const getPlayerMediaStatus = (state: AppState): PlayerMediaStatus => {
   return state.media.status;
 };
+
+export const getMediaStatus = createSelector(
+  getPlayerMediaStatus,
+  (status: PlayerMediaStatus): MediaStatus => {
+    switch (status) {
+      case "PLAYING":
+      case "PAUSED":
+        return status;
+      case "STOPPED":
+      case "ENDED":
+      case "CLOSED":
+        return "STOPPED";
+      default:
+        const s: never = status;
+        throw new Error(`Unknown media status: ${s}`);
+    }
+  }
+);
 
 export const getMediaIsPlaying = (state: AppState) =>
   state.media.status === MEDIA_STATUS.PLAYING;

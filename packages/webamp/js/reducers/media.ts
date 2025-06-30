@@ -1,4 +1,4 @@
-import { Action, MediaStatus, TimeMode } from "../types";
+import { Action, PlayerMediaStatus, TimeMode } from "../types";
 import {
   PLAY,
   STOP,
@@ -13,8 +13,10 @@ import {
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
   LOAD_SERIALIZED_STATE,
+  CLOSE_WINAMP,
+  OPEN_WINAMP,
 } from "../actionTypes";
-import { TIME_MODE, MEDIA_STATUS } from "../constants";
+import { TIME_MODE, PLAYER_MEDIA_STATUS } from "../constants";
 import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface MediaState {
@@ -24,7 +26,7 @@ export interface MediaState {
   balance: number;
   shuffle: boolean;
   repeat: boolean;
-  status: MediaStatus;
+  status: PlayerMediaStatus;
 }
 
 const defaultState = {
@@ -39,7 +41,7 @@ const defaultState = {
   shuffle: false,
   repeat: false,
   // TODO: Enforce possible values
-  status: MEDIA_STATUS.STOPPED,
+  status: PLAYER_MEDIA_STATUS.STOPPED,
 };
 
 const media = (
@@ -50,12 +52,17 @@ const media = (
     // TODO: Make these constants
     case PLAY:
     case IS_PLAYING:
-      return { ...state, status: MEDIA_STATUS.PLAYING };
+      return { ...state, status: PLAYER_MEDIA_STATUS.PLAYING };
     case PAUSE:
-      return { ...state, status: MEDIA_STATUS.PAUSED };
+      return { ...state, status: PLAYER_MEDIA_STATUS.PAUSED };
     case STOP:
+      return { ...state, status: PLAYER_MEDIA_STATUS.STOPPED };
     case IS_STOPPED:
-      return { ...state, status: MEDIA_STATUS.STOPPED };
+      return { ...state, status: PLAYER_MEDIA_STATUS.ENDED };
+    case OPEN_WINAMP:
+      return { ...state, status: PLAYER_MEDIA_STATUS.STOPPED };
+    case CLOSE_WINAMP:
+      return { ...state, status: PLAYER_MEDIA_STATUS.CLOSED };
     case TOGGLE_TIME_MODE:
       const newMode =
         state.timeMode === TIME_MODE.REMAINING

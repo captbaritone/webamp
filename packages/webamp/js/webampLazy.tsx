@@ -13,6 +13,7 @@ import {
   Options,
   MediaStatus,
   PlaylistTrack,
+  PlayerMediaStatus,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -337,8 +338,18 @@ class Webamp {
   /**
    * Get the current "playing" status.
    */
-  getMediaStatus(): MediaStatus | null {
+  getMediaStatus(): MediaStatus {
     return Selectors.getMediaStatus(this.store.getState());
+  }
+
+  /**
+   * Get the current "playing" status of the player. Similar to
+   * `getMediaStatus()`, but can differentiate between different reasons why the
+   * player might not be playing, such as "ENDED" when the end of the playlist
+   * has been reached or "CLOSED" when the player has been closed.
+   */
+  getPlayerMediaStatus(): PlayerMediaStatus {
+    return Selectors.getPlayerMediaStatus(this.store.getState());
   }
 
   /**

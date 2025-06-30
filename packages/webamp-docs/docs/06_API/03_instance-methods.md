@@ -104,6 +104,23 @@ Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STO
 const isPlaying = webamp.getMediaStatus() === "PLAYING";
 ```
 
+### `getPlayerMediaStatus(): PlayerMediaStatus`
+
+Get the current "playing" status of the player. Similar to `getMediaStatus()`, but can differentiate between different reasons why the player might not be playing, such as "ENDED" when the end of the playlist has been reached or "CLOSED" when the player has been closed.
+
+The return value is one of: `"PLAYING"`, `"STOPPED"`, `"PAUSED"`, `"ENDED"`, or `"CLOSED"`.
+
+**Since** 2.1.3
+
+```ts
+const playerStatus = webamp.getPlayerMediaStatus();
+if (playerStatus === "ENDED") {
+  console.log("Playlist has ended");
+} else if (playerStatus === "CLOSED") {
+  console.log("Player is closed");
+}
+```
+
 ### `pause(): void`
 
 Pause the current track.
