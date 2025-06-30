@@ -371,7 +371,7 @@ export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
 }
 
 export function getWindowSize(): { width: number; height: number } {
-  // Aparently this is crazy across browsers.
+  // Apparently this is crazy across browsers.
   return {
     width: Math.max(
       document.body.scrollWidth,
