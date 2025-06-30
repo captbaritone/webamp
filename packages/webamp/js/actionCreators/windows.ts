@@ -128,25 +128,23 @@ export function centerWindowsInContainer(container: HTMLElement): Thunk {
 }
 
 export function centerWindowsInView(): Thunk {
-  return centerWindows({
-    left: window.scrollX,
-    top: window.scrollY,
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const height = window.innerHeight;
+  const width = window.innerWidth;
+  return centerWindows({ left: 0, top: 0, width, height });
 }
 
-export function centerWindows(box: {
+type Box = {
   left: number;
   top: number;
   width: number;
   height: number;
-}): Thunk {
+};
+
+export function centerWindows({ left, top, width, height }: Box): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
-    const { top, left, width, height } = box;
 
     const offsetLeft = left + window.scrollX;
     const offsetTop = top + window.scrollY;

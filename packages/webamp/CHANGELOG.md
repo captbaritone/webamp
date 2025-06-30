@@ -12,6 +12,10 @@
 - Add new config option `enableMediaSession` to allow Webamp to connect to the browser's Media Session API. This enables OS/hardware level media controls like play/pause/next/previous.
 - Ensure the promise returned from `renderWhenReady` only resolves after the Webamp instance has been fully mounted and inserted into the DOM. Previously it resolved after the DOM node was created but before it was inserted into the DOM.
 
+### Bug Fixes
+
+- Fix bug where resizing the window such that the current layout cannot fit on the page, while also scrolled down the page, would cause the layout to be recentered out of view.
+
 ## 2.1.2 [CURRENT]
 
 ### Bug Fixes
