@@ -122,10 +122,8 @@ export function adjustVolume(volumeDiff: number): Thunk {
   };
 }
 
-export function scrollVolume(e: React.WheelEvent<HTMLDivElement>): Thunk {
-  // https://github.com/facebook/react/issues/22794
-  // e.preventDefault();
-  // TODO: https://github.com/captbaritone/webamp/issues/1301
+export function scrollVolume(e: WheelEvent): Thunk {
+  e.preventDefault();
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
     // Using pixels as percentage difference here is a bit arbitrary, but... oh well.

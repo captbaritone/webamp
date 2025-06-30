@@ -77,7 +77,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
       windowId={WINDOWS.MAIN}
       className={className}
       handleDrop={loadMedia}
-      onWheel={scrollVolume}
+      onWheelActive={scrollVolume}
     >
       <FocusTarget windowId={WINDOWS.MAIN}>
         <div

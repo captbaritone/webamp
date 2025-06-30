@@ -97,7 +97,7 @@ function PlaylistWindow({ analyser }: Props) {
         className={classes}
         style={style}
         handleDrop={handleDrop}
-        onWheel={scrollVolume}
+        onWheelActive={scrollVolume}
       >
         <div className="playlist-top draggable" onDoubleClick={toggleShade}>
           <div className="playlist-top-left draggable" />
