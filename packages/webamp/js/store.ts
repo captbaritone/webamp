@@ -4,7 +4,7 @@ import {
   Middleware as ReduxMiddleware,
 } from "redux";
 import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "@redux-devtools/extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
@@ -20,11 +20,7 @@ import {
   Store,
 } from "./types";
 
-// TODO: Move to demo
 const compose = composeWithDevTools({
-  // @ts-ignore A previous name of this was `actionsBlacklist`, but it was
-  // renamed to `actionsDenylist` in Redux 4.1.0 but I'd rather not upgrade the
-  // types.
   actionsDenylist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });
 
