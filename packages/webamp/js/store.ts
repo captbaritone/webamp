@@ -22,7 +22,10 @@ import {
 
 // TODO: Move to demo
 const compose = composeWithDevTools({
-  actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
+  // @ts-ignore A previous name of this was `actionsBlacklist`, but it was
+  // renamed to `actionsDenylist` in Redux 4.1.0 but I'd rather not upgrade the
+  // types.
+  actionsDenylist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });
 
 export default function createWebampStore(
