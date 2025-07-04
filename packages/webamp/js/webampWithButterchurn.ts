@@ -1,13 +1,13 @@
 import { Options } from "./types";
 import { PrivateOptions } from "./webampLazy";
 import Webamp from "./webamp";
-import "butterchurn/dist/butterchurn.min.js"; // buterchurn@3.0.0-beta.4
-import "butterchurn-presets/dist/base.js"; // butterchurn-presets@3.0.0-beta.4
+// @ts-ignore
+import butterchurn from "butterchurn/dist/butterchurn.min.js"; // buterchurn@3.0.0-beta.4
+// @ts-ignore
+import butterchurnPresets from "butterchurn-presets/dist/base.js"; // butterchurn-presets@3.0.0-beta.4
 
-// @ts-ignore
-const butterchurn = window.butterchurn;
-// @ts-ignore
-const butterchurnPresets = window.base.default;
+console.log("Using butterchurn", butterchurn);
+console.log("Using butterchurn presets", butterchurnPresets);
 
 export default class WebampWithButterchurn extends Webamp {
   constructor(options: Options & PrivateOptions) {
