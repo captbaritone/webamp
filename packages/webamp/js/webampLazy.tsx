@@ -14,6 +14,7 @@ import {
   MediaStatus,
   PlaylistTrack,
   PlayerMediaStatus,
+  IMetadataApi,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -52,7 +53,7 @@ export interface PrivateOptions {
 
 export interface InjectableDependencies {
   requireJSZip: () => Promise<typeof import("jszip")>;
-  requireMusicMetadata: () => Promise<typeof import("music-metadata")>;
+  requireMusicMetadata: () => Promise<IMetadataApi>;
 }
 
 class Webamp {

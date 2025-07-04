@@ -1,5 +1,5 @@
 import invariant from "invariant";
-import { IMusicMetadataApi, IMusicMetadataBrowserApi } from "./types";
+import { IMetadataApi } from "./types";
 import { IAudioMetadata } from "music-metadata-browser"; // Import music-metadata type definitions
 import * as Utils from "./utils";
 
@@ -7,7 +7,7 @@ type MediaDataType = string | ArrayBuffer | Blob;
 
 export async function genMediaTags(
   file: MediaDataType,
-  musicMetadata: IMusicMetadataBrowserApi | IMusicMetadataApi
+  musicMetadata: IMetadataApi
 ): Promise<IAudioMetadata> {
   invariant(
     file != null,

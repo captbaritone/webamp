@@ -893,9 +893,11 @@ export interface IMusicMetadataApi {
   parseBlob(blob: Blob, options?: IOptions): Promise<IAudioMetadata>;
 }
 
+export type IMetadataApi = IMusicMetadataBrowserApi | IMusicMetadataApi;
+
 export interface Extras {
   requireJSZip(): Promise<any>;
-  requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
+  requireMusicMetadata(): Promise<IMetadataApi>;
   convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>
