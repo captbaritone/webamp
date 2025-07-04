@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
 
   <body>
@@ -68,27 +69,6 @@
             duration: 5.322286,
           },
         ],
-        __butterchurnOptions: {
-          importButterchurn: () => Promise.resolve(butterchurn),
-          getPresets: () => {
-            return Object.entries(butterchurnPresets).map(([name, preset]) => {
-              return { name, butterchurnPresetObject: preset };
-            });
-          },
-          butterchurnOpen: true,
-        },
-        windowLayout: {
-          main: { position: { top: 0, left: 0 } },
-          equalizer: { position: { top: 116, left: 0 } },
-          playlist: {
-            position: { top: 232, left: 0 },
-            size: { extraWidth: 0, extraHeight: 4 },
-          },
-          milkdrop: {
-            position: { top: 0, left: 275 },
-            size: { extraHeight: 12, extraWidth: 7 },
-          },
-        },
       });
       webamp.renderWhenReady(document.getElementById("app"));
     </script>
