@@ -1,3 +1,4 @@
+import type { AnyWebByteStream, IFileInfo } from "strtok3";
 import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
@@ -864,19 +865,32 @@ export interface IMusicMetadataBrowserApi {
     audioTrackUrl: string,
     options?: IOptions
   ): Promise<IAudioMetadata>;
+}
+
+/**
+ * Type definition of the portion of the music-metadata module we use in Webamp.
+ */
+export interface IMusicMetadataApi {
+  /**
+   * Parse audio from Node Stream.Readable
+   * @param stream - Stream to read the audio track from
+   * @param fileInfo - File information object or MIME-type, e.g.: 'audio/mpeg'
+   * @param options - Parsing options
+   * @returns Metadata
+   */
+  parseWebStream(
+    webStream: AnyWebByteStream,
+    fileInfo?: IFileInfo | string,
+    options?: IOptions
+  ): Promise<IAudioMetadata>;
 
   /**
-   * Parse audio from Node Buffer
-   * @param {Stream.Readable} stream Audio input stream
-   * @param {string} mimeType <string> Content specification MIME-type, e.g.: 'audio/mpeg'
+   * Parse Web API File
+   * @param {Blob} blob
    * @param {IOptions} options Parsing options
    * @returns {Promise<IAudioMetadata>}
    */
-  parseBuffer(
-    buf: Buffer,
-    mimeType?: string,
-    options?: IOptions
-  ): Promise<IAudioMetadata>;
+  parseBlob(blob: Blob, options?: IOptions): Promise<IAudioMetadata>;
 }
 
 export interface Extras {

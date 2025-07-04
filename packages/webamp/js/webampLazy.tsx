@@ -51,8 +51,8 @@ export interface PrivateOptions {
 }
 
 export interface InjectableDependencies {
-  requireJSZip: () => Promise<any>; // TODO: Type JSZip
-  requireMusicMetadata: () => Promise<any>; // TODO: Type music-metadata-browser
+  requireJSZip: () => Promise<typeof import("jszip")>;
+  requireMusicMetadata: () => Promise<typeof import("music-metadata")>;
 }
 
 class Webamp {

@@ -1,13 +1,13 @@
 import invariant from "invariant";
-import { IMusicMetadataBrowserApi } from "./types";
+import { IMusicMetadataApi, IMusicMetadataBrowserApi } from "./types";
 import { IAudioMetadata } from "music-metadata-browser"; // Import music-metadata type definitions
 import * as Utils from "./utils";
 
 type MediaDataType = string | ArrayBuffer | Blob;
 
-export function genMediaTags(
+export async function genMediaTags(
   file: MediaDataType,
-  musicMetadata: IMusicMetadataBrowserApi
+  musicMetadata: IMusicMetadataBrowserApi | IMusicMetadataApi
 ): Promise<IAudioMetadata> {
   invariant(
     file != null,
@@ -20,7 +20,29 @@ export function genMediaTags(
   };
 
   if (typeof file === "string") {
-    return musicMetadata.fetchFromUrl(file, options);
+    if (
+      "parseWebStream" in musicMetadata &&
+      typeof musicMetadata.parseWebStream === "function"
+    ) {
+      const response = await fetch(file);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch URL: ${file}, status: ${response.status}`
+        );
+      }
+      const webStream = response.body;
+      if (webStream == null) {
+        throw new Error("Response body is null, cannot parse metadata.");
+      }
+      return musicMetadata.parseWebStream(webStream, undefined, options);
+    }
+    if (
+      "fetchFromUrl" in musicMetadata &&
+      typeof musicMetadata.fetchFromUrl === "function"
+    ) {
+      return musicMetadata.fetchFromUrl(file, options);
+    }
+    throw new Error("No suitable method available to parse URL");
   }
   // Assume Blob
   return musicMetadata.parseBlob(file as Blob, options);
