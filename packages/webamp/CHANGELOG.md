@@ -6,6 +6,7 @@
 
 ### Improvements
 
+- New `webamp/butterchurn` entry point which is a single bundle which includes the Butterchurn Milkdrop visualizer by default. This grows the module size by a few hundred kilobytes, but allows you to use Butterchurn without having to install it separately.
 - Switched id3/metadata parsing from using a very old version of `music-metadata-browser` to the latest version of `music-metadata`. `music-metadata-browser` is still supported for users of `webamp/lazy` for backwards compatibility, but it is no longer the default.
 - Added new `Webamp` instance methods:
   - `webamp.toggleShuffle`
