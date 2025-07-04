@@ -23,6 +23,11 @@
       "types": "./built/types/js/webamp.d.ts",
       "default": "./built/webamp.bundle.min.mjs"
     },
+    "./butterchurn": {
+      "import": "./built/webamp.butterchurn-bundle.min.mjs",
+      "types": "./built/types/js/butterchurn.d.ts",
+      "default": "./built/webamp.butterchurn-bundle.min.mjs"
+    },
     "./lazy": {
       "require": "./built/webamp.lazy-bundle.js",
       "import": "./built/webamp.lazy-bundle.min.mjs",

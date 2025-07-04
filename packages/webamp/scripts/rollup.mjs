@@ -74,6 +74,18 @@ const BUNDLES = [
       inlineDynamicImports: true,
     },
   },
+  {
+    name: "Webamp Butterchurn ES",
+    input: "js/webampWithButterchurn.ts",
+    minify: true,
+    output: {
+      file: "built/webamp.butterchurn-bundle.min.mjs",
+      format: "module",
+      // music-metadata uses dynamic imports, so we need to inline them
+      // to avoid issues with the UMD build.
+      inlineDynamicImports: true,
+    },
+  },
 ];
 
 build();
