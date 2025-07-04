@@ -44,6 +44,9 @@ const BUNDLES = [
       file: "built/webamp.bundle.js",
       format: "umd",
       name: "Webamp",
+      // music-metadata uses dynamic imports, so we need to inline them
+      // to avoid issues with the UMD build.
+      inlineDynamicImports: true,
     },
   },
   {
@@ -54,6 +57,9 @@ const BUNDLES = [
       file: "built/webamp.bundle.min.js",
       format: "umd",
       name: "Webamp",
+      // music-metadata uses dynamic imports, so we need to inline them
+      // to avoid issues with the UMD build.
+      inlineDynamicImports: true,
     },
   },
   {
@@ -63,6 +69,9 @@ const BUNDLES = [
     output: {
       file: "built/webamp.bundle.min.mjs",
       format: "module",
+      // music-metadata uses dynamic imports, so we need to inline them
+      // to avoid issues with the UMD build.
+      inlineDynamicImports: true,
     },
   },
 ];
