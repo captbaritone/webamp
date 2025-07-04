@@ -1,6 +1,6 @@
 import JSZip from "jszip";
 import * as musicMetadata from "music-metadata";
-import { Options } from "./types";
+import { IMetadataApi, Options } from "./types";
 import WebampLazy, { PrivateOptions } from "./webampLazy";
 
 // There is some bug between how JSZip pulls in setimmediate (which it expects
@@ -28,7 +28,10 @@ export default class Webamp extends WebampLazy {
     super({
       ...options,
       requireJSZip: async () => JSZip,
-      requireMusicMetadata: async () => musicMetadata,
+      requireMusicMetadata: async (): Promise<IMetadataApi> => {
+        // @ts-ignore
+        return musicMetadata;
+      },
     });
   }
 }
