@@ -23,6 +23,9 @@ export function getPlugins({ minify, outputFile, vite }) {
     // https://rollupjs.org/troubleshooting/#warning-treating-module-as-external-dependency
     // TODO: We could offer a version which does not inline React/React-DOM
     nodeResolve(),
+    // Needed for music-metadata-browser in the Webamp bundle which depends upon
+    // being able to use some polyfillable node APIs
+    nodePolyfills(),
     typescript({
       compilerOptions: {
         jsx: "react-jsx",
