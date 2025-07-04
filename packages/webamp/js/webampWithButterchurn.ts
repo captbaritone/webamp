@@ -6,8 +6,18 @@ import butterchurn from "butterchurn/dist/butterchurn.min.js"; // buterchurn@3.0
 // @ts-ignore
 import butterchurnPresets from "butterchurn-presets/dist/base.js"; // butterchurn-presets@3.0.0-beta.4
 
-console.log("Using butterchurn", butterchurn);
-console.log("Using butterchurn presets", butterchurnPresets);
+const DEFAULT_BUTTERCHURN_WINDOW_LAYOUT = {
+  main: { position: { left: 0, top: 0 } },
+  equalizer: { position: { left: 0, top: 116 } },
+  playlist: {
+    position: { left: 0, top: 232 },
+    size: { extraHeight: 4, extraWidth: 0 },
+  },
+  milkdrop: {
+    position: { left: 275, top: 0 },
+    size: { extraHeight: 12, extraWidth: 7 },
+  },
+};
 
 export default class WebampWithButterchurn extends Webamp {
   constructor(options: Options & PrivateOptions) {
@@ -21,7 +31,9 @@ export default class WebampWithButterchurn extends Webamp {
             return { name, butterchurnPresetObject: preset };
           });
         },
+        butterchurnOpen: true,
       },
+      windowLayout: options.windowLayout ?? DEFAULT_BUTTERCHURN_WINDOW_LAYOUT,
     });
   }
 }

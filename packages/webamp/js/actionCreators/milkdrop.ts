@@ -49,8 +49,9 @@ function normalizePresetTypes(preset: Preset): StatePreset {
 export function initializePresets(presetOptions: ButterchurnOptions): Thunk {
   return async (dispatch) => {
     const { getPresets, importButterchurn } = presetOptions;
-    importButterchurn().then((butterchurn) => {
-      dispatch({ type: GOT_BUTTERCHURN, butterchurn: butterchurn.default });
+    importButterchurn().then((butterchurnModule) => {
+      const butterchurn = butterchurnModule.default ?? butterchurnModule;
+      dispatch({ type: GOT_BUTTERCHURN, butterchurn });
     });
 
     const presets = await getPresets();
