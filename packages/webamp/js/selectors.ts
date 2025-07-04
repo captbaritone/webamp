@@ -687,6 +687,11 @@ export function getMilkdropMessage(state: AppState): MilkdropMessage | null {
   return state.milkdrop.message;
 }
 
+// Has Butterchurn been injected?
+export function getMilkdropEnabled(state: AppState): boolean {
+  return state.windows.milkdropEnabled;
+}
+
 export function getMilkdropWindowEnabled(state: AppState): boolean {
   return state.milkdrop.display === "WINDOW";
 }

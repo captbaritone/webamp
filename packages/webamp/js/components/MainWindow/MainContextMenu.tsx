@@ -1,7 +1,7 @@
 import { memo, Fragment, useEffect } from "react";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
-import { LOAD_STYLE } from "../../constants";
+import { LOAD_STYLE, WINDOWS } from "../../constants";
 import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 import PlaybackContextMenu from "../PlaybackContextMenu";
 import OptionsContextMenu from "../OptionsContextMenu";
@@ -24,6 +24,8 @@ const MainContextMenu = memo(({ filePickers }: Props) => {
   const menuOpened = useActionCreator(() => ({
     type: "MAIN_CONTEXT_MENU_OPENED",
   }));
+  const isMilkdropEnabled = useTypedSelector(Selectors.getMilkdropEnabled);
+
   useEffect(() => {
     menuOpened();
   }, [menuOpened]);
@@ -59,15 +61,20 @@ const MainContextMenu = memo(({ filePickers }: Props) => {
           )}
       </Parent>
       <Hr />
-      {Object.keys(genWindows).map((i) => (
-        <Node
-          key={i}
-          label={genWindows[i].title}
-          checked={genWindows[i].open}
-          onClick={() => toggleWindow(i as WindowId)}
-          hotkey={genWindows[i].hotkey}
-        />
-      ))}
+      {Object.keys(genWindows).map((i) => {
+        if (i === WINDOWS.MILKDROP && !isMilkdropEnabled) {
+          return null;
+        }
+        return (
+          <Node
+            key={i}
+            label={genWindows[i].title}
+            checked={genWindows[i].open}
+            onClick={() => toggleWindow(i as WindowId)}
+            hotkey={genWindows[i].hotkey}
+          />
+        );
+      })}
       <Hr />
       <SkinsContextMenu />
       <Hr />

@@ -40,6 +40,7 @@ export interface WindowsState {
   browserWindowSize: { height: number; width: number };
   positionsAreRelative: boolean;
   windowOrder: WindowId[];
+  milkdropEnabled: boolean;
 }
 
 const defaultWindowsState: WindowsState = {
@@ -98,6 +99,7 @@ const defaultWindowsState: WindowsState = {
     WINDOWS.MILKDROP,
     WINDOWS.MAIN,
   ],
+  milkdropEnabled: false,
 };
 
 const windows = (
@@ -108,6 +110,7 @@ const windows = (
     case ENABLE_MILKDROP:
       return {
         ...state,
+        milkdropEnabled: true,
         genWindows: {
           ...state.genWindows,
           [WINDOWS.MILKDROP]: {
