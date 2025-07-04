@@ -1,4 +1,5 @@
 import * as React from "react";
+import type JSZip from "jszip";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
@@ -52,7 +53,7 @@ export interface PrivateOptions {
 }
 
 export interface InjectableDependencies {
-  requireJSZip: () => Promise<typeof import("jszip")>;
+  requireJSZip: () => Promise<JSZip>;
   requireMusicMetadata: () => Promise<IMetadataApi>;
 }
 
