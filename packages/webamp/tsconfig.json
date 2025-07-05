@@ -17,6 +17,6 @@
     "jsx": "react-jsx",
     "module": "esnext"
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.mts", "vite.config.mts"],
   "exclude": ["node_modules", "demo/built", "built", "dist"]
 }

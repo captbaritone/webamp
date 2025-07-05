@@ -30,19 +30,22 @@ export async function genMediaTags(
           `Failed to fetch URL: ${file}, status: ${response.status}`
         );
       }
-      // There's currently an issue where some URLs will fail to parse id3 tags
-      // when using parseWebStream. So, for now, we'll deopt to using parseBlob.
-      // This forces us to download the whole file, but is at least correct.
 
       // https://github.com/Borewit/music-metadata/issues/2455
+      // There's currently an issue where some URLs will fail to parse id3 tags
+      // when using parseWebStream. This approach can work around it. However,
+      // My current assumption is that this is an issue mostly specific to that
+      // individual file and not a wide spread issue, but if we find it happens
+      // more broadly we can deopt to using parseBlob as below.
 
-      // const webStream = response.body;
-      // if (webStream == null) {
-      //   throw new Error("Response body is null, cannot parse metadata.");
-      // }
-      // return musicMetadata.parseWebStream(webStream, undefined, options);
-      const blob = await response.blob();
-      return musicMetadata.parseBlob(blob, options);
+      // const blob = await response.blob();
+      // return musicMetadata.parseBlob(blob, options);
+
+      const webStream = response.body;
+      if (webStream == null) {
+        throw new Error("Response body is null, cannot parse metadata.");
+      }
+      return musicMetadata.parseWebStream(webStream, undefined, options);
     }
     if (
       "fetchFromUrl" in musicMetadata &&
