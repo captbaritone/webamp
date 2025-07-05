@@ -97,7 +97,28 @@ async function build() {
       outputFile: bundleDesc.output.file,
       minify: bundleDesc.minify,
     });
-    const bundle = await rollup({ input: bundleDesc.input, plugins });
+    const bundle = await rollup({
+      input: bundleDesc.input,
+      plugins,
+      onwarn: (warning, warn) => {
+        // Suppress expected circular dependency warnings from external libraries
+        if (warning.code === "CIRCULAR_DEPENDENCY") {
+          const message = warning.message || "";
+          // Skip warnings for known external library circular dependencies
+          if (
+            message.includes("polyfill-node") ||
+            message.includes("readable-stream") ||
+            message.includes("jszip") ||
+            message.includes("music-metadata") ||
+            message.includes("node_modules")
+          ) {
+            return; // Don't show these warnings
+          }
+        }
+        // Show all other warnings
+        warn(warning);
+      },
+    });
     await bundle.write({
       sourcemap: true,
       ...bundleDesc.output,
