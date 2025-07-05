@@ -6,6 +6,6 @@ If you would like to look at some examples check out the [examples directory](ht
 - [Multiple Tracks](https://github.com/captbaritone/webamp/tree/master/examples/multipleTracks) An example of setting up Webamp with multiple audio tracks.
 - [Multiple Skins](https://github.com/captbaritone/webamp/tree/master/examples/multipleSkins) An example of setting up Webamp with multiple skins.
 - [Minimal Window Layout](https://github.com/captbaritone/webamp/tree/master/examples/minimalWindowLayout) An example of configuring the initial layout of windows in Webamp.
-- [Minimal Milkdrop](https://github.com/captbaritone/webamp/tree/master/examples/minimalMilkdrop) **In progress**
+- [Minimal Milkdrop](https://github.com/captbaritone/webamp/tree/master/examples/minimalMilkdrop)
 
 Each example has a README which explains it in more detail.
