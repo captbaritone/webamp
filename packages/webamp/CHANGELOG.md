@@ -22,6 +22,7 @@
 - Fix bug where resizing the window such that the current layout cannot fit on the page, while also scrolled down the page, would cause the layout to be recentered out of view.
 - Avoid a console log from Redux Dev Tools.
 - Don't show Milkdrop window option in context menu if Milkdrop is not enabled.
+- Fix bug on iPhone where Milkdrop window would resize incorrectly if you attempted to enter fullscreen mode, which is not supported on iPhones.
 
 ## 2.1.2 [CURRENT]
 

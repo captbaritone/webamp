@@ -3,8 +3,9 @@ import { Hr, Node } from "../ContextMenu";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
-import ContextMenuWraper from "../ContextMenuWrapper";
+import ContextMenuWrapper from "../ContextMenuWrapper";
 import { useTypedSelector, useActionCreator } from "../../hooks";
+import fscreen from "fscreen";
 
 interface Props {
   children: ReactNode;
@@ -16,16 +17,19 @@ const MilkdropContextMenu = (props: Props) => {
   const closeWindow = useActionCreator(Actions.closeWindow);
   const toggleDesktop = useActionCreator(Actions.toggleMilkdropDesktop);
   const toggleFullscreen = useActionCreator(Actions.toggleMilkdropFullscreen);
+
   return (
-    <ContextMenuWraper
+    <ContextMenuWrapper
       renderContents={() => {
         return (
           <>
-            <Node
-              onClick={toggleFullscreen}
-              label="Fullscreen"
-              hotkey="Alt+Enter"
-            />
+            {fscreen.fullscreenEnabled && (
+              <Node
+                onClick={toggleFullscreen}
+                label="Fullscreen"
+                hotkey="Alt+Enter"
+              />
+            )}
             <Node
               onClick={toggleDesktop}
               checked={desktop}
@@ -39,7 +43,7 @@ const MilkdropContextMenu = (props: Props) => {
       }}
     >
       {props.children}
-    </ContextMenuWraper>
+    </ContextMenuWrapper>
   );
 };
 

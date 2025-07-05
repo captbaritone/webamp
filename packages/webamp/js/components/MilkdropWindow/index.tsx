@@ -18,6 +18,7 @@ import PresetOverlay from "./PresetOverlay";
 import DropTarget from "../DropTarget";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
+import fscreen from "fscreen";
 
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
@@ -111,6 +112,12 @@ function Milkdrop({ analyser }: Props) {
   const screenSize = useScreenSize();
   const windowSize = useWindowSize();
 
+  const toggleFullScreenIfEnabled = useCallback(() => {
+    if (fscreen.fullscreenEnabled) {
+      toggleFullscreen();
+    }
+  }, [toggleFullscreen]);
+
   if (desktop) {
     return (
       <Desktop>
@@ -138,7 +145,7 @@ function Milkdrop({ analyser }: Props) {
               >
                 {overlay && <PresetOverlay {...size} />}
                 <Fullscreen enabled={fullscreen} onChange={setFullscreen}>
-                  <div onDoubleClick={toggleFullscreen}>
+                  <div onDoubleClick={toggleFullScreenIfEnabled}>
                     <Visualizer {...size} analyser={analyser} />
                   </div>
                 </Fullscreen>
