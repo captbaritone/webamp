@@ -6,7 +6,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import terser from "@rollup/plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 import replace from "@rollup/plugin-replace";
-import postcssOptimizeDataUriPngs from "./postcss-optimize-data-uri-pngs.js";
+import postcssOptimizeDataUriPngs from "./postcss-optimize-data-uri-pngs.mjs";
 import atImport from "postcss-import";
 import { babel } from "@rollup/plugin-babel";
 import nodePolyfills from "rollup-plugin-polyfill-node";
@@ -50,7 +50,7 @@ export function getPlugins({ minify, outputFile, vite }) {
     // because react-redux import react as if it were an es6 module, but it is not.
     commonjs(),
     // Must come after commonjs
-    babel({ babelHelpers: "bundled" }),
+    babel({ babelHelpers: "bundled", compact: minify }),
     minify ? terser() : null,
     // Generate a report so we can see how our bundle size is spent
     visualizer({ filename: `./${outputFile}.html` }),

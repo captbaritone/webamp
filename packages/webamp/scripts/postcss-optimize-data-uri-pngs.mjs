@@ -1,6 +1,6 @@
-const dataUriToBuffer = require("data-uri-to-buffer");
-const imagemin = require("imagemin");
-const imageminOptipng = require("imagemin-optipng");
+import dataUriToBuffer from "data-uri-to-buffer";
+import imagemin from "imagemin";
+import imageminOptipng from "imagemin-optipng";
 
 const DATA_URL_REGEX = new RegExp(/url\((data:image\/png;base64,.+)\)/gi);
 const DATA_URL_PROPS_REGEX = /^(background(?:-image)?)|(content)|(cursor)/;
@@ -40,4 +40,4 @@ const plugin = () => {
 
 plugin.postcss = true;
 
-module.exports = plugin;
+export default plugin;
