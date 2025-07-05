@@ -6,7 +6,7 @@ import type { URLTrack } from "webamp";
 
 let Webamp: typeof import("webamp").default | undefined;
 if (ExecutionEnvironment.canUseDOM) {
-  Webamp = require("webamp");
+  Webamp = require("webamp/butterchurn").default;
 }
 
 // https://freemusicarchive.org/music/netBloc_Artists/netBloc_Vol_24_tiuqottigeloot/
@@ -140,8 +140,39 @@ function WebampComponent(): ReactNode {
     if (!ref || !Webamp) {
       return;
     }
+    let windowLayout;
+    if (document.body.clientWidth < MIN_MILKDROP_WIDTH) {
+      windowLayout = {
+        main: { position: { left: 0, top: 0 } },
+        equalizer: { position: { left: 0, top: 116 } },
+        playlist: {
+          position: { left: 0, top: 232 },
+          size: { extraHeight: 0, extraWidth: 0 },
+        },
+        milkdrop: {
+          position: { left: 0, top: 348 },
+          size: { extraHeight: 0, extraWidth: 0 },
+        },
+      };
+    } else {
+      windowLayout = {
+        main: { position: { left: 0, top: 0 } },
+        equalizer: { position: { left: 0, top: 116 } },
+        playlist: {
+          position: { left: 0, top: 232 },
+          size: { extraHeight: 4, extraWidth: 0 },
+        },
+        milkdrop: {
+          position: { left: 275, top: 0 },
+          size: { extraHeight: 12, extraWidth: 7 },
+        },
+      };
+    }
     const webamp = new Webamp({
       initialTracks,
+      windowLayout,
+      enableMediaSession: true,
+      enableHotkeys: true,
     });
     webamp.renderWhenReady(ref);
 
@@ -154,11 +185,13 @@ function WebampComponent(): ReactNode {
   return <div ref={setRef} style={{ height: "100%", width: "100%" }}></div>;
 }
 
+const MIN_MILKDROP_WIDTH = 725;
+
 export default function HomepageFeatures(): ReactNode {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="row" style={{ height: "400px" }}>
+        <div className="row" style={{ height: "500px" }}>
           <BrowserOnly>{() => <WebampComponent />}</BrowserOnly>
         </div>
       </div>
