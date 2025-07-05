@@ -2,6 +2,7 @@
 import { BANDS, MEDIA_STATUS } from "../constants";
 import { Band } from "../types";
 import Emitter from "../emitter";
+import Disposable from "../Disposable";
 import StereoBalanceNode from "./StereoBalanceNode";
 import ElementSource from "./elementSource";
 
@@ -100,9 +101,11 @@ export default class Media implements IMedia {
   _gainNode: GainNode;
   _source: ElementSource;
   _bands: { [band: number]: BiquadFilterNode };
+  _disposable: Disposable;
 
   constructor() {
     this._emitter = new Emitter();
+    this._disposable = new Disposable();
     // @ts-ignore Typescript does not know about webkitAudioContext
     this._context = new (window.AudioContext || window.webkitAudioContext)();
     // Fix for iOS and Chrome (Canary) which require that the context be created
@@ -110,22 +113,27 @@ export default class Media implements IMedia {
     // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
     // https://gist.github.com/laziel/7aefabe99ee57b16081c
     // Via: https://stackoverflow.com/a/43395068/1263117
-    // TODO #leak
     if (this._context.state === "suspended") {
-      const resume = async () => {
+      const resumeHandler = async () => {
         await this._context.resume();
 
         if (this._context.state === "running") {
-          // TODO: Add this to the disposable
-          document.body.removeEventListener("touchend", resume, false);
-          document.body.removeEventListener("click", resume, false);
-          document.body.removeEventListener("keydown", resume, false);
+          document.body.removeEventListener("touchend", resumeHandler, false);
+          document.body.removeEventListener("click", resumeHandler, false);
+          document.body.removeEventListener("keydown", resumeHandler, false);
         }
       };
 
-      document.body.addEventListener("touchend", resume, false);
-      document.body.addEventListener("click", resume, false);
-      document.body.addEventListener("keydown", resume, false);
+      document.body.addEventListener("touchend", resumeHandler, false);
+      document.body.addEventListener("click", resumeHandler, false);
+      document.body.addEventListener("keydown", resumeHandler, false);
+
+      // Add cleanup for resume handlers
+      this._disposable.add(() => {
+        document.body.removeEventListener("touchend", resumeHandler, false);
+        document.body.removeEventListener("click", resumeHandler, false);
+        document.body.removeEventListener("keydown", resumeHandler, false);
+      });
     }
 
     // TODO: Maybe we can get rid of this now that we are using AudioAbstraction?
@@ -318,6 +326,9 @@ export default class Media implements IMedia {
   }
 
   dispose() {
+    // Clean up all event listeners via disposable
+    this._disposable.dispose();
+
     this._source.dispose();
     this._emitter.dispose();
   }

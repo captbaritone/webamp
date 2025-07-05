@@ -1,4 +1,5 @@
 import Emitter from "../emitter";
+import Disposable from "../Disposable";
 import { clamp } from "../utils";
 import { MEDIA_STATUS } from "../constants";
 import { MediaStatus } from "../types";
@@ -11,6 +12,7 @@ export default class ElementSource {
   _audio: HTMLAudioElement;
   _stalled: boolean;
   _status: MediaStatus;
+  _disposable: Disposable;
 
   on(eventType: string, cb: (...args: any[]) => void) {
     return this._emitter.on(eventType, cb);
@@ -24,32 +26,44 @@ export default class ElementSource {
     this._audio.crossOrigin = "anonymous";
     this._stalled = false;
     this._status = MEDIA_STATUS.STOPPED;
+    this._disposable = new Disposable();
 
-    // TODO: #leak
-    this._audio.addEventListener("suspend", () => {
+    // Create event handlers and register cleanup
+    const suspendHandler = () => {
       this._setStalled(true);
-    });
+    };
+    this._audio.addEventListener("suspend", suspendHandler);
+    this._disposable.add(() =>
+      this._audio.removeEventListener("suspend", suspendHandler)
+    );
 
-    // TODO: #leak
-    this._audio.addEventListener("durationchange", () => {
+    const durationChangeHandler = () => {
       this._emitter.trigger("loaded");
       this._setStalled(false);
-    });
+    };
+    this._audio.addEventListener("durationchange", durationChangeHandler);
+    this._disposable.add(() =>
+      this._audio.removeEventListener("durationchange", durationChangeHandler)
+    );
 
-    // TODO: #leak
-    this._audio.addEventListener("ended", () => {
+    const endedHandler = () => {
       this._emitter.trigger("ended");
       this._setStatus(MEDIA_STATUS.STOPPED);
-    });
+    };
+    this._audio.addEventListener("ended", endedHandler);
+    this._disposable.add(() =>
+      this._audio.removeEventListener("ended", endedHandler)
+    );
 
-    // TODO: Throttle to 50 (if needed)
-    // TODO: #leak
-    this._audio.addEventListener("timeupdate", () => {
+    const timeUpdateHandler = () => {
       this._emitter.trigger("positionChange");
-    });
+    };
+    this._audio.addEventListener("timeupdate", timeUpdateHandler);
+    this._disposable.add(() =>
+      this._audio.removeEventListener("timeupdate", timeUpdateHandler)
+    );
 
-    // TODO: #leak
-    this._audio.addEventListener("error", (e) => {
+    const errorHandler = (e: Event) => {
       switch (this._audio.error!.code) {
         case 1:
           // The fetching of the associated resource was aborted by the user's request.
@@ -77,7 +91,11 @@ export default class ElementSource {
 
       this._emitter.trigger("ended");
       this._setStatus(MEDIA_STATUS.STOPPED);
-    });
+    };
+    this._audio.addEventListener("error", errorHandler);
+    this._disposable.add(() =>
+      this._audio.removeEventListener("error", errorHandler)
+    );
 
     this._source = this._context.createMediaElementSource(this._audio);
     this._source.connect(destination);
@@ -159,7 +177,9 @@ export default class ElementSource {
   }
 
   dispose() {
-    // TODO: Dispose subscriptions to this.audio
+    // Clean up all event listeners via disposable
+    this._disposable.dispose();
+
     this.stop();
     this._emitter.dispose();
   }

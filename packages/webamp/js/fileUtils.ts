@@ -58,16 +58,23 @@ export function genMediaDuration(url: string): Promise<number> {
     // got the duration?
     const audio = document.createElement("audio");
     audio.crossOrigin = "anonymous";
+
     const durationChange = () => {
       resolve(audio.duration);
       audio.removeEventListener("durationchange", durationChange);
+      audio.removeEventListener("error", errorHandler);
       audio.src = "";
       // TODO: Not sure if this really gets cleaned up.
     };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", (e) => {
+
+    const errorHandler = (e: Event) => {
+      audio.removeEventListener("durationchange", durationChange);
+      audio.removeEventListener("error", errorHandler);
       reject(e);
-    });
+    };
+
+    audio.addEventListener("durationchange", durationChange);
+    audio.addEventListener("error", errorHandler);
     audio.src = url;
   });
 }

@@ -406,8 +406,7 @@ class Webamp {
    */
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
-    // TODO #leak.
-    return this.store.subscribe(() => {
+    const unsubscribe = this.store.subscribe(() => {
       const state = this.store.getState();
       const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
       if (trackId === previousTrackId) {
@@ -416,6 +415,11 @@ class Webamp {
       previousTrackId = trackId;
       cb(trackId == null ? null : Selectors.getCurrentTrackInfo(state));
     });
+
+    // Register cleanup with disposable
+    this._disposable.add(unsubscribe);
+
+    return unsubscribe;
   }
 
   /**
@@ -445,8 +449,7 @@ class Webamp {
    */
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
-    // TODO #leak.
-    await storeHas(this.store, (state) => !state.display.loading);
+    await this.storeHas((state) => !state.display.loading);
     // We attempt to pre-resolve these promises before we declare the skin
     // loaded. That's because `<EqGraph>` needs these in order to render fully.
     // As long as these are resolved before we attempt to render, we can ensure
@@ -514,8 +517,6 @@ class Webamp {
    * attempt to clean itself up to avoid memory leaks.
    */
   dispose(): void {
-    // TODO: Clean up store subscription in onTrackDidChange.
-    // TODO: Every storeHas call represents a potential race condition.
     this.media.dispose();
     this._actionEmitter.dispose();
     this._disposable.dispose();
@@ -530,8 +531,42 @@ class Webamp {
   }
 
   __onStateChange(cb: () => void): () => void {
-    // TODO #leak.
-    return this.store.subscribe(cb);
+    const unsubscribe = this.store.subscribe(cb);
+
+    // Register cleanup with disposable
+    this._disposable.add(unsubscribe);
+
+    return unsubscribe;
+  }
+
+  /**
+   * Wait for the store to match a predicate condition.
+   * Returns a promise that resolves when the condition is met.
+   * If the instance is disposed, the promise will be rejected.
+   */
+  private storeHas(predicate: (state: AppState) => boolean): Promise<void> {
+    let unsubscribed = false;
+    return new Promise((resolve, reject) => {
+      if (predicate(this.store.getState())) {
+        resolve();
+        return;
+      }
+      const unsubscribe = this.store.subscribe(() => {
+        if (predicate(this.store.getState())) {
+          unsubscribed = true;
+          unsubscribe();
+          resolve();
+        }
+      });
+
+      // Register cleanup with disposable
+      this._disposable.add(() => {
+        if (!unsubscribed) {
+          unsubscribe();
+          reject(new Error("Store was disposed before condition was met."));
+        }
+      });
+    });
   }
 
   _bufferTracks(tracks: Track[]): void {
@@ -541,25 +576,6 @@ class Webamp {
     );
   }
 }
-
-// Return a promise that resolves when the store matches a predicate.
-// TODO #leak.
-const storeHas = (
-  store: Store,
-  predicate: (state: AppState) => boolean
-): Promise<void> =>
-  new Promise((resolve) => {
-    if (predicate(store.getState())) {
-      resolve();
-      return;
-    }
-    const unsubscribe = store.subscribe(() => {
-      if (predicate(store.getState())) {
-        resolve();
-        unsubscribe();
-      }
-    });
-  });
 
 // @ts-ignore
 window.Webamp = Webamp;

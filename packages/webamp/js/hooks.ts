@@ -66,15 +66,39 @@ export function useWindowSize() {
 }
 
 const cursorPositionRef = { current: { pageX: 0, pageY: 0 } };
-window.document.addEventListener("mousemove", ({ pageX, pageY }) => {
-  cursorPositionRef.current = { pageX, pageY };
-});
+let listenerRefCount = 0;
 
-// We use a single global event listener because there is no way to get the
-// mouse position aside from an event. Ideally we could create/clean up the
-// event listener in the hook, but in the case where we want to check the cursor
-// position on mount, that we wouldn't have had time to capture an event.
+// Global mousemove listener - managed with reference counting
+const globalMouseMoveHandler = ({ pageX, pageY }: MouseEvent) => {
+  cursorPositionRef.current = { pageX, pageY };
+};
+
+// Add a reference to the global mouse listener
+function addGlobalMouseListener() {
+  if (listenerRefCount === 0) {
+    window.document.addEventListener("mousemove", globalMouseMoveHandler);
+  }
+  listenerRefCount++;
+}
+
+// Remove a reference to the global mouse listener
+function removeGlobalMouseListener() {
+  listenerRefCount--;
+  if (listenerRefCount === 0) {
+    window.document.removeEventListener("mousemove", globalMouseMoveHandler);
+  }
+}
+
+// We use a single global event listener with reference counting because there is no way to get the
+// mouse position aside from an event. The listener is only active when at least one component needs it.
 function useCursorPositionRef() {
+  useEffect(() => {
+    addGlobalMouseListener();
+    return () => {
+      removeGlobalMouseListener();
+    };
+  }, []);
+
   return cursorPositionRef;
 }
 
