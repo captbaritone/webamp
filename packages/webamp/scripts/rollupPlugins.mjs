@@ -26,16 +26,17 @@ export function getPlugins({ minify, outputFile, vite }) {
     // Needed for music-metadata-browser in the Webamp bundle which depends upon
     // being able to use some polyfillable node APIs
     nodePolyfills(),
-    typescript({
-      compilerOptions: {
-        jsx: "react-jsx",
-        module: "esnext",
-        declarationDir: vite ? "dist/demo-site/declarations" : undefined,
-        // Without this it complains that files will be overwritten, but I don't
-        // think this ever gets used...
-        outDir: vite ? undefined : "./tsBuilt",
-      },
-    }),
+    // Vite handles TypeScript natively, so only use the plugin for Rollup builds
+    vite
+      ? null
+      : typescript({
+          compilerOptions: {
+            jsx: "react-jsx",
+            module: "esnext",
+            declarationDir: "dist/demo-site/declarations",
+            outDir: "./tsBuilt",
+          },
+        }),
     // Enable importing .json files. But Vite already enables this, so enabling it there
     // causes it to try to parse the js version as JSON.
     vite ? null : json(),
