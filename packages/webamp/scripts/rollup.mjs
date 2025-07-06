@@ -104,7 +104,6 @@ async function build() {
       plugins,
       // Enable tree shaking optimizations
       treeshake: {
-        moduleSideEffects: false,
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
       },
