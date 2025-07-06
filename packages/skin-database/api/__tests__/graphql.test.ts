@@ -123,35 +123,35 @@ describe("Query.skins", () => {
       `
     );
     expect(data.skins).toMatchInlineSnapshot(`
-      Object {
+      {
         "count": 6,
-        "nodes": Array [
-          Object {
+        "nodes": [
+          {
             "filename": "tweeted.wsz",
             "md5": "a_tweeted_md5",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "Zelda_Amp_3.wsz",
             "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "path.wsz",
             "md5": "a_fake_md5",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "approved.wsz",
             "md5": "an_approved_md5",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "rejected.wsz",
             "md5": "a_rejected_md5",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "nsfw.wsz",
             "md5": "a_nsfw_md5",
             "nsfw": true,
@@ -179,15 +179,15 @@ describe("Query.skins", () => {
       { first: 2, offset: 1 }
     );
     expect(data.skins).toMatchInlineSnapshot(`
-      Object {
+      {
         "count": 6,
-        "nodes": Array [
-          Object {
+        "nodes": [
+          {
             "filename": "Zelda_Amp_3.wsz",
             "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
             "nsfw": false,
           },
-          Object {
+          {
             "filename": "path.wsz",
             "md5": "a_fake_md5",
             "nsfw": false,
