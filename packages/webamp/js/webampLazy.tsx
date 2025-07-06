@@ -190,7 +190,8 @@ class Webamp {
       // @ts-ignore
       this.store.dispatch({
         type: "SET_AVAILABLE_SKINS",
-        skins: avaliableSkins,
+        // @ts-ignore
+        skins: options.avaliableSkins,
       });
     } else if (availableSkins != null) {
       this.store.dispatch({
