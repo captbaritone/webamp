@@ -8,32 +8,32 @@ I do most development by starting the demo site in dev mode and iterating that w
     cd webamp
     # Change into the NPM module's sub directory
     cd packages/webamp
-    # __Note:__ Please use yarn over npm, since yarn will respect our `yarn.lock` file
-    yarn install
-    yarn start
+    # __Note:__ Please use pnpm over npm/yarn, since pnpm will respect our `pnpm-lock.yaml` file
+    pnpm install
+    pnpm start
 
 `http://localhost:8080/` should automatically open in your browser.
 
     # Run tests and lint checks
-    yarn test
+    pnpm test
 
 ## Building
 
 The NPM module is built separately from the demo site. To build it run:
 
-    yarn run build-library
+    pnpm run build-library
 
 This will write files to `./built`.
 
 ## Testing
 
-    yarn test
+    pnpm test
 
 This will run the tests the linter and the type checker.
 
 To update snapshots run
 
-    yarn test -u
+    pnpm test -u
 
 ## Cutting a Release
 

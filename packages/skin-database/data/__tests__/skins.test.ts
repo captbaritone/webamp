@@ -39,28 +39,28 @@ describe("seeded", () => {
   });
   test("getAllClassicSkins", async () => {
     expect(await Skins.getAllClassicSkins()).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "fileName": "Zelda_Amp_3.wsz",
           "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
         },
-        Object {
+        {
           "fileName": "path.wsz",
           "md5": "a_fake_md5",
         },
-        Object {
+        {
           "fileName": "nsfw.wsz",
           "md5": "a_nsfw_md5",
         },
-        Object {
+        {
           "fileName": "rejected.wsz",
           "md5": "a_rejected_md5",
         },
-        Object {
+        {
           "fileName": "tweeted.wsz",
           "md5": "a_tweeted_md5",
         },
-        Object {
+        {
           "fileName": "approved.wsz",
           "md5": "an_approved_md5",
         },
@@ -75,38 +75,38 @@ describe("seeded", () => {
   });
   test("getAllClassicScreenshotUrls", async () => {
     expect(await Skins.getAllClassicScreenshotUrls()).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "fileName": "Zelda_Amp_3.wsz",
           "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
           "nsfw": false,
           "url": "https://r2.webampskins.org/screenshots/48bbdbbeb03d347e59b1eebda4d352d0.png",
         },
-        Object {
+        {
           "fileName": "path.wsz",
           "md5": "a_fake_md5",
           "nsfw": false,
           "url": "https://r2.webampskins.org/screenshots/a_fake_md5.png",
         },
-        Object {
+        {
           "fileName": "nsfw.wsz",
           "md5": "a_nsfw_md5",
           "nsfw": true,
           "url": "https://r2.webampskins.org/screenshots/a_nsfw_md5.png",
         },
-        Object {
+        {
           "fileName": "rejected.wsz",
           "md5": "a_rejected_md5",
           "nsfw": false,
           "url": "https://r2.webampskins.org/screenshots/a_rejected_md5.png",
         },
-        Object {
+        {
           "fileName": "tweeted.wsz",
           "md5": "a_tweeted_md5",
           "nsfw": false,
           "url": "https://r2.webampskins.org/screenshots/a_tweeted_md5.png",
         },
-        Object {
+        {
           "fileName": "approved.wsz",
           "md5": "an_approved_md5",
           "nsfw": false,
@@ -118,33 +118,33 @@ describe("seeded", () => {
   test("getMuseumPage", async () => {
     expect(await Skins.getMuseumPage({ offset: 0, first: 10 }))
       .toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "fileName": "tweeted.wsz",
           "md5": "a_tweeted_md5",
           "nsfw": false,
         },
-        Object {
+        {
           "fileName": "Zelda_Amp_3.wsz",
           "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
           "nsfw": false,
         },
-        Object {
+        {
           "fileName": "path.wsz",
           "md5": "a_fake_md5",
           "nsfw": false,
         },
-        Object {
+        {
           "fileName": "approved.wsz",
           "md5": "an_approved_md5",
           "nsfw": false,
         },
-        Object {
+        {
           "fileName": "rejected.wsz",
           "md5": "a_rejected_md5",
           "nsfw": false,
         },
-        Object {
+        {
           "fileName": "nsfw.wsz",
           "md5": "a_nsfw_md5",
           "nsfw": true,
@@ -167,7 +167,7 @@ describe("seeded", () => {
   });
   test("getStats", async () => {
     expect(await Skins.getStats()).toMatchInlineSnapshot(`
-      Object {
+      {
         "approved": 2,
         "nsfw": 1,
         "rejected": 1,

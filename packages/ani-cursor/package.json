@@ -28,6 +28,8 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.20.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
     "typescript": "^5.3.3"
   },
   "dependencies": {

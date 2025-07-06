@@ -18,16 +18,20 @@ jobs:
       cache-key: ${{ steps.cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - name: Generate cache key
         id: cache-key
-        run: echo "key=node-modules-${{ hashFiles('**/yarn.lock') }}" >> $GITHUB_OUTPUT
+        run: echo "key=node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
   # Build job - Vite build for demo site
   build:
@@ -35,19 +39,23 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Build Vite Demo
         run: |
           # Set CI environment variable for optimized builds
           export CI=true
-          yarn workspace ani-cursor build
-          yarn workspace webamp build
+          pnpm --filter ani-cursor build
+          pnpm --filter webamp build
         env:
           NODE_ENV: production
       - name: Cache build artifacts
@@ -64,19 +72,23 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Build Library Bundles
         run: |
           # Set CI environment variable for optimized builds
           export CI=true
-          yarn workspace ani-cursor build
-          yarn workspace webamp build-library
+          pnpm --filter ani-cursor build
+          pnpm --filter webamp build-library
         env:
           NODE_ENV: production
       - name: Cache library artifacts
@@ -95,17 +107,21 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Lint
         run: |
-          yarn lint
-          yarn workspace webamp type-check
+          pnpm lint
+          pnpm --filter webamp type-check
 
   # Test job - runs in parallel
   test:
@@ -113,20 +129,24 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Run Unit Tests
         run: |
           touch packages/skin-database/config.js
           # Run tests with optimizations for CI
           export CI=true
-          yarn test --maxWorkers=2
-          yarn workspace webamp test --maxWorkers=2
+          pnpm test -- --maxWorkers=2
+          pnpm --filter webamp test -- --maxWorkers=2
         env:
           NODE_ENV: test
       # - name: Run Integration Tests
@@ -156,13 +176,17 @@ jobs:
     needs: [build, build-library, lint, test]
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
-          cache: "yarn"
+          cache: "pnpm"
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Restore build artifacts
         uses: actions/cache@v4
         with:
@@ -185,7 +209,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           echo "Setting version to 0.0.0-next-${RELEASE_COMMIT_SHA::7}"
-          yarn workspace webamp version --new-version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
+          pnpm --filter webamp version --new-version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version

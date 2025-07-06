@@ -69,8 +69,5 @@
     "@typescript-eslint/parser": "^7.1.0",
     "grats": "^0.0.31",
     "typescript": "^5.3.3"
-  },
-  "resolutions": {
-    "graphql": "16.8.1"
   }
 }

@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Query.fetch_skin_by_md5 (debug data) 1`] = `
-Object {
-  "fetch_skin_by_md5": Object {
-    "archive_files": Array [
-      Object {
+{
+  "fetch_skin_by_md5": {
+    "archive_files": [
+      {
         "date": "2000-05-08T07:44:52.000Z",
         "file_md5": "a_fake_file_md5",
         "filename": "a_fake_archive_file.bmp",
         "is_directory": false,
         "size": null,
-        "skin": Object {
+        "skin": {
           "md5": "a_fake_md5",
         },
         "text_content": null,
@@ -21,11 +21,11 @@ Object {
     "download_url": "https://r2.webampskins.org/skins/a_fake_md5.wsz",
     "filename": "path.wsz",
     "id": "Q2xhc3NpY1NraW5fX2FfZmFrZV9tZDU=",
-    "internet_archive_item": Object {
+    "internet_archive_item": {
       "identifier": "a_fake_ia_identifier",
       "metadata_url": "https://archive.org/metadata/a_fake_ia_identifier",
       "raw_metadata_json": null,
-      "skin": Object {
+      "skin": {
         "md5": "a_fake_md5",
       },
       "url": "https://archive.org/details/a_fake_ia_identifier",
@@ -34,10 +34,10 @@ Object {
     "museum_url": "https://skins.webamp.org/skin/a_fake_md5",
     "nsfw": false,
     "readme_text": null,
-    "reviews": Array [],
+    "reviews": [],
     "screenshot_url": "https://r2.webampskins.org/screenshots/a_fake_md5.png",
     "tweeted": false,
-    "tweets": Array [],
+    "tweets": [],
     "webamp_url": "https://webamp.org?skinUrl=https://r2.webampskins.org/skins/a_fake_md5.wsz",
   },
 }
