@@ -1,5 +1,7 @@
 *.min.js
 built/
+dist/
+.rollup.cache/
 coverage/
 **/node_modules/
 examples/webpack/bundle.js
