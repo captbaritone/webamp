@@ -16,8 +16,6 @@ import {
   toggleWindow,
 } from "./actionCreators";
 
-import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
-
 import { Dispatch } from "./types";
 
 const IGNORE_EVENTS_FROM_TAGS = new Set(["input", "textarea", "select"]);
@@ -54,7 +52,7 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
           dispatch(reverseList());
           break;
         case 84: // CTRL+T
-          dispatch({ type: TOGGLE_TIME_MODE });
+          dispatch({ type: "TOGGLE_TIME_MODE" });
           break;
       }
     } else if (e.altKey) {
@@ -146,7 +144,7 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
     if (e.keyCode !== 27) {
       currentPos = e.keyCode === trigger[currentPos] ? currentPos + 1 : 0;
       if (currentPos === trigger.length) {
-        dispatch({ type: TOGGLE_LLAMA_MODE });
+        dispatch({ type: "TOGGLE_LLAMA_MODE" });
       }
     }
   };

@@ -1,18 +1,6 @@
 import * as Selectors from "../selectors";
 
 import * as Utils from "../utils";
-import {
-  UPDATE_WINDOW_POSITIONS,
-  TOGGLE_DOUBLESIZE_MODE,
-  WINDOW_SIZE_CHANGED,
-  TOGGLE_WINDOW,
-  CLOSE_WINDOW,
-  TOGGLE_WINDOW_SHADE_MODE,
-  BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES,
-  TOGGLE_LLAMA_MODE,
-  SET_FOCUSED_WINDOW,
-} from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
@@ -62,58 +50,58 @@ function withWindowGraphIntegrity(action: Action): Thunk {
 }
 
 export function toggleDoubleSizeMode(): Thunk {
-  return withWindowGraphIntegrity({ type: TOGGLE_DOUBLESIZE_MODE });
+  return withWindowGraphIntegrity({ type: "TOGGLE_DOUBLESIZE_MODE" });
 }
 
 export function toggleLlamaMode(): Action {
-  return { type: TOGGLE_LLAMA_MODE };
+  return { type: "TOGGLE_LLAMA_MODE" };
 }
 
 export function toggleEqualizerShadeMode(): Thunk {
   return withWindowGraphIntegrity({
-    type: TOGGLE_WINDOW_SHADE_MODE,
+    type: "TOGGLE_WINDOW_SHADE_MODE",
     windowId: "equalizer",
   });
 }
 
 export function toggleMainWindowShadeMode(): Thunk {
   return withWindowGraphIntegrity({
-    type: TOGGLE_WINDOW_SHADE_MODE,
+    type: "TOGGLE_WINDOW_SHADE_MODE",
     windowId: "main",
   });
 }
 
 export function togglePlaylistShadeMode(): Thunk {
   return withWindowGraphIntegrity({
-    type: TOGGLE_WINDOW_SHADE_MODE,
+    type: "TOGGLE_WINDOW_SHADE_MODE",
     windowId: "playlist",
   });
 }
 
 export function closeWindow(windowId: WindowId): Action {
-  return { type: CLOSE_WINDOW, windowId };
+  return { type: "CLOSE_WINDOW", windowId };
 }
 
 export function setFocusedWindow(window: WindowId | null): Action {
-  return { type: SET_FOCUSED_WINDOW, window };
+  return { type: "SET_FOCUSED_WINDOW", window };
 }
 
 export function setWindowSize(
   windowId: WindowId,
   size: [number, number]
 ): Action {
-  return { type: WINDOW_SIZE_CHANGED, windowId, size };
+  return { type: "WINDOW_SIZE_CHANGED", windowId, size };
 }
 
 export function toggleWindow(windowId: WindowId): Action {
-  return { type: TOGGLE_WINDOW, windowId };
+  return { type: "TOGGLE_WINDOW", windowId };
 }
 
 export function updateWindowPositions(
   positions: WindowPositions,
   absolute?: boolean
 ): Action {
-  return { type: UPDATE_WINDOW_POSITIONS, positions, absolute };
+  return { type: "UPDATE_WINDOW_POSITIONS", positions, absolute };
 }
 
 export function centerWindowsInContainer(container: HTMLElement): Thunk {
@@ -185,13 +173,13 @@ export function browserWindowSizeChanged(size: {
   width: number;
 }): Thunk {
   return (dispatch: Dispatch) => {
-    dispatch({ type: BROWSER_WINDOW_SIZE_CHANGED, ...size });
+    dispatch({ type: "BROWSER_WINDOW_SIZE_CHANGED", ...size });
     dispatch(ensureWindowsAreOnScreen());
   };
 }
 
 export function resetWindowSizes(): Action {
-  return { type: RESET_WINDOW_SIZES };
+  return { type: "RESET_WINDOW_SIZES" };
 }
 
 export function stackWindows(): Thunk {
@@ -224,7 +212,7 @@ export function setWindowLayout(layout?: WindowLayout): Thunk {
     for (const id of ["main", "playlist", "equalizer"] as const) {
       if (layout[id]?.shadeMode) {
         dispatch({
-          type: TOGGLE_WINDOW_SHADE_MODE,
+          type: "TOGGLE_WINDOW_SHADE_MODE",
           windowId: id,
         });
       }

@@ -8,7 +8,6 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
-import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import { IMedia } from "./media";
 import Emitter from "./emitter";
 import {
@@ -21,7 +20,7 @@ import {
 } from "./types";
 
 const compose = composeWithDevTools({
-  actionsDenylist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
+  actionsDenylist: ["UPDATE_TIME_ELAPSED", "STEP_MARQUEE"],
 });
 
 export default function createWebampStore(

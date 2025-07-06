@@ -1,11 +1,4 @@
 import { BANDS } from "../constants";
-
-import {
-  SET_EQ_ON,
-  SET_EQ_OFF,
-  SET_BAND_VALUE,
-  SET_EQ_AUTO,
-} from "../actionTypes";
 import { Band, Thunk, Action } from "../types";
 
 const BAND_SNAP_DISTANCE = 5;
@@ -22,14 +15,14 @@ function _snapBandValue(value: number): number {
 }
 
 export function setEqBand(band: Band, value: number): Action {
-  return { type: SET_BAND_VALUE, band, value: _snapBandValue(value) };
+  return { type: "SET_BAND_VALUE", band, value: _snapBandValue(value) };
 }
 
 function _setEqTo(value: number): Thunk {
   return (dispatch) => {
     Object.values(BANDS).forEach((band) => {
       dispatch({
-        type: SET_BAND_VALUE,
+        type: "SET_BAND_VALUE",
         value,
         band: band,
       });
@@ -50,15 +43,19 @@ export function setEqToMin(): Thunk {
 }
 
 export function setPreamp(value: number): Action {
-  return { type: SET_BAND_VALUE, band: "preamp", value: _snapBandValue(value) };
+  return {
+    type: "SET_BAND_VALUE",
+    band: "preamp",
+    value: _snapBandValue(value),
+  };
 }
 
 export function toggleEq(): Thunk {
   return (dispatch, getState) => {
     if (getState().equalizer.on) {
-      dispatch({ type: SET_EQ_OFF });
+      dispatch({ type: "SET_EQ_OFF" });
     } else {
-      dispatch({ type: SET_EQ_ON });
+      dispatch({ type: "SET_EQ_ON" });
     }
   };
 }
@@ -67,6 +64,6 @@ export function toggleEqAuto(): Thunk {
   return (dispatch) => {
     // We don't actually support this feature yet so don't let the user ever turn it on.
     // dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
-    dispatch({ type: SET_EQ_AUTO, value: false });
+    dispatch({ type: "SET_EQ_AUTO", value: false });
   };
 }

@@ -1,20 +1,3 @@
-import {
-  CLOSE_WINAMP,
-  OPEN_WINAMP,
-  STOP,
-  TOGGLE_VISUALIZER_STYLE,
-  CLOSE_REQUESTED,
-  MINIMIZE_WINAMP,
-  SET_FOCUS,
-  UNSET_FOCUS,
-  LOAD_SERIALIZED_STATE,
-  LOAD_DEFAULT_SKIN,
-  SET_MILKDROP_DESKTOP,
-  SET_MILKDROP_FULLSCREEN,
-  TOGGLE_PRESET_OVERLAY,
-  STEP_MARQUEE,
-  SET_BAND_FOCUS,
-} from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Thunk, Action, Slider } from "../types";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
@@ -131,36 +114,36 @@ export function close(): Thunk {
     const cancel = () => {
       defaultPrevented = true;
     };
-    dispatch({ type: CLOSE_REQUESTED, cancel });
+    dispatch({ type: "CLOSE_REQUESTED", cancel });
     if (!defaultPrevented) {
-      dispatch({ type: STOP });
-      dispatch({ type: CLOSE_WINAMP });
+      dispatch({ type: "STOP" });
+      dispatch({ type: "CLOSE_WINAMP" });
     }
   };
 }
 
 export function open(): Action {
-  return { type: OPEN_WINAMP };
+  return { type: "OPEN_WINAMP" };
 }
 
 export function toggleVisualizerStyle(): Action {
-  return { type: TOGGLE_VISUALIZER_STYLE };
+  return { type: "TOGGLE_VISUALIZER_STYLE" };
 }
 
 export function minimize(): Action {
-  return { type: MINIMIZE_WINAMP };
+  return { type: "MINIMIZE_WINAMP" };
 }
 
 export function setFocus(input: string): Action {
-  return { type: SET_FOCUS, input };
+  return { type: "SET_FOCUS", input };
 }
 
 export function unsetFocus(): Action {
-  return { type: UNSET_FOCUS };
+  return { type: "UNSET_FOCUS" };
 }
 
 export function focusBand(band: Slider): Action {
-  return { type: SET_BAND_FOCUS, input: "eq", bandFocused: band };
+  return { type: "SET_BAND_FOCUS", input: "eq", bandFocused: band };
 }
 
 export function loadSerializedState(
@@ -168,27 +151,27 @@ export function loadSerializedState(
   serializedState: SerializedStateV1
 ): Thunk {
   return (dispatch) => {
-    dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
+    dispatch({ type: "LOAD_SERIALIZED_STATE", serializedState });
     dispatch(ensureWindowsAreOnScreen());
   };
 }
 
 export function loadDefaultSkin(): Action {
-  return { type: LOAD_DEFAULT_SKIN };
+  return { type: "LOAD_DEFAULT_SKIN" };
 }
 
 export function toggleMilkdropDesktop(): Thunk {
   return (dispatch, getState) => {
     if (Selectors.getMilkdropDesktopEnabled(getState())) {
-      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: false });
+      dispatch({ type: "SET_MILKDROP_DESKTOP", enabled: false });
     } else {
-      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: true });
+      dispatch({ type: "SET_MILKDROP_DESKTOP", enabled: true });
     }
   };
 }
 
 export function setMilkdropFullscreen(enabled: boolean): Action {
-  return { type: SET_MILKDROP_FULLSCREEN, enabled };
+  return { type: "SET_MILKDROP_FULLSCREEN", enabled };
 }
 export function toggleMilkdropFullscreen(): Thunk {
   return (dispatch, getState) => {
@@ -204,10 +187,10 @@ export function togglePresetOverlay(): Thunk {
       dispatch(setFocusedWindow(WINDOWS.MILKDROP));
     }
 
-    dispatch({ type: TOGGLE_PRESET_OVERLAY });
+    dispatch({ type: "TOGGLE_PRESET_OVERLAY" });
   };
 }
 
 export function stepMarquee(): Action {
-  return { type: STEP_MARQUEE };
+  return { type: "STEP_MARQUEE" };
 }

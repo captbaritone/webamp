@@ -7,7 +7,6 @@ import { kebabCase } from "lodash";
 
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { LOAD_SERIALIZED_STATE } from "./actionTypes";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { AppState, Action } from "./types";
 
@@ -69,7 +68,7 @@ function testSerialization<T>({
     // Try to apply this serialized state to the default state
     const secondStore = getStore();
     secondStore.dispatch({
-      type: LOAD_SERIALIZED_STATE,
+      type: "LOAD_SERIALIZED_STATE",
       serializedState: readSerializedState,
     });
 
@@ -94,7 +93,7 @@ describe("can serialize", () => {
 
     const newStore = getStore();
     newStore.dispatch({
-      type: LOAD_SERIALIZED_STATE,
+      type: "LOAD_SERIALIZED_STATE",
       serializedState,
     });
     expect(store.getState()).toEqual(newStore.getState());
