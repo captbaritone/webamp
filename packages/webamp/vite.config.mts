@@ -4,6 +4,7 @@ import { getPlugins } from "./scripts/rollupPlugins.mjs";
 export default defineConfig({
   build: {
     outDir: "../dist/demo-site",
+    chunkSizeWarningLimit: 2500, // Suppress warnings for chunks larger than 500kb
   },
   root: "demo",
   // Used only by the demo site, not the library
