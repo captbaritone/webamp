@@ -1,10 +1,5 @@
 import { useCallback, ReactNode, TouchEvent } from "react";
 import classnames from "classnames";
-import {
-  CLICKED_TRACK,
-  CTRL_CLICKED_TRACK,
-  SHIFT_CLICKED_TRACK,
-} from "../../actionTypes";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import {
@@ -36,16 +31,16 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.shiftKey) {
         e.preventDefault();
-        dispatch({ type: SHIFT_CLICKED_TRACK, index });
+        dispatch({ type: "SHIFT_CLICKED_TRACK", index });
         return;
       } else if (e.metaKey || e.ctrlKey) {
         e.preventDefault();
-        dispatch({ type: CTRL_CLICKED_TRACK, index });
+        dispatch({ type: "CTRL_CLICKED_TRACK", index });
         return;
       }
 
       if (!selected) {
-        dispatch({ type: CLICKED_TRACK, index });
+        dispatch({ type: "CLICKED_TRACK", index });
       }
 
       handleMoveClick(e);
@@ -56,7 +51,7 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
   const handleTouchStart = useCallback(
     (e: TouchEvent<HTMLDivElement>) => {
       if (!selected) {
-        dispatch({ type: CLICKED_TRACK, index });
+        dispatch({ type: "CLICKED_TRACK", index });
       }
       handleMoveClick(e);
 

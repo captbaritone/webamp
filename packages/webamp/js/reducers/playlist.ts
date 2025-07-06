@@ -1,21 +1,4 @@
 import { Action } from "../types";
-import {
-  CLICKED_TRACK,
-  CTRL_CLICKED_TRACK,
-  SHIFT_CLICKED_TRACK,
-  SELECT_ALL,
-  SELECT_ZERO,
-  INVERT_SELECTION,
-  REMOVE_ALL_TRACKS,
-  REMOVE_TRACKS,
-  ADD_TRACK_FROM_URL,
-  REVERSE_LIST,
-  RANDOMIZE_LIST,
-  SET_TRACK_ORDER,
-  PLAY_TRACK,
-  BUFFER_TRACK,
-  DRAG_SELECTED,
-} from "../actionTypes";
 import { shuffle, moveSelected } from "../utils";
 
 export interface PlaylistState {
@@ -45,14 +28,14 @@ const playlist = (
   action: Action
 ): PlaylistState => {
   switch (action.type) {
-    case CLICKED_TRACK:
+    case "CLICKED_TRACK":
       return {
         ...state,
-        selectedTracks: new Set([state.trackOrder[action.index]]),
-        lastSelectedIndex: action.index,
+        selectedTracks: new Set([state.trackOrder[(action as any).index]]),
+        lastSelectedIndex: (action as any).index,
       };
-    case CTRL_CLICKED_TRACK: {
-      const id = state.trackOrder[action.index];
+    case "CTRL_CLICKED_TRACK": {
+      const id = state.trackOrder[(action as any).index];
       const newSelectedTracks = new Set(state.selectedTracks);
       toggleSetMembership(newSelectedTracks, id);
       return {
@@ -61,14 +44,14 @@ const playlist = (
         // Using this as the lastClickedIndex is kinda funny, since you
         // may have just _un_selected the track. However, this is what
         // Winamp 2 does, so we'll copy it.
-        lastSelectedIndex: action.index,
+        lastSelectedIndex: (action as any).index,
       };
     }
-    case SHIFT_CLICKED_TRACK:
+    case "SHIFT_CLICKED_TRACK":
       if (state.lastSelectedIndex == null) {
         return state;
       }
-      const clickedIndex = action.index;
+      const clickedIndex = (action as any).index;
       const start = Math.min(clickedIndex, state.lastSelectedIndex);
       const end = Math.max(clickedIndex, state.lastSelectedIndex);
       const selectedTracks = new Set(state.trackOrder.slice(start, end + 1));
@@ -76,24 +59,24 @@ const playlist = (
         ...state,
         selectedTracks,
       };
-    case SELECT_ALL:
+    case "SELECT_ALL":
       return {
         ...state,
         selectedTracks: new Set(state.trackOrder),
       };
-    case SELECT_ZERO:
+    case "SELECT_ZERO":
       return {
         ...state,
         selectedTracks: new Set(),
       };
-    case INVERT_SELECTION:
+    case "INVERT_SELECTION":
       return {
         ...state,
         selectedTracks: new Set(
           state.trackOrder.filter((id) => !state.selectedTracks.has(id))
         ),
       };
-    case REMOVE_ALL_TRACKS:
+    case "REMOVE_ALL_TRACKS":
       // TODO: Consider disposing of ObjectUrls
       return {
         ...state,
@@ -102,9 +85,9 @@ const playlist = (
         selectedTracks: new Set(),
         lastSelectedIndex: null,
       };
-    case REMOVE_TRACKS:
+    case "REMOVE_TRACKS":
       // TODO: Consider disposing of ObjectUrls
-      const actionIds = new Set(action.ids.map(Number));
+      const actionIds = new Set((action as any).ids.map(Number));
       const { currentTrack } = state;
       return {
         ...state,
@@ -118,47 +101,47 @@ const playlist = (
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,
       };
-    case REVERSE_LIST:
+    case "REVERSE_LIST":
       return {
         ...state,
         trackOrder: [...state.trackOrder].reverse(),
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,
       };
-    case RANDOMIZE_LIST:
+    case "RANDOMIZE_LIST":
       return {
         ...state,
         trackOrder: shuffle(state.trackOrder),
       };
-    case SET_TRACK_ORDER:
-      const { trackOrder } = action;
+    case "SET_TRACK_ORDER":
+      const { trackOrder } = action as any;
       return { ...state, trackOrder };
-    case ADD_TRACK_FROM_URL:
+    case "ADD_TRACK_FROM_URL":
       const atIndex =
-        action.atIndex == null ? state.trackOrder.length : action.atIndex;
+        (action as any).atIndex == null ? state.trackOrder.length : (action as any).atIndex;
       return {
         ...state,
         trackOrder: [
           ...state.trackOrder.slice(0, atIndex),
-          Number(action.id),
+          Number((action as any).id),
           ...state.trackOrder.slice(atIndex),
         ],
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,
       };
-    case PLAY_TRACK:
-    case BUFFER_TRACK:
+    case "PLAY_TRACK":
+    case "BUFFER_TRACK":
       return {
         ...state,
-        currentTrack: action.id,
+        currentTrack: (action as any).id,
       };
-    case DRAG_SELECTED:
+    case "DRAG_SELECTED":
       return {
         ...state,
         trackOrder: moveSelected(
           state.trackOrder,
           (i) => state.selectedTracks.has(state.trackOrder[i]),
-          action.offset
+          (action as any).offset
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,

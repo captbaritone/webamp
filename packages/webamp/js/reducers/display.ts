@@ -10,26 +10,6 @@ import {
 } from "../types";
 import * as Utils from "../utils";
 import { createSelector } from "reselect";
-
-import {
-  CLOSE_WINAMP,
-  OPEN_WINAMP,
-  SET_SKIN_DATA,
-  START_WORKING,
-  STEP_MARQUEE,
-  STOP_WORKING,
-  TOGGLE_DOUBLESIZE_MODE,
-  TOGGLE_LLAMA_MODE,
-  TOGGLE_VISUALIZER_STYLE,
-  SET_PLAYLIST_SCROLL_POSITION,
-  LOADED,
-  SET_Z_INDEX,
-  DISABLE_MARQUEE,
-  SET_DUMMY_VIZ_DATA,
-  LOADING,
-  LOAD_SERIALIZED_STATE,
-  LOAD_DEFAULT_SKIN,
-} from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
 
@@ -106,7 +86,7 @@ const display = (
   action: Action
 ): DisplayState => {
   switch (action.type) {
-    case LOAD_DEFAULT_SKIN: {
+    case "LOAD_DEFAULT_SKIN": {
       const {
         skinImages,
         skinColors,
@@ -127,30 +107,30 @@ const display = (
         skinGenExColors,
       };
     }
-    case TOGGLE_DOUBLESIZE_MODE:
+    case "TOGGLE_DOUBLESIZE_MODE":
       return { ...state, doubled: !state.doubled };
-    case TOGGLE_LLAMA_MODE:
+    case "TOGGLE_LLAMA_MODE":
       return { ...state, llama: !state.llama };
-    case STEP_MARQUEE:
+    case "STEP_MARQUEE":
       return state.disableMarquee
         ? state
         : { ...state, marqueeStep: state.marqueeStep + 1 };
-    case DISABLE_MARQUEE:
+    case "DISABLE_MARQUEE":
       return { ...state, disableMarquee: true };
-    case STOP_WORKING:
+    case "STOP_WORKING":
       return { ...state, working: false };
-    case START_WORKING:
+    case "START_WORKING":
       return { ...state, working: true };
-    case CLOSE_WINAMP:
+    case "CLOSE_WINAMP":
       return { ...state, closed: true };
-    case OPEN_WINAMP:
+    case "OPEN_WINAMP":
       return { ...state, closed: false };
-    case LOADING:
+    case "LOADING":
       return { ...state, loading: true };
-    case LOADED:
+    case "LOADED":
       return { ...state, loading: false };
-    case SET_SKIN_DATA:
-      const { data } = action;
+    case "SET_SKIN_DATA":
+      const { data } = action as any;
       return {
         ...state,
         loading: false,
@@ -162,19 +142,19 @@ const display = (
         skinGenLetterWidths: data.skinGenLetterWidths,
         skinGenExColors: data.skinGenExColors || defaultSkinGenExColors,
       };
-    case TOGGLE_VISUALIZER_STYLE:
+    case "TOGGLE_VISUALIZER_STYLE":
       return {
         ...state,
         visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length,
       };
-    case SET_PLAYLIST_SCROLL_POSITION:
-      return { ...state, playlistScrollPosition: action.position };
-    case SET_Z_INDEX:
-      return { ...state, zIndex: action.zIndex };
-    case SET_DUMMY_VIZ_DATA:
-      return { ...state, dummyVizData: action.data };
-    case LOAD_SERIALIZED_STATE: {
-      const { skinCursors, ...rest } = action.serializedState.display;
+    case "SET_PLAYLIST_SCROLL_POSITION":
+      return { ...state, playlistScrollPosition: (action as any).position };
+    case "SET_Z_INDEX":
+      return { ...state, zIndex: (action as any).zIndex };
+    case "SET_DUMMY_VIZ_DATA":
+      return { ...state, dummyVizData: (action as any).data };
+    case "LOAD_SERIALIZED_STATE": {
+      const { skinCursors, ...rest } = (action as any).serializedState.display;
       const upgrade = (url: string) => ({ type: "cur", url } as const);
       const newSkinCursors =
         skinCursors == null ? null : Utils.objectMap(skinCursors, upgrade);

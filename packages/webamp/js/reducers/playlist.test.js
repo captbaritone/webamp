@@ -1,9 +1,3 @@
-import {
-  SHIFT_CLICKED_TRACK,
-  CLICKED_TRACK,
-  CTRL_CLICKED_TRACK,
-  ADD_TRACK_FROM_URL,
-} from "../actionTypes";
 import reducer from "./playlist";
 
 describe("playlist reducer", () => {
@@ -14,7 +8,7 @@ describe("playlist reducer", () => {
       lastSelectedIndex: null,
     };
     const nextState = reducer(initialState, {
-      type: ADD_TRACK_FROM_URL,
+      type: "ADD_TRACK_FROM_URL",
       id: 100,
       defaultName: "My Track Name",
       url: "url://some-url",
@@ -32,7 +26,7 @@ describe("playlist reducer", () => {
       lastSelectedIndex: 0,
     };
     const nextState = reducer(initialState, {
-      type: ADD_TRACK_FROM_URL,
+      type: "ADD_TRACK_FROM_URL",
       id: 100,
       defaultName: "My Track Name",
       url: "url://some-url",
@@ -50,7 +44,7 @@ describe("playlist reducer", () => {
       lastSelectedIndex: 0,
     };
     const nextState = reducer(initialState, {
-      type: ADD_TRACK_FROM_URL,
+      type: "ADD_TRACK_FROM_URL",
       id: 100,
       defaultName: "My Track Name",
       url: "url://some-url",
@@ -70,7 +64,7 @@ describe("playlist reducer", () => {
     };
 
     const nextState = reducer(initialState, {
-      type: CLICKED_TRACK,
+      type: "CLICKED_TRACK",
       index: 1,
     });
     expect(nextState).toEqual({
@@ -87,7 +81,7 @@ describe("playlist reducer", () => {
     };
 
     const nextState = reducer(initialState, {
-      type: CTRL_CLICKED_TRACK,
+      type: "CTRL_CLICKED_TRACK",
       index: 0,
     });
     expect(nextState).toEqual({
@@ -104,7 +98,7 @@ describe("playlist reducer", () => {
     };
 
     const nextState = reducer(initialState, {
-      type: SHIFT_CLICKED_TRACK,
+      type: "SHIFT_CLICKED_TRACK",
       index: 3,
     });
     expect(nextState).toEqual({

@@ -1,12 +1,4 @@
 import { Slider, Action } from "./../types";
-
-import {
-  SET_BAND_VALUE,
-  SET_EQ_AUTO,
-  SET_EQ_ON,
-  SET_EQ_OFF,
-  LOAD_SERIALIZED_STATE,
-} from "../actionTypes";
 import { EqualizerSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface EqualizerState {
@@ -38,17 +30,17 @@ const equalizer = (
   action: Action
 ): EqualizerState => {
   switch (action.type) {
-    case SET_BAND_VALUE:
-      const newSliders = { ...state.sliders, [action.band]: action.value };
+    case "SET_BAND_VALUE":
+      const newSliders = { ...state.sliders, [(action as any).band]: (action as any).value };
       return { ...state, sliders: newSliders };
-    case SET_EQ_ON:
+    case "SET_EQ_ON":
       return { ...state, on: true };
-    case SET_EQ_OFF:
+    case "SET_EQ_OFF":
       return { ...state, on: false };
-    case SET_EQ_AUTO:
-      return { ...state, auto: action.value };
-    case LOAD_SERIALIZED_STATE:
-      return action.serializedState.equalizer || state;
+    case "SET_EQ_AUTO":
+      return { ...state, auto: (action as any).value };
+    case "LOAD_SERIALIZED_STATE":
+      return (action as any).serializedState.equalizer || state;
     default:
       return state;
   }

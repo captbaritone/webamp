@@ -1,21 +1,4 @@
 import { Action, PlayerMediaStatus, TimeMode } from "../types";
-import {
-  PLAY,
-  STOP,
-  PAUSE,
-  IS_STOPPED,
-  IS_PLAYING,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_MEDIA,
-  TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
-  TOGGLE_TIME_MODE,
-  UPDATE_TIME_ELAPSED,
-  LOAD_SERIALIZED_STATE,
-  CLOSE_WINAMP,
-  OPEN_WINAMP,
-} from "../actionTypes";
 import { TIME_MODE, PLAYER_MEDIA_STATUS } from "../constants";
 import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 
@@ -50,41 +33,41 @@ const media = (
 ): MediaState => {
   switch (action.type) {
     // TODO: Make these constants
-    case PLAY:
-    case IS_PLAYING:
+    case "PLAY":
+    case "IS_PLAYING":
       return { ...state, status: PLAYER_MEDIA_STATUS.PLAYING };
-    case PAUSE:
+    case "PAUSE":
       return { ...state, status: PLAYER_MEDIA_STATUS.PAUSED };
-    case STOP:
+    case "STOP":
       return { ...state, status: PLAYER_MEDIA_STATUS.STOPPED };
-    case IS_STOPPED:
+    case "IS_STOPPED":
       return { ...state, status: PLAYER_MEDIA_STATUS.ENDED };
-    case OPEN_WINAMP:
+    case "OPEN_WINAMP":
       return { ...state, status: PLAYER_MEDIA_STATUS.STOPPED };
-    case CLOSE_WINAMP:
+    case "CLOSE_WINAMP":
       return { ...state, status: PLAYER_MEDIA_STATUS.CLOSED };
-    case TOGGLE_TIME_MODE:
+    case "TOGGLE_TIME_MODE":
       const newMode =
         state.timeMode === TIME_MODE.REMAINING
           ? TIME_MODE.ELAPSED
           : TIME_MODE.REMAINING;
       return { ...state, timeMode: newMode };
-    case UPDATE_TIME_ELAPSED:
-      return { ...state, timeElapsed: action.elapsed };
-    case SET_MEDIA:
+    case "UPDATE_TIME_ELAPSED":
+      return { ...state, timeElapsed: (action as any).elapsed };
+    case "SET_MEDIA":
       return {
         ...state,
       };
-    case SET_VOLUME:
-      return { ...state, volume: action.volume };
-    case SET_BALANCE:
-      return { ...state, balance: action.balance };
-    case TOGGLE_REPEAT:
+    case "SET_VOLUME":
+      return { ...state, volume: (action as any).volume };
+    case "SET_BALANCE":
+      return { ...state, balance: (action as any).balance };
+    case "TOGGLE_REPEAT":
       return { ...state, repeat: !state.repeat };
-    case TOGGLE_SHUFFLE:
+    case "TOGGLE_SHUFFLE":
       return { ...state, shuffle: !state.shuffle };
-    case LOAD_SERIALIZED_STATE:
-      return { ...state, ...action.serializedState.media };
+    case "LOAD_SERIALIZED_STATE":
+      return { ...state, ...(action as any).serializedState.media };
     default:
       return state;
   }

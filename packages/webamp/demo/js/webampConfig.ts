@@ -8,15 +8,6 @@ import * as SoundCloud from "./SoundCloud";
 
 import { Action, Options, AppState, WindowLayout } from "../../js/types";
 
-import {
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
-} from "../../js/actionTypes";
-
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
 import availableSkins from "./availableSkins";
@@ -26,12 +17,12 @@ import screenshotInitialState from "./screenshotInitialState";
 import { InjectableDependencies, PrivateOptions } from "../../js/webampLazy";
 
 const NOISY_ACTION_TYPES = new Set([
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
+  "STEP_MARQUEE",
+  "UPDATE_TIME_ELAPSED",
+  "UPDATE_WINDOW_POSITIONS",
+  "SET_VOLUME",
+  "SET_BALANCE",
+  "SET_BAND_VALUE",
 ]);
 
 const MIN_MILKDROP_WIDTH = 725;

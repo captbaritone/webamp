@@ -27,17 +27,6 @@ import * as Actions from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import * as FileUtils from "./fileUtils";
 
-import {
-  SET_AVAILABLE_SKINS,
-  NETWORK_CONNECTED,
-  NETWORK_DISCONNECTED,
-  CLOSE_WINAMP,
-  MINIMIZE_WINAMP,
-  LOADED,
-  SET_Z_INDEX,
-  CLOSE_REQUESTED,
-  ENABLE_MILKDROP,
-} from "./actionTypes";
 import Emitter from "./emitter";
 
 import { SerializedStateV1 } from "./serializedStates/v1Types";
@@ -150,18 +139,18 @@ class Webamp {
     }
 
     if (navigator.onLine) {
-      this.store.dispatch({ type: NETWORK_CONNECTED });
+      this.store.dispatch({ type: "NETWORK_CONNECTED" });
     } else {
-      this.store.dispatch({ type: NETWORK_DISCONNECTED });
+      this.store.dispatch({ type: "NETWORK_DISCONNECTED" });
     }
 
     if (zIndex != null) {
-      this.store.dispatch({ type: SET_Z_INDEX, zIndex });
+      this.store.dispatch({ type: "SET_Z_INDEX", zIndex });
     }
 
     if (options.__butterchurnOptions) {
       this.store.dispatch({
-        type: ENABLE_MILKDROP,
+        type: "ENABLE_MILKDROP",
         open: options.__butterchurnOptions.butterchurnOpen,
       });
       this.store.dispatch(
@@ -169,9 +158,9 @@ class Webamp {
       );
     }
 
-    const handleOnline = () => this.store.dispatch({ type: NETWORK_CONNECTED });
+    const handleOnline = () => this.store.dispatch({ type: "NETWORK_CONNECTED" });
     const handleOffline = () =>
-      this.store.dispatch({ type: NETWORK_DISCONNECTED });
+      this.store.dispatch({ type: "NETWORK_DISCONNECTED" });
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
@@ -185,7 +174,7 @@ class Webamp {
       this.store.dispatch(Actions.setSkinFromUrl(initialSkin.url));
     } else {
       // We are using the default skin.
-      this.store.dispatch({ type: LOADED });
+      this.store.dispatch({ type: "LOADED" });
     }
 
     if (initialTracks) {
@@ -198,9 +187,9 @@ class Webamp {
         "The misspelled option `avaliableSkins` is deprecated. Please use `availableSkins` instead."
       );
       // @ts-ignore
-      this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: avaliableSkins });
+      this.store.dispatch({ type: "SET_AVAILABLE_SKINS", skins: avaliableSkins });
     } else if (availableSkins != null) {
-      this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
+      this.store.dispatch({ type: "SET_AVAILABLE_SKINS", skins: availableSkins });
     }
 
     this.store.dispatch(Actions.setWindowLayout(options.windowLayout));
@@ -362,8 +351,8 @@ class Webamp {
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
   onWillClose(cb: (cancel: () => void) => void): () => void {
-    return this._actionEmitter.on(CLOSE_REQUESTED, (action) => {
-      cb(action.cancel);
+    return this._actionEmitter.on("CLOSE_REQUESTED", (action) => {
+      cb((action as any).cancel);
     });
   }
 
@@ -373,7 +362,7 @@ class Webamp {
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
   onClose(cb: () => void): () => void {
-    return this._actionEmitter.on(CLOSE_WINAMP, cb);
+    return this._actionEmitter.on("CLOSE_WINAMP", cb);
   }
 
   /**
@@ -428,7 +417,7 @@ class Webamp {
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
   onMinimize(cb: () => void): () => void {
-    return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
+    return this._actionEmitter.on("MINIMIZE_WINAMP", cb);
   }
 
   /**

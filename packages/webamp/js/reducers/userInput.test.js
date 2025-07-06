@@ -1,4 +1,3 @@
-import { SET_FOCUS, SET_SCRUB_POSITION, UNSET_FOCUS } from "../actionTypes";
 import userInput from "./userInput";
 
 describe("userInput reducer", () => {
@@ -13,7 +12,7 @@ describe("userInput reducer", () => {
   });
   it("can set focus", () => {
     const newState = userInput(state, {
-      type: SET_FOCUS,
+      type: "SET_FOCUS",
       input: "foo",
       bandFocused: null,
       userMessage: null,
@@ -28,7 +27,7 @@ describe("userInput reducer", () => {
   it("can unset focus", () => {
     const newState = userInput(
       { ...state, focus: "foo", bandFocused: null },
-      { type: UNSET_FOCUS }
+      { type: "UNSET_FOCUS" }
     );
     expect(newState).toEqual({
       focus: null,
@@ -39,7 +38,7 @@ describe("userInput reducer", () => {
   });
   it("can set scrub position", () => {
     const newState = userInput(state, {
-      type: SET_SCRUB_POSITION,
+      type: "SET_SCRUB_POSITION",
       position: 5,
       bandFocused: null,
       userMessage: null,

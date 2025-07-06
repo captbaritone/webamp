@@ -1,17 +1,5 @@
 import { Action, WindowId, Box, Point } from "../types";
 import { WINDOWS } from "../constants";
-import {
-  SET_FOCUSED_WINDOW,
-  TOGGLE_WINDOW,
-  CLOSE_WINDOW,
-  UPDATE_WINDOW_POSITIONS,
-  WINDOW_SIZE_CHANGED,
-  TOGGLE_WINDOW_SHADE_MODE,
-  LOAD_SERIALIZED_STATE,
-  BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES,
-  ENABLE_MILKDROP,
-} from "../actionTypes";
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
@@ -107,7 +95,7 @@ const windows = (
   action: Action
 ): WindowsState => {
   switch (action.type) {
-    case ENABLE_MILKDROP:
+    case "ENABLE_MILKDROP":
       return {
         ...state,
         milkdropEnabled: true,
@@ -115,90 +103,90 @@ const windows = (
           ...state.genWindows,
           [WINDOWS.MILKDROP]: {
             ...state.genWindows[WINDOWS.MILKDROP],
-            open: action.open,
+            open: (action as any).open,
           },
         },
       };
-    case SET_FOCUSED_WINDOW:
+    case "SET_FOCUSED_WINDOW":
       let windowOrder = state.windowOrder;
-      if (action.window != null) {
+      if ((action as any).window != null) {
         windowOrder = [
-          ...state.windowOrder.filter((windowId) => windowId !== action.window),
-          action.window,
+          ...state.windowOrder.filter((windowId) => windowId !== (action as any).window),
+          (action as any).window,
         ];
       }
-      return { ...state, focused: action.window, windowOrder };
-    case TOGGLE_WINDOW_SHADE_MODE:
-      const { canShade } = state.genWindows[action.windowId];
+      return { ...state, focused: (action as any).window, windowOrder };
+    case "TOGGLE_WINDOW_SHADE_MODE":
+      const { canShade } = state.genWindows[(action as any).windowId];
       if (!canShade) {
         throw new Error(
-          `Tried to shade/unshade a window that cannot be shaded: ${action.windowId}`
+          `Tried to shade/unshade a window that cannot be shaded: ${(action as any).windowId}`
         );
       }
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            shade: !state.genWindows[action.windowId].shade,
+          [(action as any).windowId]: {
+            ...state.genWindows[(action as any).windowId],
+            shade: !state.genWindows[(action as any).windowId].shade,
           },
         },
       };
-    case TOGGLE_WINDOW:
-      const windowState = state.genWindows[action.windowId];
+    case "TOGGLE_WINDOW":
+      const windowState = state.genWindows[(action as any).windowId];
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: {
+          [(action as any).windowId]: {
             ...windowState,
             open: !windowState.open,
           },
         },
       };
-    case CLOSE_WINDOW:
+    case "CLOSE_WINDOW":
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: {
-            ...state.genWindows[action.windowId],
+          [(action as any).windowId]: {
+            ...state.genWindows[(action as any).windowId],
             open: false,
           },
         },
       };
-    case WINDOW_SIZE_CHANGED:
-      const { canResize } = state.genWindows[action.windowId];
+    case "WINDOW_SIZE_CHANGED":
+      const { canResize } = state.genWindows[(action as any).windowId];
       if (!canResize) {
         throw new Error(
-          `Tried to resize a window that cannot be resized: ${action.windowId}`
+          `Tried to resize a window that cannot be resized: ${(action as any).windowId}`
         );
       }
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            size: action.size,
+          [(action as any).windowId]: {
+            ...state.genWindows[(action as any).windowId],
+            size: (action as any).size,
           },
         },
       };
-    case UPDATE_WINDOW_POSITIONS:
+    case "UPDATE_WINDOW_POSITIONS":
       return {
         ...state,
         positionsAreRelative:
-          action.absolute === true ? false : state.positionsAreRelative,
+          (action as any).absolute === true ? false : state.positionsAreRelative,
         genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
-          const newPosition = action.positions[windowId];
+          const newPosition = (action as any).positions[windowId];
           if (newPosition == null) {
             return w;
           }
           return { ...w, position: newPosition };
         }),
       };
-    case RESET_WINDOW_SIZES:
+    case "RESET_WINDOW_SIZES":
       return {
         ...state,
         genWindows: Utils.objectMap(state.genWindows, (w) => ({
@@ -207,9 +195,9 @@ const windows = (
           size: [0, 0] as [number, number],
         })),
       };
-    case LOAD_SERIALIZED_STATE: {
+    case "LOAD_SERIALIZED_STATE": {
       const { genWindows, focused, positionsAreRelative } =
-        action.serializedState.windows;
+        (action as any).serializedState.windows;
       return {
         ...state,
         positionsAreRelative,
@@ -225,10 +213,10 @@ const windows = (
         focused,
       };
     }
-    case BROWSER_WINDOW_SIZE_CHANGED:
+    case "BROWSER_WINDOW_SIZE_CHANGED":
       return {
         ...state,
-        browserWindowSize: { height: action.height, width: action.width },
+        browserWindowSize: { height: (action as any).height, width: (action as any).width },
       };
 
     default:

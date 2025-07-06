@@ -1,12 +1,4 @@
 import { PlaylistTrack, Action } from "../types";
-import {
-  SET_MEDIA,
-  SET_MEDIA_TAGS,
-  SET_MEDIA_DURATION,
-  MEDIA_TAG_REQUEST_INITIALIZED,
-  MEDIA_TAG_REQUEST_FAILED,
-  ADD_TRACK_FROM_URL,
-} from "../actionTypes";
 import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 import * as TrackUtils from "../trackUtils";
 
@@ -21,54 +13,54 @@ const tracks = (
   action: Action
 ): TracksState => {
   switch (action.type) {
-    case ADD_TRACK_FROM_URL:
+    case "ADD_TRACK_FROM_URL":
       return {
         ...state,
-        [action.id]: {
-          id: action.id,
-          defaultName: action.defaultName || null,
-          duration: action.duration ?? null,
-          url: action.url,
+        [(action as any).id]: {
+          id: (action as any).id,
+          defaultName: (action as any).defaultName || null,
+          duration: (action as any).duration ?? null,
+          url: (action as any).url,
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
         },
       };
-    case SET_MEDIA: {
+    case "SET_MEDIA": {
       const newTrack = {
-        ...state[action.id],
-        duration: action.length,
+        ...state[(action as any).id],
+        duration: (action as any).length,
       };
       return {
         ...state,
-        [action.id]: newTrack,
+        [(action as any).id]: newTrack,
       };
     }
-    case MEDIA_TAG_REQUEST_INITIALIZED:
+    case "MEDIA_TAG_REQUEST_INITIALIZED":
       return {
         ...state,
-        [action.id]: {
-          ...state[action.id],
+        [(action as any).id]: {
+          ...state[(action as any).id],
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
         },
       };
-    case MEDIA_TAG_REQUEST_FAILED:
+    case "MEDIA_TAG_REQUEST_FAILED":
       return {
         ...state,
-        [action.id]: {
-          ...state[action.id],
+        [(action as any).id]: {
+          ...state[(action as any).id],
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED,
         },
       };
-    case SET_MEDIA_DURATION: {
+    case "SET_MEDIA_DURATION": {
       return {
         ...state,
-        [action.id]: {
-          ...state[action.id],
-          duration: action.duration,
+        [(action as any).id]: {
+          ...state[(action as any).id],
+          duration: (action as any).duration,
         },
       };
     }
-    case SET_MEDIA_TAGS:
-      const track = state[action.id];
+    case "SET_MEDIA_TAGS":
+      const track = state[(action as any).id];
       const {
         sampleRate,
         bitrate,
@@ -77,11 +69,11 @@ const tracks = (
         artist,
         album,
         albumArtUrl,
-      } = action;
+      } = action as any;
       const { kbps, khz, channels } = track;
       return {
         ...state,
-        [action.id]: {
+        [(action as any).id]: {
           ...track,
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
           title,

@@ -7,13 +7,6 @@ import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
 import WebampLazy from "../../js/webampLazy";
-import {
-  DISABLE_MARQUEE,
-  SET_DUMMY_VIZ_DATA,
-  SET_EQ_AUTO,
-  TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
-} from "../../js/actionTypes";
 
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
@@ -95,15 +88,15 @@ async function main() {
   const webamp = new WebampLazy(config);
 
   if (disableMarquee || screenshot) {
-    webamp.store.dispatch({ type: DISABLE_MARQUEE });
+    webamp.store.dispatch({ type: "DISABLE_MARQUEE" });
   }
   if (screenshot) {
     window.document.body.style.backgroundColor = "#000";
-    webamp.store.dispatch({ type: TOGGLE_REPEAT });
-    webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
-    webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
+    webamp.store.dispatch({ type: "TOGGLE_REPEAT" });
+    webamp.store.dispatch({ type: "TOGGLE_SHUFFLE" });
+    webamp.store.dispatch({ type: "SET_EQ_AUTO", value: true });
     webamp.store.dispatch({
-      type: SET_DUMMY_VIZ_DATA,
+      type: "SET_DUMMY_VIZ_DATA",
       data: {
         0: 11.75,
         8: 11.0625,
