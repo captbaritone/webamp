@@ -21,7 +21,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.0
+          version: 9.12.0
       - name: Generate cache key
         id: cache-key
         run: echo "key=node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
@@ -42,7 +42,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.0
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -75,7 +75,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.0
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -110,7 +110,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -132,7 +132,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.0
+          version: 9.12.0
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -179,7 +179,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.0
+          version: 9.12.0
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
