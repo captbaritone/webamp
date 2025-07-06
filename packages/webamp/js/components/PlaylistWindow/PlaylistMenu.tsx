@@ -2,7 +2,7 @@ import { Children, memo, useState, ReactNode, useCallback } from "react";
 import classnames from "classnames";
 import { useOnClickAway } from "../../hooks";
 
-import PlaylistMenuEnry from "./PlaylistMenuEntry";
+import PlaylistMenuEntry from "./PlaylistMenuEntry";
 
 interface Props {
   id: string;
@@ -44,7 +44,7 @@ function PlaylistMenu(props: Props) {
       {selected && (
         <ul>
           {Children.map(props.children, (child, i) => (
-            <PlaylistMenuEnry key={i}>{child}</PlaylistMenuEnry>
+            <PlaylistMenuEntry key={i}>{child}</PlaylistMenuEntry>
           ))}
         </ul>
       )}
