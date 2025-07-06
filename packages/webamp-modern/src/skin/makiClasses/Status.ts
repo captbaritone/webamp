@@ -1,5 +1,6 @@
 import GuiObj from "./GuiObj";
 import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
+import { UIRoot } from "../../UIRoot";
 
 // Maybe this?
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CWasabi:StandardFrame:Status.2F.3E

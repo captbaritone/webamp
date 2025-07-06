@@ -40,7 +40,7 @@ export default class TrueTypeFont {
   }
 
   dispose() {
-    document.fonts.delete(this._fontFace);
+    (document.fonts as any).delete(this._fontFace);
   }
 
   getBase64() {
@@ -68,6 +68,6 @@ export default class TrueTypeFont {
 
     const font = new FontFace(fontFamily, `url(${fontUrl})`);
     this._fontFace = await font.load();
-    document.fonts.add(this._fontFace);
+    (document.fonts as any).add(this._fontFace);
   }
 }

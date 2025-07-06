@@ -29,14 +29,14 @@ export default class WasabiTitleBar extends Group {
   _renderX() {
     this._div.style.left =
       this._relatx == "1"
-        ? relative(this._padtitleleft + this._x ?? 0)
-        : px(this._padtitleleft + this._x ?? 0);
+        ? relative(this._padtitleleft + this._x)
+        : px(this._padtitleleft + this._x);
   }
 
   _renderWidth() {
     this._div.style.width =
       this._relatw == "1"
-        ? relative(-this._padtitleleft + -this._padtitleright + this._w ?? 0)
+        ? relative(-this._padtitleleft + -this._padtitleright + this._w)
         : px(-this._padtitleright + this.getwidth());
   }
 

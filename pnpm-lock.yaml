@@ -554,9 +554,6 @@ importers:
       '@babel/preset-env':
         specifier: ^7.17.10
         version: 7.27.2(@babel/core@7.27.4)
-      '@types/eslint':
-        specifier: ^7.2.14
-        version: 7.29.0
       '@types/estree':
         specifier: ^0.0.50
         version: 0.0.50
@@ -4112,9 +4109,6 @@ packages:
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
-
-  '@types/eslint@7.29.0':
-    resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
 
   '@types/eslint@8.56.7':
     resolution: {integrity: sha512-SjDvI/x3zsZnOkYZ3lCt9lOZWZLB2jIlNKz+LBgCtDurK0JZcwucxYHn1w2BJkD34dgX9Tjnak0txtq4WTggEA==}
@@ -18991,11 +18985,6 @@ snapshots:
     dependencies:
       '@types/eslint': 8.56.7
       '@types/estree': 1.0.8
-
-  '@types/eslint@7.29.0':
-    dependencies:
-      '@types/estree': 1.0.8
-      '@types/json-schema': 7.0.15
 
   '@types/eslint@8.56.7':
     dependencies:

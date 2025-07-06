@@ -3,6 +3,17 @@
     "esModuleInterop": true,
     "allowJs": true,
     "resolveJsonModule": true,
-    "target": "es5"
-  }
+    "target": "es2018",
+    "lib": ["es2018", "dom"],
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "strict": false,
+    "noEmit": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "tools/eslint-rules/proper-maki-types.ts"
+  ]
 }

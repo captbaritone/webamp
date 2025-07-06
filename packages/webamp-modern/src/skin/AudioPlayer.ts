@@ -43,7 +43,7 @@ export class AudioPlayer {
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
-      window.webkitAudioContext)();
+      (window as any).webkitAudioContext)();
 
     // Fix for iOS and Chrome (Canary) which require that the context be created
     // or resumed by a user interaction.

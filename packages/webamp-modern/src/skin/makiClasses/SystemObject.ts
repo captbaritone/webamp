@@ -1316,6 +1316,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportheightfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1334,6 +1335,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorheightfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1342,6 +1344,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorheightfromguiobject(g: GuiObj): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1359,6 +1362,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorleftfromguiobject(g: GuiObj): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1369,6 +1373,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitorleftfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1391,6 +1396,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitortopfromguiobject(g: GuiObj): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1401,6 +1407,7 @@ export default class SystemObject extends BaseObject {
    */
   getmonitortopfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   getviewportleft(): number {
@@ -1425,6 +1432,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewportleftfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
@@ -1443,6 +1451,7 @@ export default class SystemObject extends BaseObject {
    */
   getviewporttopfrompoint(x: number, y: number): number {
     // TODO
+    return unimplemented(0);
   }
 
   /**
