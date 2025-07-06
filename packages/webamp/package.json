@@ -72,6 +72,8 @@
   },
   "homepage": "https://github.com/captbaritone/webamp/",
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@parcel/reporter-bundle-analyzer": "^2.8.2",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.8",
@@ -148,6 +150,7 @@
     "redux-sentry-middleware": "^0.1.3",
     "redux-thunk": "^2.4.0",
     "reselect": "^3.0.1",
+    "strtok3": "^10.3.1",
     "tinyqueue": "^1.2.3",
     "winamp-eqf": "^1.0.0"
   }
