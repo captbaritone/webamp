@@ -138,7 +138,7 @@ async function downloadToTemp(url: string, filename: string): Promise<string> {
   const result = await response.buffer();
   const tempDir = temp.mkdirSync();
   const tempFile = path.join(tempDir, filename);
-  fs.writeFileSync(tempFile, result);
+  fs.writeFileSync(tempFile, new Uint8Array(result));
   return tempFile;
 }
 

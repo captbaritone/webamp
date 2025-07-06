@@ -73,7 +73,7 @@ export async function withBufferAsTempFile<T>(
 ): Promise<T> {
   const tempDir = temp.mkdirSync();
   const tempFile = path.join(tempDir, filename);
-  fs.writeFileSync(tempFile, buffer);
+  fs.writeFileSync(tempFile, new Uint8Array(buffer));
   const r = await cb(tempFile);
   fs.unlinkSync(tempFile);
   fs.rmdirSync(tempDir);

@@ -109,7 +109,7 @@ async function sendTweet(skin: SkinModel): Promise<string> {
   const screenshotBuffer = await getResizedScreenshot(skin.getMd5());
   const filename = await skin.getFileName();
   const tempFile = temp.path({ suffix: ".png" });
-  fs.writeFileSync(tempFile, screenshotBuffer);
+  fs.writeFileSync(tempFile, new Uint8Array(screenshotBuffer));
   const t = getTwitterClient();
 
   const promise: Promise<{ media_id_string: string }> = new Promise(

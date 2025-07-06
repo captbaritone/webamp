@@ -11,7 +11,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext ts,tsx,js,jsx --rulesdir=packages/webamp-modern/tools/eslint-rules",
-    "type-check": "pnpm --filter webamp type-check && pnpm --filter ani-cursor type-check && pnpm --filter webamp-docs type-check",
+    "type-check": "pnpm --filter webamp type-check && pnpm --filter ani-cursor type-check && pnpm --filter skin-database type-check && pnpm --filter webamp-docs type-check",
     "deploy": "sh deploy.sh",
     "format": "prettier --write '**/*.{js,ts,tsx}'"
   },

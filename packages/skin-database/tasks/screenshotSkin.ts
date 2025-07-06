@@ -28,7 +28,7 @@ export async function screenshot(skin: SkinModel, shooter: typeof Shooter) {
   const tempFile = temp.path({ suffix: ".wsz" });
   const tempScreenshotPath = temp.path({ suffix: ".png" });
 
-  fs.writeFileSync(tempFile, buffer);
+  fs.writeFileSync(tempFile, new Uint8Array(buffer));
 
   const success = await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
     minify: true,
