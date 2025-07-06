@@ -118,7 +118,9 @@ const playlist = (
       return { ...state, trackOrder };
     case "ADD_TRACK_FROM_URL":
       const atIndex =
-        (action as any).atIndex == null ? state.trackOrder.length : (action as any).atIndex;
+        (action as any).atIndex == null
+          ? state.trackOrder.length
+          : (action as any).atIndex;
       return {
         ...state,
         trackOrder: [

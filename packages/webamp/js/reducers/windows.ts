@@ -111,7 +111,9 @@ const windows = (
       let windowOrder = state.windowOrder;
       if ((action as any).window != null) {
         windowOrder = [
-          ...state.windowOrder.filter((windowId) => windowId !== (action as any).window),
+          ...state.windowOrder.filter(
+            (windowId) => windowId !== (action as any).window
+          ),
           (action as any).window,
         ];
       }
@@ -120,7 +122,9 @@ const windows = (
       const { canShade } = state.genWindows[(action as any).windowId];
       if (!canShade) {
         throw new Error(
-          `Tried to shade/unshade a window that cannot be shaded: ${(action as any).windowId}`
+          `Tried to shade/unshade a window that cannot be shaded: ${
+            (action as any).windowId
+          }`
         );
       }
       return {
@@ -160,7 +164,9 @@ const windows = (
       const { canResize } = state.genWindows[(action as any).windowId];
       if (!canResize) {
         throw new Error(
-          `Tried to resize a window that cannot be resized: ${(action as any).windowId}`
+          `Tried to resize a window that cannot be resized: ${
+            (action as any).windowId
+          }`
         );
       }
       return {
@@ -177,7 +183,9 @@ const windows = (
       return {
         ...state,
         positionsAreRelative:
-          (action as any).absolute === true ? false : state.positionsAreRelative,
+          (action as any).absolute === true
+            ? false
+            : state.positionsAreRelative,
         genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
           const newPosition = (action as any).positions[windowId];
           if (newPosition == null) {
@@ -196,8 +204,8 @@ const windows = (
         })),
       };
     case "LOAD_SERIALIZED_STATE": {
-      const { genWindows, focused, positionsAreRelative } =
-        (action as any).serializedState.windows;
+      const { genWindows, focused, positionsAreRelative } = (action as any)
+        .serializedState.windows;
       return {
         ...state,
         positionsAreRelative,
@@ -216,7 +224,10 @@ const windows = (
     case "BROWSER_WINDOW_SIZE_CHANGED":
       return {
         ...state,
-        browserWindowSize: { height: (action as any).height, width: (action as any).width },
+        browserWindowSize: {
+          height: (action as any).height,
+          width: (action as any).width,
+        },
       };
 
     default:

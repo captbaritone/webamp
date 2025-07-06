@@ -22,7 +22,11 @@ export const userInput = (
     case "SET_FOCUS":
       return { ...state, focus: (action as any).input, bandFocused: null };
     case "SET_BAND_FOCUS":
-      return { ...state, focus: (action as any).input, bandFocused: (action as any).bandFocused };
+      return {
+        ...state,
+        focus: (action as any).input,
+        bandFocused: (action as any).bandFocused,
+      };
     case "UNSET_FOCUS":
       return { ...state, focus: null, bandFocused: null };
     case "SET_SCRUB_POSITION":

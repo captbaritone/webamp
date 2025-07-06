@@ -158,7 +158,8 @@ class Webamp {
       );
     }
 
-    const handleOnline = () => this.store.dispatch({ type: "NETWORK_CONNECTED" });
+    const handleOnline = () =>
+      this.store.dispatch({ type: "NETWORK_CONNECTED" });
     const handleOffline = () =>
       this.store.dispatch({ type: "NETWORK_DISCONNECTED" });
 
@@ -187,9 +188,15 @@ class Webamp {
         "The misspelled option `avaliableSkins` is deprecated. Please use `availableSkins` instead."
       );
       // @ts-ignore
-      this.store.dispatch({ type: "SET_AVAILABLE_SKINS", skins: avaliableSkins });
+      this.store.dispatch({
+        type: "SET_AVAILABLE_SKINS",
+        skins: avaliableSkins,
+      });
     } else if (availableSkins != null) {
-      this.store.dispatch({ type: "SET_AVAILABLE_SKINS", skins: availableSkins });
+      this.store.dispatch({
+        type: "SET_AVAILABLE_SKINS",
+        skins: availableSkins,
+      });
     }
 
     this.store.dispatch(Actions.setWindowLayout(options.windowLayout));

@@ -35,9 +35,15 @@ export const milkdrop = (
 ): MilkdropState => {
   switch (action.type) {
     case "SET_MILKDROP_DESKTOP":
-      return { ...state, display: (action as any).enabled ? "DESKTOP" : "WINDOW" };
+      return {
+        ...state,
+        display: (action as any).enabled ? "DESKTOP" : "WINDOW",
+      };
     case "SET_MILKDROP_FULLSCREEN":
-      return { ...state, display: (action as any).enabled ? "FULLSCREEN" : "WINDOW" };
+      return {
+        ...state,
+        display: (action as any).enabled ? "FULLSCREEN" : "WINDOW",
+      };
     case "GOT_BUTTERCHURN":
       return { ...state, butterchurn: (action as any).butterchurn };
     case "GOT_BUTTERCHURN_PRESETS":
