@@ -207,9 +207,10 @@ jobs:
           fail-on-cache-miss: true
       - name: Set version
         if: github.ref == 'refs/heads/master'
+        working-directory: ./packages/webamp
         run: |
           echo "Setting version to 0.0.0-next-${RELEASE_COMMIT_SHA::7}"
-          pnpm --filter webamp version --new-version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
+          npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version
