@@ -22,7 +22,12 @@ export function getPlugins({ minify, outputFile, vite }) {
     vite ? null : stripInlineSuffix(),
     // https://rollupjs.org/troubleshooting/#warning-treating-module-as-external-dependency
     // TODO: We could offer a version which does not inline React/React-DOM
-    nodeResolve(),
+    nodeResolve({
+      browser: true,
+      preferBuiltins: false,
+      // Skip deep resolution for better performance
+      dedupe: ["react", "react-dom"],
+    }),
     // Needed for music-metadata-browser in the Webamp bundle which depends upon
     // being able to use some polyfillable node APIs
     nodePolyfills(),
@@ -51,8 +56,32 @@ export function getPlugins({ minify, outputFile, vite }) {
     // because react-redux import react as if it were an es6 module, but it is not.
     commonjs(),
     // Must come after commonjs
-    babel({ babelHelpers: "bundled", compact: minify }),
-    minify ? terser() : null,
+    babel({
+      babelHelpers: "bundled",
+      compact: minify,
+      // Optimize Babel by excluding node_modules and only processing necessary files
+      exclude: ["node_modules/**"],
+      include: ["js/**/*"],
+    }),
+    minify
+      ? terser({
+          compress: {
+            // eslint-disable-next-line camelcase
+            drop_console: true,
+            // eslint-disable-next-line camelcase
+            drop_debugger: true,
+            // eslint-disable-next-line camelcase
+            pure_funcs: ["console.log", "console.debug"],
+            passes: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+          format: {
+            comments: false,
+          },
+        })
+      : null,
     // Generate a report so we can see how our bundle size is spent
     visualizer({ filename: `./${outputFile}.html` }),
   ].filter(Boolean);

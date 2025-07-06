@@ -91,8 +91,10 @@ const BUNDLES = [
 build();
 
 async function build() {
-  for (const bundleDesc of BUNDLES) {
-    console.log(`=======[ Building ${bundleDesc.name} ]=======`);
+  console.log(`🚀 Building ${BUNDLES.length} bundles in parallel...`);
+  
+  const buildPromises = BUNDLES.map(async (bundleDesc) => {
+    console.log(`📦 Building ${bundleDesc.name}...`);
     const plugins = getPlugins({
       outputFile: bundleDesc.output.file,
       minify: bundleDesc.minify,
@@ -100,6 +102,17 @@ async function build() {
     const bundle = await rollup({
       input: bundleDesc.input,
       plugins,
+      // Enable tree shaking optimizations
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
+      // Optimize external dependencies handling
+      external: (id) => {
+        // Don't externalize these - we want them bundled for browser compatibility
+        return false;
+      },
       onwarn: (warning, warn) => {
         // Suppress expected circular dependency warnings from external libraries
         if (warning.code === "CIRCULAR_DEPENDENCY") {
@@ -123,5 +136,9 @@ async function build() {
       sourcemap: true,
       ...bundleDesc.output,
     });
-  }
+    console.log(`✅ Completed ${bundleDesc.name}`);
+  });
+
+  await Promise.all(buildPromises);
+  console.log(`🎉 All ${BUNDLES.length} bundles built successfully!`);
 }
