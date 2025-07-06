@@ -121,7 +121,7 @@ jobs:
       - name: Lint
         run: |
           pnpm lint
-          pnpm --filter webamp type-check
+          pnpm type-check
 
   # Test job - runs in parallel
   test:

@@ -51,6 +51,7 @@
     "build": "next build",
     "start": "next start",
     "lint:next": "next lint",
+    "type-check": "tsc --noEmit",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
