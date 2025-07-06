@@ -6,8 +6,6 @@
 
 ### Improvements
 
-- New `webamp/butterchurn` entry point which is a single bundle which includes the Butterchurn Milkdrop visualizer by default. This grows the module size by a few hundred kilobytes, but allows you to use Butterchurn without having to install it separately.
-- Switched id3/metadata parsing from using a very old version of `music-metadata-browser` to the latest version of `music-metadata`. `music-metadata-browser` is still supported for users of `webamp/lazy` for backwards compatibility, but it is no longer the default.
 - Added new `Webamp` instance methods:
   - `webamp.toggleShuffle`
   - `webamp.toggleRepeat`
@@ -17,12 +15,9 @@
 
 ### Bug Fixes
 
-- Fixed broken ID3 tag and bitrate parsing.
 - Fix bug where scrolling the main window or playlist window would change the volume but also (incorrectly) scroll the page.
 - Fix bug where resizing the window such that the current layout cannot fit on the page, while also scrolled down the page, would cause the layout to be recentered out of view.
 - Avoid a console log from Redux Dev Tools.
-- Don't show Milkdrop window option in context menu if Milkdrop is not enabled.
-- Fix bug on iPhone where Milkdrop window would resize incorrectly if you attempted to enter fullscreen mode, which is not supported on iPhones.
 
 ## 2.1.2 [CURRENT]
 
