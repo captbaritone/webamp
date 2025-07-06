@@ -51,7 +51,7 @@ function PlaylistWindow({ analyser }: Props) {
   const toggleShade = useActionCreator(Actions.togglePlaylistShadeMode);
   const scrollUpFourTracks = useActionCreator(Actions.scrollUpFourTracks);
   const scrollDownFourTracks = useActionCreator(Actions.scrollDownFourTracks);
-  const scrollVolume = useActionCreator(Actions.scrollVolume);
+  const scrollPlaylistByDelta = useActionCreator(Actions.scrollPlaylistByDelta);
   const loadMedia = useActionCreator(Actions.loadMedia);
 
   const showVisualizer = playlistSize[0] > 2;
@@ -97,7 +97,7 @@ function PlaylistWindow({ analyser }: Props) {
         className={classes}
         style={style}
         handleDrop={handleDrop}
-        onWheelActive={scrollVolume}
+        onWheelActive={scrollPlaylistByDelta}
       >
         <div className="playlist-top draggable" onDoubleClick={toggleShade}>
           <div className="playlist-top-left draggable" />
