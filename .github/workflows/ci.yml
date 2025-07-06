@@ -18,6 +18,10 @@ jobs:
       cache-key: ${{ steps.cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Generate cache key
         id: cache-key
         run: echo "key=node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
@@ -26,10 +30,6 @@ jobs:
         with:
           node-version: 20.x
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
@@ -39,15 +39,15 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Build Vite Demo
@@ -72,15 +72,15 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Build Library Bundles
@@ -107,15 +107,15 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Lint
@@ -129,15 +129,15 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Run Unit Tests
@@ -176,15 +176,15 @@ jobs:
     needs: [build, build-library, lint, test]
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
           cache: "pnpm"
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Restore build artifacts
