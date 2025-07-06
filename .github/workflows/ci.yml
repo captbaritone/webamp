@@ -1,14 +1,14 @@
 name: CI
 
-on: 
+on:
   push:
   pull_request:
     # Only run on pull requests that change relevant files
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.gitignore'
-      - 'LICENSE.txt'
+      - "**.md"
+      - "docs/**"
+      - ".gitignore"
+      - "LICENSE.txt"
 
 jobs:
   # Fast job to install dependencies and cache them for other jobs
@@ -25,11 +25,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-  # Build job - runs in parallel with lint and test jobs
+  # Build job - Vite build for demo site
   build:
     runs-on: ubuntu-latest
     needs: setup
@@ -39,16 +39,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-      - name: Build
+      - name: Build Vite Demo
         run: |
           # Set CI environment variable for optimized builds
           export CI=true
           yarn workspace ani-cursor build
           yarn workspace webamp build
-          yarn workspace webamp build-library
         env:
           NODE_ENV: production
       - name: Cache build artifacts
@@ -58,6 +57,37 @@ jobs:
             packages/*/built
             packages/*/dist
           key: build-artifacts-${{ github.sha }}
+
+  # Build Library job - Rollup build for library bundles
+  build-library:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: "yarn"
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build Library Bundles
+        run: |
+          # Set CI environment variable for optimized builds
+          export CI=true
+          yarn workspace ani-cursor build
+          yarn workspace webamp build-library
+        env:
+          NODE_ENV: production
+      - name: Cache library artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            packages/webamp/built/*.js
+            packages/webamp/built/*.mjs
+            packages/webamp/built/*.map
+            packages/webamp/built/*.html
+          key: library-artifacts-${{ github.sha }}
 
   # Lint job - runs in parallel
   lint:
@@ -69,7 +99,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Lint
@@ -87,7 +117,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run Unit Tests
@@ -123,14 +153,14 @@ jobs:
     name: Publish to NPM
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.repository == 'captbaritone/webamp'
-    needs: [build, lint, test]
+    needs: [build, build-library, lint, test]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Restore build artifacts
@@ -140,6 +170,16 @@ jobs:
             packages/*/built
             packages/*/dist
           key: build-artifacts-${{ github.sha }}
+          fail-on-cache-miss: true
+      - name: Restore library artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            packages/webamp/built/*.js
+            packages/webamp/built/*.mjs
+            packages/webamp/built/*.map
+            packages/webamp/built/*.html
+          key: library-artifacts-${{ github.sha }}
           fail-on-cache-miss: true
       - name: Set version
         if: github.ref == 'refs/heads/master'
@@ -156,7 +196,7 @@ jobs:
         if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         # Use pre-built artifacts instead of rebuilding
         run: |
-          npm publish ${TAG}
+          npm publish ${TAG} --ignore-scripts
         env:
           TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
