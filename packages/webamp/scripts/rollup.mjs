@@ -92,7 +92,7 @@ build();
 
 async function build() {
   console.log(`🚀 Building ${BUNDLES.length} bundles in parallel...`);
-  
+
   const buildPromises = BUNDLES.map(async (bundleDesc) => {
     console.log(`📦 Building ${bundleDesc.name}...`);
     const plugins = getPlugins({
