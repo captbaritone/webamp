@@ -5,6 +5,12 @@
     "packages/*",
     "examples/*"
   ],
+  "packageManager": "pnpm@8.0.0",
+  "pnpm": {
+    "overrides": {
+      "graphql": "16.8.1"
+    }
+  },
   "engines": {
     "node": ">=16.0.0"
   },

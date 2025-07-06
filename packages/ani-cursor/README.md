@@ -9,12 +9,6 @@ I wrote a blog post about this library which you can find [here](https://jordane
 ## Install
 
 ```bash
-yarn add ani-cursor
-```
-
-or
-
-```bash
 npm install ani-cursor
 ```
 

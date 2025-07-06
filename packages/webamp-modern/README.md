@@ -1,11 +1,11 @@
 ## Running locally
 
-Assuming you have [Yarn](https://yarnpkg.com/) installed:
+Assuming you have [pnpm](https://pnpm.io/) installed:
 
 ```bash
 cd packages/webamp-modern
-yarn
-yarn start
+pnpm
+pnpm start
 ```
 
 ## Performance Improvements

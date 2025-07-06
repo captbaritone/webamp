@@ -16,11 +16,11 @@ Additionally, it makes use of some private Webamp APIs to add the following func
 
 To do an optimized build of the demo site, you can run:
 
-    yarn run build
+    pnpm run build
 
 If you wish to test this build locally, run:
 
-    yarn run serve
+    pnpm run serve
 
 Then open the local ip/port that is output to the console in your browser.
 
