@@ -1,0 +1,55 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "ani-cursor#build": {
+      "outputs": ["built/**", "dist/**"]
+    },
+    "winamp-eqf#build": {
+      "outputs": ["built/**", "dist/**"]
+    },
+    "webamp#build": {
+      "dependsOn": ["ani-cursor#build", "winamp-eqf#build"],
+      "outputs": ["dist/**"]
+    },
+    "webamp#build-library": {
+      "dependsOn": [
+        "ani-cursor#build",
+        "winamp-eqf#build",
+        "webamp#type-check"
+      ],
+      "outputs": ["built/**"]
+    },
+    "webamp-docs#build": {
+      "dependsOn": ["webamp#build-library"],
+      "outputs": ["build/**", ".docusaurus/**"]
+    },
+    "ani-cursor#type-check": {},
+    "winamp-eqf#type-check": {},
+    "webamp#type-check": {
+      "dependsOn": ["ani-cursor#build", "winamp-eqf#build"]
+    },
+    "webamp-docs#type-check": {
+      "dependsOn": ["webamp#build-library"]
+    },
+    "skin-database#type-check": {},
+    "ani-cursor#test": {
+      "outputs": []
+    },
+    "winamp-eqf#test": {
+      "outputs": []
+    },
+    "webamp#test": {
+      "dependsOn": ["ani-cursor#build", "winamp-eqf#build"],
+      "outputs": []
+    },
+    "webamp#lint": {
+      "dependsOn": ["ani-cursor#build", "winamp-eqf#build"]
+    },
+    "skin-database#lint": {},
+    "webamp-modern#lint": {},
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
