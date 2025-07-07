@@ -46,7 +46,7 @@ window.addEventListener("dragover", supressDragAndDrop);
 window.addEventListener("drop", supressDragAndDrop);
 
 try {
-  // TODO: Get this working in Parcel.
+  // TODO: Get this working in Vite.
   const COMMITHASH = undefined;
   Sentry.init({
     dsn: "https://12b6be8ef7c44f28ac37ab5ed98fd294@sentry.io/146021",
