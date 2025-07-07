@@ -602,6 +602,9 @@ importers:
 
   packages/winamp-eqf:
     devDependencies:
+      '@swc/jest':
+        specifier: ^0.2.24
+        version: 0.2.36(@swc/core@1.4.12(@swc/helpers@0.5.15))
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0

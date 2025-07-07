@@ -8,6 +8,8 @@ module.exports = {
     "dist",
     // TODO: Add these as we can...
     "/packages/webamp/",
+    "/packages/ani-cursor/",
+    "/packages/winamp-eqf/",
     // TODO: Fix config import so that this can work.
     "/packages/webamp-modern/src/__tests__/integration*",
   ],

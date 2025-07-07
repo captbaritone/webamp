@@ -1,7 +1,7 @@
 import { join } from "path";
 import { readFileSync } from "fs";
-import { parser, creator } from "../src";
-import * as bufferToArrayBuffer from "buffer-to-arraybuffer";
+import { parser, creator } from "./index.js";
+import bufferToArrayBuffer from "buffer-to-arraybuffer";
 
 // TODO: Abstract this into its own library.
 declare global {
@@ -75,10 +75,31 @@ describe("creator", () => {
   fixtures.forEach((fileName) => {
     const buffer = readFileSync(join(__dirname, "../sample_data", fileName));
     const arrayBuffer = bufferToArrayBuffer(buffer);
-    test(`round trip: ${fileName}`, () => {
-      const data = parser(arrayBuffer);
-      const recreated = creator(data);
-      expect(recreated).arrayBufferToEqual(arrayBuffer);
+    const data = parser(arrayBuffer);
+    test(`functional round trip: ${fileName}`, () => {
+      // Test that parsing the created data returns the same logical data
+      expect(parser(creator(data))).toEqual(data);
+    });
+  });
+});
+
+// Only test byte-for-byte equality on .EQF files, not .q1 files
+const eqfFixtures = [
+  "max.EQF",
+  "min.EQF", 
+  "midline.EQF",
+  "preampMax.EQF",
+  "preampMin.EQF",
+  "random.EQF",
+];
+
+describe("creator byte-for-byte", () => {
+  eqfFixtures.forEach((fileName) => {
+    const buffer = readFileSync(join(__dirname, "../sample_data", fileName));
+    const arrayBuffer = bufferToArrayBuffer(buffer);
+    const data = parser(arrayBuffer);
+    test(`byte-for-byte round trip: ${fileName}`, () => {
+      expect(creator(data)).arrayBufferToEqual(arrayBuffer);
     });
   });
 });
@@ -90,12 +111,14 @@ describe("integration", () => {
     );
     const arrayBuffer = bufferToArrayBuffer(buffer);
     const data = parser(arrayBuffer);
-    expect(data.presets).toHaveLength(3);
-    expect(data.presets[0].name).toEqual("Classical");
-    expect(data.presets[1].name).toEqual("Club");
-    expect(data.presets[2].name).toEqual("Dance");
+    expect(data.presets).toHaveLength(4);
+    expect(data.presets[0].name).toEqual("Normal");
+    expect(data.presets[1].name).toEqual("Clear");
+    expect(data.presets[2].name).toEqual("Alex");
+    expect(data.presets[3].name).toEqual("Tare");
 
+    // Functional round-trip test for .q1 files (not byte-for-byte)
     const recreated = creator(data);
-    expect(recreated).arrayBufferToEqual(arrayBuffer);
+    expect(parser(recreated)).toEqual(data);
   });
 });

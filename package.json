@@ -41,7 +41,9 @@
   },
   "jest": {
     "projects": [
-      "config/jest.*.js"
+      "config/jest.*.js",
+      "packages/ani-cursor",
+      "packages/winamp-eqf"
     ]
   },
   "dependencies": {},

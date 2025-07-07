@@ -23,6 +23,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
+    "test": "jest",
     "type-check": "tsc --noEmit"
   },
   "files": [
@@ -42,9 +43,23 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
+    "@swc/jest": "^0.2.24",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
     "buffer-to-arraybuffer": "0.0.4",
     "typescript": "^5.3.3"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "built"
+    ],
+    "testEnvironment": "jsdom",
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": ["@swc/jest"]
+    }
   }
 }

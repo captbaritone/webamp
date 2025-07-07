@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser parsed file snapshot 1`] = `
+{
+  "presets": [
+    {
+      "hz1000": 33,
+      "hz12000": 15,
+      "hz14000": 47,
+      "hz16000": 33,
+      "hz170": 35,
+      "hz3000": 48,
+      "hz310": 1,
+      "hz60": 64,
+      "hz600": 33,
+      "hz6000": 33,
+      "name": "Entry1",
+      "preamp": 55,
+    },
+  ],
+  "type": "Winamp EQ library file v1.1",
+}
+`;
