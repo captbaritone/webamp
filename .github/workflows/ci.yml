@@ -123,6 +123,11 @@ jobs:
           cache: "pnpm"
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build Dependencies
+        run: |
+          # Build ani-cursor and winamp-eqf first so their types are available
+          pnpm --filter ani-cursor build
+          pnpm --filter winamp-eqf build
       - name: Lint
         run: |
           pnpm lint
