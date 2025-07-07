@@ -40,7 +40,7 @@ jobs:
         run: |
           touch packages/skin-database/config.js
           export CI=true
-          npx turbo test -- -- --maxWorkers=2
+          npx turbo test -- --maxWorkers=2
         env:
           NODE_ENV: test
       - name: Cache build artifacts for release
