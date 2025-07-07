@@ -507,6 +507,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
+      webamp:
+        specifier: workspace:*
+        version: link:../webamp
     devDependencies:
       '@docusaurus/module-type-aliases':
         specifier: 3.8.1
