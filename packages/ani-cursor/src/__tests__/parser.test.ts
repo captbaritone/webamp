@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { convertAniBinaryToCSS } from "../";
+import { convertAniBinaryToCSS } from "../index.js";
 
 const LONG_BASE_64 = /([A-Za-z0-9+/=]{50})[A-Za-z0-9+/=]+/g;
 

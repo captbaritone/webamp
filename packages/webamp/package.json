@@ -135,7 +135,7 @@
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "@sentry/browser": "5.9.1",
-    "ani-cursor": "^0.0.4",
+    "ani-cursor": "workspace:*",
     "butterchurn": "^3.0.0-beta.3",
     "butterchurn-presets": "3.0.0-beta.4",
     "classnames": "^2.2.5",

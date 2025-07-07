@@ -2,14 +2,24 @@
   "name": "ani-cursor",
   "version": "0.0.5",
   "description": "Render .ani cursors as CSS animations in the browser",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist/",
     "src/**/*.ts"
   ],
   "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/captbaritone/webamp.git",
@@ -29,6 +39,7 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.20.0",
+    "@swc/jest": "^0.2.24",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
     "typescript": "^5.3.3"
@@ -41,6 +52,13 @@
     "modulePathIgnorePatterns": [
       "dist"
     ],
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": ["@swc/jest"]
+    }
   }
 }

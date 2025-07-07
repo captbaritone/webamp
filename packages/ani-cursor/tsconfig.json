@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
-    "target": "es5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-    "lib": ["es2015", "dom"] /* Specify library files to be included in the compilation. */,
+    "target": "ES2018" /* Specify ECMAScript target version */,
+    "lib": ["ES2018", "dom"] /* Specify library files to be included in the compilation. */,
     "types": ["jest", "node"] /* Type declaration files to be included in compilation. */,
-    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
+    "module": "ES2020" /* Specify module code generation */,
     "sourceMap": true /* Generates corresponding '.map' file. */,
     "outDir": "./dist" /* Redirect output structure to the directory. */,
     "downlevelIteration": true /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */,
@@ -26,7 +26,9 @@
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
 
     /* Module Resolution Options */
+    "moduleResolution": "node" /* Use Node.js-style module resolution */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export */,
 
     "declaration": true,
     "skipLibCheck": true /* Skip type checking of declaration files. */,

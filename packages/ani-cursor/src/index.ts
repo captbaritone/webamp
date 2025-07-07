@@ -1,4 +1,4 @@
-import { parseAni } from "./parser";
+import { parseAni } from "./parser.js";
 
 type AniCursorImage = {
   frames: {
