@@ -45,13 +45,20 @@ import { SerializedStateV1 } from "./serializedStates/v1Types";
 export const getSliders = (state: AppState) => state.equalizer.sliders;
 
 export const getEqfData = createSelector(getSliders, (sliders) => {
-  const preset: { [key: string]: number | string } = {
+  const preset = {
     name: "Entry1",
     preamp: Utils.denormalizeEqBand(sliders.preamp),
+    hz60: Utils.denormalizeEqBand(sliders[60]),
+    hz170: Utils.denormalizeEqBand(sliders[170]),
+    hz310: Utils.denormalizeEqBand(sliders[310]),
+    hz600: Utils.denormalizeEqBand(sliders[600]),
+    hz1000: Utils.denormalizeEqBand(sliders[1000]),
+    hz3000: Utils.denormalizeEqBand(sliders[3000]),
+    hz6000: Utils.denormalizeEqBand(sliders[6000]),
+    hz12000: Utils.denormalizeEqBand(sliders[12000]),
+    hz14000: Utils.denormalizeEqBand(sliders[14000]),
+    hz16000: Utils.denormalizeEqBand(sliders[16000]),
   };
-  BANDS.forEach((band) => {
-    preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
-  });
   const eqfData = {
     presets: [preset],
     type: "Winamp EQ library file v1.1",

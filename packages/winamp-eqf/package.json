@@ -2,7 +2,15 @@
   "name": "winamp-eqf",
   "version": "1.0.0",
   "description": "Parse and create Winamp .EQF files which describe equalizer settings",
-  "main": "index.js",
+  "type": "module",
+  "main": "built/index.js",
+  "types": "built/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./built/index.js",
+      "types": "./built/index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/captbaritone/webamp.git",
@@ -12,15 +20,30 @@
     "url": "https://github.com/captbaritone/webamp/issues"
   },
   "homepage": "https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "type-check": "tsc --noEmit"
+  },
+  "files": [
+    "built/**/*",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "winamp",
     "equalizer",
     "parse",
     "create"
   ],
-  "author": "Jordan Eldgredge",
+  "author": "Jordan Eldredge",
   "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
     "buffer-to-arraybuffer": "0.0.4",
     "typescript": "^5.3.3"
   }

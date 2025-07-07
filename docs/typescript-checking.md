@@ -6,7 +6,7 @@ This document describes the TypeScript checking convention established for the W
 
 Each TypeScript-enabled package in the monorepo now has a consistent `type-check` script that performs type checking without emitting files.
 
-**Progress: 4 out of 5 packages now passing! 🎉**
+**Progress: 5 out of 6 packages now passing! 🎉**
 
 ### Package Status
 
@@ -16,6 +16,7 @@ Each TypeScript-enabled package in the monorepo now has a consistent `type-check
 - **ani-cursor**: Clean TypeScript compilation
 - **skin-database**: Clean TypeScript compilation (fixed JSZip types, Jest types, and Buffer compatibility issues)
 - **webamp-docs**: Clean TypeScript compilation
+- **winamp-eqf**: Clean TypeScript compilation (ES module with full type definitions)
 
 #### ❌ Failing Packages (Need fixes)
 
@@ -44,7 +45,7 @@ The root package.json contains a centralized script that runs type checking for 
 ```json
 {
   "scripts": {
-    "type-check": "pnpm --filter webamp type-check && pnpm --filter ani-cursor type-check && pnpm --filter skin-database type-check && pnpm --filter webamp-docs type-check"
+    "type-check": "pnpm --filter webamp type-check && pnpm --filter ani-cursor type-check && pnpm --filter skin-database type-check && pnpm --filter webamp-docs type-check && pnpm --filter winamp-eqf type-check"
   }
 }
 ```

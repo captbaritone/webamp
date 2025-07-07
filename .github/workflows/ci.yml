@@ -55,6 +55,7 @@ jobs:
           # Set CI environment variable for optimized builds
           export CI=true
           pnpm --filter ani-cursor build
+          pnpm --filter winamp-eqf build
           pnpm --filter webamp build
         env:
           NODE_ENV: production
@@ -88,6 +89,7 @@ jobs:
           # Set CI environment variable for optimized builds
           export CI=true
           pnpm --filter ani-cursor build
+          pnpm --filter winamp-eqf build
           pnpm --filter webamp build-library
         env:
           NODE_ENV: production

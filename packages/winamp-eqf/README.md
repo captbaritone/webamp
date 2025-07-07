@@ -1,23 +1,31 @@
 # Winamp Equalizer Preset Parser
 
-Winamp allows you to save your equalizser settings to `.eqf` file. This package allows you to parse these files.
+Winamp allows you to save your equalizer settings to `.eqf` file. This package allows you to parse these files.
 
 ## Installation
 
-    npm install --save winamp-eqf
+```bash
+npm install --save winamp-eqf
+```
 
-## Ussage
+## Usage
 
-    import {parser, creator} from 'winamp-eqf';
+```typescript
+import { parser, creator, EqfData, CreateEqfData } from 'winamp-eqf';
 
-    // ... Get your .eqf or .q1 file as an ArrayBuffer
-    const eqf = parser(eqfArrayBuffer);
+// ... Get your .eqf or .q1 file as an ArrayBuffer
+const eqf: EqfData = parser(eqfArrayBuffer);
 
-    const eqfArrayBuffer = creator(eqf);
+const eqfArrayBuffer: ArrayBuffer = creator(eqf);
+```
+
+This package is an ES module and requires Node.js 14+ or a modern bundler that supports ES modules.
 
 ## API
 
-### `parser(ArrayBuffer)`
+This package is written in TypeScript and provides full type definitions.
+
+### `parser(ArrayBuffer): EqfData`
 
 #### Return value
 
@@ -44,7 +52,7 @@ Winamp allows you to save your equalizser settings to `.eqf` file. This package 
 }
 ```
 
-### `creator(eqfObject)`
+### `creator(eqfObject: CreateEqfData): ArrayBuffer`
 
 #### Return Value: `ArrayBuffer`
 
