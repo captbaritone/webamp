@@ -63,8 +63,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            packages/*/built
-            packages/*/dist
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
+            packages/webamp/dist
           key: build-artifacts-${{ github.sha }}
 
   # Build Library job - Rollup build for library bundles
@@ -97,6 +98,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
             packages/webamp/built/*.js
             packages/webamp/built/*.mjs
             packages/webamp/built/*.map
@@ -172,7 +175,7 @@ jobs:
       #     name: new_images
       #     path: packages/webamp/js/__tests__/__image_snapshots__/
   main-release:
-    name: Publish to NPM
+    name: Publish packages to NPM
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.repository == 'captbaritone/webamp'
     needs: [build, build-library, lint, test]
@@ -193,32 +196,52 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            packages/*/built
-            packages/*/dist
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
+            packages/webamp/dist
           key: build-artifacts-${{ github.sha }}
           fail-on-cache-miss: true
       - name: Restore library artifacts
         uses: actions/cache@v4
         with:
           path: |
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
             packages/webamp/built/*.js
             packages/webamp/built/*.mjs
             packages/webamp/built/*.map
             packages/webamp/built/*.html
           key: library-artifacts-${{ github.sha }}
           fail-on-cache-miss: true
-      - name: Set version
+      - name: Set version for all packages
         if: github.ref == 'refs/heads/master'
-        working-directory: ./packages/webamp
         run: |
           echo "Setting version to 0.0.0-next-${RELEASE_COMMIT_SHA::7}"
-          npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
+          cd packages/webamp && npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
+          cd ../ani-cursor && npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
+          cd ../winamp-eqf && npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
       - name: Build release version
         if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         run: exit 1 # TODO: Script to update version number in webampLazy.tsx
-      - name: Publish to npm
+      - name: Publish ani-cursor to npm
+        working-directory: ./packages/ani-cursor
+        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        run: |
+          npm publish ${TAG} --ignore-scripts
+        env:
+          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Publish winamp-eqf to npm
+        working-directory: ./packages/winamp-eqf
+        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        run: |
+          npm publish ${TAG} --ignore-scripts
+        env:
+          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Publish webamp to npm
         working-directory: ./packages/webamp
         if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         # Use pre-built artifacts instead of rebuilding
