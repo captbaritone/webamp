@@ -150,6 +150,15 @@ jobs:
           cache: "pnpm"
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      - name: Restore build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
+            packages/webamp/dist
+          key: build-artifacts-${{ github.sha }}
+          fail-on-cache-miss: true
       - name: Run Unit Tests
         run: |
           touch packages/skin-database/config.js
