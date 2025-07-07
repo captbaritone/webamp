@@ -29,6 +29,8 @@ jobs:
       - name: Lint and type-check
         run: |
           npx turbo lint type-check
+      - name: Validate Grats generated files are up-to-date
+        run: ./scripts/validate-grats.sh
       - name: Run tests
         run: |
           touch packages/skin-database/config.js
