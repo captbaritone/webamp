@@ -161,7 +161,7 @@ type ArchiveFile {
   serverless Cloudflare function which tries to exctact the file on the fly.
   It may not work for all files.
   """
-  url: String @semanticNonNull
+  url: String
 }
 
 """A classic Winamp skin"""
@@ -411,7 +411,7 @@ type Query {
   """
   node(id: ID!): Node
   """
-  Search the database using the Algolia search index used by the Museum.
+  Search the database using SQLite's FTS (full text search) index.
   
   Useful for locating a particular skin.
   """

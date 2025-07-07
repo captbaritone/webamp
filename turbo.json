@@ -31,7 +31,12 @@
     "webamp-docs#type-check": {
       "dependsOn": ["webamp#build-library"]
     },
-    "skin-database#type-check": {},
+    "skin-database#type-check": {
+      "dependsOn": ["skin-database#grats"]
+    },
+    "skin-database#grats": {
+      "outputs": ["api/graphql/schema.graphql", "api/graphql/schema.ts"]
+    },
     "ani-cursor#test": {
       "outputs": []
     },
@@ -46,6 +51,7 @@
       "outputs": []
     },
     "skin-database#test": {
+      "dependsOn": ["skin-database#grats"],
       "outputs": []
     },
     "webamp#integration-tests": {

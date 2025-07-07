@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-# Switch to Node 22
+# Switch to Node 20
 export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
-nvm use 22
+nvm use 20
 
 # Install dependencies
 yarn install --frozen-lockfile

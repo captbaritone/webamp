@@ -316,7 +316,7 @@ export function getSchema(): GraphQLSchema {
                     name: "url",
                     type: GraphQLString,
                     resolve(source) {
-                        return assertNonNull(source.getUrl());
+                        return source.getUrl();
                     }
                 }
             };
@@ -1002,7 +1002,7 @@ export function getSchema(): GraphQLSchema {
                     }
                 },
                 search_classic_skins: {
-                    description: "Search the database using the Algolia search index used by the Museum.\n\nUseful for locating a particular skin.",
+                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.",
                     name: "search_classic_skins",
                     type: new GraphQLList(ClassicSkinType),
                     args: {
