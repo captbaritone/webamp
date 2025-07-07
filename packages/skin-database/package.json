@@ -30,7 +30,7 @@
     "node-fetch": "^2.6.7",
     "openai": "^4.68.0",
     "polygon-clipping": "^0.15.3",
-    "puppeteer": "^13.3.2",
+    "puppeteer": "^22.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^11.1.0",
@@ -75,7 +75,7 @@
     "@typescript-eslint/parser": "^7.1.0",
     "@swc/jest": "^0.2.24",
     "grats": "^0.0.31",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   },
   "jest": {
     "testEnvironment": "node",

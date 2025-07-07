@@ -220,14 +220,21 @@ program
     if (screenshot) {
       const buffer = fs.readFileSync(filePath);
       const md5 = md5Buffer(buffer);
-      const tempPath = temp.path({ suffix: ".png" });
+      const tempSkinFile = temp.path({ suffix: ".wsz" });
+      const tempScreenshotPath = temp.path({ suffix: ".png" });
+
+      // Write buffer to temporary file as Puppeteer's uploadFile expects a file path
+      fs.writeFileSync(tempSkinFile, new Uint8Array(buffer));
+
       await Shooter.withShooter(
         async (shooter: Shooter) => {
-          await shooter.takeScreenshot(buffer, tempPath, { md5 });
+          await shooter.takeScreenshot(tempSkinFile, tempScreenshotPath, {
+            md5,
+          });
         },
         (message: string) => console.log(message)
       );
-      console.log("Screenshot complete", tempPath);
+      console.log("Screenshot complete", tempScreenshotPath);
     }
   });
 

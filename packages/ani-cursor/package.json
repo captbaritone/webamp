@@ -40,9 +40,8 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.20.0",
     "@swc/jest": "^0.2.24",
-    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "byte-data": "18.1.1",
