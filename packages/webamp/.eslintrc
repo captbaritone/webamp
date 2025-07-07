@@ -32,8 +32,7 @@
     "jest": true
   },
   // TODO: Consider removing some of these.
-  // https://github.com/facebook/create-react-app/pull/1840
-  // Create React App and "Standard" only allow the following:
+  // Allow common browser globals for better compatibility:
   // * document
   // * window
   // * console
