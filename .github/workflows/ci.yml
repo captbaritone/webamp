@@ -3,12 +3,6 @@ name: CI
 on:
   push:
   pull_request:
-    # Only run on pull requests that change relevant files
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".gitignore"
-      - "LICENSE.txt"
 
 jobs:
   # Main CI job - using Turborepo for dependency management
@@ -29,7 +23,6 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build all packages
         run: |
-          export CI=true
           npx turbo build build-library
         env:
           NODE_ENV: production
@@ -39,7 +32,6 @@ jobs:
       - name: Run tests
         run: |
           touch packages/skin-database/config.js
-          export CI=true
           npx turbo test -- --maxWorkers=2
         env:
           NODE_ENV: test
@@ -49,7 +41,7 @@ jobs:
           path: |
             packages/ani-cursor/dist
             packages/winamp-eqf/built
-            packages/webamp/dist
+            packages/webamp/built
           key: release-artifacts-${{ github.sha }}
   # Release job - publish packages to NPM
   release:
@@ -76,7 +68,6 @@ jobs:
           path: |
             packages/ani-cursor/dist
             packages/winamp-eqf/built
-            packages/webamp/dist
             packages/webamp/built
           key: release-artifacts-${{ github.sha }}
           fail-on-cache-miss: true
