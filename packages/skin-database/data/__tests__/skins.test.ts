@@ -7,6 +7,10 @@ beforeEach(async () => {
   await knex.migrate.latest();
 });
 
+afterAll(async () => {
+  await knex.destroy();
+});
+
 test("empty", async () => {
   expect(await Skins.getAllClassicSkins()).toEqual([]);
   expect(await Skins.getClassicSkinCount()).toBe(0);

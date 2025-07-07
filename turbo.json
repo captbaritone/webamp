@@ -42,6 +42,16 @@
       "dependsOn": ["ani-cursor#build", "winamp-eqf#build"],
       "outputs": []
     },
+    "webamp-modern#test": {
+      "outputs": []
+    },
+    "skin-database#test": {
+      "outputs": []
+    },
+    "webamp#integration-tests": {
+      "dependsOn": ["ani-cursor#build", "winamp-eqf#build"],
+      "outputs": []
+    },
     "webamp#lint": {
       "dependsOn": ["ani-cursor#build", "winamp-eqf#build"]
     },

@@ -220,6 +220,9 @@ importers:
         specifier: ^13.2.4
         version: 13.3.2
     devDependencies:
+      '@swc/jest':
+        specifier: ^0.2.24
+        version: 0.2.36(@swc/core@1.4.12(@swc/helpers@0.5.15))
       '@types/cookie-session':
         specifier: ^2.0.48
         version: 2.0.48

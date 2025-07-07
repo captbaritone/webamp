@@ -30,6 +30,10 @@ beforeEach(async () => {
   await knex.seed.run();
 });
 
+afterAll(async () => {
+  await knex.destroy();
+});
+
 function gql(templateString: TemplateStringsArray): string {
   return templateString[0];
 }

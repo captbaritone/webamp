@@ -7,6 +7,10 @@ beforeEach(async () => {
   await knex.seed.run();
 });
 
+afterAll(async () => {
+  await knex.destroy();
+});
+
 test("fromMd5", async () => {
   const ctx = new UserContext();
   const files = await ArchiveFileModel.fromMd5(ctx, "a_fake_md5");

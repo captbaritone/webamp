@@ -49,6 +49,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "test": "jest",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -72,7 +73,19 @@
     "@types/node-fetch": "^2.5.7",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
+    "@swc/jest": "^0.2.24",
     "grats": "^0.0.31",
     "typescript": "^5.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": ["@swc/jest"]
+    },
+    "setupFiles": ["<rootDir>/jest-setup.js"]
   }
 }

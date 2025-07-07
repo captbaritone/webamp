@@ -19,6 +19,10 @@ beforeEach(async () => {
   await knex.seed.run();
 });
 
+afterAll(async () => {
+  await knex.destroy();
+});
+
 test("refresh", async () => {
   const ctx = new UserContext();
   const [skin] = await getSkinsToRefresh(ctx, 1);
