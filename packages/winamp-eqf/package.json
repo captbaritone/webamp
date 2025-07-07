@@ -40,7 +40,7 @@
   "author": "Jordan Eldredge",
   "license": "ISC",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@swc/jest": "^0.2.24",

@@ -11,7 +11,7 @@ npm install --save winamp-eqf
 ## Usage
 
 ```typescript
-import { parser, creator, EqfData, CreateEqfData } from 'winamp-eqf';
+import { parser, creator, EqfData, CreateEqfData } from "winamp-eqf";
 
 // ... Get your .eqf or .q1 file as an ArrayBuffer
 const eqf: EqfData = parser(eqfArrayBuffer);
@@ -58,8 +58,6 @@ This package is written in TypeScript and provides full type definitions.
 
 `eqfObject` is an object with the same shape as that returned by `parser()`.
 
-
-
 ## Source Material
 
 Starting with this spec found here: <http://www.perlmonks.org/bare/?node_id=584875>:
@@ -87,4 +85,4 @@ And then via direct message:
 
 > Will do it here as I can type a bit more, but the only obvious thing wrong with the link is the signature assumption as it's not guaranteed to be 'entry1' As you can have multiple eq blocks in a file.
 
-> If you've looked at winamp.q1 you should see multiple presets in that file which follow one after each other so the file signature (winamp.q1 or a specific *.eqf file) is "Winamp EQ library file v1.1\x1A!--" (pulled that out from the disassembler) it's then a 257 byte buffer (256 + null character to terminate correctly) then the 10 byte block relating to the eq sliders (need to double-check the range base) followed by the 1 byte for the preamp slider then if there's more presets in the file, they follow on immediately after with the name block looking at the preamp slider, -12dB = 0x3F, 0dB = 0x1F, 12dB = 0 (so a 0-63 range) that seems to be the same for the other sliders (and matches 1:1 with the sdk details) and I think that's it :) in the winamp.q1 file, the 'default' entry is either a flat preset or what's been saved after customisation (in-case you're wanting to mirror the native behaviour via the preset -> save -> default action)
+> If you've looked at winamp.q1 you should see multiple presets in that file which follow one after each other so the file signature (winamp.q1 or a specific \*.eqf file) is "Winamp EQ library file v1.1\x1A!--" (pulled that out from the disassembler) it's then a 257 byte buffer (256 + null character to terminate correctly) then the 10 byte block relating to the eq sliders (need to double-check the range base) followed by the 1 byte for the preamp slider then if there's more presets in the file, they follow on immediately after with the name block looking at the preamp slider, -12dB = 0x3F, 0dB = 0x1F, 12dB = 0 (so a 0-63 range) that seems to be the same for the other sliders (and matches 1:1 with the sdk details) and I think that's it :) in the winamp.q1 file, the 'default' entry is either a flat preset or what's been saved after customisation (in-case you're wanting to mirror the native behaviour via the preset -> save -> default action)
