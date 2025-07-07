@@ -19,7 +19,7 @@ const eqf: EqfData = parser(eqfArrayBuffer);
 const eqfArrayBuffer: ArrayBuffer = creator(eqf);
 ```
 
-This package is an ES module and requires Node.js 14+ or a modern bundler that supports ES modules.
+This package is an ES module and requires Node.js 22+ or a modern bundler that supports ES modules.
 
 ## API
 

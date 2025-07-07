@@ -6,7 +6,7 @@
     "graphql": "16.8.1"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "test": "jest",
