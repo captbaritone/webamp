@@ -86,7 +86,7 @@ describe("creator", () => {
 // Only test byte-for-byte equality on .EQF files, not .q1 files
 const eqfFixtures = [
   "max.EQF",
-  "min.EQF", 
+  "min.EQF",
   "midline.EQF",
   "preampMax.EQF",
   "preampMin.EQF",
