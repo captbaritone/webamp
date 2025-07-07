@@ -100,16 +100,13 @@ jobs:
           path: |
             packages/ani-cursor/dist
             packages/winamp-eqf/built
-            packages/webamp/built/*.js
-            packages/webamp/built/*.mjs
-            packages/webamp/built/*.map
-            packages/webamp/built/*.html
+            packages/webamp/built
           key: library-artifacts-${{ github.sha }}
 
-  # Lint job - runs in parallel
+  # Lint job - depends on build-library for type declarations
   lint:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-library]
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
@@ -123,20 +120,24 @@ jobs:
           cache: "pnpm"
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build Dependencies
-        run: |
-          # Build ani-cursor and winamp-eqf first so their types are available
-          pnpm --filter ani-cursor build
-          pnpm --filter winamp-eqf build
+      - name: Restore library artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            packages/ani-cursor/dist
+            packages/winamp-eqf/built
+            packages/webamp/built
+          key: library-artifacts-${{ github.sha }}
+          fail-on-cache-miss: true
       - name: Lint
         run: |
           pnpm lint
           pnpm type-check
 
-  # Test job - runs in parallel
+  # Test job - waits for build artifacts
   test:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build]
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
@@ -221,10 +222,7 @@ jobs:
           path: |
             packages/ani-cursor/dist
             packages/winamp-eqf/built
-            packages/webamp/built/*.js
-            packages/webamp/built/*.mjs
-            packages/webamp/built/*.map
-            packages/webamp/built/*.html
+            packages/webamp/built
           key: library-artifacts-${{ github.sha }}
           fail-on-cache-miss: true
       - name: Set version for all packages
