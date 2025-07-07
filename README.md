@@ -65,6 +65,52 @@ Nullsoft, the code within this project is released under the [MIT
 License](LICENSE.txt). That being said, if you do anything interesting with
 this code, please let me know. I'd love to see it.
 
+## Development
+
+This repository uses [Turborepo](https://turbo.build/) for efficient monorepo management. Turborepo provides intelligent caching and parallel execution of tasks across all packages.
+
+### Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages (automatically handles dependencies)
+npx turbo build
+
+# Build library bundles for packages that need them
+npx turbo build-library
+
+# Run all tests
+npx turbo test
+
+# Lint and type-check all packages
+npx turbo lint type-check
+
+# Work on a specific package and its dependencies
+npx turbo dev --filter="webamp"
+```
+
+### Package Dependencies
+
+The monorepo dependency graph is automatically managed by Turborepo:
+
+- `ani-cursor` and `winamp-eqf` are standalone packages built with TypeScript
+- `webamp` depends on both `ani-cursor` and `winamp-eqf` for workspace linking
+- All packages are built in the correct topological order
+- Builds are cached and only rebuild what has changed
+
+### Available Tasks
+
+- `build` - Main build output (Vite for demos, TypeScript compilation for libraries)
+- `build-library` - Library bundles for NPM publishing (only applies to `webamp`)
+- `test` - Run unit tests with Jest
+- `type-check` - TypeScript type checking without emitting files
+- `lint` - ESLint code quality checks
+- `dev` - Development server (for packages that support it)
+
+For more details on individual packages, see their respective README files.
+
 [techcrunch]: https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
 [motherboard]: https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
 [gizmodo]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
