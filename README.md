@@ -12,7 +12,7 @@ Check out this [Twitter thread](https://twitter.com/captbaritone/status/96127471
 
 ## Read the docs
 
-**The [Webamp Documentation](https://docswebamp.org/docs) site contains detailed instructions showing how to add Webamp to your site and customize it to meet your needs.**
+**The [Webamp Documentation](https://docs.webamp.org) site contains detailed instructions showing how to add Webamp to your site and customize it to meet your needs.**
 
 ## About This Repository
 
