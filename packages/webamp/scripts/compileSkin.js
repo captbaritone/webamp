@@ -8,7 +8,7 @@ const puppeteer = require("puppeteer");
   // TODO: allow the skin to be passed in via the CLI.
   try {
     await page.goto(
-      'http://localhost:8080/#{"skinUrl":"/assets/skins/base-2.91.wsz"}'
+      'http://localhost:5173/#{"skinUrl":"/skins/base-2.91.wsz"}'
     );
   } catch (e) {
     console.error(
