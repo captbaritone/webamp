@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 // import { useActionCreator } from "../hooks";
 import DownloadText from "./DownloadText";
 import { useActionCreator } from "../hooks";
+import DownloadLink from "./DownloadLink";
 
 function Metadata() {
   const hash = useSelector(Selectors.getSelectedSkinHash);
@@ -58,13 +59,13 @@ function Metadata() {
   }
 
   const elements = [
-    <a
+    <DownloadLink
       id="metadata-download-skin"
       href={Utils.skinUrlFromHash(hash)}
       download={fileName}
     >
       Download
-    </a>,
+    </DownloadLink>,
     readmeLink,
     /*
     <button

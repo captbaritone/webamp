@@ -4,13 +4,8 @@ import UserContext from "../../../data/UserContext";
 import ClassicSkinResolver from "./ClassicSkinResolver";
 import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
-import algoliasearch from "algoliasearch";
 import * as Skins from "../../../data/skins";
 import { knex } from "../../../db";
-
-// These keys are already in the web client, so they are not secret at all.
-const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
-const index = client.initIndex("Skins");
 
 export default class SkinResolver {
   constructor() {
