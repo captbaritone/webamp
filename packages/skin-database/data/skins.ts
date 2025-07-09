@@ -1,7 +1,8 @@
+import { ALGOLIA_ACCOUNT, ALGOLIA_KEY, ALGOLIA_INDEX } from "../config";
 import { knex } from "../db";
 import path from "path";
 import md5Hash from "md5";
-import { searchIndex } from "../algolia";
+import { client } from "../algolia";
 import { truncate } from "../utils";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
@@ -148,7 +149,10 @@ export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
   // TODO: Await here, but for some reason this never completes
 
-  await searchIndex.partialUpdateObjects([index]);
+  await client.partialUpdateObjects({
+    indexName: ALGOLIA_INDEX,
+    objects: [index],
+  });
   await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert(
     { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
@@ -245,8 +249,10 @@ export async function updateSearchIndexs(
 ): Promise<any> {
   const skinIndexes = await getSearchIndexes(ctx, md5s);
 
-  const results = await searchIndex.partialUpdateObjects(skinIndexes, {
+  const results = await client.partialUpdateObjects({
+    indexName: ALGOLIA_INDEX,
     createIfNotExists: true,
+    objects: skinIndexes,
   });
 
   for (const index of skinIndexes) {
@@ -271,7 +277,10 @@ export async function deleteSkin(md5: string): Promise<void> {
   await deleteLocalSkin(md5);
   console.log(`Deleting skin ${md5} from external sources...`);
   console.log(`... removing from Algolia index`);
-  await searchIndex.deleteObjects([md5]);
+  await client.deleteObjects({
+    indexName: ALGOLIA_INDEX,
+    objectIDs: [md5],
+  });
   console.log(`... removing skin from S3`);
   await S3.deleteSkin(md5);
   console.log(`... removing screenshot from S3`);
