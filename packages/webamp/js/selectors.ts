@@ -116,13 +116,20 @@ const getOrderedTrackObjects = createSelector(
   (tracks, trackOrder): PlaylistTrack[] => trackOrder.map((id) => tracks[id])
 );
 
-export const getSelectedTrackIds = (state: AppState): Set<number> => {
+export const getSelectedTrackIds = (state: AppState): Array<number> => {
   return state.playlist.selectedTracks;
 };
 
+export const getSelectedTrackIdsSet = createSelector(
+  getSelectedTrackIds,
+  (selectedTrackArray): Set<number> => {
+    return new Set(selectedTrackArray);
+  }
+);
+
 export const getSelectedTrackObjects = createSelector(
   getOrderedTrackObjects,
-  getSelectedTrackIds,
+  getSelectedTrackIdsSet,
   (tracks, selectedIds) => tracks.filter((track) => selectedIds.has(track.id))
 );
 

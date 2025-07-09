@@ -19,7 +19,7 @@ interface Props {
 
 function TrackCell({ children, handleMoveClick, index, id }: Props) {
   const skinPlaylistStyle = useTypedSelector(Selectors.getSkinPlaylistStyle);
-  const selectedTrackIds = useTypedSelector(Selectors.getSelectedTrackIds);
+  const selectedTrackIds = useTypedSelector(Selectors.getSelectedTrackIdsSet);
   const currentTrackId = useTypedSelector(Selectors.getCurrentTrackId);
   const selected = selectedTrackIds.has(id);
   const current = currentTrackId === id;

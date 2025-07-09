@@ -5,23 +5,15 @@ export interface PlaylistState {
   trackOrder: number[];
   lastSelectedIndex: number | null;
   currentTrack: number | null;
-  selectedTracks: Set<number>;
+  selectedTracks: number[];
 }
 
 const defaultPlaylistState: PlaylistState = {
   trackOrder: [],
   currentTrack: null,
   lastSelectedIndex: null,
-  selectedTracks: new Set(),
+  selectedTracks: [],
 };
-
-function toggleSetMembership<T>(set: Set<T>, value: T): void {
-  if (set.has(value)) {
-    set.delete(value);
-  } else {
-    set.add(value);
-  }
-}
 
 const playlist = (
   state: PlaylistState = defaultPlaylistState,
@@ -31,13 +23,18 @@ const playlist = (
     case "CLICKED_TRACK":
       return {
         ...state,
-        selectedTracks: new Set([state.trackOrder[(action as any).index]]),
+        selectedTracks: [state.trackOrder[(action as any).index]],
         lastSelectedIndex: (action as any).index,
       };
     case "CTRL_CLICKED_TRACK": {
       const id = state.trackOrder[(action as any).index];
-      const newSelectedTracks = new Set(state.selectedTracks);
-      toggleSetMembership(newSelectedTracks, id);
+      const index = state.selectedTracks.indexOf(id);
+      const newSelectedTracks = [...state.selectedTracks];
+      if (index === -1) {
+        newSelectedTracks.push(id);
+      } else {
+        newSelectedTracks.splice(index, 1);
+      }
       return {
         ...state,
         selectedTracks: newSelectedTracks,
@@ -54,7 +51,7 @@ const playlist = (
       const clickedIndex = (action as any).index;
       const start = Math.min(clickedIndex, state.lastSelectedIndex);
       const end = Math.max(clickedIndex, state.lastSelectedIndex);
-      const selectedTracks = new Set(state.trackOrder.slice(start, end + 1));
+      const selectedTracks = state.trackOrder.slice(start, end + 1);
       return {
         ...state,
         selectedTracks,
@@ -62,18 +59,18 @@ const playlist = (
     case "SELECT_ALL":
       return {
         ...state,
-        selectedTracks: new Set(state.trackOrder),
+        selectedTracks: [...state.trackOrder],
       };
     case "SELECT_ZERO":
       return {
         ...state,
-        selectedTracks: new Set(),
+        selectedTracks: [],
       };
     case "INVERT_SELECTION":
       return {
         ...state,
-        selectedTracks: new Set(
-          state.trackOrder.filter((id) => !state.selectedTracks.has(id))
+        selectedTracks: state.trackOrder.filter(
+          (id) => !state.selectedTracks.includes(id)
         ),
       };
     case "REMOVE_ALL_TRACKS":
@@ -82,7 +79,7 @@ const playlist = (
         ...state,
         trackOrder: [],
         currentTrack: null,
-        selectedTracks: new Set(),
+        selectedTracks: [],
         lastSelectedIndex: null,
       };
     case "REMOVE_TRACKS":
@@ -95,8 +92,8 @@ const playlist = (
           (trackId) => !actionIds.has(trackId)
         ),
         currentTrack: actionIds.has(Number(currentTrack)) ? null : currentTrack,
-        selectedTracks: new Set(
-          Array.from(state.selectedTracks).filter((id) => actionIds.has(id))
+        selectedTracks: Array.from(state.selectedTracks).filter((id) =>
+          actionIds.has(id)
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,
@@ -142,7 +139,7 @@ const playlist = (
         ...state,
         trackOrder: moveSelected(
           state.trackOrder,
-          (i) => state.selectedTracks.has(state.trackOrder[i]),
+          (i) => state.selectedTracks.includes(state.trackOrder[i]),
           (action as any).offset
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
