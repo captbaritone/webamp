@@ -111,7 +111,7 @@ export function dragSelected(offset: number): Thunk {
     const state = getState();
     const tracks = Selectors.getTracks(state);
     const trackOrder = Selectors.getTrackOrder(state);
-    const selectedIds = Selectors.getSelectedTrackIds(state);
+    const selectedIds = Selectors.getSelectedTrackIdsSet(state);
     const firstSelected = trackOrder.findIndex(
       (trackId) => tracks[trackId] && selectedIds.has(trackId)
     );
