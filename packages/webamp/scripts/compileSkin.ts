@@ -1,8 +1,8 @@
-const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
 
 // const DATA_URI = /url\([^)]+\)/g;
 
-(async () => {
+(async (): Promise<void> => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   // TODO: allow the skin to be passed in via the CLI.
@@ -12,7 +12,7 @@ const puppeteer = require("puppeteer");
     );
   } catch (e) {
     console.error(
-      "Error connecting to localhost:8080. Are you running the dev server?",
+      "Error connecting to localhost:5173. Are you running the dev server?",
       "\n\n",
       e
     );
@@ -22,13 +22,13 @@ const puppeteer = require("puppeteer");
   // TODO: Wait for node to be ready
   await new Promise((resolve) => setTimeout(resolve, 500));
   try {
-    const css = await page.evaluate(
-      () => document.getElementById("webamp-skin").innerText
+    const css: string = await page.evaluate(
+      () => document.getElementById("webamp-skin")?.innerText || ""
     );
     console.log(css);
   } catch (e) {
     console.error("Hit an error, putting a screenshot in ./error.png");
-    page.screenshot({ path: "./error.png" });
+    await page.screenshot({ path: "./error.png" });
     throw e;
   } finally {
     await browser.close();

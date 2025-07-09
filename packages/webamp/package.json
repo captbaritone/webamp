@@ -49,7 +49,7 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
     "integration-tests": "jest --config=config/jest.integration.js --runInBand",
     "build-skin": "rm assets/skins/base-2.91.wsz && cd assets/skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
-    "compile-skin": "node scripts/compileSkin.js > css/base-skin.css",
+    "compile-skin": "npx tsx scripts/compileSkin.ts > css/base-skin.css",
     "skin-info": "unzip -vl assets/skins/base-2.91.wsz",
     "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json"
   },
