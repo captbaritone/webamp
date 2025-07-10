@@ -371,7 +371,7 @@ export default class SkinModel {
     }
     try {
       return getTransparentAreaSize(text);
-    } catch (e) {
+    } catch (_e) {
       console.error(`Failed: ${this.getMd5()}`);
       return 0;
     }

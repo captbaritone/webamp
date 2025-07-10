@@ -23,7 +23,7 @@ class DiscordWinstonTransport extends Transport {
     let dataString = null;
     try {
       dataString = JSON.stringify(rest, null, 2);
-    } catch (e) {
+    } catch (_e) {
       dataString = "COULD NOT STRINGIFY DATA";
     }
     await this._channel.send(`${message}

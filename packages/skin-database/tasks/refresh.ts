@@ -79,7 +79,7 @@ export async function _refresh(
   let skinType: SkinType;
   try {
     skinType = await getSkinType(await skin.getZip());
-  } catch (e) {
+  } catch (_e) {
     throw new Error("Not a skin (no main.bmp/skin.xml)");
   }
   if (skinType !== "CLASSIC") {

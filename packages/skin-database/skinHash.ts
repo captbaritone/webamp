@@ -38,7 +38,7 @@ async function getFileData(file: JSZip.JSZipObject): Promise<FileData | null> {
       uncompressedSize: file._data.uncompressedSize,
       isDirectory: file.dir,
     };
-  } catch (e) {
+  } catch (_e) {
     // TODO: We could flag these.
     return null;
   }

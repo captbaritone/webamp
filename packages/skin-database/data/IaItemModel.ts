@@ -130,7 +130,7 @@ export default class IaItemModel {
     }
     try {
       return JSON.parse(this.row.metadata).files;
-    } catch (e) {
+    } catch (_e) {
       console.warn("Could not parse", this.row.metadata);
       return [];
     }

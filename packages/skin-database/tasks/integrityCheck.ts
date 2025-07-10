@@ -47,7 +47,7 @@ export async function checkInternetArchiveMetadata(): Promise<void> {
         continue;
         console.warn("Too few files", { identifier, skin_md5 });
       }
-    } catch (e) {
+    } catch (_e) {
       console.log(metadata);
     }
   }

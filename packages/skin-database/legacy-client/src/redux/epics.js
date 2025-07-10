@@ -513,7 +513,7 @@ const markNsfwEpic = (actions) => {
           }
         `;
         await Utils.fetchGraphql(mutation, { md5: hash });
-      } catch (e) {
+      } catch (_e) {
         return Actions.alert(
           "Oops. Something went wrong. Please try again later."
         );

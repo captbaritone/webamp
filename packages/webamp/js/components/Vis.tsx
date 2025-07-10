@@ -17,14 +17,15 @@ type Props = {
 };
 
 // Pre-render the background grid
-function preRenderBg(
-  width: number,
-  height: number,
-  bgColor: string,
-  fgColor: string,
-  windowShade: boolean,
-  pixelDensity: number
-): HTMLCanvasElement {
+function preRenderBg(options: {
+  width: number;
+  height: number;
+  bgColor: string;
+  fgColor: string;
+  windowShade: boolean;
+  pixelDensity: number;
+}): HTMLCanvasElement {
+  const { width, height, bgColor, fgColor, windowShade, pixelDensity } = options;
   // Off-screen canvas for pre-rendering the background
   const bgCanvas = document.createElement("canvas");
   bgCanvas.width = width;
@@ -67,26 +68,28 @@ export default function Vis({ analyser }: Props) {
   const renderHeight = smallVis ? 5 : 16;
   const renderWidth = 76;
   const pixelDensity = doubled && smallVis ? 2 : 1;
-  const renderWidthBG = !isMWOpen
-    ? renderWidth
-    : windowShade
-    ? doubled
-      ? renderWidth
-      : 38
-    : renderWidth * pixelDensity;
+  
+  let renderWidthBG: number;
+  if (!isMWOpen) {
+    renderWidthBG = renderWidth;
+  } else if (windowShade) {
+    renderWidthBG = doubled ? renderWidth : 38;
+  } else {
+    renderWidthBG = renderWidth * pixelDensity;
+  }
 
   const width = renderWidth * pixelDensity;
   const height = renderHeight * pixelDensity;
 
   const bgCanvas = useMemo(() => {
-    return preRenderBg(
-      renderWidthBG,
+    return preRenderBg({
+      width: renderWidthBG,
       height,
-      colors[0],
-      colors[1],
-      Boolean(windowShade),
-      pixelDensity
-    );
+      bgColor: colors[0],
+      fgColor: colors[1],
+      windowShade: Boolean(windowShade),
+      pixelDensity,
+    });
   }, [colors, height, renderWidthBG, windowShade, pixelDensity]);
 
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
