@@ -8,7 +8,7 @@ import SkinModel from "../data/SkinModel";
 import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 import DiscordEventHandler from "../api/DiscordEventHandler";
-import { exec } from "../utils";
+import { exec, execFile } from "../utils";
 import * as IAService from "../services/internetArchive";
 
 export async function findItemsMissingImages(): Promise<string[]> {
@@ -192,7 +192,7 @@ async function getNewIdentifier(filename: string): Promise<string> {
 }
 
 export async function archive(skin: SkinModel): Promise<string> {
-  const filename = await skin.getFileName();
+  const filename = await skin.getFileName(true);
 
   const screenshotFilename = await skin.getScreenshotFileName();
   const title = `Winamp Skin: ${filename}`;
@@ -207,8 +207,36 @@ export async function archive(skin: SkinModel): Promise<string> {
 
   console.log(`Going to try to upload with identifier "${identifier}"...`);
 
-  const command = `ia upload ${identifier} "${skinFile}" "${screenshotFile}" --metadata="collection:winampskins" --metadata="skintype:wsz" --metadata="mediatype:software" --metadata="title:${title}"`;
-  await exec(command, { encoding: "utf8" });
+  // Path to the ia command in the virtual environment
+  const IA_COMMAND = path.join(__dirname, "../.venv/bin/ia");
+
+  // Environment variables for the virtual environment
+  const venvEnv = {
+    ...process.env,
+    PATH: `${path.join(__dirname, "../.venv/bin")}:${process.env.PATH}`,
+    VIRTUAL_ENV: path.join(__dirname, "../.venv"),
+  };
+
+  const metadata = {
+    collection: "winampskins",
+    skintype: "wsz",
+    mediatype: "software",
+    title: title,
+  };
+
+  // Build arguments array for ia upload command
+  const args = [
+    "upload",
+    identifier,
+    skinFile,
+    screenshotFile,
+    `--metadata=collection:${metadata.collection}`,
+    `--metadata=skintype:${metadata.skintype}`,
+    `--metadata=mediatype:${metadata.mediatype}`,
+    `--metadata=title:${metadata.title}`,
+  ];
+
+  await execFile(IA_COMMAND, args, { env: venvEnv });
   await knex("ia_items").insert({ skin_md5: skin.getMd5(), identifier });
   return identifier;
 }

@@ -158,7 +158,7 @@ export default class SkinModel {
     return "UNREVIEWED";
   }
 
-  async getFileName(): Promise<string> {
+  async getFileName(normalizeExtension?: boolean): Promise<string> {
     const files = await this.getFiles();
     if (files.length === 0) {
       throw new Error(`Could not find file for skin with md5 ${this.getMd5()}`);
@@ -166,6 +166,9 @@ export default class SkinModel {
     const filename = files[0].getFileName();
     if (!filename.match(/\.(zip)|(wsz)|(wal)$/i)) {
       throw new Error("Expected filename to end with zip, wsz or wal.");
+    }
+    if (normalizeExtension) {
+      return path.parse(filename).name + ".wsz";
     }
     return filename;
   }

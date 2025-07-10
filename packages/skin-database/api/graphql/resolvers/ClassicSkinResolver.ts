@@ -24,11 +24,7 @@ export default class ClassicSkinResolver implements NodeResolver, ISkin {
     return toId(this.__typename, this.md5());
   }
   async filename(normalize_extension?: boolean): Promise<string> {
-    const filename = await this._model.getFileName();
-    if (normalize_extension) {
-      return path.parse(filename).name + ".wsz";
-    }
-    return filename;
+    return await this._model.getFileName(normalize_extension);
   }
 
   museum_url(): string {

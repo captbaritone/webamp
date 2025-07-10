@@ -6,6 +6,7 @@ import child_process from "child_process";
 import path from "path";
 
 export const exec = util.promisify(child_process.exec);
+export const execFile = util.promisify(child_process.execFile);
 
 const temp = _temp.track();
 
