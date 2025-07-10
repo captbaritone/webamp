@@ -32,7 +32,7 @@ export const NODE_ENV = env("NODE_ENV") || "production";
 
 function env(key: string): string {
   const value = process.env[key];
-  if (value == null) {
+  if (!value) {
     throw new Error(`Expected an environment variable "${key}"`);
   }
   return value;

@@ -3,7 +3,7 @@ import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
-import { searchIndex } from "../../algolia";
+import { client } from "../../algolia";
 import { createYogaInstance } from "../../app/graphql/yoga";
 import { YogaServerInstance } from "graphql-yoga";
 jest.mock("../../s3");
@@ -331,9 +331,10 @@ test("Mutation.mark_skin_nsfw", async () => {
     type: "MARKED_SKIN_NSFW",
     md5: "a_fake_md5",
   });
-  expect(searchIndex.partialUpdateObjects).toHaveBeenCalledWith([
-    { nsfw: true, objectID: "a_fake_md5" },
-  ]);
+  expect(client.partialUpdateObjects).toHaveBeenCalledWith({
+    indexName: "test-index",
+    objects: [{ nsfw: true, objectID: "a_fake_md5" }],
+  });
   expect(data).toEqual({ mark_skin_nsfw: true });
   const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
 

@@ -1,3 +1,3 @@
-export const searchIndex = {
+export const client = {
   partialUpdateObjects: jest.fn(),
 };
