@@ -26,7 +26,7 @@ export default function WrappedTable({ initialSkins, skinCount }) {
 }
 
 function Table({ initialSkins, skinCount }) {
-  const [skins, setSkins] = useState(initialSkins);
+  const skins = initialSkins;
 
   const scale = 0.5; // This can be adjusted based on your needs
   function getSkinData(data: {

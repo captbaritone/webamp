@@ -6,7 +6,6 @@ import { knex } from "../db";
 import { fetchMetadata, fetchTasks } from "../services/internetArchive";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
-import { Ctx } from "../api/graphql";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 

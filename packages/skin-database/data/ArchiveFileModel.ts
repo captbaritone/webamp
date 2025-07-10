@@ -7,7 +7,6 @@ import FileInfoModel from "./FileInfoModel";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
 import { Int } from "grats";
-import { Ctx } from "../api/graphql";
 
 export type ArchiveFileDebugData = {
   row: ArchiveFileRow;

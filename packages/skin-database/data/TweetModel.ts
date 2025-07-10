@@ -7,7 +7,6 @@ import SkinModel from "./SkinModel";
 import { Int } from "grats";
 import { ISkin } from "../api/graphql/resolvers/CommonSkinResolver";
 import SkinResolver from "../api/graphql/resolvers/SkinResolver";
-import { Ctx } from "../api/graphql";
 
 export type TweetDebugData = {
   row: TweetRow;

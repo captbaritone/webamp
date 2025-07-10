@@ -7,7 +7,6 @@ function Skin({
   style,
   height,
   width,
-  color,
   selectSkin,
   hash,
   permalink,

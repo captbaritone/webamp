@@ -1,5 +1,4 @@
 import { getTwitterClient } from "../twitter";
-import fs from "fs";
 import DiscordEventHandler from "../api/DiscordEventHandler";
 import KeyValue from "../data/KeyValue";
 

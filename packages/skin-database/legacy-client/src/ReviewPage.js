@@ -163,7 +163,7 @@ export default function ReviewPage() {
           Press up arrow to approve, down arrow to reject or "n" to mark as
           NSFW.
         </p>
-        {reverseSkins.map((skin) => {
+        {reverseSkins.map((_skin) => {
           return <div>FIXME: Add TinderCard here</div>;
           // return (
           //   <TinderCard

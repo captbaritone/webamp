@@ -109,7 +109,7 @@ export default function DebugSkin({ md5 }) {
             <p>No Tweets</p>
           ) : (
             <ul>
-              {skin.tweets.map((tweet, i) => (
+              {skin.tweets.map((tweet) => (
                 <li key={tweet.url}>
                   <a href={tweet.url}>Tweet</a> ({tweet.retweets} retweets /{" "}
                   {tweet.likes} likes)

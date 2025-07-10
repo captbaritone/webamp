@@ -156,7 +156,6 @@ export const getRouteData = createSelector(
   getFocusedSkinFile,
   getPermalinkUrlFromHashGetter,
   getSelectedSkinData,
-  getDebugViewOpen,
   (
     activeContentPage,
     hash,
@@ -164,8 +163,7 @@ export const getRouteData = createSelector(
     fileExplorerOpen,
     focusedSkinFile,
     getPermalinkUrlFromHash,
-    skinData,
-    debugViewOpen
+    skinData
   ) => {
     if (activeContentPage === REVIEW_PAGE) {
       return { url: "/review/", title: "Review" };
@@ -229,7 +227,7 @@ export function getSkins(state) {
   return state.skins;
 }
 
-export function getFileExplorerOpen(state) {
+export function getFileExplorerOpen(_state) {
   // The UI for this is not done yet.
   // return state.fileExplorerOpen;
   return false;

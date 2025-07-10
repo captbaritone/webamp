@@ -1,4 +1,4 @@
-import { ALGOLIA_ACCOUNT, ALGOLIA_KEY, ALGOLIA_INDEX } from "../config";
+import { ALGOLIA_INDEX } from "../config";
 import { knex } from "../db";
 import path from "path";
 import md5Hash from "md5";

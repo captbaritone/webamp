@@ -94,7 +94,7 @@ const selectedSkinEpic = (actions) =>
 const loadedSkinZipEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "LOADED_SKIN_ZIP"),
-    switchMap((action) => {
+    switchMap((_action) => {
       // If a file is focused, but not yet loaded, try to load it now?
       return EMPTY;
     })
@@ -170,7 +170,7 @@ const searchEpic = (actions) =>
           }));
           return Actions.gotNewMatchingSkins(matchingSkins);
         }),
-        catchError((e) => {
+        catchError((_e) => {
           return of(Actions.gotSearchError());
         })
       );
@@ -198,7 +198,7 @@ const alertEpic = (actions) =>
 
 const chunkState = {};
 
-const unloadedSkinEpic = (actions, states) =>
+const unloadedSkinEpic = (actions, _states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
     map(({ index }) => {

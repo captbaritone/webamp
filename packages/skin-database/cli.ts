@@ -462,7 +462,6 @@ program
         "missingModernSkins"
       );
       const missingModernSkinsSet = new Set(missingModernSkins);
-      const skins = {};
       for (const md5 of missingModernSkins!) {
         const skin = await SkinModel.fromMd5(ctx, md5);
         if (skin == null) {
