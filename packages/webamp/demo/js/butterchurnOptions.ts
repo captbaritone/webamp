@@ -36,7 +36,7 @@ export function getButterchurnOptions(
       return import(
         /* webpackChunkName: "butterchurn" */
         // @ts-ignore
-        "butterchurn"
+        "@webamp/butterchurn"
       );
     },
     importConvertPreset: () => {

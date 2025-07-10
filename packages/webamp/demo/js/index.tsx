@@ -2,7 +2,7 @@ import React from "react";
 import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom/client";
 // @ts-ignore
-import isButterchurnSupported from "butterchurn/dist/isSupported.min";
+import isButterchurnSupported from "@webamp/butterchurn/dist/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
