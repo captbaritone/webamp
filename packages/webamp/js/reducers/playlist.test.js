@@ -4,7 +4,7 @@ describe("playlist reducer", () => {
   it("can handle adding a track", () => {
     const initialState = {
       trackOrder: [],
-      selectedTracks: new Set(),
+      selectedTracks: [],
       lastSelectedIndex: null,
     };
     const nextState = reducer(initialState, {
@@ -15,14 +15,14 @@ describe("playlist reducer", () => {
     });
     expect(nextState).toEqual({
       trackOrder: [100],
-      selectedTracks: new Set(),
+      selectedTracks: [],
       lastSelectedIndex: null,
     });
   });
   it("defaults to adding new tracks to the end of the list", () => {
     const initialState = {
       trackOrder: [3, 2],
-      selectedTracks: new Set(),
+      selectedTracks: [],
       lastSelectedIndex: 0,
     };
     const nextState = reducer(initialState, {
@@ -32,14 +32,14 @@ describe("playlist reducer", () => {
       url: "url://some-url",
     });
     expect(nextState).toEqual({
-      selectedTracks: new Set(),
+      selectedTracks: [],
       trackOrder: [3, 2, 100],
       lastSelectedIndex: null,
     });
   });
   it("can handle adding a track at a given index", () => {
     const initialState = {
-      selectedTracks: new Set(),
+      selectedTracks: [],
       trackOrder: [3, 2],
       lastSelectedIndex: 0,
     };
@@ -51,7 +51,7 @@ describe("playlist reducer", () => {
       atIndex: 1,
     });
     expect(nextState).toEqual({
-      selectedTracks: new Set(),
+      selectedTracks: [],
       trackOrder: [3, 100, 2],
       lastSelectedIndex: null,
     });
@@ -59,7 +59,7 @@ describe("playlist reducer", () => {
   it("can handle clicking a track", () => {
     const initialState = {
       trackOrder: [3, 2],
-      selectedTracks: new Set(),
+      selectedTracks: [],
       lastSelectedIndex: 0,
     };
 
@@ -68,14 +68,14 @@ describe("playlist reducer", () => {
       index: 1,
     });
     expect(nextState).toEqual({
-      selectedTracks: new Set([2]),
+      selectedTracks: [2],
       trackOrder: [3, 2],
       lastSelectedIndex: 1,
     });
   });
   it("can handle ctrl-clicking a track", () => {
     const initialState = {
-      selectedTracks: new Set([2]),
+      selectedTracks: [2],
       trackOrder: [3, 2],
       lastSelectedIndex: 1,
     };
@@ -85,14 +85,14 @@ describe("playlist reducer", () => {
       index: 0,
     });
     expect(nextState).toEqual({
-      selectedTracks: new Set([2, 3]),
+      selectedTracks: [2, 3],
       trackOrder: [3, 2],
       lastSelectedIndex: 0,
     });
   });
   it("can handle shift-click", () => {
     const initialState = {
-      selectedTracks: new Set(),
+      selectedTracks: [],
       trackOrder: [3, 2, 1, 0],
       lastSelectedIndex: 1,
     };
@@ -103,7 +103,7 @@ describe("playlist reducer", () => {
     });
     expect(nextState).toEqual({
       lastSelectedIndex: 1,
-      selectedTracks: new Set([0, 1, 2]),
+      selectedTracks: [2, 1, 0],
       trackOrder: [3, 2, 1, 0],
     });
   });
