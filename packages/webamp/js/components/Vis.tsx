@@ -25,7 +25,8 @@ function preRenderBg(options: {
   windowShade: boolean;
   pixelDensity: number;
 }): HTMLCanvasElement {
-  const { width, height, bgColor, fgColor, windowShade, pixelDensity } = options;
+  const { width, height, bgColor, fgColor, windowShade, pixelDensity } =
+    options;
   // Off-screen canvas for pre-rendering the background
   const bgCanvas = document.createElement("canvas");
   bgCanvas.width = width;
@@ -68,7 +69,7 @@ export default function Vis({ analyser }: Props) {
   const renderHeight = smallVis ? 5 : 16;
   const renderWidth = 76;
   const pixelDensity = doubled && smallVis ? 2 : 1;
-  
+
   let renderWidthBG: number;
   if (!isMWOpen) {
     renderWidthBG = renderWidth;
