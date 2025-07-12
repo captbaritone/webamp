@@ -3,6 +3,11 @@ import { TextEncoder, TextDecoder } from "util";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
+// eslint-disable-next-line no-constant-condition
+if (true) {
+  throw new Error("HELLO FROM jest-setup");
+}
+
 // In the real app, these are set via .env
 process.env.LOCAL_FILE_CACHE = "<DUMMY>";
 process.env.CLOUDFLARE_PURGE_AUTH_KEY = "<DUMMY_CLOUDFLARE_PURGE_AUTH_KEY>";
