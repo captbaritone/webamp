@@ -1,4 +1,5 @@
 import { ALGOLIA_INDEX } from "../config";
+console.log("RAN skins.ts", ALGOLIA_INDEX);
 import { knex } from "../db";
 import path from "path";
 import md5Hash from "md5";
