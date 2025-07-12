@@ -33,8 +33,7 @@ jobs:
         run: ./scripts/validate-grats.sh
       - name: Run tests
         run: |
-          touch packages/skin-database/config.js
-          npx turbo test --no-cache -- --maxWorkers=2
+          npx turbo test -- --maxWorkers=2
         env:
           NODE_ENV: test
       - name: Cache build artifacts for release
