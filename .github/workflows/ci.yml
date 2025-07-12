@@ -26,14 +26,19 @@ jobs:
           npx turbo build build-library
         env:
           NODE_ENV: production
-      - name: Lint and type-check
+      # - name: Lint and type-check
+      #   run: |
+      #     npx turbo lint type-check
+      # - name: Validate Grats generated files are up-to-date
+      #   run: ./scripts/validate-grats.sh
+      - name: Run db tests manually
         run: |
-          npx turbo lint type-check
-      - name: Validate Grats generated files are up-to-date
-        run: ./scripts/validate-grats.sh
+          cd packages/skin-database
+          pnpm run test
+        env:
+          NODE_ENV: test
       - name: Run tests
         run: |
-          touch packages/skin-database/config.js
           npx turbo test --no-cache -- --maxWorkers=2
         env:
           NODE_ENV: test

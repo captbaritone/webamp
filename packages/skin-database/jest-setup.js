@@ -3,6 +3,8 @@ import { TextEncoder, TextDecoder } from "util";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
+// eslint-disable-next-line no-constant-condition
+
 // In the real app, these are set via .env
 process.env.LOCAL_FILE_CACHE = "<DUMMY>";
 process.env.CLOUDFLARE_PURGE_AUTH_KEY = "<DUMMY_CLOUDFLARE_PURGE_AUTH_KEY>";
@@ -31,3 +33,5 @@ process.env.INSTAGRAM_ACCESS_TOKEN = "<DUMMY>";
 process.env.INSTAGRAM_ACCOUNT_ID = "<DUMMY>";
 process.env.MASTODON_ACCESS_TOKEN = "<DUMMY>";
 process.env.SECRET = "<DUMMY>";
+
+console.log("RAN JEST SETUP", process.env.ALGOLIA_INDEX);
