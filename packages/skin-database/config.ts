@@ -30,6 +30,8 @@ export const INSTAGRAM_ACCOUNT_ID = env("INSTAGRAM_ACCOUNT_ID");
 export const SECRET = env("SECRET");
 export const NODE_ENV = env("NODE_ENV") || "production";
 
+console.log("RAN CONFIG", ALGOLIA_ACCOUNT);
+
 function env(key: string): string {
   const value = process.env[key];
   if (!value) {

@@ -4,9 +4,6 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 // eslint-disable-next-line no-constant-condition
-if (true) {
-  throw new Error("HELLO FROM jest-setup");
-}
 
 // In the real app, these are set via .env
 process.env.LOCAL_FILE_CACHE = "<DUMMY>";
@@ -36,3 +33,5 @@ process.env.INSTAGRAM_ACCESS_TOKEN = "<DUMMY>";
 process.env.INSTAGRAM_ACCOUNT_ID = "<DUMMY>";
 process.env.MASTODON_ACCESS_TOKEN = "<DUMMY>";
 process.env.SECRET = "<DUMMY>";
+
+console.log("RAN JEST SETUP", process.env.ALGOLIA_INDEX);

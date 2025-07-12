@@ -1,13 +1,16 @@
+console.log("RAN GRAPHQL TESTS");
 import { knex } from "../../db";
 import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
 import { client } from "../../algolia";
+console.log("RAN GRAPHQL TESTS ALGOLIA IMPORT");
 import { createYogaInstance } from "../../app/graphql/yoga";
 import { YogaServerInstance } from "graphql-yoga";
 jest.mock("../../s3");
 jest.mock("../../algolia");
+console.log("RAN GRAPHQL TESTS ALGOLIA MOCK");
 jest.mock("../processUserUploads");
 jest.mock("../auth");
 
