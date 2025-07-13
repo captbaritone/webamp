@@ -288,8 +288,8 @@ importers:
         specifier: 5.9.1
         version: 5.9.1
       '@webamp/butterchurn':
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 3.0.0-beta.5
+        version: 3.0.0-beta.5
       ani-cursor:
         specifier: workspace:*
         version: link:../ani-cursor
@@ -3921,8 +3921,8 @@ packages:
   '@web3-storage/multipart-parser@1.0.0':
     resolution: {integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==}
 
-  '@webamp/butterchurn@1.0.0':
-    resolution: {integrity: sha512-cGOnNerpniUTTqQljVW5n3fC7oqiyKudjeNPCnMzo3mJUboZ6Fda+RLnqjJXO9b7pNq8eavNWp5VSI4hUnyahA==}
+  '@webamp/butterchurn@3.0.0-beta.5':
+    resolution: {integrity: sha512-k80fzEP9jT87BoggJOAtulqtr0twFkVdZs5il/wu1IpX0x8P64Zu8Gkay3TbVDGu7OFpwcXeITpCER5qYdLTIQ==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -5798,8 +5798,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  eel-wasm@0.0.15:
-    resolution: {integrity: sha512-FSTWf6lwGn7Zc3QiV+KxWTznIqq4j9eST/aXmyN/cC39+1Arqs13YOMosHQ7tqUt+OjQmG79Vd41f9gu+w1lvA==}
+  eel-wasm@0.0.16:
+    resolution: {integrity: sha512-1tkId7I7E1Vs4fXTRsH83Sjn2S/AbzrVQKLBRGys6NLc3eVH4NBffJsdEeLHOWWUgQpVXBEP3CV/srUZNIuBnw==}
 
   electron-to-chromium@1.5.170:
     resolution: {integrity: sha512-GP+M7aeluQo9uAyiTCxgIj/j+PrWhMlY7LFVj8prlsPljd0Fdg9AprlfUi+OCSFWy9Y5/2D/Jrj9HS8Z4rpKWA==}
@@ -17503,11 +17503,11 @@ snapshots:
 
   '@web3-storage/multipart-parser@1.0.0': {}
 
-  '@webamp/butterchurn@1.0.0':
+  '@webamp/butterchurn@3.0.0-beta.5':
     dependencies:
       '@assemblyscript/loader': 0.17.14
       ecma-proposal-math-extensions: 0.0.2
-      eel-wasm: 0.0.15
+      eel-wasm: 0.0.16
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:
@@ -19667,7 +19667,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  eel-wasm@0.0.15: {}
+  eel-wasm@0.0.16: {}
 
   electron-to-chromium@1.5.170: {}
 
