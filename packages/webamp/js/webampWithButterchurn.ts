@@ -2,7 +2,7 @@ import { Options } from "./types";
 import { PrivateOptions } from "./webampLazy";
 import Webamp from "./webamp";
 // @ts-ignore
-import butterchurn from "@webamp/butterchurn/dist/butterchurn.min.js"; // buterchurn@3.0.0-beta.4
+import butterchurn from "butterchurn/dist/butterchurn.min.js"; // buterchurn@3.0.0-beta.4
 // @ts-ignore
 import butterchurnPresets from "butterchurn-presets/dist/base.js"; // butterchurn-presets@3.0.0-beta.4
 

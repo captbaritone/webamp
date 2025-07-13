@@ -287,12 +287,12 @@ importers:
       '@sentry/browser':
         specifier: 5.9.1
         version: 5.9.1
-      '@webamp/butterchurn':
-        specifier: 3.0.0-beta.5
-        version: 3.0.0-beta.5
       ani-cursor:
         specifier: workspace:*
         version: link:../ani-cursor
+      butterchurn:
+        specifier: 3.0.0-beta.5
+        version: 3.0.0-beta.5
       butterchurn-presets:
         specifier: 3.0.0-beta.4
         version: 3.0.0-beta.4
@@ -3921,9 +3921,6 @@ packages:
   '@web3-storage/multipart-parser@1.0.0':
     resolution: {integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==}
 
-  '@webamp/butterchurn@3.0.0-beta.5':
-    resolution: {integrity: sha512-k80fzEP9jT87BoggJOAtulqtr0twFkVdZs5il/wu1IpX0x8P64Zu8Gkay3TbVDGu7OFpwcXeITpCER5qYdLTIQ==}
-
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
 
@@ -4665,6 +4662,9 @@ packages:
 
   butterchurn@2.6.7:
     resolution: {integrity: sha512-BJiRA8L0L2+84uoG2SSfkp0kclBuN+vQKf217pK7pMlwEO2ZEg3MtO2/o+l8Qpr8Nbejg8tmL1ZHD1jmhiaaqg==}
+
+  butterchurn@3.0.0-beta.5:
+    resolution: {integrity: sha512-BStK4OAbBb9Pvt8PuQlS4WVmYBwU1KuDMRHF1V89QjoIFauAqq7tpV4EpYXj7K563r5daLrMX+2y5DBhZZ9Xig==}
 
   byte-data@18.1.1:
     resolution: {integrity: sha512-Kv/B0r7adgnCcrs/y703sac2XFLdHW5kPfis1j8+Ij/hmEcWhBKf+1pNTv+vsNqXb207Uiyri8bpnogNxR/4Lg==}
@@ -17503,12 +17503,6 @@ snapshots:
 
   '@web3-storage/multipart-parser@1.0.0': {}
 
-  '@webamp/butterchurn@3.0.0-beta.5':
-    dependencies:
-      '@assemblyscript/loader': 0.17.14
-      ecma-proposal-math-extensions: 0.0.2
-      eel-wasm: 0.0.16
-
   '@webassemblyjs/ast@1.14.1':
     dependencies:
       '@webassemblyjs/helper-numbers': 1.13.2
@@ -18431,6 +18425,12 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.27.6
       ecma-proposal-math-extensions: 0.0.2
+
+  butterchurn@3.0.0-beta.5:
+    dependencies:
+      '@assemblyscript/loader': 0.17.14
+      ecma-proposal-math-extensions: 0.0.2
+      eel-wasm: 0.0.16
 
   byte-data@18.1.1:
     dependencies:

@@ -133,7 +133,7 @@
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
     "@sentry/browser": "5.9.1",
-    "@webamp/butterchurn": "3.0.0-beta.5",
+    "butterchurn": "3.0.0-beta.5",
     "ani-cursor": "workspace:*",
     "butterchurn-presets": "3.0.0-beta.4",
     "classnames": "^2.2.5",
