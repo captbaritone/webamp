@@ -66,8 +66,8 @@ _Broken release. Use 2.0.1 instead._
 ### Features
 
 - Allow a single mouse drag across the EQ to set all values [#1180](https://github.com/captbaritone/webamp/pull/1180)
-- Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance. See `windowLayout` in the docs for more information.
-- Configure if "double size mode" should be enabled when constructing a Webamp instance. See `enableDoubleSizeMode` in the docs for more information.
+- Configure the initial layout of windows -- size, position, openness, shade mode -- when constructing a Webamp instance. See [`windowLayout`](./06_API/02_webamp-constructor.md#windowlayout) in the docs for more information.
+- Configure if "double size mode" should be enabled when constructing a Webamp instance. See [`enableDoubleSizeMode`](./06_API/02_webamp-constructor.md#enabledoublesizemode) in the docs for more information.
 - Optically allow users to lazily load heavy dependencies like JSZip and music-metadata-browser with the `webamp/lazy` entry point.
 - Include source maps for non-minified bundles.
 
@@ -104,14 +104,14 @@ _Broken release. Use 2.0.1 instead._
 
 ### Bug Fixes
 
-- Add `webamp.close()` method to public TypeScript types.
+- Add [`webamp.close()`](./06_API/03_instance-methods.md#close-void) method to public TypeScript types.
 
 ## 1.4.1
 
 ### Features
 
-- New Webamp instance method: `.setSkinFromUrl(url)`. See docs for more details.
-- New Webamp instance method: `.close()`. See docs for more details.
+- New Webamp instance method: [`.setSkinFromUrl(url)`](./06_API/03_instance-methods.md#setskinfromurlurl-string-void). See docs for more details.
+- New Webamp instance method: [`.close()`](./06_API/03_instance-methods.md#close-void). See docs for more details.
 
 ### Bug Fixes
 
@@ -126,7 +126,7 @@ _Broken release. Use 2.0.1 instead._
 ### Features
 
 - Added optional configuration option `handleTrackDropEvent` which lets you decide how drop events get converted into tracks.
-- New Webamp instance methods: `.stop()`, `.getMediaStatus()`, and `.seekToTime(seconds)`. See docs for more details.
+- New Webamp instance methods: [`.stop()`](./06_API/03_instance-methods.md#getmediastatus-mediastatus--null), `.getMediaStatus()`, and [`.seekToTime(seconds)`](./06_API/03_instance-methods.md#seektotimeseconds-number-void). See docs for more details.
 - Windows are now layered in the order in which they were focused ([5ee1a4](https://github.com/captbaritone/webamp/commit/5ee1a4f7b024d9e667c41d24c961404e463009c4))
 - When focusing something other than Webamp, it's now possible for no windows to be selected ([6132ac](https://github.com/captbaritone/webamp/commit/6132acdf2cd42b56bf757fa101fc08203e84fd67))
 
@@ -134,7 +134,7 @@ _Broken release. Use 2.0.1 instead._
 
 - Fix a bug where context menus could appear in the wrong location ([95db2d](https://github.com/captbaritone/webamp/commit/95db2d08b6b189f5b9da577d23aca44b04c462a8))
 - Fix a bug where pressing next/previous when stopped would play the track ([#740](https://github.com/captbaritone/webamp/issues/730))
-- Fix a bug where `webamp.dispose` would error if the `#webamp` node had been reparented to anything other than `document.body`.
+- Fix a bug where [`webamp.dispose`](./06_API/03_instance-methods.md#dispose-void) would error if the `#webamp` node had been reparented to anything other than `document.body`.
 - Fix a bug where tracks dropped in the main window were not autoplayed ([f8167d](https://github.com/captbaritone/webamp/commit/f8167dd32209e1a71958190abc037df79642a2cb))
 
 ### Internal Improvements:
@@ -159,23 +159,23 @@ See a full list below:
 ### Features:
 
 - Added methods to the webamp instance to control playback:
-  - `webamp.play()`
-  - `webamp.pause()`
-  - `webamp.previousTrack()`
-  - `webamp.nextTrack()`
-  - `webamp.seekForward(seconds)`
-  - `webamp.seekBackward(seconds)`
+  - [`webamp.play()`](./06_API/03_instance-methods.md#play-void)
+  - [`webamp.pause()`](./06_API/03_instance-methods.md#pause-void)
+  - [`webamp.previousTrack()`](./06_API/03_instance-methods.md#previoustrack-void)
+  - [`webamp.nextTrack()`](./06_API/03_instance-methods.md#nexttrack-void)
+  - [`webamp.seekForward(seconds)`](./06_API/03_instance-methods.md#seekbackwardseconds-number-void)
+  - [`webamp.seekBackward(seconds)`](./06_API/03_instance-methods.md#seekbackwardseconds-number-void)
 - Our ID3 parsing library [jsmediatags](https://github.com/aadsm/jsmediatags) has been replaced by [music-metadata-browser](https://www.npmjs.com/package/music-metadata-browser). This means we now support a broader range of media types, and also that the bitrate and sample rate displayed are now functional
 - The default skin is now included in the Skins section of the options menu by default
 - Implemented the "Options" sub context menu. Click the "O" in the "clutter bar" or select "Options" from the main context menu to see it
 - The equalizer graph is nolonger antialiased. It is now pixelated like real Winamp
-- Added a `.reopen()` method to reopen Webamp after you've closed it ([47ba520](https://github.com/captbaritone/webamp/commit/47ba520c2422d8e4842468a32ca13492845183cd))
+- Added a [`.reopen()`](./06_API/03_instance-methods.md#reopen-void) method to reopen Webamp after you've closed it ([47ba520](https://github.com/captbaritone/webamp/commit/47ba520c2422d8e4842468a32ca13492845183cd))
 - Stip diacritic marks from song description so it displays better in the marquee ([2b2598](https://github.com/captbaritone/webamp/commit/2b2598329d3891ee8a976b8169066586110a767a))
 
 ### Bug Fixes:
 
 - Fixed a longstanding bug where mono audio files would only play in the right channel ([4fd802](https://github.com/captbaritone/webamp/commit/4fd802f96efabb98c3c1573819eed37fec630f90))
-- Fixed a bug ([#687](https://github.com/captbaritone/webamp/issues/687)) where `webamp.appendTracks()` would cause currently playing media to pause.
+- Fixed a bug ([#687](https://github.com/captbaritone/webamp/issues/687)) where [`webamp.appendTracks()`](./06_API/03_instance-methods.md#appendtrackstracks-track-void) would cause currently playing media to pause.
 - Avoid sticking a file `<input>` into the global DOM ([343686](https://github.com/captbaritone/webamp/commit/343686f7454c4ece95b520fa3ddbf3ecc0198100))
 - Fix a bug where tracks dragged into the playlist were added at the wrong location ([b074e0](https://github.com/captbaritone/webamp/commit/b074e0eff35ac8b1b34efa902681aa19ba2b8629))
 - Fix a bug where skin cursors were not being shown for the equalizer sliders ([65bb59d](https://github.com/captbaritone/webamp/commit/65bb59353dc2da858440a3d753aec02fb771f0cc))
@@ -183,7 +183,7 @@ See a full list below:
 - Scrolling in the Equalizer window nolonger changes the volume ([48a937](https://github.com/captbaritone/webamp/commit/48a937da8722ccfd3c2e9df378a847c453c36864))
 - Clicking anywhere in a equalizer slider now makes the button depress ([20e681](https://github.com/captbaritone/webamp/commit/20e6811e6f59e82a5765c38b0b33fbed2eb575ee)
 - Parsing of the `viscolor.txt` file in skins is now more permissive, allowing us to support more skins ([0d29ff](https://github.com/captbaritone/webamp/commit/0d29ffe3f4b20505005346cbc97d0cdf85664619))
-- The hotkeys to seek forward/backwards 10 tracks now works properly ([7d9ef4](https://github.com/captbaritone/webamp/commit/7d9ef4287f7294f6bdc1db89b717592cf4e48f17))
+- The [hotkeys](./05_features/01_hotkeys.md) to seek forward/backwards 10 tracks now works properly ([7d9ef4](https://github.com/captbaritone/webamp/commit/7d9ef4287f7294f6bdc1db89b717592cf4e48f17))
 - Fix a bug where the preamp level was not applied until you changed it ([f03c88](https://github.com/captbaritone/webamp/commit/f03c88c6d89fd51cbc0538841bb3227accfa0431))
 - Fix a bug where `.eqf` values were encoded incorrectly ([c634cd](https://github.com/captbaritone/webamp/commit/c634cd8b947e5d2d8b94b38023bc20097737a995))
 - Preamp and EQ now boost/attenuate the same way original winamp 2 did ([#748](https://github.com/captbaritone/webamp/pull/748))
@@ -198,7 +198,7 @@ See a full list below:
 
 ### Features
 
-- Users can register an `onWillClose` callback, which is passed a `cancel` function. The `cancel` function can be called to prevent Webamp from closing. [#655](https://github.com/captbaritone/webamp/pull/655)
+- Users can register an [`onWillClose`](./06_API/03_instance-methods.md#onwillclosecb-cancel---void--void---void) callback, which is passed a `cancel` function. The `cancel` function can be called to prevent Webamp from closing. [#655](https://github.com/captbaritone/webamp/pull/655)
 
 ### Internal changes
 
@@ -208,7 +208,7 @@ See a full list below:
 
 ### Changes
 
-Webamp is no-longer rendered into the DOM node you pass into `webamp.renderWhenReady()`. Instead, Webamp is rendered as a direct child of the `<body>` tag. The passed DOM node is still used for positioning. Webamp will attempt to center itself within that DOM node when it renders.
+Webamp is no-longer rendered into the DOM node you pass into [`webamp.renderWhenReady()`](./06_API/03_instance-methods.md#renderwhenreadydomnode-htmlelement-promisevoid). Instead, Webamp is rendered as a direct child of the `<body>` tag. The passed DOM node is still used for positioning. Webamp will attempt to center itself within that DOM node when it renders.
 
 ### Features
 
@@ -261,8 +261,8 @@ Webamp is no-longer rendered into the DOM node you pass into `webamp.renderWhenR
 
 ### Added
 
-- Instance method to be notified when Webamp is closed `webamp.onClose(callback)`.
-- Instance method to be notified when Webamp is minimized `webamp.onMinimize(callback)`.
+- Instance method to be notified when Webamp is closed [`webamp.onClose(callback)`](./06_API/03_instance-methods.md#onclosecb---void---void).
+- Instance method to be notified when Webamp is minimized [`webamp.onMinimize(callback)`](./06_API/03_instance-methods.md#onminimizecb---void---void).
 - Support for skins that use `.png` sprite sheets instead of `.bmp`. This saves 15kb for the default skin on the demo page. ([b88e87](https://github.com/captbaritone/winamp2-js/commit/b88e87b6584fd9db2e2295addab7bba0c1acd226))
 - We now attempt to detect mono audio files. Previously mono files would report as stereo and play only in the left channel.
 
@@ -273,8 +273,8 @@ Webamp is no-longer rendered into the DOM node you pass into `webamp.renderWhenR
 
 ## 0.0.6
 
-- Added: `winamp.appendTracks()`.
-- Added: `winamp.setTracksToPlay()`.
+- Added: [`winamp.appendTracks()`](./06_API/03_instance-methods.md#appendtrackstracks-track-void).
+- Added: [`winamp.setTracksToPlay()`](./06_API/03_instance-methods.md#settrackstoplaytracks-track-void).
 - Changed: We no-longer try to center on window resize.
 - Meta: Added real documentation!
 - Meta: Remove lots of garbage from the NPM build.
