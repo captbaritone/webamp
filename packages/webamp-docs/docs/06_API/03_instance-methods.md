@@ -48,7 +48,7 @@ webamp.setTracksToPlay([
 
 Play the previous track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.previousTrack();
@@ -58,7 +58,7 @@ webamp.previousTrack();
 
 Play the next track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.nextTrack();
@@ -68,7 +68,7 @@ webamp.nextTrack();
 
 Seek forward n seconds in the current track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.seekForward(10);
@@ -78,7 +78,7 @@ webamp.seekForward(10);
 
 Seek backward n seconds in the current track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.seekBackward(10);
@@ -88,7 +88,7 @@ webamp.seekBackward(10);
 
 Seek to a given time within the current track.
 
-**Since** 1.4.0
+**Since** [v1.4.0](../12_changelog.md#140)
 
 ```ts
 webamp.seekToTime(15.5);
@@ -98,7 +98,7 @@ webamp.seekToTime(15.5);
 
 Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
 
-**Since** 1.4.0
+**Since** [v1.4.0](../12_changelog.md#140)
 
 ```ts
 const isPlaying = webamp.getMediaStatus() === "PLAYING";
@@ -110,7 +110,7 @@ Get the current "playing" status of the player. Similar to `getMediaStatus()`, b
 
 The return value is one of: `"PLAYING"`, `"STOPPED"`, `"PAUSED"`, `"ENDED"`, or `"CLOSED"`.
 
-**Since** 2.1.3
+**Since** [Unreleased](../12_changelog.md#unreleased)
 
 ```ts
 const playerStatus = webamp.getPlayerMediaStatus();
@@ -125,7 +125,7 @@ if (playerStatus === "ENDED") {
 
 Pause the current track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.pause();
@@ -135,7 +135,7 @@ webamp.pause();
 
 Play the current track.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.play();
@@ -145,7 +145,7 @@ webamp.play();
 
 Stop the currently playing audio. Equivalent to pressing the "stop" button.
 
-**Since** 1.4.0
+**Since** [v1.4.0](../12_changelog.md#140)
 
 ```ts
 webamp.stop();
@@ -155,7 +155,7 @@ webamp.stop();
 
 Set volume from 0 - 100.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 webamp.setVolume(75);
@@ -167,7 +167,7 @@ Set the current track to a specific track in the playlist by zero-based index.
 
 Note: If Webamp is currently playing, the track will begin playing. If Webamp is not playing, the track will not start playing. You can use `webamp.pause()` before calling this method or `webamp.play()` after calling this method to control whether the track starts playing.
 
-**Since** 2.1.0
+**Since** [v2.1.0](../12_changelog.md#210)
 
 ```ts
 // Play the third track in the playlist
@@ -178,7 +178,7 @@ webamp.setCurrentTrack(2);
 
 Get the current playlist in order.
 
-**Since** 2.1.0
+**Since** [v2.1.0](../12_changelog.md#210)
 
 ```ts
 const tracks = webamp.getPlaylistTracks();
@@ -189,7 +189,7 @@ console.log(`Playlist has ${tracks.length} tracks`);
 
 Check if shuffle is enabled.
 
-**Since** 2.1.0
+**Since** [v2.1.0](../12_changelog.md#210)
 
 ```ts
 if (webamp.isShuffleEnabled()) {
@@ -201,7 +201,7 @@ if (webamp.isShuffleEnabled()) {
 
 Toggle shuffle mode between enabled and disabled.
 
-**Since** 2.1.3
+**Since** [Unreleased](../12_changelog.md#unreleased)
 
 ```ts
 webamp.toggleShuffle();
@@ -211,7 +211,7 @@ webamp.toggleShuffle();
 
 Check if repeat is enabled.
 
-**Since** 2.1.0
+**Since** [v2.1.0](../12_changelog.md#210)
 
 ```ts
 if (webamp.isRepeatEnabled()) {
@@ -223,7 +223,7 @@ if (webamp.isRepeatEnabled()) {
 
 Toggle repeat mode between enabled and disabled.
 
-**Since** 2.1.3
+**Since** [Unreleased](../12_changelog.md#unreleased)
 
 ```ts
 webamp.toggleRepeat();
@@ -297,13 +297,13 @@ unsubscribe();
 
 Equivalent to selecting "Close" from Webamp's options menu. Once closed, you can open it again with `.reopen()`.
 
-**Since** 1.4.1
+**Since** [v1.4.1](../12_changelog.md#141)
 
 ### `reopen(): void`
 
 After `.close()`ing this instance, you can reopen it by calling this method.
 
-**Since** 1.3.0
+**Since** [v1.3.0](../12_changelog.md#130)
 
 ```ts
 const icon = document.getElementById("webamp-icon");
@@ -332,7 +332,9 @@ unsubscribe();
 
 Updates the skin used by the Webamp instance. Note that this does not happen immediately. If you want to be notified when the skin load is complete, use `.skinIsLoaded()`, which returns a promise which you can await.
 
-**Since** 1.4.1
+**Since** [v1.4.1](../12_changelog.md#141)
+
+````ts
 
 ### `skinIsLoaded(): Promise<void>`
 
@@ -342,7 +344,7 @@ Returns a promise that resolves when the skin is done loading.
 const start = Date.now();
 await webamp.skinIsLoaded();
 console.log(`The skin loaded in ${Date.now() - start}`);
-```
+````
 
 ### `dispose(): void`
 

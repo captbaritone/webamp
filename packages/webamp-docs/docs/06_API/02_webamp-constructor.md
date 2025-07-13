@@ -71,7 +71,7 @@ const webamp = new Webamp({
 
 ### `windowLayout`
 
-**Since** 2.0.0
+**Since** [v2.0.0](../12_changelog.md#200)
 
 An object representing the initial layout of the windows. Valid keys are `main`, `equalizer`, `playlist`, and `milkdrop`. Omitted windows will start hidden.
 
@@ -109,7 +109,7 @@ const webamp = new Webamp({
 
 ### `enableDoubleSizeMode`
 
-_Since 2.0.0_
+**Since** [v2.0.0](../12_changelog.md#200)
 
 A boolean indicating if double size mode should be enabled. **Default:** `false`.
 
@@ -191,7 +191,7 @@ const webamp = new Webamp({
 
 ### `handleAddUrlEvent`
 
-**Since** 1.4.1
+**Since** [v1.4.1](../12_changelog.md#141)
 
 An optional function to extend the behavior of the button "ADD URL". The function should return an optional array of [`Track`](01_track.md) objects or `null`.
 
@@ -208,7 +208,7 @@ const webamp = new Webamp({
 
 ### `handleLoadListEvent`
 
-**Since** 1.4.1
+**Since** [v1.4.1](../12_changelog.md#141)
 
 An optional function to extend the behavior of the playlist button "LOAD LIST". The function should return an optional array of [`Track`](01_track.md) objects or `null`.
 
@@ -225,7 +225,7 @@ const webamp = new Webamp({
 
 ### `handleSaveListEvent`
 
-**Since** 1.4.1
+**Since** [v1.4.1](../12_changelog.md#141)
 Provide a way to extend the behavior of the playlist button SAVE LIST.
 
 ```ts
@@ -239,7 +239,7 @@ const webamp = new Webamp({
 
 ### `enableMediaSession`
 
-**Since** 2.1.3
+**Since** [Unreleased](../12_changelog.md#unreleased)
 
 Have Webamp connect to the browser's [Media Session
 API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API), if the browser supports it.
