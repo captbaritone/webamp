@@ -6,12 +6,14 @@
 
 ### Improvements
 
+- Added new `webamp/butterchurn` entrypoint which includes Milkdrop window by default.
 - Added new `Webamp` instance methods:
   - `webamp.toggleShuffle`
   - `webamp.toggleRepeat`
   - `webamp.getPlayerMediaStatus`
 - Add new config option `enableMediaSession` to allow Webamp to connect to the browser's Media Session API. This enables OS/hardware level media controls like play/pause/next/previous.
 - Ensure the promise returned from `renderWhenReady` only resolves after the Webamp instance has been fully mounted and inserted into the DOM. Previously it resolved after the DOM node was created but before it was inserted into the DOM.
+- Made Redux state fully serializable.
 
 ### Bug Fixes
 
