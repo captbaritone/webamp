@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "files": [
     "built",
