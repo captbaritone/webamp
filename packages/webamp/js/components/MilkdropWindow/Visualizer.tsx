@@ -62,6 +62,7 @@ function Visualizer({ analyser, width, height }: Props) {
         // Webamp may support rendering Milkdrop presets from untrusted sources.
         // By using `onlyUseWASM` here we instruct Butterchurn not to `eval`
         // JavaScript code included in older Butterchurn preset `.json` files.
+        // https://jordaneldredge.com/blog/speeding-up-winamps-music-visualizer-with-webassembly/#security
         onlyUseWASM: true,
       }
     );
