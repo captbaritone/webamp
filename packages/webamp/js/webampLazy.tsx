@@ -16,6 +16,7 @@ import {
   PlaylistTrack,
   PlayerMediaStatus,
   IMetadataApi,
+  Preset,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -44,6 +45,7 @@ export interface PrivateOptions {
 export interface InjectableDependencies {
   requireJSZip: () => Promise<JSZip>;
   requireMusicMetadata: () => Promise<IMetadataApi>;
+  requireButterchurnPresets?: () => Promise<Preset[]>;
 }
 
 class Webamp {
@@ -51,7 +53,9 @@ class Webamp {
   _actionEmitter: Emitter;
   _root: ReactDOM.Root | null;
   _disposable: Disposable;
-  options: Options & PrivateOptions & InjectableDependencies; // TODO: Make this _private
+  // TODO: Make this _private
+  options: Options & PrivateOptions & InjectableDependencies;
+
   media: IMedia; // TODO: Make this _private
   store: Store; // TODO: Make this _private
 
@@ -84,6 +88,7 @@ class Webamp {
       zIndex,
       requireJSZip,
       requireMusicMetadata,
+      requireButterchurnPresets,
       handleTrackDropEvent,
       handleAddUrlEvent,
       handleLoadListEvent,
@@ -93,11 +98,22 @@ class Webamp {
       __customMediaClass,
     } = this.options;
 
+    const butterchurnOptions = __butterchurnOptions;
+
+    if (requireButterchurnPresets != null) {
+      if (butterchurnOptions == null) {
+        throw new Error(
+          "You must pass `__butterchurnOptions` if you are using `requireButterchurnPresets`."
+        );
+      }
+      butterchurnOptions.getPresets = requireButterchurnPresets;
+    }
+
     // TODO: Make this much cleaner.
     let convertPreset = null;
-    if (__butterchurnOptions != null) {
+    if (butterchurnOptions != null) {
       const { importConvertPreset, presetConverterEndpoint } =
-        __butterchurnOptions;
+        butterchurnOptions;
 
       if (importConvertPreset != null && presetConverterEndpoint != null) {
         convertPreset = async (file: File): Promise<Object> => {
@@ -148,14 +164,12 @@ class Webamp {
       this.store.dispatch({ type: "SET_Z_INDEX", zIndex });
     }
 
-    if (options.__butterchurnOptions) {
+    if (butterchurnOptions) {
       this.store.dispatch({
         type: "ENABLE_MILKDROP",
-        open: options.__butterchurnOptions.butterchurnOpen,
+        open: butterchurnOptions.butterchurnOpen,
       });
-      this.store.dispatch(
-        Actions.initializePresets(options.__butterchurnOptions)
-      );
+      this.store.dispatch(Actions.initializePresets(butterchurnOptions));
     }
 
     const handleOnline = () =>

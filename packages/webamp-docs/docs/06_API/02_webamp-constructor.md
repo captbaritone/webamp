@@ -254,3 +254,15 @@ const webamp = new Webamp({
   // ...other config options
 });
 ```
+
+### `requireButterchurnPresets?: () => Promise<Preset[]>`
+
+**Since** [unreleased](../12_changelog.md#unreleased)
+
+Milkdrop (Butterchurn) presets to be used. If not specified, the default presets
+included in the bundle will be used.
+
+Presets are expected to be in Butterchurn's JSON format. You can find these `.json` files in:
+
+- The [Milkdrop Presets Collection](https://archive.org/details/milkdrops) at the Internet Archive.
+- The [`butterchurn-presets@3.0.0-beta.4`](https://www.npmjs.com/package/butterchurn-presets/v/3.0.0-beta.4) NPM package
