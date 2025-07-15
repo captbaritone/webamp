@@ -6,7 +6,8 @@
     "built",
     "!built/types/demo",
     "!built/*.html",
-    "!built/tsBuilt"
+    "!built/tsBuilt",
+    "!built/dist"
   ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.mjs",
