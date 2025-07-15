@@ -11,12 +11,11 @@
     </div>
     <script type="module">
       /**
-       * Webamp includes a `webamp/butterchurn` entrypoint which includes the Butterchurn
-       * library to enable the Milkdrop visualizer. It hasn't been included in a
-       * stable version yet, until it is, you can use by installing
-       * `webamp@next`.
+       * Starting in version 2.2.0, Webamp includes a `webamp/butterchurn`
+       * entrypoint which includes the Butterchurn library to enable the
+       * Milkdrop visualizer.
        */
-      import Webamp from "https://unpkg.com/webamp@0.0.0-next-7cdc35b/butterchurn";
+      import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
       const webamp = new Webamp({
         initialTracks: [
           {

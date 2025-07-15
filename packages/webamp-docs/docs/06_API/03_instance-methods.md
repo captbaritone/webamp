@@ -110,7 +110,7 @@ Get the current "playing" status of the player. Similar to `getMediaStatus()`, b
 
 The return value is one of: `"PLAYING"`, `"STOPPED"`, `"PAUSED"`, `"ENDED"`, or `"CLOSED"`.
 
-**Since** [Unreleased](../12_changelog.md#unreleased)
+**Since** [v2.2.0](../12_changelog.md#220)
 
 ```ts
 const playerStatus = webamp.getPlayerMediaStatus();
@@ -201,7 +201,7 @@ if (webamp.isShuffleEnabled()) {
 
 Toggle shuffle mode between enabled and disabled.
 
-**Since** [Unreleased](../12_changelog.md#unreleased)
+**Since** [v2.2.0](../12_changelog.md#220)
 
 ```ts
 webamp.toggleShuffle();
@@ -223,7 +223,7 @@ if (webamp.isRepeatEnabled()) {
 
 Toggle repeat mode between enabled and disabled.
 
-**Since** [Unreleased](../12_changelog.md#unreleased)
+**Since** [v2.2.0](../12_changelog.md#220)
 
 ```ts
 webamp.toggleRepeat();

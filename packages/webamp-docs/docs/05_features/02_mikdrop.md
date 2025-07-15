@@ -2,7 +2,7 @@
 
 Webamp uses [Butterchurn](https://butterchurnviz.com/) to provide a Milkdrop visualizer. Butterchurn is a JavaScript port of the original Milkdrop visualizer, and it can run in any modern web browser.
 
-The [next release](../12_changelog.md#unreleased) of Webamp will includes a `webamp/butterchurn` entrypoint that includes Butterchurn, so you can use it to create a Webamp instance with Milkdrop visualizer enabled.
+Starting with [v2.2.0](../12_changelog.md#220) Webamp includes a `webamp/butterchurn` entrypoint that includes Butterchurn, so you can use it to create a Webamp instance with Milkdrop visualizer enabled. See "Minimal Milkdrop" in [examples](../04_examples.md) for more details.
 
 ## Hotkeys
 

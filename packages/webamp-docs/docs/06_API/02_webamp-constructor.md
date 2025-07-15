@@ -239,7 +239,7 @@ const webamp = new Webamp({
 
 ### `enableMediaSession`
 
-**Since** [Unreleased](../12_changelog.md#unreleased)
+**Since** [v2.2.0](../12_changelog.md#220)
 
 Have Webamp connect to the browser's [Media Session
 API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API), if the browser supports it.
