@@ -16,7 +16,7 @@ This is the current version of Webamp.
 
 ### Improvements
 
-- Added new `webamp/butterchurn` entrypoint which includes Milkdrop window by default.
+- Added new [`webamp/butterchurn`](./06_API/00_entrypoints.md#webampbutterchurn) entrypoint which includes Milkdrop window by default. This is the recommended entrypoint for users who want a fully featured Webamp and are not particularly concerned about bundle size.
 - Butterchurn Milkdrop visualizer now always uses WebAssembly to sandbox code defined in visualizer presets. Read more about the security implications in [Speeding Up Webamp's Music Visualizer with WebAssembly](https://jordaneldredge.com/blog/speeding-up-winamps-music-visualizer-with-webassembly/#security).
 - Added new `Webamp` instance methods:
   - [`webamp.toggleShuffle`](./06_API/03_instance-methods.md#toggleshuffle-void)

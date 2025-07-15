@@ -15,7 +15,7 @@ npm install --save webamp
 From here you can import Webamp in your JavaScript code:
 
 ```js
-import Webamp from "webamp";
+import Webamp from "webamp/butterchurn";
 // ... use Webamp here
 ```
 
@@ -25,19 +25,7 @@ ES modules can be imported via URL directly inside a `<script type="module">` ta
 
 ```html
 <script type="module">
-  import Webamp from "https://unpkg.com/webamp@^2";
-  // ... use Webamp here
-</script>
-```
-
-## Include via a script tag
-
-This will make the Webamp constructor available as a `window` property: `window.Webamp` keep in mind that you will need to use the `type="module"` attribute on the script tag,
-
-```html
-<script src="https://unpkg.com/webamp@^2" type="module"></script>
-<script>
-  const Webamp = window.Webamp;
+  import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
   // ... use Webamp here
 </script>
 ```
