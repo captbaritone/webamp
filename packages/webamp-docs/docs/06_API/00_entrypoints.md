@@ -6,7 +6,7 @@ All bundles are minified ES modules with provided TypeScript types. For examples
 
 The main bundles are exposed as the following [package entrypoints](https://nodejs.org/api/packages.html#package-entry-points):
 
-# `webamp/butterchurn`
+## `webamp/butterchurn`
 
 **Since** [v2.2.0](../12_changelog.md#220)
 
@@ -20,7 +20,7 @@ This all-inclusive minified bundle has everything you need to enable all Webamp 
 import Webamp from "webamp/butterchurn";
 ```
 
-# `webamp/lazy`
+## `webamp/lazy`
 
 :::warning
 Using this entrypoint requires that you have a rather sophisticated bundler setup.
@@ -38,7 +38,7 @@ import Webamp from "webamp/lazy";
 
 For instructions on how to use this entrypoint, see the [Bundle Size Guide](../07_guides/03_bundle-size.md).
 
-# `webamp`
+## `webamp`
 
 :::warning
 In a future version of Webamp, this entrypoint will become an alias of `webamp/butterchurn`.
