@@ -1,4 +1,4 @@
-import { Options } from "./types";
+import { Options, Preset } from "./types";
 import { PrivateOptions } from "./webampLazy";
 import Webamp from "./webamp";
 // @ts-ignore
@@ -19,18 +19,23 @@ const DEFAULT_BUTTERCHURN_WINDOW_LAYOUT = {
   },
 };
 
+const DEFAULT_REQUIRE_BUTTERCHURN_PRESETS = async () =>
+  Object.entries(butterchurnPresets).map(([name, preset]) => {
+    return { name, butterchurnPresetObject: preset as Object };
+  });
+
 export default class WebampWithButterchurn extends Webamp {
   constructor(options: Options & PrivateOptions) {
+    const requireButterchurnPresets =
+      options.requireButterchurnPresets ?? DEFAULT_REQUIRE_BUTTERCHURN_PRESETS;
     super({
       ...options,
+      requireButterchurnPresets,
       __butterchurnOptions: {
         importButterchurn: () => Promise.resolve(butterchurn),
-        // @ts-ignore
-        getPresets: () => {
-          return Object.entries(butterchurnPresets).map(([name, preset]) => {
-            return { name, butterchurnPresetObject: preset };
-          });
-        },
+        // This should be considered deprecated, and users should instead supply
+        // the top level `requireButterchurnPresets` option.
+        getPresets: requireButterchurnPresets,
         butterchurnOpen: true,
       },
       windowLayout: options.windowLayout ?? DEFAULT_BUTTERCHURN_WINDOW_LAYOUT,
