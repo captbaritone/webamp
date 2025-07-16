@@ -47,6 +47,9 @@
       "dependsOn": ["ani-cursor#build", "winamp-eqf#build"],
       "outputs": []
     },
+    "webamp-modern#build": {
+      "outputs": []
+    },
     "webamp-modern#test": {
       "outputs": []
     },
