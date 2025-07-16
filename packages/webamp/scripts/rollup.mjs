@@ -88,12 +88,32 @@ const BUNDLES = [
   },
 ];
 
+const PARALLEL_LIMIT = 1;
+
 build();
 
 async function build() {
-  console.log(`🚀 Building ${BUNDLES.length} bundles in parallel...`);
+  console.log(
+    `🚀 Building ${BUNDLES.length} bundles in parallel (limit: ${PARALLEL_LIMIT})...`
+  );
 
-  const buildPromises = BUNDLES.map(async (bundleDesc) => {
+  let index = 0;
+  async function nextBatch() {
+    const batch = [];
+    for (
+      let i = 0;
+      i < PARALLEL_LIMIT && index < BUNDLES.length;
+      i++, index++
+    ) {
+      batch.push(runBundle(BUNDLES[index]));
+    }
+    await Promise.all(batch);
+    if (index < BUNDLES.length) {
+      await nextBatch();
+    }
+  }
+
+  async function runBundle(bundleDesc) {
     console.log(`📦 Building ${bundleDesc.name}...`);
     const plugins = getPlugins({
       outputFile: bundleDesc.output.file,
@@ -136,8 +156,8 @@ async function build() {
       ...bundleDesc.output,
     });
     console.log(`✅ Completed ${bundleDesc.name}`);
-  });
+  }
 
-  await Promise.all(buildPromises);
+  await nextBatch();
   console.log(`🎉 All ${BUNDLES.length} bundles built successfully!`);
 }
