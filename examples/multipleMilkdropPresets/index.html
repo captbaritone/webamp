@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="app" style="height: 100vh">
+      <!-- Webamp will attempt to center itself within this div -->
+    </div>
+    <script type="module">
+      // The `requireButterchurnPresets` config option is not yet available in a stable release.
+      // for now you need to install a pre-release version of Webamp to use it.
+      import Webamp from "https://unpkg.com/webamp@0.0.0-next-41cfbbb/butterchurn";
+      const webamp = new Webamp({
+        initialTracks: [
+          {
+            metaData: {
+              artist: "DJ Mike Llama",
+              title: "Llama Whippin' Intro",
+            },
+            // NOTE: Your audio file must be served from the same domain as your HTML
+            // file, or served with permissive CORS HTTP headers:
+            // https://docs.webamp.org/docs/guides/cors
+            url: "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/mp3/llama-2.91.mp3",
+            duration: 5.322286,
+          },
+        ],
+        requireButterchurnPresets() {
+          return [
+            {
+              name: "md_AdamFX_Enterz_Tha_Mash_With_Martin_stahlregen_AdamFX_In_Tha_Mash_Effectz_D/md_AdamFX_Enterz_Tha_Mash_With_Martin_stahlregen_AdamFX_In_Tha_Mash_Effectz_D.milk",
+              butterchurnPresetUrl:
+                "https://archive.org/cors/md_AdamFX_Enterz_Tha_Mash_With_Martin_stahlregen_AdamFX_In_Tha_Mash_Effectz_D/md_AdamFX_Enterz_Tha_Mash_With_Martin_stahlregen_AdamFX_In_Tha_Mash_Effectz_D.json",
+            },
+          ];
+        },
+      });
+
+      // Returns a promise indicating when it's done loading.
+      webamp.renderWhenReady(document.getElementById("app"));
+    </script>
+  </body>
+</html>
