@@ -12,6 +12,10 @@ If you want access to the changes in this section before they are officially rel
 
 - Added new [`requireButterchurnPresets`](./06_API/02_webamp-constructor.md#requirebutterchurnpresets---promisepreset) option when constructing a Webamp instance. This allows you to specify which Butterchurn presets to use for the Milkdrop visualizer. If you don't specify this option, Webamp will use the default Butterchurn presets.
 
+### Bug Fixes
+
+- Fix bug where marquee dragging would error and not work.
+
 ## 2.2.0
 
 :::info

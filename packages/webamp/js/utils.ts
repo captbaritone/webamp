@@ -421,6 +421,8 @@ function getPos(e: PosEvent): { clientX: number; clientY: number } {
     case "mousemove": {
       return e as MouseEvent;
     }
+    case "pointerdown":
+      return e as React.PointerEvent<HTMLElement>;
     default:
       throw new Error(`Unexpected event type: ${e.type}`);
   }

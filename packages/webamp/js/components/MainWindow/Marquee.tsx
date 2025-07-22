@@ -104,7 +104,7 @@ function useDragX() {
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("touchmove", handleMouseMove);
-    document.addEventListener("touseup", handleMouseUp);
+    document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleMouseUp);
 
     return handleMouseUp;
