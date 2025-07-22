@@ -2,7 +2,7 @@ import { memo } from "react";
 import classnames from "classnames";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
-import ContextMenuWraper from "../ContextMenuWrapper";
+import ContextMenuWrapper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
 import { useTypedSelector, useActionCreator } from "../../hooks";
 import WinampButton from "../WinampButton";
@@ -11,7 +11,7 @@ const Shuffle = memo(() => {
   const shuffle = useTypedSelector(Selectors.getShuffle);
   const handleClick = useActionCreator(Actions.toggleShuffle);
   return (
-    <ContextMenuWraper
+    <ContextMenuWrapper
       renderContents={() => (
         <Node
           checked={shuffle}
@@ -27,7 +27,7 @@ const Shuffle = memo(() => {
         onClick={handleClick}
         title="Toggle Shuffle"
       />
-    </ContextMenuWraper>
+    </ContextMenuWrapper>
   );
 });
 
