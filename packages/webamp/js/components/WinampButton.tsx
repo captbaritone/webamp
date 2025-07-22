@@ -102,6 +102,14 @@ export default function WinampButton({
       onPointerEnter={
         requireClicksOriginateLocally ? undefined : onPointerEnter
       }
+      onPointerUp={(e) => {
+        if (originalOnClick != null) {
+          originalOnClick(e);
+        }
+        if (htmlProps.onPointerUp != null) {
+          htmlProps.onPointerUp(e);
+        }
+      }}
       onMouseUp={(e) => {
         if (originalOnClick != null) {
           originalOnClick(e);
