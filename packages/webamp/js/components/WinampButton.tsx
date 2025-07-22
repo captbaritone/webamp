@@ -89,9 +89,7 @@ export default function WinampButton({
   };
 
   const onPointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.buttons === 1) {
-      setActive(false);
-    }
+    setActive(false);
   };
 
   return (
