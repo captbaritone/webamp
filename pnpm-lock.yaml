@@ -279,8 +279,8 @@ importers:
         specifier: ^8.36.0
         version: 8.36.0(eslint@8.57.0)(typescript@5.6.3)
       grats:
-        specifier: ^0.0.31
-        version: 0.0.31
+        specifier: 0.0.0-main-e655d1ae
+        version: 0.0.0-main-e655d1ae
       typescript:
         specifier: ^5.6.2
         version: 5.6.3
@@ -5303,6 +5303,10 @@ packages:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
 
+  commander@14.0.1:
+    resolution: {integrity: sha512-2JkV3gUZUVrbNA+1sjBOYLsMZ5cEEl8GTFP2a4AVz5hvasAMCQ1D2l2le/cX+pV4N6ZU17zjUahLpIXRrnWL8A==}
+    engines: {node: '>=20'}
+
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
@@ -7367,9 +7371,9 @@ packages:
     resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
-  grats@0.0.31:
-    resolution: {integrity: sha512-nTxRZYWgi+s8xj06QfcqtZ4nReXKyZhYHd9+9pLLthorvBSr4hbHBdl5L9HpHBqaxatWx98I6wdS5+8c+FQuxA==}
-    engines: {node: '>=16 <=21', pnpm: '>=8 <=9'}
+  grats@0.0.0-main-e655d1ae:
+    resolution: {integrity: sha512-ZMMY7nVosPMTagAakS3BeenmBZrEzIryPm0hmsDf20CdlCBhOwiiiIXV4I/fcYXCPI0vng1Ns6c2i+OftFTYBQ==}
+    engines: {node: '>=16 <=23'}
     hasBin: true
 
   gray-matter@4.0.3:
@@ -9610,6 +9614,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-emoji@2.2.0:
     resolution: {integrity: sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw==}
@@ -12788,11 +12793,6 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  typescript@5.5.4:
-    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
@@ -12800,6 +12800,11 @@ packages:
 
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -19320,6 +19325,8 @@ snapshots:
 
   commander@10.0.1: {}
 
+  commander@14.0.1: {}
+
   commander@2.20.3: {}
 
   commander@4.1.1: {}
@@ -21876,12 +21883,12 @@ snapshots:
 
   graphql@16.8.1: {}
 
-  grats@0.0.31:
+  grats@0.0.0-main-e655d1ae:
     dependencies:
-      commander: 10.0.1
+      commander: 14.0.1
       graphql: 16.11.0
       semver: 7.7.2
-      typescript: 5.5.4
+      typescript: 5.9.2
 
   gray-matter@4.0.3:
     dependencies:
@@ -28716,11 +28723,11 @@ snapshots:
 
   typescript@4.3.4: {}
 
-  typescript@5.5.4: {}
-
   typescript@5.6.3: {}
 
   typescript@5.8.3: {}
+
+  typescript@5.9.2: {}
 
   ufo@1.5.3: {}
 
