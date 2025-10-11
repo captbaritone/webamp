@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@atproto/api": "^0.17.2",
     "@next/third-parties": "^15.3.3",
     "@sentry/node": "^5.27.3",
     "@sentry/tracing": "^5.27.3",

@@ -29,6 +29,8 @@ export const INSTAGRAM_ACCOUNT_ID = env("INSTAGRAM_ACCOUNT_ID");
 // Used for session encryption
 export const SECRET = env("SECRET");
 export const NODE_ENV = env("NODE_ENV") || "production";
+export const BLUESKY_PASSWORD = env("BLUESKY_PASSWORD");
+export const BLUESKY_USERNAME = env("BLUESKY_USERNAME");
 
 function env(key: string): string {
   const value = process.env[key];

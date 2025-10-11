@@ -35,6 +35,7 @@ import { setHashesForSkin } from "./skinHash";
 import * as S3 from "./s3";
 import { generateDescription } from "./services/openAi";
 import KeyValue from "./data/KeyValue";
+import { postToBluesky } from "./tasks/bluesky";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -81,21 +82,30 @@ program
   .argument("[md5]", "md5 of the skin to share")
   .option("-t, --twitter", "Share on Twitter")
   .option("-i, --instagram", "Share on Instagram")
+  .option("-b, --bluesky", "Share on Bluesky")
   .option("-m, --mastodon", "Share on Mastodon")
-  .action(async (md5, { twitter, instagram, mastodon }) => {
-    if (!twitter && !instagram && !mastodon) {
-      throw new Error("Expected at least one of --twitter or --instagram");
-    }
+  .action(async (md5, { twitter, instagram, mastodon, bluesky }) => {
     await withDiscordClient(async (client) => {
       if (twitter) {
         await tweet(client, md5);
+        return;
       }
       if (instagram) {
         await insta(client, md5);
+        return;
       }
       if (mastodon) {
         await postToMastodon(client, md5);
+        return;
       }
+      if (bluesky) {
+        await postToBluesky(client, md5);
+        return;
+      }
+
+      throw new Error(
+        "Expected at least one of --twitter, --instagram, --mastodon, --bluesky"
+      );
     });
   });
 
