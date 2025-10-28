@@ -6,6 +6,27 @@ export interface TracksState {
   [id: string]: PlaylistTrack;
 }
 
+let finalKhz: String = 'NaN';
+let finalKbps: String = 'NaN';
+function massageKhz(khz: number) {
+  let stringKhz = String(Math.round(khz / 1000));
+  if (khz/1000 != null) finalKhz = stringKhz;
+  if (khz/1000 <= 100) finalKhz = stringKhz;
+  if (khz/1000 <= 10) finalKhz = ' '+stringKhz.substring(0,1);
+  if (khz/1000 >= 100) finalKhz = stringKhz.substring(1,3);
+  return finalKhz;
+}
+
+function massageKbps(kbps: number) {
+  let stringBitrate = String(Math.round(kbps / 1000));
+  if (kbps/1000 != null) finalKbps = stringBitrate;
+  if (kbps/1000 <= 100) finalKbps = ' '+stringBitrate;
+  if (kbps/1000 <= 10) finalKbps = '  '+stringBitrate;
+  if (kbps/1000 >= 1000) finalKbps = stringBitrate.substring(0,2)+'H'; // if you asked me what this meant
+  if (kbps/1000 >= 10000) finalKbps = ' '+stringBitrate.substring(0,1)+'C'; // i wouldnt know what to tell you
+  return finalKbps;
+}
+
 const defaultPlaylistState: TracksState = {};
 
 const tracks = (
@@ -80,8 +101,8 @@ const tracks = (
           artist,
           album,
           albumArtUrl,
-          kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
-          khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
+          kbps: bitrate != null ? massageKbps(bitrate) : kbps,
+          khz: sampleRate != null ? massageKhz(sampleRate) : khz,
           channels: numberOfChannels != null ? numberOfChannels : channels,
         },
       };
