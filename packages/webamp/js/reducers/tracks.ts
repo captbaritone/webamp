@@ -6,24 +6,24 @@ export interface TracksState {
   [id: string]: PlaylistTrack;
 }
 
-let finalKhz: String = 'NaN';
-let finalKbps: String = 'NaN';
 function massageKhz(khz: number) {
-  let stringKhz = String(Math.round(khz / 1000));
-  if (khz/1000 != null) finalKhz = stringKhz;
-  if (khz/1000 <= 100) finalKhz = stringKhz;
-  if (khz/1000 <= 10) finalKhz = ' '+stringKhz.substring(0,1);
-  if (khz/1000 >= 100) finalKhz = stringKhz.substring(1,3);
+  let finalKhz: String = ' 0';
+  let khzNum: number = Math.round(khz / 1000);
+  if (khzNum != null) finalKhz = String(khzNum);
+  if (khzNum <= 100) finalKhz = String(khzNum);
+  if (khzNum <= 10) finalKhz = ' '+String(khzNum).substring(0,1);
+  if (khzNum >= 100) finalKhz = String(khzNum).substring(1,3);
   return finalKhz;
 }
 
 function massageKbps(kbps: number) {
-  let stringBitrate = String(Math.round(kbps / 1000));
-  if (kbps/1000 != null) finalKbps = stringBitrate;
-  if (kbps/1000 <= 100) finalKbps = ' '+stringBitrate;
-  if (kbps/1000 <= 10) finalKbps = '  '+stringBitrate;
-  if (kbps/1000 >= 1000) finalKbps = stringBitrate.substring(0,2)+'H'; // if you asked me what this meant
-  if (kbps/1000 >= 10000) finalKbps = ' '+stringBitrate.substring(0,1)+'C'; // i wouldnt know what to tell you
+  let finalKbps: String = '  0';
+  let bitrateNum = String(Math.round(kbps / 1000));
+  if (bitrateNum != null) finalKbps = String(bitrateNum);
+  if (bitrateNum <= 100) finalKbps = ' '+String(bitrateNum);
+  if (bitrateNum <= 10) finalKbps = '  '+String(bitrateNum);
+  if (bitrateNum >= 1000) finalKbps = String(bitrateNum).substring(0,2)+'H'; // if you asked me what this meant
+  if (bitrateNum >= 10000) finalKbps = ' '+String(bitrateNum).substring(0,1)+'C'; // i wouldnt know what to tell you
   return finalKbps;
 }
 
