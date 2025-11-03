@@ -6,7 +6,7 @@ module.exports = {
   apps: [
     {
       name: "skin-database-blue",
-      script: "yarn",
+      script: "pnpm",
       interpreter: "bash",
       args: "start",
       env: {
@@ -16,7 +16,7 @@ module.exports = {
     },
     {
       name: "skin-database-green",
-      script: "yarn",
+      script: "pnpm",
       interpreter: "bash",
       args: "start",
       env: {

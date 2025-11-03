@@ -7,10 +7,10 @@ source "$NVM_DIR/nvm.sh"
 nvm use 20
 
 # Install dependencies
-yarn install --frozen-lockfile
+pnpm install --frozen-lockfile
 
 # Build the site
-yarn run build
+pnpm run build
 
 # Reload processes via PM2
 pm2 reload ecosystem.config.js

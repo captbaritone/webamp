@@ -5,7 +5,7 @@ import { parseFile } from "../tools/parse-mi";
 import path from "path";
 
 /**
- * This file basically ensures that `yarn extract-object-types` has been run.
+ * This file basically ensures that `pnpm extract-object-types` has been run.
  */
 
 const compilers = path.join(__dirname, "../resources/maki_compiler/");

@@ -171,7 +171,7 @@ program
         console.log("====================================");
       }
       if (purge) {
-        // cat purge | xargs -I {} yarn cli skin --purge {}
+        // cat purge | xargs -I {} pnpm cli skin --purge {}
         await Skins.deleteSkin(md5);
         const purgedArr: string[] = (await KeyValue.get("purged")) || [];
         const purged = new Set(purgedArr);
