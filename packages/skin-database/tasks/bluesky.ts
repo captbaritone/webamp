@@ -166,7 +166,6 @@ async function uploadImageFromFilePath(
 
   const dstResp = await agent.uploadBlob(imgU8);
   if (!dstResp.success) {
-    console.log(dstResp);
     throw new Error("Failed to upload image");
   }
   return dstResp.data.blob;
