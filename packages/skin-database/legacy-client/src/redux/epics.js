@@ -218,7 +218,7 @@ const unloadedSkinEpic = (actions, _states) =>
             count
             nodes {
               md5
-              filename
+              filename(normalize_extension: true)
               nsfw
             }
           }
@@ -481,7 +481,7 @@ const skinDataEpic = (actions, state) => {
         const QUERY = gql`
           query IndividualSkin($md5: String!) {
             fetch_skin_by_md5(md5: $md5) {
-              filename
+              filename(normalize_extension: true)
               nsfw
             }
           }

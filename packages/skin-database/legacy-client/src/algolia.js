@@ -1,4 +1,5 @@
 import * as Utils from "./utils";
+import { gql } from "./utils";
 import { algoliasearch } from "algoliasearch";
 
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
@@ -6,14 +7,15 @@ const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
 // Fallback search that uses SQLite. Useful for when we've exceeded the Algolia
 // search quota.
 export async function graphqlSearch(query) {
-  const queryText = Utils.gql`
-   query SearchQuery($query: String!) {
-  search_classic_skins(query: $query, first: 500) {
-    filename
-    md5
-    nsfw
-  }
-}`;
+  const queryText = gql`
+    query SearchQuery($query: String!) {
+      search_classic_skins(query: $query, first: 500) {
+        filename(normalize_extension: true)
+        md5
+        nsfw
+      }
+    }
+  `;
   const data = await Utils.fetchGraphql(queryText, { query });
   const hits = data.search_classic_skins.map((skin) => {
     return {
