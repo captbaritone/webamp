@@ -48,7 +48,7 @@ function logBlank(): void {
 
 function exec(command: string, description: string): void {
   try {
-    execSync(command, { stdio: "inherit" });
+    execSync(command, { stdio: "inherit", shell: "/bin/bash" });
   } catch (error) {
     log(`✗ Failed to ${description}`, "red");
     throw error;
@@ -183,15 +183,27 @@ async function main(): Promise<void> {
     log("✓ Code updated", "cyan");
     logBlank();
 
-    // Step 3: Install dependencies
+    // Step 3: Ensure correct Node version
+    log("→ Ensuring correct Node version...", "cyan");
+    exec(
+      "source ~/.nvm/nvm.sh && nvm install",
+      "ensure correct Node version from .nvmrc"
+    );
+    log("✓ Node version verified", "cyan");
+    logBlank();
+
+    // Step 4: Install dependencies
     log("→ Installing dependencies...", "cyan");
-    exec("yarn install --frozen-lockfile", "install dependencies");
+    exec(
+      "source ~/.nvm/nvm.sh && nvm exec yarn install --frozen-lockfile",
+      "install dependencies"
+    );
     log("✓ Dependencies installed", "cyan");
     logBlank();
 
-    // Step 4: Build the site
+    // Step 5: Build the site
     log("→ Building the site...", "cyan");
-    exec("yarn build", "build the site");
+    exec("source ~/.nvm/nvm.sh && nvm exec yarn build", "build the site");
     log("✓ Build complete", "cyan");
     logBlank();
 
