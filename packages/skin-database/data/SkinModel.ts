@@ -193,9 +193,6 @@ export default class SkinModel {
       const filename = file.getFileName();
       const isReadme = IS_README.test(filename);
       const isNotReadme = IS_NOT_README.test(filename);
-
-      console.log({ filename, isReadme, isNotReadme, md5: file.getFileMd5() });
-
       return isReadme && !isNotReadme;
     });
 

@@ -11,7 +11,7 @@ const { handleRequest } = createYogaInstance({
   },
   logger: {
     log: (message: string, context: Record<string, any>) => {
-      console.log(message, context);
+      // console.log(message, context);
     },
     logError: (message: string, context: Record<string, any>) => {
       console.error(message, context);
