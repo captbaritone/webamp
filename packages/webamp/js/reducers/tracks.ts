@@ -7,23 +7,29 @@ export interface TracksState {
 }
 
 function massageKhz(khz: number) {
-  let finalKhz: String = ' 0';
+  let finalKhz: String = " 0";
   let khzNum: number = Math.round(khz / 1000);
-  if (khzNum != null) finalKhz = String(khzNum);
+
   if (khzNum <= 100) finalKhz = String(khzNum);
-  if (khzNum <= 10) finalKhz = ' '+String(khzNum).substring(0,1);
-  if (khzNum >= 100) finalKhz = String(khzNum).substring(1,3);
+  if (khzNum <= 10) finalKhz = String(khzNum).slice(0, 1).padStart(2, " ");
+  if (khzNum >= 100) finalKhz = String(khzNum).slice(1, 3);
   return finalKhz;
 }
 
 function massageKbps(kbps: number) {
-  let finalKbps: String = '  0';
-  let bitrateNum = String(Math.round(kbps / 1000));
-  if (bitrateNum != null) finalKbps = String(bitrateNum);
-  if (bitrateNum <= 100) finalKbps = ' '+String(bitrateNum);
-  if (bitrateNum <= 10) finalKbps = '  '+String(bitrateNum);
-  if (bitrateNum >= 1000) finalKbps = String(bitrateNum).substring(0,2)+'H'; // if you asked me what this meant
-  if (bitrateNum >= 10000) finalKbps = ' '+String(bitrateNum).substring(0,1)+'C'; // i wouldnt know what to tell you
+  let finalKbps: String = "  0";
+  let bitrateNum: number = Math.round(kbps / 1000);
+
+  finalKbps = String(bitrateNum); // present as is
+  if (bitrateNum <= 100) finalKbps = String(bitrateNum).padStart(3, " ");
+  if (bitrateNum <= 10) finalKbps = String(bitrateNum).padStart(3, " ");
+  // from Justin Frankel directly:
+  // IIRC H was for "hundred" and "C" was thousand,
+  // though why it was for thousand I have no idea lol, maybe it was a mistake...
+  if (bitrateNum >= 1000) finalKbps = String(bitrateNum).slice(0, 2) + "H";
+  if (bitrateNum >= 10000)
+    finalKbps = String(bitrateNum).slice(0, 1).padStart(2, " ") + "C";
+  console.log(finalKbps);
   return finalKbps;
 }
 
