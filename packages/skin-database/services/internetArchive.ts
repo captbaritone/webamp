@@ -56,22 +56,6 @@ export async function uploadFiles(
   await execFile(IA_COMMAND, args, { env: getVenvEnv() });
 }
 
-export async function uploadFiles(
-  identifier: string,
-  filepaths: string[],
-  metadata?: { [key: string]: string }
-): Promise<any> {
-  const args = ['upload', identifier, ...filepaths];
-  
-  if (metadata) {
-    Object.entries(metadata).forEach(([key, value]) => {
-      args.push(`--metadata=${key}:${value}`);
-    });
-  }
-  
-  await execFile(IA_COMMAND, args, { env: getVenvEnv() });
-}
-
 export async function identifierExists(identifier: string): Promise<boolean> {
   const result = await execFile(IA_COMMAND, ['metadata', identifier], {
     env: getVenvEnv(),
