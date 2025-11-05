@@ -3,3 +3,12 @@ body {
   height: 100vh; /* Set body height to viewport height */
   background-color: rgb(0, 0, 0);
 }
+
+.scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.scroller {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

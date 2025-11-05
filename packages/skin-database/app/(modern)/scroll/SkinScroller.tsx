@@ -66,6 +66,7 @@ export default function SkinScroller({ initialSkins, getSkins }: Props) {
             key={skin.md5}
             skin-md5={skin.md5}
             skin-index={i}
+            className="scroller"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -100,6 +101,7 @@ export default function SkinScroller({ initialSkins, getSkins }: Props) {
                   paddingBottom: "0",
                   fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                   color: "#ccc",
+                  wordBreak: "break-all",
                 }}
               >
                 {skin.fileName}
@@ -111,6 +113,7 @@ export default function SkinScroller({ initialSkins, getSkins }: Props) {
                   paddingTop: "0",
                   color: "#999",
                   fontFamily: 'monospace, "Courier New", Courier, monospace',
+                  overflow: "hidden",
                 }}
               >
                 {skin.readmeStart}
