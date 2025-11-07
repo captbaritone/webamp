@@ -6,7 +6,7 @@ module.exports = {
   apps: [
     {
       name: "skin-database-blue",
-      script: "pnpm",
+      script: "yarn",
       interpreter: "bash",
       args: "start",
       env: {
@@ -16,12 +16,21 @@ module.exports = {
     },
     {
       name: "skin-database-green",
-      script: "pnpm",
+      script: "yarn",
       interpreter: "bash",
       args: "start",
       env: {
         NODE_ENV: "production",
         PORT: 3002,
+      },
+    },
+    {
+      name: "skin-bot",
+      script: "yarn",
+      interpreter: "bash",
+      args: "bot",
+      env: {
+        NODE_ENV: "production",
       },
     },
   ],
