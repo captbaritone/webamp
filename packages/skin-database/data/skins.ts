@@ -718,6 +718,53 @@ export type MuseumPage = Array<{
   nsfw: boolean;
 }>;
 
+export type ScrollPage = Array<{
+  md5: string;
+}>;
+const PAGE_SIZE = 50;
+const FRESHNESS_PERCENTAGE = 0.2; // 20% random skins
+
+const randomCount = Math.floor(PAGE_SIZE * FRESHNESS_PERCENTAGE);
+const curatedCount = PAGE_SIZE - randomCount;
+
+export async function getScrollPage(sessionId: string): Promise<ScrollPage> {
+  const skins = await knex.raw(
+    `
+SELECT
+  museum_sort_order.skin_md5
+FROM
+  museum_sort_order
+WHERE museum_sort_order.skin_md5 NOT IN (SELECT skin_md5 from session_skin WHERE session_id = ?)
+LIMIT ?`,
+    [sessionId, curatedCount]
+  );
+
+  const randomSkins = await knex.raw(
+    `
+SELECT
+  skins.md5 as skin_md5
+FROM
+  skins
+LEFT JOIN session_skin ON session_skin.skin_md5 = skins.md5 AND session_skin.session_id = ?
+LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5 AND skin_reviews.review = 'NSFW'
+WHERE
+  skins.skin_type = 1 AND session_skin.skin_md5 IS NULL AND skin_reviews.skin_md5 IS NULL
+ORDER BY RANDOM()
+LIMIT ?`,
+    [sessionId, randomCount]
+  );
+
+  // Note: Technically we could get duplicates if a random skin is also in museum_sort_order,
+  // but in practice this is rare and acceptable for the use case.
+  const allSkins = skins.concat(randomSkins);
+  // Shuffle the results
+  allSkins.sort(() => Math.random() - 0.5);
+
+  return allSkins.map(({ skin_md5 }) => {
+    return { md5: skin_md5 };
+  });
+}
+
 export async function getMuseumPage({
   offset,
   first,
