@@ -9,6 +9,10 @@ export type ClientSkin = {
   fileName: string;
   md5: string;
   readmeStart: string;
+  downloadUrl: string;
+  shareUrl: string;
+  nsfw: boolean;
+  likeCount: number;
 };
 
 type Props = {

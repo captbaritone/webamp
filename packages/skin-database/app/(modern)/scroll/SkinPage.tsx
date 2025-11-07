@@ -1,6 +1,7 @@
 "use client";
 
 import { ClientSkin } from "./SkinScroller";
+import SkinActionIcons from "./SkinActionIcons";
 
 type Props = {
   skin: ClientSkin;
@@ -8,7 +9,7 @@ type Props = {
   sessionId: string;
 };
 
-export default function SkinPage({ skin, index }: Props) {
+export default function SkinPage({ skin, index, sessionId }: Props) {
   return (
     <div
       key={skin.md5}
@@ -22,18 +23,24 @@ export default function SkinPage({ skin, index }: Props) {
         height: "100vh",
         scrollSnapAlign: "start",
         scrollSnapStop: "always",
+        position: "relative",
       }}
     >
-      <img
-        src={skin.screenshotUrl}
-        alt={skin.fileName}
-        style={{
-          paddingTop: "4rem",
-          boxSizing: "border-box",
-          width: "100%",
-          imageRendering: "pixelated",
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <img
+          src={skin.screenshotUrl}
+          alt={skin.fileName}
+          style={{
+            paddingTop: "4rem",
+            boxSizing: "border-box",
+            width: "100%",
+            imageRendering: "pixelated",
+          }}
+        />
+
+        <SkinActionIcons skin={skin} sessionId={sessionId} />
+      </div>
+
       <div
         style={{
           color: "white",

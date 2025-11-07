@@ -15,12 +15,20 @@ async function getClientSkins(sessionId: string): Promise<ClientSkin[]> {
     page.map(async (item) => {
       const model = await SkinModel.fromMd5Assert(ctx, item.md5);
       const readmeText = await model.getReadme();
+      const fileName = await model.getFileName();
+      const tweet = await model.getTweet();
+      const likeCount = tweet ? tweet.getLikes() : 0;
+
       return {
         screenshotUrl: model.getScreenshotUrl(),
         md5: item.md5,
         // TODO: Normalize to .wsz
-        fileName: await model.getFileName(),
+        fileName: fileName,
         readmeStart: readmeText ? readmeText.slice(0, 200) : "",
+        downloadUrl: model.getSkinUrl(),
+        shareUrl: `https://skins.webamp.org/skin/${item.md5}`,
+        nsfw: await model.getIsNsfw(),
+        likeCount: likeCount,
       };
     })
   );

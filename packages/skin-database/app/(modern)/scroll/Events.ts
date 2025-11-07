@@ -1,6 +1,8 @@
 "use server";
 
 import { knex } from "../../../db";
+import { markAsNSFW } from "../../../data/skins";
+import UserContext from "../../../data/UserContext";
 
 export async function logUserEvent(sessionId: string, event: UserEvent) {
   const timestamp = Date.now();
@@ -10,6 +12,13 @@ export async function logUserEvent(sessionId: string, event: UserEvent) {
     timestamp: timestamp,
     metadata: JSON.stringify(event),
   });
+
+  // If this is a NSFW report, call the existing infrastructure
+  if (event.type === "skin_flag_nsfw") {
+    // Create an anonymous user context for the report
+    const ctx = new UserContext();
+    await markAsNSFW(ctx, event.skinMd5);
+  }
 }
 
 type UserEvent =
@@ -48,6 +57,15 @@ type UserEvent =
     }
   | {
       type: "skin_download";
+      skinMd5: string;
+    }
+  | {
+      type: "skin_like";
+      skinMd5: string;
+      liked: boolean;
+    }
+  | {
+      type: "skin_flag_nsfw";
       skinMd5: string;
     }
   | {
