@@ -27,13 +27,20 @@ export async function logUserEvent(sessionId: string, event: UserEvent) {
   }
 }
 
-type UserEvent =
+export type UserEvent =
   | {
       type: "session_start";
     }
   | {
       type: "session_end";
       reason: "unmount" | "before_unload";
+    }
+  /**
+   * @deprecated
+   */
+  | {
+      type: "skin_view";
+      skinMd5: string;
     }
   | {
       type: "skin_view_start";

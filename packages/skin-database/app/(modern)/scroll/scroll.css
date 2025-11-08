@@ -1,14 +1,16 @@
 body {
   margin: 0; /* Remove default margin */
   height: 100vh; /* Set body height to viewport height */
-  background-color: rgb(0, 0, 0);
+  background-color: #1a1a1a; /* Dark charcoal instead of pure black */
 }
 
-.scroller::-webkit-scrollbar {
+.scroller::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
 
-.scroller {
+.scroller,
+.hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }

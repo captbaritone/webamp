@@ -138,9 +138,16 @@ export default function SkinScroller({
       ref={setContainerRef}
       style={{
         height: "100vh",
+        width: "100vw",
+        maxWidth: "56.25vh", // 9:16 aspect ratio (100vh * 9/16)
+        margin: "0 auto",
         overflowY: "scroll",
         scrollSnapType: "y mandatory",
+        scrollbarWidth: "none", // Firefox
+        msOverflowStyle: "none", // IE and Edge
+        WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
       }}
+      className="hide-scrollbar"
     >
       {skins.map((skin, i) => {
         return (
