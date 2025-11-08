@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 export default function BottomMenuBar() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -49,52 +50,55 @@ export default function BottomMenuBar() {
       {/* Hamburger Menu Overlay */}
       {isHamburgerOpen && (
         <div
-          ref={menuRef}
           style={{
             position: "absolute",
             bottom: "4.5rem",
-            left: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
             width: "100%",
+            maxWidth: MOBILE_MAX_WIDTH,
             backgroundColor: "rgba(26, 26, 26, 0.98)",
             backdropFilter: "blur(10px)",
             borderTop: "1px solid rgba(255, 255, 255, 0.1)",
             zIndex: 999,
           }}
         >
-          <HamburgerMenuItem
-            href="/about"
-            icon={<Info size={20} />}
-            label="About"
-            onClick={() => {
-              setIsHamburgerOpen(false);
-            }}
-          />
-          <HamburgerMenuItem
-            href="/upload"
-            icon={<Upload size={20} />}
-            label="Upload"
-            onClick={() => {
-              setIsHamburgerOpen(false);
-            }}
-          />{" "}
-          <HamburgerMenuItem
-            href="https://github.com/captbaritone/webamp/issues"
-            icon={<MessageSquare size={20} />}
-            label="Feedback"
-            onClick={() => {
-              setIsHamburgerOpen(false);
-            }}
-            external
-          />
-          <HamburgerMenuItem
-            href="https://github.com/captbaritone/webamp/"
-            icon={<Github size={20} />}
-            label="GitHub"
-            onClick={() => {
-              setIsHamburgerOpen(false);
-            }}
-            external
-          />
+          <div ref={menuRef}>
+            <HamburgerMenuItem
+              href="/about"
+              icon={<Info size={20} />}
+              label="About"
+              onClick={() => {
+                setIsHamburgerOpen(false);
+              }}
+            />
+            <HamburgerMenuItem
+              href="/upload"
+              icon={<Upload size={20} />}
+              label="Upload"
+              onClick={() => {
+                setIsHamburgerOpen(false);
+              }}
+            />{" "}
+            <HamburgerMenuItem
+              href="https://github.com/captbaritone/webamp/issues"
+              icon={<MessageSquare size={20} />}
+              label="Feedback"
+              onClick={() => {
+                setIsHamburgerOpen(false);
+              }}
+              external
+            />
+            <HamburgerMenuItem
+              href="https://github.com/captbaritone/webamp/"
+              icon={<Github size={20} />}
+              label="GitHub"
+              onClick={() => {
+                setIsHamburgerOpen(false);
+              }}
+              external
+            />
+          </div>
         </div>
       )}
 
@@ -110,36 +114,48 @@ export default function BottomMenuBar() {
           borderTop: "1px solid rgba(255, 255, 255, 0.1)",
           padding: "0.75rem 0",
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "center",
           alignItems: "center",
           zIndex: 1000,
         }}
       >
-        <MenuButton
-          href="/scroll"
-          icon={<Smartphone size={24} />}
-          label="Feed"
-          isActive={pathname === "/scroll"}
-        />
-        <MenuButton
-          href="/"
-          icon={<Grid3x3 size={24} />}
-          label="Grid"
-          isActive={pathname === "/"}
-        />
-        <MenuButton
-          href="/"
-          icon={<Search size={24} />}
-          label="Search"
-          isActive={false}
-        />
-        <MenuButton
-          icon={<Menu size={24} />}
-          label="Menu"
-          onClick={toggleHamburger}
-          isButton
-          isActive={false}
-        />
+        <div
+          style={{
+            width: "100%",
+            maxWidth: MOBILE_MAX_WIDTH, // Match the scroll page max width
+            display: "flex",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+          }}
+        >
+          <MenuButton
+            href="/scroll"
+            icon={<Smartphone size={24} />}
+            label="Feed"
+            isActive={
+              pathname === "/scroll" || pathname.startsWith("/scroll/skin")
+            }
+          />
+          <MenuButton
+            href="/scroll/grid"
+            icon={<Grid3x3 size={24} />}
+            label="Grid"
+            isActive={pathname === "/scroll/grid"}
+          />
+          <MenuButton
+            href="/"
+            icon={<Search size={24} />}
+            label="Search"
+            isActive={false}
+          />
+          <MenuButton
+            icon={<Menu size={24} />}
+            label="Menu"
+            onClick={toggleHamburger}
+            isButton
+            isActive={false}
+          />
+        </div>
       </div>
     </>
   );
@@ -151,6 +167,7 @@ type MenuButtonProps = {
   label: string;
   isButton?: boolean;
   isActive?: boolean;
+  onClick?: () => void;
 };
 
 function MenuButton({
@@ -159,6 +176,7 @@ function MenuButton({
   label,
   isButton = false,
   isActive = false,
+  onClick,
 }: MenuButtonProps) {
   const touchTargetSize = "3.0rem";
 
@@ -230,6 +248,7 @@ function MenuButton({
         style={containerStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={onClick}
       >
         {content}
       </button>

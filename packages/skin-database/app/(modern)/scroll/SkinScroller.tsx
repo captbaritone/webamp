@@ -4,6 +4,7 @@ import { useState, useLayoutEffect, useEffect } from "react";
 import SkinPage from "./SkinPage";
 import { logUserEvent } from "./Events";
 import { useScrollHint } from "./useScrollHint";
+import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 export type ClientSkin = {
   screenshotUrl: string;
@@ -158,8 +159,10 @@ export default function SkinScroller({
       <div
         ref={setContainerRef}
         style={{
+          maxWidth: MOBILE_MAX_WIDTH, // 9:16 aspect ratio for scroll, full width for grid
+          margin: "0 auto",
           height: "100vh",
-          width: "100%",
+          // width: "100%",
           overflowY: "scroll",
           scrollSnapType: "y mandatory",
           scrollbarWidth: "none", // Firefox

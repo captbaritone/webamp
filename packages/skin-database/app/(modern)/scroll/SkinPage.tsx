@@ -1,5 +1,6 @@
 "use client";
 
+import { unstable_ViewTransition as ViewTransition } from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
 
@@ -31,15 +32,17 @@ export default function SkinPage({ skin, index, sessionId }: Props) {
       }}
     >
       <div style={{ position: "relative", flexShrink: 0 }}>
-        <img
-          src={skin.screenshotUrl}
-          alt={skin.fileName}
-          style={{
-            width: "100%",
-            aspectRatio: "275 / 348",
-            imageRendering: "pixelated",
-          }}
-        />
+        <ViewTransition name={`skin-${skin.md5}`}>
+          <img
+            src={skin.screenshotUrl}
+            alt={skin.fileName}
+            style={{
+              width: "100%",
+              aspectRatio: "275 / 348",
+              imageRendering: "pixelated",
+            }}
+          />
+        </ViewTransition>
 
         <SkinActionIcons skin={skin} sessionId={sessionId} />
       </div>
