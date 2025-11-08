@@ -165,12 +165,6 @@ export const getRouteData = createSelector(
     getPermalinkUrlFromHash,
     skinData
   ) => {
-    const currentUrl = window.location.href;
-    // Hard code ignore "modern" paths for now.
-    if (currentUrl.includes("/scroll")) {
-      return { url: "/scroll/", title: "Scroll" };
-    }
-
     if (activeContentPage === REVIEW_PAGE) {
       return { url: "/review/", title: "Review" };
     }

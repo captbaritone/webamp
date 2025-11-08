@@ -36,6 +36,7 @@ export default function SkinPage({ skin, index, sessionId }: Props) {
           alt={skin.fileName}
           style={{
             width: "100%",
+            aspectRatio: "275 / 348",
             imageRendering: "pixelated",
           }}
         />

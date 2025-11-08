@@ -3,6 +3,9 @@ import UserContext from "../../../../../data/UserContext";
 import { getClientSkins, getSkinForSession } from "../../getClientSkins";
 import SkinScroller from "../../SkinScroller";
 
+// Ensure each page load gets a new session
+export const dynamic = "force-dynamic";
+
 export default async function Skin({ params }) {
   const { md5 } = await params;
 

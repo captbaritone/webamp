@@ -462,7 +462,10 @@ const urlEpic = (actions, state) => {
 
       const newUrl = proposedUrl.toString();
 
-      window.history.replaceState({}, Selectors.getPageTitle(state), newUrl);
+      // Avoid clobbering URL for beta site
+      if (!window.location.href.includes("/scroll")) {
+        window.history.replaceState({}, Selectors.getPageTitle(state), newUrl);
+      }
     }),
     ignoreElements()
   );
