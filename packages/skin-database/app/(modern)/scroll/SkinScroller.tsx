@@ -3,6 +3,7 @@
 import { useState, useLayoutEffect, useEffect } from "react";
 import SkinPage from "./SkinPage";
 import { logUserEvent } from "./Events";
+import { useScrollHint } from "./useScrollHint";
 
 export type ClientSkin = {
   screenshotUrl: string;
@@ -30,6 +31,25 @@ export default function SkinScroller({
   const [visibleSkinIndex, setVisibleSkinIndex] = useState(0);
   const [fetching, setFetching] = useState(false);
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
+  const [hasEverScrolled, setHasEverScrolled] = useState(false);
+
+  // Track if user has ever scrolled to another skin
+  useEffect(() => {
+    if (visibleSkinIndex > 0) {
+      setHasEverScrolled(true);
+    }
+  }, [visibleSkinIndex]);
+
+  // Show scroll hint only if user has never scrolled to another skin
+  useScrollHint({
+    containerRef,
+    enabled: visibleSkinIndex === 0 && !hasEverScrolled,
+    onHintShown: () => {
+      logUserEvent(sessionId, {
+        type: "scroll_hint_shown",
+      });
+    },
+  });
 
   useLayoutEffect(() => {
     if (containerRef == null) {

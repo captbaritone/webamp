@@ -97,4 +97,7 @@ export type UserEvent =
   | {
       type: "menu_click";
       menuItem: string;
+    }
+  | {
+      type: "scroll_hint_shown";
     };
