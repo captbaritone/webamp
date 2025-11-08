@@ -19,20 +19,22 @@ export default function SkinPage({ skin, index, sessionId }: Props) {
       style={{
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         width: "100%",
         height: "100vh",
         scrollSnapAlign: "start",
         scrollSnapStop: "always",
         position: "relative",
+        paddingTop: "2rem", // Space for top shadow
+        paddingBottom: "5rem", // Space for bottom menu bar
+        boxSizing: "border-box",
       }}
     >
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", flexShrink: 0 }}>
         <img
           src={skin.screenshotUrl}
           alt={skin.fileName}
           style={{
-            paddingTop: "4rem",
-            boxSizing: "border-box",
             width: "100%",
             imageRendering: "pixelated",
           }}
@@ -44,9 +46,9 @@ export default function SkinPage({ skin, index, sessionId }: Props) {
       <div
         style={{
           color: "white",
-          flexGrow: 1,
           paddingLeft: "0.5rem",
           paddingTop: "0.5rem",
+          flexShrink: 0,
         }}
       >
         <h2

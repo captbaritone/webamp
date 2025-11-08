@@ -93,4 +93,8 @@ export type UserEvent =
       type: "share_failure";
       skinMd5: string;
       errorMessage: string;
+    }
+  | {
+      type: "menu_click";
+      menuItem: string;
     };

@@ -4,6 +4,7 @@ import "./scroll.css";
 import SkinScroller, { ClientSkin } from "./SkinScroller";
 import { getScrollPage } from "../../../data/skins";
 import SkinModel from "../../../data/SkinModel";
+import { LayoutWrapper } from "./layout";
 
 // Ensure each page load gets a new session
 export const dynamic = "force-dynamic";
@@ -51,10 +52,12 @@ export default async function ScrollPage() {
   const initialSkins = await getClientSkins(sessionId);
 
   return (
-    <SkinScroller
-      initialSkins={initialSkins}
-      getSkins={getClientSkins}
-      sessionId={sessionId}
-    />
+    <LayoutWrapper sessionId={sessionId}>
+      <SkinScroller
+        initialSkins={initialSkins}
+        getSkins={getClientSkins}
+        sessionId={sessionId}
+      />
+    </LayoutWrapper>
   );
 }

@@ -134,31 +134,45 @@ export default function SkinScroller({
   }, [visibleSkinIndex, skins, fetching]);
 
   return (
-    <div
-      ref={setContainerRef}
-      style={{
-        height: "100vh",
-        width: "100vw",
-        maxWidth: "56.25vh", // 9:16 aspect ratio (100vh * 9/16)
-        margin: "0 auto",
-        overflowY: "scroll",
-        scrollSnapType: "y mandatory",
-        scrollbarWidth: "none", // Firefox
-        msOverflowStyle: "none", // IE and Edge
-        WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
-      }}
-      className="hide-scrollbar"
-    >
-      {skins.map((skin, i) => {
-        return (
-          <SkinPage
-            key={skin.md5}
-            skin={skin}
-            index={i}
-            sessionId={sessionId}
-          />
-        );
-      })}
-    </div>
+    <>
+      <div
+        ref={setContainerRef}
+        style={{
+          height: "100vh",
+          width: "100%",
+          overflowY: "scroll",
+          scrollSnapType: "y mandatory",
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // IE and Edge
+          WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
+        }}
+        className="hide-scrollbar"
+      >
+        {skins.map((skin, i) => {
+          return (
+            <SkinPage
+              key={skin.md5}
+              skin={skin}
+              index={i}
+              sessionId={sessionId}
+            />
+          );
+        })}
+      </div>
+      {/* Top shadow overlay */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "4rem",
+          background:
+            "linear-gradient(180deg, rgba(26, 26, 26, 0.8) 0%, rgba(26, 26, 26, 0.4) 50%, rgba(26, 26, 26, 0) 100%)",
+          pointerEvents: "none",
+          zIndex: 500,
+        }}
+      />
+    </>
   );
 }
