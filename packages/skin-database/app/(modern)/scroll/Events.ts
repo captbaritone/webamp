@@ -7,6 +7,12 @@ import UserContext from "../../../data/UserContext";
 export async function logUserEvent(sessionId: string, event: UserEvent) {
   const timestamp = Date.now();
 
+  console.log("Logging user event:", {
+    sessionId,
+    timestamp,
+    event,
+  });
+
   await knex("user_log_events").insert({
     session_id: sessionId,
     timestamp: timestamp,

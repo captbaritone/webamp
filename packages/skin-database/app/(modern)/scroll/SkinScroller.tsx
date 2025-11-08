@@ -36,18 +36,33 @@ export default function SkinScroller({
       return;
     }
 
-    function onSnap(e) {
-      const md5 = e.snapTargetBlock.getAttribute("skin-md5");
-      const index = parseInt(e.snapTargetBlock.getAttribute("skin-index"));
-      setVisibleSkinIndex(index);
-    }
+    // Use IntersectionObserver for cross-browser compatibility (iOS doesn't support scrollsnapchange)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // When an element becomes mostly visible (> 50% intersecting)
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const index = parseInt(
+              entry.target.getAttribute("skin-index") || "0"
+            );
+            setVisibleSkinIndex(index);
+          }
+        });
+      },
+      {
+        root: containerRef,
+        threshold: 0.5, // Trigger when 50% of the element is visible
+      }
+    );
 
-    containerRef.addEventListener("scrollsnapchange", onSnap);
+    // Observe all skin page elements
+    const skinElements = containerRef.querySelectorAll("[skin-index]");
+    skinElements.forEach((element) => observer.observe(element));
 
     return () => {
-      containerRef.removeEventListener("scrollsnapchange", onSnap);
+      observer.disconnect();
     };
-  }, [containerRef]);
+  }, [containerRef, skins.length]);
 
   useEffect(() => {
     logUserEvent(sessionId, {

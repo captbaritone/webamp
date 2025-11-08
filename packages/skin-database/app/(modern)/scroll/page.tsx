@@ -5,6 +5,9 @@ import SkinScroller, { ClientSkin } from "./SkinScroller";
 import { getScrollPage } from "../../../data/skins";
 import SkinModel from "../../../data/SkinModel";
 
+// Ensure each page load gets a new session
+export const dynamic = "force-dynamic";
+
 async function getClientSkins(sessionId: string): Promise<ClientSkin[]> {
   "use server";
   const ctx = new UserContext();
