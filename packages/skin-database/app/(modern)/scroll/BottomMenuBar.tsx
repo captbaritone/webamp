@@ -13,29 +13,14 @@ import {
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { logUserEvent } from "./Events";
 
-type Props = {
-  sessionId?: string;
-};
-
-export default function BottomMenuBar({ sessionId }: Props) {
+export default function BottomMenuBar() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  const handleMenuClick = (menuItem: string) => {
-    if (sessionId) {
-      logUserEvent(sessionId, {
-        type: "menu_click",
-        menuItem,
-      });
-    }
-  };
-
   const toggleHamburger = () => {
     setIsHamburgerOpen(!isHamburgerOpen);
-    handleMenuClick("hamburger");
   };
 
   // Close hamburger menu when clicking outside
@@ -81,7 +66,6 @@ export default function BottomMenuBar({ sessionId }: Props) {
             icon={<Info size={20} />}
             label="About"
             onClick={() => {
-              handleMenuClick("about");
               setIsHamburgerOpen(false);
             }}
           />
@@ -90,7 +74,6 @@ export default function BottomMenuBar({ sessionId }: Props) {
             icon={<Upload size={20} />}
             label="Upload"
             onClick={() => {
-              handleMenuClick("upload");
               setIsHamburgerOpen(false);
             }}
           />{" "}
@@ -99,7 +82,6 @@ export default function BottomMenuBar({ sessionId }: Props) {
             icon={<MessageSquare size={20} />}
             label="Feedback"
             onClick={() => {
-              handleMenuClick("feedback");
               setIsHamburgerOpen(false);
             }}
             external
@@ -109,7 +91,6 @@ export default function BottomMenuBar({ sessionId }: Props) {
             icon={<Github size={20} />}
             label="GitHub"
             onClick={() => {
-              handleMenuClick("feedback");
               setIsHamburgerOpen(false);
             }}
             external
@@ -138,21 +119,18 @@ export default function BottomMenuBar({ sessionId }: Props) {
           href="/scroll"
           icon={<Smartphone size={24} />}
           label="Feed"
-          onClick={() => handleMenuClick("feed")}
           isActive={pathname === "/scroll"}
         />
         <MenuButton
           href="/"
           icon={<Grid3x3 size={24} />}
           label="Grid"
-          onClick={() => handleMenuClick("grid")}
           isActive={pathname === "/"}
         />
         <MenuButton
           href="/"
           icon={<Search size={24} />}
           label="Search"
-          onClick={() => handleMenuClick("search")}
           isActive={false}
         />
         <MenuButton
@@ -171,7 +149,6 @@ type MenuButtonProps = {
   href?: string;
   icon: React.ReactNode;
   label: string;
-  onClick: () => void;
   isButton?: boolean;
   isActive?: boolean;
 };
@@ -180,7 +157,6 @@ function MenuButton({
   href,
   icon,
   label,
-  onClick,
   isButton = false,
   isActive = false,
 }: MenuButtonProps) {
@@ -251,7 +227,6 @@ function MenuButton({
   if (isButton) {
     return (
       <button
-        onClick={onClick}
         style={containerStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -264,7 +239,6 @@ function MenuButton({
   return (
     <Link
       href={href!}
-      onClick={onClick}
       style={containerStyle}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
