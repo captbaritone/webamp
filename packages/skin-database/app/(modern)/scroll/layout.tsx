@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import BottomMenuBar from "./BottomMenuBar";
+import "./scroll.css";
 
 type LayoutProps = {
   children: ReactNode;
