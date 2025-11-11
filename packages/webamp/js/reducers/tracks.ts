@@ -8,7 +8,7 @@ export interface TracksState {
 
 function massageKhz(khz: number) {
   let finalKhz: String;
-  let khzNum: number = Math.round(khz / 1000);
+  const khzNum: number = Math.round(khz / 1000);
 
   // there is no real need to run a condition for below 100khz
   // when the other conditions (hopefully) take over
@@ -21,7 +21,7 @@ function massageKhz(khz: number) {
 
 function massageKbps(kbps: number) {
   let finalKbps: String;
-  let bitrateNum: number = Math.round(kbps / 1000);
+  const bitrateNum: number = Math.round(kbps / 1000);
 
   finalKbps = String(bitrateNum); // present as is
   if (bitrateNum <= 100) finalKbps = String(bitrateNum).padStart(3, " ");
