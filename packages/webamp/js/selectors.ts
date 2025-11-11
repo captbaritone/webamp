@@ -686,14 +686,14 @@ export const getMarqueeText = (state: AppState): string => {
 export const getKbps = createSelector(
   getCurrentTrack,
   (track: PlaylistTrack | null): string | null => {
-    return track != null ? track.kbps || null : null;
+    return track != null ? track.kbps || "0".padStart(3, " ") : null;
   }
 );
 
 export const getKhz = createSelector(
   getCurrentTrack,
   (track: PlaylistTrack | null): string | null => {
-    return track != null ? track.khz || null : null;
+    return track != null ? track.khz || "0".padStart(2, " ") : null;
   }
 );
 

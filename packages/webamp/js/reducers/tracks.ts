@@ -6,6 +6,35 @@ export interface TracksState {
   [id: string]: PlaylistTrack;
 }
 
+function massageKhz(khz: number) {
+  let finalKhz: String;
+  const khzNum: number = Math.round(khz / 1000);
+
+  // there is no real need to run a condition for below 100khz
+  // when the other conditions (hopefully) take over
+  // ...also to make CI happy
+  finalKhz = String(khzNum);
+  if (khzNum <= 10) finalKhz = String(khzNum).slice(0, 1).padStart(2, " ");
+  if (khzNum >= 100) finalKhz = String(khzNum).slice(1, 3);
+  return finalKhz;
+}
+
+function massageKbps(kbps: number) {
+  let finalKbps: String;
+  const bitrateNum: number = Math.round(kbps / 1000);
+
+  finalKbps = String(bitrateNum); // present as is
+  if (bitrateNum <= 100) finalKbps = String(bitrateNum).padStart(3, " ");
+  if (bitrateNum <= 10) finalKbps = String(bitrateNum).padStart(3, " ");
+  // from Justin Frankel directly:
+  // IIRC H was for "hundred" and "C" was thousand,
+  // though why it was for thousand I have no idea lol, maybe it was a mistake...
+  if (bitrateNum >= 1000) finalKbps = String(bitrateNum).slice(0, 2) + "H";
+  if (bitrateNum >= 10000)
+    finalKbps = String(bitrateNum).slice(0, 1).padStart(2, " ") + "C";
+  return finalKbps;
+}
+
 const defaultPlaylistState: TracksState = {};
 
 const tracks = (
@@ -80,8 +109,8 @@ const tracks = (
           artist,
           album,
           albumArtUrl,
-          kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
-          khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
+          kbps: bitrate != null ? massageKbps(bitrate) : kbps,
+          khz: sampleRate != null ? massageKhz(sampleRate) : khz,
           channels: numberOfChannels != null ? numberOfChannels : channels,
         },
       };
