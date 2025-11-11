@@ -10,7 +10,10 @@ function massageKhz(khz: number) {
   let finalKhz: String;
   let khzNum: number = Math.round(khz / 1000);
 
-  if (khzNum <= 100) finalKhz = String(khzNum);
+  // there is no real need to run a condition for below 100khz
+  // when the other conditions (hopefully) take over
+  // ...also to make CI happy
+  finalKhz = String(khzNum);
   if (khzNum <= 10) finalKhz = String(khzNum).slice(0, 1).padStart(2, " ");
   if (khzNum >= 100) finalKhz = String(khzNum).slice(1, 3);
   return finalKhz;
