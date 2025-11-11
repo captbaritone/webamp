@@ -29,7 +29,6 @@ function massageKbps(kbps: number) {
   if (bitrateNum >= 1000) finalKbps = String(bitrateNum).slice(0, 2) + "H";
   if (bitrateNum >= 10000)
     finalKbps = String(bitrateNum).slice(0, 1).padStart(2, " ") + "C";
-  console.log(finalKbps);
   return finalKbps;
 }
 
