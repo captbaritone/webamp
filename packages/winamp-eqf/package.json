@@ -23,6 +23,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
+    "lint": "eslint src --ext ts,js",
     "test": "jest",
     "type-check": "tsc --noEmit"
   },
