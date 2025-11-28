@@ -65,6 +65,7 @@
       "dependsOn": ["ani-cursor#build", "winamp-eqf#build"]
     },
     "skin-database#lint": {},
+    "skin-museum-og#lint": {},
     "webamp-modern#lint": {},
     "dev": {
       "cache": false,
