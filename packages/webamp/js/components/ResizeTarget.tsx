@@ -15,7 +15,12 @@ interface Props {
 }
 
 function ResizeTarget(props: Props) {
-  const { currentSize, setWindowSize, widthOnly, ...passThroughProps } = props;
+  const {
+    currentSize,
+    setWindowSize: _setWindowSize,
+    widthOnly,
+    ...passThroughProps
+  } = props;
   const [mouseDown, setMouseDown] = useState(false);
   const [mouseStart, setMouseStart] = useState<null | { x: number; y: number }>(
     null

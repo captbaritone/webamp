@@ -4,15 +4,11 @@
     "jsx": true,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
+      "jsx": true
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "@typescript-eslint"],
   "settings": {
-    "react": {
-      "version": "15.2"
-    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".ts", ".tsx"]
@@ -21,27 +17,81 @@
   },
   "env": {
     "node": true,
-    "amd": true,
     "es6": true,
     "jest": true
   },
-  "globals": {
-    "window": true,
-    "document": true,
-    "console": true,
-    "navigator": true,
-    "alert": true,
-    "Blob": true,
-    "fetch": true,
-    "FileReader": true,
-    "Element": true,
-    "AudioNode": true,
-    "MutationObserver": true,
-    "Image": true,
-    "location": true
-  },
   "rules": {
     "prettier/prettier": "error",
-    "no-constant-binary-expression": "error"
+    "no-constant-binary-expression": "error",
+    "block-scoped-var": "warn",
+    "camelcase": "error",
+    "constructor-super": "error",
+    "dot-notation": "error",
+    "eqeqeq": ["error", "smart"],
+    "guard-for-in": "error",
+    "max-depth": ["warn", 4],
+    "new-cap": "error",
+    "no-caller": "error",
+    "no-const-assign": "error",
+    "no-debugger": "error",
+    "no-delete-var": "error",
+    "no-div-regex": "warn",
+    "no-dupe-args": "error",
+    "no-dupe-class-members": "error",
+    "no-dupe-keys": "error",
+    "no-duplicate-case": "error",
+    "no-duplicate-imports": "error",
+    "no-else-return": "error",
+    "no-empty-character-class": "error",
+    "no-eval": "error",
+    "no-ex-assign": "error",
+    "no-extend-native": "warn",
+    "no-extra-boolean-cast": "error",
+    "no-extra-semi": "error",
+    "no-fallthrough": "error",
+    "no-func-assign": "error",
+    "no-implied-eval": "error",
+    "no-inner-declarations": "error",
+    "no-irregular-whitespace": "error",
+    "no-label-var": "error",
+    "no-labels": "error",
+    "no-lone-blocks": "error",
+    "no-lonely-if": "error",
+    "no-multi-str": "error",
+    "no-nested-ternary": "warn",
+    "no-new-object": "error",
+    "no-new-symbol": "error",
+    "no-new-wrappers": "error",
+    "no-obj-calls": "error",
+    "no-octal": "error",
+    "no-octal-escape": "error",
+    "no-proto": "error",
+    "no-redeclare": "error",
+    "no-shadow": "warn",
+    "no-this-before-super": "error",
+    "no-throw-literal": "error",
+    "no-undef-init": "error",
+    "no-unneeded-ternary": "error",
+    "no-unreachable": "error",
+    "no-unused-expressions": "error",
+    "no-useless-rename": "error",
+    "no-var": "error",
+    "no-with": "error",
+    "prefer-arrow-callback": "warn",
+    "prefer-const": "error",
+    "prefer-spread": "error",
+    "prefer-template": "warn",
+    "radix": "error",
+    "no-return-await": "error",
+    "use-isnan": "error",
+    "valid-typeof": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   }
 }

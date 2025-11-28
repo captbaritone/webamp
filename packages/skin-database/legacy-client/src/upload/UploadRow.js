@@ -19,6 +19,7 @@ function Row({ name, loading, right, complete }) {
             position: "absolute",
             left: 0,
             top: 0,
+            // eslint-disable-next-line no-nested-ternary -- legacy code
             width: loading ? `90%` : complete ? `100%` : `0%`,
             transitionProperty: "all",
             // TODO: Try to learn how long it really takes

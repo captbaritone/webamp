@@ -123,7 +123,7 @@ export default class ElementSource {
     try {
       await this._audio.play();
       // TODO #race
-    } catch (err) {
+    } catch (_err) {
       //
     }
     this._setStatus(MEDIA_STATUS.PLAYING);

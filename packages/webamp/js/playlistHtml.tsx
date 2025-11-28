@@ -22,7 +22,7 @@ const noshadeStyle = {
 
 // We use all kinds of non-standard attributes and tags. So we create these fake
 // components to trick Typescript.
-const Body = (props: any) => {
+const _Body = (props: any) => {
   // @ts-ignore
   return <body {...props} />;
 };

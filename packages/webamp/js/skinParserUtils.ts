@@ -47,7 +47,7 @@ export async function getFileFromZip(
   try {
     const contents = await lastFile.async(mode);
     return { contents, name: lastFile.name };
-  } catch (e) {
+  } catch (_e) {
     console.warn(
       `Failed to extract "${fileName}.${ext}" from the skin archive.`
     );
@@ -66,10 +66,10 @@ export async function getImgFromBlob(
     // Use this faster native browser API if available.
     // NOTE: In some browsers `window.createImageBitmap` may not exist so this will throw.
     return await window.createImageBitmap(blob);
-  } catch (e) {
+  } catch (_e) {
     try {
       return await fallbackGetImgFromBlob(blob);
-    } catch (ee) {
+    } catch (_ee) {
       // Like Winamp we will silently fail on images that don't parse.
       return null;
     }

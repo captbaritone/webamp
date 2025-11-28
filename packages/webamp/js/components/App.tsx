@@ -20,7 +20,7 @@ import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
-import Media, { IMedia } from "../media";
+import { IMedia } from "../media";
 import { useTypedSelector, useActionCreator } from "../hooks";
 import Css from "./Css";
 

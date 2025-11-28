@@ -2,7 +2,6 @@ export default function Frame({ children }) {
   return (
     <div
       style={{
-        background: "black",
         color: "white",
         width: "100%",
         height: "100%",
@@ -10,7 +9,6 @@ export default function Frame({ children }) {
         flexDirection: "column",
         textAlign: "center",
         alignItems: "center",
-        justifyContent: "center",
         justifyContent: "space-between",
         background: "linear-gradient(45deg,#000,#191927 66%,#000)",
       }}

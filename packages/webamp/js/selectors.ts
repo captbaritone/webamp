@@ -21,7 +21,6 @@ import {
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
 import {
-  BANDS,
   TRACK_HEIGHT,
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT,
@@ -30,7 +29,6 @@ import {
   MEDIA_TAG_REQUEST_STATUS,
   WINDOWS,
   VISUALIZERS,
-  PLAYER_MEDIA_STATUS,
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";

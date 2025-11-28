@@ -64,7 +64,8 @@ export default function SkinScroller({
           // When an element becomes mostly visible (> 50% intersecting)
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             const index = parseInt(
-              entry.target.getAttribute("skin-index") || "0"
+              entry.target.getAttribute("skin-index") || "0",
+              10
             );
             setVisibleSkinIndex(index);
           }

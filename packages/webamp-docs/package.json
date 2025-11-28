@@ -13,6 +13,7 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
+    "lint": "eslint src --ext ts,tsx,js",
     "type-check": "tsc",
     "typecheck": "tsc"
   },

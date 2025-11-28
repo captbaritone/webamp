@@ -215,7 +215,7 @@ const windows = (
             return w;
           }
           // Pull out `hidden` since it's been removed from our state.
-          const { hidden, ...rest } = serializedW;
+          const { hidden: _hidden, ...rest } = serializedW;
           return { ...w, ...rest };
         }),
         focused,

@@ -1,4 +1,4 @@
-import { Options, Preset } from "./types";
+import { Options } from "./types";
 import { PrivateOptions } from "./webampLazy";
 import Webamp from "./webamp";
 // @ts-ignore

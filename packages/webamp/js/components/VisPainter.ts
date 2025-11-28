@@ -280,8 +280,8 @@ export class BarPaintHandler extends VisPaintHandler {
   paintAnalyzer() {
     if (!this._ctx) return;
     const ctx = this._ctx;
-    const w = ctx.canvas.width;
-    const h = ctx.canvas.height;
+    const _w = ctx.canvas.width;
+    const _h = ctx.canvas.height;
     ctx.fillStyle = this._color;
 
     const maxFreqIndex = 512;
@@ -605,8 +605,8 @@ export class WavePaintHandler extends VisPaintHandler {
     this._dataArray = this._dataArray.slice(0, 576);
     const bandwidth = this._dataArray.length;
 
-    const width = this._ctx!.canvas.width;
-    const height = this._ctx!.canvas.height;
+    const _width = this._ctx!.canvas.width;
+    const _height = this._ctx!.canvas.height;
 
     // width would technically be correct, but if the main window is
     // in windowshade mode, it is set to 150, making sliceWidth look
@@ -693,14 +693,9 @@ export class WavePaintHandler extends VisPaintHandler {
     // clamp y to be within a certain range, here it would be 0..10 if both windowShade and pixelDensity apply
     // else we clamp y to 0..15 or 0..3, depending on renderHeight
     if (this._vis.smallVis && this._vis.pixelDensity === 2) {
-      y = y < 0 ? 0 : y > 10 - 1 ? 10 - 1 : y;
+      y = Math.max(0, Math.min(10 - 1, y));
     } else {
-      y =
-        y < 0
-          ? 0
-          : y > this._vis.renderHeight - 1
-          ? this._vis.renderHeight - 1
-          : y;
+      y = Math.max(0, Math.min(this._vis.renderHeight - 1, y));
     }
     const v = y;
     if (x === 0) this._lastY = y;
@@ -774,7 +769,7 @@ export class NoVisualizerHandler extends VisPaintHandler {
 
   paintFrame() {
     if (!this._ctx) return;
-    const ctx = this._ctx;
+    const _ctx = this._ctx;
     this.cleared = true;
   }
 }

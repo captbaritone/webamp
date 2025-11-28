@@ -111,7 +111,7 @@ export async function getWebampConfig(
       try {
         const track = JSON.parse(trackJson);
         return [track];
-      } catch (err) {
+      } catch (_err) {
         return null;
       }
     },

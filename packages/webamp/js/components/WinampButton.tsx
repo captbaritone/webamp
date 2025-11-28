@@ -62,7 +62,7 @@ export default function WinampButton({
       }
       setActive(true);
 
-      function onRelease(ee: PointerEvent) {
+      function onRelease(_ee: PointerEvent) {
         setActive(false);
         document.removeEventListener("pointerup", onRelease);
       }

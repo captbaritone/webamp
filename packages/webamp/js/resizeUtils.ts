@@ -1,4 +1,4 @@
-import { WindowInfo, WindowId } from "./types";
+import { WindowInfo } from "./types";
 
 interface NewGraph {
   [key: string]: {

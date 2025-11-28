@@ -7,6 +7,7 @@ import * as Skins from "../data/skins";
 import * as CloudFlare from "../CloudFlare";
 import SkinModel from "../data/SkinModel";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-require-imports
 const Shooter = require("../shooter");
 
 export async function screenshot(skin: SkinModel, shooter: typeof Shooter) {
