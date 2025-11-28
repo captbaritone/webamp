@@ -48,7 +48,7 @@
       "outputs": []
     },
     "webamp-modern#build": {
-      "outputs": []
+      "outputs": ["build/**"]
     },
     "webamp-modern#test": {
       "outputs": []
