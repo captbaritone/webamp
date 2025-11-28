@@ -42,7 +42,6 @@ export async function getPlaylist(
     }
   );
 
-  // eslint-disable-next-line no-return-await
   return await result.json();
 }
 
