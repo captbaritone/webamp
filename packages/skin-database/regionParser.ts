@@ -68,7 +68,7 @@ const parseIni = (text: string): IniData => {
       const value = match[2]
         // Ignore anything after a second `=`
         // TODO: What if this is inside quotes or escaped?
-        .replace(/=.*$/g, "")
+        .replace(/[=].*$/g, "")
         .trim()
         // Strip quotes
         // TODO: What about escaped quotes?

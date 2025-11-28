@@ -48,7 +48,7 @@ export async function getSkinFileData(
   skin: SkinModel
 ): Promise<(FileData | null)[]> {
   const zip = await skin.getZip();
-  return await Promise.all(Object.values(zip.files).map(getFileData));
+  return Promise.all(Object.values(zip.files).map(getFileData));
 }
 
 // https://stackoverflow.com/a/46700791/1263117

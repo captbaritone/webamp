@@ -15,10 +15,9 @@ export default class KeyValue {
       .count({ count: "*" })
       .first()) as { count: number };
     if (count) {
-      return await KeyValue.update(key, value);
-    } else {
-      return await KeyValue.insert(key, value);
+      return KeyValue.update(key, value);
     }
+    return KeyValue.insert(key, value);
   }
 
   static async update(key: string, value: any): Promise<void> {

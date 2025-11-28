@@ -242,23 +242,22 @@ export default class SkinModel {
         this.getMd5() + ext
       );
       return fs.readFile(skinPath);
-    } else {
-      const response = await fetch(this.getSkinUrl());
-      if (!response.ok) {
-        const missingModernSkins =
-          (await KeyValue.get<string[]>("missingModernSkins")) ?? [];
-        const missingModernSkinsSet = new Set(missingModernSkins);
-        missingModernSkinsSet.add(this.getMd5());
-        await KeyValue.set(
-          "missingModernSkins",
-          Array.from(missingModernSkinsSet)
-        );
-        throw new Error(
-          `Could not fetch skin at "${this.getSkinUrl()}" (Marked in missingModernSkins in the KeyValue store)`
-        );
-      }
-      return response.buffer();
     }
+    const response = await fetch(this.getSkinUrl());
+    if (!response.ok) {
+      const missingModernSkins =
+        (await KeyValue.get<string[]>("missingModernSkins")) ?? [];
+      const missingModernSkinsSet = new Set(missingModernSkins);
+      missingModernSkinsSet.add(this.getMd5());
+      await KeyValue.set(
+        "missingModernSkins",
+        Array.from(missingModernSkinsSet)
+      );
+      throw new Error(
+        `Could not fetch skin at "${this.getSkinUrl()}" (Marked in missingModernSkins in the KeyValue store)`
+      );
+    }
+    return response.buffer();
   });
 
   getScreenshotBuffer = mem(async (): Promise<Buffer> => {
@@ -385,10 +384,9 @@ export default class SkinModel {
   }
 
   async hasGeneral(): Promise<boolean> {
-    return (
-      (await this._hasSpriteSheet("GEN")) &&
-      (await this._hasSpriteSheet("GENEX"))
-    );
+    const hasGen = await this._hasSpriteSheet("GEN");
+    const hasGenEx = await this._hasSpriteSheet("GENEX");
+    return hasGen && hasGenEx;
   }
 
   async getAlgoliaIndexUpdates(limit?: number): Promise<any[]> {

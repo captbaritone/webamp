@@ -77,9 +77,8 @@ function Inner({ files }) {
             upload
           </>
         );
-      } else {
-        return `Thanks for your contribution!`;
       }
+      return `Thanks for your contribution!`;
     }
     return `No missing skins found`;
   };

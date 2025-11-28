@@ -25,7 +25,7 @@ export default class ModernSkinResolver implements NodeResolver, ISkin {
   async filename(normalize_extension: boolean): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
-      return path.parse(filename).name + ".wal";
+      return `${path.parse(filename).name}.wal`;
     }
     return filename;
   }

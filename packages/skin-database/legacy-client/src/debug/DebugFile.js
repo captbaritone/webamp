@@ -30,7 +30,7 @@ export function PreviewFile({ file }) {
         (Hover in the box to see .cur preview)
         <div
           style={{
-            cursor: "url(" + file.url + "), auto",
+            cursor: `url(${file.url}), auto`,
             border: "2px solid black",
             minWidth: "400px",
             minHeight: "400px",

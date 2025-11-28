@@ -89,9 +89,8 @@ export function useWebampAnimation({ initialPosition }) {
         transitionBeginEvents.next(null);
       });
       return () => subscription.unsubscribe();
-    } else {
-      transitionBeginEvents.next(null);
     }
+    transitionBeginEvents.next(null);
   }, [initialPosition, setCentered, transitionBeginEvents]);
 
   const handleWebampLoaded = useCallback(() => {

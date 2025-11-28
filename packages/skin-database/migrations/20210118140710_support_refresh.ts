@@ -1,7 +1,7 @@
 import * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<any> {
-  await knex.schema.createTable("refreshes", function (table) {
+  await knex.schema.createTable("refreshes", (table) => {
     table.increments();
     table.string("skin_md5").notNullable();
     table.string("error");

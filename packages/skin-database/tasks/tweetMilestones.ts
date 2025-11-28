@@ -18,7 +18,7 @@ type TweetPayload = {
 };
 
 async function getTweets(twitterClient): Promise<TweetPayload[]> {
-  let max_id: string | undefined = undefined;
+  let max_id: string | undefined;
   let tweets: TweetPayload[] = [];
   let callCount = 0;
 

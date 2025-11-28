@@ -10,19 +10,8 @@ module.exports = {
     "@typescript-eslint/no-namespace": "off",
     // Override the base no-shadow rule since it conflicts with TypeScript
     "no-shadow": "off",
-    // Relax rules for this project's existing style
+    // camelcase has too many violations (333) to fix now
     camelcase: "off",
-    "dot-notation": "off",
-    eqeqeq: "off",
-    "no-undef-init": "off",
-    "no-return-await": "off",
-    "prefer-arrow-callback": "off",
-    "no-div-regex": "off",
-    "guard-for-in": "off",
-    "prefer-template": "off",
-    "no-else-return": "off",
-    "prefer-const": "off",
-    "new-cap": "off",
   },
   ignorePatterns: ["dist/**"],
 };

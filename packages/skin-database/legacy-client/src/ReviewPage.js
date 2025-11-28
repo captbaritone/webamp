@@ -25,9 +25,8 @@ async function getSkinToReview() {
   const data = await Utils.fetchGraphql(mutation);
   if (data.me.username) {
     return data.skin_to_review;
-  } else {
-    window.location = `${API_URL}/auth`;
   }
+  window.location = `${API_URL}/auth`;
 }
 
 function useQueuedSkin() {

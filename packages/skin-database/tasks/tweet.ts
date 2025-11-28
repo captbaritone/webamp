@@ -33,12 +33,12 @@ export async function tweet(
       return;
     }
     const tweetStatus = await tweetableSkin.getTweetStatus();
-    if (tweetStatus == "TWEETED") {
+    if (tweetStatus === "TWEETED") {
       // @ts-ignore
       // await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
       // return;
     }
-    if (tweetStatus == "REJECTED" || tweetStatus == "NSFW") {
+    if (tweetStatus === "REJECTED" || tweetStatus === "NSFW") {
       // @ts-ignore
       await tweetBotChannel.send(`Oops! Can't tweet a rejected skin.`);
       return;

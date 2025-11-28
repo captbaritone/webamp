@@ -13,6 +13,7 @@ export function getUserContext(ctx: Ctx): UserContext {
   return ctx.ctx;
 }
 
+// eslint-disable-next-line new-cap -- Express Router uses this pattern
 const router = Router();
 
 const yoga = createYoga({
