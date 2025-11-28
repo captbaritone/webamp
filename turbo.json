@@ -66,6 +66,7 @@
     },
     "ani-cursor#lint": {},
     "skin-database#lint": {},
+    "skin-museum-og#lint": {},
     "webamp-modern#lint": {},
     "winamp-eqf#lint": {},
     "dev": {
