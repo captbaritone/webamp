@@ -13,7 +13,7 @@ export function museumUrlFromHash(hash) {
 }
 
 export function getWindowSize() {
-  var w = window,
+  let w = window,
     d = document,
     e = d.documentElement,
     g = d.getElementsByTagName("body")[0],

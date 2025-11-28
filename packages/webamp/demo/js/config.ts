@@ -15,7 +15,7 @@ let config: Config = {};
 if (hash) {
   try {
     config = JSON.parse(decodeURIComponent(hash).slice(1));
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to decode config from hash: ", hash);
   }
 }

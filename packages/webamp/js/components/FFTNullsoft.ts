@@ -17,9 +17,9 @@ export class FFT {
     // Assuming these are your hardcoded values:
     const samplesIn = 1024; // hardcoded value
     const samplesOut = 512; // hardcoded value
-    const bEqualize = true; // hardcoded value
+    const _bEqualize = true; // hardcoded value
     const envelopePower = 1.0; // hardcoded value
-    const mode = false; // hardcoded value
+    const _mode = false; // hardcoded value
 
     const NFREQ = samplesOut * 2;
 
@@ -28,13 +28,13 @@ export class FFT {
     this.cossintable = this.initCosSinTable(NFREQ);
 
     this.envelope = this.initEnvelopeTable(samplesIn, envelopePower);
-    this.equalize = this.initEqualizeTable(NFREQ, mode);
+    this.equalize = this.initEqualizeTable(NFREQ, _mode);
 
     this.temp1 = new Float32Array(NFREQ);
     this.temp2 = new Float32Array(NFREQ);
   }
 
-  private initEqualizeTable(NFREQ: number, mode: boolean): Float32Array {
+  private initEqualizeTable(NFREQ: number, _mode: boolean): Float32Array {
     const equalize = new Float32Array(NFREQ / 2);
     let bias = 0.04; // FFT.INITIAL_BIAS
 

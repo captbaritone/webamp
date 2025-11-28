@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { getUrl } from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import { useActionCreator } from "./hooks";
-
-import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { fetchGraphql, gql } from "./utils";
 

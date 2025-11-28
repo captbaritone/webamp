@@ -168,7 +168,7 @@ export function fetchMediaDuration(url: string, id: number): Thunk {
         try {
           const duration = await genMediaDuration(url);
           dispatch({ type: "SET_MEDIA_DURATION", duration, id });
-        } catch (e) {
+        } catch (_e) {
           // TODO: Should we update the state to indicate that we don't know the length?
         }
       },
@@ -328,7 +328,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Thunk {
         sampleRate,
         id,
       });
-    } catch (e) {
+    } catch (_e) {
       dispatch({ type: "MEDIA_TAG_REQUEST_FAILED", id });
     }
   };

@@ -29,9 +29,9 @@ function massageKbps(kbps: number) {
   // from Justin Frankel directly:
   // IIRC H was for "hundred" and "C" was thousand,
   // though why it was for thousand I have no idea lol, maybe it was a mistake...
-  if (bitrateNum >= 1000) finalKbps = String(bitrateNum).slice(0, 2) + "H";
+  if (bitrateNum >= 1000) finalKbps = `${String(bitrateNum).slice(0, 2)}H`;
   if (bitrateNum >= 10000)
-    finalKbps = String(bitrateNum).slice(0, 1).padStart(2, " ") + "C";
+    finalKbps = `${String(bitrateNum).slice(0, 1).padStart(2, " ")}C`;
   return finalKbps;
 }
 

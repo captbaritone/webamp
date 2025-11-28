@@ -9,10 +9,6 @@ interface Props {
   children: ReactNode | Array<ReactNode>;
 }
 
-interface State {
-  selected: boolean;
-}
-
 function PlaylistMenu(props: Props) {
   const [selected, setSelected] = useState(false);
 

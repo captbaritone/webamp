@@ -1,32 +1,28 @@
 module.exports = {
-  env: {
-    node: true,
-    es2021: true,
-    jest: true,
-  },
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    ecmaVersion: 12,
-    sourceType: "module",
-  },
-  plugins: ["@typescript-eslint"],
+  extends: ["plugin:@typescript-eslint/recommended"],
   rules: {
-    // "no-console": "warn",
+    // Disable rules that conflict with the project's style
     "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-require-imports": "off", // Allow require() in JS files
+    "@typescript-eslint/no-require-imports": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
-      },
-    ],
+    // Override the base no-shadow rule since it conflicts with TypeScript
+    "no-shadow": "off",
+    // Relax rules for this project's existing style
+    camelcase: "off",
+    "dot-notation": "off",
+    eqeqeq: "off",
+    "no-undef-init": "off",
+    "no-return-await": "off",
+    "prefer-arrow-callback": "off",
+    "no-div-regex": "off",
+    "guard-for-in": "off",
+    "prefer-template": "off",
+    "no-else-return": "off",
+    "prefer-const": "off",
+    "new-cap": "off",
   },
   ignorePatterns: ["dist/**"],
 };

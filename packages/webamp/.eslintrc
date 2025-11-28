@@ -1,42 +1,10 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "jsx": true,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
-    }
-  },
-  "plugins": [
-    "react",
-    "prettier",
-    "import",
-    "@typescript-eslint",
-    "react-hooks"
-  ],
+  "plugins": ["react", "import", "react-hooks"],
   "settings": {
     "react": {
       "version": "15.2"
-    },
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".ts", ".tsx"]
-      }
     }
   },
-  "env": {
-    "node": true,
-    "amd": true,
-    "es6": true,
-    "jest": true
-  },
-  // TODO: Consider removing some of these.
-  // Allow common browser globals for better compatibility:
-  // * document
-  // * window
-  // * console
-  // * navigator
   "globals": {
     "window": true,
     "document": true,
@@ -61,79 +29,18 @@
         "maxBOF": 0
       }
     ],
-    "block-scoped-var": "warn",
-    "camelcase": "error",
-    "constructor-super": "error",
-    "dot-notation": "error",
-    "eqeqeq": ["error", "smart"],
-    "guard-for-in": "error",
     "lines-between-class-members": [
       "warn",
       "always",
       { "exceptAfterSingleLine": true }
     ],
-    "max-depth": ["warn", 4],
-    "max-params": ["warn", 5],
-    "new-cap": "error",
-    "no-caller": "error",
     "no-catch-shadow": "error",
-    "no-const-assign": "error",
-    "no-debugger": "error",
-    "no-delete-var": "error",
-    "no-div-regex": "warn",
-    "no-dupe-args": "error",
-    "no-dupe-class-members": "error",
-    "no-dupe-keys": "error",
-    "no-duplicate-case": "error",
-    "no-duplicate-imports": "error",
-    "no-else-return": "error",
-    "no-empty-character-class": "error",
-    "no-eval": "error",
-    "no-ex-assign": "error",
-    "no-extend-native": "warn",
-    "no-extra-boolean-cast": "error",
-    "no-extra-semi": "error",
-    "no-fallthrough": "error",
     "no-floating-decimal": "error",
-    "no-func-assign": "error",
-    "no-implied-eval": "error",
-    "no-inner-declarations": "error",
-    "no-irregular-whitespace": "error",
-    "no-label-var": "error",
-    "no-labels": "error",
-    "no-lone-blocks": "error",
-    "no-lonely-if": "error",
     "no-multi-spaces": "warn",
-    "no-multi-str": "error",
     "no-native-reassign": "error",
     "no-negated-in-lhs": "warn",
-    "no-nested-ternary": "warn",
-    "no-new-object": "error",
-    "no-new-symbol": "error",
-    "no-new-wrappers": "error",
-    "no-obj-calls": "error",
-    "no-octal": "error",
-    "no-octal-escape": "error",
-    "no-proto": "error",
-    "no-redeclare": "error",
-    "no-shadow": "warn",
     "no-spaced-func": "error",
-    "no-this-before-super": "error",
-    "no-throw-literal": "error",
     "no-trailing-spaces": "error",
-    "no-undef-init": "error",
-    "no-unneeded-ternary": "error",
-    "no-unreachable": "error",
-    "no-unused-expressions": "error",
-    "no-useless-rename": "error",
-    "no-var": "error",
-    "no-with": "error",
-    "prefer-arrow-callback": "warn",
-    "prefer-const": "error",
-    "prefer-spread": "error",
-    "prefer-template": "warn",
-    "radix": "error",
-    "no-return-await": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
     "react/jsx-uses-react": "off",
@@ -143,8 +50,6 @@
     "react/require-render-return": "error",
     "react/self-closing-comp": "error",
     "react/no-unescaped-entities": "error",
-    "use-isnan": "error",
-    "valid-typeof": "error",
     "import/default": "error",
     "import/export": "error",
     "import/first": "error",

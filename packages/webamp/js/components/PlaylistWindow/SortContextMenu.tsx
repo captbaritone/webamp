@@ -4,12 +4,6 @@ import { Hr, Node } from "../ContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
 import { useActionCreator } from "../../hooks";
 
-interface DispatchProps {
-  sortListByTitle: () => void;
-  reverseList: () => void;
-  randomizeList: () => void;
-}
-
 /* eslint-disable no-alert */
 /* TODO: This should really be kitty-corner to the upper right hand corner of the MiscMenu */
 export default function SortContextMenu() {

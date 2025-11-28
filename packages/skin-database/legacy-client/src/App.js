@@ -1,18 +1,21 @@
 "use client";
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import About from "./About";
 import Feedback from "./Feedback";
 import Header from "./Header";
 import Overlay from "./Overlay";
 import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
-import { useSelector } from "react-redux";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import { ABOUT_PAGE, REVIEW_PAGE } from "./constants";
+import {
+  ABOUT_PAGE,
+  REVIEW_PAGE,
+  SCREENSHOT_WIDTH,
+  SKIN_RATIO,
+} from "./constants";
 import { useWindowSize, useScrollbarWidth, useActionCreator } from "./hooks";
-import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 import UploadGrid from "./upload/UploadGrid";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
@@ -78,6 +81,7 @@ function App(props) {
             windowWidth={windowWidthWithScrollabar}
           />
         )}
+        {/* eslint-disable-next-line no-nested-ternary -- legacy code */}
         {props.showFeedbackForm ? (
           <Overlay>
             <Feedback />
