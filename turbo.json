@@ -66,6 +66,7 @@
     },
     "skin-database#lint": {},
     "webamp-modern#lint": {},
+    "winamp-eqf#lint": {},
     "dev": {
       "cache": false,
       "persistent": true
