@@ -1,5 +1,8 @@
 module.exports = {
-  extends: ["plugin:@typescript-eslint/recommended"],
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@next/next/recommended",
+  ],
   rules: {
     // Disable rules that conflict with the project's style
     "@typescript-eslint/no-var-requires": "off",
@@ -12,6 +15,8 @@ module.exports = {
     "no-shadow": "off",
     // camelcase has too many violations (333) to fix now
     camelcase: "off",
+    // This codebase uses <img> for OG images and legacy code
+    "@next/next/no-img-element": "off",
   },
   ignorePatterns: ["dist/**"],
 };
