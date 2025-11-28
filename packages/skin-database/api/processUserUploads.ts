@@ -37,9 +37,9 @@ const ONE_MINUTE_IN_MS = 1000 * 60;
 function timeout<T>(p: Promise<T>, duration: number): Promise<T> {
   return Promise.race([
     p,
-    new Promise<never>((resolve, reject) =>
-      setTimeout(() => reject("timeout"), duration)
-    ),
+    new Promise<never>((_resolve, reject) => {
+      setTimeout(() => reject("timeout"), duration);
+    }),
   ]);
 }
 

@@ -89,7 +89,7 @@ const getCssRules = createSelector(
       }
       const cursorRules = cursorSelector
         .map(normalizeCursorSelector)
-        .map((selector) => {
+        .map((selector): string | null => {
           switch (cursor.type) {
             case "cur":
               return `${selector} {cursor: url(${cursor.url}), auto}`;
@@ -101,6 +101,8 @@ const getCssRules = createSelector(
                 return null;
               }
             }
+            default:
+              return null;
           }
         })
         .filter(Boolean);

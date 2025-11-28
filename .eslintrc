@@ -23,6 +23,11 @@
   "rules": {
     "prettier/prettier": "error",
     "no-constant-binary-expression": "error",
+    "array-callback-return": "error",
+    "no-template-curly-in-string": "error",
+    "no-promise-executor-return": "error",
+    "no-constructor-return": "error",
+    "no-unsafe-optional-chaining": "error",
     "block-scoped-var": "warn",
     "camelcase": "error",
     "constructor-super": "error",
