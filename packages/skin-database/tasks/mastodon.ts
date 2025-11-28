@@ -68,7 +68,7 @@ async function post(md5: string): Promise<string> {
     }
   );
 
-  if (resp.statusCode != 200) {
+  if (resp.statusCode !== 200) {
     console.log(JSON.stringify(resp, null, 2));
     console.log("data", data);
     throw new Error(

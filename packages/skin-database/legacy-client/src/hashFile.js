@@ -1,7 +1,7 @@
 import SparkMD5 from "spark-md5";
 
 export function hashFile(file) {
-  let blobSlice =
+  const blobSlice =
     File.prototype.slice ||
     File.prototype.mozSlice ||
     File.prototype.webkitSlice;
@@ -26,7 +26,7 @@ export function hashFile(file) {
     fileReader.onerror = reject;
 
     function loadNext() {
-      let start = currentChunk * chunkSize,
+      const start = currentChunk * chunkSize,
         end = start + chunkSize >= file.size ? file.size : start + chunkSize;
 
       fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));

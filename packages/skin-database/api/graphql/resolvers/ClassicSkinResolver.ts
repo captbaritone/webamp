@@ -26,7 +26,7 @@ export default class ClassicSkinResolver implements NodeResolver, ISkin {
   async filename(normalize_extension?: boolean): Promise<string> {
     const filename = await this._model.getFileName();
     if (normalize_extension) {
-      return path.parse(filename).name + ".wsz";
+      return `${path.parse(filename).name}.wsz`;
     }
     return filename;
   }

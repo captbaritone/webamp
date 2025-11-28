@@ -20,7 +20,7 @@ async function handler(message: Message, args: [string]) {
   const jsonString = JSON.stringify(data, null, 2);
   for (let i = 0; i < jsonString.length; i += pageSize) {
     await message.channel.send(
-      "```" + jsonString.slice(i, i + pageSize) + "```"
+      `\`\`\`${jsonString.slice(i, i + pageSize)}\`\`\``
     );
   }
 }

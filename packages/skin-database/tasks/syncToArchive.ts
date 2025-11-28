@@ -59,7 +59,7 @@ export async function uploadScreenshotIfSafe(md5: string): Promise<boolean> {
     return false;
   }
   const skinFiles = iaItem.getSkinFiles();
-  if (skinFiles.length != 1) {
+  if (skinFiles.length !== 1) {
     console.warn(`Has ${skinFiles.length} skins`);
     return false;
   }

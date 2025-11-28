@@ -2,7 +2,7 @@ import SkinModel from "../data/SkinModel.js";
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: process.env["OPENAI_API_KEY"], // This is the default and can be omitted
+  apiKey: process.env.OPENAI_API_KEY, // This is the default and can be omitted
 });
 
 const prompt2 = `You are a staff digital preservationist working at the Internet Archive.

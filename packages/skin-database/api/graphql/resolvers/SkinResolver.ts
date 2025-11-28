@@ -21,9 +21,8 @@ export default class SkinResolver {
   static fromModel(model: SkinModel): ISkin {
     if (model.getSkinType() === "MODERN") {
       return new ModernSkinResolver(model);
-    } else {
-      return new ClassicSkinResolver(model);
     }
+    return new ClassicSkinResolver(model);
   }
 }
 

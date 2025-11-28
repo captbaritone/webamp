@@ -52,7 +52,7 @@ export default function DebugSkin({ md5 }) {
   const skin = data.fetch_skin_by_md5;
 
   const screenshotFile = {
-    filename: skin.filename + ".png",
+    filename: `${skin.filename}.png`,
     url: skin.screenshot_url,
   };
   const focusedFile = file || screenshotFile;
@@ -199,5 +199,5 @@ function formatBytes(bytes, decimals = 2) {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }

@@ -31,9 +31,8 @@ function Skin({
           e.preventDefault();
           doesNotConcentToNsfw();
           return;
-        } else {
-          consentsToNsfw();
         }
+        consentsToNsfw();
       }
       if (Utils.eventIsLinkClick(e)) {
         e.preventDefault();

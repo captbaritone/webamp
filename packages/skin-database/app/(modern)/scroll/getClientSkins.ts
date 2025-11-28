@@ -13,7 +13,7 @@ export async function getClientSkins(sessionId: string): Promise<ClientSkin[]> {
 
   const page = await getScrollPage(sessionId);
 
-  return await Promise.all(
+  return Promise.all(
     page.map(async (item) => {
       return getSkinForSession(ctx, sessionId, item.md5);
     })
