@@ -31,3 +31,5 @@ process.env.INSTAGRAM_ACCESS_TOKEN = "<DUMMY>";
 process.env.INSTAGRAM_ACCOUNT_ID = "<DUMMY>";
 process.env.MASTODON_ACCESS_TOKEN = "<DUMMY>";
 process.env.SECRET = "<DUMMY>";
+process.env.BLUESKY_PASSWORD = "<DUMMY>";
+process.env.BLUESKY_USERNAME = "<DUMMY>";
