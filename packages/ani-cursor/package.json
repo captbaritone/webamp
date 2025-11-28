@@ -32,6 +32,7 @@
   "scripts": {
     "build": "tsc",
     "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext ts,js",
     "test": "jest",
     "prepublish": "tsc"
   },
