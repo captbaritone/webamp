@@ -64,6 +64,7 @@
     "webamp#lint": {
       "dependsOn": ["ani-cursor#build", "winamp-eqf#build"]
     },
+    "ani-cursor#lint": {},
     "skin-database#lint": {},
     "webamp-modern#lint": {},
     "dev": {
