@@ -94,7 +94,7 @@ export const parseViscolors = (text: string): string[] => {
     .map((line) => regex.exec(line))
     .filter(Boolean)
     .map((matches) => (matches as RegExpExecArray).slice(1, 4).join(","))
-    .map((rgb, i) => {
+    .forEach((rgb, i) => {
       colors[i] = `rgb(${rgb})`;
     });
   return colors;

@@ -22,7 +22,9 @@ export async function upload(fileObj) {
       console.warn(
         `Request to ${uploadUrl} returned 503, going to retry again in 5 seconds. ${retries} retries left...`
       );
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => {
+        setTimeout(resolve, 5000);
+      });
       continue;
     }
 
