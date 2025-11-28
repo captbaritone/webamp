@@ -11,6 +11,7 @@ const Eject = memo(() => {
       id="eject"
       onClick={openMediaFileDialog}
       title="Open File(s)"
+      requireClicksOriginateLocally={false}
     />
   );
 });
