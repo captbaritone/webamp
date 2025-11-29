@@ -55,15 +55,12 @@ export async function getFileFromZip(
   }
 }
 
-async function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  const url = URL.createObjectURL(blob);
-  try {
-    const img = await Utils.imgFromUrl(url);
-    return img;
-  } finally {
-    // Clean up the object URL after the image has loaded (or failed to load)
-    URL.revokeObjectURL(url);
-  }
+function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
+  // Note: We cannot revoke the object URL here because the returned image
+  // element needs the URL to remain valid for its lifetime. This is an
+  // acceptable small leak since skin images are loaded infrequently and
+  // the primary path uses createImageBitmap which doesn't have this issue.
+  return Utils.imgFromUrl(URL.createObjectURL(blob));
 }
 
 export async function getImgFromBlob(
