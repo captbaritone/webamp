@@ -88,7 +88,7 @@ const tracks = (
         },
       };
     }
-    case "SET_MEDIA_TAGS":
+    case "SET_MEDIA_TAGS": {
       const track = state[(action as any).id];
       const {
         sampleRate,
@@ -100,6 +100,16 @@ const tracks = (
         albumArtUrl,
       } = action as any;
       const { kbps, khz, channels } = track;
+
+      // Clean up old album art URL if it's being replaced
+      if (
+        track.albumArtUrl &&
+        track.albumArtUrl.startsWith("blob:") &&
+        track.albumArtUrl !== albumArtUrl
+      ) {
+        URL.revokeObjectURL(track.albumArtUrl);
+      }
+
       return {
         ...state,
         [(action as any).id]: {
@@ -114,6 +124,42 @@ const tracks = (
           channels: numberOfChannels != null ? numberOfChannels : channels,
         },
       };
+    }
+    case "REMOVE_TRACKS": {
+      const actionIds = (action as any).ids;
+      const newState = { ...state };
+
+      // Clean up object URLs for removed tracks
+      actionIds.forEach((id: number) => {
+        const track = state[id];
+        if (track) {
+          // Revoke track URL if it's an object URL
+          if (track.url && track.url.startsWith("blob:")) {
+            URL.revokeObjectURL(track.url);
+          }
+          // Revoke album art URL if it's an object URL
+          if (track.albumArtUrl && track.albumArtUrl.startsWith("blob:")) {
+            URL.revokeObjectURL(track.albumArtUrl);
+          }
+          delete newState[id];
+        }
+      });
+
+      return newState;
+    }
+    case "REMOVE_ALL_TRACKS": {
+      // Clean up all object URLs
+      Object.values(state).forEach((track) => {
+        if (track.url && track.url.startsWith("blob:")) {
+          URL.revokeObjectURL(track.url);
+        }
+        if (track.albumArtUrl && track.albumArtUrl.startsWith("blob:")) {
+          URL.revokeObjectURL(track.albumArtUrl);
+        }
+      });
+
+      return {};
+    }
     default:
       return state;
   }

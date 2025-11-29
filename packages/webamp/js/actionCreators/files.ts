@@ -116,6 +116,7 @@ export function setSkinFromBlob(blob: Blob | Promise<Blob>): Thunk {
 export function setSkinFromUrl(url: string): Thunk {
   return async (dispatch) => {
     dispatch({ type: "LOADING" });
+    const isObjectUrl = url.startsWith("blob:");
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -126,6 +127,11 @@ export function setSkinFromUrl(url: string): Thunk {
       console.error(e);
       dispatch({ type: "LOADED" });
       alert(`Failed to download skin from ${url}`);
+    } finally {
+      // Clean up object URL if one was created
+      if (isObjectUrl) {
+        URL.revokeObjectURL(url);
+      }
     }
   };
 }

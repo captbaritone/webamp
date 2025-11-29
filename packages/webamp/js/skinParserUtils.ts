@@ -55,8 +55,15 @@ export async function getFileFromZip(
   }
 }
 
-function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  return Utils.imgFromUrl(URL.createObjectURL(blob));
+async function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = await Utils.imgFromUrl(url);
+    return img;
+  } finally {
+    // Clean up the object URL after the image has loaded (or failed to load)
+    URL.revokeObjectURL(url);
+  }
 }
 
 export async function getImgFromBlob(

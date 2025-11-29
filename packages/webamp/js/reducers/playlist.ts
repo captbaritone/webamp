@@ -74,7 +74,6 @@ const playlist = (
         ),
       };
     case "REMOVE_ALL_TRACKS":
-      // TODO: Consider disposing of ObjectUrls
       return {
         ...state,
         trackOrder: [],
@@ -83,7 +82,6 @@ const playlist = (
         lastSelectedIndex: null,
       };
     case "REMOVE_TRACKS":
-      // TODO: Consider disposing of ObjectUrls
       const actionIds = new Set((action as any).ids.map(Number));
       const { currentTrack } = state;
       return {
