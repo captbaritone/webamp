@@ -528,17 +528,9 @@ class Webamp {
    * attempt to clean itself up to avoid memory leaks.
    */
   dispose(): void {
-    // Clean up all object URLs to prevent memory leaks
-    const state = this.store.getState();
-    const tracks = Selectors.getTracks(state);
-    Object.values(tracks).forEach((track) => {
-      if (track.url && track.url.startsWith("blob:")) {
-        URL.revokeObjectURL(track.url);
-      }
-      if (track.albumArtUrl && track.albumArtUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(track.albumArtUrl);
-      }
-    });
+    // Clean up all object URLs by dispatching REMOVE_ALL_TRACKS
+    // This reuses the cleanup logic in the tracks reducer
+    this.store.dispatch({ type: "REMOVE_ALL_TRACKS" });
 
     this.media.dispose();
     this._actionEmitter.dispose();
