@@ -135,7 +135,16 @@ async function genGenTextSprites(zip) {
   sprites.forEach((sprite) => {
     letterWidths[sprite.name] = sprite.width;
   });
-  return [letterWidths, SkinParserUtils.getSpriteUrisFromImg(img, sprites)];
+
+  const result = [letterWidths, SkinParserUtils.getSpriteUrisFromImg(img, sprites)];
+
+  // Clean up object URL if the image is an HTMLImageElement with a blob URL
+  // (ImageBitmap doesn't have a src property, so this only affects the fallback path)
+  if (img instanceof HTMLImageElement && img.src.startsWith("blob:")) {
+    URL.revokeObjectURL(img.src);
+  }
+
+  return result;
 }
 
 // A promise that, given an array buffer returns a skin style object

@@ -224,7 +224,7 @@ export async function getGenExColors(
   // that with getColorAt, but I don't know a great way to make that type
   // safe. So, we'll just do this for now, where we explicitly call getColorAt
   // for each key.
-  return {
+  const colors = {
     // (1) x=48: item background (background to edits, listviews, etc.)
     itemBackground: getColorAt(48),
     // (2) x=50: item foreground (text colour of edits, listviews, etc.)
@@ -270,4 +270,12 @@ export async function getGenExColors(
     // (22) x=90 List view background colour selected
     listTextSelectedBackground: getColorAt(90),
   };
+
+  // Clean up object URL if the image is an HTMLImageElement with a blob URL
+  // (ImageBitmap doesn't have a src property, so this only affects the fallback path)
+  if (img instanceof HTMLImageElement && img.src.startsWith("blob:")) {
+    URL.revokeObjectURL(img.src);
+  }
+
+  return colors;
 }
