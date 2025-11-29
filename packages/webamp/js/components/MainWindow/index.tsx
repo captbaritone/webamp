@@ -19,6 +19,7 @@ import EqToggleButton from "./EqToggleButton";
 import PlaylistToggleButton from "./PlaylistToggleButton";
 import Kbps from "./Kbps";
 import Khz from "./Khz";
+import WorkIndicator from "./work-indicator"
 import Marquee from "./Marquee";
 import MonoStereo from "./MonoStereo";
 import Position from "./Position";
@@ -99,11 +100,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
         </div>
         <div className="webamp-status">
           <ClutterBar />
-          {!working && <div id="play-pause" />}
-          <div
-            id="work-indicator"
-            className={classnames({ selected: working })}
-          />
+          <WorkIndicator />
           <Time />
         </div>
         <Vis analyser={analyser} />
