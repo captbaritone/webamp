@@ -56,10 +56,7 @@ export async function getFileFromZip(
 }
 
 function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  // Note: We cannot revoke the object URL here because the returned image
-  // element needs the URL to remain valid for its lifetime. This is an
-  // acceptable small leak since skin images are loaded infrequently and
-  // the primary path uses createImageBitmap which doesn't have this issue.
+  // Create object URL that will be cleaned up after the image is used
   return Utils.imgFromUrl(URL.createObjectURL(blob));
 }
 
@@ -129,7 +126,17 @@ export async function getSpriteUrisFromFilename(
   if (img == null) {
     return {};
   }
-  return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
+
+  // Extract sprites from the image
+  const sprites = getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
+
+  // Clean up object URL if the image is an HTMLImageElement with a blob URL
+  // (ImageBitmap doesn't have a src property, so this only affects the fallback path)
+  if (img instanceof HTMLImageElement && img.src.startsWith("blob:")) {
+    URL.revokeObjectURL(img.src);
+  }
+
+  return sprites;
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-
