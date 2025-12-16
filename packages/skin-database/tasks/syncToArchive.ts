@@ -8,7 +8,7 @@ import SkinModel from "../data/SkinModel";
 import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 import DiscordEventHandler from "../api/DiscordEventHandler";
-import { exec, execFile } from "../utils";
+import { execFile } from "../utils";
 import * as IAService from "../services/internetArchive";
 
 export async function findItemsMissingImages(): Promise<string[]> {

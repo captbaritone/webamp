@@ -225,7 +225,9 @@ async function main(): Promise<void> {
 
     // Wait for the service to start
     log("→ Waiting for service to be ready...", "cyan");
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000);
+    });
 
     // Check if the service is running
     const pm2List = execSilent("pm2 list");

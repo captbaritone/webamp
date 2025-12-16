@@ -1,7 +1,6 @@
 import { ISkin } from "./CommonSkinResolver";
 import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
-import path from "path";
 import { ID, Int } from "grats";
 import SkinModel from "../../../data/SkinModel";
 

@@ -7,4 +7,3 @@ export type Ctx = Express.Request;
 export function getUserContext(ctx: Ctx): UserContext {
   return ctx.ctx;
 }
-
