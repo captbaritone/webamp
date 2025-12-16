@@ -58,7 +58,9 @@ async function post(md5: string): Promise<string> {
   const url = skin.getMuseumUrl();
   const screenshotFileName = await skin.getScreenshotFileName();
 
-  const status = `${name}\n`; // TODO: Should we add hashtags?
+  const prefix = `${name}\n\nTry on the `;
+  const suffix = "Winamp Skin Museum";
+  const status = prefix + suffix;
 
   await agent.login({
     identifier: BLUESKY_USERNAME!,
@@ -76,7 +78,10 @@ async function post(md5: string): Promise<string> {
   const postData = await buildPost(
     agent,
     status,
-    buildImageEmbed(blob, width * 2, height * 2)
+    buildImageEmbed(blob, width * 2, height * 2),
+    url,
+    prefix.length,
+    prefix.length + suffix.length
   );
   const postResp = await agent.post(postData);
   console.log(postResp);
@@ -86,35 +91,6 @@ async function post(md5: string): Promise<string> {
 
   await Skins.markAsPostedToBlueSky(md5, postId, postUrl);
 
-  const prefix = "Try on the ";
-  const suffix = "Winamp Skin Museum";
-
-  agent.post({
-    text: prefix + suffix,
-    createdAt: new Date().toISOString(),
-    facets: [
-      {
-        $type: "app.bsky.richtext.facet",
-        index: {
-          byteStart: prefix.length,
-          byteEnd: prefix.length + suffix.length,
-        },
-        features: [
-          {
-            $type: "app.bsky.richtext.facet#link",
-            uri: url,
-          },
-        ],
-      },
-    ],
-    reply: {
-      root: postResp,
-      parent: postResp,
-    },
-    $type: "app.bsky.feed.post",
-  });
-
-  // return permalink;
   return postUrl;
 }
 
@@ -139,14 +115,33 @@ function buildImageEmbed(
 async function buildPost(
   agent: AtpAgent,
   rawText: string,
-  imageEmbed: AppBskyEmbedImages.Main
+  imageEmbed: AppBskyEmbedImages.Main,
+  linkUrl: string,
+  linkStart: number,
+  linkEnd: number
 ): Promise<AppBskyFeedPost.Record> {
   const rt = new RichText({ text: rawText });
   await rt.detectFacets(agent);
   const { text, facets } = rt;
+
+  // Add the link facet
+  const linkFacet = {
+    $type: "app.bsky.richtext.facet" as const,
+    index: {
+      byteStart: linkStart,
+      byteEnd: linkEnd,
+    },
+    features: [
+      {
+        $type: "app.bsky.richtext.facet#link" as const,
+        uri: linkUrl,
+      },
+    ],
+  };
+
   return {
     text,
-    facets,
+    facets: [...(facets || []), linkFacet],
     $type: "app.bsky.feed.post",
     createdAt: new Date().toISOString(),
     embed: {
