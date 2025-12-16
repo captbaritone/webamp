@@ -1,5 +1,6 @@
 "use client";
 
+// @ts-expect-error - unstable_ViewTransition is not yet in @types/react
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";

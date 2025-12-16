@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useCallback,
   useRef,
+  // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
   unstable_ViewTransition as ViewTransition,
 } from "react";
 
@@ -141,7 +142,7 @@ export default function SkinTable({
     return skin ? skin.md5 : `empty-cell-${columnIndex}-${rowIndex}`;
   }
 
-  const gridRef = React.useRef<any>();
+  const gridRef = React.useRef<any>(null);
   const itemRef = React.useRef<number>(0);
 
   const onScroll = useMemo(() => {

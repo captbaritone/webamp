@@ -111,8 +111,8 @@ function SkinTableUnbound({
     }
     return skin ? skin.hash : `unfectched-index-${requestToken}`;
   }
-  const gridRef = React.useRef();
-  const itemRef = React.useRef();
+  const gridRef = React.useRef<any>(null);
+  const itemRef = React.useRef<number>(0);
   React.useLayoutEffect(() => {
     if (gridRef.current == null) {
       return;
