@@ -43,5 +43,10 @@
   "prettier": {
     "trailingComma": "es5"
   },
-  "version": "0.0.0-next-87012d8d"
+  "version": "0.0.0-next-87012d8d",
+  "pnpm": {
+    "patchedDependencies": {
+      "butterchurn@3.0.0-beta.5": "patches/butterchurn@3.0.0-beta.5.patch"
+    }
+  }
 }
