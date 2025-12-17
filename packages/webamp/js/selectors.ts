@@ -467,7 +467,7 @@ const WINDOW_HEIGHT = 116;
 const SHADE_WINDOW_HEIGHT = 14;
 
 function getWPixelSize(w: WebampWindow, doubled: boolean) {
-  const [width, height] = w.size;
+  const [width, height] = w.size ? w.size : [0,0];
   const doubledMultiplier = doubled && w.canDouble ? 2 : 1;
   const pix = {
     height: WINDOW_HEIGHT + height * WINDOW_RESIZE_SEGMENT_HEIGHT,
