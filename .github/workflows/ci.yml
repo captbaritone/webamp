@@ -50,6 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.repository == 'captbaritone/webamp'
     needs: [ci]
+    permissions:
+      contents: read
+      id-token: write  # Required for OIDC trusted publishing
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
@@ -61,6 +64,8 @@ jobs:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
           cache: "pnpm"
+      - name: Update npm to latest version
+        run: npm install -g npm@latest
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Restore build artifacts
@@ -81,31 +86,40 @@ jobs:
           cd ../winamp-eqf && npm version 0.0.0-next-${RELEASE_COMMIT_SHA::7} --no-git-tag-version
         env:
           RELEASE_COMMIT_SHA: ${{ github.sha }}
-      - name: Build release version
+      - name: Set version for tagged release
         if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
-        run: exit 1 # TODO: Script to update version number in webampLazy.tsx
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "Setting version to $VERSION for tagged release"
+          cd packages/webamp && npm version $VERSION --no-git-tag-version
+          cd ../ani-cursor && npm version $VERSION --no-git-tag-version
+          cd ../winamp-eqf && npm version $VERSION --no-git-tag-version
+          # TODO: Update version number in webampLazy.tsx if needed
       - name: Publish ani-cursor to npm
         working-directory: ./packages/ani-cursor
-        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        if: github.ref == 'refs/heads/master' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v'))
         run: |
-          npm publish ${TAG} --ignore-scripts
-        env:
-          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            npm publish --tag=next --ignore-scripts --provenance
+          else
+            npm publish --ignore-scripts --provenance
+          fi
       - name: Publish winamp-eqf to npm
         working-directory: ./packages/winamp-eqf
-        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        if: github.ref == 'refs/heads/master' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v'))
         run: |
-          npm publish ${TAG} --ignore-scripts
-        env:
-          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            npm publish --tag=next --ignore-scripts --provenance
+          else
+            npm publish --ignore-scripts --provenance
+          fi
       - name: Publish webamp to npm
         working-directory: ./packages/webamp
-        if: github.ref == 'refs/heads/master' || github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        if: github.ref == 'refs/heads/master' || (github.ref_type == 'tag' && startsWith(github.ref_name, 'v'))
         # Use pre-built artifacts instead of rebuilding
         run: |
-          npm publish ${TAG} --ignore-scripts
-        env:
-          TAG: ${{ github.ref == 'refs/heads/master' && '--tag=next' || ''}}
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            npm publish --tag=next --ignore-scripts --provenance
+          else
+            npm publish --ignore-scripts --provenance
+          fi
