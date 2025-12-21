@@ -26,6 +26,7 @@ const Shuffle = memo(() => {
         className={classnames({ selected: shuffle })}
         onClick={handleClick}
         title="Toggle Shuffle"
+        requireClicksOriginateLocally={false}
       />
     </ContextMenuWrapper>
   );
