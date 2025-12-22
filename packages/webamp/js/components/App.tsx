@@ -87,7 +87,7 @@ export default function App({
       webampNode.style.right = "0";
       webampNode.style.bottom = "0";
       webampNode.style.overflow = "hidden";
-      browserWindowSizeChanged(Utils.getWindowSize());
+      browserWindowSizeChanged(Utils.getWindowSize(), parentDomNode);
       webampNode.style.right = "auto";
       webampNode.style.bottom = "auto";
       webampNode.style.overflow = "visible";
@@ -100,7 +100,7 @@ export default function App({
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, [browserWindowSizeChanged, webampNode]);
+  }, [parentDomNode, browserWindowSizeChanged, webampNode]);
 
   useEffect(() => {
     if (onMount != null) {
@@ -151,7 +151,10 @@ export default function App({
         <ContextMenuWrapper
           renderContents={() => <MainContextMenu filePickers={filePickers} />}
         >
-          <WindowManager windows={renderWindows()} />
+          <WindowManager
+            windows={renderWindows()}
+            parentDomNode={parentDomNode}
+          />
         </ContextMenuWrapper>
       </div>
     </StrictMode>,
