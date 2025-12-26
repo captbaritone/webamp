@@ -411,6 +411,7 @@ export async function getErroredUpload(): Promise<{
     .where("status", "ERRORED")
     .where("skin_md5", "!=", "c7df44bde6eb3671bde5a03e6d03ce1e")
     .where("skin_md5", "!=", "fedc564eb2ce0a4ec5518b93983240ef")
+    .where("skin_md5", "!=", "a418fd00583006b6e79cf0b251c43771")
     .first(["skin_md5", "id", "filename"]);
   return found || null;
 }

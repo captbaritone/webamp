@@ -42,6 +42,7 @@ async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
 ) {
   const handler = new DiscordEventHandler();
+  await handler._clientPromise; // Ensure client is initialized
   try {
     await cb(handler);
   } finally {
