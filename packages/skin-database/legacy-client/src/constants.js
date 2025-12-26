@@ -33,9 +33,8 @@ export const SKIN_CDN = R2_CDN;
 // export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 // export const SKIN_CDN = "https://cdn.webampskins.org";
 
-// Note: This is a Cloudflare proxy for api.webamp.org which
-// provides some additional caching.
-export const API_URL = "https://api.webampskins.org";
+// Sites have been unified, we can point to ourselves now
+export const API_URL = "https://skins.webamp.org";
 // export const API_URL = "https://dev.webamp.org";
 export const HEADING_HEIGHT = 46;
 export const CHUNK_SIZE = 300;
