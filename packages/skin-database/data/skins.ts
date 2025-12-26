@@ -254,7 +254,7 @@ async function getSearchIndexes(
   );
 }
 
-export async function updateSearchIndexs(
+export async function updateSearchIndexes(
   ctx: UserContext,
   md5s: string[]
 ): Promise<any> {
@@ -276,7 +276,7 @@ export async function updateSearchIndex(
   ctx: UserContext,
   md5: string
 ): Promise<any | null> {
-  return updateSearchIndexs(ctx, [md5]);
+  return updateSearchIndexes(ctx, [md5]);
 }
 
 export async function hideSkin(md5: string): Promise<void> {

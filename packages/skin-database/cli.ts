@@ -457,7 +457,7 @@ program
       );
       const md5s = rows.map((row) => row.md5);
       console.log(md5s.length);
-      console.log(await Skins.updateSearchIndexs(ctx, md5s));
+      console.log(await Skins.updateSearchIndexes(ctx, md5s));
     }
     if (refreshContentHash) {
       const ctx = new UserContext();
