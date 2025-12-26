@@ -479,12 +479,14 @@ class Webamp {
    *
    * Webamp is rendered into a new DOM node at the end of the <body> tag with the id `#webamp`.
    *
-   * If a domNode is passed, Webamp will place itself in the center of that DOM node.
+   * A domNode must be passed, Webamp will place itself in the center of that DOM node.
+   *
+   * @param contained TRUE to render Webamp inside the passed DOM node, and to fully contain its position inside of it
    *
    * @returns A promise is returned which will resolve after the render is complete.
    */
-  async renderWhenReady(node: HTMLElement): Promise<void> {
-    this.store.dispatch(Actions.centerWindowsInContainer(node));
+  async renderWhenReady(node: HTMLElement, contained?: false): Promise<void> {
+    this.store.dispatch(Actions.centerWindowsInContainer(node, contained));
     await this.skinIsLoaded();
     if (this._disposable.disposed) {
       return;
@@ -505,13 +507,17 @@ class Webamp {
       onMount = resolve;
     });
 
+    if (contained && getComputedStyle(node)?.position === "static") {
+      node.style.position = "relative";
+    }
+
     this._root.render(
       <Provider store={this.store}>
         <App
           media={this.media}
           filePickers={this.options.filePickers || []}
           onMount={onMount}
-          parentDomNode={document.body}
+          parentDomNode={contained ? node : document.body}
         />
       </Provider>
     );

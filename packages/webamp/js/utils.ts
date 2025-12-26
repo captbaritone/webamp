@@ -370,6 +370,16 @@ export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
   return -1;
 }
 
+export function getElementSize(domNode: HTMLElement): {
+  width: number;
+  height: number;
+} {
+  return {
+    width: Math.max(domNode.scrollWidth, domNode.offsetWidth),
+    height: Math.max(domNode.scrollHeight, domNode.offsetHeight),
+  };
+}
+
 export function getWindowSize(): { width: number; height: number } {
   // Apparently this is crazy across browsers.
   return {

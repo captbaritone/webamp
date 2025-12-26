@@ -16,6 +16,7 @@ const abuts = (a: Box, b: Box) => {
 
 interface Props {
   windows: { [windowId: string]: ReactNode };
+  parentDomNode: HTMLElement;
 }
 
 type DraggingState = {
@@ -25,9 +26,12 @@ type DraggingState = {
   mouseStart: Point;
 };
 
-function useHandleMouseDown(propsWindows: {
-  [windowId: string]: ReactNode;
-}): (
+function useHandleMouseDown(
+  propsWindows: {
+    [windowId: string]: ReactNode;
+  },
+  parentDomNode: HTMLElement
+): (
   key: WindowId,
   e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
 ) => void {
@@ -69,7 +73,9 @@ function useHandleMouseDown(propsWindows: {
 
       const withinDiff = SnapUtils.snapWithinDiff(
         proposedBox,
-        browserWindowSize
+        parentDomNode === document.body || !parentDomNode
+          ? browserWindowSize
+          : Utils.getElementSize(parentDomNode)
       );
 
       const finalDiff = SnapUtils.applyMultipleDiffs(
@@ -102,7 +108,7 @@ function useHandleMouseDown(propsWindows: {
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("touchend", handleMouseUp);
     };
-  }, [browserWindowSize, draggingState, updateWindowPositions]);
+  }, [parentDomNode, browserWindowSize, draggingState, updateWindowPositions]);
 
   // Mouse down handler
   return useCallback(
@@ -149,10 +155,13 @@ function useHandleMouseDown(propsWindows: {
   );
 }
 
-export default function WindowManager({ windows: propsWindows }: Props) {
+export default function WindowManager({
+  windows: propsWindows,
+  parentDomNode,
+}: Props) {
   const windowsInfo = useTypedSelector(Selectors.getWindowsInfo);
   const setFocusedWindow = useActionCreator(Actions.setFocusedWindow);
-  const handleMouseDown = useHandleMouseDown(propsWindows);
+  const handleMouseDown = useHandleMouseDown(propsWindows, parentDomNode);
 
   const windows = windowsInfo.filter((w) => propsWindows[w.key]);
 
