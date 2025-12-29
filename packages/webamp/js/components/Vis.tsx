@@ -4,13 +4,7 @@ import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
-
-import {
-  Vis as IVis,
-  BarPaintHandler,
-  WavePaintHandler,
-  NoVisualizerHandler,
-} from "./VisPainter";
+import { createVisualizerEngine } from "./VisualizerEngine";
 
 type Props = {
   analyser: AnalyserNode;
@@ -82,51 +76,32 @@ export default function Vis({ analyser }: Props) {
   const width = renderWidth * pixelDensity;
   const height = renderHeight * pixelDensity;
 
-  const bgCanvas = useMemo(() => {
-    return preRenderBg({
-      width: renderWidthBG,
-      height,
-      bgColor: colors[0],
-      fgColor: colors[1],
-      windowShade: Boolean(windowShade),
-      pixelDensity,
-    });
-  }, [colors, height, renderWidthBG, windowShade, pixelDensity]);
-
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
 
   //? painter administration
   const painter = useMemo(() => {
     if (!canvas) return null;
-
-    const vis: IVis = {
+    const cfg = {
       canvas,
-      colors,
       analyser,
-      oscStyle: "lines",
-      bandwidth: "wide",
-      coloring: "normal",
-      peaks: true,
-      saFalloff: "moderate",
-      saPeakFalloff: "slow",
-      sa: "analyzer", // unused, but hopefully will be used in the future for providing config options
+      colors,
+      mode:
+        mode === VISUALIZERS.BAR
+          ? "bars"
+          : mode === VISUALIZERS.OSCILLOSCOPE
+          ? "oscilloscope"
+          : "none",
       renderHeight,
       smallVis,
       pixelDensity,
       doubled,
       isMWOpen,
+      peaks: true,
+      oscStyle: "lines",
+      bandwidth: "wide",
+      coloring: "normal",
     };
-
-    switch (mode) {
-      case VISUALIZERS.OSCILLOSCOPE:
-        return new WavePaintHandler(vis);
-      case VISUALIZERS.BAR:
-        return new BarPaintHandler(vis);
-      case VISUALIZERS.NONE:
-        return new NoVisualizerHandler(vis);
-      default:
-        return new NoVisualizerHandler(vis);
-    }
+    return createVisualizerEngine(cfg);
   }, [
     analyser,
     canvas,
@@ -137,6 +112,7 @@ export default function Vis({ analyser }: Props) {
     pixelDensity,
     doubled,
     isMWOpen,
+    smallVis,
   ]);
 
   // reacts to changes in doublesize mode
@@ -171,7 +147,6 @@ export default function Vis({ analyser }: Props) {
     let animationRequest: number | null = null;
 
     const loop = () => {
-      canvasCtx.drawImage(bgCanvas, 0, 0);
       painter.paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     };
@@ -189,7 +164,7 @@ export default function Vis({ analyser }: Props) {
         window.cancelAnimationFrame(animationRequest);
       }
     };
-  }, [audioStatus, canvas, painter, bgCanvas, renderWidthBG, height, mode]);
+  }, [audioStatus, canvas, painter, renderWidthBG, height, mode]);
 
   if (audioStatus === MEDIA_STATUS.STOPPED) {
     return null;
