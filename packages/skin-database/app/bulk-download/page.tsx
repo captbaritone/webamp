@@ -349,23 +349,21 @@ export default function BulkDownloadPage() {
         <div>
           <div>
             <h1>Bulk Download All Skins</h1>
-            <p>
-              Download the entire Winamp Skin Museum collection.
-              <ul>
-                <li>
-                  Will download {progress.totalSkins.toLocaleString()} files (~
-                  {gb}
-                  GB) into the selected directory
-                </li>
-                <li>
-                  Files will be organized into directories (aa-zz, 0-9) based on
-                  filename prefix
-                </li>
-                <li>
-                  Supports resuming from previously interrupted bulk download
-                </li>
-              </ul>
-            </p>
+            <p>Download the entire Winamp Skin Museum collection.</p>
+            <ul>
+              <li>
+                Will download {progress.totalSkins.toLocaleString()} files (~
+                {gb}
+                GB) into the selected directory
+              </li>
+              <li>
+                Files will be organized into directories (aa-zz, 0-9) based on
+                filename prefix
+              </li>
+              <li>
+                Supports resuming from previously interrupted bulk download
+              </li>
+            </ul>
           </div>
         </div>
 

@@ -58,6 +58,12 @@ export class BulkDownloadConnection {
       .orderBy([{ column: "skins.id", order: "asc" }])
       .where({ skin_type: 1 })
       .orWhere({ skin_type: 2 })
+      .where((builder) => {
+        builder.where({ skin_type: 1 }).orWhere({ skin_type: 2 });
+      })
+      // https://www.virustotal.com/gui/file/cc75df902c1e128433a7f7b8635aa928fe4cefbdcd91564b7e66305a25edd538
+      // This got flagged as malicious. Unclear if it's a false positive or real.
+      .whereNot({ md5: "5dac271c708d620db7b29d5bcf1598c2" })
       .limit(this._first)
       .offset(this._offset);
 
