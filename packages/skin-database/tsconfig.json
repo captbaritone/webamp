@@ -23,11 +23,7 @@
     "outDir": "dist",
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "strict": false,
     "noEmit": true,
     "incremental": true,
@@ -37,13 +33,9 @@
   },
   "include": [
     "./**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/types/app/(legacy)/about/page.tsx"
   ],
-  "lib": [
-    "es2015"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "lib": ["es2015"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -5,5 +5,5 @@ type LayoutProps = {
 };
 
 export default function Layout({ children }: LayoutProps) {
-  return <div style={{ width: "100vw" }}>{children}</div>;
+  return <div style={{}}>{children}</div>;
 }

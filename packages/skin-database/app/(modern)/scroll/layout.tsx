@@ -1,6 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
+// @ts-expect-error - unstable_ViewTransition is not yet in @types/react
+import { unstable_ViewTransition as ViewTransition, ReactNode } from "react";
 import BottomMenuBar from "./BottomMenuBar";
 import "./scroll.css";
 
@@ -17,7 +18,9 @@ export default function Layout({ children }: LayoutProps) {
       }}
     >
       {children}
-      <BottomMenuBar />
+      <ViewTransition name="footer">
+        <BottomMenuBar />
+      </ViewTransition>
     </div>
   );
 }

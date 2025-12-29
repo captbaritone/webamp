@@ -11,9 +11,15 @@ import {
   Github,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
+import {
+  // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
+  unstable_ViewTransition as ViewTransition,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 
 export default function BottomMenuBar() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -129,6 +135,12 @@ export default function BottomMenuBar() {
           }}
         >
           <MenuButton
+            href="/scroll/grid"
+            icon={<Grid3x3 size={24} />}
+            label="Grid"
+            isActive={pathname === "/scroll/grid"}
+          />
+          <MenuButton
             href="/scroll"
             icon={<Smartphone size={24} />}
             label="Feed"
@@ -136,12 +148,7 @@ export default function BottomMenuBar() {
               pathname === "/scroll" || pathname.startsWith("/scroll/skin")
             }
           />
-          <MenuButton
-            href="/scroll/grid"
-            icon={<Grid3x3 size={24} />}
-            label="Grid"
-            isActive={pathname === "/scroll/grid"}
-          />
+
           <MenuButton
             href="/"
             icon={<Search size={24} />}
@@ -210,16 +217,18 @@ function MenuButton({
     <>
       {/* Active indicator line */}
       {isActive && (
-        <div
-          style={{
-            position: "absolute",
-            top: "-0.75rem",
-            left: 0,
-            width: touchTargetSize,
-            height: "1px",
-            backgroundColor: "#fff",
-          }}
-        />
+        <ViewTransition name="footer-menu-active">
+          <div
+            style={{
+              position: "absolute",
+              top: "-0.75rem",
+              left: 0,
+              width: touchTargetSize,
+              height: "1px",
+              backgroundColor: "#fff",
+            }}
+          />
+        </ViewTransition>
       )}
       <div
         style={{
@@ -236,9 +245,7 @@ function MenuButton({
           fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
           fontWeight: 500,
         }}
-      >
-        {label}
-      </span>
+      ></span>
     </>
   );
 
@@ -258,6 +265,7 @@ function MenuButton({
   return (
     <Link
       href={href!}
+      title={label}
       style={containerStyle}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
