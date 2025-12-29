@@ -3,8 +3,9 @@
  * Do not manually edit. Regenerate by running `npx grats`.
  */
 
-import { GraphQLSchema, GraphQLDirective, DirectiveLocation, GraphQLList, GraphQLInt, specifiedDirectives, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInterfaceType, GraphQLNonNull, GraphQLID, GraphQLEnumType, defaultFieldResolver, GraphQLInputObjectType } from "graphql";
+import { GraphQLSchema, GraphQLDirective, DirectiveLocation, GraphQLList, GraphQLInt, specifiedDirectives, GraphQLObjectType, GraphQLString, defaultFieldResolver, GraphQLNonNull, GraphQLInterfaceType, GraphQLBoolean, GraphQLID, GraphQLEnumType, GraphQLInputObjectType } from "graphql";
 import { getUserContext } from "./index";
+import { bulkDownload as queryBulkDownloadResolver } from "./resolvers/BulkDownloadConnection";
 import { fetch_archive_file_by_md5 as queryFetch_archive_file_by_md5Resolver } from "./../../data/ArchiveFileModel";
 import { fetch_internet_archive_item_by_identifier as queryFetch_internet_archive_item_by_identifierResolver } from "./../../data/IaItemModel";
 import { fetch_skin_by_md5 as queryFetch_skin_by_md5Resolver, search_classic_skins as querySearch_classic_skinsResolver, search_skins as querySearch_skinsResolver, skin_to_review as querySkin_to_reviewResolver } from "./resolvers/SkinResolver";
@@ -27,6 +28,75 @@ async function assertNonNull<T>(value: T | Promise<T>): Promise<T> {
     return awaited;
 }
 export function getSchema(): GraphQLSchema {
+    const ArchiveFileType: GraphQLObjectType = new GraphQLObjectType({
+        name: "ArchiveFile",
+        description: "A file found within a Winamp Skin's .wsz archive",
+        fields() {
+            return {
+                date: {
+                    description: "The date on the file inside the archive. Given in simplified extended ISO\nformat (ISO 8601).",
+                    name: "date",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return assertNonNull(source.getIsoDate());
+                    }
+                },
+                file_md5: {
+                    description: "The md5 hash of the file within the archive",
+                    name: "file_md5",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return assertNonNull(source.getFileMd5());
+                    }
+                },
+                filename: {
+                    description: "Filename of the file within the archive",
+                    name: "filename",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return assertNonNull(source.getFileName());
+                    }
+                },
+                is_directory: {
+                    description: "Is the file a directory?",
+                    name: "is_directory",
+                    type: GraphQLBoolean,
+                    resolve(source) {
+                        return assertNonNull(source.getIsDirectory());
+                    }
+                },
+                size: {
+                    description: "The uncompressed size of the file in bytes.\n\n**Note:** Will be `null` for directories",
+                    name: "size",
+                    type: GraphQLInt,
+                    resolve(source) {
+                        return source.getFileSize();
+                    }
+                },
+                skin: {
+                    description: "The skin in which this file was found",
+                    name: "skin",
+                    type: SkinType
+                },
+                text_content: {
+                    description: "The content of the file, if it's a text file",
+                    name: "text_content",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return source.getTextContent();
+                    }
+                },
+                url: {
+                    description: "A URL to download the file. **Note:** This is powered by a little\nserverless Cloudflare function which tries to exctact the file on the fly.\nIt may not work for all files.",
+                    name: "url",
+                    type: GraphQLString,
+                    resolve(source) {
+                        return source.getUrl();
+                    }
+                }
+            };
+        }
+    });
     const InternetArchiveItemType: GraphQLObjectType = new GraphQLObjectType({
         name: "InternetArchiveItem",
         fields() {
@@ -188,6 +258,11 @@ export function getSchema(): GraphQLSchema {
                     name: "filename",
                     type: GraphQLString,
                     args: {
+                        include_museum_id: {
+                            description: "If true, the museum ID will be appended to the filename to ensure filenames are globally unique.",
+                            type: new GraphQLNonNull(GraphQLBoolean),
+                            defaultValue: false
+                        },
                         normalize_extension: {
                             description: "If true, the the correct file extension (.wsz or .wal) will be .\nOtherwise, the original user-uploaded file extension will be used.",
                             type: new GraphQLNonNull(GraphQLBoolean),
@@ -253,70 +328,33 @@ export function getSchema(): GraphQLSchema {
             };
         }
     });
-    const ArchiveFileType: GraphQLObjectType = new GraphQLObjectType({
-        name: "ArchiveFile",
-        description: "A file found within a Winamp Skin's .wsz archive",
+    const BulkDownloadConnectionType: GraphQLObjectType = new GraphQLObjectType({
+        name: "BulkDownloadConnection",
+        description: "Connection for bulk download skin metadata",
         fields() {
             return {
-                date: {
-                    description: "The date on the file inside the archive. Given in simplified extended ISO\nformat (ISO 8601).",
-                    name: "date",
+                estimatedSizeBytes: {
+                    description: "Estimated total size in bytes (approximation for progress indication)",
+                    name: "estimatedSizeBytes",
                     type: GraphQLString,
-                    resolve(source) {
-                        return assertNonNull(source.getIsoDate());
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
                     }
                 },
-                file_md5: {
-                    description: "The md5 hash of the file within the archive",
-                    name: "file_md5",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return assertNonNull(source.getFileMd5());
+                nodes: {
+                    description: "List of skin metadata for bulk download",
+                    name: "nodes",
+                    type: new GraphQLList(new GraphQLNonNull(SkinType)),
+                    resolve(source, _args, context) {
+                        return assertNonNull(source.nodes(getUserContext(context)));
                     }
                 },
-                filename: {
-                    description: "Filename of the file within the archive",
-                    name: "filename",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return assertNonNull(source.getFileName());
-                    }
-                },
-                is_directory: {
-                    description: "Is the file a directory?",
-                    name: "is_directory",
-                    type: GraphQLBoolean,
-                    resolve(source) {
-                        return assertNonNull(source.getIsDirectory());
-                    }
-                },
-                size: {
-                    description: "The uncompressed size of the file in bytes.\n\n**Note:** Will be `null` for directories",
-                    name: "size",
+                totalCount: {
+                    description: "Total number of skins available for download",
+                    name: "totalCount",
                     type: GraphQLInt,
-                    resolve(source) {
-                        return source.getFileSize();
-                    }
-                },
-                skin: {
-                    description: "The skin in which this file was found",
-                    name: "skin",
-                    type: SkinType
-                },
-                text_content: {
-                    description: "The content of the file, if it's a text file",
-                    name: "text_content",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return source.getTextContent();
-                    }
-                },
-                url: {
-                    description: "A URL to download the file. **Note:** This is powered by a little\nserverless Cloudflare function which tries to exctact the file on the fly.\nIt may not work for all files.",
-                    name: "url",
-                    type: GraphQLString,
-                    resolve(source) {
-                        return source.getUrl();
+                    resolve(source, args, context, info) {
+                        return assertNonNull(defaultFieldResolver(source, args, context, info));
                     }
                 }
             };
@@ -382,6 +420,11 @@ export function getSchema(): GraphQLSchema {
                     name: "filename",
                     type: GraphQLString,
                     args: {
+                        include_museum_id: {
+                            description: "If true, the museum ID will be appended to the filename to ensure filenames are globally unique.",
+                            type: new GraphQLNonNull(GraphQLBoolean),
+                            defaultValue: false
+                        },
                         normalize_extension: {
                             description: "If true, the the correct file extension (.wsz or .wal) will be .\nOtherwise, the original user-uploaded file extension will be used.",
                             type: new GraphQLNonNull(GraphQLBoolean),
@@ -544,6 +587,11 @@ export function getSchema(): GraphQLSchema {
                     name: "filename",
                     type: GraphQLString,
                     args: {
+                        include_museum_id: {
+                            description: "If true, the museum ID will be appended to the filename to ensure filenames are globally unique.",
+                            type: new GraphQLNonNull(GraphQLBoolean),
+                            defaultValue: false
+                        },
                         normalize_extension: {
                             description: "If true, the the correct file extension (.wsz or .wal) will be .\nOtherwise, the original user-uploaded file extension will be used.",
                             type: new GraphQLNonNull(GraphQLBoolean),
@@ -901,6 +949,24 @@ export function getSchema(): GraphQLSchema {
         name: "Query",
         fields() {
             return {
+                bulkDownload: {
+                    description: "Get metadata for bulk downloading all skins in the museum",
+                    name: "bulkDownload",
+                    type: BulkDownloadConnectionType,
+                    args: {
+                        first: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                            defaultValue: 1000
+                        },
+                        offset: {
+                            type: new GraphQLNonNull(GraphQLInt),
+                            defaultValue: 0
+                        }
+                    },
+                    resolve(_source, args) {
+                        return assertNonNull(queryBulkDownloadResolver(args));
+                    }
+                },
                 fetch_archive_file_by_md5: {
                     description: "Fetch archive file by it's MD5 hash\n\nGet information about a file found within a skin's wsz/wal/zip archive.",
                     name: "fetch_archive_file_by_md5",
@@ -1307,6 +1373,6 @@ export function getSchema(): GraphQLSchema {
             })],
         query: QueryType,
         mutation: MutationType,
-        types: [RatingType, SkinUploadStatusType, SkinsFilterOptionType, SkinsSortOptionType, TweetsSortOptionType, NodeType, SkinType, UploadUrlRequestType, ArchiveFileType, ClassicSkinType, DatabaseStatisticsType, InternetArchiveItemType, ModernSkinType, ModernSkinsConnectionType, MutationType, QueryType, ReviewType, SkinUploadType, SkinsConnectionType, TweetType, TweetsConnectionType, UploadMutationsType, UploadUrlType, UserType]
+        types: [RatingType, SkinUploadStatusType, SkinsFilterOptionType, SkinsSortOptionType, TweetsSortOptionType, NodeType, SkinType, UploadUrlRequestType, ArchiveFileType, BulkDownloadConnectionType, ClassicSkinType, DatabaseStatisticsType, InternetArchiveItemType, ModernSkinType, ModernSkinsConnectionType, MutationType, QueryType, ReviewType, SkinUploadType, SkinsConnectionType, TweetType, TweetsConnectionType, UploadMutationsType, UploadUrlType, UserType]
     });
 }

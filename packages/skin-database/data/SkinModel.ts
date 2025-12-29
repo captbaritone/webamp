@@ -232,8 +232,8 @@ export default class SkinModel {
     }
   }
 
-  getAverageColor(): string {
-    return this.row.average_color;
+  getAverageColor(): string | null {
+    return this.row.average_color ?? null;
   }
 
   getBuffer = mem(async (): Promise<Buffer> => {

@@ -94,6 +94,10 @@ interface Skin {
   """
   filename(
     """
+    If true, the museum ID will be appended to the filename to ensure filenames are globally unique.
+    """
+    include_museum_id: Boolean! = false
+    """
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
     """
@@ -165,6 +169,16 @@ type ArchiveFile {
   url: String
 }
 
+"""Connection for bulk download skin metadata"""
+type BulkDownloadConnection {
+  """Estimated total size in bytes (approximation for progress indication)"""
+  estimatedSizeBytes: String @semanticNonNull
+  """List of skin metadata for bulk download"""
+  nodes: [Skin!] @semanticNonNull
+  """Total number of skins available for download"""
+  totalCount: Int @semanticNonNull
+}
+
 """A classic Winamp skin"""
 type ClassicSkin implements Node & Skin {
   """List of files contained within the skin's .wsz archive"""
@@ -178,6 +192,10 @@ type ClassicSkin implements Node & Skin {
   has been uploaded under multiple names. Here we just pick one.
   """
   filename(
+    """
+    If true, the museum ID will be appended to the filename to ensure filenames are globally unique.
+    """
+    include_museum_id: Boolean! = false
     """
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
@@ -309,6 +327,10 @@ type ModernSkin implements Node & Skin {
   """
   filename(
     """
+    If true, the museum ID will be appended to the filename to ensure filenames are globally unique.
+    """
+    include_museum_id: Boolean! = false
+    """
     If true, the the correct file extension (.wsz or .wal) will be .
     Otherwise, the original user-uploaded file extension will be used.
     """
@@ -385,6 +407,8 @@ type Mutation {
 }
 
 type Query {
+  """Get metadata for bulk downloading all skins in the museum"""
+  bulkDownload(first: Int! = 1000, offset: Int! = 0): BulkDownloadConnection @semanticNonNull
   """
   Fetch archive file by it's MD5 hash
   

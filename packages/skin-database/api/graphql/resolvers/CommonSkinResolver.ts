@@ -69,19 +69,34 @@ export function id(skin: ISkin): ID {
  * has been uploaded under multiple names. Here we just pick one.
  * @gqlField
  */
-export function filename(
+export async function filename(
   skin: ISkin,
   {
     normalize_extension = false,
+    include_museum_id = false,
   }: {
     /**
      * If true, the the correct file extension (.wsz or .wal) will be .
      * Otherwise, the original user-uploaded file extension will be used.
      */
     normalize_extension?: boolean;
+    /**
+     * If true, the museum ID will be appended to the filename to ensure filenames are globally unique.
+     */
+    include_museum_id?: boolean;
   }
 ): Promise<string> {
-  return skin.filename(normalize_extension);
+  const baseFilename = await skin.filename(normalize_extension);
+
+  if (!include_museum_id) {
+    return baseFilename;
+  }
+
+  const museumId = skin._model.getId();
+  const segments = baseFilename.split(".");
+  const fileExtension = segments.pop();
+
+  return `${segments.join(".")}_[S${museumId}].${fileExtension}`;
 }
 
 /**

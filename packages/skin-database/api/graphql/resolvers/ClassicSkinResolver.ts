@@ -41,7 +41,7 @@ export default class ClassicSkinResolver implements NodeResolver, ISkin {
   nsfw(): Promise<boolean> {
     return this._model.getIsNsfw();
   }
-  average_color(): string {
+  average_color(): string | null {
     return this._model.getAverageColor();
   }
   /**

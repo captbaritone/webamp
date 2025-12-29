@@ -19,7 +19,7 @@ export type SkinRow = {
   skin_type: number;
   emails: string;
   // readme_text: string;
-  average_color: string;
+  average_color?: string;
 };
 
 export type TweetRow = {
