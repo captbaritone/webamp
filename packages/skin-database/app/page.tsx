@@ -1,4 +1,4 @@
-import App from "../App";
+import App from "./App";
 import type { Metadata } from "next";
 
 const DESCRIPTION =
