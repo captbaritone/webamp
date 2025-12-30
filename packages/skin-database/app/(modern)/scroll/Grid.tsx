@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useCallback,
   useRef,
-  useTransition,
   // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
   unstable_ViewTransition as ViewTransition,
 } from "react";
@@ -115,7 +114,7 @@ export default function SkinTable({
   // State for search mode
   const [searchSkins, setSearchSkins] = useState<GridSkin[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
-  const [searchIsPending, setSearchIsPending] = useState(false);
+  const [_, setSearchIsPending] = useState(false);
 
   // Debounce timer ref
 

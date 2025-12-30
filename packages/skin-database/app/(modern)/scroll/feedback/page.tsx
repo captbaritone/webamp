@@ -61,7 +61,7 @@ export default function FeedbackPage() {
     try {
       await sendFeedback(body);
       setSent(true);
-    } catch (error) {
+    } catch (_) {
       alert("Failed to send feedback. Please try again.");
       setSending(false);
     }
