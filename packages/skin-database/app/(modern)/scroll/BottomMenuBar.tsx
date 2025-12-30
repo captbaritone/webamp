@@ -57,7 +57,7 @@ export default function BottomMenuBar() {
       {isHamburgerOpen && (
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             bottom: "4.5rem",
             left: "50%",
             transform: "translateX(-50%)",
@@ -65,13 +65,15 @@ export default function BottomMenuBar() {
             maxWidth: MOBILE_MAX_WIDTH,
             backgroundColor: "rgba(26, 26, 26, 0.98)",
             backdropFilter: "blur(10px)",
-            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderBottom: "none",
+            boxShadow: "0 -4px 12px rgba(0, 0, 0, 0.3)",
             zIndex: 999,
           }}
         >
           <div ref={menuRef}>
             <HamburgerMenuItem
-              href="/about"
+              href="/scroll/about"
               icon={<Info size={20} />}
               label="About"
               onClick={() => {
@@ -87,13 +89,12 @@ export default function BottomMenuBar() {
               }}
             />{" "}
             <HamburgerMenuItem
-              href="https://github.com/captbaritone/webamp/issues"
+              href="/scroll/feedback"
               icon={<MessageSquare size={20} />}
               label="Feedback"
               onClick={() => {
                 setIsHamburgerOpen(false);
               }}
-              external
             />
             <HamburgerMenuItem
               href="https://github.com/captbaritone/webamp/"
@@ -111,7 +112,7 @@ export default function BottomMenuBar() {
       {/* Bottom Menu Bar */}
       <div
         style={{
-          position: "absolute",
+          position: "sticky",
           bottom: 0,
           left: 0,
           width: "100%",
