@@ -18,7 +18,7 @@ export default function Layout({ children }: LayoutProps) {
       }}
     >
       {children}
-      <ViewTransition name="footer">
+      <ViewTransition>
         <BottomMenuBar />
       </ViewTransition>
     </div>

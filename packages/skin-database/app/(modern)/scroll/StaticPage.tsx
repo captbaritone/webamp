@@ -120,6 +120,7 @@ export function Input({
         borderRadius: "4px",
         color: "#fff",
         fontFamily: "inherit",
+        boxSizing: "border-box",
         ...style,
       }}
       {...props}
@@ -146,6 +147,7 @@ export function Textarea({
         fontFamily: "inherit",
         display: "block",
         resize: "vertical",
+        boxSizing: "border-box",
         ...style,
       }}
       {...props}

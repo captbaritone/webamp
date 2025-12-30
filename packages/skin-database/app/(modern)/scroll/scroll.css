@@ -2,6 +2,12 @@ body {
   margin: 0; /* Remove default margin */
   height: 100vh; /* Set body height to viewport height */
   background-color: #1a1a1a; /* Dark charcoal instead of pure black */
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+}
+
+input,
+button {
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
 }
 
 .scroller::-webkit-scrollbar,
