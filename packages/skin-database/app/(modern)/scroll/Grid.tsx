@@ -14,6 +14,7 @@ import { useWindowSize } from "../../../legacy-client/src/hooks";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,
+  MOBILE_MAX_WIDTH,
 } from "../../../legacy-client/src/constants";
 import { getMuseumPageSkins, GridSkin } from "./getMuseumPageSkins";
 
@@ -166,6 +167,55 @@ export default function SkinTable({
 
   return (
     <div id="infinite-skins">
+      {/* Floating Search Bar */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "5rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "calc(100% - 2rem)",
+          maxWidth: MOBILE_MAX_WIDTH,
+          padding: "0 1rem",
+          zIndex: 998,
+        }}
+      >
+        <form
+          action="/"
+          method="GET"
+          style={{
+            width: "100%",
+          }}
+        >
+          <input
+            type="search"
+            name="q"
+            placeholder="Search skins..."
+            style={{
+              width: "100%",
+              padding: "0.75rem 1rem",
+              fontSize: "1rem",
+              backgroundColor: "rgba(26, 26, 26, 0.85)",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "9999px",
+              color: "#fff",
+              outline: "none",
+              fontFamily: "inherit",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.backgroundColor = "rgba(26, 26, 26, 0.95)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.backgroundColor = "rgba(26, 26, 26, 0.85)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+            }}
+          />
+        </form>
+      </div>
+
       <Grid
         ref={gridRef}
         itemKey={itemKey}

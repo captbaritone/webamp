@@ -2,7 +2,6 @@
 
 import {
   Smartphone,
-  Search,
   Info,
   Grid3x3,
   Menu,
@@ -81,14 +80,6 @@ export default function BottomMenuBar() {
               }}
             />
             <HamburgerMenuItem
-              href="/upload"
-              icon={<Upload size={20} />}
-              label="Upload"
-              onClick={() => {
-                setIsHamburgerOpen(false);
-              }}
-            />{" "}
-            <HamburgerMenuItem
               href="/scroll/feedback"
               icon={<MessageSquare size={20} />}
               label="Feedback"
@@ -147,12 +138,11 @@ export default function BottomMenuBar() {
             label="Feed"
             isActive={pathname.startsWith("/scroll/skin")}
           />
-
           <MenuButton
-            href="/"
-            icon={<Search size={24} />}
-            label="Search"
-            isActive={false}
+            href="/upload"
+            icon={<Upload size={24} />}
+            label="Upload"
+            isActive={pathname === "/upload"}
           />
           <MenuButton
             icon={<Menu size={24} />}
