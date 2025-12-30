@@ -13,7 +13,6 @@ export default async function ScrollPage() {
   const sessionId = await SessionModel.create();
 
   const initialSkins = await getClientSkins(sessionId);
-  console.log("SERVER RENDER generic");
 
   return (
     <SkinScroller

@@ -8,6 +8,5 @@ export default async function SkinTable() {
     getMuseumPageSkins(0, 50),
     Skins.getClassicSkinCount(),
   ]);
-  console.log("SERVER RENDER generic");
   return <Grid initialSkins={initialSkins} initialTotal={skinCount} />;
 }
