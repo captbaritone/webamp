@@ -99,7 +99,7 @@ export default function BulkDownloadPage() {
           completedSkins: prev.completedSkins + 1,
         }));
         return;
-      } catch (error) {
+      } catch (_) {
         // File doesn't exist, continue with download
       }
 
@@ -277,6 +277,7 @@ export default function BulkDownloadPage() {
             }
 
             for (const skin of skins) {
+              // eslint-disable-next-line max-depth
               if (abortController.current.signal.aborted) break;
 
               await waitForAvailableSlot(
@@ -284,6 +285,7 @@ export default function BulkDownloadPage() {
                 abortController.current.signal
               );
 
+              // eslint-disable-next-line max-depth
               if (abortController.current.signal.aborted) break;
 
               const downloadPromise = downloadSkin(

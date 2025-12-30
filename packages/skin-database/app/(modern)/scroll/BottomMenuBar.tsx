@@ -135,18 +135,16 @@ export default function BottomMenuBar() {
           }}
         >
           <MenuButton
-            href="/scroll/grid"
+            href="/scroll"
             icon={<Grid3x3 size={24} />}
             label="Grid"
-            isActive={pathname === "/scroll/grid"}
+            isActive={pathname === "/scroll"}
           />
           <MenuButton
-            href="/scroll"
+            href="/scroll/skin"
             icon={<Smartphone size={24} />}
             label="Feed"
-            isActive={
-              pathname === "/scroll" || pathname.startsWith("/scroll/skin")
-            }
+            isActive={pathname.startsWith("/scroll/skin")}
           />
 
           <MenuButton

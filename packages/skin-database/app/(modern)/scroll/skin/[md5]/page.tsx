@@ -1,7 +1,14 @@
+import { Metadata } from "next";
 import SessionModel from "../../../../../data/SessionModel";
 import UserContext from "../../../../../data/UserContext";
 import { getClientSkins, getSkinForSession } from "../../getClientSkins";
 import SkinScroller from "../../SkinScroller";
+import { generateSkinPageMetadata } from "../../../../(legacy)/skin/[hash]/skinMetadata";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const { md5 } = await params;
+  return generateSkinPageMetadata(md5);
+}
 
 // Ensure each page load gets a new session
 export const dynamic = "force-dynamic";

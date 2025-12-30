@@ -1,24 +1,13 @@
-import SessionModel from "../../../data/SessionModel";
-import { getClientSkins } from "./getClientSkins";
-import SkinScroller from "./SkinScroller";
+import React from "react";
+import Grid from "./Grid";
+import { getMuseumPageSkins } from "./getMuseumPageSkins";
+import * as Skins from "../../..//data/skins";
 
-// Ensure each page load gets a new session
-export const dynamic = "force-dynamic";
-
-/**
- * A tik-tok style scroll page where we display one skin at a time in full screen
- */
-export default async function ScrollPage() {
-  // Create the session in the database
-  const sessionId = await SessionModel.create();
-
-  const initialSkins = await getClientSkins(sessionId);
-
-  return (
-    <SkinScroller
-      initialSkins={initialSkins}
-      getSkins={getClientSkins}
-      sessionId={sessionId}
-    />
-  );
+export default async function SkinTable() {
+  const [initialSkins, skinCount] = await Promise.all([
+    getMuseumPageSkins(0, 50),
+    Skins.getClassicSkinCount(),
+  ]);
+  console.log("SERVER RENDER generic");
+  return <Grid initialSkins={initialSkins} initialTotal={skinCount} />;
 }

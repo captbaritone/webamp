@@ -10,11 +10,11 @@ import React, {
 
 import Link from "next/link";
 import { FixedSizeGrid as Grid } from "react-window";
-import { useWindowSize } from "../../../../legacy-client/src/hooks";
+import { useWindowSize } from "../../../legacy-client/src/hooks";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,
-} from "../../../../legacy-client/src/constants";
+} from "../../../legacy-client/src/constants";
 import { getMuseumPageSkins, GridSkin } from "./getMuseumPageSkins";
 
 type CellData = {

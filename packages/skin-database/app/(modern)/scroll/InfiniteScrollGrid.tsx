@@ -10,11 +10,11 @@ import {
 } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
 import { useRouter } from "next/navigation";
-import { ClientSkin } from "../SkinScroller";
+import { ClientSkin } from "./SkinScroller";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,
-} from "../../../../legacy-client/src/constants";
+} from "../../../legacy-client/src/constants";
 
 type Props = {
   initialSkins: ClientSkin[];

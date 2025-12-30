@@ -1,6 +1,6 @@
 "use server";
 
-import { getMuseumPage, getScreenshotUrl } from "../../../../data/skins";
+import { getMuseumPage, getScreenshotUrl } from "../../../data/skins";
 
 export type GridSkin = {
   md5: string;

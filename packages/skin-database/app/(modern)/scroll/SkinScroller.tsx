@@ -109,9 +109,21 @@ export default function SkinScroller({
   }, []);
 
   useEffect(() => {
+    // We want the URL and title to update as you scroll, but
+    // we can't trigger a NextJS navigation since that would remount the
+    // component. So, here we replicate the metadata behavior of the route.
+    const skinMd5 = skins[visibleSkinIndex].md5;
+    const newUrl = `/scroll/skin/${skinMd5}`;
+    window.document.title = `${skins[visibleSkinIndex].fileName} - Winamp Skin Museum`;
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      "",
+      newUrl
+    );
+
     logUserEvent(sessionId, {
       type: "skin_view_start",
-      skinMd5: skins[visibleSkinIndex].md5,
+      skinMd5,
     });
     const startTime = Date.now();
     return () => {

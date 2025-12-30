@@ -1,7 +1,7 @@
 "use client";
 
 // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { useEffect, unstable_ViewTransition as ViewTransition } from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
 
@@ -12,6 +12,9 @@ type Props = {
 };
 
 export default function SkinPage({ skin, index, sessionId }: Props) {
+  useEffect(() => {
+    console.log("Mount SkinPage");
+  }, []);
   return (
     <div
       key={skin.md5}
