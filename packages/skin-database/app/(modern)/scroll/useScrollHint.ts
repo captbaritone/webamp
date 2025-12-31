@@ -16,7 +16,7 @@ type UseScrollHintOptions = {
 export function useScrollHint({
   containerRef,
   enabled,
-  delayMs = 5000,
+  delayMs = 2000,
   scrollAmount = 80,
   animationDuration = 1000,
   onHintShown,
