@@ -479,13 +479,32 @@ class Webamp {
    *
    * Webamp is rendered into a new DOM node at the end of the <body> tag with the id `#webamp`.
    *
-   * A domNode must be passed, Webamp will place itself in the center of that DOM node.
-   *
-   * @param contained TRUE to render Webamp inside the passed DOM node, and to fully contain its position inside of it
+   * Webamp will position itself on top of the center of the given DOM node.
    *
    * @returns A promise is returned which will resolve after the render is complete.
    */
-  async renderWhenReady(node: HTMLElement, contained?: false): Promise<void> {
+  async renderWhenReady(node: HTMLElement): Promise<void> {
+    return this._render(node, false);
+  }
+
+  /**
+   * Webamp will wait until it has fetched the skin and fully parsed it and then render itself.
+   *
+   * Webamp will render itself as a child of the given DOM node and position
+   * itself in the center of that node.
+   *
+   * @returns A promise is returned which will resolve after the render is complete.
+   */
+  async renderInto(node: HTMLElement): Promise<void> {
+    if (getComputedStyle(node)?.position === "static") {
+      throw new Error(
+        "Webamp Error: The DOM node passed to renderInto must have a non-static position."
+      );
+    }
+    return this._render(node, true);
+  }
+
+  async _render(node: HTMLElement, contained: boolean): Promise<void> {
     this.store.dispatch(Actions.centerWindowsInContainer(node, contained));
     await this.skinIsLoaded();
     if (this._disposable.disposed) {
@@ -506,10 +525,6 @@ class Webamp {
     const mountPromise = new Promise<void>((resolve) => {
       onMount = resolve;
     });
-
-    if (contained && getComputedStyle(node)?.position === "static") {
-      node.style.position = "relative";
-    }
 
     this._root.render(
       <Provider store={this.store}>

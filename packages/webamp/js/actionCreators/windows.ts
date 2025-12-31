@@ -106,7 +106,7 @@ export function updateWindowPositions(
 
 export function centerWindowsInContainer(
   container: HTMLElement,
-  contained?: false
+  contained: boolean
 ): Thunk {
   return (dispatch, getState) => {
     if (!Selectors.getPositionsAreRelative(getState())) {
