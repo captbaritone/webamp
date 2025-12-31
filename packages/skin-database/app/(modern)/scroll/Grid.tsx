@@ -6,6 +6,7 @@ import React, {
   useRef,
   // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
   unstable_ViewTransition as ViewTransition,
+  useEffect,
 } from "react";
 
 import Link from "next/link";
@@ -104,7 +105,10 @@ export default function SkinTable({
   const { windowWidth, windowHeight } = useWindowSize();
 
   // Search input state - separate input value from actual search query
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("q") || "";
+  });
 
   // State for browsing mode
   const [browseSkins, setBrowseSkins] = useState<GridSkin[]>(initialSkins);
@@ -127,42 +131,51 @@ export default function SkinTable({
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setInputValue(query);
+  };
+
+  useEffect(() => {
+    const query = inputValue;
+    const newUrl = query.trim() === "" ? "/scroll/" : `/scroll/?q=${query}`;
+    // window.document.title = `${skins[visibleSkinIndex].fileName} - Winamp Skin Museum`;
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      "",
+      newUrl
+    );
 
     // If query is empty, clear results immediately
     if (!query || query.trim().length === 0) {
-      return;
-      // setSearchQuery("");
-      startTransition(() => {
-        setSearchSkins([]);
-        setSearchError(null);
-      });
-      return;
-    }
-    // return;
-
-    try {
-      setSearchIsPending(true);
-      const result = await performAlgoliaSearch(query);
-      const hits = result.hits as Array<{
-        objectID: string;
-        fileName: string;
-        nsfw?: boolean;
-      }>;
-      const searchResults: GridSkin[] = hits.map((hit) => ({
-        md5: hit.objectID,
-        screenshotUrl: getScreenshotUrl(hit.objectID),
-        fileName: hit.fileName,
-        nsfw: hit.nsfw ?? false,
-      }));
-      setSearchSkins(searchResults);
-    } catch (err) {
-      console.error("Search failed:", err);
-      setSearchError("Search failed. Please try again.");
       setSearchSkins([]);
-    } finally {
-      setSearchIsPending(false);
+      setSearchError(null);
+      return;
     }
-  };
+
+    async function fetchResults() {
+      try {
+        setSearchIsPending(true);
+        const result = await performAlgoliaSearch(query);
+        const hits = result.hits as Array<{
+          objectID: string;
+          fileName: string;
+          nsfw?: boolean;
+        }>;
+        const searchResults: GridSkin[] = hits.map((hit) => ({
+          md5: hit.objectID,
+          screenshotUrl: getScreenshotUrl(hit.objectID),
+          fileName: hit.fileName,
+          nsfw: hit.nsfw ?? false,
+        }));
+        setSearchSkins(searchResults);
+      } catch (err) {
+        console.error("Search failed:", err);
+        setSearchError("Search failed. Please try again.");
+        setSearchSkins([]);
+      } finally {
+        setSearchIsPending(false);
+      }
+    }
+    fetchResults();
+  }, [inputValue]);
 
   const columnCount = Math.round(windowWidth / (SCREENSHOT_WIDTH * 0.9));
   const columnWidth = windowWidth / columnCount;
