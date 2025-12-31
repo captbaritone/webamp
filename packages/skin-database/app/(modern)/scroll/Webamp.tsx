@@ -18,7 +18,7 @@ export default function WebampComponent({
   const ref = useRef<HTMLDivElement | null>(null);
   const outerRef = useRef<HTMLDivElement | null>(null);
   // @ts-ignore
-  const webampRef = useRef<typeof import("webamp") | null>(null);
+  const webampRef = useRef<import("webamp").default | null>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -33,7 +33,7 @@ export default function WebampComponent({
       const webamp = new Webamp({
         initialSkin: { url: skinUrl },
         initialTracks,
-        hotkeys: true,
+        enableHotkeys: true,
         zIndex: 1001,
       });
 
@@ -41,13 +41,14 @@ export default function WebampComponent({
       cleanup = () => webamp.dispose();
 
       webamp.onClose(closeModal);
-      await webamp.renderWhenReady(ref.current);
+      // ref.current!.style.opacity = "0";
+      await webamp.renderInto(ref.current);
       const { width } = outerRef.current!.getBoundingClientRect();
       const zoom = width / SCREENSHOT_WIDTH;
-      console.log("Setting zoom:", zoom);
       document
         .getElementById("webamp")
         ?.style.setProperty("zoom", String(zoom));
+      ref.current!.style.opacity = "1";
 
       if (!disposed) loaded();
     }
@@ -75,6 +76,9 @@ export default function WebampComponent({
         style={{
           width: SCREENSHOT_WIDTH,
           height: SCREENSHOT_HEIGHT,
+          position: "relative",
+          opacity: 0,
+          transition: "opacity 1s linear",
         }}
         ref={ref}
       />

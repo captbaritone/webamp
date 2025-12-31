@@ -48,7 +48,8 @@
     "ts-node": "^10.5.0",
     "twit": "^2.2.11",
     "winston": "^3.2.1",
-    "yargs": "^13.2.4"
+    "yargs": "^13.2.4",
+    "webamp": "workspace:*"
   },
   "scripts": {
     "lint": "eslint .",

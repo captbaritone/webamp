@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function SkinPage({ skin, index, sessionId, focused }: Props) {
-  const showWebamp = focused && false; // Disable for now
+  const showWebamp = focused;
   return (
     <div
       key={skin.md5}

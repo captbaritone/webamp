@@ -74,6 +74,19 @@ importers:
         specifier: ^5.6.2
         version: 5.6.3
 
+  examples/contained:
+    dependencies:
+      webamp:
+        specifier: ^2.2.0
+        version: 2.2.0(@types/react-dom@18.2.24)(@types/react@18.2.74)
+    devDependencies:
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+      vite:
+        specifier: ^7.0.4
+        version: 7.0.4(@types/node@24.0.10)(jiti@1.21.7)(lightningcss@1.24.1)(terser@5.43.0)
+
   examples/lazy:
     dependencies:
       butterchurn:
@@ -258,6 +271,9 @@ importers:
       twit:
         specifier: ^2.2.11
         version: 2.2.11
+      webamp:
+        specifier: workspace:*
+        version: link:../webamp
       winston:
         specifier: ^3.2.1
         version: 3.13.0
