@@ -104,20 +104,27 @@ export function updateWindowPositions(
   return { type: "UPDATE_WINDOW_POSITIONS", positions, absolute };
 }
 
-export function centerWindowsInContainer(container: HTMLElement): Thunk {
+export function centerWindowsInContainer(
+  container: HTMLElement,
+  contained: boolean
+): Thunk {
   return (dispatch, getState) => {
     if (!Selectors.getPositionsAreRelative(getState())) {
       return;
     }
-    const { left, top } = container.getBoundingClientRect();
+    const { left, top } = contained
+      ? { left: 0, top: 0 }
+      : container.getBoundingClientRect();
     const { scrollWidth: width, scrollHeight: height } = container;
     dispatch(centerWindows({ left, top, width, height }));
   };
 }
 
-export function centerWindowsInView(): Thunk {
-  const height = window.innerHeight;
-  const width = window.innerWidth;
+export function centerWindowsInView(parentDomNode?: HTMLElement): Thunk {
+  const { width, height } =
+    parentDomNode === document.body || !parentDomNode
+      ? { width: window.innerWidth, height: window.innerHeight }
+      : Utils.getElementSize(parentDomNode);
   return centerWindows({ left: 0, top: 0, width, height });
 }
 
@@ -168,13 +175,16 @@ export function centerWindows({ left, top, width, height }: Box): Thunk {
   };
 }
 
-export function browserWindowSizeChanged(size: {
-  height: number;
-  width: number;
-}): Thunk {
+export function browserWindowSizeChanged(
+  size: {
+    height: number;
+    width: number;
+  },
+  parentDomNode?: HTMLElement
+): Thunk {
   return (dispatch: Dispatch) => {
     dispatch({ type: "BROWSER_WINDOW_SIZE_CHANGED", ...size });
-    dispatch(ensureWindowsAreOnScreen());
+    dispatch(ensureWindowsAreOnScreen(parentDomNode));
   };
 }
 
@@ -234,13 +244,16 @@ export function setWindowLayout(layout?: WindowLayout): Thunk {
   };
 }
 
-export function ensureWindowsAreOnScreen(): Thunk {
+export function ensureWindowsAreOnScreen(parentDomNode?: HTMLElement): Thunk {
   return (dispatch, getState) => {
     const state = getState();
 
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
-    const { height, width } = Utils.getWindowSize();
+    const { height, width } =
+      parentDomNode === document.body || !parentDomNode
+        ? Utils.getWindowSize()
+        : Utils.getElementSize(parentDomNode);
     const bounding = Utils.calculateBoundingBox(
       windowsInfo.filter((w) => getOpen(w.key))
     );
@@ -294,6 +307,6 @@ export function ensureWindowsAreOnScreen(): Thunk {
     // I give up. Just reset everything.
     dispatch(resetWindowSizes());
     dispatch(stackWindows());
-    dispatch(centerWindowsInView());
+    dispatch(centerWindowsInView(parentDomNode));
   };
 }

@@ -479,12 +479,33 @@ class Webamp {
    *
    * Webamp is rendered into a new DOM node at the end of the <body> tag with the id `#webamp`.
    *
-   * If a domNode is passed, Webamp will place itself in the center of that DOM node.
+   * Webamp will position itself on top of the center of the given DOM node.
    *
    * @returns A promise is returned which will resolve after the render is complete.
    */
   async renderWhenReady(node: HTMLElement): Promise<void> {
-    this.store.dispatch(Actions.centerWindowsInContainer(node));
+    return this._render(node, false);
+  }
+
+  /**
+   * Webamp will wait until it has fetched the skin and fully parsed it and then render itself.
+   *
+   * Webamp will render itself as a child of the given DOM node and position
+   * itself in the center of that node.
+   *
+   * @returns A promise is returned which will resolve after the render is complete.
+   */
+  async renderInto(node: HTMLElement): Promise<void> {
+    if (getComputedStyle(node)?.position === "static") {
+      throw new Error(
+        "Webamp Error: The DOM node passed to renderInto must have a non-static position."
+      );
+    }
+    return this._render(node, true);
+  }
+
+  async _render(node: HTMLElement, contained: boolean): Promise<void> {
+    this.store.dispatch(Actions.centerWindowsInContainer(node, contained));
     await this.skinIsLoaded();
     if (this._disposable.disposed) {
       return;
@@ -511,7 +532,7 @@ class Webamp {
           media={this.media}
           filePickers={this.options.filePickers || []}
           onMount={onMount}
-          parentDomNode={document.body}
+          parentDomNode={contained ? node : document.body}
         />
       </Provider>
     );

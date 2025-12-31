@@ -229,6 +229,19 @@ Toggle repeat mode between enabled and disabled.
 webamp.toggleRepeat();
 ```
 
+### `renderInto(domNode: HTMLElement): Promise<void>`
+
+Webamp will wait until it has fetched the skin and fully parsed it, and then render itself as a child of the provided `domNode` and position itself in the center of that DOM node.
+
+A promise is returned which will resolve after the render is complete.
+
+```ts
+const container = document.getElementById("webamp-container");
+webamp.renderWhenReady(container).then(() => {
+  console.log("rendered webamp!");
+});
+```
+
 ### `renderWhenReady(domNode: HTMLElement): Promise<void>`
 
 Webamp will wait until it has fetched the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.

@@ -12,6 +12,8 @@ Create a DOM element somewhere in your HTML document. This will be used by Webam
 
 :::tip
 **Webamp will not actually insert itself as a child of this element.** It will will insert itself as a child of the body element, and will attempt to center itself within this element. This is needed to allow the various Webamp windows to dragged around the page unencumbered.
+
+If you want Webamp to be a child of a specific element, use the [`renderInto(domNode)`](./06_API/03_instance-methods.md#renderintodomnode-htmlelement-promisevoid) method instead.
 :::
 
 ## Initialize Webamp instance
