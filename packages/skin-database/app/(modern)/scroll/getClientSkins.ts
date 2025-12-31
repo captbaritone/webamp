@@ -24,7 +24,7 @@ export async function getSkinForSession(
   ctx: UserContext,
   sessionId: string,
   md5: string
-) {
+): Promise<ClientSkin> {
   const model = await SkinModel.fromMd5Assert(ctx, md5);
   const readmeText = await model.getReadme();
   const fileName = await model.getFileName();
@@ -35,6 +35,7 @@ export async function getSkinForSession(
 
   return {
     screenshotUrl: model.getScreenshotUrl(),
+    skinUrl: model.getSkinUrl(),
     md5,
     // TODO: Normalize to .wsz
     fileName: fileName,

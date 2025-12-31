@@ -1,20 +1,20 @@
 "use client";
 
 // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
-import { useEffect, unstable_ViewTransition as ViewTransition } from "react";
+import { unstable_ViewTransition as ViewTransition } from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
+import WebampComponent from "./Webamp";
 
 type Props = {
   skin: ClientSkin;
   index: number;
   sessionId: string;
+  focused: boolean;
 };
 
-export default function SkinPage({ skin, index, sessionId }: Props) {
-  useEffect(() => {
-    console.log("Mount SkinPage");
-  }, []);
+export default function SkinPage({ skin, index, sessionId, focused }: Props) {
+  const showWebamp = focused && false; // Disable for now
   return (
     <div
       key={skin.md5}
@@ -41,11 +41,19 @@ export default function SkinPage({ skin, index, sessionId }: Props) {
             src={skin.screenshotUrl}
             alt={skin.fileName}
             style={{
+              position: "relative",
               width: "100%",
               aspectRatio: "275 / 348",
               imageRendering: "pixelated",
             }}
           />
+          {showWebamp && (
+            <WebampComponent
+              skinUrl={skin.skinUrl}
+              closeModal={() => {}}
+              loaded={() => {}}
+            />
+          )}
         </ViewTransition>
 
         <SkinActionIcons skin={skin} sessionId={sessionId} />

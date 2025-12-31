@@ -1,0 +1,204 @@
+import React, { useEffect, useRef } from "react";
+import {
+  SCREENSHOT_HEIGHT,
+  SCREENSHOT_WIDTH,
+} from "../../../legacy-client/src/constants";
+
+type Props = {
+  skinUrl: string;
+  closeModal: () => void;
+  loaded: () => void;
+};
+
+export default function WebampComponent({
+  skinUrl,
+  closeModal,
+  loaded,
+}: Props) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  // @ts-ignore
+  const webampRef = useRef<typeof import("webamp") | null>(null);
+
+  useEffect(() => {
+    let disposed = false;
+    let cleanup = () => {};
+
+    async function loadWebamp() {
+      // @ts-ignore
+      const { default: Webamp } = await import("webamp");
+
+      if (disposed) return;
+
+      const webamp = new Webamp({
+        initialSkin: { url: skinUrl },
+        initialTracks,
+        hotkeys: true,
+        zIndex: 1001,
+      });
+
+      webampRef.current = webamp;
+      cleanup = () => webamp.dispose();
+
+      webamp.onClose(closeModal);
+      await webamp.renderWhenReady(ref.current);
+      const { width } = outerRef.current!.getBoundingClientRect();
+      const zoom = width / SCREENSHOT_WIDTH;
+      console.log("Setting zoom:", zoom);
+      document
+        .getElementById("webamp")
+        ?.style.setProperty("zoom", String(zoom));
+
+      if (!disposed) loaded();
+    }
+
+    loadWebamp();
+
+    return () => {
+      disposed = true;
+      cleanup();
+    };
+  }, [skinUrl, closeModal, loaded]);
+
+  return (
+    <div
+      ref={outerRef}
+      style={{
+        top: 0,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div
+        className="webamp-container"
+        style={{
+          width: SCREENSHOT_WIDTH,
+          height: SCREENSHOT_HEIGHT,
+        }}
+        ref={ref}
+      />
+    </div>
+  );
+}
+
+const album = "netBloc Vol. 24: tiuqottigeloot";
+
+const initialTracks = [
+  {
+    metaData: {
+      artist: "DJ Mike Llama",
+      title: "Llama Whippin' Intro",
+    },
+    url: "/llama.mp3",
+    duration: 5.322286,
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Diablo_Swing_Orchestra_-_01_-_Heroines.mp3",
+    duration: 322.612245,
+    metaData: {
+      title: "Heroines",
+      artist: "Diablo Swing Orchestra",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Eclectek_-_02_-_We_Are_Going_To_Eclecfunk_Your_Ass.mp3",
+    duration: 190.093061,
+    metaData: {
+      title: "We Are Going To Eclecfunk Your Ass",
+      artist: "Eclectek",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3",
+    duration: 214.622041,
+    metaData: {
+      title: "Seventeen",
+      artist: "Auto-Pilot",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Muha_-_04_-_Microphone.mp3",
+    duration: 181.838367,
+    metaData: {
+      title: "Microphone",
+      artist: "Muha",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Just_Plain_Ant_-_05_-_Stumble.mp3",
+    duration: 86.047347,
+    metaData: {
+      title: "Stumble",
+      artist: "Just Plain Ant",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Sleaze_-_06_-_God_Damn.mp3",
+    duration: 226.795102,
+    metaData: {
+      title: "God Damn",
+      artist: "Sleaze",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Juanitos_-_07_-_Hola_Hola_Bossa_Nova.mp3",
+    duration: 207.072653,
+    metaData: {
+      title: "Hola Hola Bossa Nova",
+      artist: "Juanitos",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Entertainment_for_the_Braindead_-_08_-_Resolutions_Chris_Summer_Remix.mp3",
+    duration: 314.331429,
+    metaData: {
+      title: "Resolutions (Chris Summer Remix)",
+      artist: "Entertainment for the Braindead",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Nobara_Hayakawa_-_09_-_Trail.mp3",
+    duration: 204.042449,
+    metaData: {
+      title: "Trail",
+      artist: "Nobara Hayakawa",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Paper_Navy_-_10_-_Tongue_Tied.mp3",
+    duration: 201.116735,
+    metaData: {
+      title: "Tongue Tied",
+      artist: "Paper Navy",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/60_Tigres_-_11_-_Garage.mp3",
+    duration: 245.394286,
+    metaData: {
+      title: "Garage",
+      artist: "60 Tigres",
+      album,
+    },
+  },
+  {
+    url: "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/CM_aka_Creative_-_12_-_The_Cycle_Featuring_Mista_Mista.mp3",
+    duration: 221.44,
+    metaData: {
+      title: "The Cycle (Featuring Mista Mista)",
+      artist: "CM aka Creative",
+      album,
+    },
+  },
+];

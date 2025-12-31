@@ -8,6 +8,7 @@ import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 export type ClientSkin = {
   screenshotUrl: string;
+  skinUrl: string;
   fileName: string;
   md5: string;
   readmeStart: string;
@@ -190,6 +191,7 @@ export default function SkinScroller({
               key={skin.md5}
               skin={skin}
               index={i}
+              focused={i === visibleSkinIndex}
               sessionId={sessionId}
             />
           );
