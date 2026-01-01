@@ -42,7 +42,7 @@ export default function WebampComponent({
 
       webamp.onClose(closeModal);
       // ref.current!.style.opacity = "0";
-      await webamp.renderInto(ref.current);
+      await webamp.renderInto(ref.current!);
       const { width } = outerRef.current!.getBoundingClientRect();
       const zoom = width / SCREENSHOT_WIDTH;
       document
