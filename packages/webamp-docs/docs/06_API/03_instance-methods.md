@@ -233,7 +233,13 @@ webamp.toggleRepeat();
 
 Webamp will wait until it has fetched the skin and fully parsed it, and then render itself as a child of the provided `domNode` and position itself in the center of that DOM node.
 
+:::warning
+**The `domNode` must have a non-static CSS position** (e.g., `position: relative`, `position: absolute`, or `position: fixed`) for Webamp to render correctly within it.
+:::
+
 A promise is returned which will resolve after the render is complete.
+
+**Since** [Unreleased](../12_changelog.md#unreleased)
 
 ```ts
 const container = document.getElementById("webamp-container");
