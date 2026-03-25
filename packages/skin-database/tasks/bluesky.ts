@@ -5,7 +5,6 @@ import {
   AppBskyRichtextFacet,
   AtpAgent,
   BlobRef,
-  RichText,
 } from "@atproto/api";
 import {
   TWEET_BOT_CHANNEL_ID,
