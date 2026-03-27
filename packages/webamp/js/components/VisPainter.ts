@@ -673,6 +673,13 @@ export class WavePaintHandler extends VisPaintHandler {
     // y is then adjusted downward to be in the center of the scope
     y = Math.round((y / 16) * 2) - 9;
 
+    // this sucks
+    // the way i'm getting the data in the first place makes it difficult to properly re-massage
+    // if getByteTimeDomainData was perfectly at 0 and we had to deal with signed/unsigned conversion
+    // i wouldn't have to do this...
+    // note to self: rejig this with getFloatTimeDomainData later
+    y = -y+14;
+
     // adjusts the center point of y if we are in windowShade mode, and if pixelDensity is 2
     // where it's adjusted further to give you the fullest view possible in that small window
     // else we leave y as is
