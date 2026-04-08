@@ -1,74 +1,124 @@
 import * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<any> {
-  await knex.raw(`CREATE TABLE "files" (
-        "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-        "file_path"     TEXT NOT NULL,
-        "source_attribution"    TEXT,
-        "skin_md5"      TEXT NOT NULL
-);`);
-  await knex.raw(`CREATE TABLE "ia_items" (
-        "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-        "skin_md5"      TEXT,
-        "identifier"    TEXT NOT NULL
-);`);
-  await knex.raw(
-    `CREATE TABLE "tweets" ( "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "url"   TEXT, "likes" INTEGER, "skin_md5"      TEXT NOT NULL , tweet_id text, retweets INTEGER);`
-  );
-  await knex.raw(
-    `CREATE TABLE "skins" ( "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "md5"   TEXT NOT NULL UNIQUE, "skin_type"     INTEGER NOT NULL, "emails"        BLOB, "readme_text"   BLOB, "average_color" TEXT, content_hash TEXT);`
-  );
-  await knex.raw(
-    `CREATE TABLE "skin_reviews" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "skin_md5" TEXT NOT NULL, review TEXT NOT NULL);`
-  );
-  await knex.raw(
-    `CREATE TABLE nsfw_predictions (id INTEGER PRIMARY KEY AUTOINCREMENT, porn REAL, neutral REAL, sexy REAL, hentai REAL, drawing REAL, skin_md5 TEXT NOT NULL);`
-  );
-  await knex.raw(`CREATE TABLE algolia_field_updates(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-update_timestamp INTEGER NOT NULL,
-field TEXT NOT NULL,
-    skin_md5 TEXT NOT NULL,
-    FOREIGN KEY (skin_md5) REFERENCES skins (md5)
-);`);
-  await knex.raw(
-    `CREATE INDEX idx_algolia_field_updates_skin_md5 ON algolia_field_updates(skin_md5);`
-  );
-  await knex.raw(`CREATE TABLE archive_files (
-id INTEGER PRIMARY KEY,
-   skin_md5 TEXT NOT NULL,
-file_name TEXT NOT_NULL,
-file_md5 TEXT NOT NULL,
-FOREIGN KEY (skin_md5) REFERENCES skins (md5),
-UNIQUE(skin_md5,file_name)
-);`);
-  await knex.raw(`CREATE UNIQUE INDEX idx_skins_md5 ON skins(md5);`);
-  await knex.raw(
-    `CREATE INDEX idx_nsfw_predictions_skin_md5 ON nsfw_predictions(skin_md5);`
-  );
-  await knex.raw(`CREATE INDEX idx_tweets_skin_md5 ON tweets(skin_md5);`);
-  await knex.raw(`CREATE INDEX idx_files_new_skin_md5 ON files(skin_md5);`);
-  await knex.raw(`CREATE INDEX idx_ia_items_skin_md5 ON ia_items(skin_md5);`);
-  await knex.raw(
-    `CREATE INDEX idx_skin_reviews_skin_md5 ON skin_reviews(skin_md5);`
-  );
-  await knex.raw(
-    `CREATE TABLE "skin_uploads" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "skin_md5" TEXT NOT NULL, status TEXT NOT NULL, filename TEXT);`
-  );
-  await knex.raw(
-    `CREATE INDEX idx_skin_uploads_skin_md5 ON skin_uploads(skin_md5);`
-  );
-  await knex.raw(`CREATE TABLE screenshot_updates(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    update_timestamp INTEGER NOT NULL,
-    skin_md5 TEXT NOT NULL,
-    success INTEGER NOT NULL,
-    error_message TEXT,
-    FOREIGN KEY (skin_md5) REFERENCES skins (md5)
-);`);
-  await knex.raw(
-    `CREATE INDEX idx_screenshot_updates_skin_md5 ON screenshot_updates(skin_md5);`
-  );
+  // Use parameterized schema builders instead of raw SQL to prevent injection
+  await knex.schema.createTable("files", (table) => {
+    table.increments("id").primary();
+    table.text("file_path").notNullable();
+    table.text("source_attribution");
+    table.text("skin_md5").notNullable();
+  });
+
+  await knex.schema.createTable("ia_items", (table) => {
+    table.increments("id").primary();
+    table.text("skin_md5");
+    table.text("identifier").notNullable();
+  });
+
+  await knex.schema.createTable("tweets", (table) => {
+    table.increments("id").primary();
+    table.text("url");
+    table.integer("likes");
+    table.text("skin_md5").notNullable();
+    table.text("tweet_id");
+    table.integer("retweets");
+  });
+
+  await knex.schema.createTable("skins", (table) => {
+    table.increments("id").primary();
+    table.text("md5").notNullable().unique();
+    table.integer("skin_type").notNullable();
+    table.binary("emails");
+    table.binary("readme_text");
+    table.text("average_color");
+    table.text("content_hash");
+  });
+
+  await knex.schema.createTable("skin_reviews", (table) => {
+    table.increments("id").primary();
+    table.text("skin_md5").notNullable();
+    table.text("review").notNullable();
+  });
+
+  await knex.schema.createTable("nsfw_predictions", (table) => {
+    table.increments("id").primary();
+    table.decimal("porn");
+    table.decimal("neutral");
+    table.decimal("sexy");
+    table.decimal("hentai");
+    table.decimal("drawing");
+    table.text("skin_md5").notNullable();
+  });
+
+  await knex.schema.createTable("algolia_field_updates", (table) => {
+    table.increments("id").primary();
+    table.integer("update_timestamp").notNullable();
+    table.text("field").notNullable();
+    table.text("skin_md5").notNullable();
+    table.foreign("skin_md5").references("skins.md5");
+  });
+
+  await knex.schema.table("algolia_field_updates", (table) => {
+    table.index("skin_md5", "idx_algolia_field_updates_skin_md5");
+  });
+
+  await knex.schema.createTable("archive_files", (table) => {
+    table.increments("id").primary();
+    table.text("skin_md5").notNullable();
+    table.text("file_name").notNullable();
+    table.text("file_md5").notNullable();
+    table.foreign("skin_md5").references("skins.md5");
+    table.unique(["skin_md5", "file_name"]);
+  });
+
+  // Create indices
+  await knex.schema.table("skins", (table) => {
+    table.index("md5", "idx_skins_md5");
+  });
+
+  await knex.schema.table("nsfw_predictions", (table) => {
+    table.index("skin_md5", "idx_nsfw_predictions_skin_md5");
+  });
+
+  await knex.schema.table("tweets", (table) => {
+    table.index("skin_md5", "idx_tweets_skin_md5");
+  });
+
+  await knex.schema.table("files", (table) => {
+    table.index("skin_md5", "idx_files_new_skin_md5");
+  });
+
+  await knex.schema.table("ia_items", (table) => {
+    table.index("skin_md5", "idx_ia_items_skin_md5");
+  });
+
+  await knex.schema.table("skin_reviews", (table) => {
+    table.index("skin_md5", "idx_skin_reviews_skin_md5");
+  });
+
+  await knex.schema.createTable("skin_uploads", (table) => {
+    table.increments("id").primary();
+    table.text("skin_md5").notNullable();
+    table.text("status").notNullable();
+    table.text("filename");
+  });
+
+  await knex.schema.table("skin_uploads", (table) => {
+    table.index("skin_md5", "idx_skin_uploads_skin_md5");
+  });
+
+  await knex.schema.createTable("screenshot_updates", (table) => {
+    table.increments("id").primary();
+    table.integer("update_timestamp").notNullable();
+    table.text("skin_md5").notNullable();
+    table.integer("success").notNullable();
+    table.text("error_message");
+    table.foreign("skin_md5").references("skins.md5");
+  });
+
+  await knex.schema.table("screenshot_updates", (table) => {
+    table.index("skin_md5", "idx_screenshot_updates_skin_md5");
+  });
 }
 
 export async function down(_knex: Knex): Promise<any> {
