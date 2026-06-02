@@ -48,8 +48,8 @@ export function createVisualizerEngine(cfg: VEConfig) {
 
   const INITIAL_KICK_OFF = 3.0;
 
-  const doubleSized = !!cfg.doubled;
-  const isMWOpen = !!cfg.isMWOpen;
+  let doubleSized = !!cfg.doubled;
+  let isMWOpen = !!cfg.isMWOpen;
   const visMode =
     cfg.mode === "oscilloscope" ? 1 : cfg.mode === "bars" ? 0 : -1;
   const visOscStyle =
@@ -61,7 +61,7 @@ export function createVisualizerEngine(cfg: VEConfig) {
       ? 2
       : 0;
   const saColorMode = coloring === "normal" ? 0 : coloring === "fire" ? 1 : 2;
-  const windowShaded = smallVis;
+  let windowShaded = smallVis;
   const peaks = !!cfg.peaks;
   const wideBars = cfg.bandwidth === "wide" ? 1 : 0;
 
@@ -783,5 +783,21 @@ export function createVisualizerEngine(cfg: VEConfig) {
     ctx.putImageData(myImageData, 0, 0);
   }
 
-  return { prepare, paintFrame };
+  function updateConfig(newCfg: Partial<VEConfig>) {
+    // Update mutable configuration values that can change without recreating the painter
+    if (newCfg.doubled !== undefined) {
+      doubleSized = !!newCfg.doubled;
+      prepare(); // recalculate buffer size
+    }
+    if (newCfg.isMWOpen !== undefined) {
+      isMWOpen = !!newCfg.isMWOpen;
+      prepare(); // recalculate buffer size
+    }
+    if (newCfg.smallVis !== undefined) {
+      windowShaded = !!newCfg.smallVis;
+      prepare(); // recalculate buffer size
+    }
+  }
+
+  return { prepare, paintFrame, updateConfig };
 }

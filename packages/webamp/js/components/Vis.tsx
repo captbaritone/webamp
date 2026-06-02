@@ -54,10 +54,10 @@ export default function Vis({ analyser }: Props) {
   const audioStatus = useTypedSelector(Selectors.getMediaStatus);
   const getWindowShade = useTypedSelector(Selectors.getWindowShade);
   const getWindowOpen = useTypedSelector(Selectors.getWindowOpen);
-  const isMWOpen = getWindowOpen("main");
+  const isMWOpen = getWindowOpen("main") ?? false;
   const doubled = useTypedSelector(Selectors.getDoubled);
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
-  const windowShade = getWindowShade("main");
+  const windowShade = getWindowShade("main") ?? false;
 
   const smallVis = windowShade && isMWOpen;
   const renderHeight = smallVis ? 5 : 16;
@@ -81,16 +81,17 @@ export default function Vis({ analyser }: Props) {
   //? painter administration
   const painter = useMemo(() => {
     if (!canvas) return null;
+    const modeValue: "bars" | "oscilloscope" | "none" =
+      mode === VISUALIZERS.BAR
+        ? "bars"
+        : mode === VISUALIZERS.OSCILLOSCOPE
+        ? "oscilloscope"
+        : "none";
     const cfg = {
       canvas,
       analyser,
       colors,
-      mode:
-        mode === VISUALIZERS.BAR
-          ? "bars"
-          : mode === VISUALIZERS.OSCILLOSCOPE
-          ? "oscilloscope"
-          : "none",
+      mode: modeValue,
       renderHeight,
       smallVis,
       pixelDensity,
@@ -99,7 +100,7 @@ export default function Vis({ analyser }: Props) {
       peaks: true,
       oscStyle: "lines",
       bandwidth: "wide",
-      coloring: "normal",
+      coloring: "line",
     };
     return createVisualizerEngine(cfg);
   }, [
@@ -107,12 +108,6 @@ export default function Vis({ analyser }: Props) {
     canvas,
     mode,
     colors,
-    renderHeight,
-    smallVis,
-    pixelDensity,
-    doubled,
-    isMWOpen,
-    smallVis,
   ]);
 
   // reacts to changes in doublesize mode
@@ -132,6 +127,18 @@ export default function Vis({ analyser }: Props) {
     // want to clear the canvas when the audio is paused.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doubled, canvas, painter]);
+
+  // updates painter configuration when layout changes (windowShade, main window open/closed)
+  // without recreating the painter, preserving visualizer state
+  useEffect(() => {
+    if (painter) {
+      painter.updateConfig({
+        doubled,
+        isMWOpen,
+        smallVis,
+      });
+    }
+  }, [doubled, isMWOpen, smallVis, painter]);
 
   useEffect(() => {
     if (canvas == null || painter == null) {
