@@ -100,7 +100,7 @@ export default function Vis({ analyser }: Props) {
       peaks: true,
       oscStyle: "lines",
       bandwidth: "wide",
-      coloring: "line",
+      coloring: "normal",
     };
     return createVisualizerEngine(cfg);
   }, [

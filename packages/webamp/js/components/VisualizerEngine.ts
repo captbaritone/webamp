@@ -274,6 +274,16 @@ export function createVisualizerEngine(cfg: VEConfig) {
       // just so it ranges from -32..32
     }
 
+    if (visMode === 0) {
+      for (let i = 0; i < VIS_WIDTH; i++) {
+        arr[i + VIS_WIDTH] = 0;
+      }
+    } else if (visMode === 1) {
+      for (let i = 0; i < VIS_WIDTH; i++) {
+        arr[i] = 0;
+      }
+    }
+
     return arr;
   }
 
@@ -397,7 +407,6 @@ export function createVisualizerEngine(cfg: VEConfig) {
           // set the samples buffer past 75 to 0, to avoid oscilloscope data leakage
           // this can theoretically be done by checking the visMode in getSamples()
           // and blank the other mode when necessary
-          samples[x + VIS_WIDTH] = 0;
 
           if (wideBars) {
             // when wideBars is enabled, each bar represents a 4-sample chunk
@@ -495,7 +504,6 @@ export function createVisualizerEngine(cfg: VEConfig) {
         if (visMode == 0) {
           let chunker, chunkedData;
           for (let x = 0; x < VIS_WIDTH; x++) {
-            samples[x + VIS_WIDTH] = 0;
             if (wideBars) {
               chunker = x & ~3;
               chunkedData =
@@ -637,7 +645,6 @@ export function createVisualizerEngine(cfg: VEConfig) {
           // unsure why 38 - 1 was being done here
           // technically a bug, won't fix
           for (let x = 0; x < WINDOWSHADE_WIDTH - 1; x++) {
-            samples[x + VIS_WIDTH] = 0;
             if (visMode == 0) {
               if (wideBars) {
                 chunker = (x & ~3) * 2;
