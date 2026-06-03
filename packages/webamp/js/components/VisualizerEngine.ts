@@ -641,7 +641,7 @@ export function createVisualizerEngine(cfg: VEConfig) {
         }
       } else {
         if (visMode == 0) {
-          let chunker, chunkedData;
+          let chunker, chunkedData = 0;
           // unsure why 38 - 1 was being done here
           // technically a bug, won't fix
           for (let x = 0; x < WINDOWSHADE_WIDTH - 1; x++) {
