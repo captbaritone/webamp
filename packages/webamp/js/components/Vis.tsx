@@ -10,38 +10,10 @@ type Props = {
   analyser: AnalyserNode;
 };
 
-// Pre-render the background grid
-function preRenderBg(options: {
-  width: number;
-  height: number;
-  bgColor: string;
-  fgColor: string;
-  windowShade: boolean;
-  pixelDensity: number;
-}): HTMLCanvasElement {
-  const { width, height, bgColor, fgColor, windowShade, pixelDensity } =
-    options;
-  // Off-screen canvas for pre-rendering the background
-  const bgCanvas = document.createElement("canvas");
-  bgCanvas.width = width;
-  bgCanvas.height = height;
-  const distance = 2 * pixelDensity;
-
-  const bgCanvasCtx = bgCanvas.getContext("2d");
-  if (bgCanvasCtx == null) {
-    throw new Error("Could not construct canvas context");
-  }
-  bgCanvasCtx.fillStyle = bgColor;
-  bgCanvasCtx.fillRect(0, 0, width, height);
-  if (!windowShade) {
-    bgCanvasCtx.fillStyle = fgColor;
-    for (let x = 0; x < width; x += distance) {
-      for (let y = pixelDensity; y < height; y += distance) {
-        bgCanvasCtx.fillRect(x, y, pixelDensity, pixelDensity);
-      }
-    }
-  }
-  return bgCanvas;
+function resolveMode(mode: unknown): "bars" | "oscilloscope" | "none" {
+  if (mode === VISUALIZERS.BAR) return "bars";
+  if (mode === VISUALIZERS.OSCILLOSCOPE) return "oscilloscope";
+  return "none";
 }
 
 export default function Vis({ analyser }: Props) {
@@ -81,34 +53,22 @@ export default function Vis({ analyser }: Props) {
   //? painter administration
   const painter = useMemo(() => {
     if (!canvas) return null;
-    const modeValue: "bars" | "oscilloscope" | "none" =
-      mode === VISUALIZERS.BAR
-        ? "bars"
-        : mode === VISUALIZERS.OSCILLOSCOPE
-        ? "oscilloscope"
-        : "none";
-    const cfg = {
+    return createVisualizerEngine({
       canvas,
       analyser,
       colors,
-      mode: modeValue,
-      renderHeight,
-      smallVis,
-      pixelDensity,
-      doubled,
-      isMWOpen,
+      mode: resolveMode(mode),
+      renderHeight: 16,
+      smallVis: false,
+      pixelDensity: 1,
+      doubled: false,
+      isMWOpen: false,
       peaks: true,
       oscStyle: "lines",
       bandwidth: "wide",
       coloring: "normal",
-    };
-    return createVisualizerEngine(cfg);
-  }, [
-    analyser,
-    canvas,
-    mode,
-    colors,
-  ]);
+    });
+  }, [analyser, canvas, mode, colors]);
 
   // reacts to changes in doublesize mode
   useEffect(() => {
