@@ -18,6 +18,8 @@ Additionally, it makes use of some private Webamp APIs to add the following func
 
     pnpm start
 
+This starts a Vite dev server that imports the webamp library source directly via relative paths. Any edits to files in `packages/webamp/js/` are immediately reflected in the browser without a rebuild step.
+
 ## Production Builds
 
 To do an optimized build of the demo site:
