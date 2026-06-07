@@ -347,9 +347,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      milkdrop-preset-converter-aws:
-        specifier: ^0.1.6
-        version: 0.1.6
       music-metadata:
         specifier: ^11.6.0
         version: 11.6.0
