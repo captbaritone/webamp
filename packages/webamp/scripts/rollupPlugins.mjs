@@ -11,14 +11,14 @@ import atImport from "postcss-import";
 import nodePolyfills from "rollup-plugin-polyfill-node";
 import path from "node:path";
 
-export function getPlugins({ minify, outputFile, vite }) {
+export function getPlugins({ minify, outputFile }) {
   const plugins = [
     replace({
       // Ensure we don't use the dev build of React
       values: { "process.env.NODE_ENV": JSON.stringify("production") },
       preventAssignment: true,
     }),
-    vite ? null : stripInlineSuffix(),
+    stripInlineSuffix(),
     // https://rollupjs.org/troubleshooting/#warning-treating-module-as-external-dependency
     // TODO: We could offer a version which does not inline React/React-DOM
     nodeResolve({
@@ -30,27 +30,19 @@ export function getPlugins({ minify, outputFile, vite }) {
     // Needed for music-metadata-browser in the Webamp bundle which depends upon
     // being able to use some polyfillable node APIs
     nodePolyfills(),
-    // Vite handles TypeScript natively, so only use the plugin for Rollup builds
-    vite
-      ? null
-      : typescript({
-          compilerOptions: {
-            jsx: "react-jsx",
-            module: "esnext",
-            declarationDir: "dist/demo-site/declarations",
-            outDir: "./tsBuilt",
-          },
-        }),
-    // Enable importing .json files. But Vite already enables this, so enabling it there
-    // causes it to try to parse the js version as JSON.
-    vite ? null : json(),
-    // https://www.npmjs.com/package/rollup-plugin-import-css
-    vite
-      ? null
-      : postcss({
-          inject: false,
-          plugins: [atImport, postcssOptimizeDataUriPngs],
-        }),
+    typescript({
+      compilerOptions: {
+        jsx: "react-jsx",
+        module: "esnext",
+        declarationDir: "dist/demo-site/declarations",
+        outDir: "./tsBuilt",
+      },
+    }),
+    json(),
+    postcss({
+      inject: false,
+      plugins: [atImport, postcssOptimizeDataUriPngs],
+    }),
     // Required because React still ships as CJS
     commonjs(),
     minify

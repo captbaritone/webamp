@@ -1,5 +1,5 @@
-import WebampLazy from "../../js/webampLazy";
-import { URLTrack } from "../../js/types";
+import WebampLazy from "../../webamp/js/webampLazy";
+import { URLTrack } from "../../webamp/js/types";
 import { useCallback } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";

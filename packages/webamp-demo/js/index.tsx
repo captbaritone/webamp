@@ -6,7 +6,7 @@ import isButterchurnSupported from "butterchurn/dist/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
 import * as SoundCloud from "./SoundCloud";
 
-import WebampLazy from "../../js/webampLazy";
+import WebampLazy from "../../webamp/js/webampLazy";
 
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";

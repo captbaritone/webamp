@@ -1,6 +1,6 @@
 [build]
 command = "pnpm run deploy"
-publish = "packages/webamp/dist/demo-site/"
+publish = "packages/webamp-demo/dist/"
 
 # A short URL for listeners of https://changelog.com/podcast/291
 [[redirects]]

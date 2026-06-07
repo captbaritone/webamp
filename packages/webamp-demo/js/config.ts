@@ -1,4 +1,4 @@
-import { Track, URLTrack, PartialState } from "../../js/types";
+import { Track, URLTrack, PartialState } from "../../webamp/js/types";
 // @ts-ignore
 import llamaAudio from "../mp3/llama-2.91.mp3";
 

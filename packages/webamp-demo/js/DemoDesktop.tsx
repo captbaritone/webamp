@@ -1,10 +1,10 @@
-import WebampLazy from "../../js/webampLazy";
+import WebampLazy from "../../webamp/js/webampLazy";
 import { Suspense } from "react";
 import WebampIcon from "./WebampIcon";
 // import Mp3Icon from "./Mp3Icon";
 import SkinIcon from "./SkinIcon";
 import { /* defaultInitialTracks, */ SHOW_DESKTOP_ICONS } from "./config";
-import { useWindowSize } from "../../js/hooks";
+import { useWindowSize } from "../../webamp/js/hooks";
 import availableSkins from "./availableSkins";
 import DesktopLinkIcon from "./DesktopLinkIcon";
 import museumIcon from "../images/icons/internet-folder-32x32.png";

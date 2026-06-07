@@ -2,26 +2,22 @@
 
 ## Development
 
-I do most development by starting the demo site in dev mode and iterating that way. The following commands will install all dependencies, run an initial development build and then start a local server. Every time you save a file, it will rebuild the bundle and automatically refresh the page.
+The demo site in `packages/webamp-demo` imports the library source directly, so you can iterate on the library with live reloading:
 
-    # First clone the repo, then...
-    cd webamp
-    # Change into the NPM module's sub directory
-    cd packages/webamp
-    # __Note:__ Please use pnpm over npm/yarn, since pnpm will respect our `pnpm-lock.yaml` file
-    pnpm install
+    cd packages/webamp-demo
     pnpm start
 
-`http://localhost:8080/` should automatically open in your browser.
+Any edits to library source files in `packages/webamp/js/` are immediately reflected in the browser — no rebuild needed.
 
-    # Run tests and lint checks
+    # Run tests
+    cd packages/webamp
     pnpm test
 
 ## Building
 
-The NPM module is built separately from the demo site. To build it run:
+To build the library for publishing:
 
-    pnpm run build-library
+    pnpm run build
 
 This will write files to `./built`.
 
