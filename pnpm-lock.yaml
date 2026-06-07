@@ -381,12 +381,6 @@ importers:
         specifier: ^1.2.3
         version: 1.2.3
     devDependencies:
-      '@babel/preset-env':
-        specifier: ^7.25.0
-        version: 7.27.2(@babel/core@7.27.4)
-      '@rollup/plugin-babel':
-        specifier: ^6.0.4
-        version: 6.0.4(@babel/core@7.27.4)(@types/babel__core@7.20.5)(rollup@4.18.0)
       '@rollup/plugin-commonjs':
         specifier: ^25.0.8
         version: 25.0.8(rollup@4.18.0)
@@ -3117,19 +3111,6 @@ packages:
   '@rgrove/parse-xml@3.0.0':
     resolution: {integrity: sha512-GFGDywRwGbuGq9yeL8wTjjLOsZ5Ps4O5tQ71eDcAfaZrZeA7Oe8QJzrnmFgplWtnoaBIBaFBB3n5Ht9iU4jLLw==}
     engines: {node: '>=12.0.0'}
-
-  '@rollup/plugin-babel@6.0.4':
-    resolution: {integrity: sha512-YF7Y52kFdFT/xVSuVdjkV5ZdX/3YtmX0QulG+x0taQOtJdHYzVU61aSSkAgVJ7NOv6qPkIYiJSgSWWN/DM5sGw==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/babel__core': ^7.1.9
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      '@types/babel__core':
-        optional: true
-      rollup:
-        optional: true
 
   '@rollup/plugin-commonjs@16.0.0':
     resolution: {integrity: sha512-LuNyypCP3msCGVQJ7ki8PqYdpjfEkE/xtFa5DqlF+7IBD0JsfMZ87C58heSwIMint58sAUZbt3ITqOmdQv/dXw==}
@@ -16744,17 +16725,6 @@ snapshots:
   '@resvg/resvg-wasm@2.0.0-alpha.4': {}
 
   '@rgrove/parse-xml@3.0.0': {}
-
-  '@rollup/plugin-babel@6.0.4(@babel/core@7.27.4)(@types/babel__core@7.20.5)(rollup@4.18.0)':
-    dependencies:
-      '@babel/core': 7.27.4
-      '@babel/helper-module-imports': 7.27.1
-      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
-    optionalDependencies:
-      '@types/babel__core': 7.20.5
-      rollup: 4.18.0
-    transitivePeerDependencies:
-      - supports-color
 
   '@rollup/plugin-commonjs@16.0.0(rollup@2.37.1)':
     dependencies:

@@ -75,8 +75,6 @@
     "ani-cursor": "workspace:*",
     "milkdrop-preset-converter-aws": "^0.1.6",
     "winamp-eqf": "workspace:*",
-    "@babel/preset-env": "^7.25.0",
-    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",

@@ -8,7 +8,6 @@ import { visualizer } from "rollup-plugin-visualizer";
 import replace from "@rollup/plugin-replace";
 import postcssOptimizeDataUriPngs from "./postcss-optimize-data-uri-pngs.mjs";
 import atImport from "postcss-import";
-import { babel } from "@rollup/plugin-babel";
 import nodePolyfills from "rollup-plugin-polyfill-node";
 import path from "node:path";
 
@@ -55,14 +54,6 @@ export function getPlugins({ minify, outputFile, vite }) {
     // Without this we get: Error: 'default' is not exported by node_modules/react/index.js
     // because react-redux import react as if it were an es6 module, but it is not.
     commonjs(),
-    // Must come after commonjs
-    babel({
-      babelHelpers: "bundled",
-      compact: minify,
-      // Optimize Babel by excluding node_modules and only processing necessary files
-      exclude: ["node_modules/**"],
-      include: ["js/**/*"],
-    }),
     minify
       ? terser({
           compress: {

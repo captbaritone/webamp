@@ -1,33 +1,4 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "browsers": [
-            "last 2 Chrome versions",
-            "last 2 ChromeAndroid versions",
-            "last 2 Safari versions",
-            "last 2 Firefox versions",
-            "last 2 Edge versions",
-            "last 2 iOS versions",
-            "last 2 Opera versions"
-          ]
-        }
-      }
-    ],
-    // TODO: Can TypeScript just do this for us?
-    "@babel/preset-typescript"
-  ],
-  "plugins": [],
-  "env": {
-    "test": {
-      "plugins": [
-        "@babel/plugin-transform-modules-commonjs"
-      ]
-    },
-    "library": {
-      "plugins": ["@babel/plugin-transform-runtime"]
-    }
-  }
+  "presets": ["@babel/preset-typescript"],
+  "plugins": ["@babel/plugin-transform-modules-commonjs"]
 }
