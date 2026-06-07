@@ -73,6 +73,7 @@
   "homepage": "https://github.com/captbaritone/webamp/",
   "devDependencies": {
     "ani-cursor": "workspace:*",
+    "milkdrop-preset-converter-aws": "^0.1.6",
     "winamp-eqf": "workspace:*",
     "@babel/preset-env": "^7.25.0",
     "@rollup/plugin-babel": "^6.0.4",
