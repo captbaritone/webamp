@@ -83,7 +83,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/classnames": "^2.2.6",
-    "@types/fscreen": "^1.0.1",
     "@types/invariant": "^2.2.29",
     "@types/jest": "^30.0.0",
     "@types/jszip": "^3.1.5",
