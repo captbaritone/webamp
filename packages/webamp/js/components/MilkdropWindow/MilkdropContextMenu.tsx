@@ -5,7 +5,6 @@ import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import { useTypedSelector, useActionCreator } from "../../hooks";
-import fscreen from "fscreen";
 
 interface Props {
   children: ReactNode;
@@ -23,7 +22,7 @@ const MilkdropContextMenu = (props: Props) => {
       renderContents={() => {
         return (
           <>
-            {fscreen.fullscreenEnabled && (
+            {document.fullscreenEnabled && (
               <Node
                 onClick={toggleFullscreen}
                 label="Fullscreen"

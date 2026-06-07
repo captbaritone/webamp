@@ -1,6 +1,5 @@
 // Adapted from https://github.com/snakesilk/react-fullscreen
 import { ReactNode, useRef, useLayoutEffect, useEffect } from "react";
-import fscreen from "fscreen";
 
 interface Props {
   enabled: boolean;
@@ -9,14 +8,14 @@ interface Props {
 }
 
 function leaveFullScreen() {
-  if (fscreen.fullscreenEnabled) {
-    fscreen.exitFullscreen();
+  if (document.fullscreenEnabled) {
+    document.exitFullscreen();
   }
 }
 
 function enterFullScreen(node: HTMLDivElement) {
-  if (fscreen.fullscreenEnabled) {
-    fscreen.requestFullscreen(node);
+  if (document.fullscreenEnabled) {
+    node.requestFullscreen();
   }
 }
 
@@ -27,18 +26,18 @@ function FullScreen(props: Props) {
   useEffect(() => {
     function detectFullScreen() {
       if (onChange) {
-        onChange(fscreen.fullscreenElement === ref.current);
+        onChange(document.fullscreenElement === ref.current);
       }
     }
-    fscreen.addEventListener("fullscreenchange", detectFullScreen);
+    document.addEventListener("fullscreenchange", detectFullScreen);
     return () => {
-      fscreen.removeEventListener("fullscreenchange", detectFullScreen);
+      document.removeEventListener("fullscreenchange", detectFullScreen);
     };
   }, [onChange]);
 
   // This must run in response to a click event, so we'll use useLayoutEffect just in case.
   useLayoutEffect(() => {
-    const isEnabled = fscreen.fullscreenElement === ref.current;
+    const isEnabled = document.fullscreenElement === ref.current;
     if (isEnabled && !enabled) {
       leaveFullScreen();
     } else if (!isEnabled && enabled && ref.current != null) {

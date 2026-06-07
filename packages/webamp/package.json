@@ -134,7 +134,6 @@
     "butterchurn": "3.0.0-beta.5",
     "butterchurn-presets": "3.0.0-beta.4",
     "classnames": "^2.2.5",
-    "fscreen": "^1.0.2",
     "invariant": "^2.2.3",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
