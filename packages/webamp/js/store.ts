@@ -1,10 +1,10 @@
 import {
   legacy_createStore as createStore,
   applyMiddleware,
+  compose as reduxCompose,
   Middleware as ReduxMiddleware,
 } from "redux";
 import { withExtraArgument } from "redux-thunk";
-import { composeWithDevTools } from "@redux-devtools/extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
@@ -19,9 +19,13 @@ import {
   Store,
 } from "./types";
 
-const compose = composeWithDevTools({
-  actionsDenylist: ["UPDATE_TIME_ELAPSED", "STEP_MARQUEE"],
-});
+// Use Redux DevTools extension if available, otherwise plain compose
+const compose =
+  (typeof window !== "undefined" &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__?.({
+      actionsDenylist: ["UPDATE_TIME_ELAPSED", "STEP_MARQUEE"],
+    })) ||
+  reduxCompose;
 
 export default function createWebampStore(
   media: IMedia,

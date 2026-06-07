@@ -323,9 +323,6 @@ importers:
 
   packages/webamp:
     dependencies:
-      '@redux-devtools/extension':
-        specifier: ^3.3.0
-        version: 3.3.0(redux@5.0.1)
       '@sentry/browser':
         specifier: 5.9.1
         version: 5.9.1

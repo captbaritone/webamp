@@ -18,7 +18,7 @@ import {
   PlayerMediaStatus,
   MediaStatus,
 } from "./types";
-import { createSelector, defaultMemoize } from "reselect";
+import { createSelector } from "reselect";
 import * as Utils from "./utils";
 import {
   TRACK_HEIGHT,
@@ -339,9 +339,15 @@ export const getDuration = (state: AppState): number | null => {
 };
 
 export const getTrackDisplayName = createSelector(getTracks, (tracks) => {
-  return defaultMemoize((trackId: number | null) =>
-    fromTracks.getTrackDisplayName(tracks, trackId)
-  );
+  let lastArg: number | null | undefined;
+  let lastResult: string | null;
+  return (trackId: number | null) => {
+    if (trackId !== lastArg) {
+      lastArg = trackId;
+      lastResult = fromTracks.getTrackDisplayName(tracks, trackId);
+    }
+    return lastResult;
+  };
 });
 
 export const getCurrentTrackDisplayName = createSelector(
