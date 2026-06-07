@@ -12,6 +12,7 @@ If you want access to the changes in this section before they are officially rel
 
 - Added a new Webamp instance method: [`webamp.renderInto(domNode)`](./06_API/03_instance-methods.md#renderintodomnode-htmlelement-promisevoid). Which renders Webamp as a _child_ of the provided DOM node, rather than within its own top-level container.
 - Added new [`requireButterchurnPresets`](./06_API/02_webamp-constructor.md#requirebutterchurnpresets---promisepreset) option when constructing a Webamp instance. This allows you to specify which Butterchurn presets to use for the Milkdrop visualizer. If you don't specify this option, Webamp will use the default Butterchurn presets.
+- Webamp no longer declares any runtime dependencies in `package.json`. All dependencies have always been bundled into the library at build time, but now the package metadata correctly reflects this — `npm install webamp` will no longer pull in unnecessary transitive dependencies.
 
 ### Bug Fixes
 
