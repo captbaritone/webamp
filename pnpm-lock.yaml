@@ -322,55 +322,6 @@ importers:
         version: 28.20.0(@swc/core@1.4.12(@swc/helpers@0.5.15))(@types/node@14.18.33)(bufferutil@4.0.8)(encoding@0.1.13)(lightningcss@1.24.1)(terser@5.43.0)(ts-node@10.9.2(@swc/core@1.4.12(@swc/helpers@0.5.15))(@types/node@14.18.33)(typescript@4.3.4))(utf-8-validate@5.0.10)
 
   packages/webamp:
-    dependencies:
-      butterchurn:
-        specifier: 3.0.0-beta.5
-        version: 3.0.0-beta.5(patch_hash=dn4lya4siqyl4wmtq4serjeoma)
-      butterchurn-presets:
-        specifier: 3.0.0-beta.4
-        version: 3.0.0-beta.4
-      classnames:
-        specifier: ^2.2.5
-        version: 2.5.1
-      invariant:
-        specifier: ^2.2.3
-        version: 2.2.4
-      jszip:
-        specifier: ^3.10.1
-        version: 3.10.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      music-metadata:
-        specifier: ^11.6.0
-        version: 11.6.0
-      music-metadata-browser:
-        specifier: ^0.6.1
-        version: 0.6.6
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
-      react-redux:
-        specifier: ^8.0.5
-        version: 8.1.3(@types/react-dom@18.2.24)(@types/react@18.2.74)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(redux@5.0.1)
-      redux:
-        specifier: ^5.0.0-alpha.0
-        version: 5.0.1
-      redux-thunk:
-        specifier: ^3.1.0
-        version: 3.1.0(redux@5.0.1)
-      reselect:
-        specifier: ^3.0.1
-        version: 3.0.1
-      strtok3:
-        specifier: ^10.3.1
-        version: 10.3.1
-      tinyqueue:
-        specifier: ^3.0.0
-        version: 3.0.0
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.8
@@ -426,6 +377,15 @@ importers:
       ani-cursor:
         specifier: workspace:*
         version: link:../ani-cursor
+      butterchurn:
+        specifier: 3.0.0-beta.5
+        version: 3.0.0-beta.5(patch_hash=dn4lya4siqyl4wmtq4serjeoma)
+      butterchurn-presets:
+        specifier: 3.0.0-beta.4
+        version: 3.0.0-beta.4
+      classnames:
+        specifier: ^2.2.5
+        version: 2.5.1
       data-uri-to-buffer:
         specifier: ^2.0.0
         version: 2.0.2
@@ -435,9 +395,24 @@ importers:
       imagemin-optipng:
         specifier: ^6.0.0
         version: 6.0.0
+      invariant:
+        specifier: ^2.2.3
+        version: 2.2.4
+      jszip:
+        specifier: ^3.10.1
+        version: 3.10.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       milkdrop-preset-converter-aws:
         specifier: ^0.1.6
         version: 0.1.6
+      music-metadata:
+        specifier: ^11.6.0
+        version: 11.6.0
+      music-metadata-browser:
+        specifier: ^0.6.1
+        version: 0.6.6
       postcss:
         specifier: ^8.4.21
         version: 8.5.6
@@ -447,9 +422,27 @@ importers:
       puppeteer:
         specifier: ^22.2.0
         version: 22.6.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)
+      react:
+        specifier: ^19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
+      react-redux:
+        specifier: ^8.0.5
+        version: 8.1.3(@types/react-dom@18.2.24)(@types/react@18.2.74)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(redux@5.0.1)
+      redux:
+        specifier: ^5.0.0-alpha.0
+        version: 5.0.1
       redux-sentry-middleware:
         specifier: ^0.1.3
         version: 0.1.8
+      redux-thunk:
+        specifier: ^3.1.0
+        version: 3.1.0(redux@5.0.1)
+      reselect:
+        specifier: ^3.0.1
+        version: 3.0.1
       rollup:
         specifier: ^4.18.0
         version: 4.18.0
@@ -462,6 +455,12 @@ importers:
       rollup-plugin-visualizer:
         specifier: ^5.12.0
         version: 5.12.0(rollup@4.18.0)
+      strtok3:
+        specifier: ^10.3.1
+        version: 10.3.1
+      tinyqueue:
+        specifier: ^3.0.0
+        version: 3.0.0
       typescript:
         specifier: ^5.6.2
         version: 5.6.3

@@ -73,8 +73,24 @@
   "devDependencies": {
     "@sentry/browser": "5.9.1",
     "ani-cursor": "workspace:*",
+    "butterchurn": "3.0.0-beta.5",
+    "butterchurn-presets": "3.0.0-beta.4",
+    "classnames": "^2.2.5",
+    "invariant": "^2.2.3",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
     "milkdrop-preset-converter-aws": "^0.1.6",
+    "music-metadata": "^11.6.0",
+    "music-metadata-browser": "^0.6.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-redux": "^8.0.5",
+    "redux": "^5.0.0-alpha.0",
     "redux-sentry-middleware": "^0.1.3",
+    "redux-thunk": "^3.1.0",
+    "reselect": "^3.0.1",
+    "strtok3": "^10.3.1",
+    "tinyqueue": "^3.0.0",
     "winamp-eqf": "workspace:*",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
@@ -108,23 +124,5 @@
   },
   "prettier": {
     "trailingComma": "es5"
-  },
-  "dependencies": {
-    "butterchurn": "3.0.0-beta.5",
-    "butterchurn-presets": "3.0.0-beta.4",
-    "classnames": "^2.2.5",
-    "invariant": "^2.2.3",
-    "jszip": "^3.10.1",
-    "lodash": "^4.17.21",
-    "music-metadata": "^11.6.0",
-    "music-metadata-browser": "^0.6.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-redux": "^8.0.5",
-    "redux": "^5.0.0-alpha.0",
-    "redux-thunk": "^3.1.0",
-    "reselect": "^3.0.1",
-    "strtok3": "^10.3.1",
-    "tinyqueue": "^3.0.0"
   }
 }
