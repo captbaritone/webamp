@@ -5,7 +5,7 @@
 _These changes are not yet published to NPM with an official version number._
 
 :::tip
-If you want access to the changes in this section before they are officially released you can do `npm install webamp@next`.
+If you want access to the changes in this section before they are officially released you can do `npm install webamp@next`, or use it via CDN at `https://unpkg.com/webamp@next`.
 :::
 
 ### Improvements
