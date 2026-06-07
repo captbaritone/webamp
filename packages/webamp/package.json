@@ -4,14 +4,12 @@
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "files": [
     "built",
-    "!built/types/demo",
     "!built/*.html",
     "!built/tsBuilt",
     "!built/dist"
   ],
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.mjs",
-  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "exports": {
     ".": {
       "require": "./built/webamp.bundle.min.js",

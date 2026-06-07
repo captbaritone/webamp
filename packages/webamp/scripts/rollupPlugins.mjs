@@ -34,7 +34,8 @@ export function getPlugins({ minify, outputFile }) {
       compilerOptions: {
         jsx: "react-jsx",
         module: "esnext",
-        declarationDir: "dist/demo-site/declarations",
+        declaration: false,
+        declarationDir: undefined,
         outDir: "./tsBuilt",
       },
     }),
