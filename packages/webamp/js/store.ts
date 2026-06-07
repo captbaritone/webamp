@@ -3,7 +3,7 @@ import {
   applyMiddleware,
   Middleware as ReduxMiddleware,
 } from "redux";
-import thunk from "redux-thunk";
+import { withExtraArgument } from "redux-thunk";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
@@ -44,7 +44,7 @@ export default function createWebampStore(
   };
 
   const middlewares: Middleware[] = [
-    thunk.withExtraArgument(extras),
+    withExtraArgument(extras),
     mediaMiddleware(media),
     emitterMiddleware,
     ...customMiddlewares,

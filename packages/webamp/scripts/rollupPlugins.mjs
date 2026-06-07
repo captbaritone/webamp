@@ -1,8 +1,8 @@
 import typescript from "@rollup/plugin-typescript";
 import json from "@rollup/plugin-json";
+import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
-import commonjs from "@rollup/plugin-commonjs";
 import terser from "@rollup/plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 import replace from "@rollup/plugin-replace";
@@ -51,8 +51,7 @@ export function getPlugins({ minify, outputFile, vite }) {
           inject: false,
           plugins: [atImport, postcssOptimizeDataUriPngs],
         }),
-    // Without this we get: Error: 'default' is not exported by node_modules/react/index.js
-    // because react-redux import react as if it were an es6 module, but it is not.
+    // Required because React still ships as CJS
     commonjs(),
     minify
       ? terser({

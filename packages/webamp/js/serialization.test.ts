@@ -6,7 +6,7 @@ import * as Actions from "./actionCreators";
 import { kebabCase } from "lodash";
 
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import { withExtraArgument } from "redux-thunk";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { AppState, Action } from "./types";
 
@@ -81,7 +81,7 @@ function testSerialization<T>({
 
 function getStore() {
   const extras = {};
-  const enhancer = applyMiddleware(thunk.withExtraArgument(extras));
+  const enhancer = applyMiddleware(withExtraArgument(extras));
   return createStore(reducer, undefined, enhancer);
 }
 
