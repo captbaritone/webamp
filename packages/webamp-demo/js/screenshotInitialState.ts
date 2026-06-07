@@ -1,4 +1,4 @@
-import { PartialState } from "../../js/types";
+import { PartialState } from "../../webamp/js/types";
 
 const defaultTracksState = {
   "0": {

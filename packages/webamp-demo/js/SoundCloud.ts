@@ -1,4 +1,4 @@
-import { Track } from "../../js/types";
+import { Track } from "../../webamp/js/types";
 
 const CLIENT_ID = "T9EbIJ75SnsJK3iX8lOZaDlGIYgQB32G";
 

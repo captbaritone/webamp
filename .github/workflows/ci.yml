@@ -23,7 +23,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build all packages
         run: |
-          npx turbo build build-library
+          npx turbo build
         env:
           NODE_ENV: production
       - name: Lint and type-check

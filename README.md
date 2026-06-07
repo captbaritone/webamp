@@ -6,7 +6,7 @@
 A reimplementation of Winamp in HTML5 and JavaScript with full skin support.
 As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [4]), and [elsewhere](./packages/webamp/docs/press.md).
 
-[![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/packages/webamp/demo/images/preview.png)](https://webamp.org)
+[![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/packages/webamp-demo/images/preview.png)](https://webamp.org)
 
 Check out this [Twitter thread](https://twitter.com/captbaritone/status/961274714013319168) for an illustrated list of features. Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not supported](http://caniuse.com/#feat=audio-api).
 
@@ -19,7 +19,7 @@ Check out this [Twitter thread](https://twitter.com/captbaritone/status/96127471
 Webamp uses a [monorepo](https://en.wikipedia.org/wiki/Monorepo) approach, so in addition to the Webamp NPM module, this repository contains code for a few closely related projects and some pieces of Webamp which are published as standalone modules:
 
 - [`packages/webamp`](https://github.com/captbaritone/webamp/tree/master/packages/webamp): The [Webamp NPM module](https://www.npmjs.com/package/webamp)
-- [`packages/webamp/demo`](https://github.com/captbaritone/webamp/tree/master/packages/webamp/demo): The demo site which lives at [webamp.org](https://webamp.org)
+- [`packages/webamp-demo`](https://github.com/captbaritone/webamp/tree/master/packages/webamp-demo): The demo site which lives at [webamp.org](https://webamp.org)
 - [`packages/webamp-docs`](https://github.com/captbaritone/webamp/tree/master/packages/webamp-docs): The documentation site for Webamp the NPM library which lives at [docs.webamp.org](https://docs.webamp.org)
 - [`packages/ani-cursor`](https://github.com/captbaritone/webamp/tree/master/packages/ani-cursor): An NPM module for rendering animiated `.ani` cursors as CSS animations
 - [`packages/skin-database`](https://github.com/captbaritone/webamp/tree/master/packages/skin-database): The server component of https://skins.webamp.org which also runs our [Twitter bot](https://twitter.com/winampskins), and a Discord bot for our community chat

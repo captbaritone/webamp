@@ -22,5 +22,5 @@ jobs:
       - uses: preactjs/compressed-size-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          build-script: "deploy"
+          build-script: "build"
           pattern: "./packages/webamp/built/*bundle.min.js"

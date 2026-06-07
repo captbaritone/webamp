@@ -1,5 +1,5 @@
-import Webamp from "../../js/webampLazy";
-import { Slider } from "../../js/types";
+import Webamp from "../../webamp/js/webampLazy";
+import { Slider } from "../../webamp/js/types";
 import { batch } from "react-redux";
 
 const BANDS: Slider[] = [

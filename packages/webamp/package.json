@@ -12,11 +12,6 @@
   "types": "built/types/js/webamp.d.ts",
   "browser": "built/webamp.bundle.min.mjs",
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
-  "targets": {
-    "demo-site": {
-      "source": "demo/index.html"
-    }
-  },
   "exports": {
     ".": {
       "require": "./built/webamp.bundle.min.js",
@@ -40,11 +35,8 @@
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
-    "build": "vite build --emptyOutDir",
-    "build-library": "node ./scripts/rollup.mjs",
-    "prepublishOnly": "npm run build-library && npm run type-check",
-    "serve": "vite preview",
-    "start": "vite",
+    "build": "node ./scripts/rollup.mjs",
+    "prepublishOnly": "npm run build && npm run type-check",
     "test": "vitest run",
     "tdd": "vitest",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
@@ -71,7 +63,6 @@
   },
   "homepage": "https://github.com/captbaritone/webamp/",
   "devDependencies": {
-    "@sentry/browser": "5.9.1",
     "ani-cursor": "workspace:*",
     "butterchurn": "3.0.0-beta.5",
     "butterchurn-presets": "3.0.0-beta.4",
@@ -79,14 +70,12 @@
     "invariant": "^2.2.3",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
-    "milkdrop-preset-converter-aws": "^0.1.6",
     "music-metadata": "^11.6.0",
     "music-metadata-browser": "^0.6.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^8.0.5",
     "redux": "^5.0.0-alpha.0",
-    "redux-sentry-middleware": "^0.1.3",
     "redux-thunk": "^3.1.0",
     "reselect": "^3.0.1",
     "strtok3": "^10.3.1",
@@ -119,8 +108,7 @@
     "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-visualizer": "^5.12.0",
-    "typescript": "^5.6.2",
-    "vite": "^5.2.12"
+    "typescript": "^5.6.2"
   },
   "prettier": {
     "trailingComma": "es5"
