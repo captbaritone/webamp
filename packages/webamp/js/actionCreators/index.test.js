@@ -88,7 +88,7 @@ test("setEqBand", () => {
 });
 
 test("setEqToMax", () => {
-  const mockDispatch = jest.fn();
+  const mockDispatch = vi.fn();
   const dispatcher = setEqToMax();
   dispatcher(mockDispatch);
   const expectedCalls = BANDS.map((band) => [
@@ -98,7 +98,7 @@ test("setEqToMax", () => {
 });
 
 test("setEqToMin", () => {
-  const mockDispatch = jest.fn();
+  const mockDispatch = vi.fn();
   const dispatcher = setEqToMin();
   dispatcher(mockDispatch);
   const expectedCalls = BANDS.map((band) => [
@@ -108,7 +108,7 @@ test("setEqToMin", () => {
 });
 
 test("setEqToMid", () => {
-  const mockDispatch = jest.fn();
+  const mockDispatch = vi.fn();
   const dispatcher = setEqToMid();
   dispatcher(mockDispatch);
   const expectedCalls = BANDS.map((band) => [

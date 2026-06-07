@@ -5,12 +5,12 @@ import * as Selectors from "../selectors";
 
 // Actually tests action creators too
 const media = {
-  addEventListener: jest.fn(),
-  setVolume: jest.fn(),
-  setBalance: jest.fn(),
-  setPreamp: jest.fn(),
+  addEventListener: vi.fn(),
+  setVolume: vi.fn(),
+  setBalance: vi.fn(),
+  setPreamp: vi.fn(),
   getAnalyser: () => null,
-  on: jest.fn(),
+  on: vi.fn(),
 };
 
 test("The first tack is picked at random", () => {

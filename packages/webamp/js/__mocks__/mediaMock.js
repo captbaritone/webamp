@@ -1,9 +1,11 @@
+import { vi } from "vitest";
+
 const media = {
-  addEventListener: jest.fn(),
-  setVolume: jest.fn(),
-  setBalance: jest.fn(),
-  setPreamp: jest.fn(),
+  addEventListener: vi.fn(),
+  setVolume: vi.fn(),
+  setBalance: vi.fn(),
+  setPreamp: vi.fn(),
   getAnalyser: () => null,
-  on: jest.fn(),
+  on: vi.fn(),
 };
 export default media;
