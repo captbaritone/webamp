@@ -19,6 +19,7 @@ const PlaylistToggleButton = memo(() => {
       className={classnames({ selected })}
       onClick={handleClick}
       title="Toggle Playlist Editor"
+      requireClicksOriginateLocally={false}
     />
   );
 });
