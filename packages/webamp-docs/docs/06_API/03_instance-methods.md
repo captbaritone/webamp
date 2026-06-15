@@ -243,7 +243,7 @@ A promise is returned which will resolve after the render is complete.
 
 ```ts
 const container = document.getElementById("webamp-container");
-webamp.renderWhenReady(container).then(() => {
+webamp.renderInto(container).then(() => {
   console.log("rendered webamp!");
 });
 ```
