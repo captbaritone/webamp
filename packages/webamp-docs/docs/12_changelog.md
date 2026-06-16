@@ -1,11 +1,19 @@
 # Changelog
 
+<!--
 ## Unreleased
 
 _These changes are not yet published to NPM with an official version number._
 
 :::tip
 If you want access to the changes in this section before they are officially released you can do `npm install webamp@next`, or use it via CDN at `https://unpkg.com/webamp@next`.
+:::
+-->
+
+## 2.3.0
+
+:::info
+This is the current version of Webamp.
 :::
 
 ### Improvements
@@ -19,10 +27,6 @@ If you want access to the changes in this section before they are officially rel
 - Fix bug where marquee dragging would error and not work.
 
 ## 2.2.0
-
-:::info
-This is the current version of Webamp.
-:::
 
 ### Improvements
 

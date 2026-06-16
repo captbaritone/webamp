@@ -6,13 +6,11 @@
   </head>
 
   <body>
-    <div id="app" style="height: 100vh">
-      <!-- Webamp will attempt to center itself within this div -->
+    <div id="app" style="height: 100vh; position: relative">
+      <!-- Webamp will render as a child of this div -->
     </div>
     <script type="module">
-      // The `requireButterchurnPresets` config option is not yet available in a stable release.
-      // for now you need to install a pre-release version of Webamp to use it.
-      import Webamp from "https://unpkg.com/webamp@0.0.0-next-41cfbbb/butterchurn";
+      import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
       const webamp = new Webamp({
         initialTracks: [
           {
@@ -39,7 +37,7 @@
       });
 
       // Returns a promise indicating when it's done loading.
-      webamp.renderWhenReady(document.getElementById("app"));
+      webamp.renderInto(document.getElementById("app"));
     </script>
   </body>
 </html>

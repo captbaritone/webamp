@@ -17,6 +17,6 @@
     "butterchurn-presets": "3.0.0-beta.4",
     "jszip": "^3.10.1",
     "music-metadata": "^11.6.0",
-    "webamp": "^2.2.0"
+    "webamp": "^2.3.0"
   }
 }

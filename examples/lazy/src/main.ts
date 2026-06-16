@@ -54,4 +54,4 @@ const webamp = new Webamp({
   },
 });
 
-webamp.renderWhenReady(document.getElementById("app")!);
+webamp.renderInto(document.getElementById("app")!);

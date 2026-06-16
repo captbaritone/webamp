@@ -239,7 +239,7 @@ Webamp will wait until it has fetched the skin and fully parsed it, and then ren
 
 A promise is returned which will resolve after the render is complete.
 
-**Since** [Unreleased](../12_changelog.md#unreleased)
+**Since** [v2.3.0](../12_changelog.md#230)
 
 ```ts
 const container = document.getElementById("webamp-container");

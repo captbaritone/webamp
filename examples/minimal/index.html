@@ -6,8 +6,8 @@
   </head>
 
   <body>
-    <div id="app" style="height: 100vh">
-      <!-- Webamp will attempt to center itself within this div -->
+    <div id="app" style="height: 100vh; position: relative">
+      <!-- Webamp will render as a child of this div -->
     </div>
     <script type="module">
       import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
@@ -35,7 +35,7 @@
         ],
       });
 
-      webamp.renderWhenReady(document.getElementById("app"));
+      webamp.renderInto(document.getElementById("app"));
     </script>
   </body>
 </html>

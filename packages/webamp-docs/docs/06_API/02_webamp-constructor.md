@@ -257,7 +257,7 @@ const webamp = new Webamp({
 
 ### `requireButterchurnPresets?: () => Promise<Preset[]>`
 
-**Since** [unreleased](../12_changelog.md#unreleased)
+**Since** [v2.3.0](../12_changelog.md#230)
 
 Milkdrop (Butterchurn) presets to be used. If not specified, the default presets
 included in the bundle will be used.
