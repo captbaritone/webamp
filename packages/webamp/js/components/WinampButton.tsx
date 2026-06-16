@@ -20,7 +20,7 @@ type Props = DetailedHTMLPropsAndMore;
 /**
  * Renders a `div` with an `.winamp-active` class if the element is being clicked/tapped.
  *
- * For now this mimicks the behavior of `:active`, but in the future we will use
+ * For now this mimics the behavior of `:active`, but in the future we will use
  * this component to mimic Winamp's behavior, which is quite different than
  * `:active`.
  *
@@ -35,6 +35,7 @@ type Props = DetailedHTMLPropsAndMore;
 export default function WinampButton({
   requireClicksOriginateLocally = true,
   onPointerDown: originalOnPointerDown,
+  onClick: originalOnClick,
   className,
   ...htmlProps
 }: Props): JSX.Element {
@@ -87,6 +88,10 @@ export default function WinampButton({
     }
   };
 
+  const onPointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+    setActive(false);
+  };
+
   return (
     <div
       {...htmlProps}
@@ -94,6 +99,25 @@ export default function WinampButton({
       onPointerDown={onPointerDown}
       onPointerEnter={
         requireClicksOriginateLocally ? undefined : onPointerEnter
+      }
+      onPointerUp={(e) => {
+        if (originalOnClick != null) {
+          originalOnClick(e);
+        }
+        if (htmlProps.onPointerUp != null) {
+          htmlProps.onPointerUp(e);
+        }
+      }}
+      onMouseUp={(e) => {
+        if (originalOnClick != null) {
+          originalOnClick(e);
+        }
+        if (htmlProps.onMouseUp != null) {
+          htmlProps.onMouseUp(e);
+        }
+      }}
+      onPointerLeave={
+        requireClicksOriginateLocally ? undefined : onPointerLeave
       }
     />
   );
