@@ -48,7 +48,7 @@ export interface InjectableDependencies {
 }
 
 class Webamp {
-  static VERSION = "2.3.0";
+  static VERSION = "2.3.1";
   _actionEmitter: Emitter;
   _root: ReactDOM.Root | null;
   _disposable: Disposable;
