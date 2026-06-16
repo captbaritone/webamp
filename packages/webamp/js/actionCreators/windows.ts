@@ -112,20 +112,26 @@ export function centerWindowsInContainer(
     if (!Selectors.getPositionsAreRelative(getState())) {
       return;
     }
-    const { left, top } = contained
-      ? { left: 0, top: 0 }
-      : container.getBoundingClientRect();
+    let left = 0;
+    let top = 0;
+    if (!contained) {
+      const rect = container.getBoundingClientRect();
+      left = rect.left + window.scrollX;
+      top = rect.top + window.scrollY;
+    }
     const { scrollWidth: width, scrollHeight: height } = container;
     dispatch(centerWindows({ left, top, width, height }));
   };
 }
 
-export function centerWindowsInView(parentDomNode?: HTMLElement): Thunk {
-  const { width, height } =
-    parentDomNode === document.body || !parentDomNode
-      ? { width: window.innerWidth, height: window.innerHeight }
-      : Utils.getElementSize(parentDomNode);
-  return centerWindows({ left: 0, top: 0, width, height });
+export function centerWindowsInView(parentDomNode: HTMLElement): Thunk {
+  const isBody = parentDomNode === document.body;
+  const { width, height } = isBody
+    ? { width: window.innerWidth, height: window.innerHeight }
+    : Utils.getElementSize(parentDomNode);
+  const left = isBody ? window.scrollX : 0;
+  const top = isBody ? window.scrollY : 0;
+  return centerWindows({ left, top, width, height });
 }
 
 type Box = {
@@ -155,12 +161,9 @@ export function centerWindows({ left, top, width, height }: Box): Thunk {
     const boxHeight = bounding.bottom - bounding.top;
     const boxWidth = bounding.right - bounding.left;
 
-    const offsetLeft = left + window.scrollX;
-    const offsetTop = top + window.scrollY;
-
     const move = {
-      x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
-      y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2),
+      x: Math.ceil(left - bounding.left + (width - boxWidth) / 2),
+      y: Math.ceil(top - bounding.top + (height - boxHeight) / 2),
     };
 
     const newPositions = windowsInfo.reduce(
@@ -180,7 +183,7 @@ export function browserWindowSizeChanged(
     height: number;
     width: number;
   },
-  parentDomNode?: HTMLElement
+  parentDomNode: HTMLElement
 ): Thunk {
   return (dispatch: Dispatch) => {
     dispatch({ type: "BROWSER_WINDOW_SIZE_CHANGED", ...size });
@@ -244,14 +247,14 @@ export function setWindowLayout(layout?: WindowLayout): Thunk {
   };
 }
 
-export function ensureWindowsAreOnScreen(parentDomNode?: HTMLElement): Thunk {
+export function ensureWindowsAreOnScreen(parentDomNode: HTMLElement): Thunk {
   return (dispatch, getState) => {
     const state = getState();
 
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
     const { height, width } =
-      parentDomNode === document.body || !parentDomNode
+      parentDomNode === document.body
         ? Utils.getWindowSize()
         : Utils.getElementSize(parentDomNode);
     const bounding = Utils.calculateBoundingBox(
