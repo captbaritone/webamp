@@ -1,6 +1,5 @@
 import { Action, PlayerMediaStatus, TimeMode } from "../types";
 import { TIME_MODE, PLAYER_MEDIA_STATUS } from "../constants";
-import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface MediaState {
   timeMode: TimeMode; // TODO: Convert this to an enum
@@ -66,16 +65,9 @@ const media = (
       return { ...state, repeat: !state.repeat };
     case "TOGGLE_SHUFFLE":
       return { ...state, shuffle: !state.shuffle };
-    case "LOAD_SERIALIZED_STATE":
-      return { ...state, ...(action as any).serializedState.media };
     default:
       return state;
   }
 };
-
-export function getSerializedState(state: MediaState): MediaSerializedStateV1 {
-  const { volume, balance, shuffle, repeat } = state;
-  return { volume, balance, shuffle, repeat };
-}
 
 export default media;

@@ -141,9 +141,6 @@ export function centerWindows({ left, top, width, height }: Box): Thunk {
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
 
-    const offsetLeft = left + window.scrollX;
-    const offsetTop = top + window.scrollY;
-
     // A layout has been supplied. We will compute the bounding box and
     // center the given layout.
     const bounding = Utils.calculateBoundingBox(
@@ -157,6 +154,9 @@ export function centerWindows({ left, top, width, height }: Box): Thunk {
 
     const boxHeight = bounding.bottom - bounding.top;
     const boxWidth = bounding.right - bounding.left;
+
+    const offsetLeft = left + window.scrollX;
+    const offsetTop = top + window.scrollY;
 
     const move = {
       x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),

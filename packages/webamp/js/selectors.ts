@@ -33,12 +33,8 @@ import {
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
 import * as fromDisplay from "./reducers/display";
-import * as fromEqualizer from "./reducers/equalizer";
-import * as fromMedia from "./reducers/media";
-import * as fromWindows from "./reducers/windows";
 import * as MarqueeUtils from "./marqueeUtils";
 import { generateGraph } from "./resizeUtils";
-import { SerializedStateV1 } from "./serializedStates/v1Types";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
 
@@ -593,16 +589,6 @@ export const getChannels = createSelector(
 export const getTimeElapsed = (state: AppState): number => {
   return state.media.timeElapsed;
 };
-
-export function getSerlializedState(state: AppState): SerializedStateV1 {
-  return {
-    version: 1,
-    media: fromMedia.getSerializedState(state.media),
-    equalizer: fromEqualizer.getSerializedState(state.equalizer),
-    display: fromDisplay.getSerializedState(state.display),
-    windows: fromWindows.getSerializedState(state.windows),
-  };
-}
 
 export function getEqualizerEnabled(state: AppState): boolean {
   return state.equalizer.on;

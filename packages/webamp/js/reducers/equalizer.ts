@@ -1,5 +1,4 @@
 import { Slider, Action } from "./../types";
-import { EqualizerSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface EqualizerState {
   on: boolean;
@@ -42,17 +41,9 @@ const equalizer = (
       return { ...state, on: false };
     case "SET_EQ_AUTO":
       return { ...state, auto: (action as any).value };
-    case "LOAD_SERIALIZED_STATE":
-      return (action as any).serializedState.equalizer || state;
     default:
       return state;
   }
 };
-
-export function getSerializedState(
-  state: EqualizerState
-): EqualizerSerializedStateV1 {
-  return state;
-}
 
 export default equalizer;

@@ -30,7 +30,6 @@ import * as FileUtils from "./fileUtils";
 
 import Emitter from "./emitter";
 
-import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
 import enableMediaSession from "./mediaSession.js";
 
@@ -552,14 +551,6 @@ class Webamp {
     this.media.dispose();
     this._actionEmitter.dispose();
     this._disposable.dispose();
-  }
-
-  __loadSerializedState(serializedState: SerializedStateV1): void {
-    this.store.dispatch(Actions.loadSerializedState(serializedState));
-  }
-
-  __getSerializedState() {
-    return Selectors.getSerlializedState(this.store.getState());
   }
 
   __onStateChange(cb: () => void): () => void {

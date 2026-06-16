@@ -1,8 +1,7 @@
 import { WINDOWS } from "../constants";
 import { Thunk, Action, Slider } from "../types";
-import { SerializedStateV1 } from "../serializedStates/v1Types";
 import * as Selectors from "../selectors";
-import { ensureWindowsAreOnScreen, setFocusedWindow } from "./windows";
+import { setFocusedWindow } from "./windows";
 
 export {
   toggleDoubleSizeMode,
@@ -144,16 +143,6 @@ export function unsetFocus(): Action {
 
 export function focusBand(band: Slider): Action {
   return { type: "SET_BAND_FOCUS", input: "eq", bandFocused: band };
-}
-
-export function loadSerializedState(
-  // In the future this type should be the union of all versioned types.
-  serializedState: SerializedStateV1
-): Thunk {
-  return (dispatch) => {
-    dispatch({ type: "LOAD_SERIALIZED_STATE", serializedState });
-    dispatch(ensureWindowsAreOnScreen());
-  };
 }
 
 export function loadDefaultSkin(): Action {

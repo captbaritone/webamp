@@ -2,7 +2,6 @@ import { IMedia } from "./media";
 import { next as nextTrack } from "./actionCreators";
 import * as Selectors from "./selectors";
 import { MiddlewareStore, Action, Dispatch } from "./types";
-import { objectForEach } from "./utils";
 
 export default (media: IMedia) => (store: MiddlewareStore) => {
   const {
@@ -105,26 +104,6 @@ export default (media: IMedia) => (store: MiddlewareStore) => {
       case "SET_EQ_ON":
         media.enableEq();
         break;
-      case "LOAD_SERIALIZED_STATE": {
-        // Set ALL THE THINGS!
-        if (Selectors.getEqualizerEnabled(state)) {
-          media.enableEq();
-        } else {
-          media.disableEq();
-        }
-        media.setVolume(Selectors.getVolume(state));
-        media.setBalance(Selectors.getBalance(state));
-        objectForEach(state.equalizer.sliders, (value, slider) => {
-          if (slider === "preamp") {
-            media.setPreamp(value);
-          } else {
-            // @ts-ignore I don't know how to teach TypeScript about objects
-            // that use Slider as keys
-            media.setEqBand(slider, value);
-          }
-        });
-        break;
-      }
     }
     return returnValue;
   };

@@ -1,7 +1,6 @@
 import { Action, WindowId, Box, Point } from "../types";
 import { WINDOWS } from "../constants";
 import * as Utils from "../utils";
-import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
 export type WindowPositions = {
   [windowId: string]: Point;
@@ -203,24 +202,6 @@ const windows = (
           size: [0, 0] as [number, number],
         })),
       };
-    case "LOAD_SERIALIZED_STATE": {
-      const { genWindows, focused, positionsAreRelative } = (action as any)
-        .serializedState.windows;
-      return {
-        ...state,
-        positionsAreRelative,
-        genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
-          const serializedW = genWindows[windowId];
-          if (serializedW == null) {
-            return w;
-          }
-          // Pull out `hidden` since it's been removed from our state.
-          const { hidden: _hidden, ...rest } = serializedW;
-          return { ...w, ...rest };
-        }),
-        focused,
-      };
-    }
     case "BROWSER_WINDOW_SIZE_CHANGED":
       return {
         ...state,
@@ -234,23 +215,5 @@ const windows = (
       return state;
   }
 };
-
-export function getSerializedState(
-  state: WindowsState
-): WindowsSerializedStateV1 {
-  return {
-    positionsAreRelative: state.positionsAreRelative,
-    genWindows: Utils.objectMap(state.genWindows, (w) => {
-      return {
-        size: w.size,
-        open: w.open,
-        hidden: false, // Not used any more
-        shade: w.shade || false,
-        position: w.position,
-      };
-    }),
-    focused: state.focused,
-  };
-}
 
 export default windows;

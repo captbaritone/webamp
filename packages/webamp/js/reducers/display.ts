@@ -11,7 +11,6 @@ import {
 import * as Utils from "../utils";
 import { createSelector } from "reselect";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
-import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface DisplayState {
   visualizerStyle: number;
@@ -153,59 +152,11 @@ const display = (
       return { ...state, zIndex: (action as any).zIndex };
     case "SET_DUMMY_VIZ_DATA":
       return { ...state, dummyVizData: (action as any).data };
-    case "LOAD_SERIALIZED_STATE": {
-      const { skinCursors, ...rest } = (action as any).serializedState.display;
-      const upgrade = (url: string) => ({ type: "cur", url } as const);
-      const newSkinCursors =
-        skinCursors == null ? null : Utils.objectMap(skinCursors, upgrade);
-      return { ...state, skinCursors: newSkinCursors, ...rest };
-    }
     default:
       return state;
   }
 };
 export default display;
-
-export const getSerializedState = (
-  state: DisplayState
-): DisplaySerializedStateV1 => {
-  // My kingdom for a type-safe `_.pick`.
-  const {
-    visualizerStyle,
-    doubled,
-    llama,
-    marqueeStep,
-    skinImages,
-    skinCursors,
-    skinRegion,
-    skinGenLetterWidths,
-    skinColors,
-    skinPlaylistStyle,
-  } = state;
-
-  let newCursors: { [cursor: string]: string } | null = null;
-  if (skinCursors != null) {
-    // @ts-ignore Typescript does not like that we can have `undefined` as
-    // values here. Since this is going to get serialized to JSON (which will
-    // drop undefined) it's fine.
-    // This code is geting removed soon anyway.
-    newCursors = Utils.objectMap(skinCursors, (cursor) => {
-      return cursor.type === "cur" ? cursor.url : undefined;
-    });
-  }
-  return {
-    visualizerStyle,
-    doubled,
-    llama,
-    marqueeStep,
-    skinImages,
-    skinCursors: newCursors,
-    skinRegion,
-    skinGenLetterWidths,
-    skinColors,
-    skinPlaylistStyle,
-  };
-};
 
 export const getVisualizerStyle = createSelector(
   (state: DisplayState) => state.visualizerStyle,

@@ -314,13 +314,6 @@ export function uniqueId() {
   return counter++;
 }
 
-export function objectForEach<V>(
-  obj: { [key: string]: V },
-  cb: (value: V, key: string) => void
-): void {
-  Object.keys(obj).forEach((key) => cb(obj[key], key));
-}
-
 export function objectMap<V, N>(
   obj: { [key: string]: V },
   cb: (value: V, key: string) => N

@@ -14,7 +14,6 @@ import {
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 import { MilkdropState } from "./reducers/milkdrop";
-import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
 import { IAudioMetadata, IOptions } from "music-metadata-browser";
 import { Store as ReduxStore } from "redux";
@@ -503,10 +502,6 @@ export type Action =
   | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
-    }
-  | {
-      type: "LOAD_SERIALIZED_STATE";
-      serializedState: SerializedStateV1;
     }
   | { type: "RESET_WINDOW_SIZES" }
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
