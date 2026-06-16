@@ -10,11 +10,17 @@ If you want access to the changes in this section before they are officially rel
 :::
 -->
 
-## 2.3.0
+## 2.3.1
 
 :::info
 This is the current version of Webamp.
 :::
+
+### Bug Fixes
+
+- Fix `Webamp.VERSION` reporting `"2.2.0"` instead of the correct version.
+
+## 2.3.0
 
 ### Improvements
 
