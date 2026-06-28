@@ -15,6 +15,7 @@ async function reviewSkin(message: Message): Promise<void> {
     md5,
     title: (filename) => `Review: ${filename}`,
     dest: message.channel,
+    source: "bot:!review",
   });
 }
 

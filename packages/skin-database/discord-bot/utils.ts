@@ -29,18 +29,21 @@ export async function postSkin({
   md5,
   title: _title,
   dest,
+  source = "unknown",
 }: {
   md5: string;
   title?: (filename: string | null) => string;
   dest: TextChannel | DMChannel;
+  source?: string;
 }) {
   const ctx = new UserContext();
 
-  console.log("postSkin...");
+  const destName = "name" in dest ? dest.name : "DM";
+  logger.info("postSkin: entry", { md5, source, dest: destName });
   const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
-    logger.warn("Could not find skin for md5", { md5, alert: true });
+    logger.warn("Could not find skin for md5", { md5, alert: true, source });
     return;
   }
   const readmeText = await skin.getReadme();
@@ -108,14 +111,62 @@ export async function postSkin({
 
   // @ts-ignore WAT?
   const msg = await dest.send(embed);
+  const msgId = Array.isArray(msg) ? msg.map((m) => m.id).join(",") : msg.id;
+  logger.info("postSkin: sent message", { md5, source, msgId, isArray: Array.isArray(msg) });
   if (tweetStatus !== "UNREVIEWED") {
+    logger.info("postSkin: skipping reactions, not UNREVIEWED", { md5, source, msgId, tweetStatus });
     return;
   }
 
   // Don't await
-  Promise.all([msg.react("👍"), msg.react("👎"), msg.react("🔞")]);
+  Promise.all([msg.react("👍"), msg.react("👎"), msg.react("🔞")])
+    .then(() => logger.info("postSkin: bot reactions added", { md5, source, msgId }))
+    .catch((err) =>
+      logger.error("postSkin: bot reactions failed", {
+        md5,
+        source,
+        msgId,
+        err: err?.message,
+        stack: err?.stack,
+      })
+    );
+
+  const loggingFilter = async (
+    reaction: MessageReaction,
+    user: User
+  ): Promise<boolean> => {
+    let passes = false;
+    let err: string | undefined;
+    try {
+      passes = await filter(reaction);
+    } catch (e: any) {
+      err = e?.message ?? String(e);
+    }
+    logger.info("postSkin: reaction observed", {
+      md5,
+      source,
+      msgId,
+      emoji: reaction.emoji.name,
+      userId: user?.id,
+      username: user?.username,
+      userIsBot: user?.bot,
+      passes,
+      filterErr: err,
+    });
+    return passes;
+  };
+
+  logger.info("postSkin: awaiting reactions", { md5, source, msgId });
   // TODO: Timeout at some point
-  await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
+  await msg
+    .awaitReactions(loggingFilter, { max: 1 })
+    .then(async (collected) => {
+    logger.info("postSkin: awaitReactions resolved", {
+      md5,
+      source,
+      msgId,
+      collectedSize: collected.size,
+    });
     const vote = collected.first();
     if (vote == null) {
       throw new Error("Did not expect vote to be empty");

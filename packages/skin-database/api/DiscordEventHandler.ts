@@ -4,15 +4,57 @@ import * as Config from "../config";
 import SkinModel from "../data/SkinModel";
 import * as DiscordUtils from "../discord-bot/utils";
 import UserContext from "../data/UserContext";
+import logger from "../logger";
 
 export default class DiscordEventHandler {
   _clientPromise: Promise<Discord.Client>;
 
   constructor() {
+    logger.info("DiscordEventHandler: constructing");
     const _client = new Discord.Client();
+    _client.on("ready", () => {
+      logger.info("DiscordEventHandler: client ready", {
+        user: _client.user?.tag,
+      });
+    });
+    _client.on("error", (err: any) => {
+      logger.error("DiscordEventHandler: client error", {
+        err: err?.message,
+        stack: err?.stack,
+      });
+    });
+    _client.on("disconnect", (event: any) => {
+      logger.warn("DiscordEventHandler: client disconnect", { event });
+    });
+    _client.on("reconnecting", () => {
+      logger.warn("DiscordEventHandler: client reconnecting");
+    });
+    _client.on("shardError", (err: any) => {
+      logger.error("DiscordEventHandler: shard error", {
+        err: err?.message,
+        stack: err?.stack,
+      });
+    });
+    _client.on("messageReactionAdd", (reaction: any, user: any) => {
+      logger.info("DiscordEventHandler: messageReactionAdd", {
+        emoji: reaction?.emoji?.name,
+        msgId: reaction?.message?.id,
+        channelId: reaction?.message?.channel?.id,
+        userId: user?.id,
+        username: user?.username,
+        userIsBot: user?.bot,
+      });
+    });
     this._clientPromise = _client
       .login(Config.discordToken)
-      .then(() => _client);
+      .then(() => _client)
+      .catch((err) => {
+        logger.error("DiscordEventHandler: login failed", {
+          err: err?.message,
+          stack: err?.stack,
+        });
+        throw err;
+      });
   }
 
   async dispose() {
@@ -34,6 +76,24 @@ export default class DiscordEventHandler {
   }
 
   async handle(action: ApiAction): Promise<void> {
+    const actionMd5 = "md5" in action ? action.md5 : undefined;
+    logger.info("DiscordEventHandler.handle: entry", {
+      type: action.type,
+      md5: actionMd5,
+    });
+    try {
+      await this._handle(action);
+    } catch (err: any) {
+      logger.error("DiscordEventHandler.handle: failed", {
+        type: action.type,
+        md5: actionMd5,
+        err: err?.message,
+        stack: err?.stack,
+      });
+    }
+  }
+
+  private async _handle(action: ApiAction): Promise<void> {
     const ctx = new UserContext();
     switch (action.type) {
       case "REVIEW_REQUESTED":
@@ -159,19 +219,31 @@ export default class DiscordEventHandler {
   }
 
   private async requestReview(md5: string, ctx: UserContext) {
+    logger.info("requestReview: entry", { md5 });
     const skin = await SkinModel.fromMd5(ctx, md5);
     if (skin == null) {
+      logger.warn("requestReview: skin not found", { md5 });
       return;
     }
     const dest = await this.getChannel(Config.NSFW_SKIN_CHANNEL_ID);
     const tweetStatus = await skin.getTweetStatus();
+    logger.info("requestReview: resolved", {
+      md5,
+      tweetStatus,
+      channelId: Config.NSFW_SKIN_CHANNEL_ID,
+    });
     if (tweetStatus === "UNREVIEWED") {
       await DiscordUtils.postSkin({
         md5,
         title: (filename) => `Review: ${filename}`,
         dest,
+        source: "graphql:request_nsfw_review_for_skin",
       });
     } else {
+      logger.info("requestReview: skipping post, already reviewed", {
+        md5,
+        tweetStatus,
+      });
       // Too much nosie
       // await DiscordUtils.sendAlreadyReviewed({ md5, dest });
     }
