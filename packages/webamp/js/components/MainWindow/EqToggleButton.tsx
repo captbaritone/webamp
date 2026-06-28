@@ -19,6 +19,7 @@ const EqToggleButton = memo(() => {
       className={classnames({ selected: windowOpen })}
       onClick={handleClick}
       title="Toggle Graphical Equalizer"
+      requireClicksOriginateLocally={false}
     />
   );
 });
