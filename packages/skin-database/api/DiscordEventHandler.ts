@@ -10,7 +10,6 @@ export default class DiscordEventHandler {
   _clientPromise: Promise<Discord.Client>;
 
   constructor() {
-    logger.info("DiscordEventHandler: constructing");
     const _client = new Discord.Client();
     _client.on("ready", () => {
       logger.info("DiscordEventHandler: client ready", {
@@ -33,16 +32,6 @@ export default class DiscordEventHandler {
       logger.error("DiscordEventHandler: shard error", {
         err: err?.message,
         stack: err?.stack,
-      });
-    });
-    _client.on("messageReactionAdd", (reaction: any, user: any) => {
-      logger.info("DiscordEventHandler: messageReactionAdd", {
-        emoji: reaction?.emoji?.name,
-        msgId: reaction?.message?.id,
-        channelId: reaction?.message?.channel?.id,
-        userId: user?.id,
-        username: user?.username,
-        userIsBot: user?.bot,
       });
     });
     this._clientPromise = _client
@@ -76,14 +65,10 @@ export default class DiscordEventHandler {
   }
 
   async handle(action: ApiAction): Promise<void> {
-    const actionMd5 = "md5" in action ? action.md5 : undefined;
-    logger.info("DiscordEventHandler.handle: entry", {
-      type: action.type,
-      md5: actionMd5,
-    });
     try {
       await this._handle(action);
     } catch (err: any) {
+      const actionMd5 = "md5" in action ? action.md5 : undefined;
       logger.error("DiscordEventHandler.handle: failed", {
         type: action.type,
         md5: actionMd5,
@@ -219,7 +204,6 @@ export default class DiscordEventHandler {
   }
 
   private async requestReview(md5: string, ctx: UserContext) {
-    logger.info("requestReview: entry", { md5 });
     const skin = await SkinModel.fromMd5(ctx, md5);
     if (skin == null) {
       logger.warn("requestReview: skin not found", { md5 });
@@ -227,11 +211,6 @@ export default class DiscordEventHandler {
     }
     const dest = await this.getChannel(Config.NSFW_SKIN_CHANNEL_ID);
     const tweetStatus = await skin.getTweetStatus();
-    logger.info("requestReview: resolved", {
-      md5,
-      tweetStatus,
-      channelId: Config.NSFW_SKIN_CHANNEL_ID,
-    });
     if (tweetStatus === "UNREVIEWED") {
       await DiscordUtils.postSkin({
         md5,
@@ -240,10 +219,6 @@ export default class DiscordEventHandler {
         source: "graphql:request_nsfw_review_for_skin",
       });
     } else {
-      logger.info("requestReview: skipping post, already reviewed", {
-        md5,
-        tweetStatus,
-      });
       // Too much nosie
       // await DiscordUtils.sendAlreadyReviewed({ md5, dest });
     }
