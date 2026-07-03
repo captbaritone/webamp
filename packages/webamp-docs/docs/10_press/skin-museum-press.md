@@ -27,6 +27,7 @@ For press mentions of the core Webamp project, see the [Webamp Press Page](./web
   - [r/internetisbeautiful](https://www.reddit.com/r/InternetIsBeautiful/comments/ilyjf1/infinite_scroll_through_65k_winamp_skins_with/) (4.7k upvotes)
   - [r/tech](https://www.reddit.com/r/tech/comments/imv7bp/winamp_skin_museum_internet_history_around_2000/) (2.7k upvotes)
 - [Hacker News](https://news.ycombinator.com/item?id=24373699) (690 points)
+- [Hacker News](https://news.ycombinator.com/item?id=48760840) (104 points)
 - [Imgur](https://imgur.com/gallery/wuq9BRv) (70k views)
 - [Kottke.org](https://kottke.org/quick-links/2020-09)
 - [Twisted Sifter](https://twistedsifter.com/2020/09/the-shirk-report-volume-595/)
