@@ -46,6 +46,7 @@ An incomplete list of websites using Webamp:
 - [winxp.now.sh](https://winxp.now.sh/) - A Windows XP clone in JavaScript with React ([GitHub](https://github.com/ShizukuIchi))
 - [Try Andy's Desk](https://desk.glitchy.website/) - A quirky Windows themed desktop experience.
 - [www.dkdomino.zone](https://www.dkdomino.zone/album.html) - Someone's personal music player
+- [Bamp](https://www.bamp.skin) - A web app for a tool that converts winamp skins to/from a format that streamlines skin design. ([GitHub](https://github.com/dp-mason/bamp))
 
 ## Thanks
 
