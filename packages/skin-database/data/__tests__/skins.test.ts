@@ -169,6 +169,19 @@ describe("seeded", () => {
     );
     expect(hasZelda).toBe(false);
   });
+  test("getMuseumPage skips orphan museum_sort_order rows", async () => {
+    // Simulate the prod state where a skin was deleted from the `skins` table
+    // but its entry in `museum_sort_order` was left behind.
+    await knex("museum_sort_order").insert({
+      skin_md5: "orphan_md5_does_not_exist",
+    });
+
+    const page = await Skins.getMuseumPage({ offset: 0, first: 100 });
+    const hasOrphan = page.some(
+      (skin) => skin.md5 === "orphan_md5_does_not_exist" || skin.md5 == null
+    );
+    expect(hasOrphan).toBe(false);
+  });
   test("getStats", async () => {
     expect(await Skins.getStats()).toMatchInlineSnapshot(`
       {

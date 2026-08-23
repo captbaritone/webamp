@@ -200,6 +200,48 @@ describe("Query.skins", () => {
       }
     `);
   });
+  test("sort: MUSEUM count reflects paginable rows only", async () => {
+    // A skin in museum_sort_order whose skins row was deleted should not be
+    // counted in `count`, since it can't be paginated either.
+    await knex("museum_sort_order").insert({
+      skin_md5: "orphan_md5_does_not_exist",
+    });
+    const body = await graphQLRequest(
+      gql`
+        query {
+          skins(sort: MUSEUM) {
+            count
+            nodes {
+              ... on ClassicSkin {
+                md5
+              }
+            }
+          }
+        }
+      `
+    );
+    expect(body.errors).toBeUndefined();
+    expect(body.data.skins.count).toBe(body.data.skins.nodes.length);
+  });
+  test("filter + sort: MUSEUM returns a helpful error message", async () => {
+    const body = await graphQLRequest(
+      gql`
+        query {
+          skins(sort: MUSEUM, filter: APPROVED, first: 2) {
+            count
+            nodes {
+              ... on ClassicSkin {
+                md5
+              }
+            }
+          }
+        }
+      `
+    );
+    expect(body.errors?.[0]?.message).toMatchInlineSnapshot(
+      `"Combining \`sort: MUSEUM\` with \`filter\` is not supported."`
+    );
+  });
 });
 
 // TODO: Upgrade Grats

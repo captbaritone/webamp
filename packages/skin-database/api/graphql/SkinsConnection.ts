@@ -6,20 +6,21 @@ import LRU from "lru-cache";
 import { Int } from "grats";
 import { ISkin } from "./resolvers/CommonSkinResolver";
 import UserContext from "../../data/UserContext.js";
+import { GraphQLError } from "graphql";
 
 const options = {
   max: 100,
   maxAge: 1000 * 60 * 60,
 };
-let skinCount: number | null = null;
+let museumPageCount: number | null = null;
 const cache = new LRU<string, Skins.MuseumPage>(options);
 
 // A supery hacky global cache for common requests.
 async function getMuseumSkinCountFromCache() {
-  if (skinCount == null) {
-    skinCount = await Skins.getClassicSkinCount();
+  if (museumPageCount == null) {
+    museumPageCount = await Skins.getMuseumPageCount();
   }
-  return skinCount;
+  return museumPageCount;
 }
 
 // A supery hacky global cache for common requests.
@@ -105,8 +106,8 @@ export default class SkinsConnection {
   async nodes(ctx: UserContext): Promise<Array<ISkin | null>> {
     if (this._sort === "MUSEUM") {
       if (this._filter) {
-        throw new Error(
-          "We don't support combining sorting and filtering at the same time."
+        throw new GraphQLError(
+          "Combining `sort: MUSEUM` with `filter` is not supported."
         );
       }
       const items = await getSkinMuseumPageFromCache(this._first, this._offset);

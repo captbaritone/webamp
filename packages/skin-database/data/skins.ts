@@ -115,6 +115,19 @@ export async function getClassicSkinCount(): Promise<number> {
   return Number(count);
 }
 
+// The number of skins actually paginable via getMuseumPage: entries in
+// museum_sort_order that still have a matching skins row (see getMuseumPage's
+// INNER JOIN).
+export async function getMuseumPageCount(): Promise<number> {
+  const rows = await knex.raw(
+    `
+SELECT COUNT(*) as count
+FROM museum_sort_order
+INNER JOIN skins ON skins.md5 = museum_sort_order.skin_md5`
+  );
+  return Number(rows[0]?.count ?? 0);
+}
+
 export async function markAsTweeted(
   md5: string,
   tweetId: string
@@ -781,7 +794,7 @@ SELECT
   (skins.md5 IN (SELECT skin_reviews.skin_md5 from skin_reviews WHERE skin_reviews.review = 'NSFW')) as nsfw
 FROM
   museum_sort_order
-LEFT JOIN skins ON skins.md5 = museum_sort_order.skin_md5
+INNER JOIN skins ON skins.md5 = museum_sort_order.skin_md5
 LIMIT ? OFFSET ?`,
     [first, offset]
   );
