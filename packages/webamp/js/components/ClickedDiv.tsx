@@ -26,6 +26,7 @@ function ClickedDiv(props: Props) {
       {...props}
       className={classnames(props.className, { clicked })}
       onPointerDown={handlePointerDown}
+      requireClicksOriginateLocally={false}
     />
   );
 }

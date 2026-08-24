@@ -26,6 +26,7 @@ const Repeat = memo(() => {
         className={classnames({ selected: repeat })}
         onClick={handleClick}
         title="Toggle Repeat"
+        requireClicksOriginateLocally={false}
       />
     </ContextMenuWraper>
   );
