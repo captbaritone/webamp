@@ -323,6 +323,9 @@ importers:
 
   packages/webamp:
     devDependencies:
+      '@rollup/plugin-alias':
+        specifier: ^6.0.0
+        version: 6.0.0(rollup@4.18.0)
       '@rollup/plugin-commonjs':
         specifier: ^25.0.8
         version: 25.0.8(rollup@4.18.0)
@@ -413,6 +416,9 @@ importers:
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.0(postcss@8.5.6)
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8
       puppeteer:
         specifier: ^22.2.0
         version: 22.6.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)
@@ -464,6 +470,9 @@ importers:
 
   packages/webamp-demo:
     devDependencies:
+      '@preact/compat':
+        specifier: ^18.3.2
+        version: 18.3.2(preact@10.29.8)
       '@sentry/browser':
         specifier: 5.9.1
         version: 5.9.1
@@ -503,6 +512,9 @@ importers:
       music-metadata-browser:
         specifier: ^0.6.1
         version: 0.6.6
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -3235,6 +3247,11 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
+  '@preact/compat@18.3.2':
+    resolution: {integrity: sha512-5vSl55K5yLMvocT7PBKxDOHGgYPjMrKQqqr6roSNjIXcJOtSgDDMjpiCAF3s7klRdmGrN75b/Przmjw8gmlg/w==}
+    peerDependencies:
+      preact: '*'
+
   '@puppeteer/browsers@2.2.0':
     resolution: {integrity: sha512-MC7LxpcBtdfTbzwARXIkqGZ1Osn3nnZJlm+i0+VqHl72t//Xwl9wICrXT8BwtgC6s1xJNHsxOpvzISUqe92+sw==}
     engines: {node: '>=18'}
@@ -3258,6 +3275,15 @@ packages:
   '@rgrove/parse-xml@3.0.0':
     resolution: {integrity: sha512-GFGDywRwGbuGq9yeL8wTjjLOsZ5Ps4O5tQ71eDcAfaZrZeA7Oe8QJzrnmFgplWtnoaBIBaFBB3n5Ht9iU4jLLw==}
     engines: {node: '>=12.0.0'}
+
+  '@rollup/plugin-alias@6.0.0':
+    resolution: {integrity: sha512-tPCzJOtS7uuVZd+xPhoy5W4vThe6KWXNmsFCNktaAh5RTqcLiSfT4huPQIXkgJ6YCOjJHvecOAzQxLFhPxKr+g==}
+    engines: {node: '>=20.19.0'}
+    peerDependencies:
+      rollup: '>=4.0.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/plugin-commonjs@16.0.0':
     resolution: {integrity: sha512-LuNyypCP3msCGVQJ7ki8PqYdpjfEkE/xtFa5DqlF+7IBD0JsfMZ87C58heSwIMint58sAUZbt3ITqOmdQv/dXw==}
@@ -10995,6 +11021,14 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
+  preact@10.29.8:
+    resolution: {integrity: sha512-ej2aVZ+vZ8WO7tvlQWRM9N63A0KzF9q4mWJfDUHgYaIofWY9hu74QdnQrjoPMmZi2/nZ5gN0bJCQF49xQqx09Q==}
+    peerDependencies:
+      preact-render-to-string: '>=5'
+    peerDependenciesMeta:
+      preact-render-to-string:
+        optional: true
+
   prebuild-install@7.1.2:
     resolution: {integrity: sha512-UnNke3IQb6sgarcZIDU3gbMeTp/9SSU1DAIkil7PrqG1vZlBtY5msYccSKSHDqa3hNg436IXK+SNImReuA1wEQ==}
     engines: {node: '>=10'}
@@ -13442,6 +13476,7 @@ packages:
   whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
     engines: {node: '>=12'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -16951,6 +16986,10 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
+  '@preact/compat@18.3.2(preact@10.29.8)':
+    dependencies:
+      preact: 10.29.8
+
   '@puppeteer/browsers@2.2.0':
     dependencies:
       debug: 4.3.4
@@ -16981,6 +17020,10 @@ snapshots:
   '@resvg/resvg-wasm@2.0.0-alpha.4': {}
 
   '@rgrove/parse-xml@3.0.0': {}
+
+  '@rollup/plugin-alias@6.0.0(rollup@4.18.0)':
+    optionalDependencies:
+      rollup: 4.18.0
 
   '@rollup/plugin-commonjs@16.0.0(rollup@2.37.1)':
     dependencies:
@@ -26653,6 +26696,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  preact@10.29.8: {}
 
   prebuild-install@7.1.2:
     dependencies:

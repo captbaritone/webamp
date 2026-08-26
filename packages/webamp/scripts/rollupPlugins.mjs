@@ -5,6 +5,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
+import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
 import postcssOptimizeDataUriPngs from "./postcss-optimize-data-uri-pngs.mjs";
 import atImport from "postcss-import";
@@ -13,6 +14,15 @@ import path from "node:path";
 
 export function getPlugins({ minify, outputFile }) {
   const plugins = [
+    alias({
+      entries: [
+        { find: "react/jsx-runtime", replacement: "preact/jsx-runtime" },
+        { find: "react/jsx-dev-runtime", replacement: "preact/jsx-runtime" },
+        { find: "react-dom/client", replacement: "preact/compat/client" },
+        { find: "react-dom", replacement: "preact/compat" },
+        { find: "react", replacement: "preact/compat" },
+      ],
+    }),
     replace({
       // Ensure we don't use the dev build of React
       values: { "process.env.NODE_ENV": JSON.stringify("production") },
@@ -25,7 +35,7 @@ export function getPlugins({ minify, outputFile }) {
       browser: true,
       preferBuiltins: false,
       // Skip deep resolution for better performance
-      dedupe: ["react", "react-dom"],
+      dedupe: ["preact"],
     }),
     // Needed for music-metadata-browser in the Webamp bundle which depends upon
     // being able to use some polyfillable node APIs
@@ -33,6 +43,7 @@ export function getPlugins({ minify, outputFile }) {
     typescript({
       compilerOptions: {
         jsx: "react-jsx",
+        jsxImportSource: "preact",
         module: "esnext",
         declaration: false,
         declarationDir: undefined,
