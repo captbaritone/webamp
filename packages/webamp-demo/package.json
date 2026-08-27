@@ -19,6 +19,7 @@
     "milkdrop-preset-converter-aws": "^0.1.6",
     "music-metadata": "^11.6.0",
     "music-metadata-browser": "^0.6.1",
+    "preact": "^10.29.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^8.0.5",

@@ -25,7 +25,7 @@ export default function Volume({ id, style, className }: Props) {
       value={volume}
       style={{ ...style, touchAction: "none" }}
       className={className}
-      onChange={(e) => setVolume(Number(e.target.value))}
+      onInput={(e) => setVolume(Number((e.target as HTMLInputElement).value))}
       onPointerDown={() => setFocus("volume")}
       onPointerUp={unsetFocus}
       title="Volume Bar"

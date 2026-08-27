@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useRef } from "react";
 
 import * as Actions from "../actionCreators";
+import { snapBalance } from "../actionCreators/media";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
 
@@ -15,8 +17,21 @@ export default function Balance({ style, className, id }: Props) {
   const setBalance = useActionCreator(Actions.setBalance);
   const setFocus = useActionCreator(Actions.setFocus);
   const unsetFocus = useActionCreator(Actions.unsetFocus);
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const input = e.target as HTMLInputElement;
+    const snapped = snapBalance(Number(input.value));
+    // Force DOM value to match snapped value so the slider visually snaps
+    if (String(snapped) !== input.value) {
+      input.value = String(snapped);
+    }
+    setBalance(snapped);
+  };
+
   return (
     <input
+      ref={ref}
       id={id}
       className={className}
       type="range"
@@ -25,7 +40,7 @@ export default function Balance({ style, className, id }: Props) {
       step="1"
       value={balance}
       style={{ ...style, touchAction: "none" }}
-      onChange={(e) => setBalance(Number(e.target.value))}
+      onInput={handleInput}
       onPointerDown={() => setFocus("balance")}
       onPointerUp={unsetFocus}
       title="Balance"

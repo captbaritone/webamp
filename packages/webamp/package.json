@@ -79,6 +79,8 @@
     "strtok3": "^10.3.1",
     "tinyqueue": "^3.0.0",
     "winamp-eqf": "workspace:*",
+    "preact": "^10.29.8",
+    "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",

@@ -117,15 +117,19 @@ export function scrollVolume(e: WheelEvent): Thunk {
   };
 }
 
-export function setBalance(balance: number): Action {
+export function snapBalance(balance: number): number {
   balance = clamp(balance, -100, 100);
   // The balance clips to the center
   if (Math.abs(balance) < 25) {
     balance = 0;
   }
+  return balance;
+}
+
+export function setBalance(balance: number): Action {
   return {
     type: "SET_BALANCE",
-    balance,
+    balance: snapBalance(balance),
   };
 }
 
