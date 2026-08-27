@@ -470,9 +470,6 @@ importers:
 
   packages/webamp-demo:
     devDependencies:
-      '@preact/compat':
-        specifier: ^18.3.2
-        version: 18.3.2(preact@10.29.8)
       '@sentry/browser':
         specifier: 5.9.1
         version: 5.9.1
@@ -3246,11 +3243,6 @@ packages:
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
-
-  '@preact/compat@18.3.2':
-    resolution: {integrity: sha512-5vSl55K5yLMvocT7PBKxDOHGgYPjMrKQqqr6roSNjIXcJOtSgDDMjpiCAF3s7klRdmGrN75b/Przmjw8gmlg/w==}
-    peerDependencies:
-      preact: '*'
 
   '@puppeteer/browsers@2.2.0':
     resolution: {integrity: sha512-MC7LxpcBtdfTbzwARXIkqGZ1Osn3nnZJlm+i0+VqHl72t//Xwl9wICrXT8BwtgC6s1xJNHsxOpvzISUqe92+sw==}
@@ -16985,10 +16977,6 @@ snapshots:
       config-chain: 1.1.13
 
   '@polka/url@1.0.0-next.29': {}
-
-  '@preact/compat@18.3.2(preact@10.29.8)':
-    dependencies:
-      preact: 10.29.8
 
   '@puppeteer/browsers@2.2.0':
     dependencies:
