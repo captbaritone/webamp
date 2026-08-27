@@ -19,7 +19,7 @@ export default function Balance({ style, className, id }: Props) {
   const unsetFocus = useActionCreator(Actions.unsetFocus);
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleInput = (e: Event) => {
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const input = e.target as HTMLInputElement;
     const snapped = snapBalance(Number(input.value));
     // Force DOM value to match snapped value so the slider visually snaps
