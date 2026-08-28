@@ -36,6 +36,10 @@ jobs:
           npx turbo test -- --maxWorkers=2
         env:
           NODE_ENV: test
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+      - name: Run integration tests
+        run: npx turbo integration-tests
       - name: Cache build artifacts for release
         uses: actions/cache@v4
         with:
