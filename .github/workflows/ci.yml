@@ -38,6 +38,7 @@ jobs:
           NODE_ENV: test
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
+        working-directory: packages/webamp
       - name: Run integration tests
         run: npx turbo integration-tests
       - name: Cache build artifacts for release
