@@ -9,15 +9,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 /**
- * Simulate clicking the desktop background (outside all webamp windows).
- *
- * In headless Chromium, mouse events are routed to the focused element
- * rather than hit-tested, so page.mouse.click() on empty space doesn't
- * work when a tabIndex=-1 FocusTarget has focus. We use dispatchEvent
- * on the page container instead.
+ * Click the page body outside all Webamp windows to trigger blur/unfocus.
  */
 async function clickBackground(page: import("@playwright/test").Page) {
-  await page.locator("#app").dispatchEvent("mousedown", { bubbles: true });
+  // Click a point well below the Webamp windows (bottom-right corner of the viewport)
+  await page.mouse.click(1, 1);
 }
 
 test.describe("Window focus", () => {
