@@ -16,5 +16,5 @@
     "jsx": "react-jsx"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "built", "dist"]
+  "exclude": ["node_modules", "built", "dist", "e2e"]
 }
