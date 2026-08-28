@@ -1,3 +1,4 @@
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 
@@ -9,8 +10,15 @@ interface Props {
   tracks: string[];
 }
 
-export const getAsDataURI = (text: string): string =>
-  `data:text/html;base64,${window.btoa(text)}`;
+export const getAsDataURI = (text: string): string => {
+  // Properly encode UTF-8 to base64
+  // btoa() only handles Latin-1 (ISO-8859-1), so we need to encode UTF-8 first
+  const utf8Bytes = encodeURIComponent(text).replace(
+    /%([0-9A-F]{2})/g,
+    (_, p1) => String.fromCharCode(parseInt(p1, 16))
+  );
+  return `data:text/html;base64,${window.btoa(utf8Bytes)}`;
+};
 
 // Replaces deprecated "noshade" attribute
 const noshadeStyle = {
