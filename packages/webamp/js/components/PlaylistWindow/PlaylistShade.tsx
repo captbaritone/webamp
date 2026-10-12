@@ -65,9 +65,14 @@ function PlaylistShade() {
             <CharacterString>{time}</CharacterString>
           </div>
           <PlaylistResizeTarget widthOnly />
-          <WinampButton id="playlist-shade-button" onClick={toggleShade} />
+          <WinampButton
+            id="playlist-shade-button"
+            aria-label="Toggle Windowshade Mode"
+            onClick={toggleShade}
+          />
           <WinampButton
             id="playlist-close-button"
+            aria-label="Close"
             onClick={() => closeWindow("playlist")}
           />
         </div>

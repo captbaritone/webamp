@@ -11,6 +11,7 @@ const EqAuto = memo(() => {
   return (
     <WinampButton
       id="auto"
+      aria-label="Auto"
       className={classnames({ selected })}
       onClick={toggleAuto}
     />

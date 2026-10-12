@@ -11,6 +11,7 @@ const EqOn = () => {
   return (
     <WinampButton
       id="on"
+      aria-label="On"
       className={classnames({ selected: on })}
       onClick={toggleEq}
     />

@@ -111,9 +111,14 @@ function PlaylistWindow({ analyser }: Props) {
           )}
           <div className="playlist-top-right-fill draggable" />
           <div className="playlist-top-right draggable">
-            <WinampButton id="playlist-shade-button" onClick={toggleShade} />
+            <WinampButton
+              id="playlist-shade-button"
+              aria-label="Toggle Windowshade Mode"
+              onClick={toggleShade}
+            />
             <WinampButton
               id="playlist-close-button"
+              aria-label="Close"
               onClick={() => close(WINDOWS.PLAYLIST)}
             />
           </div>
