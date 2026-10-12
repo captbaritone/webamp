@@ -21,11 +21,22 @@ function ClickedDiv(props: Props) {
       props.onPointerDown(e);
     }
   }
+  const { onClick } = props;
+  // Keyboard activation does not fire `pointerdown`, so mark the button as
+  // clicked here too.
+  const handleClick =
+    onClick == null
+      ? undefined
+      : (e: React.MouseEvent<HTMLDivElement>) => {
+          setClicked(true);
+          onClick(e);
+        };
   return (
     <WinampButton
       {...props}
       className={classnames(props.className, { clicked })}
       onPointerDown={handlePointerDown}
+      onClick={handleClick}
     />
   );
 }

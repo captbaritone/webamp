@@ -5,6 +5,7 @@ import {
   HTMLAttributes,
   useState,
   PointerEvent as ReactPointerEvent,
+  KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 
 const ACTIVE_CLASSNAME = "winamp-active";
@@ -31,10 +32,15 @@ type Props = DetailedHTMLPropsAndMore;
  * > "down" state (e.g. for a mouse, between the time the mouse button is pressed
  * > and the time it is depressed; for a finger in a multitouch environment, while
  * > the finger is touching the display surface).
+ *
+ * If an `onClick` handler is provided, the `div` is also exposed as a button to
+ * keyboard and screen reader users: it can be focused with Tab and activated
+ * with Enter or Space.
  */
 export default function WinampButton({
   requireClicksOriginateLocally = true,
   onPointerDown: originalOnPointerDown,
+  onKeyDown: originalOnKeyDown,
   className,
   ...htmlProps
 }: Props): JSX.Element {
@@ -87,8 +93,29 @@ export default function WinampButton({
     }
   };
 
+  const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (originalOnKeyDown != null) {
+      originalOnKeyDown(e);
+    }
+    // Ignore key events bubbling up from focusable descendants.
+    if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) {
+      return;
+    }
+    // Prevent Space from scrolling the page.
+    e.preventDefault();
+    if (!e.repeat) {
+      e.currentTarget.click();
+    }
+  };
+
+  const buttonProps =
+    htmlProps.onClick == null
+      ? { onKeyDown: originalOnKeyDown }
+      : { role: "button", tabIndex: 0, onKeyDown };
+
   return (
     <div
+      {...buttonProps}
       {...htmlProps}
       className={classnames(className, { [ACTIVE_CLASSNAME]: active })}
       onPointerDown={onPointerDown}

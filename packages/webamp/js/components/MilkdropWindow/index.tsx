@@ -42,6 +42,13 @@ function useKeyHandler() {
     (e: KeyboardEvent) => {
       switch (e.keyCode) {
         case 32: // spacebar
+          // Let Space activate focused buttons, like the close button.
+          if (
+            e.target instanceof Element &&
+            e.target.getAttribute("role") === "button"
+          ) {
+            break;
+          }
           selectNextPreset();
           break;
         case 8: // backspace
