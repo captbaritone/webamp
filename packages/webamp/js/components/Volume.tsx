@@ -29,6 +29,7 @@ export default function Volume({ id, style, className }: Props) {
       onPointerDown={() => setFocus("volume")}
       onPointerUp={unsetFocus}
       title="Volume Bar"
+      aria-valuetext={`${volume}%`}
     />
   );
 }
