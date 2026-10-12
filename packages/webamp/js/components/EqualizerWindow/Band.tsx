@@ -28,6 +28,20 @@ export const spriteOffsets = (number: number): { x: number; y: number } => {
   return { x, y };
 };
 
+function bandLabel(band: SliderType): string {
+  if (band === "preamp") {
+    return "Preamp";
+  }
+  return band < 1000 ? `${band} Hz` : `${band / 1000} kHz`;
+}
+
+// Values range from 0-100, which represents -12dB to +12dB.
+export function bandValueText(value: number): string {
+  const db = ((value - 50) / 50) * 12;
+  const sign = db > 0 ? "+" : "";
+  return `${sign}${db.toFixed(1)} dB`;
+}
+
 const Handle = () => {
   const style = { width: 11, height: 11, marginLeft: 1 };
   return <div style={style} className="slider-handle" />;
@@ -73,6 +87,10 @@ export default function Band({
           !(band !== "preamp" && clickOriginatedInEq)
         }
         handle={<Handle />}
+        label={bandLabel(band)}
+        valueText={bandValueText(value)}
+        // One dB per arrow key press.
+        keyboardStep={1 / 24}
       />
     </WinampButton>
   );
