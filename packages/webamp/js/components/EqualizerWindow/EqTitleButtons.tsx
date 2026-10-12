@@ -15,9 +15,14 @@ export default function EqTitleButtons() {
   );
   return (
     <ClickedDiv id="eq-buttons" key={selected ? "selected" : "unselected"}>
-      <WinampButton id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
+      <WinampButton
+        id="equalizer-shade"
+        aria-label="Toggle Windowshade Mode"
+        onClick={toggleEqualizerShadeMode}
+      />
       <WinampButton
         id="equalizer-close"
+        aria-label="Close"
         onClick={() => closeWindow(WINDOWS.EQUALIZER)}
       />
     </ClickedDiv>

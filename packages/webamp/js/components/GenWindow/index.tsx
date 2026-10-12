@@ -80,6 +80,7 @@ export const GenWindow = ({
           <div className="gen-top-right draggable">
             <WinampButton
               className="gen-close selected"
+              aria-label="Close"
               onClick={() => closeWindow(windowId)}
             />
           </div>
