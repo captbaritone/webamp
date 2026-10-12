@@ -351,6 +351,40 @@ class Webamp {
   }
 
   /**
+   * Update the name and/or metadata of the track at `index` in the playlist,
+   * without reloading it. `metaData` replaces any metadata the track already
+   * has, including metadata read from the file itself.
+   */
+  updateTrack(
+    index: number,
+    update: Pick<Track, "defaultName" | "metaData">
+  ): void {
+    const track = this.getPlaylistTracks()[index];
+    if (track == null) {
+      throw new Error(`No track at index ${index}`);
+    }
+    const { defaultName, metaData } = update;
+    if (defaultName != null) {
+      this.store.dispatch({
+        type: "SET_TRACK_DEFAULT_NAME",
+        id: track.id,
+        defaultName,
+      });
+    }
+    if (metaData != null) {
+      const { artist, title, album, albumArtUrl } = metaData;
+      this.store.dispatch({
+        type: "SET_MEDIA_TAGS",
+        id: track.id,
+        artist,
+        title,
+        album,
+        albumArtUrl,
+      });
+    }
+  }
+
+  /**
    * Get the current playlist in order.
    */
   getPlaylistTracks(): PlaylistTrack[] {

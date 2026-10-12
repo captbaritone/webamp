@@ -192,6 +192,18 @@ Note: If Webamp is currently playing, the track will begin playing. If Webamp is
 webamp.setCurrentTrack(2);
 ```
 
+### `updateTrack(index: number, update: { defaultName?: string; metaData?: TrackMetaData }): void`
+
+Update the name and/or metadata of the track at `index` in the playlist, without reloading it. `metaData` replaces any metadata the track already has, including metadata read from the file itself. See [`Track`](01_track.md) for the shape of `defaultName` and `metaData`.
+
+```ts
+webamp.updateTrack(0, { defaultName: "My Renamed Track" });
+
+webamp.updateTrack(0, {
+  metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
+});
+```
+
 ### `getPlaylistTracks(): PlaylistTrack[]`
 
 Get the current playlist in order.
