@@ -31,6 +31,7 @@ interface Props {
   filePickers: FilePicker[];
   media: IMedia;
   parentDomNode: HTMLElement;
+  focusIndicator: boolean;
   onMount?: () => void;
 }
 
@@ -42,6 +43,7 @@ export default function App({
   filePickers,
   onMount,
   parentDomNode,
+  focusIndicator,
 }: Props) {
   const closed = useTypedSelector(Selectors.getClosed);
   const genWindowsInfo = useTypedSelector(Selectors.getGenWindows);
@@ -63,6 +65,10 @@ export default function App({
   useLayoutEffect(() => {
     webampNode.style.zIndex = String(zIndex);
   }, [webampNode, zIndex]);
+
+  useLayoutEffect(() => {
+    webampNode.classList.toggle("webamp-focus-indicator", focusIndicator);
+  }, [webampNode, focusIndicator]);
 
   useLayoutEffect(() => {
     parentDomNode.appendChild(webampNode);

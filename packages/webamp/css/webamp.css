@@ -31,6 +31,22 @@
   outline: 0;
 }
 
+/*
+ * Opt-in keyboard focus indicator, enabled by the `focusIndicator` option.
+ * It is drawn entirely outside the focused element so the skin's pixels are
+ * never covered, and is two-tone (a light ring inside a dark one) so that it
+ * contrasts with any skin. `z-index` keeps adjacent sprites from painting over
+ * it. The `input[type="range"]` selector is needed to beat the range input
+ * reset's specificity below.
+ */
+#webamp.webamp-focus-indicator :focus-visible,
+#webamp.webamp-focus-indicator input[type="range"]:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px #000;
+  z-index: 1;
+}
+
 /* Range input css reset */
 #webamp input[type="range"] {
   -webkit-appearance: none;
