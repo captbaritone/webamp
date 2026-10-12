@@ -130,6 +130,7 @@ function Milkdrop({ analyser }: Props) {
   return (
     <GenWindow
       title={"Milkdrop"}
+      id="milkdrop-window"
       windowId={WINDOWS.MILKDROP}
       onKeyDown={handleKeyDown}
     >

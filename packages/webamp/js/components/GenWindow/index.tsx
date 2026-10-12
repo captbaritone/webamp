@@ -41,11 +41,18 @@ interface Props {
   windowId: WindowId;
   children: (windowSize: WindowSize) => React.ReactNode;
   title: string;
+  id?: string;
   onKeyDown?(e: KeyboardEvent): void;
 }
 
 // Named export for testing
-export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
+export const GenWindow = ({
+  children,
+  title,
+  id,
+  windowId,
+  onKeyDown,
+}: Props) => {
   const setWindowSize = useActionCreator(Actions.setWindowSize);
   const closeWindow = useActionCreator(Actions.closeWindow);
   const getWindowPixelSize = useTypedSelector(Selectors.getWindowPixelSize);
@@ -57,6 +64,7 @@ export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
   return (
     <FocusTarget windowId={windowId} onKeyDown={onKeyDown}>
       <div
+        id={id}
         className={classnames("gen-window", "window", { selected })}
         style={{ width, height }}
       >
