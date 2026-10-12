@@ -32,7 +32,7 @@
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
-    "type-check": "tsc",
+    "type-check": "tsc && node ./scripts/markTypesAsEsm.mjs",
     "build": "node ./scripts/rollup.mjs",
     "prepublishOnly": "npm run build && npm run type-check",
     "test": "vitest run",
