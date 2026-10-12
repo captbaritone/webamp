@@ -19,7 +19,7 @@
     },
     "./butterchurn": {
       "import": "./built/webamp.butterchurn-bundle.min.mjs",
-      "types": "./built/types/js/butterchurn.d.ts",
+      "types": "./built/types/js/webampWithButterchurn.d.ts",
       "default": "./built/webamp.butterchurn-bundle.min.mjs"
     },
     "./lazy": {
