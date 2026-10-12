@@ -1,6 +1,7 @@
 import { FormEvent, KeyboardEvent, memo, useCallback, useRef } from "react";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
+import { getTimeStr } from "../../utils";
 import { useTypedSelector, useTypedDispatch } from "../../hooks";
 
 function usePosition() {
@@ -10,14 +11,21 @@ function usePosition() {
   const scrubPosition = useTypedSelector(Selectors.getUserInputScrubPosition);
   const userInputFocus = useTypedSelector(Selectors.getUserInputFocus);
 
-  const displayedPosition =
-    userInputFocus === "position" ? scrubPosition : position;
+  const scrubbing = userInputFocus === "position";
+  const displayedPosition = scrubbing ? scrubPosition : position;
 
-  return [position, displayedPosition];
+  // E.g. "0:32 of 2:00"
+  let valueText;
+  if (duration != null) {
+    const time = scrubbing ? (duration * scrubPosition) / 100 : timeElapsed;
+    valueText = `${getTimeStr(time)} of ${getTimeStr(duration)}`;
+  }
+
+  return [position, displayedPosition, valueText] as const;
 }
 
 const Position = memo(() => {
-  const [position, displayedPosition] = usePosition();
+  const [position, displayedPosition, valueText] = usePosition();
   const dispatch = useTypedDispatch();
 
   const seekToPercentComplete = useCallback(
@@ -124,6 +132,7 @@ const Position = memo(() => {
       onPointerUp={handlePointerUp}
       onPointerDown={handlePointerDown}
       title="Seeking Bar"
+      aria-valuetext={valueText}
     />
   );
 });

@@ -4,6 +4,14 @@ import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
 
+// E.g. "Center" or "20% Left"
+export function balanceValueText(balance: number): string {
+  if (balance === 0) {
+    return "Center";
+  }
+  return `${Math.abs(balance)}% ${balance > 0 ? "Right" : "Left"}`;
+}
+
 interface Props {
   id?: string;
   style?: React.CSSProperties;
@@ -29,6 +37,7 @@ export default function Balance({ style, className, id }: Props) {
       onPointerDown={() => setFocus("balance")}
       onPointerUp={unsetFocus}
       title="Balance"
+      aria-valuetext={balanceValueText(balance)}
     />
   );
 }

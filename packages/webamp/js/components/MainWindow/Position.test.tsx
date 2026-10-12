@@ -125,4 +125,14 @@ describe("Position", () => {
     pointer("pointerup");
     expect(seeks()).toEqual([60]);
   });
+
+  it("describes the position as elapsed time of total time", () => {
+    expect(input.getAttribute("aria-valuetext")).toBe("0:30 of 2:00");
+  });
+
+  it("describes the scrub position while dragging", () => {
+    pointer("pointerdown");
+    changeValue("50");
+    expect(input.getAttribute("aria-valuetext")).toBe("1:00 of 2:00");
+  });
 });
