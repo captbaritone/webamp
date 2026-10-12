@@ -24,6 +24,7 @@ const Shuffle = memo(() => {
       <WinampButton
         id="shuffle"
         className={classnames({ selected: shuffle })}
+        aria-pressed={shuffle}
         onClick={handleClick}
         title="Toggle Shuffle"
       />

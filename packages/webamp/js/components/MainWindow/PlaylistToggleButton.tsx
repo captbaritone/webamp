@@ -17,6 +17,7 @@ const PlaylistToggleButton = memo(() => {
     <WinampButton
       id="playlist-button"
       className={classnames({ selected })}
+      aria-pressed={selected}
       onClick={handleClick}
       title="Toggle Playlist Editor"
     />
