@@ -82,6 +82,7 @@ function FocusTarget({ onKeyDown, windowId, children }: Props) {
       tabIndex={-1}
       role="group"
       aria-label={WINDOW_LABELS[windowId]}
+      data-window-id={windowId}
       style={{ height: "100%", width: "100%" }}
     >
       {children}
