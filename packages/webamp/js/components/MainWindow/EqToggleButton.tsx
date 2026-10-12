@@ -17,6 +17,7 @@ const EqToggleButton = memo(() => {
     <WinampButton
       id="equalizer-button"
       className={classnames({ selected: windowOpen })}
+      aria-pressed={windowOpen}
       onClick={handleClick}
       title="Toggle Graphical Equalizer"
     />

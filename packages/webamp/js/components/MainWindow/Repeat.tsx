@@ -24,6 +24,7 @@ const Repeat = memo(() => {
       <WinampButton
         id="repeat"
         className={classnames({ selected: repeat })}
+        aria-pressed={repeat}
         onClick={handleClick}
         title="Toggle Repeat"
       />

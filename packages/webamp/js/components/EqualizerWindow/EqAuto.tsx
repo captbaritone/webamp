@@ -13,6 +13,7 @@ const EqAuto = memo(() => {
       id="auto"
       aria-label="Auto"
       className={classnames({ selected })}
+      aria-pressed={selected}
       onClick={toggleAuto}
     />
   );
