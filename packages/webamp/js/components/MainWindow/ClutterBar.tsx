@@ -25,7 +25,11 @@ const ClutterBar = memo(() => {
   const doubled = useTypedSelector(Selectors.getDoubled);
   return (
     <div id="clutter-bar">
-      <ContextMenuTarget bottom renderMenu={() => <OptionsContextMenu />}>
+      <ContextMenuTarget
+        bottom
+        label="Options"
+        renderMenu={() => <OptionsContextMenu />}
+      >
         <div id="button-o" />
       </ContextMenuTarget>
       <div id="button-a" />
