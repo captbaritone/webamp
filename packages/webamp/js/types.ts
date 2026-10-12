@@ -688,11 +688,16 @@ export interface Options {
   enableDoubleSizeMode?: boolean;
 
   /**
-   * Should global hotkeys be enabled?
+   * Should hotkeys be enabled?
+   *
+   * - `true`: Hotkeys are handled anywhere in the page.
+   * - `"scoped"`: Hotkeys are only handled while focus is within Webamp. Useful
+   *   if the page has other keyboard interactions.
+   * - `false`: Hotkeys are disabled.
    *
    * Default: `false`
    */
-  enableHotkeys?: boolean;
+  enableHotkeys?: boolean | "scoped";
 
   /**
    * An array of additional file pickers.

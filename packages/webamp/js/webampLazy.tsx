@@ -215,7 +215,9 @@ class Webamp {
 
     this.store.dispatch(Actions.setWindowLayout(options.windowLayout));
 
-    if (enableHotkeys) {
+    // Scoped hotkeys are bound by `<App />`, since they are attached to
+    // Webamp's DOM node.
+    if (enableHotkeys === true) {
       this._disposable.add(bindHotkeys(this.store.dispatch));
     }
   }
@@ -556,6 +558,7 @@ class Webamp {
         <App
           media={this.media}
           filePickers={this.options.filePickers || []}
+          scopedHotkeys={this.options.enableHotkeys === "scoped"}
           onMount={onMount}
           parentDomNode={contained ? node : document.body}
         />

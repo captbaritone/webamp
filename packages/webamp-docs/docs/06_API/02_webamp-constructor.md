@@ -126,7 +126,11 @@ In keeping with the original Winamp, **double size mode does not apply to resiza
 
 ### `enableHotkeys`
 
-A boolean indicating if global hotkeys should be enabled. **Default:** `false`.
+Controls whether hotkeys are enabled. **Default:** `false`.
+
+- `true`: Hotkeys are handled anywhere in the page.
+- `"scoped"`: Hotkeys are only handled while focus is within Webamp. Use this if your page has its own keyboard interactions.
+- `false`: Hotkeys are disabled.
 
 ```ts
 const webamp = new Webamp({
