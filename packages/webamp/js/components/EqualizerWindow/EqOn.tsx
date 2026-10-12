@@ -13,6 +13,7 @@ const EqOn = () => {
       id="on"
       aria-label="On"
       className={classnames({ selected: on })}
+      aria-pressed={on}
       onClick={toggleEq}
     />
   );
