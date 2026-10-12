@@ -7,6 +7,7 @@ import OptionsContextMenu from "../OptionsContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";
 import * as Selectors from "../../selectors";
+import { handleActivationKey } from "../WinampButton";
 
 function setFocusDouble(): Action {
   return Actions.setFocus("double");
@@ -34,6 +35,12 @@ const ClutterBar = memo(() => {
         title={"Toggle Doublesize Mode"}
         id="button-d"
         className={classnames({ selected: doubled })}
+        role="button"
+        tabIndex={0}
+        aria-pressed={doubled}
+        // This button toggles on pointer up rather than click, so it needs its
+        // own keyboard handling.
+        onKeyDown={(e) => handleActivationKey(e, handleMouseUp)}
         onPointerUp={handleMouseUp}
         onPointerDown={(e) => {
           e.preventDefault();
