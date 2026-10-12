@@ -22,6 +22,10 @@ export default (media: IMedia) => (store: MiddlewareStore) => {
     });
   });
 
+  media.on("error", (code: number) => {
+    store.dispatch({ type: "MEDIA_ERROR", code });
+  });
+
   media.on("ended", () => {
     store.dispatch(nextTrack());
   });

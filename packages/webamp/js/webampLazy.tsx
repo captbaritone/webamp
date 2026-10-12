@@ -387,6 +387,22 @@ class Webamp {
   }
 
   /**
+   * A callback which will be called when the current track fails to load or
+   * play, for example because it could not be fetched or decoded. Webamp then
+   * continues as if the track had ended.
+   *
+   * The callback is passed the `code` of the underlying
+   * [`MediaError`](https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code).
+   *
+   * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
+   */
+  onMediaError(cb: (error: { code: number }) => void): () => void {
+    return this._actionEmitter.on("MEDIA_ERROR", (action) => {
+      cb({ code: action.code });
+    });
+  }
+
+  /**
    * Equivalent to selecting "Close" from Webamp's options menu. Once closed,
    * you can open it again with `.reopen()`.
    */

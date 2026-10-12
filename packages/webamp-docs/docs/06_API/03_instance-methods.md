@@ -312,6 +312,21 @@ const unsubscribe = webamp.onClose(() => {
 unsubscribe();
 ```
 
+### `onMediaError(cb: (error: { code: number }) => void): () => void`
+
+A callback which will be called when the current track fails to load or play, for example because the file could not be fetched or decoded. Webamp then continues as if the track had ended. The callback is passed the `code` of the underlying [`MediaError`](https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code). Returns an "unsubscribe" function.
+
+```ts
+const unsubscribe = webamp.onMediaError(({ code }) => {
+  if (code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+    console.log("This file could not be played");
+  }
+});
+
+// If at some point in the future you want to stop listening to these events:
+unsubscribe();
+```
+
 ### `close(): void`
 
 Equivalent to selecting "Close" from Webamp's options menu. Once closed, you can open it again with `.reopen()`.

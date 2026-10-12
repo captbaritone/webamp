@@ -500,6 +500,10 @@ export type Action =
       type: "MINIMIZE_WINAMP";
     }
   | {
+      type: "MEDIA_ERROR";
+      code: number;
+    }
+  | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
     }
