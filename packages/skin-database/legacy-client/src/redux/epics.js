@@ -200,6 +200,15 @@ const alertEpic = (actions) =>
 
 const chunkState = {};
 
+// A fast scroll through the grid queues up many chunks at once, and an
+// unbounded mergeMap would put them all in flight together. They then share the
+// visitor's downlink: measured against production, the heaviest scrollers were
+// seeing ~26KB chunks take 1.5-6s each at an implied ~8KB/s, while the server
+// answered each in ~50ms and the same client's own fastest request was 50ms.
+// Limiting how many are in flight lets each chunk land at close to server speed
+// instead of all of them crawling in parallel.
+const MAX_CONCURRENT_CHUNK_FETCHES = 3;
+
 const unloadedSkinEpic = (actions, _states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
@@ -241,7 +250,7 @@ const unloadedSkinEpic = (actions, _states) =>
         }),
         map((payload) => [payload, chunk])
       );
-    }),
+    }, MAX_CONCURRENT_CHUNK_FETCHES),
     mergeMap(([body, chunk]) => {
       return of(
         { type: "GOT_SKIN_CHUNK", chunk, payload: body.skins },
