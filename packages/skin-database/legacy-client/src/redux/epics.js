@@ -18,10 +18,11 @@ import {
   exhaustMap,
   takeWhile,
   mergeAll,
-  debounceTime,
+  debounce,
 } from "rxjs/operators";
 import { algoliaSearch, graphqlSearch, USE_ALGOLIA } from "../algolia";
 import queryParser from "../queryParser";
+import { getSearchDebounceMs } from "../searchConfig";
 import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
 
@@ -141,13 +142,15 @@ const selectSkinReadmeEpic = (actions, states) =>
 
 // Search used to run against Algolia and this kept us under their rate limit.
 // Now that we serve search ourselves it's what keeps a keystroke from becoming
-// a query, so it matters more, not less.
-const SEARCH_DEBOUNCE_TIME = 400;
-
+// a query, so it matters more, not less. It's configurable at runtime via
+// SEARCH_DEBOUNCE_MS; see ../searchConfig.
+//
+// Read per search rather than once up front, so the value doesn't depend on
+// the store being created after the config is set.
 const searchEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "SEARCH_QUERY_CHANGED"),
-    debounceTime(SEARCH_DEBOUNCE_TIME),
+    debounce(() => timer(getSearchDebounceMs())),
     switchMap(({ query }) => {
       if (query == null || query.length === 0) {
         return of(Actions.gotNewMatchingSkins(null));

@@ -1,4 +1,5 @@
 import ReduxContextProvider from "./redux";
+import { parseSearchDebounceMs } from "../legacy-client/src/searchConfig";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 import type { Viewport } from "next";
@@ -14,10 +15,17 @@ type Props = {
 };
 
 export default function RootLayout({ children }: Props) {
+  // Read per request rather than at build time, so SEARCH_DEBOUNCE_MS can be
+  // changed with a service restart instead of a rebuild.
+  const searchDebounceMs = parseSearchDebounceMs(
+    process.env.SEARCH_DEBOUNCE_MS
+  );
   return (
     <html lang="en">
       <body>
-        <ReduxContextProvider>{children}</ReduxContextProvider>
+        <ReduxContextProvider searchDebounceMs={searchDebounceMs}>
+          {children}
+        </ReduxContextProvider>
         <GoogleAnalytics gaId="UA-96948-20" />
       </body>
     </html>
