@@ -1080,7 +1080,7 @@ export function getSchema(): GraphQLSchema {
                     }
                 },
                 search_skins: {
-                    description: "Search the database using the Algolia search index used by the Museum.\n\nUseful for locating a particular skin.",
+                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.",
                     name: "search_skins",
                     type: new GraphQLList(SkinType),
                     args: {

@@ -6,6 +6,7 @@ import * as Actions from "./redux/actionCreators";
 import { useActionCreator, useWindowSize } from "./hooks";
 import AlgoliaLogo from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
+import { USE_ALGOLIA } from "./algolia";
 import FeedbackIcon from "./components/icons/FeedbackIcon";
 import AboutIcon from "./components/icons/AboutIcon";
 import RandomIcon from "./components/icons/RandomIcon";
@@ -80,17 +81,19 @@ function Header({ searchLogo }) {
         <CloseButton />
       ) : (
         <>
-          <a
-            href="https://www.algolia.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              opacity: searchQuery ? 0.5 : 0,
-              transition: "opacity ease-in 300ms",
-            }}
-          >
-            {searchLogo || <SearchLogo />}
-          </a>
+          {USE_ALGOLIA && (
+            <a
+              href="https://www.algolia.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                opacity: searchQuery ? 0.5 : 0,
+                transition: "opacity ease-in 300ms",
+              }}
+            >
+              {searchLogo || <SearchLogo />}
+            </a>
+          )}
           <input
             type="search"
             style={{ marginLeft: 10 }}

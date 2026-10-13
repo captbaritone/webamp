@@ -4,6 +4,10 @@ import { algoliasearch } from "algoliasearch";
 
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
 
+// We ran out of Algolia credits, so search runs against our own SQLite FTS
+// index until that's sorted out. Flip this back to re-enable Algolia.
+export const USE_ALGOLIA = false;
+
 // Fallback search that uses SQLite. Useful for when we've exceeded the Algolia
 // search quota.
 export async function graphqlSearch(query) {

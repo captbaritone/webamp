@@ -20,7 +20,7 @@ import {
   mergeAll,
   debounceTime,
 } from "rxjs/operators";
-import { algoliaSearch, graphqlSearch } from "../algolia";
+import { algoliaSearch, graphqlSearch, USE_ALGOLIA } from "../algolia";
 import queryParser from "../queryParser";
 import { CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../upload/uploadUtils";
@@ -139,11 +139,10 @@ const selectSkinReadmeEpic = (actions, states) =>
     })
   );
 
-const USE_ALGOLIA = true;
-
-// I'd prefer not to have this, but we keep hitting Algolia's rate limit.
-// This is an attempt to keep the number of requests down.
-const SEARCH_DEBOUNCE_TIME = 300;
+// Search used to run against Algolia and this kept us under their rate limit.
+// Now that we serve search ourselves it's what keeps a keystroke from becoming
+// a query, so it matters more, not less.
+const SEARCH_DEBOUNCE_TIME = 400;
 
 const searchEpic = (actions) =>
   actions.pipe(

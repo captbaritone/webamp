@@ -442,7 +442,7 @@ type Query {
   """
   search_classic_skins(first: Int! = 10, offset: Int! = 0, query: String!): [ClassicSkin] @semanticNonNull
   """
-  Search the database using the Algolia search index used by the Museum.
+  Search the database using SQLite's FTS (full text search) index.
   
   Useful for locating a particular skin.
   """

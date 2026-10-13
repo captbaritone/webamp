@@ -6,6 +6,7 @@ import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
 import * as Skins from "../../../data/skins";
 import { knex } from "../../../db";
+import { ftsMatchExpression } from "../../../ftsQuery";
 
 export default class SkinResolver {
   constructor() {
@@ -43,7 +44,7 @@ export async function fetch_skin_by_md5(
 }
 
 /**
- * Search the database using the Algolia search index used by the Museum.
+ * Search the database using SQLite's FTS (full text search) index.
  *
  * Useful for locating a particular skin.
  * @gqlQueryField
@@ -58,13 +59,19 @@ export async function search_skins(
     throw new Error("Can only query 1000 records via search.");
   }
 
+  const match = ftsMatchExpression(query);
+  if (match == null) {
+    return [];
+  }
+
   const skins = await knex("skin_search")
     .select("skin_md5")
     .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
     .where("skins.skin_type", "in", [1, 2])
+    .orderByRaw("rank")
     .limit(first)
     .offset(offset)
-    .whereRaw("skin_search MATCH ?", query);
+    .whereRaw("skin_search MATCH ?", match);
 
   return Promise.all(
     skins.map(async (hit) => {
@@ -100,13 +107,19 @@ export async function search_classic_skins(
   //   .offset(offset)
   //   .whereRaw("skin_search MATCH ?", query);
 
+  const match = ftsMatchExpression(query);
+  if (match == null) {
+    return [];
+  }
+
   const skins = await knex("skin_search")
     .select("skin_md5")
     .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
     .where("skins.skin_type", "=", 1)
+    .orderByRaw("rank")
     .limit(first)
     .offset(offset)
-    .whereRaw("skin_search MATCH ?", query);
+    .whereRaw("skin_search MATCH ?", match);
 
   return Promise.all(
     skins.map(async (hit) => {
