@@ -6,7 +6,7 @@ import * as Skins from "../../..//data/skins";
 export default async function SkinTable() {
   const [initialSkins, skinCount] = await Promise.all([
     getMuseumPageSkins(0, 50),
-    Skins.getClassicSkinCount(),
+    Skins.getMuseumPageCount(),
   ]);
   return <Grid initialSkins={initialSkins} initialTotal={skinCount} />;
 }

@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useLayoutEffect, useEffect, useRef } from "react";
 import SkinPage from "./SkinPage";
 import { logUserEvent } from "./Events";
-import { useScrollHint } from "./useScrollHint";
-import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
+import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
+import { useSharedWebamp } from "./Webamp";
 
 export type ClientSkin = {
   screenshotUrl: string;
   skinUrl: string;
   fileName: string;
   md5: string;
-  readmeStart: string;
+  readme: string;
   downloadUrl: string;
   shareUrl: string;
   nsfw: boolean;
@@ -24,6 +24,11 @@ type Props = {
   sessionId: string;
 };
 
+// After a failed fetch, wait this long before trying again, doubling on each
+// consecutive failure.
+const FETCH_RETRY_BASE_MS = 2000;
+const FETCH_RETRY_MAX_MS = 60000;
+
 export default function SkinScroller({
   initialSkins,
   getSkins,
@@ -32,8 +37,15 @@ export default function SkinScroller({
   const [skins, setSkins] = useState<ClientSkin[]>(initialSkins);
   const [visibleSkinIndex, setVisibleSkinIndex] = useState(0);
   const [fetching, setFetching] = useState(false);
+  // Set once the server has no more skins for this session.
+  const [exhausted, setExhausted] = useState(false);
+  const failureCountRef = useRef(0);
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
+  const [webampSlot, setWebampSlot] = useState<HTMLDivElement | null>(null);
   const [hasEverScrolled, setHasEverScrolled] = useState(false);
+
+  const visibleSkin = skins[visibleSkinIndex];
+  useSharedWebamp(webampSlot, visibleSkin.skinUrl);
 
   // Track if user has ever scrolled to another skin
   useEffect(() => {
@@ -42,15 +54,39 @@ export default function SkinScroller({
     }
   }, [visibleSkinIndex]);
 
-  // Show scroll hint only if user has never scrolled to another skin
-  useScrollHint({
-    containerRef,
-    enabled: visibleSkinIndex === 0 && !hasEverScrolled,
-    onHintShown: () => {
-      logUserEvent(sessionId, {
-        type: "scroll_hint_shown",
-      });
-    },
+  function scrollToSkin(index: number) {
+    containerRef
+      ?.querySelector(`[data-skin-index="${index}"]`)
+      ?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // Keyboard navigation: J / Space for the next skin, K / Shift+Space for the
+  // previous one. Webamp's own hotkeys don't use any of these.
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable]")) {
+        return;
+      }
+      let delta: number;
+      if (e.key === "j" || e.key === "J") {
+        delta = 1;
+      } else if (e.key === "k" || e.key === "K") {
+        delta = -1;
+      } else if (e.key === " ") {
+        // Space should still press a focused button or link.
+        if (target?.closest("button, a, [role='button']")) return;
+        delta = e.shiftKey ? -1 : 1;
+      } else {
+        return;
+      }
+      e.preventDefault();
+      const index = visibleSkinIndex + delta;
+      if (index >= 0 && index < skins.length) scrollToSkin(index);
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   });
 
   useLayoutEffect(() => {
@@ -65,7 +101,7 @@ export default function SkinScroller({
           // When an element becomes mostly visible (> 50% intersecting)
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             const index = parseInt(
-              entry.target.getAttribute("skin-index") || "0",
+              (entry.target as HTMLElement).dataset.skinIndex || "0",
               10
             );
             setVisibleSkinIndex(index);
@@ -79,7 +115,7 @@ export default function SkinScroller({
     );
 
     // Observe all skin page elements
-    const skinElements = containerRef.querySelectorAll("[skin-index]");
+    const skinElements = containerRef.querySelectorAll("[data-skin-index]");
     skinElements.forEach((element) => observer.observe(element));
 
     return () => {
@@ -92,30 +128,50 @@ export default function SkinScroller({
       type: "session_start",
     });
 
-    function beforeUnload() {
-      logUserEvent(sessionId, {
-        type: "session_end",
-        reason: "before_unload",
-      });
+    // Make sure we only ever log one session_end per session.
+    let ended = false;
+
+    // `pagehide` fires more reliably than `beforeunload`, notably on mobile
+    // where pages are often closed by backgrounding the browser. A beacon is
+    // used because a regular request may be cancelled as the page unloads.
+    function onPageHide() {
+      if (ended) return;
+      ended = true;
+      navigator.sendBeacon(
+        "/scroll/events",
+        new Blob(
+          [
+            JSON.stringify({
+              sessionId,
+              event: { type: "session_end", reason: "before_unload" },
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
     }
 
-    addEventListener("beforeunload", beforeUnload);
+    addEventListener("pagehide", onPageHide);
     return () => {
-      removeEventListener("beforeunload", beforeUnload);
+      removeEventListener("pagehide", onPageHide);
+      if (ended) return;
+      ended = true;
+      // Client-side navigation away from the scroller.
       logUserEvent(sessionId, {
         type: "session_end",
         reason: "unmount",
       });
     };
-  }, []);
+  }, [sessionId]);
 
+  const visibleSkinMd5 = visibleSkin.md5;
+  const visibleSkinFileName = visibleSkin.fileName;
   useEffect(() => {
     // We want the URL and title to update as you scroll, but
     // we can't trigger a NextJS navigation since that would remount the
     // component. So, here we replicate the metadata behavior of the route.
-    const skinMd5 = skins[visibleSkinIndex].md5;
-    const newUrl = `/scroll/skin/${skinMd5}`;
-    window.document.title = `${skins[visibleSkinIndex].fileName} - Winamp Skin Museum`;
+    const newUrl = `/scroll/skin/${visibleSkinMd5}`;
+    window.document.title = `${visibleSkinFileName} - Winamp Skin Museum`;
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },
       "",
@@ -124,59 +180,84 @@ export default function SkinScroller({
 
     logUserEvent(sessionId, {
       type: "skin_view_start",
-      skinMd5,
+      skinMd5: visibleSkinMd5,
     });
     const startTime = Date.now();
     return () => {
       const durationMs = Date.now() - startTime;
       logUserEvent(sessionId, {
         type: "skin_view_end",
-        skinMd5: skins[visibleSkinIndex].md5,
+        skinMd5: visibleSkinMd5,
         durationMs,
       });
     };
-  }, [visibleSkinIndex, skins, fetching]);
+  }, [visibleSkinMd5, visibleSkinFileName, sessionId]);
 
   useLayoutEffect(() => {
-    if (fetching) {
+    if (fetching || exhausted) {
       return;
     }
-    if (visibleSkinIndex + 5 >= skins.length) {
-      setFetching(true);
-      console.log("Fetching more skins...");
-      logUserEvent(sessionId, {
-        type: "skins_fetch_start",
-        offset: skins.length,
-      });
-      getSkins(sessionId, skins.length)
-        .then((newSkins) => {
-          logUserEvent(sessionId, {
-            type: "skins_fetch_success",
-            offset: skins.length,
-          });
-          setSkins([...skins, ...newSkins]);
-          setFetching(false);
-        })
-        .catch((error) => {
-          logUserEvent(sessionId, {
-            type: "skins_fetch_failure",
-            offset: skins.length,
-            errorMessage: error.message,
-          });
-          setFetching(false);
-        });
+    if (visibleSkinIndex + 5 < skins.length) {
+      return;
     }
-  }, [visibleSkinIndex, skins, fetching]);
+    setFetching(true);
+    const offset = skins.length;
+    logUserEvent(sessionId, {
+      type: "skins_fetch_start",
+      offset,
+    });
+    getSkins(sessionId, offset)
+      .then((newSkins) => {
+        logUserEvent(sessionId, {
+          type: "skins_fetch_success",
+          offset,
+        });
+        failureCountRef.current = 0;
+        if (newSkins.length === 0) {
+          setExhausted(true);
+        } else {
+          setSkins((prev) => {
+            // Guard against the server returning a skin we already have,
+            // which would give two pages the same key.
+            const seen = new Set(prev.map((skin) => skin.md5));
+            return [...prev, ...newSkins.filter((skin) => !seen.has(skin.md5))];
+          });
+        }
+        setFetching(false);
+      })
+      .catch((error) => {
+        logUserEvent(sessionId, {
+          type: "skins_fetch_failure",
+          offset,
+          errorMessage: error.message,
+        });
+        // Back off before allowing another attempt, rather than retrying in a
+        // tight loop.
+        const delay = Math.min(
+          FETCH_RETRY_BASE_MS * 2 ** failureCountRef.current,
+          FETCH_RETRY_MAX_MS
+        );
+        failureCountRef.current++;
+        setTimeout(() => setFetching(false), delay);
+      });
+  }, [
+    visibleSkinIndex,
+    skins.length,
+    fetching,
+    exhausted,
+    sessionId,
+    getSkins,
+  ]);
 
   return (
     <>
       <div
         ref={setContainerRef}
         style={{
-          maxWidth: MOBILE_MAX_WIDTH, // 9:16 aspect ratio for scroll, full width for grid
-          margin: "0 auto",
-          height: "100vh",
-          // width: "100%",
+          // Full width so the wheel scrolls from anywhere on desktop, and so
+          // the action icons can sit beside the skin. Each page constrains its
+          // own content to MOBILE_MAX_WIDTH.
+          height: "100dvh",
           overflowY: "scroll",
           scrollSnapType: "y mandatory",
           scrollbarWidth: "none", // Firefox
@@ -191,12 +272,27 @@ export default function SkinScroller({
               key={skin.md5}
               skin={skin}
               index={i}
-              focused={i === visibleSkinIndex}
               sessionId={sessionId}
+              webampSlotRef={i === visibleSkinIndex ? setWebampSlot : undefined}
             />
           );
         })}
       </div>
+      <ScrollHintPill
+        hasScrolled={hasEverScrolled}
+        onShown={() => {
+          logUserEvent(sessionId, {
+            type: "scroll_hint_shown",
+          });
+        }}
+        onTap={() => scrollToSkin(visibleSkinIndex + 1)}
+      />
+      <FeedNavButtons
+        canGoPrevious={visibleSkinIndex > 0}
+        canGoNext={visibleSkinIndex < skins.length - 1}
+        onPrevious={() => scrollToSkin(visibleSkinIndex - 1)}
+        onNext={() => scrollToSkin(visibleSkinIndex + 1)}
+      />
       {/* Top shadow overlay */}
       <div
         style={{
@@ -204,7 +300,7 @@ export default function SkinScroller({
           top: 0,
           left: 0,
           width: "100%",
-          height: "4rem",
+          height: "1rem",
           background:
             "linear-gradient(180deg, rgba(26, 26, 26, 0.8) 0%, rgba(26, 26, 26, 0.4) 50%, rgba(26, 26, 26, 0) 100%)",
           pointerEvents: "none",

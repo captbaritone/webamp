@@ -1,89 +1,192 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   SCREENSHOT_HEIGHT,
   SCREENSHOT_WIDTH,
 } from "../../../legacy-client/src/constants";
 
-type Props = {
-  skinUrl: string;
-  closeModal: () => void;
-  loaded: () => void;
-};
+// @ts-ignore
+type WebampInstance = import("webamp").default;
 
-export default function WebampComponent({
-  skinUrl,
-  closeModal,
-  loaded,
-}: Props) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const outerRef = useRef<HTMLDivElement | null>(null);
-  // @ts-ignore
-  const webampRef = useRef<import("webamp").default | null>(null);
+/**
+ * Keeps a single Webamp instance alive for the lifetime of the scroller and
+ * moves it into `slot` whenever the focused skin changes. Swapping the skin on
+ * a live instance (rather than creating one per skin) means the music keeps
+ * playing as you scroll.
+ */
+export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const webampPromiseRef = useRef<Promise<WebampInstance> | null>(null);
+  const currentSkinUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
-    let disposed = false;
-    let cleanup = () => {};
+    return () => {
+      webampPromiseRef.current?.then((webamp) => webamp.dispose());
+      webampPromiseRef.current = null;
+      hostRef.current?.remove();
+      hostRef.current = null;
+    };
+  }, []);
 
-    async function loadWebamp() {
-      // @ts-ignore
-      const { default: Webamp } = await import("webamp");
+  useEffect(() => {
+    if (slot == null) {
+      return;
+    }
+    let cancelled = false;
+    // Holds the screenshot and the slot. Marked once Webamp is showing so the
+    // screenshot can be hidden (see scroll.css) and windows can be moved
+    // around without it showing through.
+    const container = slot.parentElement;
 
-      if (disposed) return;
-
-      const webamp = new Webamp({
-        initialSkin: { url: skinUrl },
-        initialTracks,
-        enableHotkeys: true,
-        zIndex: 1001,
+    if (hostRef.current == null) {
+      const host = document.createElement("div");
+      host.className = "webamp-container";
+      Object.assign(host.style, {
+        width: `${SCREENSHOT_WIDTH}px`,
+        height: `${SCREENSHOT_HEIGHT}px`,
+        position: "relative",
+        opacity: "0",
       });
+      // Webamp uses the wheel for volume (main window) and scrolling the
+      // playlist, and calls preventDefault, which stops the feed from moving
+      // to the next skin. Stop wheel events here, on the way down, so they
+      // never reach Webamp. We don't preventDefault, so the feed still
+      // scrolls.
+      host.addEventListener("wheel", (e) => e.stopPropagation(), {
+        capture: true,
+        passive: true,
+      });
+      hostRef.current = host;
+    }
+    const host = hostRef.current;
+    // Hide instantly so the previous skin doesn't ghost over the new
+    // screenshot, then fade in once the new skin is ready.
+    host.style.transition = "none";
+    host.style.opacity = "0";
+    // Moving the DOM node preserves Webamp's React root and all of its state.
+    slot.appendChild(host);
 
-      webampRef.current = webamp;
-      cleanup = () => webamp.dispose();
+    async function show() {
+      if (webampPromiseRef.current == null) {
+        currentSkinUrlRef.current = skinUrl;
+        webampPromiseRef.current = createWebamp(host, skinUrl);
+      }
+      const webamp = await webampPromiseRef.current;
+      if (cancelled) return;
 
-      webamp.onClose(closeModal);
-      // ref.current!.style.opacity = "0";
-      await webamp.renderInto(ref.current!);
-      const { width } = outerRef.current!.getBoundingClientRect();
-      const zoom = width / SCREENSHOT_WIDTH;
-      document
-        .getElementById("webamp")
+      if (currentSkinUrlRef.current !== skinUrl) {
+        currentSkinUrlRef.current = skinUrl;
+        resetWindowLayout(webamp);
+        webamp.setSkinFromUrl(skinUrl);
+        await webamp.skinIsLoaded();
+        if (cancelled) return;
+      }
+
+      const zoom = slot!.getBoundingClientRect().width / SCREENSHOT_WIDTH;
+      host
+        .querySelector<HTMLElement>("#webamp")
         ?.style.setProperty("zoom", String(zoom));
-      ref.current!.style.opacity = "1";
-
-      if (!disposed) loaded();
+      host.style.transition = "opacity 0.3s linear";
+      host.style.opacity = "1";
+      // Hide the screenshot once Webamp has faded in over it.
+      await new Promise((resolve) => {
+        setTimeout(resolve, 300);
+      });
+      if (cancelled) return;
+      container?.setAttribute(WEBAMP_READY_ATTRIBUTE, "");
     }
 
-    loadWebamp();
+    show().catch((error) => {
+      console.error("Failed to load Webamp", error);
+    });
 
     return () => {
-      disposed = true;
-      cleanup();
+      cancelled = true;
+      container?.removeAttribute(WEBAMP_READY_ATTRIBUTE);
     };
-  }, [skinUrl, closeModal, loaded]);
+  }, [slot, skinUrl]);
+}
 
-  return (
-    <div
-      ref={outerRef}
-      style={{
-        top: 0,
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <div
-        className="webamp-container"
-        style={{
-          width: SCREENSHOT_WIDTH,
-          height: SCREENSHOT_HEIGHT,
-          position: "relative",
-          opacity: 0,
-          transition: "opacity 1s linear",
-        }}
-        ref={ref}
-      />
-    </div>
-  );
+async function createWebamp(
+  host: HTMLElement,
+  skinUrl: string
+): Promise<WebampInstance> {
+  // @ts-ignore
+  const { default: Webamp } = await import("webamp");
+  const webamp = new Webamp({
+    initialSkin: { url: skinUrl },
+    initialTracks,
+    enableHotkeys: true,
+    // Only needs to sit above its own screenshot. Anything higher puts it on
+    // top of the bottom menu bar and its popup.
+    zIndex: 1,
+  });
+  // Track whether the user closed Webamp, so we only reopen it when needed.
+  // Reopening also resets Webamp's playback status to stopped, even if audio
+  // is still playing, which freezes the visualizer and stops it advancing to
+  // the next track.
+  webamp.onClose(() => {
+    closedWebamps.add(webamp);
+    // Show the screenshot again rather than an empty space.
+    host
+      .closest(`[${WEBAMP_READY_ATTRIBUTE}]`)
+      ?.removeAttribute(WEBAMP_READY_ATTRIBUTE);
+  });
+  await webamp.renderInto(host);
+  return webamp;
+}
+
+const closedWebamps = new WeakSet<WebampInstance>();
+
+const WEBAMP_READY_ATTRIBUTE = "data-webamp-ready";
+
+// Which windows are open in Webamp's default layout (and in screenshots).
+const DEFAULT_WINDOWS_OPEN = [
+  ["main", true],
+  ["equalizer", true],
+  ["playlist", true],
+  ["milkdrop", false],
+] as const;
+
+// Put the windows back where they are in the screenshot, so each new skin
+// lines up with its screenshot even if the user moved or closed windows while
+// viewing the previous one.
+//
+// Webamp has no public API for this, so we dispatch its internal actions
+// directly. The positions are Webamp's default stacked layout: each window is
+// 116px tall, which is why screenshots are 275x348.
+function resetWindowLayout(webamp: WebampInstance) {
+  if (closedWebamps.has(webamp)) {
+    closedWebamps.delete(webamp);
+    webamp.reopen();
+  }
+  // Put each window back in its default open/shade state. There are only
+  // toggles for these, so we compare against the current state.
+  const { genWindows } = webamp.store.getState().windows;
+  for (const [windowId, defaultOpen] of DEFAULT_WINDOWS_OPEN) {
+    const windowState = genWindows[windowId];
+    if (windowState == null) continue;
+    if (windowState.open !== defaultOpen) {
+      webamp.store.dispatch(
+        defaultOpen
+          ? { type: "TOGGLE_WINDOW", windowId }
+          : { type: "CLOSE_WINDOW", windowId }
+      );
+    }
+    // None are shaded by default.
+    if (windowState.shade) {
+      webamp.store.dispatch({ type: "TOGGLE_WINDOW_SHADE_MODE", windowId });
+    }
+  }
+  webamp.store.dispatch({ type: "RESET_WINDOW_SIZES" });
+  webamp.store.dispatch({
+    type: "UPDATE_WINDOW_POSITIONS",
+    positions: {
+      main: { x: 0, y: 0 },
+      equalizer: { x: 0, y: 116 },
+      playlist: { x: 0, y: 232 },
+    },
+    absolute: true,
+  });
 }
 
 const album = "netBloc Vol. 24: tiuqottigeloot";

@@ -14,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
     <div
       style={{
         position: "relative",
-        height: "100vh",
+        height: "100dvh",
       }}
     >
       {children}

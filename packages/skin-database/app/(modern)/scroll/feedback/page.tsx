@@ -22,7 +22,7 @@ async function sendFeedback(variables: {
     }
   `;
 
-  const response = await fetch("/api/graphql", {
+  const response = await fetch("/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

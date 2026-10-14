@@ -23,20 +23,43 @@ import {
 export default function BottomMenuBar() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+
+  // Publish our height so overlays (like the expanded readme) can sit right on
+  // top of the bar.
+  useEffect(() => {
+    const bar = barRef.current;
+    if (bar == null) return;
+    const root = document.documentElement;
+    const publish = () =>
+      root.style.setProperty(
+        "--bottom-nav-height",
+        `${bar.getBoundingClientRect().height}px`
+      );
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(bar);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--bottom-nav-height");
+    };
+  }, []);
   const pathname = usePathname();
 
   const toggleHamburger = () => {
-    setIsHamburgerOpen(!isHamburgerOpen);
+    setIsHamburgerOpen((open) => !open);
   };
 
   // Close hamburger menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        isHamburgerOpen
-      ) {
+      const target = event.target as Element;
+      // Let the toggle button handle its own clicks. Otherwise this closes the
+      // menu on mousedown and the button's click immediately reopens it.
+      if (target.closest("[data-hamburger-toggle]")) {
+        return;
+      }
+      if (menuRef.current && !menuRef.current.contains(target)) {
         setIsHamburgerOpen(false);
       }
     }
@@ -102,6 +125,7 @@ export default function BottomMenuBar() {
 
       {/* Bottom Menu Bar */}
       <div
+        ref={barRef}
         style={{
           position: "sticky",
           bottom: 0,
@@ -150,6 +174,7 @@ export default function BottomMenuBar() {
             onClick={toggleHamburger}
             isButton
             isActive={false}
+            isExpanded={isHamburgerOpen}
           />
         </div>
       </div>
@@ -163,6 +188,7 @@ type MenuButtonProps = {
   label: string;
   isButton?: boolean;
   isActive?: boolean;
+  isExpanded?: boolean;
   onClick?: () => void;
 };
 
@@ -172,6 +198,7 @@ function MenuButton({
   label,
   isButton = false,
   isActive = false,
+  isExpanded,
   onClick,
 }: MenuButtonProps) {
   const touchTargetSize = "3.0rem";
@@ -241,6 +268,10 @@ function MenuButton({
   if (isButton) {
     return (
       <button
+        data-hamburger-toggle
+        aria-label={label}
+        aria-expanded={isExpanded}
+        title={label}
         style={containerStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -316,7 +347,13 @@ function HamburgerMenuItem({
 
   if (external) {
     return (
-      <a href={href} onClick={onClick} style={{ textDecoration: "none" }}>
+      <a
+        href={href}
+        onClick={onClick}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: "none" }}
+      >
         {content}
       </a>
     );

@@ -1,5 +1,9 @@
 import SessionModel from "../../../../data/SessionModel";
-import { getClientSkins } from "../getClientSkins";
+import {
+  getClientSkins,
+  getClientSkinsPage,
+  INITIAL_PAGE_SIZE,
+} from "../getClientSkins";
 import SkinScroller from "../SkinScroller";
 
 // Ensure each page load gets a new session
@@ -12,7 +16,7 @@ export default async function ScrollPage() {
   // Create the session in the database
   const sessionId = await SessionModel.create();
 
-  const initialSkins = await getClientSkins(sessionId);
+  const initialSkins = await getClientSkinsPage(sessionId, INITIAL_PAGE_SIZE);
 
   return (
     <SkinScroller

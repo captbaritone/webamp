@@ -9,7 +9,7 @@ export default function StaticPage({ children }: StaticPageProps) {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         backgroundColor: "#1a1a1a",
         paddingBottom: "5rem", // Space for bottom menu bar
         boxSizing: "border-box",

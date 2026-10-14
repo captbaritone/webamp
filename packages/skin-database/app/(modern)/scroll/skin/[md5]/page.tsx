@@ -1,7 +1,12 @@
 import { Metadata } from "next";
 import SessionModel from "../../../../../data/SessionModel";
 import UserContext from "../../../../../data/UserContext";
-import { getClientSkins, getSkinForSession } from "../../getClientSkins";
+import {
+  getClientSkins,
+  getClientSkinsPage,
+  getSkinForSession,
+  INITIAL_PAGE_SIZE,
+} from "../../getClientSkins";
 import SkinScroller from "../../SkinScroller";
 import { generateSkinPageMetadata } from "../../../../(legacy)/skin/[hash]/skinMetadata";
 
@@ -21,7 +26,7 @@ export default async function Skin({ params }) {
 
   const ctx = new UserContext();
   const linked = await getSkinForSession(ctx, sessionId, md5);
-  const initialSkins = await getClientSkins(sessionId);
+  const initialSkins = await getClientSkinsPage(sessionId, INITIAL_PAGE_SIZE);
 
   return (
     <SkinScroller

@@ -744,10 +744,13 @@ export type ScrollPage = Array<{
 const PAGE_SIZE = 50;
 const FRESHNESS_PERCENTAGE = 0.2; // 20% random skins
 
-const randomCount = Math.floor(PAGE_SIZE * FRESHNESS_PERCENTAGE);
-const curatedCount = PAGE_SIZE - randomCount;
+export async function getScrollPage(
+  sessionId: string,
+  pageSize: number = PAGE_SIZE
+): Promise<ScrollPage> {
+  const randomCount = Math.floor(pageSize * FRESHNESS_PERCENTAGE);
+  const curatedCount = pageSize - randomCount;
 
-export async function getScrollPage(sessionId: string): Promise<ScrollPage> {
   const skins = await knex.raw(
     `
 SELECT

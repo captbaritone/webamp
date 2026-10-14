@@ -1,6 +1,6 @@
 body {
   margin: 0; /* Remove default margin */
-  height: 100vh; /* Set body height to viewport height */
+  height: 100dvh; /* Set body height to viewport height */
   background-color: #1a1a1a; /* Dark charcoal instead of pure black */
   font-family: "MS Sans Serif", "Segoe UI", sans-serif;
 }
@@ -19,4 +19,420 @@ button {
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/*
+ * Once Webamp has loaded over a skin's screenshot, hide the screenshot so it
+ * doesn't show through when windows are moved, shaded or closed. It keeps its
+ * space in the layout.
+ */
+[data-webamp-ready] > img {
+  visibility: hidden;
+}
+
+/*
+ * The column holding a feed page's skin, icons and readme. On mobile it would
+ * otherwise run edge to edge, so give it a small gutter. On desktop it's
+ * already narrower than the screen.
+ */
+.skin-column {
+  box-sizing: border-box;
+  padding: 0 0.75rem;
+}
+
+@media (min-aspect-ratio: 3/4) {
+  .skin-column {
+    padding: 0;
+  }
+}
+
+/* The skin's filename, above it. One line so every page lays out the same. */
+.skin-title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: bold;
+  color: #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*
+ * The skin (screenshot/Webamp). On desktop the action icons are positioned
+ * against it.
+ */
+.skin-frame {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/*
+ * Like/share/flag/download. On narrow screens they're a row under the skin;
+ * overlaying them would put them under Webamp (or over its controls).
+ */
+.skin-action-icons {
+  display: flex;
+  /*
+   * Reversed so the like button (first in the column on desktop) sits at the
+   * right edge. With row-reverse, flex-start is the right-hand side.
+   */
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  padding: 0.75rem 0.5rem;
+}
+
+.skin-action-button {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.skin-action-button svg {
+  width: 26px;
+  height: 26px;
+}
+
+/*
+ * "Copied" confirmation on the share button. Floats over its surroundings so
+ * it doesn't shift the other icons. Above the icon in the mobile row.
+ */
+.skin-action-status {
+  position: absolute;
+  bottom: calc(100% + 0.375rem);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.skin-action-status:empty {
+  display: none;
+}
+
+/*
+ * When the window is wide enough to fit them beside the 9:16 skin column
+ * (56.25dvh wide) stack them in a column to its right.
+ */
+@media (min-aspect-ratio: 3/4) {
+  .skin-action-icons {
+    position: absolute;
+    left: calc(100% + 1.5rem);
+    /* Vertically centered alongside the skin. */
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .skin-action-button {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .skin-action-button svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* To the right of the icon in the desktop column. */
+  .skin-action-status {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 0.5rem);
+    transform: translateY(-50%);
+  }
+}
+
+/* Shown inside the search input while a query is debouncing or in flight. */
+.search-spinner {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: search-spin 0.7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes search-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-spinner {
+    animation-duration: 2s;
+  }
+}
+
+/*
+ * Filename and readme under each skin in the feed. The whole readme is
+ * rendered, clipped to the space left under the skin.
+ */
+.skin-readme-slot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.skin-readme {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  box-sizing: border-box;
+  color: white;
+  background: #1a1a1a;
+  /* Same box as when expanded, so nothing shifts as it opens. */
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.skin-readme[role="button"] {
+  cursor: pointer;
+}
+
+/* Header and text. Slides as one while the readme expands. */
+.skin-readme-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.5rem 0.5rem 0;
+}
+
+.skin-readme-text {
+  min-height: 0;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #999;
+  font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+  /* Keep readme formatting (and ASCII art) intact. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Shows there's more text. Pinned to the bottom of the readme box. */
+.skin-readme-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(2.5rem, 60%);
+  background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #1a1a1a);
+  pointer-events: none;
+}
+
+/*
+ * Expanded: the same element, grown upward over the skin. It keeps its bottom
+ * edge, which is the top of the bottom menu bar. Positioned against the (full
+ * viewport height) feed page. Above Webamp (1) and the top shadow (500); below
+ * the menu bar (1000) and its popup (999).
+ */
+.skin-readme.expanded {
+  position: absolute;
+  bottom: var(--bottom-nav-height, 4rem);
+  z-index: 601;
+  flex: none;
+  /* Leave the top shadow area clear. */
+  max-height: calc(100% - var(--bottom-nav-height, 4rem) - 3rem);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.skin-readme.expanded .skin-readme-text {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Lets the last lines be scrolled up out of the fade. */
+  padding-bottom: 2.5rem;
+  color: #bbb;
+}
+
+.skin-readme.expanded .skin-readme-collapse {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tap target behind the expanded readme that collapses it. */
+.readme-expanded-dismiss {
+  position: absolute;
+  inset: 0;
+  z-index: 600;
+}
+
+.skin-readme-collapse {
+  float: right;
+  position: sticky;
+  top: 0;
+  margin: 0 0 0.25rem 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+/* Only show a focus ring for keyboard focus, not on click/tap. */
+.skin-readme-collapse:focus,
+.skin-readme[role="button"]:focus {
+  outline: none;
+}
+
+.skin-readme-collapse:focus-visible,
+.skin-readme[role="button"]:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skin-readme,
+  .skin-readme-content {
+    transition: none !important;
+  }
+}
+
+/*
+ * Mobile scroll hint: a pill just above the bottom menu bar. Above the
+ * readme (601) and top shadow (500); below the menu bar (1000).
+ */
+.scroll-hint-pill {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--bottom-nav-height, 4rem) + 0.75rem);
+  transform: translateX(-50%);
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 0.8rem;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+  animation: scroll-hint-in 0.3s ease-out;
+}
+
+.scroll-hint-chevron {
+  animation: scroll-hint-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-hint-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.5rem);
+  }
+}
+
+@keyframes scroll-hint-nudge {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Desktop previous/next skin buttons. Hidden on mobile, where you swipe. */
+.feed-nav-buttons {
+  display: none;
+}
+
+@media (min-aspect-ratio: 3/4) {
+  .scroll-hint-pill {
+    display: none;
+  }
+
+  /*
+   * At the right edge of the screen, vertically centered. On narrower desktop
+   * windows there isn't room for these beside the action icons, so
+   * FeedNavButtons hides them there.
+   */
+  .feed-nav-buttons {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.feed-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.feed-nav-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.feed-nav-button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.feed-nav-button:focus {
+  outline: none;
+}
+
+.feed-nav-button:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint-pill,
+  .scroll-hint-chevron {
+    animation: none;
+  }
 }

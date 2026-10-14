@@ -18,19 +18,41 @@ import {
   MOBILE_MAX_WIDTH,
 } from "../../../legacy-client/src/constants";
 import { getMuseumPageSkins, GridSkin } from "./getMuseumPageSkins";
-import { searchSkins as performAlgoliaSearch } from "./algoliaClient";
+import {
+  algoliaSearch,
+  graphqlSearch,
+  USE_ALGOLIA,
+} from "../../../legacy-client/src/algolia";
+import { getSearchDebounceMs } from "../../../legacy-client/src/searchConfig";
 
 // Simple utility to get screenshot URL (avoiding server-side import)
 function getScreenshotUrl(md5: string): string {
   return `https://r2.webampskins.org/screenshots/${md5}.png`;
 }
 
+const PAGE_SIZE = 50;
+
+// Same backends as the legacy museum search. If Algolia is enabled but
+// failing (e.g. out of quota) fall back to our own SQLite FTS search.
+async function runSearch(query: string): Promise<{
+  hits: Array<{ objectID: string; fileName: string; nsfw?: any }>;
+}> {
+  if (USE_ALGOLIA) {
+    try {
+      return await algoliaSearch(query);
+    } catch (error) {
+      console.warn("Algolia search failed, falling back to SQLite", error);
+    }
+  }
+  return graphqlSearch(query);
+}
+
 type CellData = {
-  skins: GridSkin[];
+  // Sparse: pages are written at their offset as they arrive.
+  skins: Array<GridSkin | undefined>;
   columnCount: number;
   width: number;
   height: number;
-  loadMoreSkins: (startIndex: number) => Promise<void>;
 };
 
 function Cell({
@@ -46,7 +68,6 @@ function Cell({
 }) {
   const { skins, width, height, columnCount } = data;
   const index = rowIndex * columnCount + columnIndex;
-  data.loadMoreSkins(index);
   const skin = skins[index];
 
   if (!skin) {
@@ -110,33 +131,41 @@ export default function SkinTable({
     return params.get("q") || "";
   });
 
-  // State for browsing mode
-  const [browseSkins, setBrowseSkins] = useState<GridSkin[]>(initialSkins);
-  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set([0]));
-  const isLoadingRef = useRef(false);
+  // State for browsing mode. A sparse array indexed by position in the museum,
+  // so pages land in the right place even if they load out of order.
+  const [browseSkins, setBrowseSkins] =
+    useState<Array<GridSkin | undefined>>(initialSkins);
+  const loadedPagesRef = useRef<Set<number>>(new Set([0]));
+  const inFlightPagesRef = useRef<Set<number>>(new Set());
 
   // State for search mode
   const [searchSkins, setSearchSkins] = useState<GridSkin[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
-  const [_, setSearchIsPending] = useState(false);
-
-  // Debounce timer ref
+  // The query that `searchSkins`/`searchError` are the outcome of. Until it
+  // matches the input, a search is pending (debouncing or in flight).
+  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
 
   // Determine which mode we're in based on actual search query, not input
   const isSearchMode = inputValue.trim().length > 0;
-  const skins = isSearchMode ? searchSkins : browseSkins;
-  const total = isSearchMode ? searchSkins.length : initialTotal;
+  const searchPending = isSearchMode && resultsQuery !== inputValue.trim();
+  // While a search is pending we leave whatever was already on screen mounted:
+  // the previous query's results, or the browse grid if this is the first
+  // query. So we show search results once any query has resolved.
+  const showSearchResults = isSearchMode && resultsQuery !== null;
+  const skins = showSearchResults ? searchSkins : browseSkins;
+  const total = showSearchResults ? searchSkins.length : initialTotal;
 
   // Handle search input change
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setInputValue(query);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   useEffect(() => {
-    const query = inputValue;
-    const newUrl = query.trim() === "" ? "/scroll/" : `/scroll/?q=${query}`;
-    // window.document.title = `${skins[visibleSkinIndex].fileName} - Winamp Skin Museum`;
+    const query = inputValue.trim();
+    const newUrl =
+      query === ""
+        ? "/scroll/"
+        : `/scroll/?${new URLSearchParams({ q: inputValue })}`;
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },
       "",
@@ -144,71 +173,101 @@ export default function SkinTable({
     );
 
     // If query is empty, clear results immediately
-    if (!query || query.trim().length === 0) {
+    if (query.length === 0) {
       setSearchSkins([]);
       setSearchError(null);
+      setResultsQuery(null);
       return;
     }
 
-    async function fetchResults() {
+    // Debounce, and ignore responses that arrive after a newer query.
+    let cancelled = false;
+    const timer = setTimeout(async () => {
       try {
-        setSearchIsPending(true);
-        const result = await performAlgoliaSearch(query);
-        const hits = result.hits as Array<{
-          objectID: string;
-          fileName: string;
-          nsfw?: boolean;
-        }>;
-        const searchResults: GridSkin[] = hits.map((hit) => ({
-          md5: hit.objectID,
-          screenshotUrl: getScreenshotUrl(hit.objectID),
-          fileName: hit.fileName,
-          nsfw: hit.nsfw ?? false,
-        }));
-        setSearchSkins(searchResults);
+        const result = await runSearch(query);
+        if (cancelled) return;
+        setSearchSkins(
+          result.hits.map((hit) => ({
+            md5: hit.objectID,
+            screenshotUrl: getScreenshotUrl(hit.objectID),
+            fileName: hit.fileName,
+            // Some records still have float scores rather than booleans.
+            nsfw: hit.nsfw === true || hit.nsfw === 1,
+          }))
+        );
+        setSearchError(null);
+        setResultsQuery(query);
       } catch (err) {
+        if (cancelled) return;
         console.error("Search failed:", err);
         setSearchError("Search failed. Please try again.");
         setSearchSkins([]);
-      } finally {
-        setSearchIsPending(false);
+        setResultsQuery(query);
       }
-    }
-    fetchResults();
+    }, getSearchDebounceMs());
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [inputValue]);
 
-  const columnCount = Math.round(windowWidth / (SCREENSHOT_WIDTH * 0.9));
+  const columnCount = Math.max(
+    1,
+    Math.round(windowWidth / (SCREENSHOT_WIDTH * 0.9))
+  );
   const columnWidth = windowWidth / columnCount;
   const rowHeight = columnWidth * SKIN_RATIO;
-  const pageSize = 50; // Number of skins to load per page
 
-  const loadMoreSkins = useCallback(
-    async (startIndex: number) => {
-      // Don't load more in search mode
-      if (isSearchMode) {
+  const loadPage = useCallback(async (pageNumber: number) => {
+    if (
+      loadedPagesRef.current.has(pageNumber) ||
+      inFlightPagesRef.current.has(pageNumber)
+    ) {
+      return;
+    }
+    inFlightPagesRef.current.add(pageNumber);
+    try {
+      const offset = pageNumber * PAGE_SIZE;
+      const newSkins = await getMuseumPageSkins(offset, PAGE_SIZE);
+      setBrowseSkins((prev) => {
+        const next = prev.slice();
+        newSkins.forEach((skin, i) => {
+          next[offset + i] = skin;
+        });
+        return next;
+      });
+      loadedPagesRef.current.add(pageNumber);
+    } catch (error) {
+      // Leave the page unloaded so it's retried next time it's rendered.
+      console.error("Failed to load skins:", error);
+    } finally {
+      inFlightPagesRef.current.delete(pageNumber);
+    }
+  }, []);
+
+  const onItemsRendered = useCallback(
+    ({
+      overscanRowStartIndex,
+      overscanRowStopIndex,
+    }: {
+      overscanRowStartIndex: number;
+      overscanRowStopIndex: number;
+    }) => {
+      if (showSearchResults) {
         return;
       }
-
-      const pageNumber = Math.floor(startIndex / pageSize);
-
-      // Don't reload if we already have this page
-      if (loadedPages.has(pageNumber) || isLoadingRef.current) {
-        return;
-      }
-
-      isLoadingRef.current = true;
-      try {
-        const offset = pageNumber * pageSize;
-        const newSkins = await getMuseumPageSkins(offset, pageSize);
-        setBrowseSkins((prev) => [...prev, ...newSkins]);
-        setLoadedPages((prev) => new Set([...prev, pageNumber]));
-      } catch (error) {
-        console.error("Failed to load skins:", error);
-      } finally {
-        isLoadingRef.current = false;
+      const firstIndex = overscanRowStartIndex * columnCount;
+      const lastIndex = (overscanRowStopIndex + 1) * columnCount - 1;
+      for (
+        let page = Math.floor(firstIndex / PAGE_SIZE);
+        page <= Math.floor(lastIndex / PAGE_SIZE);
+        page++
+      ) {
+        loadPage(page);
       }
     },
-    [loadedPages, pageSize, isSearchMode]
+    [showSearchResults, columnCount, loadPage]
   );
 
   const itemKey = useCallback(
@@ -237,9 +296,8 @@ export default function SkinTable({
       columnCount,
       width: columnWidth,
       height: rowHeight,
-      loadMoreSkins,
     }),
-    [skins, columnCount, columnWidth, rowHeight, loadMoreSkins]
+    [skins, columnCount, columnWidth, rowHeight]
   );
 
   return (
@@ -263,10 +321,13 @@ export default function SkinTable({
             value={inputValue}
             onChange={handleSearchChange}
             placeholder="Search skins..."
+            aria-label="Search skins"
+            aria-busy={searchPending}
             style={{
               width: "100%",
               padding: "0.75rem 1rem",
-              paddingRight: "1rem",
+              // Make room for the pending spinner.
+              paddingRight: searchPending ? "2.75rem" : "1rem",
               fontSize: "1rem",
               backgroundColor: "rgba(26, 26, 26, 0.55)",
               backdropFilter: "blur(10px)",
@@ -287,11 +348,18 @@ export default function SkinTable({
               e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
             }}
           />
+          {searchPending && (
+            <div
+              className="search-spinner"
+              role="status"
+              aria-label="Searching"
+            />
+          )}
         </div>
       </div>
 
       {/* Error State */}
-      {isSearchMode && searchError && (
+      {showSearchResults && searchError && (
         <div
           style={{
             display: "flex",
@@ -306,7 +374,7 @@ export default function SkinTable({
       )}
 
       {/* Empty Results */}
-      {isSearchMode && !searchError && skins.length === 0 && (
+      {showSearchResults && !searchError && skins.length === 0 && (
         <div
           style={{
             display: "flex",
@@ -316,12 +384,12 @@ export default function SkinTable({
             color: "#ccc",
           }}
         >
-          No results found for &quot;{inputValue}&quot;
+          No results found for &quot;{resultsQuery}&quot;
         </div>
       )}
 
       {/* Grid - show when browsing or when we have results (even while pending) */}
-      {(!isSearchMode || (!searchError && skins.length > 0)) && (
+      {(!showSearchResults || (!searchError && skins.length > 0)) && (
         <Grid
           ref={gridRef}
           itemKey={itemKey}
@@ -332,8 +400,9 @@ export default function SkinTable({
           rowCount={Math.ceil(total / columnCount)}
           rowHeight={rowHeight}
           width={windowWidth}
-          overscanRowsCount={5}
+          overscanRowCount={5}
           onScroll={onScroll}
+          onItemsRendered={onItemsRendered}
           style={{ overflowY: "scroll" }}
         >
           {Cell}

@@ -4,93 +4,96 @@
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
-import WebampComponent from "./Webamp";
+import SkinReadme from "./SkinReadme";
+import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 type Props = {
   skin: ClientSkin;
   index: number;
   sessionId: string;
-  focused: boolean;
+  // Only set for the focused skin. The shared Webamp instance is moved into
+  // this element.
+  webampSlotRef?: (node: HTMLDivElement | null) => void;
 };
 
-export default function SkinPage({ skin, index, sessionId, focused }: Props) {
-  const showWebamp = focused;
+export default function SkinPage({
+  skin,
+  index,
+  sessionId,
+  webampSlotRef,
+}: Props) {
   return (
     <div
-      key={skin.md5}
-      skin-md5={skin.md5}
-      skin-index={index}
+      data-skin-md5={skin.md5}
+      data-skin-index={index}
       className="scroller"
       style={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "start",
         scrollSnapStop: "always",
         position: "relative",
-        paddingTop: "2rem", // Space for top shadow
-        paddingBottom: "5rem", // Space for bottom menu bar
+        paddingTop: "1rem",
+        // Space for the bottom menu bar. Exactly its height, so the readme
+        // ends right on top of it.
+        paddingBottom: "var(--bottom-nav-height, 4rem)",
         boxSizing: "border-box",
       }}
     >
-      <div style={{ position: "relative", flexShrink: 0 }}>
-        <ViewTransition name={`skin-${skin.md5}`}>
-          <img
-            src={skin.screenshotUrl}
-            alt={skin.fileName}
-            style={{
-              position: "relative",
-              width: "100%",
-              aspectRatio: "275 / 348",
-              imageRendering: "pixelated",
-            }}
-          />
-          {showWebamp && (
-            <WebampComponent
-              skinUrl={skin.skinUrl}
-              closeModal={() => {}}
-              loaded={() => {}}
-            />
-          )}
-        </ViewTransition>
-
-        <SkinActionIcons skin={skin} sessionId={sessionId} />
-      </div>
-
       <div
+        className="skin-column"
         style={{
-          color: "white",
-          paddingLeft: "0.5rem",
-          paddingTop: "0.5rem",
-          flexShrink: 0,
+          width: "100%",
+          maxWidth: MOBILE_MAX_WIDTH,
+          margin: "0 auto",
+          // The skin, then the readme filling whatever space is left.
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
         }}
       >
-        <h2
-          style={{
-            marginBottom: 0,
-            fontSize: "0.9rem",
-            paddingBottom: "0",
-            fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
-            color: "#ccc",
-            wordBreak: "break-all",
-          }}
-        >
+        <h2 className="skin-title" title={skin.fileName}>
           {skin.fileName}
         </h2>
-        <p
-          style={{
-            marginTop: "0.5rem",
-            fontSize: "0.75rem",
-            paddingTop: "0",
-            color: "#999",
-            fontFamily: 'monospace, "Courier New", Courier, monospace',
-            overflow: "hidden",
-          }}
-        >
-          {skin.readmeStart}
-        </p>
+        {/* The skin, with the action icons positioned beside it. */}
+        <div className="skin-frame">
+          <div style={{ position: "relative" }}>
+            <ViewTransition name={`skin-${skin.md5}`}>
+              <img
+                src={skin.screenshotUrl}
+                alt={skin.fileName}
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "275 / 348",
+                  imageRendering: "pixelated",
+                }}
+              />
+              {webampSlotRef != null && (
+                <div
+                  ref={webampSlotRef}
+                  style={{
+                    top: 0,
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              )}
+            </ViewTransition>
+          </div>
+
+          <SkinActionIcons skin={skin} sessionId={sessionId} />
+        </div>
+
+        <SkinReadme
+          skin={skin}
+          sessionId={sessionId}
+          focused={webampSlotRef != null}
+        />
       </div>
     </div>
   );
