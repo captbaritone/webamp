@@ -10,6 +10,7 @@ import StaticPage, {
   Textarea,
   Button,
 } from "../StaticPage";
+import { fetchGraphql } from "../graphql";
 
 async function sendFeedback(variables: {
   message: string;
@@ -22,22 +23,7 @@ async function sendFeedback(variables: {
     }
   `;
 
-  const response = await fetch("/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: mutation,
-      variables,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to send feedback");
-  }
-
-  return response.json();
+  return fetchGraphql(mutation, variables);
 }
 
 export default function FeedbackPage() {

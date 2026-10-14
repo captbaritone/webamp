@@ -87,7 +87,7 @@ export default function SkinScroller({
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  });
+  }, [visibleSkinIndex, skins.length, containerRef]);
 
   useLayoutEffect(() => {
     if (containerRef == null) {
@@ -273,7 +273,8 @@ export default function SkinScroller({
               skin={skin}
               index={i}
               sessionId={sessionId}
-              webampSlotRef={i === visibleSkinIndex ? setWebampSlot : undefined}
+              focused={i === visibleSkinIndex}
+              webampSlotRef={setWebampSlot}
             />
           );
         })}

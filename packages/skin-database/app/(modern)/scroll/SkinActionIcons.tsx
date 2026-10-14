@@ -13,8 +13,8 @@ type Props = {
 
 export default function SkinActionIcons({ skin, sessionId }: Props) {
   return (
-    // Positioned in scroll.css: overlaid on the skin on mobile, beside it on
-    // desktop.
+    // Laid out in scroll.css: a row under the skin on mobile, a column beside
+    // it on desktop.
     <div className="skin-action-icons">
       <LikeButton skin={skin} sessionId={sessionId} />
       <ShareButton skin={skin} sessionId={sessionId} />
@@ -29,7 +29,6 @@ export default function SkinActionIcons({ skin, sessionId }: Props) {
 type ButtonProps = {
   onClick: () => void;
   disabled?: boolean;
-  opacity?: number;
   "aria-label": string;
   children: ReactNode;
 };
@@ -37,7 +36,6 @@ type ButtonProps = {
 function Button({
   onClick,
   disabled = false,
-  opacity = 1,
   "aria-label": ariaLabel,
   children,
 }: ButtonProps) {
@@ -46,10 +44,6 @@ function Button({
       onClick={onClick}
       disabled={disabled}
       className="skin-action-button"
-      style={{
-        cursor: disabled ? "default" : "pointer",
-        opacity,
-      }}
       aria-label={ariaLabel}
       title={ariaLabel}
     >
@@ -104,15 +98,7 @@ function LikeButton({ skin, sessionId }: LikeButtonProps) {
         strokeWidth={2}
       />
       {likeCount > 0 && (
-        <span
-          style={{
-            color: "white",
-            fontSize: "0.75rem",
-            fontWeight: "bold",
-          }}
-        >
-          {formatLikeCount(likeCount)}
-        </span>
+        <span className="skin-like-count">{formatLikeCount(likeCount)}</span>
       )}
     </Button>
   );
@@ -258,7 +244,6 @@ function FlagButton({ skin, sessionId }: FlagButtonProps) {
     <Button
       onClick={handleFlagNsfw}
       disabled={isFlagged}
-      opacity={isFlagged ? 0.5 : 1}
       aria-label={isFlagged ? "Reported as NSFW" : "Report as NSFW"}
     >
       <Flag

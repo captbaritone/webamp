@@ -22,28 +22,44 @@ button {
 }
 
 /*
- * Once Webamp has loaded over a skin's screenshot, hide the screenshot so it
- * doesn't show through when windows are moved, shaded or closed. It keeps its
- * space in the layout.
+ * Layering, bottom to top: Webamp (1, set in Webamp.tsx), the top shadow
+ * (500), the expanded readme (600/601), the hint pill and nav buttons (700),
+ * the bottom menu bar's popup (999) and the bar itself (1000).
  */
-[data-webamp-ready] > img {
-  visibility: hidden;
+
+/*
+ * One feed page: a full-viewport snap point. Space at the bottom for the
+ * bottom menu bar, exactly its height so the readme ends right on top of it.
+ * Also used by the skin route's loading state so it lays out identically.
+ */
+.skin-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100dvh;
+  padding-top: 1rem;
+  padding-bottom: var(--bottom-nav-height, 4rem);
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /*
- * The column holding a feed page's skin, icons and readme. On mobile it would
- * otherwise run edge to edge, so give it a small gutter. On desktop it's
- * already narrower than the screen.
+ * The column holding a page's title, skin, icons and readme (its max width is
+ * set inline from MOBILE_MAX_WIDTH). The readme fills whatever space the skin
+ * leaves. On mobile it would otherwise run edge to edge, so give it a small
+ * gutter.
  */
 .skin-column {
-  box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  margin: 0 auto;
   padding: 0 0.75rem;
-}
-
-@media (min-aspect-ratio: 3/4) {
-  .skin-column {
-    padding: 0;
-  }
+  box-sizing: border-box;
 }
 
 /* The skin's filename, above it. One line so every page lays out the same. */
@@ -68,8 +84,24 @@ button {
   flex-shrink: 0;
 }
 
+.skin-screenshot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 275 / 348;
+  image-rendering: pixelated;
+}
+
 /*
- * Like/share/flag/download. On narrow screens they're a row under the skin;
+ * Once Webamp has loaded over a skin's screenshot, hide the screenshot so it
+ * doesn't show through when windows are moved, shaded or closed. It keeps its
+ * space in the layout.
+ */
+[data-webamp-ready] > img {
+  visibility: hidden;
+}
+
+/*
+ * Like/share/flag/download. On mobile they're a row under the skin;
  * overlaying them would put them under Webamp (or over its controls).
  */
 .skin-action-icons {
@@ -94,11 +126,23 @@ button {
   flex-direction: row;
   align-items: center;
   gap: 0.375rem;
+  cursor: pointer;
+}
+
+.skin-action-button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .skin-action-button svg {
   width: 26px;
   height: 26px;
+}
+
+.skin-like-count {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 
 /*
@@ -125,41 +169,6 @@ button {
   display: none;
 }
 
-/*
- * When the window is wide enough to fit them beside the 9:16 skin column
- * (56.25dvh wide) stack them in a column to its right.
- */
-@media (min-aspect-ratio: 3/4) {
-  .skin-action-icons {
-    position: absolute;
-    left: calc(100% + 1.5rem);
-    /* Vertically centered alongside the skin. */
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 0;
-  }
-
-  .skin-action-button {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .skin-action-button svg {
-    width: 32px;
-    height: 32px;
-  }
-
-  /* To the right of the icon in the desktop column. */
-  .skin-action-status {
-    bottom: auto;
-    top: 50%;
-    left: calc(100% + 0.5rem);
-    transform: translateY(-50%);
-  }
-}
-
 /* Shown inside the search input while a query is debouncing or in flight. */
 .search-spinner {
   position: absolute;
@@ -181,15 +190,9 @@ button {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .search-spinner {
-    animation-duration: 2s;
-  }
-}
-
 /*
- * Filename and readme under each skin in the feed. The whole readme is
- * rendered, clipped to the space left under the skin.
+ * The readme under each skin in the feed. The whole readme is rendered,
+ * clipped to the space left under the skin.
  */
 .skin-readme-slot {
   flex: 1;
@@ -217,7 +220,7 @@ button {
   cursor: pointer;
 }
 
-/* Header and text. Slides as one while the readme expands. */
+/* The readme text. Slides while the readme expands; the fade stays put. */
 .skin-readme-content {
   flex: 1;
   display: flex;
@@ -252,8 +255,7 @@ button {
 /*
  * Expanded: the same element, grown upward over the skin. It keeps its bottom
  * edge, which is the top of the bottom menu bar. Positioned against the (full
- * viewport height) feed page. Above Webamp (1) and the top shadow (500); below
- * the menu bar (1000) and its popup (999).
+ * viewport height) feed page.
  */
 .skin-readme.expanded {
   position: absolute;
@@ -274,11 +276,6 @@ button {
   color: #bbb;
 }
 
-.skin-readme.expanded .skin-readme-collapse {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* Tap target behind the expanded readme that collapses it. */
 .readme-expanded-dismiss {
   position: absolute;
@@ -286,13 +283,16 @@ button {
   z-index: 600;
 }
 
+/*
+ * Floated into the text's top-right corner. Invisible while collapsed (where
+ * it's also inert, so it can't be clicked or focused).
+ */
 .skin-readme-collapse {
   float: right;
   position: sticky;
   top: 0;
   margin: 0 0 0.25rem 0.5rem;
   opacity: 0;
-  pointer-events: none;
   transition: opacity 0.25s ease-out;
   background: none;
   border: none;
@@ -302,29 +302,25 @@ button {
   cursor: pointer;
 }
 
+.skin-readme.expanded .skin-readme-collapse {
+  opacity: 1;
+}
+
 /* Only show a focus ring for keyboard focus, not on click/tap. */
 .skin-readme-collapse:focus,
-.skin-readme[role="button"]:focus {
+.skin-readme[role="button"]:focus,
+.feed-nav-button:focus {
   outline: none;
 }
 
 .skin-readme-collapse:focus-visible,
-.skin-readme[role="button"]:focus-visible {
+.skin-readme[role="button"]:focus-visible,
+.feed-nav-button:focus-visible {
   outline: 1px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .skin-readme,
-  .skin-readme-content {
-    transition: none !important;
-  }
-}
-
-/*
- * Mobile scroll hint: a pill just above the bottom menu bar. Above the
- * readme (601) and top shadow (500); below the menu bar (1000).
- */
+/* Mobile scroll hint: a pill just above the bottom menu bar. */
 .scroll-hint-pill {
   position: fixed;
   left: 50%;
@@ -375,28 +371,6 @@ button {
   display: none;
 }
 
-@media (min-aspect-ratio: 3/4) {
-  .scroll-hint-pill {
-    display: none;
-  }
-
-  /*
-   * At the right edge of the screen, vertically centered. On narrower desktop
-   * windows there isn't room for these beside the action icons, so
-   * FeedNavButtons hides them there.
-   */
-  .feed-nav-buttons {
-    position: fixed;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 700;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-}
-
 .feed-nav-button {
   display: flex;
   align-items: center;
@@ -421,18 +395,77 @@ button {
   cursor: default;
 }
 
-.feed-nav-button:focus {
-  outline: none;
-}
+/*
+ * Desktop: the window is wide enough to fit things beside the 9:16 skin
+ * column. Keep in sync with DESKTOP_MEDIA_QUERY in FeedNavigation.tsx.
+ */
+@media (min-aspect-ratio: 3/4) {
+  /* Already narrower than the screen; no gutter needed. */
+  .skin-column {
+    padding: 0;
+  }
 
-.feed-nav-button:focus-visible {
-  outline: 1px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
+  /* A column to the right of the skin, vertically centered alongside it. */
+  .skin-action-icons {
+    position: absolute;
+    left: calc(100% + 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .skin-action-button {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .skin-action-button svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* To the right of the icon in the desktop column. */
+  .skin-action-status {
+    bottom: auto;
+    top: 50%;
+    left: calc(100% + 0.5rem);
+    transform: translateY(-50%);
+  }
+
+  .scroll-hint-pill {
+    display: none;
+  }
+
+  /*
+   * At the right edge of the screen, vertically centered. On narrower desktop
+   * windows there isn't room for these beside the action icons, so
+   * FeedNavButtons hides them there.
+   */
+  .feed-nav-buttons {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 700;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .search-spinner {
+    animation-duration: 2s;
+  }
+
   .scroll-hint-pill,
   .scroll-hint-chevron {
     animation: none;
+  }
+
+  .skin-readme,
+  .skin-readme-content {
+    transition: none !important;
   }
 }

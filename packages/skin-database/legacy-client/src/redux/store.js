@@ -33,7 +33,7 @@ export function createStore() {
   window.onpopstate = function () {
     syncUrlToStore(store, { force: true });
   };
-  syncUrlToStore(store, { force: true });
+  syncUrlToStore(store);
   // TODO: We could maybe get this going eaven before JS starts parsing...
   store.dispatch(Actions.requestUnloadedSkin(0));
   return store;

@@ -1,7 +1,10 @@
 "use client";
 
-// @ts-expect-error - unstable_ViewTransition is not yet in @types/react
-import { unstable_ViewTransition as ViewTransition } from "react";
+import {
+  memo,
+  // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
+  unstable_ViewTransition as ViewTransition,
+} from "react";
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
 import SkinReadme from "./SkinReadme";
@@ -11,50 +14,25 @@ type Props = {
   skin: ClientSkin;
   index: number;
   sessionId: string;
-  // Only set for the focused skin. The shared Webamp instance is moved into
-  // this element.
-  webampSlotRef?: (node: HTMLDivElement | null) => void;
+  // Whether this is the skin currently scrolled into view.
+  focused: boolean;
+  // Receives the element the shared Webamp instance is moved into, which only
+  // the focused skin renders.
+  webampSlotRef: (node: HTMLDivElement | null) => void;
 };
 
-export default function SkinPage({
+// Memoized: the feed keeps every page it has loaded mounted, and only the
+// pages gaining or losing focus need to re-render as you scroll.
+export default memo(function SkinPage({
   skin,
   index,
   sessionId,
+  focused,
   webampSlotRef,
 }: Props) {
   return (
-    <div
-      data-skin-md5={skin.md5}
-      data-skin-index={index}
-      className="scroller"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        height: "100dvh",
-        scrollSnapAlign: "start",
-        scrollSnapStop: "always",
-        position: "relative",
-        paddingTop: "1rem",
-        // Space for the bottom menu bar. Exactly its height, so the readme
-        // ends right on top of it.
-        paddingBottom: "var(--bottom-nav-height, 4rem)",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        className="skin-column"
-        style={{
-          width: "100%",
-          maxWidth: MOBILE_MAX_WIDTH,
-          margin: "0 auto",
-          // The skin, then the readme filling whatever space is left.
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 0,
-        }}
-      >
+    <div data-skin-index={index} className="scroller skin-page">
+      <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
         <h2 className="skin-title" title={skin.fileName}>
           {skin.fileName}
         </h2>
@@ -63,16 +41,11 @@ export default function SkinPage({
           <div style={{ position: "relative" }}>
             <ViewTransition name={`skin-${skin.md5}`}>
               <img
+                className="skin-screenshot"
                 src={skin.screenshotUrl}
                 alt={skin.fileName}
-                style={{
-                  position: "relative",
-                  width: "100%",
-                  aspectRatio: "275 / 348",
-                  imageRendering: "pixelated",
-                }}
               />
-              {webampSlotRef != null && (
+              {focused && (
                 <div
                   ref={webampSlotRef}
                   style={{
@@ -89,12 +62,8 @@ export default function SkinPage({
           <SkinActionIcons skin={skin} sessionId={sessionId} />
         </div>
 
-        <SkinReadme
-          skin={skin}
-          sessionId={sessionId}
-          focused={webampSlotRef != null}
-        />
+        <SkinReadme skin={skin} sessionId={sessionId} focused={focused} />
       </div>
     </div>
   );
-}
+});

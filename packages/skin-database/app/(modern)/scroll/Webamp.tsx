@@ -39,12 +39,10 @@ export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
 
     if (hostRef.current == null) {
       const host = document.createElement("div");
-      host.className = "webamp-container";
       Object.assign(host.style, {
         width: `${SCREENSHOT_WIDTH}px`,
         height: `${SCREENSHOT_HEIGHT}px`,
         position: "relative",
-        opacity: "0",
       });
       // Webamp uses the wheel for volume (main window) and scrolling the
       // playlist, and calls preventDefault, which stops the feed from moving
@@ -120,12 +118,7 @@ async function createWebamp(
     // top of the bottom menu bar and its popup.
     zIndex: 1,
   });
-  // Track whether the user closed Webamp, so we only reopen it when needed.
-  // Reopening also resets Webamp's playback status to stopped, even if audio
-  // is still playing, which freezes the visualizer and stops it advancing to
-  // the next track.
   webamp.onClose(() => {
-    closedWebamps.add(webamp);
     // Show the screenshot again rather than an empty space.
     host
       .closest(`[${WEBAMP_READY_ATTRIBUTE}]`)
@@ -134,8 +127,6 @@ async function createWebamp(
   await webamp.renderInto(host);
   return webamp;
 }
-
-const closedWebamps = new WeakSet<WebampInstance>();
 
 const WEBAMP_READY_ATTRIBUTE = "data-webamp-ready";
 
@@ -155,8 +146,10 @@ const DEFAULT_WINDOWS_OPEN = [
 // directly. The positions are Webamp's default stacked layout: each window is
 // 116px tall, which is why screenshots are 275x348.
 function resetWindowLayout(webamp: WebampInstance) {
-  if (closedWebamps.has(webamp)) {
-    closedWebamps.delete(webamp);
+  // Only reopen if the user closed Webamp. Reopening also resets its playback
+  // status to stopped, even if audio is still playing, which freezes the
+  // visualizer and stops it advancing to the next track.
+  if (webamp.store.getState().display.closed) {
     webamp.reopen();
   }
   // Put each window back in its default open/shade state. There are only

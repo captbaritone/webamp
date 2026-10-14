@@ -18,7 +18,7 @@ const SLIDE_MS = 250;
 type ExpandedBox = { left: number; width: number };
 
 /**
- * The filename and full readme, clipped to the space under the skin. If it
+ * The full readme, clipped to the space under the skin. If it
  * doesn't all fit it fades out, and tapping it slides it up over the skin
  * (its bottom resting on the bottom menu bar) to reveal the rest, scrolling if
  * there's still more.
@@ -27,13 +27,11 @@ export default function SkinReadme({ skin, sessionId, focused }: Props) {
   // Holds the readme's place in the layout while it's expanded.
   const slotRef = useRef<HTMLDivElement>(null);
   const readmeRef = useRef<HTMLDivElement>(null);
-  // The header and text, which slide; the fade at the bottom stays put.
+  // The text, which slides; the fade at the bottom stays put.
   const contentRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [overflowing, setOverflowing] = useState(false);
   const [expanded, setExpanded] = useState<ExpandedBox | null>(null);
-  const expandedRef = useRef(expanded);
-  expandedRef.current = expanded;
   const collapsingRef = useRef(false);
   // Set when focus was inside the readme as it collapsed, so we can put it
   // back on the (collapsed) readme rather than lose it.
@@ -86,7 +84,7 @@ export default function SkinReadme({ skin, sessionId, focused }: Props) {
   function expand() {
     const slot = slotRef.current;
     const page = slot?.closest("[data-skin-index]");
-    if (slot == null || page == null || expandedRef.current != null) return;
+    if (slot == null || page == null || expanded != null) return;
     const slotRect = slot.getBoundingClientRect();
     const pageRect = page.getBoundingClientRect();
     // Keep the collapsed readme's space so nothing else moves.
@@ -113,11 +111,7 @@ export default function SkinReadme({ skin, sessionId, focused }: Props) {
 
   function collapse() {
     const readme = readmeRef.current;
-    if (
-      readme == null ||
-      expandedRef.current == null ||
-      collapsingRef.current
-    ) {
+    if (readme == null || expanded == null || collapsingRef.current) {
       return;
     }
     collapsingRef.current = true;

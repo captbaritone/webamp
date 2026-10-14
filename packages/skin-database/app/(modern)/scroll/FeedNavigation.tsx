@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { FEED_COLUMN_RATIO } from "../../../legacy-client/src/constants";
 
-// Matches the breakpoint in scroll.css where the layout switches to desktop
-// (action icons beside the skin, next/previous buttons, no hint pill).
+// The desktop breakpoint from scroll.css: action icons beside the skin,
+// next/previous buttons, no hint pill.
 const DESKTOP_MEDIA_QUERY = "(min-aspect-ratio: 3/4)";
 
 // Remembered per device: once someone has scrolled, they know how.
@@ -142,7 +143,10 @@ function useHasRoomForNavButtons(): boolean {
   useEffect(() => {
     function measure() {
       const width = window.innerWidth;
-      const columnWidth = Math.min(width, window.innerHeight * 0.5625);
+      const columnWidth = Math.min(
+        width,
+        window.innerHeight * FEED_COLUMN_RATIO
+      );
       setHasRoom((width - columnWidth) / 2 >= NAV_BUTTONS_SIDE_SPACE_PX);
     }
     measure();

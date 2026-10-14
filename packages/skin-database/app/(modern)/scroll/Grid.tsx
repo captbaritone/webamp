@@ -24,11 +24,7 @@ import {
   USE_ALGOLIA,
 } from "../../../legacy-client/src/algolia";
 import { getSearchDebounceMs } from "../../../legacy-client/src/searchConfig";
-
-// Simple utility to get screenshot URL (avoiding server-side import)
-function getScreenshotUrl(md5: string): string {
-  return `https://r2.webampskins.org/screenshots/${md5}.png`;
-}
+import { screenshotUrlFromHash } from "../../../legacy-client/src/utils";
 
 const PAGE_SIZE = 50;
 
@@ -189,7 +185,7 @@ export default function SkinTable({
         setSearchSkins(
           result.hits.map((hit) => ({
             md5: hit.objectID,
-            screenshotUrl: getScreenshotUrl(hit.objectID),
+            screenshotUrl: screenshotUrlFromHash(hit.objectID),
             fileName: hit.fileName,
             // Some records still have float scores rather than booleans.
             nsfw: hit.nsfw === true || hit.nsfw === 1,

@@ -24,43 +24,58 @@ export async function getClientSkinsPage(
   pageSize?: number
 ): Promise<ClientSkin[]> {
   const ctx = new UserContext();
-
   const page = await getScrollPage(sessionId, pageSize);
+  const md5s = page.map((item) => item.md5);
 
-  return await Promise.all(
-    page.map(async (item) => {
-      return getSkinForSession(ctx, sessionId, item.md5);
-    })
-  );
+  // Record them in the session (one insert for the page) so that a later
+  // getScrollPage for this session excludes them.
+  const [skins] = await Promise.all([
+    Promise.all(md5s.map((md5) => getClientSkin(ctx, md5))),
+    SessionModel.addSkins(sessionId, md5s),
+  ]);
+  return skins;
 }
 
+// A single skin, e.g. the one a shared link points at, recorded in the
+// session like the rest of the feed.
 export async function getSkinForSession(
   ctx: UserContext,
   sessionId: string,
   md5: string
 ): Promise<ClientSkin> {
-  const model = await SkinModel.fromMd5Assert(ctx, md5);
-  const readmeText = (await model.getReadme())?.trim() ?? "";
-  const fileName = await model.getFileName();
-  const tweet = await model.getTweet();
-  const likeCount = tweet ? tweet.getLikes() : 0;
+  const [skin] = await Promise.all([
+    getClientSkin(ctx, md5),
+    SessionModel.addSkin(sessionId, md5),
+  ]);
+  return skin;
+}
 
-  // Await this so that a later getScrollPage for this session excludes it.
-  await SessionModel.addSkin(sessionId, md5);
+async function getClientSkin(
+  ctx: UserContext,
+  md5: string
+): Promise<ClientSkin> {
+  const model = await SkinModel.fromMd5Assert(ctx, md5);
+  const [readme, fileName, tweet, nsfw] = await Promise.all([
+    model.getReadme(),
+    model.getFileName(),
+    model.getTweet(),
+    model.getIsNsfw(),
+  ]);
+  const readmeText = readme?.trim() ?? "";
 
   return {
     screenshotUrl: model.getScreenshotUrl(),
     skinUrl: model.getSkinUrl(),
     md5,
     // TODO: Normalize to .wsz
-    fileName: fileName,
+    fileName,
     readme:
       readmeText.length > README_MAX_LENGTH
         ? `${readmeText.slice(0, README_MAX_LENGTH)}…`
         : readmeText,
     downloadUrl: model.getSkinUrl(),
     shareUrl: `https://skins.webamp.org/scroll/skin/${md5}`,
-    nsfw: await model.getIsNsfw(),
-    likeCount: likeCount,
+    nsfw,
+    likeCount: tweet ? tweet.getLikes() : 0,
   };
 }

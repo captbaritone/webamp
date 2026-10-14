@@ -19,6 +19,13 @@ export default class SessionModel {
     });
   }
 
+  static async addSkins(sessionId: string, skinMd5s: string[]): Promise<void> {
+    if (skinMd5s.length === 0) return;
+    await knex("session_skin").insert(
+      skinMd5s.map((skinMd5) => ({ session_id: sessionId, skin_md5: skinMd5 }))
+    );
+  }
+
   static async getIncludedSkinCount(sessionId: string): Promise<number> {
     const result = await knex("session_skin")
       .where({ session_id: sessionId })
