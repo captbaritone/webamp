@@ -117,7 +117,6 @@ async function addClassicSkinFromBuffer(
 
   await setHashesForSkin(skin);
 
-  // Disable while we figure out our quota
   await Skins.updateSearchIndex(ctx, md5);
 
   return { md5, status: "ADDED", skinType: "CLASSIC" };

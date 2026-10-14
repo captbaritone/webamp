@@ -1,4 +1,4 @@
-import { ALGOLIA_INDEX } from "../config";
+import { ALGOLIA_INDEX, ALGOLIA_ENABLED } from "../config";
 import { knex } from "../db";
 import path from "path";
 import md5Hash from "md5";
@@ -171,12 +171,13 @@ export async function markAsPostedToBlueSky(
 // TODO: Also path actor
 export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
-  // TODO: Await here, but for some reason this never completes
 
-  await client.partialUpdateObjects({
-    indexName: ALGOLIA_INDEX,
-    objects: [index],
-  });
+  if (ALGOLIA_ENABLED) {
+    await client.partialUpdateObjects({
+      indexName: ALGOLIA_INDEX,
+      objects: [index],
+    });
+  }
   await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert(
     { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
@@ -273,11 +274,14 @@ export async function updateSearchIndexes(
 ): Promise<any> {
   const skinIndexes = await getSearchIndexes(ctx, md5s);
 
-  const results = await client.partialUpdateObjects({
-    indexName: ALGOLIA_INDEX,
-    createIfNotExists: true,
-    objects: skinIndexes,
-  });
+  let results: any = null;
+  if (ALGOLIA_ENABLED) {
+    results = await client.partialUpdateObjects({
+      indexName: ALGOLIA_INDEX,
+      createIfNotExists: true,
+      objects: skinIndexes,
+    });
+  }
 
   for (const index of skinIndexes) {
     await recordSearchIndexUpdates(index.md5, Object.keys(index));
@@ -300,11 +304,13 @@ export async function hideSkin(md5: string): Promise<void> {
 export async function deleteSkin(md5: string): Promise<void> {
   await deleteLocalSkin(md5);
   console.log(`Deleting skin ${md5} from external sources...`);
-  console.log(`... removing from Algolia index`);
-  await client.deleteObjects({
-    indexName: ALGOLIA_INDEX,
-    objectIDs: [md5],
-  });
+  if (ALGOLIA_ENABLED) {
+    console.log(`... removing from Algolia index`);
+    await client.deleteObjects({
+      indexName: ALGOLIA_INDEX,
+      objectIDs: [md5],
+    });
+  }
   console.log(`... removing skin from S3`);
   await S3.deleteSkin(md5);
   console.log(`... removing screenshot from S3`);

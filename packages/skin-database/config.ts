@@ -17,6 +17,7 @@ export const LOGIN_REDIRECT_URL = env("LOGIN_REDIRECT_URL");
 export const ALGOLIA_ACCOUNT = env("ALGOLIA_ACCOUNT");
 export const ALGOLIA_INDEX = env("ALGOLIA_INDEX");
 export const ALGOLIA_KEY = env("ALGOLIA_KEY");
+export const ALGOLIA_ENABLED = process.env["ALGOLIA_ENABLED"] === "true";
 export const TWITTER_CREDS = {
   apiKey: env("TWITTER_API_KEY"),
   apiSecret: env("TWITTER_API_SECRET"),
