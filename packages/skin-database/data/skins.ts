@@ -743,6 +743,8 @@ export type ScrollPage = Array<{
 }>;
 const PAGE_SIZE = 50;
 const FRESHNESS_PERCENTAGE = 0.2; // 20% random skins
+// How many random rowids to sample per random skin wanted (see getScrollPage).
+const RANDOM_OVERSAMPLE = 30;
 
 export async function getScrollPage(
   sessionId: string,
@@ -762,19 +764,32 @@ LIMIT ?`,
     [sessionId, curatedCount]
   );
 
+  // Random classic skins this session hasn't seen and that aren't NSFW.
+  //
+  // Rather than sorting every skin with ORDER BY RANDOM() (which took ~1.5s in
+  // production, and checked each skin against every session that had ever
+  // seen it), we pick random rowids and keep the ones that pass the filters.
+  // Each existing row is equally likely to be picked. Rowids are sparse and
+  // most rows aren't classic skins (about 100k of 220k), so we oversample
+  // generously; in the rare case too few pass, the page just has fewer random
+  // skins.
   const randomSkins = await knex.raw(
     `
+WITH RECURSIVE
+  n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n WHERE i < ?),
+  bounds(max_id) AS (SELECT max(rowid) FROM skins),
+  picks(id) AS (SELECT DISTINCT abs(random()) % max_id + 1 FROM n, bounds)
 SELECT
   skins.md5 as skin_md5
 FROM
-  skins
-LEFT JOIN session_skin ON session_skin.skin_md5 = skins.md5 AND session_skin.session_id = ?
-LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5 AND skin_reviews.review = 'NSFW'
+  picks
+JOIN skins ON skins.rowid = picks.id
 WHERE
-  skins.skin_type = 1 AND session_skin.skin_md5 IS NULL AND skin_reviews.skin_md5 IS NULL
-ORDER BY RANDOM()
+  skins.skin_type = 1
+  AND skins.md5 NOT IN (SELECT skin_md5 FROM session_skin WHERE session_id = ?)
+  AND skins.md5 NOT IN (SELECT skin_md5 FROM skin_reviews WHERE review = 'NSFW')
 LIMIT ?`,
-    [sessionId, randomCount]
+    [randomCount * RANDOM_OVERSAMPLE, sessionId, randomCount]
   );
 
   // Note: Technically we could get duplicates if a random skin is also in museum_sort_order,
