@@ -168,6 +168,8 @@ button {
 
 .skin-screenshot {
   display: block;
+  /* Hide the alt text Firefox draws until the image loads. */
+  color: transparent;
   width: 100%;
   aspect-ratio: 275 / 348;
   image-rendering: pixelated;
@@ -802,6 +804,9 @@ button {
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated;
+  /* Firefox draws the alt text (the skin's name, in link blue) until the
+     image loads; screen readers still get it. */
+  color: transparent;
 }
 
 /* The glow replaces the browser's focus outline (only for keyboard focus). */
