@@ -314,6 +314,8 @@ unsubscribe();
 
 ### `onMediaError(cb: (error: { code: number }) => void): () => void`
 
+**Since** [Unreleased](../12_changelog.md#unreleased)
+
 A callback which will be called when the current track fails to load or play, for example because the file could not be fetched or decoded. Webamp then continues as if the track had ended. The callback is passed the `code` of the underlying [`MediaError`](https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code). Returns an "unsubscribe" function.
 
 ```ts
