@@ -20,6 +20,7 @@ If you want access to the changes in this section before they are officially rel
 
 - Fix TypeScript types for the `webamp/butterchurn` entrypoint, which pointed at a file that is not included in the package.
 - Fix TypeScript types under `moduleResolution: "node16"` or `"nodenext"`, where the default export of each entrypoint was typed as a namespace rather than the `Webamp` class.
+- Fix skins with a `region.txt` (custom window shapes) being cut off in Firefox when Webamp is scaled with CSS `zoom`: the window shape didn't scale with the window, so only part of the main and equalizer windows showed.
 
 ## 2.3.1
 

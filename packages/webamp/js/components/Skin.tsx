@@ -1,12 +1,12 @@
 // Dynamically set the css background images for all the sprites
-import { LETTERS } from "../constants";
+import { LETTERS, WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 import { useTypedSelector } from "../hooks";
 import * as Selectors from "../selectors";
 import { SkinImages } from "../types";
 import { createSelector } from "reselect";
 import Css from "./Css";
-import ClipPaths from "./ClipPaths";
+import ClipPaths, { type ClipPath } from "./ClipPaths";
 import { convertAniBinaryToCSS } from "ani-cursor";
 
 const CSS_PREFIX = "#webamp";
@@ -16,6 +16,14 @@ const mapRegionNamesToIds: { [key: string]: string } = {
   windowshade: "shadeMainWindowClipPath",
   equalizer: "equalizerWindowClipPath",
   equalizerws: "shadeEqualizerWindowClipPath",
+};
+
+// The size of the window each region clips (a window shaded is 14px tall).
+const mapRegionNamesToSize: { [key: string]: [number, number] } = {
+  normal: [WINDOW_WIDTH, WINDOW_HEIGHT],
+  windowshade: [WINDOW_WIDTH, 14],
+  equalizer: [WINDOW_WIDTH, WINDOW_HEIGHT],
+  equalizerws: [WINDOW_WIDTH, 14],
 };
 
 const mapRegionNamesToMatcher: { [key: string]: string } = {
@@ -130,11 +138,12 @@ const getCssRules = createSelector(
 );
 
 const getClipPaths = createSelector(Selectors.getSkinRegion, (skinRegion) => {
-  const clipPaths: { [id: string]: string[] } = {};
+  const clipPaths: { [id: string]: ClipPath } = {};
   for (const [regionName, polygons] of Object.entries(skinRegion)) {
     if (polygons) {
       const id = mapRegionNamesToIds[regionName];
-      clipPaths[id] = polygons;
+      const [width, height] = mapRegionNamesToSize[regionName];
+      clipPaths[id] = { polygons, width, height };
     }
   }
   return clipPaths;
