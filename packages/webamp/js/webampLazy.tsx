@@ -341,6 +341,16 @@ class Webamp {
   }
 
   /**
+   * Replace the playlist with an array of `Track`s without starting playback.
+   * Any current playback is stopped, and the first track is loaded so that it
+   * is ready to play.
+   */
+  setTracks(tracks: Track[]): void {
+    this.store.dispatch(Actions.removeAllTracks());
+    this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER));
+  }
+
+  /**
    * Get the current playlist in order.
    */
   getPlaylistTracks(): PlaylistTrack[] {

@@ -44,6 +44,24 @@ webamp.setTracksToPlay([
 **The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
 :::
 
+### `setTracks(tracks: Track[]): void`
+
+**Since** [Unreleased](../12_changelog.md#unreleased)
+
+Replace the playlist with an array of [`Track`s](01_track.md) without starting playback. Any current playback is stopped, and the first track is loaded so that it is ready to play.
+
+```ts
+webamp.setTracks([
+  { url: "https://example.com/track1.mp3" },
+  { url: "https://example.com/track2.mp3" },
+  { url: "https://example.com/track3.mp3" },
+]);
+```
+
+:::warning
+**The `url` must be served with the [correct CORS headers](../07_guides/01_cors.md).**
+:::
+
 ### `previousTrack(): void`
 
 Play the previous track.
