@@ -16,6 +16,8 @@ const webamp = new Webamp({
 webamp.renderWhenReady(document.getElementById("winamp-container"));
 ```
 
+By default, hotkeys are handled anywhere in the page. If your page has its own keyboard interactions, pass `enableHotkeys: "scoped"` _(since [Unreleased](../12_changelog.md#unreleased))_ to only handle hotkeys while focus is within Webamp.
+
 ## Hotkeys
 
 | Key Combo | Action                  |

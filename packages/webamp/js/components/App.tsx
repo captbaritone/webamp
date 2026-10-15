@@ -6,7 +6,7 @@ import {
   StrictMode,
 } from "react";
 import ReactDOM from "react-dom";
-import { FilePicker } from "../types";
+import { FilePicker, Dispatch } from "../types";
 import { WINDOWS } from "../constants";
 import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
@@ -21,7 +21,8 @@ import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
 import { IMedia } from "../media";
-import { useTypedSelector, useActionCreator } from "../hooks";
+import { useTypedSelector, useActionCreator, useTypedDispatch } from "../hooks";
+import { bindHotkeys } from "../hotkeys";
 import Css from "./Css";
 
 // @ts-ignore
@@ -31,6 +32,7 @@ interface Props {
   filePickers: FilePicker[];
   media: IMedia;
   parentDomNode: HTMLElement;
+  enableHotkeys: boolean | "scoped";
   onMount?: () => void;
 }
 
@@ -42,6 +44,7 @@ export default function App({
   filePickers,
   onMount,
   parentDomNode,
+  enableHotkeys,
 }: Props) {
   const closed = useTypedSelector(Selectors.getClosed);
   const genWindowsInfo = useTypedSelector(Selectors.getGenWindows);
@@ -63,6 +66,16 @@ export default function App({
   useLayoutEffect(() => {
     webampNode.style.zIndex = String(zIndex);
   }, [webampNode, zIndex]);
+
+  const dispatch = useTypedDispatch();
+  useEffect(() => {
+    if (!enableHotkeys) {
+      return;
+    }
+    // Scoped hotkeys only see key events from within Webamp's DOM node.
+    const target = enableHotkeys === "scoped" ? webampNode : document;
+    return bindHotkeys(dispatch as Dispatch, target);
+  }, [enableHotkeys, dispatch, webampNode]);
 
   useLayoutEffect(() => {
     parentDomNode.appendChild(webampNode);

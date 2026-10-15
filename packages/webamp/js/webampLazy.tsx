@@ -20,7 +20,6 @@ import {
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
-import { bindHotkeys } from "./hotkeys";
 import Media, { IMedia, IMediaClass } from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
@@ -83,7 +82,6 @@ class Webamp {
       initialTracks,
       initialSkin,
       availableSkins,
-      enableHotkeys = false,
       zIndex,
       requireJSZip,
       requireMusicMetadata,
@@ -214,10 +212,6 @@ class Webamp {
     }
 
     this.store.dispatch(Actions.setWindowLayout(options.windowLayout));
-
-    if (enableHotkeys) {
-      this._disposable.add(bindHotkeys(this.store.dispatch));
-    }
   }
 
   /**
@@ -556,6 +550,7 @@ class Webamp {
         <App
           media={this.media}
           filePickers={this.options.filePickers || []}
+          enableHotkeys={this.options.enableHotkeys ?? false}
           onMount={onMount}
           parentDomNode={contained ? node : document.body}
         />
