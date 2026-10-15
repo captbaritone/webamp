@@ -145,13 +145,22 @@ button {
   -webkit-touch-callout: none;
   user-select: none;
   -webkit-user-select: none;
-  border-radius: 2px;
-  transition: box-shadow 0.15s ease-out;
 }
 
-/* While a press-and-hold has handed the touch to Webamp. */
-.feed-webamp.webamp-grabbed {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+/*
+ * While a press-and-hold has handed the touch to Webamp, outline the skin.
+ * On the slot rather than .feed-webamp itself, which stays Webamp's unscaled
+ * size while Webamp is zoomed to fit.
+ */
+.webamp-slot {
+  border-radius: 2px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s ease-out;
+}
+
+.webamp-slot:has(> .webamp-grabbed) {
+  outline-color: rgba(255, 255, 255, 0.5);
 }
 
 /*
