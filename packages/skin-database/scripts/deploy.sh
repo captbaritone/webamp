@@ -51,7 +51,8 @@ restart_and_check() {
   for port in "${PORTS[@]}"; do
     local ok=""
     for _ in $(seq 1 30); do
-      if [[ $(curl -s -o /dev/null -w "%{http_code}" "http://localhost:$port/about") == 200 ]]; then
+      # -L: a page that moves (and redirects) shouldn't fail the check.
+      if [[ $(curl -sL -o /dev/null -w "%{http_code}" "http://localhost:$port/about") == 200 ]]; then
         ok=1
         break
       fi
