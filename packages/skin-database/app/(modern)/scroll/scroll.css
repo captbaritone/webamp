@@ -130,22 +130,28 @@ button {
 }
 
 /*
- * Webamp sets touch-action: none on each window (the only divs it gives an
- * inline touch-action) so dragging one doesn't scroll the page. Over the feed
- * that means a swipe starting on the skin can't scroll to the next one, so let
- * vertical swipes through. Webamp's horizontal sliders (volume, balance, seek)
- * are inputs with their own touch-action: none, which still applies; restore
- * it for the vertical controls that rely on the window's: equalizer bands and
- * the playlist scrollbar. Dragging windows vertically by touch no longer works
- * here, which is fine since the layout resets on every skin.
+ * Webamp sets touch-action: none on its windows and sliders so dragging them
+ * doesn't scroll the page. In the feed, vertical swipes over Webamp should
+ * scroll to the next skin, so let them through; webampTouch.ts decides which
+ * touches go to Webamp instead (taps, horizontal drags, press-and-hold) and
+ * blocks the scroll for those.
  */
-.feed-webamp div[style*="touch-action"] {
+.feed-webamp [style*="touch-action"] {
   touch-action: pan-y !important;
 }
 
-.feed-webamp .band,
-.feed-webamp .playlist-scrollbar {
-  touch-action: none;
+.feed-webamp {
+  /* Press-and-hold grabs a control; don't select text or open a callout. */
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 2px;
+  transition: box-shadow 0.15s ease-out;
+}
+
+/* While a press-and-hold has handed the touch to Webamp. */
+.feed-webamp.webamp-grabbed {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 /*

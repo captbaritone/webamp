@@ -9,6 +9,10 @@ import { NextResponse, type NextRequest } from "next/server";
 // restart, not a rebuild (see `scripts/deploy.sh --classic`). Both UIs ship in
 // every build until the classic one is removed.
 //
+// A visitor can override it for themselves (e.g. to try the new UI before
+// it's the default) with ?ui=new or ?ui=classic on any of these URLs, which
+// sets a cookie; ?ui=default clears it.
+//
 // The new UI's routes live under /scroll, where it was developed; this maps
 // the public URLs onto them. Paths it doesn't map (upload, review, a skin's
 // debug and file views, ...) always get the classic app.
@@ -51,8 +55,36 @@ function lookup(
   return null;
 }
 
+const UI_COOKIE = "museum_ui";
+const UI_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+function chosenUi(request: NextRequest): "new" | "classic" {
+  const override = request.cookies.get(UI_COOKIE)?.value;
+  if (override === "new" || override === "classic") return override;
+  return process.env.MUSEUM_UI === "classic" ? "classic" : "new";
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // ?ui=new|classic|default: set (or clear) this visitor's override, then
+  // reload the same URL without the parameter.
+  const ui = request.nextUrl.searchParams.get("ui");
+  if (ui === "new" || ui === "classic" || ui === "default") {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete("ui");
+    const response = NextResponse.redirect(url, 307);
+    if (ui === "default") {
+      response.cookies.delete(UI_COOKIE);
+    } else {
+      response.cookies.set(UI_COOKIE, ui, {
+        path: "/",
+        maxAge: UI_COOKIE_MAX_AGE,
+        sameSite: "lax",
+      });
+    }
+    return response;
+  }
 
   const redirectTo = lookup(REDIRECTS, pathname);
   if (redirectTo != null) {
@@ -67,7 +99,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  if (process.env.MUSEUM_UI === "classic") {
+  if (chosenUi(request) === "classic") {
     return NextResponse.next();
   }
 

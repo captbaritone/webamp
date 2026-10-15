@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { WebampTarget } from "./eventTypes";
+import { attachWebampTouchHandling } from "./webampTouch";
 import {
   SCREENSHOT_HEIGHT,
   SCREENSHOT_WIDTH,
@@ -69,41 +70,27 @@ export function useSharedWebamp(
         capture: true,
         passive: true,
       });
-      // Webamp's playlist reorders tracks as a finger drags over them, which
-      // in the feed fights with swiping to the next skin. Keep touches on the
-      // track list from reaching Webamp (mouse use is unaffected). Webamp's
-      // React root listens on this same element, hence
-      // stopImmediatePropagation, and this is registered before it.
-      host.addEventListener(
-        "touchstart",
-        (e) => {
-          if ((e.target as Element).closest(".playlist-tracks")) {
-            e.stopImmediatePropagation();
-          }
-        },
-        { capture: true, passive: true }
-      );
-      // Report presses on Webamp once they complete. If the browser turns a
-      // touch into a scroll it fires pointercancel instead, and we drop it.
+      // On touch screens, work out whether each touch is meant for Webamp or
+      // for scrolling the feed (see webampTouch.ts). Registered before Webamp
+      // renders into the host, so it sees touches first.
+      attachWebampTouchHandling(host, (_intent, target) => {
+        onInteractRef.current?.(classifyWebampTarget(target));
+      });
+      // Report mouse presses on Webamp once they complete.
       let pressTarget: WebampTarget | null = null;
       host.addEventListener(
         "pointerdown",
         (e) => {
+          if (e.pointerType === "touch") return;
           pressTarget = classifyWebampTarget(e.target as Element);
         },
         { capture: true, passive: true }
       );
       host.addEventListener(
         "pointerup",
-        () => {
+        (e) => {
+          if (e.pointerType === "touch") return;
           if (pressTarget != null) onInteractRef.current?.(pressTarget);
-          pressTarget = null;
-        },
-        { capture: true, passive: true }
-      );
-      host.addEventListener(
-        "pointercancel",
-        () => {
           pressTarget = null;
         },
         { capture: true, passive: true }
