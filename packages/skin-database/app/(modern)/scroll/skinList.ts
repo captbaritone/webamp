@@ -10,7 +10,8 @@ import {
 } from "../../../legacy-client/src/algolia";
 
 // The lists of skins that the grid and the feed are two views of: the museum
-// (every skin, in museum order) and searches. A list is named by its query;
+// (every skin, in museum order, with random ones mixed in: see
+// museumList.ts) and searches. A list is named by its query;
 // "" is the museum.
 //
 // Which list you're in, and where, is kept in listPosition.ts.

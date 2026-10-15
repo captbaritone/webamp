@@ -15,7 +15,7 @@ import {
   setFeedSkin,
   useEventLogger,
 } from "./eventLogger";
-import type { NavMethod } from "./eventTypes";
+import type { FeedSource, NavMethod } from "./eventTypes";
 import { ClientSkin, GridSkin, SkinDetails, toClientSkin } from "./gridSkin";
 import {
   getDetails,
@@ -28,6 +28,7 @@ import {
   useSearch,
 } from "./skinList";
 import { followingList, setListPosition } from "./listPosition";
+import { skinUrlFromHash } from "../../../legacy-client/src/utils";
 
 type Props = {
   // The skin the page is for: the one the feed opens on.
@@ -35,9 +36,13 @@ type Props = {
   details: SkinDetails;
 };
 
-// A skin in the feed, and its place in the list (null for the skin the feed
-// opened on, when it isn't in the list).
-type FeedItem = { skin: GridSkin; listIndex: number | null };
+// A skin in the feed, why it's there, and its place in the list (null for
+// the skin the feed opened on, when it isn't in the list).
+type FeedItem = {
+  skin: GridSkin;
+  source: FeedSource;
+  listIndex: number | null;
+};
 
 // Show this many more of the list once the skin in view is within
 // EXTEND_WITHIN of the last (or first) one shown.
@@ -75,6 +80,8 @@ const DETAILS_AHEAD = 5;
 // The skin currently in view, for timing how long it holds attention.
 type OpenView = {
   skinMd5: string;
+  skinUrl: string;
+  source: FeedSource;
   listIndex: number | null;
   depth: number;
   // performance.now() when it came into view.
@@ -86,6 +93,8 @@ type OpenView = {
   activeSince: number | null;
   // Completed presses on Webamp while it was in view.
   webampInteractions: number;
+  // How long after it came into view Webamp showed it, once it has.
+  readyMs: number | null;
 };
 
 // A navigation we started (key, button, hint) is attributed to the next view
@@ -136,17 +145,26 @@ export default function SkinScroller({
   }, [query, first, last]);
 
   const items = useMemo(() => {
+    // The list's copy of the skin opened on, once loaded, says whether it's
+    // a random one.
     const at = (i: number): GridSkin | undefined =>
-      i === anchor ? linkedSkin : list?.[i];
+      i === anchor ? list?.[i] ?? linkedSkin : list?.[i];
     // Only the run of loaded skins around the anchor, so there are no gaps.
     const shown: FeedItem[] = [];
+    const item = (i: number): FeedItem => ({
+      skin: at(i)!,
+      source: at(i)!.random ? "random" : "list",
+      listIndex: i,
+    });
     for (let i = (anchor ?? 0) - 1; i >= first && at(i) != null; i--) {
-      shown.unshift({ skin: at(i)!, listIndex: i });
+      shown.unshift(item(i));
     }
-    if (anchor == null) shown.push({ skin: linkedSkin, listIndex: null });
+    if (anchor == null) {
+      shown.push({ skin: linkedSkin, source: "link", listIndex: null });
+    }
     const end = listLength == null ? last : Math.min(last, listLength - 1);
     for (let i = anchor ?? 0; i <= end && at(i) != null; i++) {
-      shown.push({ skin: at(i)!, listIndex: i });
+      shown.push(item(i));
     }
     // The skin a feed opened on can also be in the list after it; show each
     // skin once.
@@ -154,7 +172,7 @@ export default function SkinScroller({
     return shown.filter(
       (item) => !seen.has(item.skin.md5) && seen.add(item.skin.md5)
     );
-  }, [anchor, linkedSkin, list, listLength, first, last]);
+  }, [query, anchor, linkedSkin, list, listLength, first, last]);
   const lastShown = items.at(-1)?.listIndex ?? -1;
   const listEnded =
     query !== "" && listLength != null && lastShown === listLength - 1;
@@ -215,17 +233,22 @@ export default function SkinScroller({
     const now = performance.now();
     const view: OpenView = {
       skinMd5: item.skin.md5,
+      skinUrl: skinUrlFromHash(item.skin.md5),
+      source: item.source,
       listIndex: item.listIndex,
       depth: depthRef.current++,
       startedAt: now,
       activeMs: 0,
       activeSince: document.visibilityState === "visible" ? now : null,
       webampInteractions: 0,
+      // Back from the back/forward cache, it's still showing.
+      readyMs: via === "resume" ? 0 : null,
     };
     openViewRef.current = view;
     logger.log({
       type: "skin_view_start",
       skinMd5: view.skinMd5,
+      source: view.source,
       query: query || null,
       listIndex: view.listIndex,
       depth: view.depth,
@@ -243,6 +266,7 @@ export default function SkinScroller({
     logger.log({
       type: "skin_view_end",
       skinMd5: view.skinMd5,
+      source: view.source,
       query: query || null,
       listIndex: view.listIndex,
       depth: view.depth,
@@ -250,6 +274,7 @@ export default function SkinScroller({
       activeMs: Math.round(activeMs),
       endedBy,
       webampInteractions: view.webampInteractions,
+      readyMs: view.readyMs,
     });
   }
 
@@ -285,6 +310,21 @@ export default function SkinScroller({
       if (view.webampInteractions === 1) {
         logger.log({ type: "webamp_interact", skinMd5: view.skinMd5, target });
       }
+    },
+    (skinUrl) => {
+      const view = openViewRef.current;
+      if (view?.skinUrl === skinUrl && view.readyMs == null) {
+        view.readyMs = Math.round(performance.now() - view.startedAt);
+      }
+    },
+    (skinUrl, error) => {
+      const view = openViewRef.current;
+      if (view?.skinUrl !== skinUrl) return;
+      logger.log({
+        type: "skin_load_failure",
+        skinMd5: view.skinMd5,
+        errorMessage: String((error as Error)?.message ?? error),
+      });
     }
   );
 

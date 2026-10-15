@@ -10,6 +10,10 @@ export type GridSkin = {
   screenshotUrl: string;
   fileName: string;
   nsfw: boolean;
+  // Set on the random skins the server put in the museum list (see
+  // museumList.ts), as opposed to ones in their place in the museum's order.
+  // Logged with what's done with them.
+  random?: true;
 };
 
 /**

@@ -14,7 +14,16 @@
 // - 3: a session is a visit to the museum in one tab (until it's closed or
 //   reloaded), spanning the grid and the feed, which are two views of the
 //   same list: the museum, or a search. See LegacyEvent for what changed.
-export const EVENT_SCHEMA_VERSION = 3;
+// - 4: the museum list (in the grid and the feed) has random skins in some
+//   places (see museumList.ts), counted in its positions. Each skin shown is
+//   logged with its source ("list" or "random"): ViewContext's `source`,
+//   grid_impressions and grid_skin_click. Adds skin_view_end's readyMs,
+//   skin_load_failure, grid_impressions and link_click.
+export const EVENT_SCHEMA_VERSION = 4;
+
+// The most skins in one grid_impressions event (more are split across
+// several), keeping it within the endpoint's size limit.
+export const MAX_GRID_IMPRESSIONS = 50;
 
 // The grid and the feed.
 export type MuseumView = "grid" | "feed";
@@ -48,11 +57,21 @@ type ListContext = {
   query: string | null;
 };
 
+// Why a skin is where it is in a list: it's in its place in the museum's
+// order (or a search's results), or it's a random skin the server put in the
+// museum list (see museumList.ts).
+export type ListSource = "list" | "random";
+
+// The same for a skin in the feed, which can also be the one the feed opened
+// on, when that isn't in the list (e.g. a shared link, followed by the
+// museum).
+export type FeedSource = ListSource | "link";
+
 // Identifies a view of one skin in the feed.
 type ViewContext = ListContext & {
   skinMd5: string;
-  // Its place in the list (0-based), or null for the skin a feed opened on
-  // when it isn't in the list (e.g. a shared link, followed by the museum).
+  source: FeedSource;
+  // Its place in the list (0-based), or null for a "link" skin.
   // Skins earlier in a list get more attention regardless of quality, and the
   // museum is already sorted by popularity, so weigh views by this.
   listIndex: number | null;
@@ -99,7 +118,13 @@ export type UserEvent =
       endedBy: "next_skin" | "left_feed" | "session_end";
       // Completed presses on Webamp while this skin was in view.
       webampInteractions: number;
+      // How long after it came into view Webamp was showing it (with the
+      // skin loaded), or null if it never was while it was in view. A slow
+      // skin gets scrolled past or left on for reasons that aren't its looks.
+      readyMs: number | null;
     } & ViewContext)
+  // Webamp couldn't show this skin (it shows its screenshot instead).
+  | { type: "skin_load_failure"; skinMd5: string; errorMessage: string }
   // The first completed press on Webamp while a skin was in view. Presses
   // that turn into a scroll don't count.
   | { type: "webamp_interact"; skinMd5: string; target: WebampTarget }
@@ -126,6 +151,20 @@ export type UserEvent =
   | { type: "scroll_hint_shown" }
   // The grid's "Tap a skin" hint was shown.
   | { type: "grid_hint_shown" }
+  // Skins in the grid that were on screen for a moment (GRID_IMPRESSION_MS)
+  // once scrolling stopped, as [md5, position, source]. Each skin is reported
+  // once per session for each list. With grid_skin_click, how often a skin is
+  // tapped when it's seen; the furthest position, how far the grid was
+  // scrolled; and the last ones before the session ends, what it ended on.
+  | ({
+      type: "grid_impressions";
+      skins: Array<[md5: string, position: number, source: ListSource]>;
+    } & ListContext)
+  // A link was followed somewhere other than the grid or the feed: the
+  // About or Feedback page, Upload (the classic site), or another site. Says
+  // where a session that ends next went. `href` is a path on this site, or a
+  // full URL elsewhere.
+  | { type: "link_click"; href: string; external: boolean; newTab: boolean }
   // A search's results arrived.
   | { type: "grid_search"; query: string; resultCount: number }
   // A skin in the grid was tapped. Position is its index in the list
@@ -134,11 +173,14 @@ export type UserEvent =
       type: "grid_skin_click";
       skinMd5: string;
       position: number;
+      source: ListSource;
       query: string | null;
     };
 
 /**
- * Events (and shapes of events) only in earlier versions' data. Version 3
+ * Events (and shapes of events) only in earlier versions' data. Version 4
+ * added ViewContext's `source` (before it, a null listIndex meant "link") and
+ * skin_view_end's readyMs. Version 3
  * replaced session_start's feed fields (entry, skinMd5s, fromSessionId) and
  * grid_open with session_start/view_switch; ViewContext's `position` (depth
  * into a feed session) and `source` with listIndex, query and depth;
@@ -214,6 +256,9 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<
   "page_visible",
   "audio_status",
   "details_fetch_failure",
+  "skin_load_failure",
+  "grid_impressions",
+  "link_click",
   "readme_expand",
   "skin_download",
   "skin_like",

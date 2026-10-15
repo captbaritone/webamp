@@ -19,6 +19,7 @@ import {
   MOBILE_MAX_WIDTH,
 } from "../../../legacy-client/src/constants";
 import { GridSkin } from "./gridSkin";
+import { MAX_GRID_IMPRESSIONS, type ListSource } from "./eventTypes";
 import { enterView, setNextViewVia, useEventLogger } from "./eventLogger";
 import { getSearchDebounceMs } from "../../../legacy-client/src/searchConfig";
 import { gridPath, skinPath } from "./paths";
@@ -35,6 +36,7 @@ import { corsScreenshotUrl } from "./skinTint";
 import HintPill, { markHintDone } from "./HintPill";
 import { EyeOff, Pointer } from "lucide-react";
 import { rememberSkinNsfw, useShowNsfw } from "./nsfwConsent";
+import { isModifiedClick } from "./BottomMenuBar";
 
 // Remembered once the visitor has tapped a skin (see HintPill).
 const GRID_HINT_KEY = "grid-hint-dismissed";
@@ -46,13 +48,20 @@ const GRID_HINT_KEY = "grid-hint-dismissed";
 // reload starts at the top.
 const scrollPositions = new Map<string, number>();
 
+// Skins on screen once scrolling has stopped for this long are reported as
+// seen (grid_impressions).
+const GRID_IMPRESSION_MS = 1000;
+// The skins reported as seen this visit, by list ("query\nmd5"), so each is
+// reported once.
+const reportedImpressions = new Set<string>();
+
 type CellData = {
   // Sparse: pages are written at their offset as they arrive.
   skins: ReadonlyArray<GridSkin | undefined>;
   columnCount: number;
   width: number;
   height: number;
-  onSkinClick: (skin: GridSkin, position: number) => void;
+  onSkinClick: (skin: GridSkin, position: number, newTab: boolean) => void;
 };
 
 function Cell({
@@ -83,9 +92,9 @@ function Cell({
       >
         <Link
           href={skinPath(skin.md5, skin.fileName)}
-          onClick={() => {
+          onClick={(e) => {
             rememberSkinNsfw(skin.md5, skin.nsfw);
-            data.onSkinClick(skin, index);
+            data.onSkinClick(skin, index, isModifiedClick(e));
           }}
         >
           <ViewTransition name={`skin-${skin.md5}`}>
@@ -326,6 +335,62 @@ export default function SkinTable({
       ? 0
       : Math.floor(restoreIndex / columnCount) * rowHeight;
 
+  // Report the skins on screen, once scrolling has stopped (or what's on
+  // screen has changed) and they've been there a moment.
+  const scrollTopRef = useRef(initialScrollTop);
+  const impressionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reportImpressionsRef = useRef(() => {});
+  reportImpressionsRef.current = () => {
+    if (rowHeight === 0 || document.visibilityState !== "visible") return;
+    const scrollTop = scrollTopRef.current;
+    // Rows at least half on screen.
+    const firstRow = Math.max(0, Math.ceil(scrollTop / rowHeight - 0.5));
+    const lastRow = Math.floor((scrollTop + windowHeight) / rowHeight - 0.5);
+    const seen: Array<[string, number, ListSource]> = [];
+    for (let i = firstRow * columnCount; i < (lastRow + 1) * columnCount; i++) {
+      const skin = skins[i];
+      const key = `${listQuery}\n${skin?.md5}`;
+      if (skin == null || reportedImpressions.has(key)) continue;
+      reportedImpressions.add(key);
+      seen.push([skin.md5, i, skin.random ? "random" : "list"]);
+    }
+    for (let i = 0; i < seen.length; i += MAX_GRID_IMPRESSIONS) {
+      logger.log({
+        type: "grid_impressions",
+        query: listQuery || null,
+        skins: seen.slice(i, i + MAX_GRID_IMPRESSIONS),
+      });
+    }
+  };
+  const scheduleImpressions = useCallback(() => {
+    if (impressionTimerRef.current != null) {
+      clearTimeout(impressionTimerRef.current);
+    }
+    impressionTimerRef.current = setTimeout(
+      () => reportImpressionsRef.current(),
+      GRID_IMPRESSION_MS
+    );
+  }, []);
+  useEffect(() => {
+    scheduleImpressions();
+  }, [
+    scheduleImpressions,
+    skins,
+    listQuery,
+    columnCount,
+    rowHeight,
+    windowHeight,
+  ]);
+  useEffect(() => {
+    return () => {
+      if (impressionTimerRef.current != null) {
+        clearTimeout(impressionTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Set once a skin's been tapped to open here (see onScroll).
+  const leavingRef = useRef(false);
   const onScroll = useCallback(
     ({
       scrollTop,
@@ -334,16 +399,34 @@ export default function SkinTable({
       scrollTop: number;
       scrollUpdateWasRequested: boolean;
     }) => {
+      scrollTopRef.current = scrollTop;
+      scheduleImpressions();
       if (rowHeight === 0) return;
       const index = Math.round(scrollTop / rowHeight) * columnCount;
       if (scrollKey != null) scrollPositions.set(scrollKey, index);
       // Only the visitor's own scrolling moves them on from the skin they
-      // came back to (not where the grid starts, or scrolls itself to).
-      if (scrollUpdateWasRequested || scrollTop === initialScrollTop) return;
+      // came back to (not where the grid starts, or scrolls itself to). Not
+      // once a skin's been tapped: a scroll that was still settling would
+      // replace it as where the feed opens in the list.
+      if (
+        leavingRef.current ||
+        scrollUpdateWasRequested ||
+        scrollTop === initialScrollTop
+      ) {
+        return;
+      }
       const skin = skins[index];
       if (skin != null) setListPosition({ query: listQuery, index, skin });
     },
-    [columnCount, rowHeight, scrollKey, skins, listQuery, initialScrollTop]
+    [
+      columnCount,
+      rowHeight,
+      scrollKey,
+      skins,
+      listQuery,
+      initialScrollTop,
+      scheduleImpressions,
+    ]
   );
 
   // Strict Mode runs this effect twice in development; log one arrival.
@@ -398,11 +481,14 @@ export default function SkinTable({
   }, []);
 
   const onSkinClick = useCallback(
-    (skin: GridSkin, position: number) => {
+    (skin: GridSkin, position: number, newTab: boolean) => {
+      // Opening it here, rather than in a new tab, leaves the grid.
+      if (!newTab) leavingRef.current = true;
       logger.log({
         type: "grid_skin_click",
         skinMd5: skin.md5,
         position,
+        source: skin.random ? "random" : "list",
         query: listQuery || null,
       });
       // The feed continues through this list from here.

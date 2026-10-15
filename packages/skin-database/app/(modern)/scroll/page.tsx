@@ -4,6 +4,7 @@ import Grid from "./Grid";
 import { getMuseumPageSkins, getSearchSkins } from "./getMuseumPageSkins";
 import * as Skins from "../../..//data/skins";
 import { museumMetadata } from "../../museumMetadata";
+import { museumListLength } from "./museumList";
 
 // The museum's home page (served at / by middleware.ts).
 export async function generateMetadata({ searchParams }): Promise<Metadata> {
@@ -32,7 +33,7 @@ export default async function SkinTable({ searchParams }) {
     <Grid
       initialSkins={initialSkins}
       initialSearchSkins={initialSearchSkins}
-      initialTotal={skinCount}
+      initialTotal={museumListLength(skinCount)}
       initialQuery={initialQuery}
     />
   );

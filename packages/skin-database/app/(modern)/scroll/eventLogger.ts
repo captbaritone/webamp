@@ -100,6 +100,7 @@ function getSession(): Session {
     };
     session = created;
     watchPageLifecycle(created);
+    watchLinkClicks(created);
   }
   return session;
 }
@@ -130,6 +131,51 @@ function watchPageLifecycle(s: Session): void {
     s.logger.log({ type: "session_resume" });
     resumeListeners.forEach((listener) => listener());
   });
+}
+
+// Links followed out of the grid and the feed (to About, Upload, another
+// site...), so a session that ends next says where it went. Links between
+// the grid and the feed are logged as view_switch instead.
+const MAX_HREF_LENGTH = 300;
+
+function watchLinkClicks(s: Session): void {
+  function onClick(e: MouseEvent) {
+    // The main button, or the middle one (auxclick).
+    if (e.button !== 0 && e.button !== 1) return;
+    const link = (e.target as Element | null)?.closest?.("a[href]");
+    if (!(link instanceof HTMLAnchorElement)) return;
+    let url: URL;
+    try {
+      url = new URL(link.href);
+    } catch {
+      return;
+    }
+    const external = url.origin !== location.origin;
+    if (
+      !external &&
+      (url.pathname === "/" ||
+        url.pathname === "/feed" ||
+        url.pathname.startsWith("/skin/"))
+    ) {
+      return;
+    }
+    s.logger.log({
+      type: "link_click",
+      href: (external
+        ? `${url.origin}${url.pathname}`
+        : `${url.pathname}${url.search}`
+      ).slice(0, MAX_HREF_LENGTH),
+      external,
+      newTab:
+        link.target === "_blank" ||
+        e.button === 1 ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey,
+    });
+  }
+  document.addEventListener("click", onClick, { capture: true });
+  document.addEventListener("auxclick", onClick, { capture: true });
 }
 
 // The session's logger. The session starts with its first event.

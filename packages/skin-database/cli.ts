@@ -36,7 +36,6 @@ import * as S3 from "./s3";
 import { generateDescription } from "./services/openAi";
 import KeyValue from "./data/KeyValue";
 import { postToBluesky } from "./tasks/bluesky";
-import { computeSkinRankings } from "./tasks/computeScrollRanking";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -308,14 +307,6 @@ program
   )
   .action(async () => {
     console.table([await Skins.getStats()]);
-  });
-
-program
-  .command("compute-scroll-ranking")
-  .description("Analyze user event data and compute skin ranking scores.")
-  .action(async () => {
-    const rankings = await computeSkinRankings();
-    console.log(JSON.stringify(rankings, null, 2));
   });
 
 program

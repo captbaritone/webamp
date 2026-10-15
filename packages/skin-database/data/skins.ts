@@ -767,6 +767,39 @@ LIMIT ? OFFSET ?`,
   });
 }
 
+/**
+ * Random skins from the museum (any of them, however they rank), excluding
+ * NSFW ones. Rather than sorting the museum with ORDER BY random(), picks
+ * random rows of museum_sort_order: its rowids run from 1 to its size, as
+ * it's rebuilt from empty (see computeMuseumOrder). A pick can miss (a
+ * skin since deleted, or NSFW), so it picks a few extra.
+ */
+export async function getRandomMuseumPage(count: number): Promise<MuseumPage> {
+  const skins = await knex.raw(
+    `
+WITH RECURSIVE
+  n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n WHERE i < ?),
+  bounds(max_id) AS (SELECT max(rowid) FROM museum_sort_order),
+  picks(id) AS (SELECT DISTINCT abs(random()) % max_id + 1 FROM n, bounds)
+SELECT
+  skins.md5,
+  (SELECT file_path from files WHERE files.skin_md5 = skins.md5 LIMIT 1) as file_path
+FROM
+  picks
+  JOIN museum_sort_order ON museum_sort_order.rowid = picks.id
+  JOIN skins ON skins.md5 = museum_sort_order.skin_md5
+WHERE
+  skins.md5 NOT IN (SELECT skin_md5 FROM skin_reviews WHERE review = 'NSFW')
+LIMIT ?`,
+    [count * 2, count]
+  );
+  return skins.map(({ md5, file_path }) => ({
+    fileName: path.basename(file_path),
+    md5,
+    nsfw: false,
+  }));
+}
+
 export async function computeMuseumOrder() {
   await knex.transaction(async (trx) => {
     await trx("museum_sort_order").del();

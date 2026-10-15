@@ -21,7 +21,11 @@ export function useSharedWebamp(
   // Called when playback starts, pauses, stops, etc. (Webamp's media status).
   onMediaStatusChange?: (status: string) => void,
   // Called for each completed press on Webamp (not ones that become a scroll).
-  onInteract?: (target: WebampTarget) => void
+  onInteract?: (target: WebampTarget) => void,
+  // Called once Webamp is showing `skinUrl` (fading in over its screenshot),
+  // or if it couldn't show it.
+  onSkinShown?: (skinUrl: string) => void,
+  onSkinFailed?: (skinUrl: string, error: unknown) => void
 ) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const webampPromiseRef = useRef<Promise<WebampInstance> | null>(null);
@@ -30,6 +34,10 @@ export function useSharedWebamp(
   onMediaStatusChangeRef.current = onMediaStatusChange;
   const onInteractRef = useRef(onInteract);
   onInteractRef.current = onInteract;
+  const onSkinShownRef = useRef(onSkinShown);
+  onSkinShownRef.current = onSkinShown;
+  const onSkinFailedRef = useRef(onSkinFailed);
+  onSkinFailedRef.current = onSkinFailed;
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -106,31 +114,36 @@ export function useSharedWebamp(
     slot.appendChild(host);
 
     async function show() {
+      let initialSkinFailed = false;
       if (webampPromiseRef.current == null) {
         currentSkinUrlRef.current = skinUrl;
-        webampPromiseRef.current = createWebamp(host, skinUrl).then(
-          (webamp) => {
-            let lastStatus = webamp.getMediaStatus();
-            unsubscribeRef.current = webamp.store.subscribe(() => {
-              const status = webamp.getMediaStatus();
-              if (status !== lastStatus) {
-                lastStatus = status;
-                onMediaStatusChangeRef.current?.(String(status));
-              }
-            });
-            return webamp;
-          }
-        );
+        webampPromiseRef.current = createWebamp(host, skinUrl, () => {
+          initialSkinFailed = true;
+        }).then((webamp) => {
+          let lastStatus = webamp.getMediaStatus();
+          unsubscribeRef.current = webamp.store.subscribe(() => {
+            const status = webamp.getMediaStatus();
+            if (status !== lastStatus) {
+              lastStatus = status;
+              onMediaStatusChangeRef.current?.(String(status));
+            }
+          });
+          return webamp;
+        });
       }
       const webamp = await webampPromiseRef.current;
       if (cancelled) return;
+      // Leaves the screenshot showing, rather than the previous skin.
+      if (initialSkinFailed) throw new Error(SKIN_FAILED);
 
       if (currentSkinUrlRef.current !== skinUrl) {
         currentSkinUrlRef.current = skinUrl;
         resetWindowLayout(webamp);
+        const previousImages = skinImages(webamp);
         webamp.setSkinFromUrl(skinUrl);
         await webamp.skinIsLoaded();
         if (cancelled) return;
+        if (skinImages(webamp) === previousImages) throw new Error(SKIN_FAILED);
       }
 
       const zoom = slot!.getBoundingClientRect().width / SCREENSHOT_WIDTH;
@@ -139,6 +152,7 @@ export function useSharedWebamp(
         ?.style.setProperty("zoom", String(zoom));
       host.style.transition = "opacity 0.3s linear";
       host.style.opacity = "1";
+      onSkinShownRef.current?.(skinUrl);
       // Hide the screenshot once Webamp has faded in over it.
       await new Promise((resolve) => {
         setTimeout(resolve, 300);
@@ -149,6 +163,7 @@ export function useSharedWebamp(
 
     show().catch((error) => {
       console.error("Failed to load Webamp", error);
+      if (!cancelled) onSkinFailedRef.current?.(skinUrl, error);
     });
 
     return () => {
@@ -165,9 +180,18 @@ function classifyWebampTarget(target: Element): WebampTarget {
   return "control";
 }
 
+// Webamp doesn't report a skin failing to load (it alerts, and keeps the skin
+// it had), but a skin that loads replaces its images.
+const SKIN_FAILED = "Webamp couldn't load the skin";
+
+function skinImages(webamp: WebampInstance): unknown {
+  return webamp.store.getState().display.skinImages;
+}
+
 async function createWebamp(
   host: HTMLElement,
-  skinUrl: string
+  skinUrl: string,
+  onInitialSkinFailed: () => void
 ): Promise<WebampInstance> {
   // @ts-ignore
   const { default: Webamp } = await import("webamp");
@@ -179,13 +203,17 @@ async function createWebamp(
     // top of the bottom menu bar and its popup.
     zIndex: 1,
   });
+  // Still the default skin's: the initial skin is loading.
+  const defaultImages = skinImages(webamp);
   webamp.onClose(() => {
     // Show the screenshot again rather than an empty space.
     host
       .closest(`[${WEBAMP_READY_ATTRIBUTE}]`)
       ?.removeAttribute(WEBAMP_READY_ATTRIBUTE);
   });
+  // Waits for the skin to load.
   await webamp.renderInto(host);
+  if (skinImages(webamp) === defaultImages) onInitialSkinFailed();
   return webamp;
 }
 
