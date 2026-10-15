@@ -46,6 +46,8 @@ webamp.setTracksToPlay([
 
 ### `setTracks(tracks: Track[]): void`
 
+**Since** [Unreleased](../12_changelog.md#unreleased)
+
 Replace the playlist with an array of [`Track`s](01_track.md) without starting playback. Any current playback is stopped, and the first track is loaded so that it is ready to play.
 
 ```ts
