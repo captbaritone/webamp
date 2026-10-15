@@ -5,6 +5,7 @@ import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
 import { TIME_MODE } from "../../constants";
 import { useActionCreator, useTypedSelector } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 const Time = memo(() => {
   const toggleTimeMode = useActionCreator(Actions.toggleTimeMode);
@@ -16,7 +17,13 @@ const Time = memo(() => {
 
   const timeObj = Utils.getTimeObj(seconds);
   return (
-    <div id="time" onClick={toggleTimeMode} className="countdown">
+    <WinampButton
+      id="time"
+      onClick={toggleTimeMode}
+      className="countdown"
+      aria-label="Toggle Remaining Time"
+      aria-pressed={timeMode === TIME_MODE.REMAINING}
+    >
       {timeMode === TIME_MODE.REMAINING && <div id="minus-sign" />}
       <div
         id="minute-first-digit"
@@ -34,7 +41,7 @@ const Time = memo(() => {
         id="second-second-digit"
         className={`digit digit-${timeObj.secondsSecondDigit}`}
       />
-    </div>
+    </WinampButton>
   );
 });
 

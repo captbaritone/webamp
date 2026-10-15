@@ -3,6 +3,7 @@ import React, { useMemo, useState, useLayoutEffect, useEffect } from "react";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
+import { handleActivationKey } from "./WinampButton";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 import {
@@ -203,6 +204,10 @@ export default function Vis({ analyser }: Props) {
       width={width}
       height={height}
       onClick={toggleVisualizerStyle}
+      role="button"
+      tabIndex={0}
+      aria-label="Change Visualizer Style"
+      onKeyDown={(e) => handleActivationKey(e, toggleVisualizerStyle)}
     />
   );
 }
