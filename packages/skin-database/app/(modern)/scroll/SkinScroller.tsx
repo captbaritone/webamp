@@ -478,6 +478,11 @@ export default function SkinScroller({
         onPrevious={() => scrollToSkin(visibleSkinIndex - 1, "button")}
         onNext={() => scrollToSkin(visibleSkinIndex + 1, "button")}
       />
+      {/*
+        Fades out whatever runs off the bottom of the page (usually the readme)
+        into the menu bar. Fixed, so it stays put as you scroll between skins.
+      */}
+      <div className="feed-bottom-fade" aria-hidden />
       {/* Top shadow overlay */}
       <div
         style={{

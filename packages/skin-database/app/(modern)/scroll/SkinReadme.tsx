@@ -248,12 +248,11 @@ export default function SkinReadme({ skin, focused }: Props) {
           )}
         </div>
         {/*
-          Fades the bottom of the text to show there's more. It stays put while
-          the readme expands, so the text slides up from under it.
+          Fades the bottom of the expanded text to show there's more. It stays
+          put while the readme expands, so the text slides up from under it.
+          (Collapsed, the feed's fixed bottom fade does this.)
         */}
-        {(overflowing || expanded != null) && (
-          <div className="skin-readme-fade" />
-        )}
+        {expanded != null && <div className="skin-readme-fade" />}
       </div>
     </div>
   );

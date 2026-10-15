@@ -311,8 +311,6 @@ button {
   min-height: 0;
   box-sizing: border-box;
   color: white;
-  /* What the fade at the bottom blends into: the page's dark edge. */
-  --readme-fade-to: var(--feed-edge);
   /* Same box as when expanded, so nothing shifts as it opens. */
   border: 1px solid transparent;
   border-bottom: none;
@@ -355,7 +353,7 @@ button {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
-/* Shows there's more text. Pinned to the bottom of the readme box. */
+/* Shows there's more text in the expanded readme. Pinned to its bottom. */
 .skin-readme-fade {
   position: absolute;
   left: 0;
@@ -364,6 +362,22 @@ button {
   height: min(2.5rem, 60%);
   background: linear-gradient(to bottom, transparent, var(--readme-fade-to));
   pointer-events: none;
+}
+
+/*
+ * Fades the bottom of each page (a collapsed readme that doesn't fit) into the
+ * menu bar. Fixed to the viewport rather than part of each page, so it doesn't
+ * scroll along with them. Below the expanded readme, which has its own.
+ */
+.feed-bottom-fade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--bottom-nav-height, 4rem);
+  height: 2.5rem;
+  background: linear-gradient(to bottom, transparent, var(--feed-edge));
+  pointer-events: none;
+  z-index: 500;
 }
 
 /*
