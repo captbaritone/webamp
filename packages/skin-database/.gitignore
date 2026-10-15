@@ -11,3 +11,4 @@ dist/
 .next
 .next-build
 .next-previous
+.env*.local

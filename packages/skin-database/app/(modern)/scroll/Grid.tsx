@@ -7,11 +7,11 @@ import React, {
   // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
   unstable_ViewTransition as ViewTransition,
   useEffect,
+  useLayoutEffect,
 } from "react";
 
 import Link from "next/link";
 import { FixedSizeGrid as Grid } from "react-window";
-import { useWindowSize } from "../../../legacy-client/src/hooks";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,
@@ -31,6 +31,7 @@ import {
 } from "../../../legacy-client/src/algolia";
 import { getSearchDebounceMs } from "../../../legacy-client/src/searchConfig";
 import { screenshotUrlFromHash } from "../../../legacy-client/src/utils";
+import { skinPath } from "./paths";
 
 const PAGE_SIZE = 50;
 
@@ -81,7 +82,7 @@ function Cell({
     <div style={style}>
       <div style={{ width, height, position: "relative" }}>
         <Link
-          href={`/scroll/skin/${skin.md5}`}
+          href={skinPath(skin.md5, skin.fileName)}
           onClick={() => data.onSkinClick(skin.md5, index)}
         >
           <ViewTransition name={`skin-${skin.md5}`}>
@@ -123,13 +124,38 @@ function Cell({
 type SkinTableProps = {
   initialSkins: GridSkin[];
   initialTotal: number;
+  // The search in the URL (?query=), if any.
+  initialQuery: string;
 };
+
+// The window's size, or null until mounted. The grid is laid out to fit the
+// window, so it isn't rendered on the server (or the first client render,
+// which has to match it).
+function useMountedWindowSize(): { width: number; height: number } | null {
+  const [size, setSize] = useState<{ width: number; height: number } | null>(
+    null
+  );
+  useLayoutEffect(() => {
+    const update = () =>
+      setSize({
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight,
+      });
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return size;
+}
 
 export default function SkinTable({
   initialSkins,
   initialTotal,
+  initialQuery,
 }: SkinTableProps) {
-  const { windowWidth, windowHeight } = useWindowSize();
+  const windowSize = useMountedWindowSize();
+  const windowWidth = windowSize?.width ?? 0;
+  const windowHeight = windowSize?.height ?? 0;
 
   // Each grid visit is its own event-logging session. A feed session reached
   // from here records this ID, so a search and the skins opened from it can be
@@ -138,10 +164,7 @@ export default function SkinTable({
   const [logger] = useState(() => createEventLogger(gridSessionId));
 
   // Search input state - separate input value from actual search query
-  const [inputValue, setInputValue] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("q") || "";
-  });
+  const [inputValue, setInputValue] = useState(initialQuery);
 
   // State for browsing mode. A sparse array indexed by position in the museum,
   // so pages land in the right place even if they load out of order.
@@ -175,9 +198,7 @@ export default function SkinTable({
   useEffect(() => {
     const query = inputValue.trim();
     const newUrl =
-      query === ""
-        ? "/scroll/"
-        : `/scroll/?${new URLSearchParams({ q: inputValue })}`;
+      query === "" ? "/" : `/?${new URLSearchParams({ query: inputValue })}`;
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },
       "",
@@ -364,8 +385,13 @@ export default function SkinTable({
         <div style={{ position: "relative" }}>
           <input
             type="search"
+            enterKeyHint="search"
             value={inputValue}
             onChange={handleSearchChange}
+            onKeyDown={(e) => {
+              // Search runs as you type; Enter just dismisses the keyboard.
+              if (e.key === "Enter") e.currentTarget.blur();
+            }}
             placeholder="Search skins..."
             aria-label="Search skins"
             aria-busy={searchPending}
@@ -435,25 +461,26 @@ export default function SkinTable({
       )}
 
       {/* Grid - show when browsing or when we have results (even while pending) */}
-      {(!showSearchResults || (!searchError && skins.length > 0)) && (
-        <Grid
-          ref={gridRef}
-          itemKey={itemKey}
-          itemData={itemData}
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          height={windowHeight}
-          rowCount={Math.ceil(total / columnCount)}
-          rowHeight={rowHeight}
-          width={windowWidth}
-          overscanRowCount={5}
-          onScroll={onScroll}
-          onItemsRendered={onItemsRendered}
-          style={{ overflowY: "scroll" }}
-        >
-          {Cell}
-        </Grid>
-      )}
+      {windowSize != null &&
+        (!showSearchResults || (!searchError && skins.length > 0)) && (
+          <Grid
+            ref={gridRef}
+            itemKey={itemKey}
+            itemData={itemData}
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            height={windowHeight}
+            rowCount={Math.ceil(total / columnCount)}
+            rowHeight={rowHeight}
+            width={windowWidth}
+            overscanRowCount={5}
+            onScroll={onScroll}
+            onItemsRendered={onItemsRendered}
+            style={{ overflowY: "scroll" }}
+          >
+            {Cell}
+          </Grid>
+        )}
     </div>
   );
 }

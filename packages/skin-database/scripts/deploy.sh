@@ -19,6 +19,11 @@
 # The previous build is kept as .next-previous. To go back to it:
 #
 #   bash scripts/deploy.sh --rollback
+#
+# Which UI the museum serves (see middleware.ts) is switched without a build:
+#
+#   bash scripts/deploy.sh --classic   # the original museum
+#   bash scripts/deploy.sh --new       # the new grid and feed (the default)
 
 set -euo pipefail
 
@@ -46,7 +51,7 @@ restart_and_check() {
   for port in "${PORTS[@]}"; do
     local ok=""
     for _ in $(seq 1 30); do
-      if [[ $(curl -s -o /dev/null -w "%{http_code}" "http://localhost:$port/scroll/about") == 200 ]]; then
+      if [[ $(curl -s -o /dev/null -w "%{http_code}" "http://localhost:$port/about") == 200 ]]; then
         ok=1
         break
       fi
@@ -69,6 +74,15 @@ swap_back() {
 # Everything runs from main, called on the last line, so bash has read the
 # whole script before the `git pull` below can change it on disk.
 main() {
+  if [[ "${1:-}" == "--classic" || "${1:-}" == "--new" ]]; then
+    local ui="${1#--}"
+    # Next loads this file at startup; MUSEUM_UI is read per request.
+    printf 'MUSEUM_UI=%s\n' "$ui" > .env.production.local
+    restart_and_check
+    log "The museum now serves the $ui UI"
+    exit 0
+  fi
+
   if [[ "${1:-}" == "--rollback" ]]; then
     if [[ ! -d .next-previous ]]; then
       echo "✗ No .next-previous to roll back to"

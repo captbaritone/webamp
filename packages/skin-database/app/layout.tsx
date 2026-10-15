@@ -1,4 +1,4 @@
-import ReduxContextProvider from "./redux";
+import { SearchDebounceConfig } from "./redux";
 import { parseSearchDebounceMs } from "../legacy-client/src/searchConfig";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -23,9 +23,8 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>
-        <ReduxContextProvider searchDebounceMs={searchDebounceMs}>
-          {children}
-        </ReduxContextProvider>
+        <SearchDebounceConfig searchDebounceMs={searchDebounceMs} />
+        {children}
         <GoogleAnalytics gaId="UA-96948-20" />
       </body>
     </html>

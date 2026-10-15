@@ -96,7 +96,7 @@ export default function BottomMenuBar() {
         >
           <div ref={menuRef}>
             <HamburgerMenuItem
-              href="/scroll/about"
+              href="/about"
               icon={<Info size={20} />}
               label="About"
               onClick={() => {
@@ -104,7 +104,7 @@ export default function BottomMenuBar() {
               }}
             />
             <HamburgerMenuItem
-              href="/scroll/feedback"
+              href="/feedback"
               icon={<MessageSquare size={20} />}
               label="Feedback"
               onClick={() => {
@@ -152,16 +152,16 @@ export default function BottomMenuBar() {
           }}
         >
           <MenuButton
-            href="/scroll"
+            href="/"
             icon={<Grid3x3 size={24} />}
             label="Grid"
-            isActive={pathname === "/scroll"}
+            isActive={pathname === "/"}
           />
           <MenuButton
-            href="/scroll/skin"
+            href="/feed"
             icon={<Smartphone size={24} />}
             label="Feed"
-            isActive={pathname.startsWith("/scroll/skin")}
+            isActive={pathname === "/feed" || pathname.startsWith("/skin/")}
             onClick={() => setFeedEntry("feed_tab")}
           />
           <MenuButton

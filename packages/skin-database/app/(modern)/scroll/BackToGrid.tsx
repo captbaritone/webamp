@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 export default function BackToGrid() {
   return (
     <Link
-      href="/scroll"
+      href="/"
       className="skin-back"
       aria-label="Back to grid"
       title="Back to grid"

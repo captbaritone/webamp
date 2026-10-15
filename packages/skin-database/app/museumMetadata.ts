@@ -1,13 +1,13 @@
-import App from "./App";
 import type { Metadata } from "next";
 
 const DESCRIPTION =
   "Infinite scroll through 100k Winamp skins with interactive preview";
 
-export const dynamic = "force-dynamic"; // Force this page to always be server-rendered
-
-export async function generateMetadata({ searchParams }): Promise<Metadata> {
-  const { query } = await searchParams;
+/**
+ * Metadata for the museum's home page (the skin grid), including a search's
+ * results (`?query=`). Shared by the classic and new UIs.
+ */
+export function museumMetadata(query: string | undefined): Metadata {
   if (query) {
     const images = [
       {
@@ -70,8 +70,4 @@ export async function generateMetadata({ searchParams }): Promise<Metadata> {
       images,
     },
   };
-}
-
-export default function Page() {
-  return <App />;
 }

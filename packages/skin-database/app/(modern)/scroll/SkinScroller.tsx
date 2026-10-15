@@ -4,6 +4,7 @@ import { useState, useLayoutEffect, useEffect, useRef } from "react";
 import SkinPage from "./SkinPage";
 import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
 import { useSharedWebamp } from "./Webamp";
+import { skinPath } from "./paths";
 import {
   createEventLogger,
   EventLoggerContext,
@@ -320,7 +321,7 @@ export default function SkinScroller({
     // We want the URL and title to update as you scroll, but
     // we can't trigger a NextJS navigation since that would remount the
     // component. So, here we replicate the metadata behavior of the route.
-    const newUrl = `/scroll/skin/${visibleSkinMd5}`;
+    const newUrl = skinPath(visibleSkinMd5, visibleSkinFileName);
     window.document.title = `${visibleSkinFileName} - Winamp Skin Museum`;
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },

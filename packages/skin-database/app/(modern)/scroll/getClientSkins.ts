@@ -4,6 +4,7 @@ import { ClientSkin } from "./SkinScroller";
 import { getScrollPage } from "../../../data/skins";
 import SkinModel from "../../../data/SkinModel";
 import type { SkinSource } from "./eventTypes";
+import { skinPath } from "./paths";
 
 // The feed shows the whole readme (clipped until expanded), so we send it all,
 // within reason. A handful of readmes are enormous.
@@ -80,7 +81,7 @@ async function getClientSkin(
         ? `${readmeText.slice(0, README_MAX_LENGTH)}…`
         : readmeText,
     downloadUrl: model.getSkinUrl(),
-    shareUrl: `https://skins.webamp.org/scroll/skin/${md5}`,
+    shareUrl: `https://skins.webamp.org${skinPath(md5, fileName)}`,
     nsfw,
     likeCount: tweet ? tweet.getLikes() : 0,
   };
