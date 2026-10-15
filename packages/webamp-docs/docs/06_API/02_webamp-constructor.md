@@ -129,7 +129,7 @@ In keeping with the original Winamp, **double size mode does not apply to resiza
 Controls whether hotkeys are enabled. **Default:** `false`.
 
 - `true`: Hotkeys are handled anywhere in the page.
-- `"scoped"`: Hotkeys are only handled while focus is within Webamp. Use this if your page has its own keyboard interactions.
+- `"scoped"` _(since [Unreleased](../12_changelog.md#unreleased))_: Hotkeys are only handled while focus is within Webamp. Use this if your page has its own keyboard interactions.
 - `false`: Hotkeys are disabled.
 
 ```ts
