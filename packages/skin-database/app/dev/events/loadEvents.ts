@@ -23,16 +23,25 @@ export function pulledAt(): Date | null {
   }
 }
 
-let pulledKnex: ReturnType<typeof Knex> | null = null;
+// Reopened whenever the file changes: scripts/pull-events.sh replaces it, and
+// a connection to the old file would go on reading the previous copy.
+let pulled: { knex: ReturnType<typeof Knex>; mtimeMs: number } | null = null;
 
 function database(source: EventSource): ReturnType<typeof Knex> {
   if (source === "local") return appKnex;
-  pulledKnex ??= Knex({
-    client: "sqlite3",
-    connection: { filename: pulledPath() },
-    useNullAsDefault: true,
-  });
-  return pulledKnex;
+  const mtimeMs = pulledAt()?.getTime() ?? 0;
+  if (pulled == null || pulled.mtimeMs !== mtimeMs) {
+    pulled?.knex.destroy();
+    pulled = {
+      knex: Knex({
+        client: "sqlite3",
+        connection: { filename: pulledPath() },
+        useNullAsDefault: true,
+      }),
+      mtimeMs,
+    };
+  }
+  return pulled.knex;
 }
 
 /** Each session's events, from `minVersion` on, received since `since`. */
@@ -57,6 +66,7 @@ export async function loadSessions(
     timestamp: number;
     metadata: string;
   }> = await query;
+  const userAgents = await loadUserAgents(database(source));
   const sessions = new Map<string, StoredSession>();
   for (const row of rows) {
     let event: StoredEvent;
@@ -69,6 +79,7 @@ export async function loadSessions(
     if (session == null) {
       session = {
         id: row.session_id,
+        userAgent: userAgents.get(row.session_id) ?? null,
         firstReceived: row.timestamp,
         lastReceived: row.timestamp,
         events: [],
@@ -83,4 +94,19 @@ export async function loadSessions(
   return [...sessions.values()].filter((session) =>
     session.events.some((event) => (event.v ?? 1) >= minVersion)
   );
+}
+
+// Sessions' user agents (recorded from version 6), if this copy has them.
+async function loadUserAgents(
+  db: ReturnType<typeof Knex>
+): Promise<Map<string, string>> {
+  try {
+    const rows: Array<{ id: string; user_agent: string }> = await db("session")
+      .select("id", "user_agent")
+      .whereNotNull("user_agent");
+    return new Map(rows.map((row) => [row.id, row.user_agent]));
+  } catch {
+    // An older copy, without the session table or its user_agent column.
+    return new Map();
+  }
 }

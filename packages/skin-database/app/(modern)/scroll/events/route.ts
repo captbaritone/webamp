@@ -18,6 +18,7 @@ const MAX_BODY_BYTES = 64 * 1024; // sendBeacon's limit
 const MAX_EVENTS = 200;
 const MAX_EVENT_BYTES = 4 * 1024;
 const MAX_SESSION_SKINS = 100;
+const MAX_USER_AGENT_LENGTH = 512;
 
 const SESSION_ID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -48,7 +49,11 @@ export async function POST(request: Request) {
     return new Response(null, { status: 400 });
   }
 
-  await storeEvents(sessionId, events);
+  await storeEvents(
+    sessionId,
+    events,
+    request.headers.get("user-agent")?.slice(0, MAX_USER_AGENT_LENGTH) ?? null
+  );
   return new Response(null, { status: 204 });
 }
 

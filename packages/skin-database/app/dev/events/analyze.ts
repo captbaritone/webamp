@@ -18,6 +18,8 @@ export type StoredEvent = {
 
 export type StoredSession = {
   id: string;
+  // The browser's, from version 6 on.
+  userAgent: string | null;
   // Server receive times (ms) of its first and last batches.
   firstReceived: number;
   lastReceived: number;
@@ -27,6 +29,10 @@ export type StoredSession = {
 // Views shorter than this that moved on to the next skin were scrolled
 // through, not looked at.
 export const PASS_THROUGH_MS = 300;
+
+// A search this soon after the last, extending or trimming it, is the same
+// search still being typed.
+const SEARCH_TYPING_MS = 5000;
 
 export type View = {
   sessionId: string;
@@ -154,6 +160,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
   const open = new Map<number, View>();
   // The view in view now (the last started and not yet ended).
   let current: View | null = null;
+  let lastSearch: { query: string; t: number } | null = null;
   // The view whose Webamp is being used (touch screens).
   let usingWebamp: View | null = null;
   let visitDepth = 0;
@@ -279,13 +286,32 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
         break;
       }
       case "grid_search":
-        searches++;
-        analysis.searches.push({
-          query: event.query,
-          resultCount: event.resultCount,
-        });
+        // Searches run as you type, so "ev", "evange", "evangelion" are one
+        // search: each replaces the one before it if it came within
+        // SEARCH_TYPING_MS and either extends or trims it.
+        if (
+          lastSearch != null &&
+          event.t - lastSearch.t < SEARCH_TYPING_MS &&
+          (event.query.startsWith(lastSearch.query) ||
+            lastSearch.query.startsWith(event.query))
+        ) {
+          analysis.searches[analysis.searches.length - 1] = {
+            query: event.query,
+            resultCount: event.resultCount,
+          };
+        } else {
+          searches++;
+          analysis.searches.push({
+            query: event.query,
+            resultCount: event.resultCount,
+          });
+        }
+        lastSearch = { query: event.query, t: event.t };
         break;
       case "link_click":
+        // The Download button's blob: link, logged as a link before it was
+        // filtered out (its href came out as the blob's inner URL).
+        if (!event.external && !String(event.href).startsWith("/")) break;
         analysis.linkClicks.push({
           href: event.href,
           external: event.external,
@@ -501,4 +527,41 @@ export function bucketGroups<T>(
   const groups = groupBy(items, (item) => bucketLabel(bounds, value(item)));
   const order = bounds.map((bound) => bucketLabel(bounds, bound));
   return [...groups].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
+}
+
+// Suspected bots
+
+// Crawlers, link previews, headless and scripted browsers, HTTP libraries.
+const BOT_USER_AGENT =
+  /bot|crawl|spider|slurp|archiver|preview|facebookexternalhit|embedly|headless|lighthouse|phantom|puppeteer|playwright|selenium|python|curl|wget|httpclient|okhttp|go-http|java\//i;
+
+export const BOT_REASONS = {
+  "no start":
+    "Its first events never arrived (only the ones sent as the page closed did), as when a page is loaded by something that isn't a person's browser.",
+  "bot user agent":
+    "Its user agent is a crawler, link preview, headless browser or HTTP library (version 6 on).",
+  "automated browser":
+    "The browser said it was driven by automation (navigator.webdriver; version 6 on).",
+  "never seen":
+    "The page was never visible: loaded in the background and closed (version 6 on).",
+} as const;
+
+export type BotReason = keyof typeof BOT_REASONS;
+
+/** Why a session looks like it wasn't a person, if it does. */
+export function botReasons(session: StoredSession): BotReason[] {
+  const reasons: BotReason[] = [];
+  const start = session.events.find((e) => e.type === "session_start");
+  if (start == null) reasons.push("no start");
+  if (session.userAgent != null && BOT_USER_AGENT.test(session.userAgent)) {
+    reasons.push("bot user agent");
+  }
+  if (start?.automated === true) reasons.push("automated browser");
+  if (
+    start?.visible === false &&
+    !session.events.some((e) => e.type === "page_visible")
+  ) {
+    reasons.push("never seen");
+  }
+  return reasons;
 }

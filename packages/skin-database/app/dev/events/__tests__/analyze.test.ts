@@ -1,4 +1,9 @@
-import { analyze, feedRetention, type StoredEvent } from "../analyze";
+import {
+  analyze,
+  botReasons,
+  feedRetention,
+  type StoredEvent,
+} from "../analyze";
 
 const A = "a".repeat(32);
 const B = "b".repeat(32);
@@ -11,7 +16,13 @@ function session(id: string, events: Array<Record<string, any>>) {
     receivedAt: seq * 1000 + 50,
     ...event,
   })) as StoredEvent[];
-  return { id, firstReceived: 0, lastReceived: 0, events: stored };
+  return {
+    id,
+    userAgent: null,
+    firstReceived: 0,
+    lastReceived: 0,
+    events: stored,
+  };
 }
 
 function view(
@@ -135,4 +146,33 @@ test("retention counts how far each visit to the feed got", () => {
     session("s2", [...view(A, 0, 5000, "session_end")]),
   ]);
   expect(feedRetention(result.views, 3)).toEqual([1, 0.5, 0]);
+});
+
+test("spots sessions that don't look like people", () => {
+  const person = session("p", [
+    { type: "session_start", view: "grid", automated: false, visible: true },
+  ]);
+  expect(botReasons(person)).toEqual([]);
+  expect(
+    botReasons({
+      ...person,
+      userAgent: "Mozilla/5.0 (compatible; Googlebot/2.1)",
+    })
+  ).toEqual(["bot user agent"]);
+  expect(
+    botReasons(
+      session("a", [
+        { type: "session_start", view: "grid", automated: true, visible: true },
+      ])
+    )
+  ).toEqual(["automated browser"]);
+  expect(
+    botReasons(session("n", [{ type: "session_end", reason: "pagehide" }]))
+  ).toEqual(["no start"]);
+  const unseen = session("u", [
+    { type: "session_start", view: "feed", visible: false },
+  ]);
+  expect(botReasons(unseen)).toEqual(["never seen"]);
+  unseen.events.push({ type: "page_visible", seq: 1, t: 1, receivedAt: 1 });
+  expect(botReasons(unseen)).toEqual([]);
 });

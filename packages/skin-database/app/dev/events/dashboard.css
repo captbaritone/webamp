@@ -67,7 +67,7 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   align-items: end;
-  margin: 12px 0 0;
+  margin: 12px 0;
 }
 
 .filters label {
@@ -144,18 +144,21 @@ body {
   opacity: 0.8;
 }
 
+/*
+ * One grid for all of a chart's rows (each row's cells join it), so every
+ * row's value column is as wide as the widest value and the bars all start
+ * and end in the same place.
+ */
 .bars {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: minmax(80px, 40%) 1fr auto;
+  gap: 6px 8px;
+  align-items: center;
+  font-size: 12px;
 }
 
 .bar-row {
-  display: grid;
-  grid-template-columns: minmax(80px, 40%) 1fr auto;
-  gap: 8px;
-  align-items: center;
-  font-size: 12px;
+  display: contents;
 }
 
 .bar-label {
@@ -179,6 +182,7 @@ body {
 .bar-value {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  text-align: right;
 }
 
 .bar-detail {
@@ -225,6 +229,9 @@ body {
   text-align: center;
   margin-top: 4px;
   line-height: 1.2;
+  /* Room for two lines on every label, so the columns' bases line up
+     whether or not a label wraps. */
+  height: 2.4em;
   overflow-wrap: anywhere;
 }
 
@@ -344,4 +351,11 @@ body {
   color: var(--muted);
   font-size: 12px;
   margin: 0;
+}
+
+.dashboard td .wrap {
+  display: block;
+  white-space: normal;
+  text-align: left;
+  min-width: 280px;
 }

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { screenshotUrlFromHash } from "../../../legacy-client/src/utils";
 import {
   analyze,
+  BOT_REASONS,
+  botReasons,
   bucketGroups,
   countBy,
   countHistogram,
@@ -12,6 +14,7 @@ import {
   PASS_THROUGH_MS,
   quantile,
   rate,
+  type StoredSession,
   type View,
 } from "./analyze";
 import {
@@ -60,6 +63,9 @@ type Filters = {
   minVersion: number;
   days: number | null;
   layout: "all" | "mobile" | "desktop";
+  // Sessions that look like people, ones that look like bots (see
+  // botReasons), or both.
+  traffic: "people" | "bots" | "all";
 };
 
 function readFilters(params: Record<string, string | undefined>): Filters {
@@ -76,6 +82,10 @@ function readFilters(params: Record<string, string | undefined>): Filters {
       params.layout === "mobile" || params.layout === "desktop"
         ? params.layout
         : "all",
+    traffic:
+      params.traffic === "bots" || params.traffic === "all"
+        ? params.traffic
+        : "people",
   };
 }
 
@@ -88,7 +98,7 @@ export default async function EventsDashboard({
   const filters = readFilters(await searchParams);
   const pulled = pulledAt();
 
-  let stored;
+  let stored: StoredSession[];
   try {
     stored = await loadSessions(filters.source, {
       minVersion: filters.minVersion,
@@ -107,7 +117,15 @@ export default async function EventsDashboard({
       </main>
     );
   }
-  const all = analyze(stored);
+  const reasons = new Map(stored.map((s) => [s.id, botReasons(s)]));
+  const suspected = stored.filter((s) => reasons.get(s.id)!.length > 0);
+  const all = analyze(
+    filters.traffic === "all"
+      ? stored
+      : stored.filter(
+          (s) => reasons.get(s.id)!.length > 0 === (filters.traffic === "bots")
+        )
+  );
   const sessionLayouts = new Map(all.sessions.map((s) => [s.id, s.layout]));
   const inLayout = (id: string) =>
     filters.layout === "all" || sessionLayouts.get(id) === filters.layout;
@@ -137,6 +155,20 @@ export default async function EventsDashboard({
             ).toLocaleDateString()}.`}
         </p>
         <FilterBar filters={filters} hasPulled={pulled != null} />
+        <p className="note">
+          {suspected.length.toLocaleString()} of{" "}
+          {stored.length.toLocaleString()} sessions look like bots
+          {filters.traffic === "people" && " and are left out"}
+          {filters.traffic === "bots" && ", and only they are shown"}
+          {suspected.length > 0 &&
+            ` (${countBy(
+              suspected.flatMap((s) => reasons.get(s.id)!),
+              (reason) => reason
+            )
+              .map(([reason, n]) => `${reason}: ${n}`)
+              .join(", ")})`}
+          .
+        </p>
       </header>
 
       <Section title="Overview">
@@ -212,7 +244,19 @@ export default async function EventsDashboard({
         switches={all.viewSwitches}
       />
       <TopSkinsSection views={views} />
-      <QualitySection all={all} sessions={sessions} />
+      <QualitySection
+        all={all}
+        sessions={sessions}
+        botCounts={
+          new Map(
+            countBy(
+              suspected.flatMap((s) => reasons.get(s.id)!),
+              (reason) => reason
+            )
+          )
+        }
+        total={stored.length}
+      />
     </main>
   );
 }
@@ -249,6 +293,14 @@ function FilterBar({
           <option value="1">Last day</option>
           <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
+        </select>
+      </label>
+      <label>
+        Traffic
+        <select name="traffic" defaultValue={filters.traffic}>
+          <option value="people">Likely people</option>
+          <option value="bots">Suspected bots</option>
+          <option value="all">Everything</option>
         </select>
       </label>
       <label>
@@ -890,12 +942,36 @@ function TopSkinsSection({ views }: { views: View[] }) {
 function QualitySection({
   all,
   sessions,
+  botCounts,
+  total,
 }: {
   all: Analysis;
   sessions: Analysis["sessions"];
+  // Sessions caught by each rule, of `total` (before the Traffic filter).
+  botCounts: Map<string, number>;
+  total: number;
 }) {
   return (
     <Section title="Data quality">
+      <Card
+        title="Suspected bots"
+        note="Sessions matching any of these are left out unless Traffic says otherwise. Of all sessions in the period, before that filter."
+        wide
+      >
+        <Table
+          columns={["Rule", "Sessions", "What it means"]}
+          rows={Object.entries(BOT_REASONS).map(([reason, meaning]) => [
+            reason,
+            `${(botCounts.get(reason) ?? 0).toLocaleString()} · ${formatPercent(
+              total === 0 ? null : (botCounts.get(reason) ?? 0) / total,
+              0
+            )}`,
+            <span key="meaning" className="wrap">
+              {meaning}
+            </span>,
+          ])}
+        />
+      </Card>
       <Card title="Gaps">
         <Stats
           items={[

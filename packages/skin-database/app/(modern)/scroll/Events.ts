@@ -6,12 +6,13 @@ import type { LoggedEvent } from "./eventTypes";
 // Client code sends events through eventLogger.ts instead of importing this.
 export async function storeEvents(
   sessionId: string,
-  events: LoggedEvent[]
+  events: LoggedEvent[],
+  userAgent: string | null
 ): Promise<void> {
   const receivedAt = Date.now();
 
   // The first batch from a browser creates the session.
-  await SessionModel.ensure(sessionId);
+  await SessionModel.ensure(sessionId, userAgent);
 
   await knex("user_log_events").insert(
     events.map((event) => ({

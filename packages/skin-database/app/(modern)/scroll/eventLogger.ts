@@ -31,6 +31,7 @@ function createEventLogger(sessionId: string): EventLogger {
   let queue: LoggedEvent[] = [];
   let seq = 0;
   let timer: ReturnType<typeof setTimeout> | null = null;
+  let waitingForActivation = false;
 
   function flush({ unloading = false } = {}) {
     if (timer != null) {
@@ -38,6 +39,22 @@ function createEventLogger(sessionId: string): EventLogger {
       timer = null;
     }
     if (queue.length === 0) return;
+    // A prerendered page that's never opened sends nothing, so leaves no
+    // session. Once it's opened, everything queued goes.
+    if (isPrerendering()) {
+      if (!waitingForActivation) {
+        waitingForActivation = true;
+        document.addEventListener(
+          "prerenderingchange",
+          () => {
+            waitingForActivation = false;
+            flush();
+          },
+          { once: true }
+        );
+      }
+      return;
+    }
     const body = JSON.stringify({ sessionId, events: queue });
     queue = [];
     if (
@@ -150,6 +167,8 @@ function watchLinkClicks(s: Session): void {
     } catch {
       return;
     }
+    // Not blob: (the Download button saves the skin through one) or the like.
+    if (url.protocol !== "https:" && url.protocol !== "http:") return;
     const external = url.origin !== location.origin;
     if (
       !external &&
@@ -260,6 +279,9 @@ function getVisitContext(): {
   referrerHost: string | null;
   layout: "mobile" | "desktop";
   pointer: "coarse" | "fine";
+  automated: boolean;
+  prerendered: boolean;
+  visible: boolean;
 } {
   let referrerHost: string | null = null;
   try {
@@ -274,5 +296,24 @@ function getVisitContext(): {
     referrerHost,
     layout: matchMedia(DESKTOP_MEDIA_QUERY).matches ? "desktop" : "mobile",
     pointer: matchMedia("(pointer: coarse)").matches ? "coarse" : "fine",
+    automated: navigator.webdriver === true,
+    prerendered: wasPrerendered(),
+    visible: document.visibilityState === "visible",
   };
+}
+
+// Whether the browser loaded the page ahead of the visitor opening it (e.g.
+// from a search result), and so the session started before anyone saw it.
+function wasPrerendered(): boolean {
+  if ((document as { prerendering?: boolean }).prerendering) return true;
+  const navigation = performance.getEntriesByType("navigation")[0] as
+    | (PerformanceEntry & { activationStart?: number })
+    | undefined;
+  return (navigation?.activationStart ?? 0) > 0;
+}
+
+// While the page is being prerendered nobody has opened it (and they may
+// never), so nothing is sent until they do.
+function isPrerendering(): boolean {
+  return (document as { prerendering?: boolean }).prerendering === true;
 }

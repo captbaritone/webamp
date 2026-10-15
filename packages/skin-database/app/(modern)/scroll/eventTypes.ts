@@ -24,7 +24,12 @@
 //   feed. Before, each touch was guessed to be for one or the other, so
 //   webamp_interact and webampInteractions on touch screens mean something
 //   different from version 5 on.
-export const EVENT_SCHEMA_VERSION = 5;
+// - 6: a page the browser prerendered (e.g. from a search result) sends
+//   nothing until it's opened, so it no longer leaves a session nobody saw.
+//   session_start says whether it was prerendered, whether the browser is
+//   automated, and whether the page was visible. The server records each
+//   session's user agent (the session table).
+export const EVENT_SCHEMA_VERSION = 6;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -102,6 +107,12 @@ export type UserEvent =
       referrerHost: string | null;
       layout: "mobile" | "desktop";
       pointer: "coarse" | "fine";
+      // navigator.webdriver: a browser driven by automation.
+      automated: boolean;
+      // The browser loaded the page before the visitor opened it.
+      prerendered: boolean;
+      // The page was visible when the session started.
+      visible: boolean;
     }
   // Switched to the other view. For the feed, skinMd5 and listIndex are the
   // skin it opened on; for the grid, the skin it came back to (if any).
