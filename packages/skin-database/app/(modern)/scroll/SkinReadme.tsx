@@ -85,7 +85,7 @@ export default function SkinReadme({ skin, focused }: Props) {
 
   function expand() {
     const slot = slotRef.current;
-    const page = slot?.closest("[data-skin-index]");
+    const page = slot?.closest(".skin-page");
     if (slot == null || page == null || expanded != null) return;
     const slotRect = slot.getBoundingClientRect();
     const pageRect = page.getBoundingClientRect();
