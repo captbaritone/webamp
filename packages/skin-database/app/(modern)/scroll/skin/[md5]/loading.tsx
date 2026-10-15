@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { MOBILE_MAX_WIDTH } from "../../../../../legacy-client/src/constants";
 import { screenshotUrlFromHash } from "../../../../../legacy-client/src/utils";
 import BackToGrid from "../../BackToGrid";
+import { corsScreenshotUrl } from "../../skinTint";
 
 /**
  * Shown immediately when navigating to a skin (e.g. from the grid) while the
@@ -28,7 +29,10 @@ export default function Loading() {
           <ViewTransition name={`skin-${md5}`}>
             <img
               className="skin-screenshot"
-              src={screenshotUrlFromHash(md5)}
+              // The same URL and request mode as SkinPage's, so it's one
+              // cached image.
+              crossOrigin="anonymous"
+              src={corsScreenshotUrl(screenshotUrlFromHash(md5))}
               alt=""
             />
           </ViewTransition>

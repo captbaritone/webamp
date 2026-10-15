@@ -7,7 +7,7 @@ import {
   type LoggedEvent,
   type UserEvent,
 } from "./eventTypes";
-import { DESKTOP_MEDIA_QUERY } from "./FeedNavigation";
+import { DESKTOP_MEDIA_QUERY } from "./breakpoints";
 
 const ENDPOINT = "/scroll/events";
 // Send a batch once this many events are queued, or this long after the first

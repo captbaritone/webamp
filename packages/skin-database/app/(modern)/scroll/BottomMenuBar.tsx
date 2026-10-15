@@ -128,10 +128,13 @@ export default function BottomMenuBar() {
       <div
         ref={barRef}
         style={{
-          position: "sticky",
+          // Fixed, not sticky: sticky leaves it right after the content, which
+          // while a page is loading is at the top of the screen. Pages leave
+          // room for it via --bottom-nav-height.
+          position: "fixed",
           bottom: 0,
           left: 0,
-          width: "100%",
+          right: 0,
           backgroundColor: "rgba(26, 26, 26, 0.95)",
           backdropFilter: "blur(10px)",
           borderTop: "1px solid rgba(255, 255, 255, 0.1)",

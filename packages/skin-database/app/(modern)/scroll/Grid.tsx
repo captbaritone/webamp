@@ -32,6 +32,13 @@ import {
 import { getSearchDebounceMs } from "../../../legacy-client/src/searchConfig";
 import { screenshotUrlFromHash } from "../../../legacy-client/src/utils";
 import { skinPath } from "./paths";
+import { normalizeSkinFileName } from "./skinFileName";
+import { corsScreenshotUrl } from "./skinTint";
+import HintPill, { markHintDone } from "./HintPill";
+import { Pointer } from "lucide-react";
+
+// Remembered once the visitor has tapped a skin (see HintPill).
+const GRID_HINT_KEY = "grid-hint-dismissed";
 
 const PAGE_SIZE = 50;
 
@@ -80,14 +87,20 @@ function Cell({
 
   return (
     <div style={style}>
-      <div style={{ width, height, position: "relative" }}>
+      <div
+        className="grid-tile"
+        style={{ width, height, position: "relative" }}
+      >
         <Link
           href={skinPath(skin.md5, skin.fileName)}
           onClick={() => data.onSkinClick(skin.md5, index)}
         >
           <ViewTransition name={`skin-${skin.md5}`}>
             <img
-              src={skin.screenshotUrl}
+              // The same URL and request mode as the feed's screenshots
+              // (which read their colors), so the browser caches one copy.
+              crossOrigin="anonymous"
+              src={corsScreenshotUrl(skin.screenshotUrl)}
               alt={skin.fileName}
               style={{
                 width: "100%",
@@ -97,6 +110,9 @@ function Cell({
             />
           </ViewTransition>
         </Link>
+        <div className="grid-tile-name" aria-hidden>
+          {skin.fileName}
+        </div>
         {skin.nsfw && (
           <div
             style={{
@@ -223,7 +239,7 @@ export default function SkinTable({
           result.hits.map((hit) => ({
             md5: hit.objectID,
             screenshotUrl: screenshotUrlFromHash(hit.objectID),
-            fileName: hit.fileName,
+            fileName: normalizeSkinFileName(hit.fileName),
             // Some records still have float scores rather than booleans.
             nsfw: hit.nsfw === true || hit.nsfw === 1,
           }))
@@ -343,6 +359,32 @@ export default function SkinTable({
   const activeQueryRef = useRef<string | null>(null);
   activeQueryRef.current = showSearchResults ? resultsQuery : null;
 
+  // Keyboard shortcuts to jump to the search box: "/" (when not already typing
+  // somewhere) and Cmd/Ctrl+K (from anywhere).
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const input = searchInputRef.current;
+      if (input == null || e.defaultPrevented) return;
+      const isCommandK =
+        (e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === "k";
+      const isSlash =
+        e.key === "/" &&
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        !(e.target as HTMLElement | null)?.closest(
+          "input, textarea, select, [contenteditable]"
+        );
+      if (!isCommandK && !isSlash) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   const onSkinClick = useCallback(
     (skinMd5: string, position: number) => {
       logger.log({
@@ -352,6 +394,7 @@ export default function SkinTable({
         query: activeQueryRef.current,
       });
       setFeedEntry("grid", gridSessionId);
+      markHintDone(GRID_HINT_KEY);
     },
     [logger, gridSessionId]
   );
@@ -369,6 +412,15 @@ export default function SkinTable({
 
   return (
     <div id="infinite-skins">
+      <HintPill
+        storageKey={GRID_HINT_KEY}
+        done={false}
+        onShown={() => logger.log({ type: "grid_hint_shown" })}
+        icon={<Pointer size={16} />}
+        className="hint-pill-grid"
+      >
+        Tap a skin to try it in Webamp
+      </HintPill>
       {/* Floating Search Bar */}
       <div
         style={{
@@ -388,12 +440,18 @@ export default function SkinTable({
             enterKeyHint="search"
             value={inputValue}
             onChange={handleSearchChange}
+            ref={searchInputRef}
             onKeyDown={(e) => {
-              // Search runs as you type; Enter just dismisses the keyboard.
-              if (e.key === "Enter") e.currentTarget.blur();
+              // Search runs as you type; Enter just dismisses the keyboard,
+              // and Escape leaves the search box.
+              if (e.key === "Enter" || e.key === "Escape") {
+                e.currentTarget.blur();
+              }
             }}
             placeholder="Search skins..."
             aria-label="Search skins"
+            aria-keyshortcuts="/ Meta+K Control+K"
+            title="Search skins (/ or ⌘K)"
             aria-busy={searchPending}
             style={{
               width: "100%",

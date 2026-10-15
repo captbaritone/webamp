@@ -63,7 +63,7 @@ async function getClientSkin(
   const model = await SkinModel.fromMd5Assert(ctx, md5);
   const [readme, fileName, tweet, nsfw] = await Promise.all([
     model.getReadme(),
-    model.getFileName(),
+    model.getFileName(true),
     model.getTweet(),
     model.getIsNsfw(),
   ]);
@@ -74,7 +74,6 @@ async function getClientSkin(
     skinUrl: model.getSkinUrl(),
     md5,
     source,
-    // TODO: Normalize to .wsz
     fileName,
     readme:
       readmeText.length > README_MAX_LENGTH

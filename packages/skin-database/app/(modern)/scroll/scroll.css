@@ -1,3 +1,8 @@
+:root {
+  /* The feed's darkest color: the edges of each page's spotlight. */
+  --feed-edge: #0c0c10;
+}
+
 body {
   margin: 0; /* Remove default margin */
   height: 100dvh; /* Set body height to viewport height */
@@ -43,6 +48,47 @@ button {
   box-sizing: border-box;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+/*
+ * Behind the feed: a spotlight tinted with the visible skin's colors (set by
+ * SkinScroller), which stays put and morphs to each new skin's tint. The two
+ * colors are registered properties so the gradient can transition.
+ * The readme's fade blends into its dark edge (--feed-edge).
+ */
+@property --feed-glow {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #383838;
+}
+
+@property --feed-glow-mid {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #1c1c1c;
+}
+
+.feed-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 60% at 50% 38%,
+    var(--feed-glow) 0%,
+    var(--feed-glow-mid) 55%,
+    var(--feed-edge) 100%
+  );
+  transition: --feed-glow 0.6s ease-out, --feed-glow-mid 0.6s ease-out;
+  /* Fade in over the page's plain background (e.g. arriving from the grid)
+     rather than appearing all at once. */
+  animation: feed-backdrop-in 0.8s ease-out both;
+}
+
+@keyframes feed-backdrop-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /*
@@ -265,7 +311,8 @@ button {
   min-height: 0;
   box-sizing: border-box;
   color: white;
-  background: #1a1a1a;
+  /* What the fade at the bottom blends into: the page's dark edge. */
+  --readme-fade-to: var(--feed-edge);
   /* Same box as when expanded, so nothing shifts as it opens. */
   border: 1px solid transparent;
   border-bottom: none;
@@ -315,7 +362,7 @@ button {
   right: 0;
   bottom: 0;
   height: min(2.5rem, 60%);
-  background: linear-gradient(to bottom, rgba(26, 26, 26, 0), #1a1a1a);
+  background: linear-gradient(to bottom, transparent, var(--readme-fade-to));
   pointer-events: none;
 }
 
@@ -331,6 +378,9 @@ button {
   flex: none;
   /* Leave the top shadow area clear. */
   max-height: calc(100% - var(--bottom-nav-height, 4rem) - 3rem);
+  /* Solid, since it covers the skin. */
+  background: #15151a;
+  --readme-fade-to: #15151a;
   border-color: rgba(255, 255, 255, 0.15);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
 }
@@ -387,11 +437,10 @@ button {
   outline-offset: 2px;
 }
 
-/* Mobile scroll hint: a pill just above the bottom menu bar. */
-.scroll-hint-pill {
+/* A one-time hint on mobile (see HintPill.tsx). Positioned per use below. */
+.hint-pill {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--bottom-nav-height, 4rem) + 0.75rem);
   transform: translateX(-50%);
   z-index: 700;
   display: flex;
@@ -408,21 +457,32 @@ button {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   white-space: nowrap;
   cursor: pointer;
-  animation: scroll-hint-in 0.3s ease-out;
+  animation: hint-pill-in 0.3s ease-out;
 }
 
-.scroll-hint-chevron {
-  animation: scroll-hint-nudge 1.6s ease-in-out infinite;
+/* The feed's "Swipe up" hint, just above the bottom menu bar. */
+.hint-pill-feed {
+  bottom: calc(var(--bottom-nav-height, 4rem) + 0.75rem);
 }
 
-@keyframes scroll-hint-in {
+/* The grid's "Tap a skin" hint, just above its floating search bar. */
+.hint-pill-grid {
+  bottom: 8.25rem;
+}
+
+.hint-pill-icon {
+  display: inline-flex;
+  animation: hint-pill-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes hint-pill-in {
   from {
     opacity: 0;
     transform: translate(-50%, 0.5rem);
   }
 }
 
-@keyframes scroll-hint-nudge {
+@keyframes hint-pill-nudge {
   0%,
   60%,
   100% {
@@ -472,6 +532,11 @@ button {
     padding: 0;
   }
 
+  /* No icon row under the skin here, so give the readme some room. */
+  .skin-readme-slot {
+    margin-top: 1.25rem;
+  }
+
   /* A column to the right of the skin, vertically centered alongside it. */
   .skin-action-icons {
     position: absolute;
@@ -500,7 +565,7 @@ button {
     transform: translateY(-50%);
   }
 
-  .scroll-hint-pill {
+  .hint-pill {
     display: none;
   }
 
@@ -526,13 +591,84 @@ button {
     animation-duration: 2s;
   }
 
-  .scroll-hint-pill,
-  .scroll-hint-chevron {
+  .hint-pill,
+  .hint-pill-icon {
     animation: none;
   }
 
   .skin-readme,
-  .skin-readme-content {
+  .skin-readme-content,
+  .feed-backdrop {
     transition: none !important;
+    animation: none;
+  }
+}
+
+/*
+ * A skin in the grid. On devices that can hover, it glows and brightens a
+ * little under the pointer to show it can be opened, and keyboard focus looks
+ * the same. The glow is inset (on a layer over the tile) because tiles sit
+ * edge to edge.
+ */
+.grid-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7),
+    inset 0 0 12px rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  pointer-events: none;
+}
+
+.grid-tile img {
+  transition: filter 0.15s ease-out;
+}
+
+/* The glow replaces the browser's focus outline (only for keyboard focus). */
+.grid-tile a:focus {
+  outline: none;
+}
+
+.grid-tile:has(a:focus-visible)::after {
+  opacity: 1;
+}
+
+.grid-tile:has(a:focus-visible) img {
+  filter: brightness(1.1);
+}
+
+/* The skin's name, along the bottom of the tile on hover or focus. */
+.grid-tile-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.25rem 0.5rem 0.4rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  pointer-events: none;
+}
+
+.grid-tile:has(a:focus-visible) .grid-tile-name {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .grid-tile:hover::after,
+  .grid-tile:hover .grid-tile-name {
+    opacity: 1;
+  }
+
+  .grid-tile:hover img {
+    filter: brightness(1.1);
   }
 }

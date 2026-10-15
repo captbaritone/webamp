@@ -9,6 +9,7 @@ import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
 import SkinReadme from "./SkinReadme";
 import BackToGrid from "./BackToGrid";
+import { corsScreenshotUrl } from "./skinTint";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 type Props = {
@@ -44,7 +45,9 @@ export default memo(function SkinPage({
             <ViewTransition name={`skin-${skin.md5}`}>
               <img
                 className="skin-screenshot"
-                src={skin.screenshotUrl}
+                // So its colors can be read for the backdrop tint.
+                crossOrigin="anonymous"
+                src={corsScreenshotUrl(skin.screenshotUrl)}
                 alt={skin.fileName}
               />
               {focused && (

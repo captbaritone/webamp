@@ -112,6 +112,8 @@ export type UserEvent =
       layout: "mobile" | "desktop";
       pointer: "coarse" | "fine";
     }
+  // The grid's "Tap a skin" hint was shown.
+  | { type: "grid_hint_shown" }
   // A search's results arrived.
   | { type: "grid_search"; query: string; resultCount: number }
   // A skin in the grid was tapped. Position is its index in the grid (0-based);
@@ -159,6 +161,7 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<UserEvent["type"]>(
     "scroll_hint_shown",
     "webamp_interact",
     "grid_open",
+    "grid_hint_shown",
     "grid_search",
     "grid_skin_click",
   ]

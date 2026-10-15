@@ -1,10 +1,17 @@
 "use client";
 
 import { useState, useLayoutEffect, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import SkinPage from "./SkinPage";
 import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
 import { useSharedWebamp } from "./Webamp";
 import { skinPath } from "./paths";
+import {
+  TINT_INTENSITY,
+  backdropColors,
+  corsScreenshotUrl,
+  useSkinTint,
+} from "./skinTint";
 import {
   createEventLogger,
   EventLoggerContext,
@@ -76,8 +83,17 @@ export default function SkinScroller({
   const [webampSlot, setWebampSlot] = useState<HTMLDivElement | null>(null);
   const [hasEverScrolled, setHasEverScrolled] = useState(false);
   const [logger] = useState(() => createEventLogger(sessionId));
+  const router = useRouter();
+  // Whether the visitor tapped a skin in the grid to get here.
+  const cameFromGridRef = useRef(false);
 
   const visibleSkin = skins[visibleSkinIndex];
+
+  // The backdrop is tinted with the visible skin's colors, and morphs to the
+  // next skin's as you scroll. Until a skin's tint is known it keeps the
+  // previous one.
+  const tint = useSkinTint(corsScreenshotUrl(visibleSkin.screenshotUrl));
+  const backdrop = tint == null ? null : backdropColors(tint, TINT_INTENSITY);
   // For event handlers that outlive a render.
   const visibleRef = useRef({ skin: visibleSkin, index: visibleSkinIndex });
   visibleRef.current = { skin: visibleSkin, index: visibleSkinIndex };
@@ -177,7 +193,7 @@ export default function SkinScroller({
   }
 
   // Keyboard navigation: J / Down / Space for the next skin, K / Up /
-  // Shift+Space for the previous one. Webamp's hotkeys use Up/Down for volume;
+  // Shift+Space for the previous one, Escape back to the grid. Webamp's hotkeys use Up/Down for volume;
   // the feed takes them instead (listening on window in the capture phase so we
   // see them first, and stopping them there). Left/Right still seek in Webamp.
   useEffect(() => {
@@ -185,6 +201,19 @@ export default function SkinScroller({
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest("input, textarea, select, [contenteditable]")) {
+        return;
+      }
+      if (e.key === "Escape") {
+        // An expanded readme handles Escape itself (it collapses).
+        if (document.querySelector(".skin-readme.expanded") != null) return;
+        e.preventDefault();
+        // Back to where they came from if that was the grid (keeping its
+        // scroll position and search), otherwise to the grid.
+        if (cameFromGridRef.current) {
+          history.back();
+        } else {
+          router.push("/");
+        }
         return;
       }
       let delta: number;
@@ -249,6 +278,7 @@ export default function SkinScroller({
   // is the session's first event.
   useEffect(() => {
     const pendingEntry = takeFeedEntry();
+    cameFromGridRef.current = pendingEntry?.entry === "grid";
     logger.log({
       type: "session_start",
       entry: pendingEntry?.entry ?? (landedOnSkin ? "link" : "direct"),
@@ -395,6 +425,19 @@ export default function SkinScroller({
   return (
     <EventLoggerContext.Provider value={logger}>
       <div
+        className="feed-backdrop"
+        aria-hidden
+        style={
+          backdrop == null
+            ? undefined
+            : ({
+                // The spotlight's center, and its color halfway to the edge.
+                "--feed-glow": backdrop.glow,
+                "--feed-glow-mid": backdrop.glowMid,
+              } as React.CSSProperties)
+        }
+      />
+      <div
         ref={setContainerRef}
         style={{
           // Full width so the wheel scrolls from anywhere on desktop, and so
@@ -443,7 +486,7 @@ export default function SkinScroller({
           width: "100%",
           height: "1rem",
           background:
-            "linear-gradient(180deg, rgba(26, 26, 26, 0.8) 0%, rgba(26, 26, 26, 0.4) 50%, rgba(26, 26, 26, 0) 100%)",
+            "linear-gradient(180deg, rgba(12, 12, 16, 0.8) 0%, rgba(12, 12, 16, 0.4) 50%, rgba(12, 12, 16, 0) 100%)",
           pointerEvents: "none",
           zIndex: 500,
         }}

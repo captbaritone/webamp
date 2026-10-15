@@ -1,18 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import HintPill from "./HintPill";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { FEED_COLUMN_RATIO } from "../../../legacy-client/src/constants";
-
-// The desktop breakpoint from scroll.css: action icons beside the skin,
-// next/previous buttons, no hint pill.
-export const DESKTOP_MEDIA_QUERY = "(min-aspect-ratio: 3/4)";
-
-// Remembered per device: once someone has scrolled, they know how.
-const HINT_DISMISSED_KEY = "scroll-hint-dismissed";
-
-// How long the user must be idle before we hint.
-const HINT_IDLE_MS = 3000;
 
 type ScrollHintPillProps = {
   // True once the user has moved on from the first skin.
@@ -21,67 +12,23 @@ type ScrollHintPillProps = {
   onTap: () => void;
 };
 
-/**
- * On mobile, a small "Swipe up" pill above the bottom menu bar, shown once
- * per device if the user hasn't scrolled after a few idle seconds.
- */
+/** On mobile, a "Swipe up" hint above the bottom menu bar (see HintPill). */
 export function ScrollHintPill({
   hasScrolled,
   onShown,
   onTap,
 }: ScrollHintPillProps) {
-  const [visible, setVisible] = useState(false);
-  const onShownRef = useRef(onShown);
-  onShownRef.current = onShown;
-
-  useEffect(() => {
-    if (hasScrolled) {
-      setVisible(false);
-      try {
-        localStorage.setItem(HINT_DISMISSED_KEY, "1");
-      } catch {
-        // Storage can be unavailable (e.g. private mode). We'll just hint again.
-      }
-      return;
-    }
-    try {
-      if (localStorage.getItem(HINT_DISMISSED_KEY) != null) return;
-    } catch {
-      // Fall through and hint.
-    }
-
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const show = () => {
-      if (window.matchMedia(DESKTOP_MEDIA_QUERY).matches) return;
-      setVisible(true);
-      onShownRef.current();
-      stopListening();
-    };
-    // Any interaction (e.g. playing with Webamp) restarts the idle timer.
-    const restart = () => {
-      clearTimeout(timer);
-      timer = setTimeout(show, HINT_IDLE_MS);
-    };
-    const events = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
-    const stopListening = () => {
-      for (const event of events) removeEventListener(event, restart, true);
-    };
-    for (const event of events) {
-      addEventListener(event, restart, { capture: true, passive: true });
-    }
-    restart();
-    return () => {
-      clearTimeout(timer);
-      stopListening();
-    };
-  }, [hasScrolled]);
-
-  if (!visible) return null;
   return (
-    <button className="scroll-hint-pill" onClick={onTap}>
-      <ChevronUp size={16} className="scroll-hint-chevron" aria-hidden />
+    <HintPill
+      storageKey="scroll-hint-dismissed"
+      done={hasScrolled}
+      onShown={onShown}
+      onTap={onTap}
+      icon={<ChevronUp size={16} />}
+      className="hint-pill-feed"
+    >
       Swipe up for more skins
-    </button>
+    </HintPill>
   );
 }
 

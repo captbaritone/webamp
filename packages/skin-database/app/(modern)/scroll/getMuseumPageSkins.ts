@@ -1,6 +1,7 @@
 "use server";
 
 import { getMuseumPage, getScreenshotUrl } from "../../../data/skins";
+import { normalizeSkinFileName } from "./skinFileName";
 
 export type GridSkin = {
   md5: string;
@@ -18,7 +19,7 @@ export async function getMuseumPageSkins(
   const skins = page.map((item) => ({
     md5: item.md5,
     screenshotUrl: getScreenshotUrl(item.md5),
-    fileName: item.fileName,
+    fileName: normalizeSkinFileName(item.fileName),
     nsfw: item.nsfw,
   }));
 
