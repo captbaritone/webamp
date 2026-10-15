@@ -9,3 +9,5 @@ dist/
 *.sqlite3-wal
 .env
 .next
+.next-build
+.next-previous
