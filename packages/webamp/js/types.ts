@@ -695,6 +695,17 @@ export interface Options {
   enableHotkeys?: boolean;
 
   /**
+   * Should a focus indicator be drawn around the focused control when the user
+   * navigates with the keyboard?
+   *
+   * The indicator is only shown for keyboard focus (`:focus-visible`), and is
+   * drawn outside the focused control so the skin itself is never altered.
+   *
+   * Default: `false`
+   */
+  focusIndicator?: boolean;
+
+  /**
    * An array of additional file pickers.
    *
    * These will appear in the "Options" menu under "Play".
