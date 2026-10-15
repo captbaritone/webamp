@@ -16,6 +16,7 @@ If you want access to the changes in this section before they are officially rel
 - Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 - Added a new Webamp instance method: [`webamp.setTracks(tracks)`](./06_API/03_instance-methods.md#settrackstracks-track-void), which replaces the playlist without starting playback.
 - Each window is now exposed to assistive technology as a labelled group: "Main window", "Equalizer", "Playlist" or "Milkdrop".
+- When a window is closed with the keyboard, focus now moves to another open window (or to Webamp's root element if none are open) instead of being lost.
 
 ### Bug Fixes
 
