@@ -15,12 +15,14 @@ If you want access to the changes in this section before they are officially rel
 - The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
 - Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 - Added a new Webamp instance method: [`webamp.setTracks(tracks)`](./06_API/03_instance-methods.md#settrackstracks-track-void), which replaces the playlist without starting playback.
+- The seeking, volume and balance sliders now describe their values to screen readers, for example "0:32 of 2:00", "75%" or "20% Left".
 
 ### Bug Fixes
 
 - Fix TypeScript types for the `webamp/butterchurn` entrypoint, which pointed at a file that is not included in the package.
 - Fix TypeScript types under `moduleResolution: "node16"` or `"nodenext"`, where the default export of each entrypoint was typed as a namespace rather than the `Webamp` class.
 - Fix skins with a `region.txt` (custom window shapes) being cut off in Firefox when Webamp is scaled with CSS `zoom`: the window shape didn't scale with the window, so only part of the main and equalizer windows showed.
+- Fix the seeking bar not seeking when changed with the keyboard. The arrow keys now seek backward and forward five seconds, and Home, End, Page Up and Page Down seek immediately.
 
 ## 2.3.1
 
