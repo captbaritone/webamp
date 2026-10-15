@@ -13,6 +13,7 @@ If you want access to the changes in this section before they are officially rel
 - Toggle buttons (Shuffle, Repeat, the EQ and playlist window toggles, and the equalizer's On and Auto buttons) now expose their state to screen readers with `aria-pressed`.
 - Webamp's buttons can now be reached with Tab and activated with Enter or Space, and screen readers announce them as buttons with names that match their existing tooltips (for example "Play" or "Toggle Shuffle"). Buttons without a tooltip, like the equalizer's "On" and "Auto", now have names too.
 - The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
+- Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 
 ### Bug Fixes
 

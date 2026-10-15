@@ -86,6 +86,8 @@ export default class ElementSource {
           // The associated resource or media provider object (such as a MediaStream) has been found to be unsuitable.
           break;
       }
+      this._emitter.trigger("error", this._audio.error!.code);
+
       // Rather than just geting stuck in this error state, we can just pretend this is
       // the end of the track.
 

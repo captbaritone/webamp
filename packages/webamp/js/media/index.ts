@@ -184,6 +184,9 @@ export default class Media implements IMedia {
     this._source.on("ended", () => {
       this._emitter.trigger("ended");
     });
+    this._source.on("error", (code: number) => {
+      this._emitter.trigger("error", code);
+    });
     this._source.on("statusChange", () => {
       switch (this._source.getStatus()) {
         case MEDIA_STATUS.PLAYING:
