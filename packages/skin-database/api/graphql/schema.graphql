@@ -439,8 +439,12 @@ type Query {
   Search the database using SQLite's FTS (full text search) index.
   
   Useful for locating a particular skin.
+  
+  `nsfw` limits the results to skins that are (true) or aren't (false) flagged
+  NSFW, like the museum's `filter:nsfw` and `-filter:nsfw`. With a filter, an
+  empty query lists every matching skin, most liked first.
   """
-  search_classic_skins(first: Int! = 10, offset: Int! = 0, query: String!): [ClassicSkin] @semanticNonNull
+  search_classic_skins(first: Int! = 10, nsfw: Boolean = null, offset: Int! = 0, query: String!): [ClassicSkin] @semanticNonNull
   """
   Search the database using SQLite's FTS (full text search) index.
   

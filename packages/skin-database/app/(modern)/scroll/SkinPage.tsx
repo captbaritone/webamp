@@ -10,6 +10,8 @@ import SkinActionIcons from "./SkinActionIcons";
 import SkinReadme from "./SkinReadme";
 import BackToGrid from "./BackToGrid";
 import { corsScreenshotUrl } from "./skinTint";
+import { useShowNsfw } from "./nsfwConsent";
+import NsfwCover from "./NsfwCover";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 type Props = {
@@ -30,6 +32,10 @@ export default memo(function SkinPage({
   focused,
   webampSlotRef,
 }: Props) {
+  // An NSFW skin stays blurred, and Webamp isn't loaded over it, until the
+  // visitor chooses to see NSFW skins.
+  const showNsfw = useShowNsfw();
+  const hidden = skin.nsfw && !showNsfw;
   return (
     <div data-skin-index={index} className="scroller skin-page">
       <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
@@ -44,13 +50,15 @@ export default memo(function SkinPage({
           <div style={{ position: "relative" }}>
             <ViewTransition name={`skin-${skin.md5}`}>
               <img
-                className="skin-screenshot"
+                className={
+                  hidden ? "skin-screenshot nsfw-blurred" : "skin-screenshot"
+                }
                 // So its colors can be read for the backdrop tint.
                 crossOrigin="anonymous"
                 src={corsScreenshotUrl(skin.screenshotUrl)}
                 alt={skin.fileName}
               />
-              {focused && (
+              {focused && !hidden && (
                 <div
                   ref={webampSlotRef}
                   style={{
@@ -62,6 +70,7 @@ export default memo(function SkinPage({
                 />
               )}
             </ViewTransition>
+            {hidden && <NsfwCover skinMd5={skin.md5} />}
           </div>
 
           <SkinActionIcons skin={skin} />

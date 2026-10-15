@@ -11,6 +11,7 @@ import React, {
 } from "react";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { FixedSizeGrid as Grid } from "react-window";
 import {
   SCREENSHOT_WIDTH,
@@ -35,7 +36,8 @@ import { skinPath } from "./paths";
 import { normalizeSkinFileName } from "./skinFileName";
 import { corsScreenshotUrl } from "./skinTint";
 import HintPill, { markHintDone } from "./HintPill";
-import { Pointer } from "lucide-react";
+import { EyeOff, Pointer } from "lucide-react";
+import { rememberSkinNsfw, useShowNsfw } from "./nsfwConsent";
 
 // Remembered once the visitor has tapped a skin (see HintPill).
 const GRID_HINT_KEY = "grid-hint-dismissed";
@@ -78,6 +80,7 @@ function Cell({
   data: CellData;
 }) {
   const { skins, width, height, columnCount } = data;
+  const showNsfw = useShowNsfw();
   const index = rowIndex * columnCount + columnIndex;
   const skin = skins[index];
 
@@ -93,7 +96,10 @@ function Cell({
       >
         <Link
           href={skinPath(skin.md5, skin.fileName)}
-          onClick={() => data.onSkinClick(skin.md5, index)}
+          onClick={() => {
+            rememberSkinNsfw(skin.md5, skin.nsfw);
+            data.onSkinClick(skin.md5, index);
+          }}
         >
           <ViewTransition name={`skin-${skin.md5}`}>
             <img
@@ -102,6 +108,8 @@ function Cell({
               crossOrigin="anonymous"
               src={corsScreenshotUrl(skin.screenshotUrl)}
               alt={skin.fileName}
+              // Opening it shows the choice to see it (see NsfwCover).
+              className={skin.nsfw && !showNsfw ? "nsfw-blurred" : undefined}
               style={{
                 width: "100%",
                 height: "100%",
@@ -113,22 +121,9 @@ function Cell({
         <div className="grid-tile-name" aria-hidden>
           {skin.fileName}
         </div>
-        {skin.nsfw && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: "rgba(0,0,0,0.7)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: "14px",
-            }}
-          >
+        {skin.nsfw && !showNsfw && (
+          <div className="grid-tile-nsfw" aria-hidden>
+            <EyeOff size={14} />
             NSFW
           </div>
         )}
@@ -142,6 +137,8 @@ type SkinTableProps = {
   initialTotal: number;
   // The search in the URL (?query=), if any.
   initialQuery: string;
+  // That search's results, if the server ran it (initialSkins is then empty).
+  initialSearchSkins: GridSkin[] | null;
 };
 
 // The window's size, or null until mounted. The grid is laid out to fit the
@@ -168,6 +165,7 @@ export default function SkinTable({
   initialSkins,
   initialTotal,
   initialQuery,
+  initialSearchSkins,
 }: SkinTableProps) {
   const windowSize = useMountedWindowSize();
   const windowWidth = windowSize?.width ?? 0;
@@ -180,21 +178,40 @@ export default function SkinTable({
   const [logger] = useState(() => createEventLogger(gridSessionId));
 
   // Search input state - separate input value from actual search query
-  const [inputValue, setInputValue] = useState(initialQuery);
+  // From the live URL rather than only the server's render: coming Back to a
+  // search, the page can be the one first rendered without it.
+  const searchParams = useSearchParams();
+  const [inputValue, setInputValue] = useState(
+    () => searchParams.get("query") ?? initialQuery
+  );
+  // The server's results, if they're for the search we're starting with.
+  const [serverResults] = useState(() =>
+    initialSearchSkins != null && inputValue.trim() === initialQuery.trim()
+      ? { query: initialQuery.trim(), skins: initialSearchSkins }
+      : null
+  );
 
   // State for browsing mode. A sparse array indexed by position in the museum,
   // so pages land in the right place even if they load out of order.
   const [browseSkins, setBrowseSkins] =
     useState<Array<GridSkin | undefined>>(initialSkins);
-  const loadedPagesRef = useRef<Set<number>>(new Set([0]));
+  const loadedPagesRef = useRef<Set<number>>(
+    new Set(initialSkins.length > 0 ? [0] : [])
+  );
   const inFlightPagesRef = useRef<Set<number>>(new Set());
 
   // State for search mode
-  const [searchSkins, setSearchSkins] = useState<GridSkin[]>([]);
+  const [searchSkins, setSearchSkins] = useState<GridSkin[]>(
+    serverResults?.skins ?? []
+  );
   const [searchError, setSearchError] = useState<string | null>(null);
   // The query that `searchSkins`/`searchError` are the outcome of. Until it
   // matches the input, a search is pending (debouncing or in flight).
-  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
+  const [resultsQuery, setResultsQuery] = useState<string | null>(
+    serverResults?.query ?? null
+  );
+  const resultsQueryRef = useRef(resultsQuery);
+  resultsQueryRef.current = resultsQuery;
 
   // Determine which mode we're in based on actual search query, not input
   const isSearchMode = inputValue.trim().length > 0;
@@ -215,11 +232,12 @@ export default function SkinTable({
     const query = inputValue.trim();
     const newUrl =
       query === "" ? "/" : `/?${new URLSearchParams({ query: inputValue })}`;
-    window.history.replaceState(
-      { ...window.history.state, as: newUrl, url: newUrl },
-      "",
-      newUrl
-    );
+    replaceHistoryEntry({}, newUrl);
+
+    // Already showing this search's results (e.g. the server's).
+    if (query.length > 0 && query === resultsQueryRef.current) {
+      return;
+    }
 
     // If query is empty, clear results immediately
     if (query.length === 0) {
@@ -300,19 +318,12 @@ export default function SkinTable({
     }
   }, []);
 
-  const onItemsRendered = useCallback(
-    ({
-      overscanRowStartIndex,
-      overscanRowStopIndex,
-    }: {
-      overscanRowStartIndex: number;
-      overscanRowStopIndex: number;
-    }) => {
-      if (showSearchResults) {
-        return;
-      }
-      const firstIndex = overscanRowStartIndex * columnCount;
-      const lastIndex = (overscanRowStopIndex + 1) * columnCount - 1;
+  // The rows the grid last rendered (including overscan).
+  const renderedRowsRef = useRef<[number, number]>([0, 0]);
+  const loadPagesForRows = useCallback(
+    (firstRow: number, lastRow: number) => {
+      const firstIndex = firstRow * columnCount;
+      const lastIndex = (lastRow + 1) * columnCount - 1;
       for (
         let page = Math.floor(firstIndex / PAGE_SIZE);
         page <= Math.floor(lastIndex / PAGE_SIZE);
@@ -321,8 +332,33 @@ export default function SkinTable({
         loadPage(page);
       }
     },
-    [showSearchResults, columnCount, loadPage]
+    [columnCount, loadPage]
   );
+
+  const onItemsRendered = useCallback(
+    ({
+      overscanRowStartIndex,
+      overscanRowStopIndex,
+    }: {
+      overscanRowStartIndex: number;
+      overscanRowStopIndex: number;
+    }) => {
+      renderedRowsRef.current = [overscanRowStartIndex, overscanRowStopIndex];
+      if (showSearchResults) {
+        return;
+      }
+      loadPagesForRows(overscanRowStartIndex, overscanRowStopIndex);
+    },
+    [showSearchResults, loadPagesForRows]
+  );
+
+  // Clearing a search shows the browse grid in the rows that were already on
+  // screen, so onItemsRendered isn't called again; load their pages here.
+  useEffect(() => {
+    if (!showSearchResults) {
+      loadPagesForRows(...renderedRowsRef.current);
+    }
+  }, [showSearchResults, loadPagesForRows]);
 
   const itemKey = useCallback(
     ({ columnIndex, rowIndex }: { columnIndex: number; rowIndex: number }) => {
@@ -336,13 +372,57 @@ export default function SkinTable({
   const gridRef = React.useRef<any>(null);
   const itemRef = React.useRef<number>(0);
 
+  // Coming back to this grid (e.g. with the feed's back arrow) returns to the
+  // skin you were looking at. The first visible skin is remembered per history
+  // entry, as an index so it survives a change in column count.
+  const scrollKey = useHistoryEntryKey();
+  const restoreIndexRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (scrollKey == null) return;
+    try {
+      const saved = sessionStorage.getItem(`grid-scroll:${scrollKey}`);
+      if (saved != null) restoreIndexRef.current = Number(saved);
+    } catch {
+      // Start at the top.
+    }
+  }, [scrollKey]);
+
   const onScroll = useMemo(() => {
     const half = Math.round(columnCount / 2);
+    let saveTimer: ReturnType<typeof setTimeout> | undefined;
     return (scrollData: { scrollTop: number }) => {
-      itemRef.current =
-        Math.round(scrollData.scrollTop / rowHeight) * columnCount + half;
+      const firstRow = Math.round(scrollData.scrollTop / rowHeight);
+      itemRef.current = firstRow * columnCount + half;
+      if (scrollKey == null || restoreIndexRef.current != null) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        try {
+          sessionStorage.setItem(
+            `grid-scroll:${scrollKey}`,
+            String(firstRow * columnCount)
+          );
+        } catch {
+          // Not remembered; fine.
+        }
+      }, 150);
     };
-  }, [columnCount, rowHeight]);
+  }, [columnCount, rowHeight, scrollKey]);
+
+  // Restore once the skins we were scrolled to are what the grid shows: the
+  // search's results, or the browse grid (whose pages load as they're
+  // scrolled to).
+  const showingRestoredContent = isSearchMode
+    ? showSearchResults && !searchPending
+    : true;
+  useEffect(() => {
+    const index = restoreIndexRef.current;
+    if (index == null || windowSize == null || !showingRestoredContent) return;
+    restoreIndexRef.current = null;
+    gridRef.current?.scrollToItem({
+      rowIndex: Math.floor(index / columnCount),
+      align: "start",
+    });
+  }, [showingRestoredContent, windowSize, columnCount, scrollKey]);
 
   useEffect(() => {
     logger.log({
@@ -350,6 +430,13 @@ export default function SkinTable({
       query: inputValue.trim() || null,
       ...getVisitContext(),
     });
+    if (serverResults != null) {
+      logger.log({
+        type: "grid_search",
+        query: serverResults.query,
+        resultCount: serverResults.skins.length,
+      });
+    }
     return flushWhenHidden(logger);
     // Only on mount: the search the grid was opened with.
   }, [logger]);
@@ -541,4 +628,39 @@ export default function SkinTable({
         )}
     </div>
   );
+}
+
+// A key for the current history entry, kept in its state, so a grid can
+// remember things about this visit to it and find them again on Back.
+function useHistoryEntryKey(): string | null {
+  const [key, setKey] = useState<string | null>(null);
+  useEffect(() => {
+    let entryKey: string | undefined = window.history.state?.gridEntryKey;
+    if (entryKey == null) {
+      entryKey = crypto.randomUUID();
+      replaceHistoryEntry({ gridEntryKey: entryKey });
+    }
+    setKey(entryKey);
+  }, []);
+  return key;
+}
+
+/**
+ * Update the current history entry's state (keeping what we've stored there)
+ * and optionally its URL. Next.js's own keys are left out: given those, Next
+ * assumes the update is its own and doesn't learn the new URL, then puts its
+ * old one back on the entry, so Back would lose the search.
+ */
+function replaceHistoryEntry(
+  state: Record<string, unknown>,
+  url?: string
+): void {
+  const {
+    __NA,
+    __PRIVATE_NEXTJS_INTERNALS_TREE,
+    as: _as,
+    url: _url,
+    ...ours
+  } = window.history.state ?? {};
+  window.history.replaceState({ ...ours, ...state }, "", url);
 }

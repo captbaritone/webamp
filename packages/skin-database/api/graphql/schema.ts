@@ -1059,13 +1059,17 @@ export function getSchema(): GraphQLSchema {
                     }
                 },
                 search_classic_skins: {
-                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.",
+                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.\n\n`nsfw` limits the results to skins that are (true) or aren't (false) flagged\nNSFW, like the museum's `filter:nsfw` and `-filter:nsfw`. With a filter, an\nempty query lists every matching skin, most liked first.",
                     name: "search_classic_skins",
                     type: new GraphQLList(ClassicSkinType),
                     args: {
                         first: {
                             type: new GraphQLNonNull(GraphQLInt),
                             defaultValue: 10
+                        },
+                        nsfw: {
+                            type: GraphQLBoolean,
+                            defaultValue: null
                         },
                         offset: {
                             type: new GraphQLNonNull(GraphQLInt),
@@ -1076,7 +1080,7 @@ export function getSchema(): GraphQLSchema {
                         }
                     },
                     resolve(_source, args, context) {
-                        return assertNonNull(querySearch_classic_skinsResolver(args.query, args.first, args.offset, getUserContext(context)));
+                        return assertNonNull(querySearch_classic_skinsResolver(args.query, args.first, args.offset, args.nsfw, getUserContext(context)));
                     }
                 },
                 search_skins: {

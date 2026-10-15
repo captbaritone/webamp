@@ -6,6 +6,7 @@ import SkinPage from "./SkinPage";
 import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
 import { useSharedWebamp } from "./Webamp";
 import { skinPath } from "./paths";
+import { returnToGrid, setCameFromGrid } from "./gridReturn";
 import {
   TINT_INTENSITY,
   backdropColors,
@@ -84,8 +85,6 @@ export default function SkinScroller({
   const [hasEverScrolled, setHasEverScrolled] = useState(false);
   const [logger] = useState(() => createEventLogger(sessionId));
   const router = useRouter();
-  // Whether the visitor tapped a skin in the grid to get here.
-  const cameFromGridRef = useRef(false);
 
   const visibleSkin = skins[visibleSkinIndex];
 
@@ -207,13 +206,7 @@ export default function SkinScroller({
         // An expanded readme handles Escape itself (it collapses).
         if (document.querySelector(".skin-readme.expanded") != null) return;
         e.preventDefault();
-        // Back to where they came from if that was the grid (keeping its
-        // scroll position and search), otherwise to the grid.
-        if (cameFromGridRef.current) {
-          history.back();
-        } else {
-          router.push("/");
-        }
+        returnToGrid(router);
         return;
       }
       let delta: number;
@@ -276,9 +269,17 @@ export default function SkinScroller({
 
   // Session lifecycle. Declared before the view effect below so session_start
   // is the session's first event.
+  // Taken once per feed, not per run of the effect below (which runs twice in
+  // development's Strict Mode, and would find it already taken).
+  const feedEntryRef = useRef<ReturnType<typeof takeFeedEntry> | undefined>(
+    undefined
+  );
   useEffect(() => {
-    const pendingEntry = takeFeedEntry();
-    cameFromGridRef.current = pendingEntry?.entry === "grid";
+    if (feedEntryRef.current === undefined) {
+      feedEntryRef.current = takeFeedEntry();
+    }
+    const pendingEntry = feedEntryRef.current;
+    setCameFromGrid(pendingEntry?.entry === "grid");
     logger.log({
       type: "session_start",
       entry: pendingEntry?.entry ?? (landedOnSkin ? "link" : "direct"),

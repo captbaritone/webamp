@@ -634,7 +634,7 @@ button {
   opacity: 1;
 }
 
-.grid-tile:has(a:focus-visible) img {
+.grid-tile:has(a:focus-visible) img:not(.nsfw-blurred) {
   filter: brightness(1.1);
 }
 
@@ -668,7 +668,85 @@ button {
     opacity: 1;
   }
 
-  .grid-tile:hover img {
+  .grid-tile:hover img:not(.nsfw-blurred) {
     filter: brightness(1.1);
   }
+}
+
+/*
+ * A skin flagged NSFW, until the visitor chooses to see them (see
+ * nsfwConsent.ts). Clipped so the blur doesn't bleed past its edges.
+ */
+.nsfw-blurred {
+  filter: blur(16px) brightness(0.7) saturate(0.7);
+  clip-path: inset(0);
+}
+
+/* Over a blurred skin in the feed. */
+.nsfw-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: #fff;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.nsfw-cover p {
+  margin: 0;
+}
+
+.nsfw-cover-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.nsfw-cover-text {
+  max-width: 16rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nsfw-cover-button {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font: bold 0.9rem Arial, "Helvetica Neue", Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+.nsfw-cover-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.nsfw-cover-note {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* The label on a blurred tile in the grid. */
+.grid-tile-nsfw {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font: bold 11px Arial, "Helvetica Neue", Helvetica, sans-serif;
+  pointer-events: none;
 }

@@ -7,6 +7,7 @@ import { MOBILE_MAX_WIDTH } from "../../../../../legacy-client/src/constants";
 import { screenshotUrlFromHash } from "../../../../../legacy-client/src/utils";
 import BackToGrid from "../../BackToGrid";
 import { corsScreenshotUrl } from "../../skinTint";
+import { getKnownNsfw, useShowNsfw } from "../../nsfwConsent";
 
 /**
  * Shown immediately when navigating to a skin (e.g. from the grid) while the
@@ -15,6 +16,12 @@ import { corsScreenshotUrl } from "../../skinTint";
  */
 export default function Loading() {
   const { md5 } = useParams<{ md5: string }>();
+  const showNsfw = useShowNsfw();
+  // Only show the screenshot if we know it's safe to (e.g. it was opened from
+  // the grid). An NSFW one is blurred, as on SkinPage; one we know nothing
+  // about waits for the real page rather than risk showing it.
+  const nsfw = getKnownNsfw(md5);
+  const hidden = nsfw === true && !showNsfw;
   return (
     <div className="skin-page">
       <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
@@ -28,7 +35,10 @@ export default function Loading() {
         <div className="skin-frame">
           <ViewTransition name={`skin-${md5}`}>
             <img
-              className="skin-screenshot"
+              className={
+                hidden ? "skin-screenshot nsfw-blurred" : "skin-screenshot"
+              }
+              style={nsfw == null ? { visibility: "hidden" } : undefined}
               // The same URL and request mode as SkinPage's, so it's one
               // cached image.
               crossOrigin="anonymous"

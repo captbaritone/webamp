@@ -1,6 +1,8 @@
 "use server";
 
 import { getMuseumPage, getScreenshotUrl } from "../../../data/skins";
+import UserContext from "../../../data/UserContext";
+import { search_classic_skins } from "../../../api/graphql/resolvers/SkinResolver";
 import { normalizeSkinFileName } from "./skinFileName";
 
 export type GridSkin = {
@@ -24,4 +26,33 @@ export async function getMuseumPageSkins(
   }));
 
   return skins;
+}
+
+/**
+ * The grid's search, for a page loaded with one in its URL, so it can start
+ * with the results. The same search the grid runs in the browser
+ * (graphqlSearch), with the same number of results.
+ */
+export async function getSearchSkins(query: string): Promise<GridSkin[]> {
+  const results = await search_classic_skins(
+    query,
+    500,
+    0,
+    null,
+    new UserContext()
+  );
+  return Promise.all(
+    results.flatMap((skin) =>
+      skin == null
+        ? []
+        : [
+            (async () => ({
+              md5: skin.md5(),
+              screenshotUrl: getScreenshotUrl(skin.md5()),
+              fileName: normalizeSkinFileName(await skin.filename(true)),
+              nsfw: await skin.nsfw(),
+            }))(),
+          ]
+    )
+  );
 }

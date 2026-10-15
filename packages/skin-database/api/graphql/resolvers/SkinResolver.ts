@@ -85,12 +85,17 @@ export async function search_skins(
  * Search the database using SQLite's FTS (full text search) index.
  *
  * Useful for locating a particular skin.
+ *
+ * `nsfw` limits the results to skins that are (true) or aren't (false) flagged
+ * NSFW, like the museum's `filter:nsfw` and `-filter:nsfw`. With a filter, an
+ * empty query lists every matching skin, most liked first.
  * @gqlQueryField
  */
 export async function search_classic_skins(
   query: string,
   first: Int = 10,
   offset: Int = 0,
+  nsfw: boolean | null = null,
   ctx: UserContext
 ): Promise<Array<ClassicSkinResolver | null>> {
   if (first > 1000) {
@@ -107,19 +112,38 @@ export async function search_classic_skins(
   //   .offset(offset)
   //   .whereRaw("skin_search MATCH ?", query);
 
+  const nsfwMd5s = knex("skin_reviews")
+    .select("skin_md5")
+    .where("review", "NSFW");
   const match = ftsMatchExpression(query);
-  if (match == null) {
+
+  let skins: Array<{ skin_md5: string }>;
+  if (match != null) {
+    const search = knex("skin_search")
+      .select("skin_md5")
+      .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
+      .where("skins.skin_type", "=", 1)
+      .orderByRaw("rank")
+      .limit(first)
+      .offset(offset)
+      .whereRaw("skin_search MATCH ?", match);
+    if (nsfw === true) search.whereIn("skin_search.skin_md5", nsfwMd5s);
+    if (nsfw === false) search.whereNotIn("skin_search.skin_md5", nsfwMd5s);
+    skins = await search;
+  } else if (nsfw != null) {
+    // Nothing to match, just the filter.
+    skins = await knex("skins")
+      .select("skins.md5 as skin_md5")
+      .leftJoin("tweets", "tweets.skin_md5", "skins.md5")
+      .where("skins.skin_type", "=", 1)
+      [nsfw ? "whereIn" : "whereNotIn"]("skins.md5", nsfwMd5s)
+      .groupBy("skins.md5")
+      .orderByRaw("MAX(COALESCE(tweets.likes, 0)) DESC")
+      .limit(first)
+      .offset(offset);
+  } else {
     return [];
   }
-
-  const skins = await knex("skin_search")
-    .select("skin_md5")
-    .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
-    .where("skins.skin_type", "=", 1)
-    .orderByRaw("rank")
-    .limit(first)
-    .offset(offset)
-    .whereRaw("skin_search MATCH ?", match);
 
   return Promise.all(
     skins.map(async (hit) => {

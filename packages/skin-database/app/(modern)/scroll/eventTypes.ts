@@ -99,6 +99,8 @@ export type UserEvent =
   | { type: "skin_download"; skinMd5: string }
   | { type: "skin_like"; skinMd5: string; liked: boolean }
   | { type: "skin_flag_nsfw"; skinMd5: string }
+  // Chose to see NSFW skins (from the cover over one in the feed).
+  | { type: "nsfw_reveal"; skinMd5: string }
   | { type: "share_open"; skinMd5: string }
   | { type: "share_success"; skinMd5: string }
   | { type: "share_failure"; skinMd5: string; errorMessage: string }
@@ -155,6 +157,7 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<UserEvent["type"]>(
     "skin_download",
     "skin_like",
     "skin_flag_nsfw",
+    "nsfw_reveal",
     "share_open",
     "share_success",
     "share_failure",
