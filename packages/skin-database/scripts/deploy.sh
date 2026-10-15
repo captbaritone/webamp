@@ -100,6 +100,10 @@ main() {
   rm -rf .next-build
   NEXT_DIST_DIR=.next-build NODE_OPTIONS="--max-old-space-size=$BUILD_HEAP_MB" \
     pnpm run build
+  # next build edits tsconfig.json to include the build directory's generated
+  # types if it isn't already there. Put it back so the next deploy's pull
+  # isn't blocked by a dirty checkout.
+  git checkout -- tsconfig.json
   if [[ ! -f .next-build/BUILD_ID ]]; then
     echo "✗ The build didn't produce .next-build/BUILD_ID; nothing was changed"
     exit 1

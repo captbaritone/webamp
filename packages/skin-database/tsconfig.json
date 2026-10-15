@@ -34,7 +34,8 @@
   "include": [
     "./**/*",
     ".next/types/**/*.ts",
-    ".next/types/app/(legacy)/about/page.tsx"
+    ".next/types/app/(legacy)/about/page.tsx",
+    ".next-build/types/**/*.ts"
   ],
   "lib": ["es2015"],
   "exclude": ["node_modules", "dist"]
