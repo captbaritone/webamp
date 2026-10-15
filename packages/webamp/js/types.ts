@@ -475,6 +475,11 @@ export type Action =
       duration: number;
     }
   | {
+      type: "SET_TRACK_DEFAULT_NAME";
+      id: number;
+      defaultName: string;
+    }
+  | {
       type: "PLAY_TRACK";
       id: number;
     }
