@@ -1,12 +1,6 @@
 import { Metadata } from "next";
 import SessionModel from "../../../../../data/SessionModel";
-import UserContext from "../../../../../data/UserContext";
-import {
-  getClientSkins,
-  getClientSkinsPage,
-  getSkinForSession,
-  INITIAL_PAGE_SIZE,
-} from "../../getClientSkins";
+import { getClientSkins, getInitialClientSkins } from "../../getClientSkins";
 import SkinScroller from "../../SkinScroller";
 import { generateSkinPageMetadata } from "../../../../(legacy)/skin/[hash]/skinMetadata";
 
@@ -21,18 +15,16 @@ export const dynamic = "force-dynamic";
 export default async function Skin({ params }) {
   const { md5 } = await params;
 
-  // Create the session in the database
-  const sessionId = await SessionModel.create();
-
-  const ctx = new UserContext();
-  const linked = await getSkinForSession(ctx, sessionId, md5);
-  const initialSkins = await getClientSkinsPage(sessionId, INITIAL_PAGE_SIZE);
+  // Nothing is written for the session until the browser reports in.
+  const sessionId = SessionModel.newId();
+  const initialSkins = await getInitialClientSkins(sessionId, md5);
 
   return (
     <SkinScroller
-      initialSkins={[linked, ...initialSkins]}
+      initialSkins={initialSkins}
       getSkins={getClientSkins}
       sessionId={sessionId}
+      landedOnSkin
     />
   );
 }

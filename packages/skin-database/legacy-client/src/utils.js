@@ -99,7 +99,10 @@ export function gql(strings) {
 }
 
 export async function fetchGraphql(query, variables = {}) {
-  const url = `${API_URL}/graphql`;
+  // Same origin: the client is served by the same Next app as /graphql (on
+  // both skins.webamp.org and api.webamp.org), and this way local dev talks to
+  // the local server rather than production.
+  const url = "/graphql";
   let response;
   try {
     response = await fetch(url, {

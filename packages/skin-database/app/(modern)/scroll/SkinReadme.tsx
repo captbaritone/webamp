@@ -3,11 +3,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { ClientSkin } from "./SkinScroller";
-import { logUserEvent } from "./Events";
+import { useEventLogger } from "./eventLogger";
 
 type Props = {
   skin: ClientSkin;
-  sessionId: string;
   // Whether this skin is the one currently scrolled into view.
   focused: boolean;
 };
@@ -23,7 +22,8 @@ type ExpandedBox = { left: number; width: number };
  * (its bottom resting on the bottom menu bar) to reveal the rest, scrolling if
  * there's still more.
  */
-export default function SkinReadme({ skin, sessionId, focused }: Props) {
+export default function SkinReadme({ skin, focused }: Props) {
+  const logger = useEventLogger();
   // Holds the readme's place in the layout while it's expanded.
   const slotRef = useRef<HTMLDivElement>(null);
   const readmeRef = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function SkinReadme({ skin, sessionId, focused }: Props) {
     // Keep the collapsed readme's space so nothing else moves.
     slot.style.height = `${slotRect.height}px`;
     setExpanded({ left: slotRect.left - pageRect.left, width: slotRect.width });
-    logUserEvent(sessionId, { type: "readme_expand", skinMd5: skin.md5 });
+    logger.log({ type: "readme_expand", skinMd5: skin.md5 });
   }
 
   // Slide up: start looking exactly like the collapsed readme, then animate to
@@ -204,6 +204,9 @@ export default function SkinReadme({ skin, sessionId, focused }: Props) {
               </button>
               {skin.readme}
             </div>
+          )}
+          {skin.readme === "" && (
+            <p className="skin-readme-empty">No readme included in this skin</p>
           )}
         </div>
         {/*

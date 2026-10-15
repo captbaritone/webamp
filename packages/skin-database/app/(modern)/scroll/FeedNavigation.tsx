@@ -6,7 +6,7 @@ import { FEED_COLUMN_RATIO } from "../../../legacy-client/src/constants";
 
 // The desktop breakpoint from scroll.css: action icons beside the skin,
 // next/previous buttons, no hint pill.
-const DESKTOP_MEDIA_QUERY = "(min-aspect-ratio: 3/4)";
+export const DESKTOP_MEDIA_QUERY = "(min-aspect-ratio: 3/4)";
 
 // Remembered per device: once someone has scrolled, they know how.
 const HINT_DISMISSED_KEY = "scroll-hint-dismissed";
@@ -108,7 +108,7 @@ export function FeedNavButtons({
         onClick={onPrevious}
         disabled={!canGoPrevious}
         aria-label="Previous skin"
-        aria-keyshortcuts="K Shift+Space"
+        aria-keyshortcuts="K ArrowUp Shift+Space"
         title="Previous skin (K)"
       >
         <ChevronUp size={24} />
@@ -118,7 +118,7 @@ export function FeedNavButtons({
         onClick={onNext}
         disabled={!canGoNext}
         aria-label="Next skin"
-        aria-keyshortcuts="J Space"
+        aria-keyshortcuts="J ArrowDown Space"
         title="Next skin (J)"
       >
         <ChevronDown size={24} />

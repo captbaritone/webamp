@@ -1,5 +1,5 @@
 import { knex } from "../db";
-import type { UserEvent } from "../app/(modern)/scroll/Events";
+import type { UserEvent } from "../app/(modern)/scroll/eventTypes";
 
 const WEIGHTS = {
   viewDurationPerSecond: 0.1,

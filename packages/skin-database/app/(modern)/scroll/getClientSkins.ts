@@ -3,15 +3,26 @@ import SessionModel from "../../../data/SessionModel";
 import { ClientSkin } from "./SkinScroller";
 import { getScrollPage } from "../../../data/skins";
 import SkinModel from "../../../data/SkinModel";
+import type { SkinSource } from "./eventTypes";
 
 // The feed shows the whole readme (clipped until expanded), so we send it all,
 // within reason. A handful of readmes are enormous.
 const README_MAX_LENGTH = 5000;
 
-// Fetches the next page of the feed as the user scrolls.
+// Fetches the next page of the feed as the user scrolls. Only a real browser
+// calls this, so it records the page in the session (one insert) so that a
+// later getScrollPage for this session excludes them.
 export async function getClientSkins(sessionId: string): Promise<ClientSkin[]> {
   "use server";
-  return getClientSkinsPage(sessionId);
+  const page = await getScrollPage(sessionId);
+  const [skins] = await Promise.all([
+    getClientSkinsFor(page),
+    SessionModel.addSkins(
+      sessionId,
+      page.map((item) => item.md5)
+    ),
+  ]);
+  return skins;
 }
 
 // The first page is rendered with the route, so we keep it small: everything
@@ -19,40 +30,34 @@ export async function getClientSkins(sessionId: string): Promise<ClientSkin[]> {
 // pages from there.
 export const INITIAL_PAGE_SIZE = 10;
 
-export async function getClientSkinsPage(
+// The page a feed is rendered with. Not recorded in the session here: renders
+// also come from crawlers and link previews, so the browser reports these
+// skins in its session_start event instead (see SessionModel).
+export async function getInitialClientSkins(
   sessionId: string,
-  pageSize?: number
+  linkedMd5?: string
 ): Promise<ClientSkin[]> {
-  const ctx = new UserContext();
-  const page = await getScrollPage(sessionId, pageSize);
-  const md5s = page.map((item) => item.md5);
-
-  // Record them in the session (one insert for the page) so that a later
-  // getScrollPage for this session excludes them.
-  const [skins] = await Promise.all([
-    Promise.all(md5s.map((md5) => getClientSkin(ctx, md5))),
-    SessionModel.addSkins(sessionId, md5s),
-  ]);
-  return skins;
+  const page = (await getScrollPage(sessionId, INITIAL_PAGE_SIZE)).filter(
+    (item) => item.md5 !== linkedMd5
+  );
+  return getClientSkinsFor(
+    linkedMd5 == null ? page : [{ md5: linkedMd5, source: "link" }, ...page]
+  );
 }
 
-// A single skin, e.g. the one a shared link points at, recorded in the
-// session like the rest of the feed.
-export async function getSkinForSession(
-  ctx: UserContext,
-  sessionId: string,
-  md5: string
-): Promise<ClientSkin> {
-  const [skin] = await Promise.all([
-    getClientSkin(ctx, md5),
-    SessionModel.addSkin(sessionId, md5),
-  ]);
-  return skin;
+function getClientSkinsFor(
+  page: Array<{ md5: string; source: SkinSource }>
+): Promise<ClientSkin[]> {
+  const ctx = new UserContext();
+  return Promise.all(
+    page.map(({ md5, source }) => getClientSkin(ctx, md5, source))
+  );
 }
 
 async function getClientSkin(
   ctx: UserContext,
-  md5: string
+  md5: string,
+  source: SkinSource
 ): Promise<ClientSkin> {
   const model = await SkinModel.fromMd5Assert(ctx, md5);
   const [readme, fileName, tweet, nsfw] = await Promise.all([
@@ -67,6 +72,7 @@ async function getClientSkin(
     screenshotUrl: model.getScreenshotUrl(),
     skinUrl: model.getSkinUrl(),
     md5,
+    source,
     // TODO: Normalize to .wsz
     fileName,
     readme:

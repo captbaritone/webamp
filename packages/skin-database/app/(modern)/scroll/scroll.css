@@ -62,9 +62,47 @@ button {
   box-sizing: border-box;
 }
 
-/* The skin's filename, above it. One line so every page lays out the same. */
+/* The back-to-grid link and the skin's filename, above the skin. */
+/*
+ * The title is centered on the column, like a navigation bar; the arrow sits at
+ * the left edge, with matching room on both sides so long titles don't run
+ * into it.
+ */
+.skin-title-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.skin-back {
+  position: absolute;
+  /* Pull the arrow's built-in whitespace back to the column edge. */
+  left: -0.3rem;
+  display: flex;
+  color: #ccc;
+  border-radius: 4px;
+}
+
+.skin-back:hover {
+  color: #fff;
+}
+
+.skin-back:focus {
+  outline: none;
+}
+
+.skin-back:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* The skin's filename. One line so every page lays out the same. */
 .skin-title {
-  margin: 0 0 1rem;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0 1.75rem;
+  text-align: center;
   font-size: 1.1rem;
   line-height: 1.3;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -89,6 +127,25 @@ button {
   width: 100%;
   aspect-ratio: 275 / 348;
   image-rendering: pixelated;
+}
+
+/*
+ * Webamp sets touch-action: none on each window (the only divs it gives an
+ * inline touch-action) so dragging one doesn't scroll the page. Over the feed
+ * that means a swipe starting on the skin can't scroll to the next one, so let
+ * vertical swipes through. Webamp's horizontal sliders (volume, balance, seek)
+ * are inputs with their own touch-action: none, which still applies; restore
+ * it for the vertical controls that rely on the window's: equalizer bands and
+ * the playlist scrollbar. Dragging windows vertically by touch no longer works
+ * here, which is fine since the layout resets on every skin.
+ */
+.feed-webamp div[style*="touch-action"] {
+  touch-action: pan-y !important;
+}
+
+.feed-webamp .band,
+.feed-webamp .playlist-scrollbar {
+  touch-action: none;
 }
 
 /*
@@ -239,6 +296,17 @@ button {
   /* Keep readme formatting (and ASCII art) intact. */
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* In place of the text when a skin has no readme, so the space isn't blank. */
+.skin-readme-empty {
+  /* Centered in the space under the skin (the readme area is a flex column). */
+  margin: auto 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #666;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 /* Shows there's more text. Pinned to the bottom of the readme box. */

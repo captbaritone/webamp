@@ -8,12 +8,12 @@ import {
 import { ClientSkin } from "./SkinScroller";
 import SkinActionIcons from "./SkinActionIcons";
 import SkinReadme from "./SkinReadme";
+import BackToGrid from "./BackToGrid";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 
 type Props = {
   skin: ClientSkin;
   index: number;
-  sessionId: string;
   // Whether this is the skin currently scrolled into view.
   focused: boolean;
   // Receives the element the shared Webamp instance is moved into, which only
@@ -26,16 +26,18 @@ type Props = {
 export default memo(function SkinPage({
   skin,
   index,
-  sessionId,
   focused,
   webampSlotRef,
 }: Props) {
   return (
     <div data-skin-index={index} className="scroller skin-page">
       <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
-        <h2 className="skin-title" title={skin.fileName}>
-          {skin.fileName}
-        </h2>
+        <div className="skin-title-row">
+          <BackToGrid />
+          <h2 className="skin-title" title={skin.fileName}>
+            {skin.fileName}
+          </h2>
+        </div>
         {/* The skin, with the action icons positioned beside it. */}
         <div className="skin-frame">
           <div style={{ position: "relative" }}>
@@ -59,10 +61,10 @@ export default memo(function SkinPage({
             </ViewTransition>
           </div>
 
-          <SkinActionIcons skin={skin} sessionId={sessionId} />
+          <SkinActionIcons skin={skin} />
         </div>
 
-        <SkinReadme skin={skin} sessionId={sessionId} focused={focused} />
+        <SkinReadme skin={skin} focused={focused} />
       </div>
     </div>
   );

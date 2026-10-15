@@ -740,6 +740,8 @@ export type MuseumPage = Array<{
 
 export type ScrollPage = Array<{
   md5: string;
+  // Whether it came from the curated museum order or the random share.
+  source: "curated" | "random";
 }>;
 const PAGE_SIZE = 50;
 const FRESHNESS_PERCENTAGE = 0.2; // 20% random skins
@@ -792,15 +794,20 @@ LIMIT ?`,
     [randomCount * RANDOM_OVERSAMPLE, sessionId, randomCount]
   );
 
-  // Note: Technically we could get duplicates if a random skin is also in museum_sort_order,
-  // but in practice this is rare and acceptable for the use case.
-  const allSkins = skins.concat(randomSkins);
+  // A random pick can also be one of the curated ones; keep it as curated.
+  const curatedMd5s = new Set(skins.map(({ skin_md5 }) => skin_md5));
+  const allSkins: ScrollPage = [
+    ...skins.map(({ skin_md5 }) => ({
+      md5: skin_md5,
+      source: "curated" as const,
+    })),
+    ...randomSkins
+      .filter(({ skin_md5 }) => !curatedMd5s.has(skin_md5))
+      .map(({ skin_md5 }) => ({ md5: skin_md5, source: "random" as const })),
+  ];
   // Shuffle the results
   allSkins.sort(() => Math.random() - 0.5);
-
-  return allSkins.map(({ skin_md5 }) => {
-    return { md5: skin_md5 };
-  });
+  return allSkins;
 }
 
 export async function getMuseumPage({

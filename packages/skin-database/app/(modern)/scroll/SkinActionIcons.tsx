@@ -3,23 +3,22 @@
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { Heart, Share2, Flag, Download, Check } from "lucide-react";
 import { ClientSkin } from "./SkinScroller";
-import { logUserEvent } from "./Events";
+import { useEventLogger } from "./eventLogger";
 import { fetchGraphql } from "./graphql";
 
 type Props = {
   skin: ClientSkin;
-  sessionId: string;
 };
 
-export default function SkinActionIcons({ skin, sessionId }: Props) {
+export default function SkinActionIcons({ skin }: Props) {
   return (
     // Laid out in scroll.css: a row under the skin on mobile, a column beside
     // it on desktop.
     <div className="skin-action-icons">
-      <LikeButton skin={skin} sessionId={sessionId} />
-      <ShareButton skin={skin} sessionId={sessionId} />
-      <FlagButton skin={skin} sessionId={sessionId} />
-      <DownloadButton skin={skin} sessionId={sessionId} />
+      <LikeButton skin={skin} />
+      <ShareButton skin={skin} />
+      <FlagButton skin={skin} />
+      <DownloadButton skin={skin} />
     </div>
   );
 }
@@ -66,10 +65,10 @@ function formatLikeCount(count: number): string {
 
 type LikeButtonProps = {
   skin: ClientSkin;
-  sessionId: string;
 };
 
-function LikeButton({ skin, sessionId }: LikeButtonProps) {
+function LikeButton({ skin }: LikeButtonProps) {
+  const logger = useEventLogger();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(skin.likeCount);
 
@@ -82,7 +81,7 @@ function LikeButton({ skin, sessionId }: LikeButtonProps) {
       newLikedState ? prevCount + 1 : prevCount - 1
     );
 
-    logUserEvent(sessionId, {
+    logger.log({
       type: "skin_like",
       skinMd5: skin.md5,
       liked: newLikedState,
@@ -106,7 +105,6 @@ function LikeButton({ skin, sessionId }: LikeButtonProps) {
 
 type ShareButtonProps = {
   skin: ClientSkin;
-  sessionId: string;
 };
 
 const COPY_STATUS_TEXT = {
@@ -124,7 +122,8 @@ function shouldUseShareSheet(): boolean {
   );
 }
 
-function ShareButton({ skin, sessionId }: ShareButtonProps) {
+function ShareButton({ skin }: ShareButtonProps) {
+  const logger = useEventLogger();
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(
     null
   );
@@ -143,7 +142,7 @@ function ShareButton({ skin, sessionId }: ShareButtonProps) {
   }
 
   const handleShare = async () => {
-    logUserEvent(sessionId, {
+    logger.log({
       type: "share_open",
       skinMd5: skin.md5,
     });
@@ -156,7 +155,7 @@ function ShareButton({ skin, sessionId }: ShareButtonProps) {
           url: skin.shareUrl,
         });
 
-        logUserEvent(sessionId, {
+        logger.log({
           type: "share_success",
           skinMd5: skin.md5,
         });
@@ -164,7 +163,7 @@ function ShareButton({ skin, sessionId }: ShareButtonProps) {
         // User cancelled or share failed
         if (error instanceof Error && error.name !== "AbortError") {
           console.error("Share failed:", error);
-          logUserEvent(sessionId, {
+          logger.log({
             type: "share_failure",
             skinMd5: skin.md5,
             errorMessage: error.message,
@@ -177,14 +176,14 @@ function ShareButton({ skin, sessionId }: ShareButtonProps) {
     try {
       await navigator.clipboard.writeText(skin.shareUrl);
       showCopyStatus("copied");
-      logUserEvent(sessionId, {
+      logger.log({
         type: "share_success",
         skinMd5: skin.md5,
       });
     } catch (error) {
       console.error("Copy failed:", error);
       showCopyStatus("failed");
-      logUserEvent(sessionId, {
+      logger.log({
         type: "share_failure",
         skinMd5: skin.md5,
         errorMessage: error instanceof Error ? error.message : String(error),
@@ -210,10 +209,10 @@ function ShareButton({ skin, sessionId }: ShareButtonProps) {
 
 type FlagButtonProps = {
   skin: ClientSkin;
-  sessionId: string;
 };
 
-function FlagButton({ skin, sessionId }: FlagButtonProps) {
+function FlagButton({ skin }: FlagButtonProps) {
+  const logger = useEventLogger();
   const [isFlagged, setIsFlagged] = useState(skin.nsfw);
 
   const handleFlagNsfw = async () => {
@@ -221,7 +220,7 @@ function FlagButton({ skin, sessionId }: FlagButtonProps) {
 
     setIsFlagged(true);
 
-    logUserEvent(sessionId, {
+    logger.log({
       type: "skin_flag_nsfw",
       skinMd5: skin.md5,
     });
@@ -258,12 +257,12 @@ function FlagButton({ skin, sessionId }: FlagButtonProps) {
 
 type DownloadButtonProps = {
   skin: ClientSkin;
-  sessionId: string;
 };
 
-function DownloadButton({ skin, sessionId }: DownloadButtonProps) {
+function DownloadButton({ skin }: DownloadButtonProps) {
+  const logger = useEventLogger();
   const handleDownload = async () => {
-    logUserEvent(sessionId, {
+    logger.log({
       type: "skin_download",
       skinMd5: skin.md5,
     });

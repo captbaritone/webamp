@@ -1,25 +1,26 @@
 import { knex } from "../db";
 import { randomUUID } from "crypto";
 
+// A /scroll feed session: one visit to the feed. Pages mint the ID when they
+// render, but nothing is written until the visitor's browser reports in (its
+// first event batch, or a request for more skins). Server renders that never
+// run JavaScript, like crawlers and link previews, leave no rows.
 export default class SessionModel {
-  static async create(): Promise<string> {
-    const sessionId = randomUUID();
-    const startTime = Date.now();
-    await knex("session").insert({
-      id: sessionId,
-      start_time: startTime,
-    });
-    return sessionId;
+  static newId(): string {
+    return randomUUID();
   }
 
-  static async addSkin(sessionId: string, skinMd5: string): Promise<void> {
-    await knex("session_skin").insert({
-      session_id: sessionId,
-      skin_md5: skinMd5,
-    });
+  // Record the session if it isn't already. Safe to call repeatedly.
+  static async ensure(sessionId: string): Promise<void> {
+    await knex("session")
+      .insert({ id: sessionId, start_time: Date.now() })
+      .onConflict("id")
+      .ignore();
   }
 
+  // Record skins as shown to the session, so later pages exclude them.
   static async addSkins(sessionId: string, skinMd5s: string[]): Promise<void> {
+    await SessionModel.ensure(sessionId);
     if (skinMd5s.length === 0) return;
     await knex("session_skin").insert(
       skinMd5s.map((skinMd5) => ({ session_id: sessionId, skin_md5: skinMd5 }))

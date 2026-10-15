@@ -19,6 +19,12 @@ import {
 } from "../../../legacy-client/src/constants";
 import { getMuseumPageSkins, GridSkin } from "./getMuseumPageSkins";
 import {
+  createEventLogger,
+  flushWhenHidden,
+  getVisitContext,
+  setFeedEntry,
+} from "./eventLogger";
+import {
   algoliaSearch,
   graphqlSearch,
   USE_ALGOLIA,
@@ -49,6 +55,7 @@ type CellData = {
   columnCount: number;
   width: number;
   height: number;
+  onSkinClick: (skinMd5: string, position: number) => void;
 };
 
 function Cell({
@@ -73,7 +80,10 @@ function Cell({
   return (
     <div style={style}>
       <div style={{ width, height, position: "relative" }}>
-        <Link href={`/scroll/skin/${skin.md5}`}>
+        <Link
+          href={`/scroll/skin/${skin.md5}`}
+          onClick={() => data.onSkinClick(skin.md5, index)}
+        >
           <ViewTransition name={`skin-${skin.md5}`}>
             <img
               src={skin.screenshotUrl}
@@ -120,6 +130,12 @@ export default function SkinTable({
   initialTotal,
 }: SkinTableProps) {
   const { windowWidth, windowHeight } = useWindowSize();
+
+  // Each grid visit is its own event-logging session. A feed session reached
+  // from here records this ID, so a search and the skins opened from it can be
+  // joined up.
+  const [gridSessionId] = useState(() => crypto.randomUUID());
+  const [logger] = useState(() => createEventLogger(gridSessionId));
 
   // Search input state - separate input value from actual search query
   const [inputValue, setInputValue] = useState(() => {
@@ -193,6 +209,11 @@ export default function SkinTable({
         );
         setSearchError(null);
         setResultsQuery(query);
+        logger.log({
+          type: "grid_search",
+          query,
+          resultCount: result.hits.length,
+        });
       } catch (err) {
         if (cancelled) return;
         console.error("Search failed:", err);
@@ -286,14 +307,43 @@ export default function SkinTable({
     };
   }, [columnCount, rowHeight]);
 
+  useEffect(() => {
+    logger.log({
+      type: "grid_open",
+      query: inputValue.trim() || null,
+      ...getVisitContext(),
+    });
+    return flushWhenHidden(logger);
+    // Only on mount: the search the grid was opened with.
+  }, [logger]);
+
+  // The search the visible results came from, for click events. A ref so
+  // itemData (and every cell) doesn't change when it does.
+  const activeQueryRef = useRef<string | null>(null);
+  activeQueryRef.current = showSearchResults ? resultsQuery : null;
+
+  const onSkinClick = useCallback(
+    (skinMd5: string, position: number) => {
+      logger.log({
+        type: "grid_skin_click",
+        skinMd5,
+        position,
+        query: activeQueryRef.current,
+      });
+      setFeedEntry("grid", gridSessionId);
+    },
+    [logger, gridSessionId]
+  );
+
   const itemData: CellData = useMemo(
     () => ({
       skins,
       columnCount,
       width: columnWidth,
       height: rowHeight,
+      onSkinClick,
     }),
-    [skins, columnCount, columnWidth, rowHeight]
+    [skins, columnCount, columnWidth, rowHeight, onSkinClick]
   );
 
   return (

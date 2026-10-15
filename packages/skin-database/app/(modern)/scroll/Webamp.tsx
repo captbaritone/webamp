@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import type { WebampTarget } from "./eventTypes";
 import {
   SCREENSHOT_HEIGHT,
   SCREENSHOT_WIDTH,
@@ -13,13 +14,26 @@ type WebampInstance = import("webamp").default;
  * a live instance (rather than creating one per skin) means the music keeps
  * playing as you scroll.
  */
-export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
+export function useSharedWebamp(
+  slot: HTMLElement | null,
+  skinUrl: string,
+  // Called when playback starts, pauses, stops, etc. (Webamp's media status).
+  onMediaStatusChange?: (status: string) => void,
+  // Called for each completed press on Webamp (not ones that become a scroll).
+  onInteract?: (target: WebampTarget) => void
+) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const webampPromiseRef = useRef<Promise<WebampInstance> | null>(null);
   const currentSkinUrlRef = useRef<string | null>(null);
+  const onMediaStatusChangeRef = useRef(onMediaStatusChange);
+  onMediaStatusChangeRef.current = onMediaStatusChange;
+  const onInteractRef = useRef(onInteract);
+  onInteractRef.current = onInteract;
+  const unsubscribeRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     return () => {
+      unsubscribeRef.current?.();
       webampPromiseRef.current?.then((webamp) => webamp.dispose());
       webampPromiseRef.current = null;
       hostRef.current?.remove();
@@ -39,6 +53,8 @@ export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
 
     if (hostRef.current == null) {
       const host = document.createElement("div");
+      // Styled in scroll.css (lets touch swipes over Webamp scroll the feed).
+      host.className = "feed-webamp";
       Object.assign(host.style, {
         width: `${SCREENSHOT_WIDTH}px`,
         height: `${SCREENSHOT_HEIGHT}px`,
@@ -53,6 +69,31 @@ export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
         capture: true,
         passive: true,
       });
+      // Report presses on Webamp once they complete. If the browser turns a
+      // touch into a scroll it fires pointercancel instead, and we drop it.
+      let pressTarget: WebampTarget | null = null;
+      host.addEventListener(
+        "pointerdown",
+        (e) => {
+          pressTarget = classifyWebampTarget(e.target as Element);
+        },
+        { capture: true, passive: true }
+      );
+      host.addEventListener(
+        "pointerup",
+        () => {
+          if (pressTarget != null) onInteractRef.current?.(pressTarget);
+          pressTarget = null;
+        },
+        { capture: true, passive: true }
+      );
+      host.addEventListener(
+        "pointercancel",
+        () => {
+          pressTarget = null;
+        },
+        { capture: true, passive: true }
+      );
       hostRef.current = host;
     }
     const host = hostRef.current;
@@ -66,7 +107,19 @@ export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
     async function show() {
       if (webampPromiseRef.current == null) {
         currentSkinUrlRef.current = skinUrl;
-        webampPromiseRef.current = createWebamp(host, skinUrl);
+        webampPromiseRef.current = createWebamp(host, skinUrl).then(
+          (webamp) => {
+            let lastStatus = webamp.getMediaStatus();
+            unsubscribeRef.current = webamp.store.subscribe(() => {
+              const status = webamp.getMediaStatus();
+              if (status !== lastStatus) {
+                lastStatus = status;
+                onMediaStatusChangeRef.current?.(String(status));
+              }
+            });
+            return webamp;
+          }
+        );
       }
       const webamp = await webampPromiseRef.current;
       if (cancelled) return;
@@ -102,6 +155,13 @@ export function useSharedWebamp(slot: HTMLElement | null, skinUrl: string) {
       container?.removeAttribute(WEBAMP_READY_ATTRIBUTE);
     };
   }, [slot, skinUrl]);
+}
+
+function classifyWebampTarget(target: Element): WebampTarget {
+  if (target.closest("input")) return "slider";
+  // Webamp marks the areas you can drag a window by.
+  if (target.classList.contains("draggable")) return "drag";
+  return "control";
 }
 
 async function createWebamp(

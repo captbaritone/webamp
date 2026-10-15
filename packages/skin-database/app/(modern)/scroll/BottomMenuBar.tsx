@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { setFeedEntry } from "./eventLogger";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 import {
   // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
@@ -161,6 +162,7 @@ export default function BottomMenuBar() {
             icon={<Smartphone size={24} />}
             label="Feed"
             isActive={pathname.startsWith("/scroll/skin")}
+            onClick={() => setFeedEntry("feed_tab")}
           />
           <MenuButton
             href="/upload"
@@ -287,6 +289,7 @@ function MenuButton({
       href={href!}
       title={label}
       style={containerStyle}
+      onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
