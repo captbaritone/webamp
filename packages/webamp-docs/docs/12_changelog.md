@@ -11,6 +11,13 @@ If you want access to the changes in this section before they are officially rel
 ### Improvements
 
 - Toggle buttons (Shuffle, Repeat, the EQ and playlist window toggles, and the equalizer's On and Auto buttons) now expose their state to screen readers with `aria-pressed`.
+- Webamp's buttons can now be reached with Tab and activated with Enter or Space, and screen readers announce them as buttons with names that match their existing tooltips (for example "Play" or "Toggle Shuffle"). Buttons without a tooltip, like the equalizer's "On" and "Auto", now have names too.
+- The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
+
+### Bug Fixes
+
+- Fix TypeScript types for the `webamp/butterchurn` entrypoint, which pointed at a file that is not included in the package.
+- Fix TypeScript types under `moduleResolution: "node16"` or `"nodenext"`, where the default export of each entrypoint was typed as a namespace rather than the `Webamp` class.
 
 ## 2.3.1
 
