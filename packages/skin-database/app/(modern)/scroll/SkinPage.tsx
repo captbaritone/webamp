@@ -50,7 +50,6 @@ export default memo(function SkinPage({
               {focused && (
                 <div
                   ref={webampSlotRef}
-                  className="webamp-slot"
                   style={{
                     top: 0,
                     position: "absolute",

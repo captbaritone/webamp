@@ -22,6 +22,8 @@
 const HOLD_MS = 300;
 // Movement within this distance still counts as a tap or a hold.
 const SLOP_PX = 8;
+// A contextmenu this soon after a touch started is that touch's long press.
+const LONG_PRESS_MENU_WINDOW_MS = 1000;
 
 type PendingTouch = {
   target: Element;
@@ -43,6 +45,8 @@ export function attachWebampTouchHandling(
   let grabbed = false;
   // Set while we dispatch our own replayed events, so we let them through.
   let replaying = false;
+  // When the last touch on Webamp started (see the contextmenu handler).
+  let lastTouchStart = -Infinity;
 
   const options = { capture: true } as const;
 
@@ -77,7 +81,6 @@ export function attachWebampTouchHandling(
     clearTimeout(touch.holdTimer);
     pending = null;
     grabbed = true;
-    host.classList.add("webamp-grabbed");
     if (intent === "hold") navigator.vibrate?.(10);
     replayPress(touch, true);
     onWebampTouch(intent, touch.target);
@@ -87,7 +90,6 @@ export function attachWebampTouchHandling(
     if (pending != null) clearTimeout(pending.holdTimer);
     pending = null;
     grabbed = false;
-    host.classList.remove("webamp-grabbed");
   }
 
   host.addEventListener(
@@ -96,6 +98,7 @@ export function attachWebampTouchHandling(
       if (e.pointerType !== "touch" || replaying) return;
       e.stopImmediatePropagation();
       reset();
+      lastTouchStart = performance.now();
       const touch: PendingTouch = {
         target: e.target as Element,
         pointerId: e.pointerId,
@@ -139,7 +142,6 @@ export function attachWebampTouchHandling(
         onWebampTouch("tap", touch.target);
       }
       grabbed = false;
-      host.classList.remove("webamp-grabbed");
     },
     options
   );
@@ -165,11 +167,17 @@ export function attachWebampTouchHandling(
     { capture: true, passive: false }
   );
 
-  // A long press would otherwise open the browser's context menu or callout.
+  // A long press fires contextmenu, which would open the browser's menu and
+  // Webamp's own (it handles contextmenu as a right-click). Some browsers
+  // cancel the touch first, so go by when it started rather than our state.
+  // A mouse right-click still opens Webamp's menu.
   host.addEventListener(
     "contextmenu",
     (e) => {
-      if (pending != null || grabbed) e.preventDefault();
+      if (performance.now() - lastTouchStart < LONG_PRESS_MENU_WINDOW_MS) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
     },
     options
   );

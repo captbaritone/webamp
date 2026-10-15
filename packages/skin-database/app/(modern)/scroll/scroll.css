@@ -148,22 +148,6 @@ button {
 }
 
 /*
- * While a press-and-hold has handed the touch to Webamp, outline the skin.
- * On the slot rather than .feed-webamp itself, which stays Webamp's unscaled
- * size while Webamp is zoomed to fit.
- */
-.webamp-slot {
-  border-radius: 2px;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  transition: outline-color 0.15s ease-out;
-}
-
-.webamp-slot:has(> .webamp-grabbed) {
-  outline-color: rgba(255, 255, 255, 0.5);
-}
-
-/*
  * Once Webamp has loaded over a skin's screenshot, hide the screenshot so it
  * doesn't show through when windows are moved, shaded or closed. It keeps its
  * space in the layout.
