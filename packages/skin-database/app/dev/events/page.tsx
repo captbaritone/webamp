@@ -238,8 +238,8 @@ function FilterBar({
       <label>
         Versions
         <select name="v" defaultValue={String(filters.minVersion)}>
-          <option value="3">3 and 4</option>
-          <option value="4">4 only</option>
+          <option value="3">3 and later</option>
+          <option value="4">4 and later</option>
         </select>
       </label>
       <label>
@@ -430,6 +430,7 @@ function SignalsSection({ views }: { views: View[] }) {
       .sort((a, b) => DWELL_ORDER.indexOf(a[0]) - DWELL_ORDER.indexOf(b[0]))
       .map(([label, group]) => [`dwell ${label}`, group] as [string, View[]]),
     ["used Webamp", views.filter((v) => v.webampInteractions > 0)],
+    ["tapped to use Webamp", views.filter((v) => v.webampUseMs != null)],
     ["didn't use Webamp", views.filter((v) => v.webampInteractions === 0)],
     ["opened the readme", views.filter((v) => v.readmeExpanded)],
     ["didn't open it", views.filter((v) => !v.readmeExpanded)],
@@ -478,6 +479,7 @@ function SignalsSection({ views }: { views: View[] }) {
         <Bars
           rows={[
             ["used Webamp", (v: View) => v.webampInteractions > 0],
+            ["tapped to use Webamp", (v: View) => v.webampUseMs != null],
             ["opened the readme", (v: View) => v.readmeExpanded],
             ["downloaded", (v: View) => v.downloaded],
             ["liked", (v: View) => v.liked],
@@ -779,6 +781,18 @@ function WebampSection({
         <Stats
           items={[
             { label: "Median load", value: formatMs(quantile(ready, 0.5)) },
+            {
+              label: "Median time using Webamp",
+              value: formatMs(
+                quantile(
+                  allViews
+                    .filter((v) => v.webampUseMs != null)
+                    .map((v) => v.webampUseMs!),
+                  0.5
+                )
+              ),
+              hint: "touch screens, version 5",
+            },
             { label: "95th pct load", value: formatMs(quantile(ready, 0.95)) },
             { label: "Load failures", value: failures.toLocaleString() },
             {

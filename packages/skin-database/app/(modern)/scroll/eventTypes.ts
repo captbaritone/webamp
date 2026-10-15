@@ -19,7 +19,12 @@
 //   logged with its source ("list" or "random"): ViewContext's `source`,
 //   grid_impressions and grid_skin_click. Adds skin_view_end's readyMs,
 //   skin_load_failure, grid_impressions and link_click.
-export const EVENT_SCHEMA_VERSION = 4;
+// - 5: on touch screens, touches reach Webamp only while the visitor is
+//   using it (webamp_use_start/webamp_use_end); otherwise they scroll the
+//   feed. Before, each touch was guessed to be for one or the other, so
+//   webamp_interact and webampInteractions on touch screens mean something
+//   different from version 5 on.
+export const EVENT_SCHEMA_VERSION = 5;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -45,6 +50,11 @@ export type NavMethod =
   | "button" // the desktop previous/next buttons
   | "hint" // tapped the "Swipe up" hint pill
   | "resume"; // the session resumed from the back/forward cache
+
+// How the visitor stopped using Webamp (see webamp_use_end): the Done
+// button, tapping elsewhere, Escape, or moving on (another skin, or leaving
+// the feed).
+export type WebampExit = "done" | "outside" | "escape" | "moved_on";
 
 // What a visitor did in Webamp (see webamp_interact).
 export type WebampTarget =
@@ -125,9 +135,18 @@ export type UserEvent =
     } & ViewContext)
   // Webamp couldn't show this skin (it shows its screenshot instead).
   | { type: "skin_load_failure"; skinMd5: string; errorMessage: string }
-  // The first completed press on Webamp while a skin was in view. Presses
-  // that turn into a scroll don't count.
+  // The first completed press on Webamp while a skin was in view. (On touch
+  // screens, Webamp can only be pressed while it's being used.)
   | { type: "webamp_interact"; skinMd5: string; target: WebampTarget }
+  // On a touch screen, tapped Webamp to use it (the feed stops scrolling
+  // until they're done), and stopped, after this long.
+  | { type: "webamp_use_start"; skinMd5: string }
+  | {
+      type: "webamp_use_end";
+      skinMd5: string;
+      durationMs: number;
+      how: WebampExit;
+    }
   // The page was backgrounded or brought back, with the feed's skin in view
   // (if it's the feed). Mobile browsers often discard backgrounded pages
   // without a pagehide, so a session whose last event is page_hidden ended
@@ -269,6 +288,8 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<
   "share_failure",
   "scroll_hint_shown",
   "webamp_interact",
+  "webamp_use_start",
+  "webamp_use_end",
   "grid_hint_shown",
   "grid_search",
   "grid_skin_click",

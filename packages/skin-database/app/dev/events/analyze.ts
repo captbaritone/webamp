@@ -42,6 +42,9 @@ export type View = {
   endedBy: string | null;
   readyMs: number | null;
   webampInteractions: number;
+  // On a touch screen, time spent using Webamp (version 5), or null if they
+  // never tapped to use it.
+  webampUseMs: number | null;
   passThrough: boolean;
   // The session ended on it (it was the last thing seen, with nothing after).
   exit: boolean;
@@ -151,6 +154,8 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
   const open = new Map<number, View>();
   // The view in view now (the last started and not yet ended).
   let current: View | null = null;
+  // The view whose Webamp is being used (touch screens).
+  let usingWebamp: View | null = null;
   let visitDepth = 0;
   const impressions = new Map<string, Impression>();
   let lastKind: "feed" | "grid" | "link" | null = null;
@@ -189,6 +194,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
           endedBy: null,
           readyMs: null,
           webampInteractions: 0,
+          webampUseMs: null,
           passThrough: false,
           exit: false,
           failed: false,
@@ -227,6 +233,16 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
         for (const view of open.values()) {
           if (view.skinMd5 === event.skinMd5) view.failed = true;
         }
+        break;
+      case "webamp_use_start":
+        if (current != null && current.skinMd5 === event.skinMd5) {
+          current.webampUseMs ??= 0;
+          usingWebamp = current;
+        }
+        break;
+      case "webamp_use_end":
+        if (usingWebamp != null) usingWebamp.webampUseMs! += event.durationMs;
+        usingWebamp = null;
         break;
       case "skin_like":
         if (current != null && current.skinMd5 === event.skinMd5) {

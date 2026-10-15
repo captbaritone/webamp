@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useLayoutEffect, useEffect, useMemo, useRef } from "react";
+import {
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { useRouter } from "next/navigation";
 import SkinPage from "./SkinPage";
 import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
@@ -15,7 +22,7 @@ import {
   setFeedSkin,
   useEventLogger,
 } from "./eventLogger";
-import type { FeedSource, NavMethod } from "./eventTypes";
+import type { FeedSource, NavMethod, WebampExit } from "./eventTypes";
 import { ClientSkin, GridSkin, SkinDetails, toClientSkin } from "./gridSkin";
 import {
   getDetails,
@@ -212,6 +219,56 @@ export default function SkinScroller({
   const visibleSkin = clientSkins[visiblePos];
 
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
+
+  // On touch screens, the skin whose Webamp the visitor is using (see
+  // .webamp-shield in scroll.css), and since when. Meanwhile the feed
+  // doesn't scroll, and Webamp gets every touch.
+  const [usingWebampOn, setUsingWebampOn] = useState<string | null>(null);
+  const webampUseRef = useRef<{ md5: string; startedAt: number } | null>(null);
+  const startUsingWebamp = useCallback(
+    (md5: string) => {
+      webampUseRef.current = { md5, startedAt: performance.now() };
+      setUsingWebampOn(md5);
+      logger.log({ type: "webamp_use_start", skinMd5: md5 });
+    },
+    [logger]
+  );
+  const stopUsingWebamp = useCallback(
+    (how: WebampExit) => {
+      const use = webampUseRef.current;
+      if (use == null) return;
+      webampUseRef.current = null;
+      setUsingWebampOn(null);
+      logger.log({
+        type: "webamp_use_end",
+        skinMd5: use.md5,
+        durationMs: Math.round(performance.now() - use.startedAt),
+        how,
+      });
+    },
+    [logger]
+  );
+  // Tapping anywhere but the skin (or Webamp's menus, which it puts at the
+  // end of the page) stops using it. The tap still does whatever it does.
+  useEffect(() => {
+    if (usingWebampOn == null) return;
+    function onPointerDown(e: PointerEvent) {
+      const target = e.target as Element | null;
+      if (
+        target?.closest(
+          ".using-webamp .skin-stage, #webamp-context-menu, .webamp-done"
+        )
+      ) {
+        return;
+      }
+      stopUsingWebamp("outside");
+    }
+    document.addEventListener("pointerdown", onPointerDown, { capture: true });
+    return () =>
+      document.removeEventListener("pointerdown", onPointerDown, {
+        capture: true,
+      });
+  }, [usingWebampOn, stopUsingWebamp]);
   const [webampSlot, setWebampSlot] = useState<HTMLDivElement | null>(null);
 
   // The backdrop is tinted with the visible skin's colors, and morphs to the
@@ -358,6 +415,7 @@ export default function SkinScroller({
   // scroll to correct it.
   function scrollBySkins(delta: number, via: NavMethod) {
     if (containerRef == null) return;
+    stopUsingWebamp("moved_on");
     const pages = feedPages(containerRef);
     let from = pages.findIndex(
       (page) => page.dataset.skinMd5 === scrollTargetRef.current
@@ -380,6 +438,11 @@ export default function SkinScroller({
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest("input, textarea, select, [contenteditable]")) {
+        return;
+      }
+      if (e.key === "Escape" && webampUseRef.current != null) {
+        e.preventDefault();
+        stopUsingWebamp("escape");
         return;
       }
       if (e.key === "Escape") {
@@ -560,6 +623,7 @@ export default function SkinScroller({
       stopEnd();
       stopResume();
       // Client-side navigation away from the feed.
+      stopUsingWebamp("moved_on");
       closeView("left_feed");
       setFeedSkin(null);
     };
@@ -617,7 +681,8 @@ export default function SkinScroller({
           // the action icons can sit beside the skin. Each page constrains its
           // own content to MOBILE_MAX_WIDTH.
           height: "100dvh",
-          overflowY: "scroll",
+          // Not while the visitor is using Webamp.
+          overflowY: usingWebampOn == null ? "scroll" : "hidden",
           scrollSnapType: "y mandatory",
           // We keep the skin in view in place ourselves when skins are added
           // above it.
@@ -632,6 +697,9 @@ export default function SkinScroller({
             skin={skin}
             focused={i === visiblePos}
             webampSlotRef={setWebampSlot}
+            usingWebamp={skin.md5 === usingWebampOn}
+            onUseWebamp={startUsingWebamp}
+            onStopUsingWebamp={stopUsingWebamp}
           />
         ))}
         {listEnded && (

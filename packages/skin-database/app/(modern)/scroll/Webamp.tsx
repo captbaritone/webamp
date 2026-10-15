@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import type { WebampTarget } from "./eventTypes";
-import { attachWebampTouchHandling } from "./webampTouch";
 import {
   SCREENSHOT_HEIGHT,
   SCREENSHOT_WIDTH,
@@ -20,7 +19,7 @@ export function useSharedWebamp(
   skinUrl: string,
   // Called when playback starts, pauses, stops, etc. (Webamp's media status).
   onMediaStatusChange?: (status: string) => void,
-  // Called for each completed press on Webamp (not ones that become a scroll).
+  // Called for each completed press on Webamp.
   onInteract?: (target: WebampTarget) => void,
   // Called once Webamp is showing `skinUrl` (fading in over its screenshot),
   // or if it couldn't show it.
@@ -62,7 +61,7 @@ export function useSharedWebamp(
 
     if (hostRef.current == null) {
       const host = document.createElement("div");
-      // Styled in scroll.css (lets touch swipes over Webamp scroll the feed).
+      // Styled in scroll.css.
       host.className = "feed-webamp";
       Object.assign(host.style, {
         width: `${SCREENSHOT_WIDTH}px`,
@@ -78,27 +77,28 @@ export function useSharedWebamp(
         capture: true,
         passive: true,
       });
-      // On touch screens, work out whether each touch is meant for Webamp or
-      // for scrolling the feed (see webampTouch.ts). Registered before Webamp
-      // renders into the host, so it sees touches first.
-      attachWebampTouchHandling(host, (_intent, target) => {
-        onInteractRef.current?.(classifyWebampTarget(target));
-      });
-      // Report mouse presses on Webamp once they complete.
+      // Report presses on Webamp once they complete. (On touch screens,
+      // touches only reach Webamp while the visitor is using it: see
+      // WebampShield in SkinPage.)
       let pressTarget: WebampTarget | null = null;
       host.addEventListener(
         "pointerdown",
         (e) => {
-          if (e.pointerType === "touch") return;
           pressTarget = classifyWebampTarget(e.target as Element);
         },
         { capture: true, passive: true }
       );
       host.addEventListener(
         "pointerup",
-        (e) => {
-          if (e.pointerType === "touch") return;
+        () => {
           if (pressTarget != null) onInteractRef.current?.(pressTarget);
+          pressTarget = null;
+        },
+        { capture: true, passive: true }
+      );
+      host.addEventListener(
+        "pointercancel",
+        () => {
           pressTarget = null;
         },
         { capture: true, passive: true }

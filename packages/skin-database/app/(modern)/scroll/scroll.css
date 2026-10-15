@@ -185,21 +185,75 @@ button {
 }
 
 /*
- * Webamp sets touch-action: none on its windows and sliders so dragging them
- * doesn't scroll the page. In the feed, vertical swipes over Webamp should
- * scroll to the next skin, so let them through; webampTouch.ts decides which
- * touches go to Webamp instead (taps, horizontal drags, press-and-hold) and
- * blocks the scroll for those.
+ * On touch screens, Webamp is either seen or used, never both (see
+ * SkinPage): a touch means one thing at a time. While it's seen, this
+ * transparent shield covers it, so every swipe scrolls the feed and no touch
+ * reaches Webamp. Tapping it starts using Webamp: the shield goes, the feed
+ * stops scrolling, and Webamp gets every touch, unaltered. With a mouse,
+ * there's nothing to tell apart (the wheel scrolls, clicks press), so no
+ * shield.
  */
-.feed-webamp [style*="touch-action"] {
-  touch-action: pan-y !important;
+.webamp-shield {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .webamp-shield {
+    display: block;
+    position: absolute;
+    inset: 0;
+    /* Above Webamp (z-index 1 in its slot). */
+    z-index: 2;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 .feed-webamp {
-  /* Press-and-hold grabs a control; don't select text or open a callout. */
+  /* Don't select text or open the browser's callout on a long press. */
   -webkit-touch-callout: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Using Webamp: everything else on the page steps back. */
+.skin-page.using-webamp .skin-title-row,
+.skin-page.using-webamp .skin-action-icons,
+.skin-page.using-webamp .skin-readme-slot {
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+.skin-page.using-webamp .skin-stage {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Back to scrolling. Above the menu bar, over the faded readme. */
+.webamp-done {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--bottom-nav-height, 4rem) + 16px);
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  font: inherit;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
 /*
@@ -725,14 +779,21 @@ button {
  * the same. The glow is inset (on a layer over the tile) because tiles sit
  * edge to edge.
  */
+/*
+ * The glow on hover or focus: a border and a slight brightening, drawn over
+ * the image. Switched instantly, and never a filter on the image: animating,
+ * or filtering, makes the browser put the tile on its own GPU layer, which
+ * (tiles being at fractional positions) re-samples its pixels, and its
+ * neighbors', slightly differently.
+ */
 .grid-tile::after {
   content: "";
   position: absolute;
   inset: 0;
+  background: rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7),
     inset 0 0 12px rgba(255, 255, 255, 0.35);
-  opacity: 0;
-  transition: opacity 0.15s ease-out;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -741,7 +802,6 @@ button {
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated;
-  transition: filter 0.15s ease-out;
 }
 
 /* The glow replaces the browser's focus outline (only for keyboard focus). */
@@ -750,11 +810,7 @@ button {
 }
 
 .grid-tile:has(a:focus-visible)::after {
-  opacity: 1;
-}
-
-.grid-tile:has(a:focus-visible) img:not(.nsfw-blurred) {
-  filter: brightness(1.1);
+  visibility: visible;
 }
 
 /* The skin's name, along the bottom of the tile on hover or focus. */
@@ -772,23 +828,21 @@ button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0;
-  transition: opacity 0.15s ease-out;
+  visibility: hidden;
   pointer-events: none;
 }
 
 .grid-tile:has(a:focus-visible) .grid-tile-name {
-  opacity: 1;
+  visibility: visible;
 }
 
 @media (hover: hover) {
-  .grid-tile:hover::after,
-  .grid-tile:hover .grid-tile-name {
-    opacity: 1;
+  .grid-tile:hover::after {
+    visibility: visible;
   }
 
-  .grid-tile:hover img:not(.nsfw-blurred) {
-    filter: brightness(1.1);
+  .grid-tile:hover .grid-tile-name {
+    visibility: visible;
   }
 }
 
