@@ -194,6 +194,8 @@ webamp.setCurrentTrack(2);
 
 ### `updateTrack(index: number, update: { defaultName?: string; metaData?: TrackMetaData }): void`
 
+**Since** [Unreleased](../12_changelog.md#unreleased)
+
 Update the name and/or metadata of the track at `index` in the playlist, without reloading it. `metaData` replaces any metadata the track already has, including metadata read from the file itself. See [`Track`](01_track.md) for the shape of `defaultName` and `metaData`.
 
 ```ts
