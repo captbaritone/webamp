@@ -64,8 +64,9 @@ jobs:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
           cache: "pnpm"
-      - name: Update npm to latest version
-        run: npm install -g npm@latest
+      - name: Update npm
+        # npm 12 requires Node 22+. npm 11.5.1+ is needed for trusted publishing.
+        run: npm install -g npm@11
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Restore build artifacts
