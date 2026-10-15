@@ -139,6 +139,8 @@ For a list of hotkeys, see the [hotkeys documentation](../05_features/01_hotkeys
 
 ### `focusIndicator`
 
+**Since** [Unreleased](../12_changelog.md#unreleased)
+
 A boolean indicating if a focus indicator should be drawn around the focused control when the user navigates with the keyboard. **Default:** `false`.
 
 The indicator only appears for keyboard focus (it uses [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible)), so mouse and touch users never see it. It is drawn entirely outside the focused control, so the skin's pixels are never covered, and is two-tone (a light ring inside a dark one) so it remains visible against any skin.
