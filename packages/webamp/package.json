@@ -41,7 +41,8 @@
     "build-skin": "rm assets/skins/base-2.91.wsz && cd assets/skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
     "compile-skin": "npx tsx scripts/compileSkin.ts > css/base-skin.css",
     "skin-info": "unzip -vl assets/skins/base-2.91.wsz",
-    "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json"
+    "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json",
+    "integration-tests": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -106,7 +107,8 @@
     "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-visualizer": "^5.12.0",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "@playwright/test": "^1.62.1"
   },
   "prettier": {
     "trailingComma": "es5"
