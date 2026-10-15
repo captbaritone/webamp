@@ -1,6 +1,6 @@
 import path from "path";
 
-const production = {
+export const production = {
   client: "sqlite3",
   connection: {
     // Use process.cwd() and not __dir since Next runs from a build directory
@@ -15,19 +15,15 @@ const production = {
   },
 };
 
-const configs = {
-  test: {
-    ...production,
-    connection: ":memory:",
-    seeds: {
-      // Only put this in the test config so that we ensure we never clobber prod data.
-      directory: path.join(__dirname, "./seeds"),
-    },
+export const test = {
+  ...production,
+  connection: ":memory:",
+  seeds: {
+    // Only put this in the test config so that we ensure we never clobber prod data.
+    directory: path.join(__dirname, "./seeds"),
   },
-  development: {
-    ...production,
-  },
-  production,
 };
 
-module.exports = configs;
+export const development = {
+  ...production,
+};

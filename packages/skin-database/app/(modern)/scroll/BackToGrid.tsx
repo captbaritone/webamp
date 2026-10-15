@@ -4,19 +4,22 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { returnToGrid } from "./gridReturn";
+import { gridPath } from "./paths";
+import { useListPosition } from "./listPosition";
+import { isModifiedClick } from "./BottomMenuBar";
 
 // Shown to the left of each skin's title in the feed.
 export default function BackToGrid() {
   const router = useRouter();
+  const position = useListPosition();
   return (
     <Link
-      href="/"
+      href={gridPath(position?.query ?? "")}
       className="skin-back"
       aria-label="Back to grid"
       title="Back to grid"
       onClick={(e) => {
-        // Let modified clicks (e.g. open in a new tab) through.
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (isModifiedClick(e)) return;
         e.preventDefault();
         returnToGrid(router);
       }}

@@ -45,10 +45,9 @@ function loadTint(url: string): Promise<SkinTint | null> {
  * until it's known or if it can't be read. Results are cached, and the image
  * is usually already in the browser's cache from being displayed.
  */
-export function useSkinTint(url: string | null): SkinTint | null {
+export function useSkinTint(url: string): SkinTint | null {
   const [tint, setTint] = useState<SkinTint | null>(null);
   useEffect(() => {
-    if (url == null) return;
     let cancelled = false;
     loadTint(url).then((result) => {
       if (!cancelled && result != null) setTint(result);
@@ -117,7 +116,7 @@ function toHueSaturation(
 
 // How strongly the backdrop takes on the skin's color: 0 is the neutral
 // spotlight, 1 the full tint.
-export const TINT_INTENSITY = 0.15;
+const TINT_INTENSITY = 0.15;
 
 // The neutral spotlight's colors (its center, and halfway to the edge).
 // Keep in sync with the initial values of --feed-glow/--feed-glow-mid.
@@ -128,25 +127,25 @@ type Rgb = [number, number, number];
 
 /**
  * The backdrop's two colors for a skin's tint, blended with the neutral
- * spotlight by `intensity` (0-1). They're plain colors rather than hue and
+ * spotlight by TINT_INTENSITY. They're plain colors rather than hue and
  * saturation so the backdrop's transition goes straight from one skin's color
  * to the next, rather than sweeping through every hue in between (vivid reds
  * and greens neither skin has) on the way.
  */
-export function backdropColors(
-  tint: SkinTint,
-  intensity: number
-): { glow: string; glowMid: string } {
+export function backdropColors(tint: SkinTint): {
+  glow: string;
+  glowMid: string;
+} {
   return {
     glow: blend(
       NEUTRAL_GLOW,
       hslToRgb(tint.hue, tint.saturation, 22),
-      intensity
+      TINT_INTENSITY
     ),
     glowMid: blend(
       NEUTRAL_GLOW_MID,
       hslToRgb(tint.hue, tint.saturation * 0.8, 11),
-      intensity
+      TINT_INTENSITY
     ),
   };
 }

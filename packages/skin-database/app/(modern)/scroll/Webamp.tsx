@@ -191,6 +191,23 @@ async function createWebamp(
 
 const WEBAMP_READY_ATTRIBUTE = "data-webamp-ready";
 
+/**
+ * Show the skin's screenshot in Webamp's place, as the feed is left: the view
+ * transition back to the grid animates the skin's image into its tile, and
+ * Webamp (which hides the image once it's loaded) doesn't make the trip.
+ */
+export function showScreenshotInsteadOfWebamp(): void {
+  for (const container of document.querySelectorAll(
+    `[${WEBAMP_READY_ATTRIBUTE}]`
+  )) {
+    container.removeAttribute(WEBAMP_READY_ATTRIBUTE);
+  }
+  for (const host of document.querySelectorAll<HTMLElement>(".feed-webamp")) {
+    host.style.transition = "none";
+    host.style.opacity = "0";
+  }
+}
+
 // Which windows are open in Webamp's default layout (and in screenshots).
 const DEFAULT_WINDOWS_OPEN = [
   ["main", true],

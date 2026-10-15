@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { ClientSkin } from "./SkinScroller";
+import { ClientSkin } from "./gridSkin";
 import { useEventLogger } from "./eventLogger";
 
 type Props = {
@@ -221,7 +221,8 @@ export default function SkinReadme({ skin, focused }: Props) {
         }
       >
         <div ref={contentRef} className="skin-readme-content">
-          {skin.readme !== "" && (
+          {/* Nothing while it loads (null). */}
+          {skin.readme != null && skin.readme !== "" && (
             <div ref={textRef} className="skin-readme-text">
               {/*
                 Floated into the text's top-right corner (and stuck there while

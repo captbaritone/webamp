@@ -15,12 +15,10 @@ button {
   font-family: "MS Sans Serif", "Segoe UI", sans-serif;
 }
 
-.scroller::-webkit-scrollbar,
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
 
-.scroller,
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -54,7 +52,7 @@ button {
  * Behind the feed: a spotlight tinted with the visible skin's colors (set by
  * SkinScroller), which stays put and morphs to each new skin's tint. The two
  * colors are registered properties so the gradient can transition.
- * The readme's fade blends into its dark edge (--feed-edge).
+ * The fixed fade above the menu bar blends into its dark edge (--feed-edge).
  */
 @property --feed-glow {
   syntax: "<color>";
@@ -176,6 +174,17 @@ button {
 }
 
 /*
+ * A view transition animates snapshots of the page, which are scaled
+ * smoothly; keep a skin's pixels crisp as it grows or shrinks between its
+ * grid tile and the feed. (Everything else in a transition is shown at its
+ * own size, so this doesn't change it.)
+ */
+::view-transition-old(*),
+::view-transition-new(*) {
+  image-rendering: pixelated;
+}
+
+/*
  * Webamp sets touch-action: none on its windows and sliders so dragging them
  * doesn't scroll the page. In the feed, vertical swipes over Webamp should
  * scroll to the next skin, so let them through; webampTouch.ts decides which
@@ -271,6 +280,55 @@ button {
   display: none;
 }
 
+/* The grid's search box, floating above the bottom menu bar. */
+.grid-search {
+  position: fixed;
+  bottom: 4.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  padding: 0 1rem;
+  z-index: 998;
+}
+
+.grid-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background-color: rgba(26, 26, 26, 0.55);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: padding-right 0.2s ease;
+}
+
+.grid-search-input:focus {
+  background-color: rgba(26, 26, 26, 0.65);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Makes room for the spinner. */
+.grid-search-input.pending {
+  padding-right: 2.75rem;
+}
+
+/* In place of the grid: a failed search, or one with no results. */
+.grid-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  color: #ccc;
+}
+
+.grid-message-error {
+  color: #ff6b6b;
+}
+
 /* Shown inside the search input while a query is debouncing or in flight. */
 .search-spinner {
   position: absolute;
@@ -343,6 +401,32 @@ button {
 }
 
 /* In place of the text when a skin has no readme, so the space isn't blank. */
+/* The page after a search's last skin in the feed. */
+.feed-end {
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #aaa;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.feed-end-button {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.feed-end-button:hover,
+.feed-end-button:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .skin-readme-empty {
   /* Centered in the space under the skin (the readme area is a flex column). */
   margin: auto 0;
@@ -360,7 +444,8 @@ button {
   right: 0;
   bottom: 0;
   height: min(2.5rem, 60%);
-  background: linear-gradient(to bottom, transparent, var(--readme-fade-to));
+  /* Into the expanded readme's background. */
+  background: linear-gradient(to bottom, transparent, #15151a);
   pointer-events: none;
 }
 
@@ -369,6 +454,23 @@ button {
  * menu bar. Fixed to the viewport rather than part of each page, so it doesn't
  * scroll along with them. Below the expanded readme, which has its own.
  */
+/* Shades the top edge of the feed, under the title row. */
+.feed-top-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1rem;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 12, 16, 0.8) 0%,
+    rgba(12, 12, 16, 0.4) 50%,
+    rgba(12, 12, 16, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 500;
+}
+
 .feed-bottom-fade {
   position: fixed;
   left: 0;
@@ -394,7 +496,6 @@ button {
   max-height: calc(100% - var(--bottom-nav-height, 4rem) - 3rem);
   /* Solid, since it covers the skin. */
   background: #15151a;
-  --readme-fade-to: #15151a;
   border-color: rgba(255, 255, 255, 0.15);
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
 }
@@ -538,7 +639,7 @@ button {
 
 /*
  * Desktop: the window is wide enough to fit things beside the 9:16 skin
- * column. Keep in sync with DESKTOP_MEDIA_QUERY in FeedNavigation.tsx.
+ * column. Keep in sync with DESKTOP_MEDIA_QUERY in breakpoints.ts.
  */
 @media (min-aspect-ratio: 3/4) {
   /* Already narrower than the screen; no gutter needed. */
@@ -636,6 +737,10 @@ button {
 }
 
 .grid-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
   transition: filter 0.15s ease-out;
 }
 

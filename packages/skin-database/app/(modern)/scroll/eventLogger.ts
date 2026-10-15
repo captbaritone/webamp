@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext } from "react";
 import {
   EVENT_SCHEMA_VERSION,
-  type FeedEntry,
   type LoggedEvent,
+  type MuseumView,
   type UserEvent,
+  type ViewVia,
 } from "./eventTypes";
 import { DESKTOP_MEDIA_QUERY } from "./breakpoints";
 
@@ -23,11 +23,11 @@ export type EventLogger = {
 };
 
 /**
- * Queues the feed's events and sends them to /scroll/events in batches, each
+ * Queues a session's events and sends them to /scroll/events in batches, each
  * stamped with the schema version, a per-session sequence number and the
  * client's clock.
  */
-export function createEventLogger(sessionId: string): EventLogger {
+function createEventLogger(sessionId: string): EventLogger {
   let queue: LoggedEvent[] = [];
   let seq = 0;
   let timer: ReturnType<typeof setTimeout> | null = null;
@@ -76,35 +76,141 @@ export function createEventLogger(sessionId: string): EventLogger {
   return { log, flush };
 }
 
-const noopLogger: EventLogger = { log() {}, flush() {} };
+// The visit's session: everything from opening the museum in a tab until
+// it's closed or reloaded, across the grid and the feed.
+type Session = {
+  logger: EventLogger;
+  started: boolean;
+  ended: boolean;
+  // The skin in view in the feed, while it's showing.
+  feedSkinMd5: string | null;
+};
 
-export const EventLoggerContext = createContext<EventLogger>(noopLogger);
+let session: Session | null = null;
+const endListeners = new Set<() => void>();
+const resumeListeners = new Set<() => void>();
+
+function getSession(): Session {
+  if (session == null) {
+    const created: Session = {
+      logger: createEventLogger(crypto.randomUUID()),
+      started: false,
+      ended: false,
+      feedSkinMd5: null,
+    };
+    session = created;
+    watchPageLifecycle(created);
+  }
+  return session;
+}
+
+// Log the page being hidden and shown, and send what we have whenever it's
+// hidden: mobile browsers often discard backgrounded pages without warning.
+// The session ends on pagehide, and resumes if the page comes back from the
+// back/forward cache.
+function watchPageLifecycle(s: Session): void {
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      s.logger.log({ type: "page_hidden", skinMd5: s.feedSkinMd5 });
+      s.logger.flush({ unloading: true });
+    } else {
+      s.logger.log({ type: "page_visible", skinMd5: s.feedSkinMd5 });
+    }
+  });
+  addEventListener("pagehide", () => {
+    if (s.ended) return;
+    s.ended = true;
+    endListeners.forEach((listener) => listener());
+    s.logger.log({ type: "session_end", reason: "pagehide" });
+    s.logger.flush({ unloading: true });
+  });
+  addEventListener("pageshow", (e) => {
+    if (!e.persisted || !s.ended) return;
+    s.ended = false;
+    s.logger.log({ type: "session_resume" });
+    resumeListeners.forEach((listener) => listener());
+  });
+}
+
+// The session's logger. The session starts with its first event.
+const sessionLogger: EventLogger = {
+  log(event) {
+    getSession().logger.log(event);
+  },
+  flush(options) {
+    getSession().logger.flush(options);
+  },
+};
 
 export function useEventLogger(): EventLogger {
-  return useContext(EventLoggerContext);
+  return sessionLogger;
 }
 
-// How the next feed visit was reached, set by in-app links to the feed just
-// before they navigate. The feed reads it once when it mounts; if nothing set
-// it, the visitor landed on the feed directly.
-type PendingFeedEntry = { entry: FeedEntry; fromSessionId: string | null };
-let pendingFeedEntry: PendingFeedEntry | null = null;
+// How the next view is being reached, set by in-app links just before they
+// navigate. Read when the view opens; if nothing set it, it was the browser's
+// history (or something we don't know about).
+let nextViewVia: ViewVia | null = null;
 
-export function setFeedEntry(
-  entry: FeedEntry,
-  fromSessionId: string | null = null
-): void {
-  pendingFeedEntry = { entry, fromSessionId };
+export function setNextViewVia(via: ViewVia): void {
+  nextViewVia = via;
 }
 
-export function takeFeedEntry(): PendingFeedEntry | null {
-  const pending = pendingFeedEntry;
-  pendingFeedEntry = null;
-  return pending;
+/**
+ * Log arriving at a view: the session's start, if this is its first view,
+ * otherwise a switch to it. Returns how the view was reached ("link" for the
+ * session's first). Call once per visit to the view.
+ */
+export function enterView(
+  view: MuseumView,
+  context: {
+    query: string | null;
+    skinMd5: string | null;
+    listIndex: number | null;
+  }
+): "link" | ViewVia {
+  const s = getSession();
+  const via = nextViewVia ?? "history";
+  nextViewVia = null;
+  if (!s.started) {
+    s.started = true;
+    s.logger.log({
+      type: "session_start",
+      view,
+      query: context.query,
+      skinMd5: context.skinMd5,
+      ...getVisitContext(),
+    });
+    // Send right away: this is what records the session.
+    s.logger.flush();
+    return "link";
+  }
+  s.logger.log({ type: "view_switch", to: view, via, ...context });
+  return via;
 }
 
-// Context logged when a feed or grid visit starts.
-export function getVisitContext(): {
+/** The feed's skin in view (null when leaving the feed), for page_hidden/visible. */
+export function setFeedSkin(md5: string | null): void {
+  getSession().feedSkinMd5 = md5;
+}
+
+/** Called when the session ends (before session_end is logged). */
+export function onSessionEnd(listener: () => void): () => void {
+  endListeners.add(listener);
+  return () => {
+    endListeners.delete(listener);
+  };
+}
+
+/** Called when an ended session resumes (after session_resume is logged). */
+export function onSessionResume(listener: () => void): () => void {
+  resumeListeners.add(listener);
+  return () => {
+    resumeListeners.delete(listener);
+  };
+}
+
+// Context logged when a session starts.
+function getVisitContext(): {
   referrerHost: string | null;
   layout: "mobile" | "desktop";
   pointer: "coarse" | "fine";
@@ -122,21 +228,5 @@ export function getVisitContext(): {
     referrerHost,
     layout: matchMedia(DESKTOP_MEDIA_QUERY).matches ? "desktop" : "mobile",
     pointer: matchMedia("(pointer: coarse)").matches ? "coarse" : "fine",
-  };
-}
-
-// Sends queued events whenever the page is hidden (mobile browsers often
-// discard backgrounded pages without warning) and when the caller unmounts.
-// Returns a cleanup function.
-export function flushWhenHidden(logger: EventLogger): () => void {
-  function onVisibilityChange() {
-    if (document.visibilityState === "hidden") {
-      logger.flush({ unloading: true });
-    }
-  }
-  document.addEventListener("visibilitychange", onVisibilityChange);
-  return () => {
-    document.removeEventListener("visibilitychange", onVisibilityChange);
-    logger.flush({ unloading: true });
   };
 }

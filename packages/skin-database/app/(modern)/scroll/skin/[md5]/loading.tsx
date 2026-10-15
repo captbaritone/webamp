@@ -4,9 +4,8 @@
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { useParams } from "next/navigation";
 import { MOBILE_MAX_WIDTH } from "../../../../../legacy-client/src/constants";
-import { screenshotUrlFromHash } from "../../../../../legacy-client/src/utils";
 import BackToGrid from "../../BackToGrid";
-import { corsScreenshotUrl } from "../../skinTint";
+import SkinScreenshot from "../../SkinScreenshot";
 import { getKnownNsfw, useShowNsfw } from "../../nsfwConsent";
 
 /**
@@ -34,16 +33,11 @@ export default function Loading() {
         </div>
         <div className="skin-frame">
           <ViewTransition name={`skin-${md5}`}>
-            <img
-              className={
-                hidden ? "skin-screenshot nsfw-blurred" : "skin-screenshot"
-              }
-              style={nsfw == null ? { visibility: "hidden" } : undefined}
-              // The same URL and request mode as SkinPage's, so it's one
-              // cached image.
-              crossOrigin="anonymous"
-              src={corsScreenshotUrl(screenshotUrlFromHash(md5))}
+            <SkinScreenshot
+              md5={md5}
               alt=""
+              blurred={hidden}
+              invisible={nsfw == null}
             />
           </ViewTransition>
         </div>

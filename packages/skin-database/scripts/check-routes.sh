@@ -47,7 +47,9 @@ check() {
   if [[ "$MODE" == new ]]; then expected="$2"; else expected="$3"; fi
   local actual
   actual=$(describe "$path" "${4:-GET}")
-  if [[ "$expected" == any || "$actual" == "$expected" ]]; then
+  # Expectations are glob patterns (e.g. "307 /skin/*").
+  # shellcheck disable=SC2053
+  if [[ "$expected" == any || "$actual" == $expected ]]; then
     printf '  ok    %-60s %s\n' "$path" "$actual"
   else
     printf '  FAIL  %-60s %s (expected %s)\n' "$path" "$actual" "$expected"
@@ -60,10 +62,11 @@ echo "Checking $BASE (expecting the $MODE UI)"
 # The museum's own URLs.
 check "/" new classic
 check "/?query=zelda" new classic
-check "/feed" new 404
+check "/feed" "307 /skin/*" 404
 check "/skin/$MD5" new classic
 check "/skin/$MD5/$FILE" new classic
 check "/skin/$MD5/$FILE/null" new any
+check "/skin/00000000000000000000000000000000/x.wsz" 404 any
 check "/about" new classic
 check "/feedback" new classic
 

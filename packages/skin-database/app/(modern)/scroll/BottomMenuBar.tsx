@@ -10,8 +10,11 @@ import {
   Github,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { setFeedEntry } from "./eventLogger";
+import { usePathname, useRouter } from "next/navigation";
+import { setNextViewVia } from "./eventLogger";
+import { notePathname, returnToGrid } from "./gridReturn";
+import { gridPath, skinPath } from "./paths";
+import { useListPosition } from "./listPosition";
 import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 import {
   // @ts-expect-error - unstable_ViewTransition is not yet in @types/react
@@ -46,6 +49,13 @@ export default function BottomMenuBar() {
     };
   }, []);
   const pathname = usePathname();
+  const router = useRouter();
+  useEffect(() => {
+    notePathname(pathname);
+  }, [pathname]);
+  // The grid and the feed open on the skin you were last on in either.
+  const position = useListPosition();
+  const onFeed = pathname.startsWith("/skin/");
 
   const toggleHamburger = () => {
     setIsHamburgerOpen((open) => !open);
@@ -155,17 +165,32 @@ export default function BottomMenuBar() {
           }}
         >
           <MenuButton
-            href="/"
+            href={gridPath(position?.query ?? "")}
             icon={<Grid3x3 size={24} />}
             label="Grid"
             isActive={pathname === "/"}
+            onClick={(e) => {
+              if (!onFeed) {
+                setNextViewVia("menu");
+              } else if (!isModifiedClick(e)) {
+                // As the feed's back arrow does.
+                e.preventDefault();
+                returnToGrid(router, "menu");
+              }
+            }}
           />
           <MenuButton
-            href="/feed"
+            href={
+              position == null
+                ? "/feed"
+                : skinPath(position.skin.md5, position.skin.fileName)
+            }
             icon={<Smartphone size={24} />}
             label="Feed"
-            isActive={pathname === "/feed" || pathname.startsWith("/skin/")}
-            onClick={() => setFeedEntry("feed_tab")}
+            isActive={onFeed}
+            onClick={() => {
+              if (!onFeed) setNextViewVia("menu");
+            }}
           />
           <MenuButton
             href="/upload"
@@ -194,8 +219,13 @@ type MenuButtonProps = {
   isButton?: boolean;
   isActive?: boolean;
   isExpanded?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 };
+
+// A click meant for the browser, e.g. to open the link in a new tab.
+export function isModifiedClick(e: React.MouseEvent): boolean {
+  return e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+}
 
 function MenuButton({
   href,

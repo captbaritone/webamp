@@ -1,7 +1,7 @@
 import { storeEvents } from "../Events";
 import { USER_EVENT_TYPES, type LoggedEvent } from "../eventTypes";
 
-// Receives batches of /scroll feed events from eventLogger.ts, as either a
+// Receives batches of the new museum UI's events from eventLogger.ts, as either a
 // fetch or a `navigator.sendBeacon` (the only reliable way to send while the
 // page is unloading).
 //
@@ -62,7 +62,8 @@ function isValidEvent(event: unknown): event is LoggedEvent {
     return false;
   }
   if ("skinMd5" in e && e.skinMd5 != null && !isMd5(e.skinMd5)) return false;
-  if (e.type === "session_start") {
+  // Version 2's session_start (from tabs still open on an older build).
+  if (e.type === "session_start" && "skinMd5s" in e) {
     return (
       (e.fromSessionId == null ||
         (typeof e.fromSessionId === "string" &&

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import SessionModel from "../../../../../data/SessionModel";
-import { getClientSkins, getInitialClientSkins } from "../../getClientSkins";
+import { notFound } from "next/navigation";
+import { getFeedSkin } from "../../getMuseumPageSkins";
 import SkinScroller from "../../SkinScroller";
 import { generateSkinPageMetadata } from "../../../../(legacy)/skin/[hash]/skinMetadata";
 
@@ -9,22 +9,16 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   return generateSkinPageMetadata(md5);
 }
 
-// Ensure each page load gets a new session
+// Likes and readmes change; render each visit fresh.
 export const dynamic = "force-dynamic";
 
+/**
+ * A skin's permalink: the feed, opened on it. Which skins come after it is
+ * up to the browser (see listPosition.ts), so all we render is this one.
+ */
 export default async function Skin({ params }) {
   const { md5 } = await params;
-
-  // Nothing is written for the session until the browser reports in.
-  const sessionId = SessionModel.newId();
-  const initialSkins = await getInitialClientSkins(sessionId, md5);
-
-  return (
-    <SkinScroller
-      initialSkins={initialSkins}
-      getSkins={getClientSkins}
-      sessionId={sessionId}
-      landedOnSkin
-    />
-  );
+  const linked = await getFeedSkin(md5);
+  if (linked == null) notFound();
+  return <SkinScroller skin={linked.skin} details={linked.details} />;
 }

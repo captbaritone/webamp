@@ -10,7 +10,7 @@ import {
 } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
 import { useRouter } from "next/navigation";
-import { ClientSkin } from "./SkinScroller";
+import { ClientSkin } from "./gridSkin";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,

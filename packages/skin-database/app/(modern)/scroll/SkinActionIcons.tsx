@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { Heart, Share2, Flag, Download, Check } from "lucide-react";
-import { ClientSkin } from "./SkinScroller";
+import { ClientSkin } from "./gridSkin";
 import { useEventLogger } from "./eventLogger";
 import { fetchGraphql } from "./graphql";
 
@@ -70,16 +70,12 @@ type LikeButtonProps = {
 function LikeButton({ skin }: LikeButtonProps) {
   const logger = useEventLogger();
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(skin.likeCount);
+  // Counting our like (the count can arrive after the skin, see skinList.ts).
+  const likeCount = skin.likeCount + (isLiked ? 1 : 0);
 
   const handleLike = async () => {
     const newLikedState = !isLiked;
     setIsLiked(newLikedState);
-
-    // Optimistically update the like count
-    setLikeCount((prevCount) =>
-      newLikedState ? prevCount + 1 : prevCount - 1
-    );
 
     logger.log({
       type: "skin_like",
@@ -255,6 +251,32 @@ function FlagButton({ skin }: FlagButtonProps) {
   );
 }
 
+// Browsers ignore a link's `download` file name for files from another origin
+// (the skins' storage), so the skin would be saved under its md5. They respect
+// it for an object URL, so fetch the file (already cached, as Webamp loaded
+// it) and save that. The same trick as the classic UI's DownloadLink.
+async function downloadAs(url: string, fileName: string): Promise<void> {
+  let objectUrl: string;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    objectUrl = URL.createObjectURL(await response.blob());
+  } catch (error) {
+    console.error("Failed to fetch the skin to download:", error);
+    // Saved under its md5, but saved.
+    window.location.href = url;
+    return;
+  }
+  const link = document.createElement("a");
+  link.href = objectUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  // Long enough for the browser to start saving it.
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+}
+
 type DownloadButtonProps = {
   skin: ClientSkin;
 };
@@ -267,8 +289,7 @@ function DownloadButton({ skin }: DownloadButtonProps) {
       skinMd5: skin.md5,
     });
 
-    // Trigger download
-    window.location.href = skin.downloadUrl;
+    await downloadAs(skin.downloadUrl, skin.fileName);
   };
 
   return (

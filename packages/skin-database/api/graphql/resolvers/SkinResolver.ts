@@ -127,8 +127,9 @@ export async function search_classic_skins(
       .limit(first)
       .offset(offset)
       .whereRaw("skin_search MATCH ?", match);
-    if (nsfw === true) search.whereIn("skin_search.skin_md5", nsfwMd5s);
-    if (nsfw === false) search.whereNotIn("skin_search.skin_md5", nsfwMd5s);
+    if (nsfw != null) {
+      search[nsfw ? "whereIn" : "whereNotIn"]("skin_search.skin_md5", nsfwMd5s);
+    }
     skins = await search;
   } else if (nsfw != null) {
     // Nothing to match, just the filter.

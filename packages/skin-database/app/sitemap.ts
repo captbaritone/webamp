@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { skinPath } from "./(modern)/scroll/paths";
 import * as Skins from "../data/skins";
 
 // Google's limit is 50,000 URLs per sitemap
@@ -23,9 +24,7 @@ export default async function sitemap({
   id: string;
 }): Promise<MetadataRoute.Sitemap> {
   const md5s = await Skins.getAllClassicSkins();
-  const skinUrls = md5s.map(
-    ({ md5, fileName }) => `/skin/${md5}/${encodeURIComponent(fileName)}`
-  );
+  const skinUrls = md5s.map(({ md5, fileName }) => skinPath(md5, fileName));
   const urls = ["/about", "/", "/upload", ...skinUrls];
   const slice = urls.slice(
     parseInt(id, 10) * PAGE_SIZE,

@@ -1,58 +1,82 @@
 "use client";
 
-import { useState, useLayoutEffect, useEffect, useRef } from "react";
+import { useState, useLayoutEffect, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import SkinPage from "./SkinPage";
 import { FeedNavButtons, ScrollHintPill } from "./FeedNavigation";
-import { useSharedWebamp } from "./Webamp";
+import { showScreenshotInsteadOfWebamp, useSharedWebamp } from "./Webamp";
 import { skinPath } from "./paths";
-import { returnToGrid, setCameFromGrid } from "./gridReturn";
+import { returnToGrid } from "./gridReturn";
+import { backdropColors, corsScreenshotUrl, useSkinTint } from "./skinTint";
 import {
-  TINT_INTENSITY,
-  backdropColors,
-  corsScreenshotUrl,
-  useSkinTint,
-} from "./skinTint";
-import {
-  createEventLogger,
-  EventLoggerContext,
-  getVisitContext,
-  takeFeedEntry,
+  enterView,
+  onSessionEnd,
+  onSessionResume,
+  setFeedSkin,
+  useEventLogger,
 } from "./eventLogger";
-import type { NavMethod, SkinSource } from "./eventTypes";
-
-export type ClientSkin = {
-  screenshotUrl: string;
-  skinUrl: string;
-  fileName: string;
-  md5: string;
-  // Where it came from, for logging which kinds of skins hold attention.
-  source: SkinSource;
-  readme: string;
-  downloadUrl: string;
-  shareUrl: string;
-  nsfw: boolean;
-  likeCount: number;
-};
+import type { NavMethod } from "./eventTypes";
+import { ClientSkin, GridSkin, SkinDetails, toClientSkin } from "./gridSkin";
+import {
+  getDetails,
+  loadDetails,
+  loadMuseumRange,
+  loadSearch,
+  seedDetails,
+  useDetailsVersion,
+  useMuseum,
+  useSearch,
+} from "./skinList";
+import { followingList, setListPosition } from "./listPosition";
 
 type Props = {
-  initialSkins: ClientSkin[];
-  getSkins: (sessionId: string, offset: number) => Promise<ClientSkin[]>;
-  sessionId: string;
-  // The route was for a specific skin (the first one), e.g. a shared link.
-  landedOnSkin?: boolean;
+  // The skin the page is for: the one the feed opens on.
+  skin: GridSkin;
+  details: SkinDetails;
 };
 
-// After a failed fetch, wait this long before trying again, doubling on each
-// consecutive failure.
-const FETCH_RETRY_BASE_MS = 2000;
-const FETCH_RETRY_MAX_MS = 60000;
+// A skin in the feed, and its place in the list (null for the skin the feed
+// opened on, when it isn't in the list).
+type FeedItem = { skin: GridSkin; listIndex: number | null };
+
+// Show this many more of the list once the skin in view is within
+// EXTEND_WITHIN of the last (or first) one shown.
+const SHOW_MORE = 10;
+const EXTEND_WITHIN = 4;
+// Skins are added above the one in view (which moves everything) only once
+// scrolling has stopped for this long, or this long after the feed opens (so
+// its transition from the grid has finished).
+const SCROLL_IDLE_MS = 150;
+const OPEN_SETTLE_MS = 600;
+function feedPages(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>("[data-skin-md5]"));
+}
+
+// The page nearest the top of the feed.
+function pageInView(container: HTMLElement): HTMLElement | null {
+  const top = container.getBoundingClientRect().top;
+  let nearest: HTMLElement | null = null;
+  let nearestDistance = Infinity;
+  for (const page of feedPages(container)) {
+    const distance = Math.abs(page.getBoundingClientRect().top - top);
+    if (distance < nearestDistance) {
+      nearest = page;
+      nearestDistance = distance;
+    }
+  }
+  return nearest;
+}
+
+// Load readmes and like counts for this many skins either side of the one in
+// view.
+const DETAILS_BEHIND = 2;
+const DETAILS_AHEAD = 5;
 
 // The skin currently in view, for timing how long it holds attention.
 type OpenView = {
   skinMd5: string;
-  position: number;
-  source: SkinSource;
+  listIndex: number | null;
+  depth: number;
   // performance.now() when it came into view.
   startedAt: number;
   // Time the page was visible while it was in view, not counting the current
@@ -68,62 +92,148 @@ type OpenView = {
 // if it comes within this long; anything else is the visitor scrolling.
 const NAV_ATTRIBUTION_MS = 1500;
 
+/**
+ * The feed: one skin at a time, full screen, scrolling through a list (see
+ * skinList.ts). Opened from the grid it shows the grid's list from the skin
+ * you tapped, in both directions; opened on a link it shows that skin
+ * followed by the museum.
+ */
 export default function SkinScroller({
-  initialSkins,
-  getSkins,
-  sessionId,
-  landedOnSkin = false,
+  skin: linkedSkin,
+  details: linkedDetails,
 }: Props) {
-  const [skins, setSkins] = useState<ClientSkin[]>(initialSkins);
-  const [visibleSkinIndex, setVisibleSkinIndex] = useState(0);
-  const [fetching, setFetching] = useState(false);
-  // Set once the server has no more skins for this session.
-  const [exhausted, setExhausted] = useState(false);
-  const failureCountRef = useRef(0);
-  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
-  const [webampSlot, setWebampSlot] = useState<HTMLDivElement | null>(null);
-  const [hasEverScrolled, setHasEverScrolled] = useState(false);
-  const [logger] = useState(() => createEventLogger(sessionId));
+  const logger = useEventLogger();
   const router = useRouter();
 
-  const visibleSkin = skins[visibleSkinIndex];
+  // Which list this visit to the feed shows, and where the skin it opened on
+  // is in it (null: shown first, followed by the list from the top).
+  const [{ query, index: anchor }] = useState(() => {
+    seedDetails(linkedSkin.md5, linkedDetails);
+    return typeof window === "undefined"
+      ? { query: "", index: null }
+      : followingList(linkedSkin.md5);
+  });
+  const museum = useMuseum();
+  const search = useSearch(query);
+  const list = query === "" ? museum.skins : search;
+  // How long the list is, once known.
+  const listLength = query === "" ? museum.total : search?.length ?? null;
+  useEffect(() => {
+    // Normally already loaded by the grid we came from.
+    if (query !== "") {
+      loadSearch(query).catch((error) => console.error(error));
+    }
+  }, [query]);
+
+  // The part of the list shown, from `first` to `last` (inclusive). It grows
+  // in both directions as you get near either end.
+  const [shownBefore, setShownBefore] = useState(0);
+  const [shownAfter, setShownAfter] = useState(SHOW_MORE);
+  const first = anchor == null ? 0 : Math.max(0, anchor - shownBefore);
+  const last = (anchor ?? -1) + shownAfter;
+  useEffect(() => {
+    if (query === "") loadMuseumRange(first, last);
+  }, [query, first, last]);
+
+  const items = useMemo(() => {
+    const at = (i: number): GridSkin | undefined =>
+      i === anchor ? linkedSkin : list?.[i];
+    // Only the run of loaded skins around the anchor, so there are no gaps.
+    const shown: FeedItem[] = [];
+    for (let i = (anchor ?? 0) - 1; i >= first && at(i) != null; i--) {
+      shown.unshift({ skin: at(i)!, listIndex: i });
+    }
+    if (anchor == null) shown.push({ skin: linkedSkin, listIndex: null });
+    const end = listLength == null ? last : Math.min(last, listLength - 1);
+    for (let i = anchor ?? 0; i <= end && at(i) != null; i++) {
+      shown.push({ skin: at(i)!, listIndex: i });
+    }
+    // The skin a feed opened on can also be in the list after it; show each
+    // skin once.
+    const seen = new Set<string>();
+    return shown.filter(
+      (item) => !seen.has(item.skin.md5) && seen.add(item.skin.md5)
+    );
+  }, [anchor, linkedSkin, list, listLength, first, last]);
+  const lastShown = items.at(-1)?.listIndex ?? -1;
+  const listEnded =
+    query !== "" && listLength != null && lastShown === listLength - 1;
+
+  const [visibleMd5, setVisibleMd5] = useState(linkedSkin.md5);
+  const visiblePos = Math.max(
+    0,
+    items.findIndex((item) => item.skin.md5 === visibleMd5)
+  );
+  const visibleItem = items[visiblePos];
+
+  // Each skin with its details (once loaded), reused until they change so
+  // only the pages that change re-render.
+  const detailsVersion = useDetailsVersion();
+  const clientSkinsRef = useRef(
+    new Map<
+      string,
+      { skin: GridSkin; details: SkinDetails | undefined; client: ClientSkin }
+    >()
+  );
+  const clientSkins = useMemo(
+    () =>
+      items.map(({ skin }) => {
+        const details =
+          getDetails(skin.md5) ??
+          (skin.md5 === linkedSkin.md5 ? linkedDetails : undefined);
+        const cached = clientSkinsRef.current.get(skin.md5);
+        if (cached?.skin === skin && cached.details === details) {
+          return cached.client;
+        }
+        const client = toClientSkin(skin, details);
+        clientSkinsRef.current.set(skin.md5, { skin, details, client });
+        return client;
+      }),
+    [items, detailsVersion, linkedSkin, linkedDetails]
+  );
+  const visibleSkin = clientSkins[visiblePos];
+
+  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
+  const [webampSlot, setWebampSlot] = useState<HTMLDivElement | null>(null);
 
   // The backdrop is tinted with the visible skin's colors, and morphs to the
   // next skin's as you scroll. Until a skin's tint is known it keeps the
   // previous one.
   const tint = useSkinTint(corsScreenshotUrl(visibleSkin.screenshotUrl));
-  const backdrop = tint == null ? null : backdropColors(tint, TINT_INTENSITY);
+  const backdrop = tint == null ? null : backdropColors(tint);
   // For event handlers that outlive a render.
-  const visibleRef = useRef({ skin: visibleSkin, index: visibleSkinIndex });
-  visibleRef.current = { skin: visibleSkin, index: visibleSkinIndex };
+  const visibleRef = useRef(visibleItem);
+  visibleRef.current = visibleItem;
 
   // View timing. Views are opened and closed imperatively (rather than in
   // effect cleanups) because how a view ends matters: moving on to another
-  // skin, or the session ending on it.
+  // skin, leaving the feed, or the session ending on it.
   const openViewRef = useRef<OpenView | null>(null);
-  const hasOpenedViewRef = useRef(false);
+  const depthRef = useRef(0);
 
-  function openView(skin: ClientSkin, position: number, via: NavMethod) {
+  function openView(item: FeedItem, via: NavMethod) {
     const now = performance.now();
-    openViewRef.current = {
-      skinMd5: skin.md5,
-      position,
-      source: skin.source,
+    const view: OpenView = {
+      skinMd5: item.skin.md5,
+      listIndex: item.listIndex,
+      depth: depthRef.current++,
       startedAt: now,
       activeMs: 0,
       activeSince: document.visibilityState === "visible" ? now : null,
       webampInteractions: 0,
     };
+    openViewRef.current = view;
     logger.log({
       type: "skin_view_start",
-      skinMd5: skin.md5,
-      position,
-      source: skin.source,
+      skinMd5: view.skinMd5,
+      query: query || null,
+      listIndex: view.listIndex,
+      depth: view.depth,
       via,
     });
   }
 
-  function closeView(exit: boolean) {
+  function closeView(endedBy: "next_skin" | "left_feed" | "session_end") {
     const view = openViewRef.current;
     if (view == null) return;
     openViewRef.current = null;
@@ -133,11 +243,12 @@ export default function SkinScroller({
     logger.log({
       type: "skin_view_end",
       skinMd5: view.skinMd5,
-      position: view.position,
-      source: view.source,
+      query: query || null,
+      listIndex: view.listIndex,
+      depth: view.depth,
       durationMs: Math.round(now - view.startedAt),
       activeMs: Math.round(activeMs),
-      exit,
+      endedBy,
       webampInteractions: view.webampInteractions,
     });
   }
@@ -177,24 +288,53 @@ export default function SkinScroller({
     }
   );
 
-  // Track if user has ever scrolled to another skin
+  // Leaving with the browser's Back (or Forward) button: as with the back
+  // arrow, have the screenshot rather than Webamp make the transition. This
+  // has to happen before Next.js renders the grid, which it does before any
+  // popstate listener runs, so this uses the Navigation API's navigate event,
+  // which comes first. (Without it, Back crossfades instead.)
   useEffect(() => {
-    if (visibleSkinIndex > 0) {
-      setHasEverScrolled(true);
+    const navigation = (window as { navigation?: EventTarget }).navigation;
+    if (navigation == null) return;
+    function onNavigate(e: Event) {
+      if (
+        (e as Event & { navigationType: string }).navigationType === "traverse"
+      ) {
+        showScreenshotInsteadOfWebamp();
+      }
     }
-  }, [visibleSkinIndex]);
+    navigation.addEventListener("navigate", onNavigate);
+    return () => navigation.removeEventListener("navigate", onNavigate);
+  }, []);
 
-  function scrollToSkin(index: number, via: NavMethod) {
+  // The skin we're scrolling to, until scrolling stops, so pressing again
+  // mid-scroll goes one further.
+  const scrollTargetRef = useRef<string | null>(null);
+
+  // Scroll `delta` skins from the one in view. Counted from the pages where
+  // they are, not visibleMd5: that's only updated as pages cross the middle,
+  // so it can be off by one after an interrupted scroll (e.g. by skins being
+  // added below), and moving to the skin already in view would then never
+  // scroll to correct it.
+  function scrollBySkins(delta: number, via: NavMethod) {
+    if (containerRef == null) return;
+    const pages = feedPages(containerRef);
+    let from = pages.findIndex(
+      (page) => page.dataset.skinMd5 === scrollTargetRef.current
+    );
+    if (from === -1) from = pages.indexOf(pageInView(containerRef)!);
+    const target = pages[from + delta];
+    if (target == null) return;
+    scrollTargetRef.current = target.dataset.skinMd5!;
     pendingNavRef.current = { via, at: performance.now() };
-    containerRef
-      ?.querySelector(`[data-skin-index="${index}"]`)
-      ?.scrollIntoView({ behavior: "smooth" });
+    target.scrollIntoView({ behavior: "smooth" });
   }
 
   // Keyboard navigation: J / Down / Space for the next skin, K / Up /
-  // Shift+Space for the previous one, Escape back to the grid. Webamp's hotkeys use Up/Down for volume;
-  // the feed takes them instead (listening on window in the capture phase so we
-  // see them first, and stopping them there). Left/Right still seek in Webamp.
+  // Shift+Space for the previous one, Escape back to the grid. Webamp's
+  // hotkeys use Up/Down for volume; the feed takes them instead (listening on
+  // window in the capture phase so we see them first, and stopping them
+  // there). Left/Right still seek in Webamp.
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -225,13 +365,12 @@ export default function SkinScroller({
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.stopPropagation();
       }
-      const index = visibleSkinIndex + delta;
-      if (index >= 0 && index < skins.length) scrollToSkin(index, "key");
+      scrollBySkins(delta, "key");
     }
     window.addEventListener("keydown", onKeyDown, { capture: true });
     return () =>
       window.removeEventListener("keydown", onKeyDown, { capture: true });
-  }, [visibleSkinIndex, skins.length, containerRef]);
+  }, [containerRef]);
 
   useLayoutEffect(() => {
     if (containerRef == null) {
@@ -244,11 +383,8 @@ export default function SkinScroller({
         entries.forEach((entry) => {
           // When an element becomes mostly visible (> 50% intersecting)
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            const index = parseInt(
-              (entry.target as HTMLElement).dataset.skinIndex || "0",
-              10
-            );
-            setVisibleSkinIndex(index);
+            const md5 = (entry.target as HTMLElement).dataset.skinMd5;
+            if (md5 != null) setVisibleMd5(md5);
           }
         });
       },
@@ -258,173 +394,169 @@ export default function SkinScroller({
       }
     );
 
-    // Observe all skin page elements
-    const skinElements = containerRef.querySelectorAll("[data-skin-index]");
-    skinElements.forEach((element) => observer.observe(element));
+    containerRef
+      .querySelectorAll("[data-skin-md5]")
+      .forEach((element) => observer.observe(element));
 
     return () => {
       observer.disconnect();
     };
-  }, [containerRef, skins.length]);
+  }, [containerRef, items]);
 
-  // Session lifecycle. Declared before the view effect below so session_start
-  // is the session's first event.
-  // Taken once per feed, not per run of the effect below (which runs twice in
-  // development's Strict Mode, and would find it already taken).
-  const feedEntryRef = useRef<ReturnType<typeof takeFeedEntry> | undefined>(
-    undefined
-  );
+  // Keep the skin in view where it is when skins are added above it. They're
+  // only added while the feed is at rest on a skin, so that's where it goes.
+  // (Set outright, rather than moved by what was added: some browsers already
+  // re-snap to the same skin themselves.)
+  const shownAboveRef = useRef({ md5: visibleMd5, count: visiblePos });
+  useLayoutEffect(() => {
+    const previous = shownAboveRef.current;
+    shownAboveRef.current = { md5: visibleMd5, count: visiblePos };
+    if (
+      containerRef == null ||
+      previous.md5 !== visibleMd5 ||
+      previous.count === visiblePos
+    ) {
+      return;
+    }
+    const page = containerRef.querySelector<HTMLElement>(
+      `[data-skin-md5="${visibleMd5}"]`
+    );
+    if (page != null) {
+      containerRef.scrollTop +=
+        page.getBoundingClientRect().top -
+        containerRef.getBoundingClientRect().top;
+    }
+  });
+
+  // Once scrolling stops: make sure visibleMd5 is the skin actually in view
+  // (the observer can miss one), and near the top of what's shown, show more
+  // of the list above.
+  const onScrollIdleRef = useRef(() => {});
+  onScrollIdleRef.current = () => {
+    scrollTargetRef.current = null;
+    const md5 = containerRef && pageInView(containerRef)?.dataset.skinMd5;
+    if (md5 != null) setVisibleMd5(md5);
+    if (first > 0 && visiblePos < EXTEND_WITHIN) {
+      setShownBefore((n) => n + SHOW_MORE);
+    }
+  };
   useEffect(() => {
-    if (feedEntryRef.current === undefined) {
-      feedEntryRef.current = takeFeedEntry();
+    if (containerRef == null) return;
+    let timer = setTimeout(() => onScrollIdleRef.current(), OPEN_SETTLE_MS);
+    function onScroll() {
+      clearTimeout(timer);
+      timer = setTimeout(() => onScrollIdleRef.current(), SCROLL_IDLE_MS);
     }
-    const pendingEntry = feedEntryRef.current;
-    setCameFromGrid(pendingEntry?.entry === "grid");
-    logger.log({
-      type: "session_start",
-      entry: pendingEntry?.entry ?? (landedOnSkin ? "link" : "direct"),
-      fromSessionId: pendingEntry?.fromSessionId ?? null,
-      ...getVisitContext(),
-      skinMd5s: initialSkins.map((skin) => skin.md5),
+    containerRef.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      containerRef.removeEventListener("scroll", onScroll);
+    };
+  }, [containerRef]);
+
+  // Near the bottom of what's shown, show more of the list below (once the
+  // ones already asked for have loaded).
+  useEffect(() => {
+    if (items.length - 1 - visiblePos >= EXTEND_WITHIN) return;
+    if (lastShown < last) return;
+    if (listLength != null && last >= listLength - 1) return;
+    setShownAfter((n) => n + SHOW_MORE);
+  }, [items.length, visiblePos, lastShown, last, listLength]);
+
+  // Readmes and like counts for the skins around the one in view.
+  useEffect(() => {
+    const md5s = items
+      .slice(
+        Math.max(0, visiblePos - DETAILS_BEHIND),
+        visiblePos + DETAILS_AHEAD + 1
+      )
+      .map((item) => item.skin.md5)
+      .filter((md5) => getDetails(md5) == null);
+    if (md5s.length === 0) return;
+    loadDetails(md5s).catch((error) => {
+      logger.log({
+        type: "details_fetch_failure",
+        errorMessage: String(error?.message ?? error),
+      });
     });
-    // Send right away: this is what records the session and its first skins.
-    logger.flush();
+  }, [items, visiblePos, logger]);
 
-    let ended = false;
-
-    function endSession(reason: "pagehide" | "unmount") {
-      if (ended) return;
-      ended = true;
-      closeView(true);
-      logger.log({ type: "session_end", reason });
-      logger.flush({ unloading: true });
+  // This visit to the feed. Declared before the view effect below so its
+  // arrival is logged before its first view. How it was reached is taken once
+  // per visit, not per run of the effect (which runs twice in development's
+  // Strict Mode).
+  const arrivedViaRef = useRef<NavMethod | null>(null);
+  useEffect(() => {
+    if (arrivedViaRef.current == null) {
+      arrivedViaRef.current = enterView("feed", {
+        query: query || null,
+        skinMd5: linkedSkin.md5,
+        listIndex: anchor,
+      });
     }
 
-    // Count only time the page is actually visible as dwell, and send what we
-    // have whenever it's hidden: mobile browsers often discard backgrounded
-    // pages without a pagehide.
+    // Count only time the page is actually visible as dwell.
     function onVisibilityChange() {
       const view = openViewRef.current;
+      if (view == null) return;
       const now = performance.now();
       if (document.visibilityState === "hidden") {
-        if (view != null && view.activeSince != null) {
+        if (view.activeSince != null) {
           view.activeMs += now - view.activeSince;
           view.activeSince = null;
         }
-        logger.log({ type: "page_hidden", skinMd5: view?.skinMd5 ?? null });
-        logger.flush({ unloading: true });
-      } else {
-        if (view != null && view.activeSince == null) {
-          view.activeSince = now;
-        }
-        logger.log({ type: "page_visible", skinMd5: view?.skinMd5 ?? null });
+      } else if (view.activeSince == null) {
+        view.activeSince = now;
       }
     }
-
-    function onPageHide() {
-      endSession("pagehide");
-    }
-
-    // Restored from the back/forward cache after a pagehide: pick up where
-    // the session left off.
-    function onPageShow(e: PageTransitionEvent) {
-      if (!e.persisted || !ended) return;
-      ended = false;
-      logger.log({ type: "session_resume" });
-      openView(visibleRef.current.skin, visibleRef.current.index, "resume");
-    }
-
     document.addEventListener("visibilitychange", onVisibilityChange);
-    addEventListener("pagehide", onPageHide);
-    addEventListener("pageshow", onPageShow);
+    const stopEnd = onSessionEnd(() => closeView("session_end"));
+    // Restored from the back/forward cache: pick up where we left off.
+    const stopResume = onSessionResume(() =>
+      openView(visibleRef.current, "resume")
+    );
     return () => {
       document.removeEventListener("visibilitychange", onVisibilityChange);
-      removeEventListener("pagehide", onPageHide);
-      removeEventListener("pageshow", onPageShow);
+      stopEnd();
+      stopResume();
       // Client-side navigation away from the feed.
-      endSession("unmount");
+      closeView("left_feed");
+      setFeedSkin(null);
     };
   }, [logger]);
 
-  const visibleSkinMd5 = visibleSkin.md5;
-  const visibleSkinFileName = visibleSkin.fileName;
+  const visibleFileName = visibleItem.skin.fileName;
+  const hasOpenedViewRef = useRef(false);
   useEffect(() => {
     // We want the URL and title to update as you scroll, but
     // we can't trigger a NextJS navigation since that would remount the
     // component. So, here we replicate the metadata behavior of the route.
-    const newUrl = skinPath(visibleSkinMd5, visibleSkinFileName);
-    window.document.title = `${visibleSkinFileName} - Winamp Skin Museum`;
+    const newUrl = skinPath(visibleMd5, visibleFileName);
+    window.document.title = `${visibleFileName} - Winamp Skin Museum`;
     window.history.replaceState(
       { ...window.history.state, as: newUrl, url: newUrl },
       "",
       newUrl
     );
+    setFeedSkin(visibleMd5);
+    const item = visibleRef.current;
+    if (item.listIndex != null) {
+      setListPosition({ query, index: item.listIndex, skin: item.skin });
+    }
 
-    if (openViewRef.current?.skinMd5 !== visibleSkinMd5) {
+    if (openViewRef.current?.skinMd5 !== visibleMd5) {
       const isFirstView = !hasOpenedViewRef.current;
       hasOpenedViewRef.current = true;
-      closeView(false);
+      closeView("next_skin");
       openView(
-        visibleRef.current.skin,
-        visibleRef.current.index,
-        isFirstView ? "initial" : takeNavMethod()
+        item,
+        isFirstView ? arrivedViaRef.current ?? "link" : takeNavMethod()
       );
     }
-  }, [visibleSkinMd5, visibleSkinFileName]);
-
-  useLayoutEffect(() => {
-    if (fetching || exhausted) {
-      return;
-    }
-    if (visibleSkinIndex + 5 < skins.length) {
-      return;
-    }
-    setFetching(true);
-    const offset = skins.length;
-    logger.log({ type: "skins_fetch_start", offset });
-    getSkins(sessionId, offset)
-      .then((newSkins) => {
-        logger.log({ type: "skins_fetch_success", offset });
-        failureCountRef.current = 0;
-        if (newSkins.length === 0) {
-          setExhausted(true);
-        } else {
-          setSkins((prev) => {
-            // Guard against the server returning a skin we already have,
-            // which would give two pages the same key.
-            const seen = new Set(prev.map((skin) => skin.md5));
-            return [...prev, ...newSkins.filter((skin) => !seen.has(skin.md5))];
-          });
-        }
-        setFetching(false);
-      })
-      .catch((error) => {
-        logger.log({
-          type: "skins_fetch_failure",
-          offset,
-          errorMessage: error.message,
-        });
-        // Back off before allowing another attempt, rather than retrying in a
-        // tight loop.
-        const delay = Math.min(
-          FETCH_RETRY_BASE_MS * 2 ** failureCountRef.current,
-          FETCH_RETRY_MAX_MS
-        );
-        failureCountRef.current++;
-        setTimeout(() => setFetching(false), delay);
-      });
-  }, [
-    visibleSkinIndex,
-    skins.length,
-    fetching,
-    exhausted,
-    sessionId,
-    getSkins,
-    logger,
-  ]);
+  }, [visibleMd5, visibleFileName]);
 
   return (
-    <EventLoggerContext.Provider value={logger}>
+    <>
       <div
         className="feed-backdrop"
         aria-hidden
@@ -447,56 +579,54 @@ export default function SkinScroller({
           height: "100dvh",
           overflowY: "scroll",
           scrollSnapType: "y mandatory",
-          scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none", // IE and Edge
+          // We keep the skin in view in place ourselves when skins are added
+          // above it.
+          overflowAnchor: "none",
           WebkitOverflowScrolling: "touch", // Smooth scrolling on iOS
         }}
         className="hide-scrollbar"
       >
-        {skins.map((skin, i) => {
-          return (
-            <SkinPage
-              key={skin.md5}
-              skin={skin}
-              index={i}
-              focused={i === visibleSkinIndex}
-              webampSlotRef={setWebampSlot}
-            />
-          );
-        })}
+        {clientSkins.map((skin, i) => (
+          <SkinPage
+            key={skin.md5}
+            skin={skin}
+            focused={i === visiblePos}
+            webampSlotRef={setWebampSlot}
+          />
+        ))}
+        {listEnded && (
+          <div className="skin-page feed-end">
+            <p>That&apos;s every skin for &ldquo;{query}&rdquo;.</p>
+            <button
+              className="feed-end-button"
+              onClick={() => returnToGrid(router)}
+            >
+              Back to the results
+            </button>
+          </div>
+        )}
       </div>
       <ScrollHintPill
-        hasScrolled={hasEverScrolled}
+        // Once done, the hint is remembered as done (see HintPill), so
+        // scrolling back to the first skin doesn't bring it back.
+        hasScrolled={visibleMd5 !== linkedSkin.md5}
         onShown={() => {
           logger.log({ type: "scroll_hint_shown" });
         }}
-        onTap={() => scrollToSkin(visibleSkinIndex + 1, "hint")}
+        onTap={() => scrollBySkins(1, "hint")}
       />
       <FeedNavButtons
-        canGoPrevious={visibleSkinIndex > 0}
-        canGoNext={visibleSkinIndex < skins.length - 1}
-        onPrevious={() => scrollToSkin(visibleSkinIndex - 1, "button")}
-        onNext={() => scrollToSkin(visibleSkinIndex + 1, "button")}
+        canGoPrevious={visiblePos > 0}
+        canGoNext={visiblePos < items.length - 1}
+        onPrevious={() => scrollBySkins(-1, "button")}
+        onNext={() => scrollBySkins(1, "button")}
       />
       {/*
         Fades out whatever runs off the bottom of the page (usually the readme)
         into the menu bar. Fixed, so it stays put as you scroll between skins.
       */}
       <div className="feed-bottom-fade" aria-hidden />
-      {/* Top shadow overlay */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "1rem",
-          background:
-            "linear-gradient(180deg, rgba(12, 12, 16, 0.8) 0%, rgba(12, 12, 16, 0.4) 50%, rgba(12, 12, 16, 0) 100%)",
-          pointerEvents: "none",
-          zIndex: 500,
-        }}
-      />
-    </EventLoggerContext.Provider>
+      <div className="feed-top-shadow" aria-hidden />
+    </>
   );
 }
