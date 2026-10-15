@@ -225,6 +225,7 @@ export default async function EventsDashboard({
       <SessionsSection sessions={sessions} />
       <FeedSection views={views} allViews={allViews} />
       <SignalsSection views={views} />
+      <DownloadsSection views={views} sessions={sessions} />
       <SourcesSection views={views} impressions={impressions} />
       <CoverageSection views={views} />
       <GridSection
@@ -550,6 +551,150 @@ function SignalsSection({ views }: { views: View[] }) {
         note="Of skins viewed, the share that got it at least once."
       >
         <SkinActionShares views={views} />
+      </Card>
+    </Section>
+  );
+}
+
+const DOWNLOAD_AFTER_BOUNDS = [1000, 2000, 5000, 10_000, 30_000, 60_000];
+
+// Downloads are the clearest sign a skin landed (the click on Download, so a
+// cancelled save still counts). Where they come from, how fast, and how many.
+function DownloadsSection({
+  views,
+  sessions,
+}: {
+  views: View[];
+  sessions: Analysis["sessions"];
+}) {
+  const downloaded = views.filter((v) => v.downloaded);
+  const after = downloaded
+    .filter((v) => v.downloadAfterMs != null)
+    .map((v) => v.downloadAfterMs!);
+  const downloading = sessions.filter((s) => s.downloads > 0);
+  const sessionById = new Map(sessions.map((s) => [s.id, s]));
+  const arrival = (v: View) => {
+    const session = sessionById.get(v.sessionId);
+    return session?.referrerHost ?? "direct";
+  };
+  const rateRows = (groups: Array<[string, View[]]>) =>
+    groups.map(([label, group]) => ({
+      label,
+      value: rate(group, (v) => v.downloaded) ?? 0,
+      detail: `(${group.filter((v) => v.downloaded).length}/${group.length})`,
+    }));
+  const bySkin = [...groupBy(views, (v) => v.skinMd5)]
+    .map(([md5, group]) => ({
+      md5,
+      views: group.length,
+      downloads: group.filter((v) => v.downloaded).length,
+    }))
+    .filter((skin) => skin.downloads > 0)
+    .sort((a, b) => b.downloads - a.downloads || a.views - b.views)
+    .slice(0, 15);
+  return (
+    <Section
+      title="Downloads"
+      note="A download is a click on Download in the feed (a cancelled save still counts)."
+    >
+      <Card title="Overview" wide>
+        <Stats
+          items={[
+            {
+              label: "Views with a download",
+              value: formatPercent(rate(views, (v) => v.downloaded)),
+            },
+            {
+              label: "Sessions with a download",
+              value: formatPercent(rate(sessions, (s) => s.downloads > 0)),
+            },
+            {
+              label: "Downloads per downloading session",
+              value:
+                downloading.length === 0
+                  ? "–"
+                  : (
+                      downloading.reduce((n, s) => n + s.downloads, 0) /
+                      downloading.length
+                    ).toFixed(1),
+            },
+            {
+              label: "Median time to download",
+              value: formatMs(quantile(after, 0.5)),
+              hint: "from opening the skin",
+            },
+            {
+              label: "On the first skin of a feed visit",
+              value: formatPercent(rate(downloaded, (v) => v.visitDepth === 0)),
+              hint: "the one tapped in the grid, or linked",
+            },
+          ]}
+        />
+      </Card>
+      <Card title="Time from opening a skin to downloading it">
+        <Histogram bins={histogram(after, DOWNLOAD_AFTER_BOUNDS, formatMs)} />
+      </Card>
+      <Card
+        title="Downloads per session"
+        note="Of sessions that downloaded anything."
+      >
+        <Histogram
+          bins={countHistogram(
+            downloading.map((s) => s.downloads),
+            [1, 2, 3, 5, 10]
+          )}
+        />
+      </Card>
+      <Card title="Download rate by device" note="Share of views downloaded.">
+        <Bars
+          rows={rateRows([...groupBy(views, (v) => v.layout ?? "unknown")])}
+          format={(v) => formatPercent(v)}
+        />
+      </Card>
+      <Card
+        title="Download rate by where the session came from"
+        note="Referrers with at least 5 views."
+      >
+        <Bars
+          rows={rateRows(
+            [...groupBy(views, arrival)]
+              .filter(([, group]) => group.length >= 5)
+              .sort((a, b) => b[1].length - a[1].length)
+              .slice(0, 10)
+          )}
+          format={(v) => formatPercent(v)}
+        />
+      </Card>
+      <Card
+        title="Download rate by depth"
+        note="Skins into the visit to the feed (0: the one it opened on)."
+      >
+        <Bars
+          rows={rateRows(
+            bucketGroups(views, DEPTH_BOUNDS, (v) => v.visitDepth)
+          )}
+          format={(v) => formatPercent(v)}
+        />
+      </Card>
+      <Card title="Most downloaded skins" wide>
+        <Table
+          columns={["Skin", "Downloads", "Views", "Rate"]}
+          rows={bySkin.map((skin) => [
+            <span key="skin" className="skin-cell">
+              <img
+                src={screenshotUrlFromHash(skin.md5)}
+                alt=""
+                className="thumb"
+              />
+              <a href={`/skin/${skin.md5}`} className="mono">
+                {skin.md5.slice(0, 8)}
+              </a>
+            </span>,
+            skin.downloads,
+            skin.views,
+            formatPercent(skin.downloads / skin.views, 0),
+          ])}
+        />
       </Card>
     </Section>
   );

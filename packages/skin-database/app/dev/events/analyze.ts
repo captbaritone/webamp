@@ -58,6 +58,10 @@ export type View = {
   // Done while it was in view.
   liked: boolean;
   downloaded: boolean;
+  // How long after it came into view it was first downloaded (client clock).
+  downloadAfterMs: number | null;
+  // When it came into view (client clock).
+  startedAt: number;
   shared: boolean;
   readmeExpanded: boolean;
   nsfwRevealed: boolean;
@@ -79,6 +83,8 @@ export type SessionSummary = {
   gridImpressions: number;
   maxGridPosition: number | null;
   gridClicks: number;
+  // skin_download events (clicks on Download).
+  downloads: number;
   searches: number;
   playedAudio: boolean;
   // Where it ended: on a skin in the feed, in the grid, after following a
@@ -115,7 +121,6 @@ export type Analysis = {
 };
 
 const ACTION_FIELDS: Record<string, keyof View> = {
-  skin_download: "downloaded",
   share_success: "shared",
   share_open: "shareOpened",
   readme_expand: "readmeExpanded",
@@ -167,6 +172,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
   const impressions = new Map<string, Impression>();
   let lastKind: "feed" | "grid" | "link" | null = null;
   let gridClicks = 0;
+  let downloads = 0;
   let searches = 0;
   let playedAudio = false;
   let hasEnd = false;
@@ -207,6 +213,8 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
           failed: false,
           liked: false,
           downloaded: false,
+          downloadAfterMs: null,
+          startedAt: event.t,
           shared: false,
           readmeExpanded: false,
           nsfwRevealed: false,
@@ -325,6 +333,13 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
       case "session_resume":
         hasEnd = false;
         break;
+      case "skin_download":
+        downloads++;
+        if (current != null && current.skinMd5 === event.skinMd5) {
+          current.downloaded = true;
+          current.downloadAfterMs ??= event.t - current.startedAt;
+        }
+        break;
       default: {
         const field = ACTION_FIELDS[event.type];
         if (
@@ -375,6 +390,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
         ? null
         : Math.max(...gridImpressions.map((i) => i.position)),
     gridClicks,
+    downloads,
     searches,
     playedAudio,
     endedIn: !interacted ? "bounce" : lastKind ?? "other",
