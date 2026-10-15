@@ -32,7 +32,7 @@ interface Props {
   filePickers: FilePicker[];
   media: IMedia;
   parentDomNode: HTMLElement;
-  scopedHotkeys: boolean;
+  enableHotkeys: boolean | "scoped";
   onMount?: () => void;
 }
 
@@ -44,7 +44,7 @@ export default function App({
   filePickers,
   onMount,
   parentDomNode,
-  scopedHotkeys,
+  enableHotkeys,
 }: Props) {
   const closed = useTypedSelector(Selectors.getClosed);
   const genWindowsInfo = useTypedSelector(Selectors.getGenWindows);
@@ -69,10 +69,13 @@ export default function App({
 
   const dispatch = useTypedDispatch();
   useEffect(() => {
-    if (scopedHotkeys) {
-      return bindHotkeys(dispatch as Dispatch, webampNode);
+    if (!enableHotkeys) {
+      return;
     }
-  }, [scopedHotkeys, dispatch, webampNode]);
+    // Scoped hotkeys only see key events from within Webamp's DOM node.
+    const target = enableHotkeys === "scoped" ? webampNode : document;
+    return bindHotkeys(dispatch as Dispatch, target);
+  }, [enableHotkeys, dispatch, webampNode]);
 
   useLayoutEffect(() => {
     parentDomNode.appendChild(webampNode);
