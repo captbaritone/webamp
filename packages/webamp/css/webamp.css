@@ -27,6 +27,7 @@
   -webkit-box-sizing: content-box;
 }
 
+#webamp:focus,
 #webamp *:focus {
   outline: 0;
 }
