@@ -15,6 +15,7 @@ If you want access to the changes in this section before they are officially rel
 - The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
 - Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 - Added a new Webamp instance method: [`webamp.setTracks(tracks)`](./06_API/03_instance-methods.md#settrackstracks-track-void), which replaces the playlist without starting playback.
+- Webamp's menus (the main menu, the options menu, the equalizer's presets menu, and the playlist's sort and misc menus) can now be opened and navigated with the keyboard, and screen readers announce them as menus.
 
 ### Bug Fixes
 
