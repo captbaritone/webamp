@@ -111,6 +111,13 @@ main() {
   log "Installing dependencies..."
   (cd ../.. && pnpm install --frozen-lockfile)
 
+  # The museum uses this repo's Webamp, which is only usable once built. If
+  # it isn't, the build quietly falls back to a published copy of Webamp
+  # elsewhere in node_modules, so build the bundles the museum imports.
+  log "Building Webamp..."
+  (cd ../webamp && NODE_OPTIONS="--max-old-space-size=$BUILD_HEAP_MB" \
+    node ./scripts/rollup.mjs webamp.bundle.min.mjs webamp.bundle.min.js)
+
   log "Building into .next-build (the live sites keep serving .next)..."
   rm -rf .next-build
   NEXT_DIST_DIR=.next-build NODE_OPTIONS="--max-old-space-size=$BUILD_HEAP_MB" \

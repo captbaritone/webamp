@@ -1,3 +1,4 @@
+import path from "node:path";
 import { rollup } from "rollup";
 import { getPlugins } from "./rollupPlugins.mjs";
 
@@ -89,6 +90,25 @@ const BUNDLES = [
 ];
 
 const PARALLEL_LIMIT = 1;
+
+// Build only some bundles by naming their files, e.g.
+// `node ./scripts/rollup.mjs webamp.bundle.min.mjs` (the skin museum's deploy
+// builds just the ones it uses). With no arguments, builds them all.
+const only = process.argv.slice(2);
+if (only.length > 0) {
+  const unknown = only.filter(
+    (file) => !BUNDLES.some((b) => path.basename(b.output.file) === file)
+  );
+  if (unknown.length > 0) {
+    console.error(`Unknown bundles: ${unknown.join(", ")}`);
+    process.exit(1);
+  }
+  BUNDLES.splice(
+    0,
+    BUNDLES.length,
+    ...BUNDLES.filter((b) => only.includes(path.basename(b.output.file)))
+  );
+}
 
 build();
 
