@@ -15,6 +15,7 @@ If you want access to the changes in this section before they are officially rel
 - The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
 - Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 - Added a new Webamp instance method: [`webamp.setTracks(tracks)`](./06_API/03_instance-methods.md#settrackstracks-track-void), which replaces the playlist without starting playback.
+- The equalizer's preamp and band sliders can now be focused and adjusted with the keyboard (the arrow keys move one dB, and Page Up, Page Down, Home and End also work), and screen readers announce them as sliders, for example "60 Hz, +6.0 dB".
 
 ### Bug Fixes
 
