@@ -1130,9 +1130,14 @@ function QualitySection({
               hint: "gaps in seq",
             },
             {
-              label: "No session_end",
-              value: formatPercent(rate(sessions, (s) => !s.hasEnd)),
-              hint: "discarded in the background",
+              label: "Ended in the background",
+              value: formatPercent(rate(sessions, (s) => s.end === "hidden")),
+              hint: "no session_end, but hidden last: nothing lost",
+            },
+            {
+              label: "Cut off",
+              value: formatPercent(rate(sessions, (s) => s.end === "cut_off")),
+              hint: "no session_end or hide: may be missing events",
             },
             {
               label: "Views never ended",

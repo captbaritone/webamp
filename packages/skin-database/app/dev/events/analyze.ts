@@ -91,7 +91,12 @@ export type SessionSummary = {
   // link elsewhere, or with nothing but its start.
   endedIn: "feed" | "grid" | "link" | "bounce" | "other";
   lostEvents: number;
-  hasEnd: boolean;
+  // How we know it ended: it sent session_end; the page was hidden and never
+  // came back (the browser discarded it in the background, which sends
+  // nothing, but everything up to the hide was sent with it); or neither, so
+  // it was cut off (the browser quit or crashed, the app was killed) and may
+  // be missing its last events.
+  end: "session_end" | "hidden" | "cut_off";
 };
 
 export type Impression = {
@@ -395,7 +400,11 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
     playedAudio,
     endedIn: !interacted ? "bounce" : lastKind ?? "other",
     lostEvents,
-    hasEnd,
+    end: hasEnd
+      ? "session_end"
+      : events.at(-1)?.type === "page_hidden"
+      ? "hidden"
+      : "cut_off",
   });
   analysis.views.push(...views);
   analysis.impressions.push(...gridImpressions);

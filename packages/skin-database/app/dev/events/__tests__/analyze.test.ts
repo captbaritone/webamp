@@ -134,7 +134,33 @@ test("notices lost events and sessions that never ended", () => {
   stored.events.splice(1, 1); // seq 1 never arrived
   const result = analyze([stored]);
   expect(result.sessions[0].lostEvents).toBe(1);
-  expect(result.sessions[0].hasEnd).toBe(false);
+  expect(result.sessions[0].end).toBe("cut_off");
+});
+
+test("tells sessions that ended from ones discarded in the background", () => {
+  const result = analyze([
+    session("ended", [
+      { type: "session_start", view: "grid" },
+      { type: "page_hidden", skinMd5: null },
+      { type: "session_end", reason: "pagehide" },
+    ]),
+    session("discarded", [
+      { type: "session_start", view: "grid" },
+      { type: "page_hidden", skinMd5: null },
+    ]),
+    session("resumed", [
+      { type: "session_start", view: "grid" },
+      { type: "page_hidden", skinMd5: null },
+      { type: "session_end", reason: "pagehide" },
+      { type: "session_resume" },
+      { type: "page_visible", skinMd5: null },
+    ]),
+  ]);
+  expect(result.sessions.map((s) => [s.id, s.end])).toEqual([
+    ["ended", "session_end"],
+    ["discarded", "hidden"],
+    ["resumed", "cut_off"],
+  ]);
 });
 
 test("retention counts how far each visit to the feed got", () => {
