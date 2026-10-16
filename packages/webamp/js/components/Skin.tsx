@@ -140,8 +140,9 @@ const getCssRules = createSelector(
 const getClipPaths = createSelector(Selectors.getSkinRegion, (skinRegion) => {
   const clipPaths: { [id: string]: ClipPath } = {};
   for (const [regionName, polygons] of Object.entries(skinRegion)) {
-    if (polygons) {
-      const id = mapRegionNamesToIds[regionName];
+    // region.txt may have sections for windows we don't clip; skip them.
+    const id = mapRegionNamesToIds[regionName];
+    if (polygons && id != null) {
       const [width, height] = mapRegionNamesToSize[regionName];
       clipPaths[id] = { polygons, width, height };
     }
