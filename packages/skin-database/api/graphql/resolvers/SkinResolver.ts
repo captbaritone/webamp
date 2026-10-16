@@ -6,7 +6,7 @@ import { ISkin } from "./CommonSkinResolver";
 import ModernSkinResolver from "./ModernSkinResolver";
 import * as Skins from "../../../data/skins";
 import { knex } from "../../../db";
-import { ftsMatchExpression } from "../../../ftsQuery";
+import { ftsColumnExpression, ftsMatchExpression } from "../../../ftsQuery";
 
 export default class SkinResolver {
   constructor() {
@@ -26,6 +26,20 @@ export default class SkinResolver {
       return new ClassicSkinResolver(model);
     }
   }
+}
+
+// How to order a skin_search MATCH's results. FTS5's rank (BM25) scores a
+// match lower the longer the whole row is, readme included, so a long readme
+// can bury a skin whose file name is just what was searched for: "Atlas" put
+// Skinner_Atlas.wsz, with a 49 KB readme, 136th of 165. So skins with every
+// word of the search in their file names come first, then by rank.
+function searchOrder(match: string): [string, string[]] {
+  return [
+    `skin_search.skin_md5 IN (
+      SELECT skin_md5 FROM skin_search WHERE skin_search MATCH ?
+    ) DESC, rank`,
+    [ftsColumnExpression("file_names", match)],
+  ];
 }
 
 /**
@@ -68,7 +82,7 @@ export async function search_skins(
     .select("skin_md5")
     .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
     .where("skins.skin_type", "in", [1, 2])
-    .orderByRaw("rank")
+    .orderByRaw(...searchOrder(match))
     .limit(first)
     .offset(offset)
     .whereRaw("skin_search MATCH ?", match);
@@ -123,7 +137,7 @@ export async function search_classic_skins(
       .select("skin_md5")
       .leftJoin("skins", "skin_search.skin_md5", "skins.md5")
       .where("skins.skin_type", "=", 1)
-      .orderByRaw("rank")
+      .orderByRaw(...searchOrder(match))
       .limit(first)
       .offset(offset)
       .whereRaw("skin_search MATCH ?", match);

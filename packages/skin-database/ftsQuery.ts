@@ -35,3 +35,11 @@ export function ftsMatchExpression(userInput: string): string | null {
     })
     .join(" ");
 }
+
+/**
+ * Limit a MATCH expression from ftsMatchExpression to one column of the index,
+ * e.g. to find the rows where every word of the search is in their file names.
+ */
+export function ftsColumnExpression(column: string, match: string): string {
+  return `${column} : (${match})`;
+}

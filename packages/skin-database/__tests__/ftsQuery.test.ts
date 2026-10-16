@@ -1,4 +1,4 @@
-import { ftsMatchExpression } from "../ftsQuery";
+import { ftsColumnExpression, ftsMatchExpression } from "../ftsQuery";
 
 describe("ftsMatchExpression", () => {
   it("quotes each token and prefix matches the last one", () => {
@@ -36,5 +36,13 @@ describe("ftsMatchExpression", () => {
     // queryParser strips `filter:` tokens out of the query before it reaches
     // us, so an all-filters query arrives empty.
     expect(ftsMatchExpression("+++")).toBe(null);
+  });
+});
+
+describe("ftsColumnExpression", () => {
+  it("limits a match expression to one column", () => {
+    expect(ftsColumnExpression("file_names", '"green" "day"*')).toBe(
+      'file_names : ("green" "day"*)'
+    );
   });
 });

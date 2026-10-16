@@ -537,6 +537,33 @@ test("An Upload Flow", async () => {
   });
 });
 
+test("search_classic_skins ranks file name matches above readme matches", async () => {
+  // A long readme sinks a skin's rank in the search index, even when the
+  // search is for the skin's own file name.
+  await knex("files").insert({
+    skin_md5: "a_fake_md5",
+    file_path: "/a/fake/Skinner_Atlas.wsz",
+  });
+  await knex("skins")
+    .where({ md5: "a_fake_md5" })
+    .update({ readme_text: `Atlas. ${"Lots of other words. ".repeat(500)}` });
+  await knex("skins")
+    .where({ md5: "an_approved_md5" })
+    .update({ readme_text: "Inspired by Atlas" });
+
+  const { data } = await graphQLRequest(gql`
+    query {
+      search_classic_skins(query: "atlas") {
+        md5
+      }
+    }
+  `);
+  expect(data.search_classic_skins).toEqual([
+    { md5: "a_fake_md5" },
+    { md5: "an_approved_md5" },
+  ]);
+});
+
 test("the search index follows skins and their files", async () => {
   const search = async (query: string) => {
     const { data } = await graphQLRequest(
