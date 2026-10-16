@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { screenshotUrlFromHash } from "../../../legacy-client/src/utils";
 import {
@@ -34,11 +35,13 @@ import {
   PULLED_EVENTS_FILE,
   type EventSource,
 } from "./loadEvents";
+import { DEV_ACCESS_COOKIE, hasDevAccess } from "../devAccess";
 import "./dashboard.css";
 
 // A report on the new museum UI's event log, to decide which signals are
-// worth building a ranking on. Development only: it reads the dev server's
-// database, or a copy of production's events (scripts/pull-events.sh).
+// worth building a ranking on. It reads the server's own database, or (in
+// development) a copy of production's events (scripts/pull-events.sh). In
+// production, only for someone signed in at /dev/login (see devAccess.ts).
 
 export const dynamic = "force-dynamic";
 
@@ -94,7 +97,8 @@ export default async function EventsDashboard({
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  if (process.env.NODE_ENV === "production") notFound();
+  const cookieStore = await cookies();
+  if (!hasDevAccess(cookieStore.get(DEV_ACCESS_COOKIE)?.value)) notFound();
   const filters = readFilters(await searchParams);
   const pulled = pulledAt();
 

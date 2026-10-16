@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { DEV_ACCESS_COOKIE, hasDevAccess } from "./app/dev/devAccess";
 
 // Which UI the museum's public URLs serve:
 //
@@ -67,6 +68,18 @@ function chosenUi(request: NextRequest): "new" | "classic" {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // The /dev pages are private in production (see app/dev/devAccess.ts). A
+  // plain 404 for anyone else, so they don't show there's anything here.
+  if (pathname === "/dev" || pathname.startsWith("/dev/")) {
+    if (
+      pathname === "/dev/login" ||
+      hasDevAccess(request.cookies.get(DEV_ACCESS_COOKIE)?.value)
+    ) {
+      return NextResponse.next();
+    }
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   // ?ui=new|classic|default: set (or clear) this visitor's override, then
   // reload the same URL without the parameter.
   const ui = request.nextUrl.searchParams.get("ui");
@@ -113,7 +126,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Only the paths above (keeps the middleware off assets, /graphql, etc.).
+  // Only the paths above and /dev (keeps the middleware off assets, /graphql, etc.).
   matcher: [
     "/",
     "/index.html",
@@ -125,5 +138,7 @@ export const config = {
     "/scroll/skin/:path*",
     "/scroll/about",
     "/scroll/feedback",
+    "/dev",
+    "/dev/:path*",
   ],
 };

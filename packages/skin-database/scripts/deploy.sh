@@ -77,8 +77,14 @@ swap_back() {
 main() {
   if [[ "${1:-}" == "--classic" || "${1:-}" == "--new" ]]; then
     local ui="${1#--}"
-    # Next loads this file at startup; MUSEUM_UI is read per request.
-    printf 'MUSEUM_UI=%s\n' "$ui" > .env.production.local
+    # Next loads this file at startup; MUSEUM_UI is read per request. Keep
+    # the file's other settings (e.g. DEV_DASHBOARD_TOKEN).
+    touch .env.production.local
+    {
+      grep -v '^MUSEUM_UI=' .env.production.local || true
+      printf 'MUSEUM_UI=%s\n' "$ui"
+    } > .env.production.local.tmp
+    mv .env.production.local.tmp .env.production.local
     restart_and_check
     log "The museum now serves the $ui UI"
     exit 0
