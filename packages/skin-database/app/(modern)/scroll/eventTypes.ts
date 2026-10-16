@@ -29,7 +29,9 @@
 //   session_start says whether it was prerendered, whether the browser is
 //   automated, and whether the page was visible. The server records each
 //   session's user agent (the session table).
-export const EVENT_SCHEMA_VERSION = 6;
+// - 7: adds menu_open. Before, opening the bottom bar's menu wasn't logged,
+//   only following a link in it (link_click).
+export const EVENT_SCHEMA_VERSION = 7;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -181,6 +183,8 @@ export type UserEvent =
   | { type: "scroll_hint_shown" }
   // The grid's "Tap a skin" hint was shown.
   | { type: "grid_hint_shown" }
+  // The bottom bar's menu (About, Feedback, GitHub) was opened.
+  | { type: "menu_open" }
   // Skins in the grid that were on screen for a moment (GRID_IMPRESSION_MS)
   // once scrolling stopped, as [md5, position, source]. Each skin is reported
   // once per session for each list. With grid_skin_click, how often a skin is
@@ -302,6 +306,7 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<
   "webamp_use_start",
   "webamp_use_end",
   "grid_hint_shown",
+  "menu_open",
   "grid_search",
   "grid_skin_click",
   "skins_fetch_start",

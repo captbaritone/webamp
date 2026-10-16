@@ -8,10 +8,11 @@ import {
   MessageSquare,
   Upload,
   Github,
+  Heart,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { setNextViewVia } from "./eventLogger";
+import { setNextViewVia, useEventLogger } from "./eventLogger";
 import { notePathname, returnToGrid } from "./gridReturn";
 import { gridPath, skinPath } from "./paths";
 import { useListPosition } from "./listPosition";
@@ -23,6 +24,10 @@ import {
   useEffect,
   useRef,
 } from "react";
+
+// Where "Support the museum" goes: thank-you donations. Following it is
+// logged as a link_click with this href, like the menu's other links.
+const DONATION_URL = "https://ko-fi.com/jordaneldredge";
 
 export default function BottomMenuBar() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -57,8 +62,10 @@ export default function BottomMenuBar() {
   const position = useListPosition();
   const onFeed = pathname.startsWith("/skin/");
 
+  const logger = useEventLogger();
   const toggleHamburger = () => {
-    setIsHamburgerOpen((open) => !open);
+    if (!isHamburgerOpen) logger.log({ type: "menu_open" });
+    setIsHamburgerOpen(!isHamburgerOpen);
   };
 
   // Close hamburger menu when clicking outside
@@ -120,6 +127,15 @@ export default function BottomMenuBar() {
               onClick={() => {
                 setIsHamburgerOpen(false);
               }}
+            />
+            <HamburgerMenuItem
+              href={DONATION_URL}
+              icon={<Heart size={20} />}
+              label="Support the museum"
+              onClick={() => {
+                setIsHamburgerOpen(false);
+              }}
+              external
             />
             <HamburgerMenuItem
               href="https://github.com/captbaritone/webamp/"
