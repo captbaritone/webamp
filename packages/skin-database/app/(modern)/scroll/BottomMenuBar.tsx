@@ -25,7 +25,7 @@ import {
   useRef,
 } from "react";
 
-// Where "Support the museum" goes: thank-you donations. Following it is
+// Where "Donate" goes: thank-you donations. Following it is
 // logged as a link_click with this href, like the menu's other links.
 const DONATION_URL = "https://ko-fi.com/jordaneldredge";
 
@@ -131,7 +131,7 @@ export default function BottomMenuBar() {
             <HamburgerMenuItem
               href={DONATION_URL}
               icon={<Heart size={20} />}
-              label="Support the museum"
+              label="Donate"
               onClick={() => {
                 setIsHamburgerOpen(false);
               }}
