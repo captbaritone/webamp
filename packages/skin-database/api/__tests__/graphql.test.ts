@@ -536,3 +536,35 @@ test("An Upload Flow", async () => {
     status: "UPLOAD_REPORTED",
   });
 });
+
+test("the search index follows skins and their files", async () => {
+  const search = async (query: string) => {
+    const { data } = await graphQLRequest(
+      `query($query: String!) { search_skins(query: $query) { md5 } }`,
+      { query }
+    );
+    return data.search_skins.map((skin: { md5: string }) => skin.md5);
+  };
+  // Seeded skins are indexed by their file names.
+  const zelda = "48bbdbbeb03d347e59b1eebda4d352d0";
+  expect(await search("zelda")).toEqual([zelda]);
+
+  await knex("files")
+    .where({ skin_md5: zelda })
+    .update({ file_path: "/a/fake/Link_Amp.wsz" });
+  expect(await search("zelda")).toEqual([]);
+  expect(await search("link")).toEqual([zelda]);
+
+  await knex("skins").insert({ md5: "a_new_md5", skin_type: 1 });
+  await knex("files").insert({
+    skin_md5: "a_new_md5",
+    file_path: "/a/fake/brand_new.wsz",
+  });
+  expect(await search("brand new")).toEqual(["a_new_md5"]);
+
+  await knex("files").where({ skin_md5: "a_new_md5" }).del();
+  await knex("skins").where({ md5: "a_new_md5" }).del();
+  expect(await knex("skin_search").where({ skin_md5: "a_new_md5" })).toEqual(
+    []
+  );
+});
