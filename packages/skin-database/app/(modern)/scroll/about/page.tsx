@@ -1,9 +1,13 @@
+import type { Metadata } from "next";
+import { ABOUT_METADATA } from "../../../museumMetadata";
 import StaticPage, {
   Heading,
   Subheading,
   Link,
   Paragraph,
 } from "../StaticPage";
+
+export const metadata: Metadata = ABOUT_METADATA;
 
 export default function AboutPage() {
   return (
