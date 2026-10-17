@@ -92,7 +92,9 @@ async function searchImage(query) {
     }`,
     { query }
   );
-  return new ImageResponse(<ImageGrid skins={data.skins} title={query} />, {
+  // Modern skins come back as {}: they have no screenshot to show.
+  const skins = data.skins.filter((skin) => skin.screenshot_url != null);
+  return new ImageResponse(<ImageGrid skins={skins} title={query} />, {
     width: 1200,
     height: 600,
   });

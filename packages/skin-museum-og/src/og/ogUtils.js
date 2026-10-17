@@ -1,5 +1,7 @@
 export async function fetchGraphql(query, variables) {
-  const response = await fetch("https://api.webampskins.org/graphql", {
+  // Not api.webampskins.org: Cloudflare reaches the server over HTTP for it,
+  // and Apache redirects HTTP to HTTPS, so every request loops.
+  const response = await fetch("https://skins.webamp.org/graphql", {
     headers: {
       accept: "application/json",
       "content-type": "application/json",
