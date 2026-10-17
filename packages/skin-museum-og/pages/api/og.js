@@ -231,10 +231,19 @@ async function permalinkImage(skinMd5) {
       skin: fetch_skin_by_md5(md5: $md5) {
           filename
           screenshot_url
+          nsfw
       }
   }`,
     { md5: skinMd5 }
   );
+  // An NSFW skin's page covers its screenshot until you choose to see it, so
+  // its preview shows only its name.
+  if (data.skin.nsfw) {
+    return new ImageResponse(
+      <ImageGrid skins={[]} title={stripExt(data.skin.filename)} />,
+      { width: 1200, height: 600 }
+    );
+  }
   const size = 900;
   return new ImageResponse(
     (
