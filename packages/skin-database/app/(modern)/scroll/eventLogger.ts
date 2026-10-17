@@ -103,6 +103,24 @@ type Session = {
   feedSkinMd5: string | null;
 };
 
+// A tab opened from the /dev pages or /sorts (a skin in one of its rankings)
+// is someone looking through a ranking, and would count as a direct load of
+// that skin, feeding back into the ranking. It logs nothing.
+const NOOP_LOGGER: EventLogger = { log() {}, flush() {} };
+
+function openedFromDevPage(): boolean {
+  try {
+    const referrer = document.referrer ? new URL(document.referrer) : null;
+    return (
+      referrer != null &&
+      referrer.host === location.host &&
+      (referrer.pathname.startsWith("/dev/") || referrer.pathname === "/sorts")
+    );
+  } catch {
+    return false;
+  }
+}
+
 let session: Session | null = null;
 const endListeners = new Set<() => void>();
 const resumeListeners = new Set<() => void>();
@@ -110,7 +128,9 @@ const resumeListeners = new Set<() => void>();
 function getSession(): Session {
   if (session == null) {
     const created: Session = {
-      logger: createEventLogger(crypto.randomUUID()),
+      logger: openedFromDevPage()
+        ? NOOP_LOGGER
+        : createEventLogger(crypto.randomUUID()),
       started: false,
       ended: false,
       feedSkinMd5: null,
