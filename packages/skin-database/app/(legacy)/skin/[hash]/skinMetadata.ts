@@ -9,7 +9,7 @@ export async function generateSkinPageMetadata(
   const fileName = await skin.getFileName();
   const readme = await skin.getReadme();
 
-  const imageUrl = `https://skin-museum-og-captbaritone-webamp.vercel.app/api/og?md5=${hash}`;
+  const imageUrl = `https://skin-museum-og.vercel.app/api/og?md5=${hash}`;
 
   const images = [
     {
