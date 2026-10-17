@@ -209,9 +209,9 @@ export const getPreviewImageUrl = createSelector(
   getSearchQuery,
   (hash, searchQuery) => {
     if (hash) {
-      return `https://skin-museum-og.vercel.app/api/og?md5=${hash}`;
+      return `https://skins.webamp.org/og/skin/${hash}.png`;
     } else if (searchQuery) {
-      return `https://skin-museum-og.vercel.app/api/og?query=${encodeURIComponent(
+      return `https://skins.webamp.org/og/search.jpg?query=${encodeURIComponent(
         searchQuery
       )}`;
     }

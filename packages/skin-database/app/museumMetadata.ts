@@ -12,7 +12,7 @@ export function museumMetadata(query: string | undefined): Metadata {
     const images = [
       {
         alt: `Screenshot of Winamp skins matching "${query}"`,
-        url: `https://skin-museum-og.vercel.app/api/og?query=${encodeURIComponent(
+        url: `https://skins.webamp.org/og/search.jpg?query=${encodeURIComponent(
           query
         )}`,
         width: 1200,
@@ -45,7 +45,7 @@ export function museumMetadata(query: string | undefined): Metadata {
   const images = [
     {
       alt: "Screenshot of many Winamp skins in a grid.",
-      url: "https://skin-museum-og.vercel.app/api/og",
+      url: "https://skins.webamp.org/og/museum.jpg",
       width: 1200,
       height: 600,
     },
