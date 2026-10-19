@@ -909,6 +909,8 @@ export type IMetadataApi = IMusicMetadataBrowserApi | IMusicMetadataApi;
 export interface Extras {
   requireJSZip(): Promise<any>;
   requireMusicMetadata(): Promise<IMetadataApi>;
+  // Like `URL.createObjectURL`, but revoked when Webamp is disposed.
+  createObjectURL(blob: Blob): string;
   convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>

@@ -334,5 +334,9 @@ export default class Media implements IMedia {
 
     this._source.dispose();
     this._emitter.dispose();
+    // An open context keeps its audio thread running, and keeps every node
+    // in it (and so the <audio> element) alive, for as long as the page is
+    // open.
+    this._context.close().catch(() => {});
   }
 }

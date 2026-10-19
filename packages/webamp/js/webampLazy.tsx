@@ -142,11 +142,22 @@ class Webamp {
         handleAddUrlEvent,
         handleLoadListEvent,
         handleSaveListEvent,
+        createObjectURL: (blob: Blob) => {
+          const url = URL.createObjectURL(blob);
+          // Work that finishes after dispose (say, reading a track's tags)
+          // gets a URL that's already revoked.
+          if (this._disposable.disposed) {
+            URL.revokeObjectURL(url);
+          } else {
+            this._disposable.add(() => URL.revokeObjectURL(url));
+          }
+          return url;
+        },
       }
     ) as Store;
 
     if (options.enableMediaSession) {
-      enableMediaSession(this);
+      this._disposable.add(enableMediaSession(this));
     }
 
     if (enableDoubleSizeMode) {

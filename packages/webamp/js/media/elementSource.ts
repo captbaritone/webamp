@@ -183,6 +183,11 @@ export default class ElementSource {
     this._disposable.dispose();
 
     this.stop();
+    this._source.disconnect();
+    // Removing the source and reloading is how a media element is told to let
+    // go of what it has downloaded and decoded.
+    this._audio.removeAttribute("src");
+    this._audio.load();
     this._emitter.dispose();
   }
 }

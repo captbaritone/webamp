@@ -225,14 +225,14 @@ export function loadMediaFile(
   priority: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Thunk {
-  return (dispatch) => {
+  return (dispatch, getState, { createObjectURL }) => {
     const id = Utils.uniqueId();
     const { defaultName, metaData, duration } = track;
     let canonicalUrl: string;
     if ("url" in track) {
       canonicalUrl = track.url.toString();
     } else if ("blob" in track) {
-      canonicalUrl = URL.createObjectURL(track.blob);
+      canonicalUrl = createObjectURL(track.blob);
     } else {
       throw new Error("Expected track to have either a blob or a url");
     }
@@ -303,7 +303,11 @@ function queueFetchingMediaTags(id: number): Thunk {
 }
 
 export function fetchMediaTags(file: string | Blob, id: number): Thunk {
-  return async (dispatch, getState, { requireMusicMetadata }) => {
+  return async (
+    dispatch,
+    getState,
+    { requireMusicMetadata, createObjectURL }
+  ) => {
     dispatch({ type: "MEDIA_TAG_REQUEST_INITIALIZED", id });
 
     try {
@@ -315,7 +319,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Thunk {
       if (picture && picture.length >= 1) {
         const byteArray = new Uint8Array(picture[0].data);
         const blob = new Blob([byteArray], { type: picture[0].format });
-        albumArtUrl = URL.createObjectURL(blob);
+        albumArtUrl = createObjectURL(blob);
       }
       dispatch({
         type: "SET_MEDIA_TAGS",
