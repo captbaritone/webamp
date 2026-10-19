@@ -453,20 +453,20 @@ class Webamp {
    */
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
-    const unsubscribe = this.store.subscribe(() => {
-      const state = this.store.getState();
-      const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
-      if (trackId === previousTrackId) {
-        return;
-      }
-      previousTrackId = trackId;
-      cb(trackId == null ? null : Selectors.getCurrentTrackInfo(state));
-    });
-
-    // Register cleanup with disposable
-    this._disposable.add(unsubscribe);
-
-    return unsubscribe;
+    // Its own scope, so unsubscribing early doesn't leave a teardown behind.
+    const scope = this._disposable.child();
+    scope.add(
+      this.store.subscribe(() => {
+        const state = this.store.getState();
+        const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
+        if (trackId === previousTrackId) {
+          return;
+        }
+        previousTrackId = trackId;
+        cb(trackId == null ? null : Selectors.getCurrentTrackInfo(state));
+      })
+    );
+    return () => scope.dispose();
   }
 
   /**
@@ -591,12 +591,10 @@ class Webamp {
   }
 
   __onStateChange(cb: () => void): () => void {
-    const unsubscribe = this.store.subscribe(cb);
-
-    // Register cleanup with disposable
-    this._disposable.add(unsubscribe);
-
-    return unsubscribe;
+    // Its own scope, so unsubscribing early doesn't leave a teardown behind.
+    const scope = this._disposable.child();
+    scope.add(this.store.subscribe(cb));
+    return () => scope.dispose();
   }
 
   /**
@@ -605,27 +603,27 @@ class Webamp {
    * If the instance is disposed, the promise will be rejected.
    */
   private storeHas(predicate: (state: AppState) => boolean): Promise<void> {
-    let unsubscribed = false;
     return new Promise((resolve, reject) => {
       if (predicate(this.store.getState())) {
         resolve();
         return;
       }
-      const unsubscribe = this.store.subscribe(() => {
-        if (predicate(this.store.getState())) {
-          unsubscribed = true;
-          unsubscribe();
-          resolve();
-        }
-      });
-
-      // Register cleanup with disposable
-      this._disposable.add(() => {
-        if (!unsubscribed) {
-          unsubscribe();
-          reject(new Error("Store was disposed before condition was met."));
-        }
-      });
+      // This is called on every skin load, so it gets its own scope, which
+      // ends with the wait rather than living as long as Webamp.
+      const scope = this._disposable.child();
+      // Once resolved this is a no-op, so it only rejects if Webamp is disposed
+      // first.
+      scope.add(() =>
+        reject(new Error("Store was disposed before condition was met."))
+      );
+      scope.add(
+        this.store.subscribe(() => {
+          if (predicate(this.store.getState())) {
+            resolve();
+            scope.dispose();
+          }
+        })
+      );
     });
   }
 
