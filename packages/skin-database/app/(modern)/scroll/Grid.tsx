@@ -34,7 +34,7 @@ import {
 import { getListPosition, setListPosition } from "./listPosition";
 import { corsScreenshotUrl } from "./skinTint";
 import HintPill, { markHintDone } from "./HintPill";
-import { EyeOff, Pointer } from "lucide-react";
+import { EyeOff, Pointer, Search, X } from "lucide-react";
 import { rememberSkinNsfw, useShowNsfw } from "./nsfwConsent";
 import { isModifiedClick } from "./BottomMenuBar";
 
@@ -523,9 +523,12 @@ export default function SkinTable({
       </HintPill>
       <div className="grid-search" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
         <div style={{ position: "relative" }}>
+          <Search className="grid-search-icon" size={18} aria-hidden />
           <input
             className={
-              searchPending ? "grid-search-input pending" : "grid-search-input"
+              "grid-search-input" +
+              (inputValue !== "" ? " has-value" : "") +
+              (searchPending ? " pending" : "")
             }
             type="search"
             enterKeyHint="search"
@@ -551,6 +554,26 @@ export default function SkinTable({
               role="status"
               aria-label="Searching"
             />
+          )}
+          {inputValue !== "" && (
+            <button
+              type="button"
+              className="grid-search-clear"
+              aria-label="Clear search"
+              title="Clear search"
+              // Leaves focus where it was, so a tap doesn't summon the
+              // keyboard on mobile.
+              onPointerDown={(e) => e.preventDefault()}
+              onClick={(e) => {
+                const viaKeyboard = document.activeElement === e.currentTarget;
+                setInputValue("");
+                // The button goes away, so focus would otherwise fall to the
+                // page.
+                if (viaKeyboard) searchInputRef.current?.focus();
+              }}
+            >
+              <X size={16} strokeWidth={2.5} aria-hidden />
+            </button>
           )}
         </div>
       </div>

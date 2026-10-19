@@ -347,29 +347,98 @@ button {
   z-index: 998;
 }
 
+/*
+ * Mostly opaque, with a light edge and a deep shadow, so it reads as a
+ * control rather than part of the busy screenshots behind it.
+ */
 .grid-search-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
   font-size: 1rem;
-  background-color: rgba(26, 26, 26, 0.55);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(20, 20, 24, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 9999px;
   color: #fff;
   outline: none;
   font-family: inherit;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: padding-right 0.2s ease;
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    padding-right 0.2s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.grid-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.grid-search-input:hover {
+  border-color: rgba(255, 255, 255, 0.32);
 }
 
 .grid-search-input:focus {
-  background-color: rgba(26, 26, 26, 0.65);
-  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(20, 20, 24, 0.92);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
-/* Makes room for the spinner. */
-.grid-search-input.pending {
+.grid-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  /* The input's backdrop-filter would otherwise paint over it. */
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+/* Our own clear button replaces the browser's. */
+.grid-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Makes room for the clear button, and then the spinner beside it. */
+.grid-search-input.has-value {
   padding-right: 2.75rem;
+}
+
+.grid-search-input.has-value.pending {
+  padding-right: 4.5rem;
+}
+
+.grid-search-clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.grid-search-clear:hover {
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+.grid-search-clear:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 /* In place of the grid: a failed search, or one with no results. */
@@ -388,7 +457,8 @@ button {
 /* Shown inside the search input while a query is debouncing or in flight. */
 .search-spinner {
   position: absolute;
-  right: 1rem;
+  /* Just left of the clear button. */
+  right: 2.75rem;
   top: 50%;
   width: 1rem;
   height: 1rem;
