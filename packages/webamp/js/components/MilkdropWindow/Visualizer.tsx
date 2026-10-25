@@ -3,6 +3,7 @@ import { VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
 import { TransitionType } from "../../types";
 import { useTypedSelector } from "../../hooks";
+import { createFlashGovernor } from "./flashGovernor";
 
 type ButterchurnVisualizer = {
   setRendererSize(width: number, height: number): void;
@@ -31,10 +32,13 @@ function Visualizer({ analyser, width, height }: Props) {
   const currentPreset = useTypedSelector(Selectors.getCurrentPreset);
   const transitionType = useTypedSelector(Selectors.getPresetTransitionType);
   const message = useTypedSelector(Selectors.getMilkdropMessage);
+  const reduceFlashing = useTypedSelector(Selectors.getReduceFlashing);
 
   const isEnabledVisualizer = visualizerStyle === VISUALIZERS.MILKDROP;
 
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const governorRef = useRef(createFlashGovernor());
+  const [isDamping, setIsDamping] = useState<boolean>(false);
   const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
     null
   );
@@ -81,6 +85,12 @@ function Visualizer({ analyser, width, height }: Props) {
   // Load presets when they change
   const hasLoadedPreset = useRef<boolean>(false);
   useEffect(() => {
+    governorRef.current.reset();
+    setIsDamping(false);
+    if (canvasRef.current) {
+      canvasRef.current.style.filter = "";
+    }
+
     if (visualizer == null || currentPreset == null) {
       return;
     }
@@ -128,11 +138,31 @@ function Visualizer({ analyser, width, height }: Props) {
   // Kick off the animation loop
   useEffect(() => {
     if (!shouldAnimate || visualizer == null) {
+      if (canvas) {
+        canvas.style.filter = "";
+      }
+      setIsDamping(false);
       return;
     }
+    const canvas = canvasRef.current;
     let animationFrameRequest: number | null = null;
     const loop = () => {
       visualizer.render();
+
+      if (reduceFlashing && canvasRef.current) {
+        const decision = governorRef.current.tick(
+          canvasRef.current,
+          performance.now()
+        );
+        canvasRef.current.style.filter = decision.isDamping
+          ? `brightness(${decision.scale.toFixed(3)})`
+          : "";
+        setIsDamping(decision.isDamping);
+      } else if (canvasRef.current && canvasRef.current.style.filter !== "") {
+        canvasRef.current.style.filter = "";
+        setIsDamping(false);
+      }
+
       animationFrameRequest = window.requestAnimationFrame(loop);
     };
     loop();
@@ -140,20 +170,53 @@ function Visualizer({ analyser, width, height }: Props) {
       if (animationFrameRequest != null) {
         window.cancelAnimationFrame(animationFrameRequest);
       }
+      if (canvas) {
+        canvas.style.filter = "";
+      }
     };
-  }, [visualizer, shouldAnimate]);
+  }, [visualizer, shouldAnimate, reduceFlashing]);
 
   return (
-    <canvas
-      height={height}
-      width={width}
+    <div
       style={{
+        position: "relative",
         height: "100%",
         width: "100%",
         display: isEnabledVisualizer ? "block" : "none",
       }}
-      ref={canvasRef}
-    />
+    >
+      <canvas
+        height={height}
+        width={width}
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "block",
+        }}
+        ref={canvasRef}
+      />
+      {isDamping && (
+        <div
+          style={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            color: "#fff",
+            fontSize: 10,
+            padding: "2px 6px",
+            borderRadius: 3,
+            pointerEvents: "none",
+            letterSpacing: 0.5,
+            fontFamily: "sans-serif",
+            textTransform: "uppercase",
+            zIndex: 10,
+          }}
+        >
+          Dimming Flashes
+        </div>
+      )}
+    </div>
   );
 }
 

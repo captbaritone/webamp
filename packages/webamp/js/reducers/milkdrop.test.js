@@ -93,3 +93,12 @@ test("selectes the first preset in a new set when added", async () => {
   // Once the first preset is loaded, it gets selected
   expect(Selectors.getCurrentPresetIndex(store.getState())).toBe(2);
 });
+
+test("toggles reduceFlashing correctly", () => {
+  const store = createStore(media, new Emitter());
+  expect(Selectors.getReduceFlashing(store.getState())).toBe(true);
+  store.dispatch(Actions.toggleReduceFlashing());
+  expect(Selectors.getReduceFlashing(store.getState())).toBe(false);
+  store.dispatch(Actions.toggleReduceFlashing());
+  expect(Selectors.getReduceFlashing(store.getState())).toBe(true);
+});

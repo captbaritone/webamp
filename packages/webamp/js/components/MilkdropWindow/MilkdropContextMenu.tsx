@@ -12,8 +12,10 @@ interface Props {
 
 const MilkdropContextMenu = (props: Props) => {
   const desktop = useTypedSelector(Selectors.getMilkdropDesktopEnabled);
+  const reduceFlashing = useTypedSelector(Selectors.getReduceFlashing);
 
   const closeWindow = useActionCreator(Actions.closeWindow);
+  const toggleReduceFlashing = useActionCreator(Actions.toggleReduceFlashing);
   const toggleDesktop = useActionCreator(Actions.toggleMilkdropDesktop);
   const toggleFullscreen = useActionCreator(Actions.toggleMilkdropFullscreen);
 
@@ -34,6 +36,12 @@ const MilkdropContextMenu = (props: Props) => {
               checked={desktop}
               label="Desktop Mode"
               hotkey="Alt+D"
+            />
+            <Hr />
+            <Node
+              onClick={toggleReduceFlashing}
+              checked={reduceFlashing}
+              label="Reduce Flashing (WCAG 2.3.1)"
             />
             <Hr />
             <Node onClick={() => closeWindow(WINDOWS.MILKDROP)} label="Quit" />
