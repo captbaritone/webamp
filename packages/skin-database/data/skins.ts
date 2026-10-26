@@ -168,17 +168,42 @@ export async function markAsPostedToBlueSky(
   );
 }
 
+/**
+ * Run a write to the Algolia index, if Algolia is enabled. Returns whether it
+ * happened. A failure is logged rather than thrown: we've run out of Algolia
+ * quota before, and that shouldn't fail an upload or a review. Only record the
+ * fields in algolia_field_updates when this returns true, so that table lists
+ * what actually reached Algolia.
+ */
+async function writeToAlgolia(
+  description: string,
+  write: () => Promise<unknown>
+): Promise<boolean> {
+  if (!ALGOLIA_ENABLED) {
+    return false;
+  }
+  try {
+    await write();
+    return true;
+  } catch (e) {
+    console.error(`Algolia write failed (${description})`, e);
+    return false;
+  }
+}
+
 // TODO: Also path actor
 export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
 
-  if (ALGOLIA_ENABLED) {
-    await client.partialUpdateObjects({
+  const indexed = await writeToAlgolia(`mark ${md5} NSFW`, () =>
+    client.partialUpdateObjects({
       indexName: ALGOLIA_INDEX,
       objects: [index],
-    });
+    })
+  );
+  if (indexed) {
+    await recordSearchIndexUpdates(md5, Object.keys(index));
   }
-  await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert(
     { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
     []
@@ -275,16 +300,21 @@ export async function updateSearchIndexes(
   const skinIndexes = await getSearchIndexes(ctx, md5s);
 
   let results: any = null;
-  if (ALGOLIA_ENABLED) {
-    results = await client.partialUpdateObjects({
-      indexName: ALGOLIA_INDEX,
-      createIfNotExists: true,
-      objects: skinIndexes,
-    });
-  }
+  const indexed = await writeToAlgolia(
+    `index ${md5s.length} skin(s)`,
+    async () => {
+      results = await client.partialUpdateObjects({
+        indexName: ALGOLIA_INDEX,
+        createIfNotExists: true,
+        objects: skinIndexes,
+      });
+    }
+  );
 
-  for (const index of skinIndexes) {
-    await recordSearchIndexUpdates(index.md5, Object.keys(index));
+  if (indexed) {
+    for (const index of skinIndexes) {
+      await recordSearchIndexUpdates(index.md5, Object.keys(index));
+    }
   }
   return results;
 }

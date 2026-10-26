@@ -68,8 +68,9 @@ export async function getMuseumPageSkins(
 
 /**
  * The grid's search, for a page loaded with one in its URL, so it can start
- * with the results. The same search the grid runs in the browser
- * (graphqlSearch), with the same number of results.
+ * with the results. Always our SQLite FTS search (graphqlSearch's backend),
+ * even when the browser searches Algolia, so crawlers and link previews don't
+ * spend Algolia quota. Results can differ a little from Algolia's.
  */
 export async function getSearchSkins(query: string): Promise<GridSkin[]> {
   const results = await search_classic_skins(

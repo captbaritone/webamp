@@ -8,6 +8,10 @@ import { createYogaInstance } from "../../app/graphql/yoga";
 import { YogaServerInstance } from "graphql-yoga";
 jest.mock("../../s3");
 jest.mock("../../algolia");
+jest.mock("../../config", () => ({
+  ...jest.requireActual("../../config"),
+  ALGOLIA_ENABLED: true,
+}));
 jest.mock("../processUserUploads");
 jest.mock("../auth");
 

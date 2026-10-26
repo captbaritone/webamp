@@ -140,10 +140,9 @@ const selectSkinReadmeEpic = (actions, states) =>
     })
   );
 
-// Search used to run against Algolia and this kept us under their rate limit.
-// Now that we serve search ourselves it's what keeps a keystroke from becoming
-// a query, so it matters more, not less. It's configurable at runtime via
-// SEARCH_DEBOUNCE_MS; see ../searchConfig.
+// Keeps a keystroke from becoming a query, which matters whichever backend
+// answers: Algolia bills per request, and the SQLite fallback runs on our own
+// box. It's configurable at runtime via SEARCH_DEBOUNCE_MS; see ../searchConfig.
 //
 // Read per search rather than once up front, so the value doesn't depend on
 // the store being created after the config is set.

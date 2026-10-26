@@ -1,5 +1,5 @@
 // The search debounce is the main lever we have on how much search traffic
-// actually reaches the server, so it's worth being able to turn it without a
+// actually reaches Algolia (or the server, when it answers instead), so it's worth being able to turn it without a
 // deploy. Building this app needs ~2GB of heap, which the server can only just
 // manage, so a rebuild is the expensive way to change a number.
 //
