@@ -44,6 +44,8 @@ function database(source: EventSource): ReturnType<typeof Knex> {
   return pulled.knex;
 }
 
+type EventRow = { session_id: string; timestamp: number; metadata: string };
+
 /** Each session's events, from `minVersion` on, received since `since`. */
 export async function loadSessions(
   source: EventSource,
@@ -61,12 +63,41 @@ export async function loadSessions(
         .where("timestamp", ">=", since)
     );
   }
-  const rows: Array<{
-    session_id: string;
-    timestamp: number;
-    metadata: string;
-  }> = await query;
+  const rows: EventRow[] = await query;
   const userAgents = await loadUserAgents(database(source));
+  return toSessions(rows, userAgents, minVersion);
+}
+
+/**
+ * Every session's events, from `minVersion` on, `batchSize` sessions at a
+ * time, for work over the whole log that needn't hold it all in memory.
+ * Reading a batch uses the index on user_log_events.session_id.
+ */
+export async function forEachSessionBatch(
+  source: EventSource,
+  { minVersion, batchSize }: { minVersion: number; batchSize: number },
+  callback: (sessions: StoredSession[]) => void | Promise<void>
+): Promise<void> {
+  const db = database(source);
+  const ids: string[] = (
+    await db("user_log_events").distinct("session_id")
+  ).map((row: { session_id: string }) => row.session_id);
+  const userAgents = await loadUserAgents(db);
+  for (let i = 0; i < ids.length; i += batchSize) {
+    const rows: EventRow[] = await db("user_log_events")
+      .select("session_id", "timestamp", "metadata")
+      .whereIn("session_id", ids.slice(i, i + batchSize))
+      .orderBy("id", "asc");
+    await callback(toSessions(rows, userAgents, minVersion));
+  }
+}
+
+// Groups rows (in the order they arrived) into sessions.
+function toSessions(
+  rows: EventRow[],
+  userAgents: Map<string, string>,
+  minVersion: number
+): StoredSession[] {
   const sessions = new Map<string, StoredSession>();
   for (const row of rows) {
     let event: StoredEvent;

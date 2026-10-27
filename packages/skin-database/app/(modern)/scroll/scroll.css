@@ -556,6 +556,10 @@ button {
   padding-right: 5.25rem;
 }
 
+.grid-search-input.has-sort.sort-downloads {
+  padding-right: 8rem;
+}
+
 .grid-search-input.has-sort.sort-newest {
   padding-right: 6.75rem;
 }

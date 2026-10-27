@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  getDownloadsMuseumPage,
   getMuseumPage,
   getRandomMuseumPage,
   getSortedMuseumPage,
@@ -12,6 +13,7 @@ import { GridSkin, SkinDetails, toGridSkin } from "./gridSkin";
 import {
   isRandomPlace,
   MAX_RANDOM_SEED,
+  MUSEUM_SORTS,
   museumPosition,
   type MuseumSort,
 } from "./museumList";
@@ -40,11 +42,15 @@ export async function getMuseumPageSkins(
     !Number.isInteger(limit) ||
     limit < 1 ||
     limit > MAX_PAGE_SIZE ||
-    !(sort === "top" || sort === "newest" || sort === "random") ||
+    !MUSEUM_SORTS.includes(sort) ||
     (sort === "random" &&
       !(Number.isInteger(seed) && seed! >= 1 && seed! <= MAX_RANDOM_SEED))
   ) {
     throw new Error("Invalid request");
+  }
+  if (sort === "downloads") {
+    const skins = await getDownloadsMuseumPage({ offset, first: limit });
+    return skins.map((skin) => toGridSkin(skin.md5, skin.fileName, skin.nsfw));
   }
   if (sort !== "top") {
     const skins = await getSortedMuseumPage({

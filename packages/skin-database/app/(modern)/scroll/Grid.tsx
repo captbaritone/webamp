@@ -39,6 +39,7 @@ import {
   ArrowUpDown,
   Check,
   Clock,
+  Download,
   EyeOff,
   Pointer,
   Search,
@@ -152,12 +153,14 @@ type SkinTableProps = {
 
 const SORT_LABELS: Record<MuseumSort, string> = {
   top: "Top",
+  downloads: "Downloads",
   newest: "Newest",
   random: "Random",
 };
 
 const SORT_ICONS: Record<MuseumSort, typeof Star> = {
   top: Star,
+  downloads: Download,
   newest: Clock,
   random: Shuffle,
 };

@@ -24,25 +24,32 @@ export default async function SkinTable({ searchParams }) {
   const seed = sort === "random" ? pickRandomSeed() : null;
   // With a search in the URL, start with its results rather than the museum's
   // first page (which loads if the search is cleared).
-  const [initialSkins, initialSearchSkins, skinCount, sortedCount] =
-    await Promise.all([
-      search === "" ? getMuseumPageSkins(0, 50, sort, seed) : [],
-      search === ""
-        ? null
-        : getSearchSkins(search).catch((error) => {
-            // The grid will run the search itself.
-            console.error("Initial search failed", error);
-            return null;
-          }),
-      Skins.getMuseumPageCount(),
-      Skins.getSortedMuseumCount(),
-    ]);
+  const [
+    initialSkins,
+    initialSearchSkins,
+    skinCount,
+    sortedCount,
+    downloadsCount,
+  ] = await Promise.all([
+    search === "" ? getMuseumPageSkins(0, 50, sort, seed) : [],
+    search === ""
+      ? null
+      : getSearchSkins(search).catch((error) => {
+          // The grid will run the search itself.
+          console.error("Initial search failed", error);
+          return null;
+        }),
+    Skins.getMuseumPageCount(),
+    Skins.getSortedMuseumCount(),
+    Skins.getDownloadsMuseumCount(),
+  ]);
   return (
     <Grid
       initialSkins={initialSkins}
       initialSearchSkins={initialSearchSkins}
       totals={{
         top: museumListLength(skinCount),
+        downloads: downloadsCount,
         newest: sortedCount,
         random: sortedCount,
       }}

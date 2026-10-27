@@ -36,6 +36,7 @@ import * as S3 from "./s3";
 import { generateDescription } from "./services/openAi";
 import KeyValue from "./data/KeyValue";
 import { postToBluesky } from "./tasks/bluesky";
+import { computeDownloadsOrder } from "./tasks/computeDownloadsOrder";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -426,6 +427,19 @@ program
     if (computeMuseumOrder) {
       await Skins.computeMuseumOrder();
       console.log("Museum order updated.");
+      // The Downloads order ends with the museum's own, so it's rebuilt
+      // after it. If that fails, the previous one stays.
+      try {
+        const { scored, total } = await computeDownloadsOrder();
+        console.log(
+          `Downloads order updated: ${scored} scored skins, ${total} in all.`
+        );
+      } catch (error) {
+        console.error(
+          "Couldn't update the Downloads order; keeping the previous one.",
+          error
+        );
+      }
     }
     if (configureR2Cors) {
       await S3.configureCors();

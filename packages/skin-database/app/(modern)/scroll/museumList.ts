@@ -8,14 +8,22 @@
 // which without knowing these rules.
 
 // Orders the museum can be browsed in: its own ("top", with the random
-// skins below), or every skin but the NSFW ones newest first or in a random
-// order (see getSortedMuseumPage). Searches have their own order (best match
-// first) and aren't sorted.
-export type MuseumSort = "top" | "newest" | "random";
-export const MUSEUM_SORTS: readonly MuseumSort[] = ["top", "newest", "random"];
+// skins below), or every skin but the NSFW ones by downloads per grid view
+// (rebuilt nightly, see tasks/computeDownloadsOrder.ts), newest first or in a
+// random order (see getSortedMuseumPage). In the order the sort menu lists
+// them. Searches have their own order (best match first) and aren't sorted.
+export type MuseumSort = "top" | "downloads" | "newest" | "random";
+export const MUSEUM_SORTS: readonly MuseumSort[] = [
+  "top",
+  "downloads",
+  "newest",
+  "random",
+];
 
 export function parseMuseumSort(value: unknown): MuseumSort {
-  return value === "newest" || value === "random" ? value : "top";
+  return value === "downloads" || value === "newest" || value === "random"
+    ? value
+    : "top";
 }
 
 // A random order is picked by a seed from 1 to this (one less than

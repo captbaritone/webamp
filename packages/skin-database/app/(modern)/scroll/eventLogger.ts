@@ -104,9 +104,9 @@ type Session = {
   feedSkinMd5: string | null;
 };
 
-// A tab opened from the /dev pages or /sorts (a skin in one of its rankings)
-// is someone looking through a ranking, and would count as a direct load of
-// that skin, feeding back into the ranking. It logs nothing.
+// A tab opened from the /dev pages (e.g. a skin on the event dashboard) is
+// someone looking through the data, and would count as a direct load of that
+// skin, feeding back into it. It logs nothing.
 const NOOP_LOGGER: EventLogger = { log() {}, flush() {} };
 
 function openedFromDevPage(): boolean {
@@ -115,7 +115,7 @@ function openedFromDevPage(): boolean {
     return (
       referrer != null &&
       referrer.host === location.host &&
-      (referrer.pathname.startsWith("/dev/") || referrer.pathname === "/sorts")
+      referrer.pathname.startsWith("/dev/")
     );
   } catch {
     return false;

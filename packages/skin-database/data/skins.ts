@@ -844,6 +844,45 @@ LIMIT ? OFFSET ?`,
   }));
 }
 
+/**
+ * A page of the museum's Downloads order, rebuilt nightly into
+ * museum_downloads_order (see tasks/computeDownloadsOrder.ts). Its positions
+ * count from 1, so a page is a range of them.
+ */
+export async function getDownloadsMuseumPage({
+  offset,
+  first,
+}: {
+  offset: number;
+  first: number;
+}): Promise<MuseumPage> {
+  const skins = await knex.raw(
+    `
+SELECT
+  skins.md5,
+  (SELECT file_path from files WHERE files.skin_md5 = skins.md5 LIMIT 1) as file_path
+FROM
+  museum_downloads_order
+INNER JOIN skins ON skins.md5 = museum_downloads_order.skin_md5
+WHERE position > ? AND position <= ?
+ORDER BY position`,
+    [offset, offset + first]
+  );
+  return skins.map(({ md5, file_path }) => ({
+    fileName: path.basename(file_path),
+    md5,
+    nsfw: false,
+  }));
+}
+
+/** How many skins the Downloads order has (its last position). */
+export async function getDownloadsMuseumCount(): Promise<number> {
+  const rows = await knex.raw(
+    `SELECT MAX(position) as count FROM museum_downloads_order`
+  );
+  return Number(rows[0]?.count ?? 0);
+}
+
 // How many skins getSortedMuseumPage's orders have. Changes only as skins are
 // added or reviewed, so it's kept for a minute rather than counted per page.
 let sortedMuseumCount: { count: number; at: number } | null = null;
