@@ -40,21 +40,27 @@ export async function computeDownloadsOrder(): Promise<{
     (skin) => skin.gridViews >= MIN_GRID_VIEWS
   );
 
-  return knex.transaction(async (trx) => {
-    // The skins the museum lists, other than NSFW ones.
-    const listed = new Set<string>(
-      (
-        await trx.raw(`
+  // The skins the museum lists, other than NSFW ones. Read before the
+  // transaction: in WAL mode, a transaction that reads and then writes fails
+  // at once if another write lands in between, however long it would wait.
+  const listed = new Set<string>(
+    (
+      await knex.raw(`
 SELECT skins.md5
 FROM museum_sort_order
 INNER JOIN skins ON skins.md5 = museum_sort_order.skin_md5
 WHERE skins.md5 NOT IN (SELECT skin_md5 FROM skin_reviews WHERE review = 'NSFW')`)
-      ).map((row: { md5: string }) => row.md5)
-    );
-    const scored = ranked
-      .filter((skin) => listed.has(skin.md5))
-      .map((skin) => ({ skin_md5: skin.md5, score: skin.score }));
+    ).map((row: { md5: string }) => row.md5)
+  );
+  const scored = ranked
+    .filter((skin) => listed.has(skin.md5))
+    .map((skin) => ({ skin_md5: skin.md5, score: skin.score }));
 
+  // Wait longer than the site's connections would for a turn to write.
+  await knex.raw("PRAGMA busy_timeout = 30000");
+  return knex.transaction(async (trx) => {
+    // Its first statement writes, so it takes the write lock (waiting for
+    // one if need be) before anything else.
     await trx("museum_downloads_order").del();
     // Positions count from 1 in the order rows go in (an emptied table's
     // rowids start again from 1).

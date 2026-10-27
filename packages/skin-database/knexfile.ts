@@ -8,6 +8,14 @@ export const production = {
   },
   useNullAsDefault: true,
   debug: false,
+  pool: {
+    // A write that finds another in progress (the site's servers, the
+    // nightly jobs and the bot share this file) waits up to this long for
+    // it, rather than failing at once with SQLITE_BUSY.
+    afterCreate(connection: any, done: (error: Error | null) => void) {
+      connection.run("PRAGMA busy_timeout = 5000", done);
+    },
+  },
   migrations: {
     tableName: "knex_migrations",
     // Use process.cwd() and not __dir since Next runs from a build directory
