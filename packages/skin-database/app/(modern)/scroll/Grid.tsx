@@ -49,12 +49,14 @@ import {
   Pointer,
   Search,
   Shuffle,
+  SlidersHorizontal,
   Star,
   X,
 } from "lucide-react";
 import { rememberSkinNsfw, useShowNsfw } from "./nsfwConsent";
 import { isModifiedClick } from "./MuseumMenu";
 import FloatingBar from "./FloatingBar";
+import { hasFilter, SEARCH_FILTER_GROUPS, toggleFilter } from "./searchQuery";
 
 // Remembered once the visitor has tapped a skin (see HintPill).
 const GRID_HINT_KEY = "grid-hint-dismissed";
@@ -236,8 +238,16 @@ export default function SkinTable({
   const [sort, setSort] = useState<MuseumSort>(() =>
     parseMuseumSort(searchParams.get("sort") ?? initialSort)
   );
-  // Whether the menu for choosing it is open (see the sort button).
-  const [sortOpen, setSortOpen] = useState(false);
+  // Which of the search box's popovers is open, if either: the menu for
+  // choosing the order (the sort button), or the form of has: filters (the
+  // filters button).
+  const [popover, setPopover] = useState<"sort" | "filters" | null>(null);
+  const sortOpen = popover === "sort";
+  const filtersOpen = popover === "filters";
+  // Whether the search uses any of the form's filters.
+  const filtering = SEARCH_FILTER_GROUPS.some((group) =>
+    group.filters.some(({ filter }) => hasFilter(inputValue, filter))
+  );
   useState(() => {
     if (initialSeed != null) adoptRandomSeed(initialSeed);
     for (const s of MUSEUM_SORTS) {
@@ -595,14 +605,26 @@ export default function SkinTable({
 
   function toggleSort() {
     if (!sortOpen) logger.log({ type: "sort_open" });
-    setSortOpen(!sortOpen);
+    setPopover(sortOpen ? null : "sort");
+  }
+
+  function toggleFiltersForm() {
+    if (!filtersOpen) logger.log({ type: "search_filters_open" });
+    setPopover(filtersOpen ? null : "filters");
+  }
+
+  // The menu stays open, so several can be picked; each search runs as the
+  // box's text changes.
+  function setFilter(filter: string, on: boolean) {
+    logger.log({ type: "search_filter_toggle", filter, on });
+    setInputValue((value) => toggleFilter(value, filter, on));
   }
 
   function chooseSort(next: MuseumSort) {
     logger.log({ type: "grid_sort", sort: next });
     // Picking one closes the menu. Focus goes back to its button, rather
     // than falling to the page with the menu.
-    setSortOpen(false);
+    setPopover(null);
     sortButtonRef.current?.focus();
     if (next === sort) return;
     setSort(next);
@@ -610,21 +632,24 @@ export default function SkinTable({
     gridRef.current?.scrollTo({ scrollTop: 0 });
   }
 
-  // Like the "…" menu (MuseumMenu.tsx), a press outside the sort menu, or
+  // Like the "…" menu (MuseumMenu.tsx), a press outside the open popover, or
   // Escape, closes it.
-  const sortMenuRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const filtersButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (!sortOpen) return;
+    if (popover == null) return;
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Element;
-      // The button opens and closes it itself.
-      if (target.closest(".grid-sort-button")) return;
-      if (!sortMenuRef.current?.contains(target)) setSortOpen(false);
+      // Its button opens and closes it itself.
+      if (target.closest(".grid-search-actions")) return;
+      if (!popoverRef.current?.contains(target)) setPopover(null);
     }
     function onKeyDown(e: KeyboardEvent) {
       if (e.key !== "Escape") return;
-      setSortOpen(false);
-      sortButtonRef.current?.focus();
+      const button =
+        popover === "sort" ? sortButtonRef.current : filtersButtonRef.current;
+      setPopover(null);
+      button?.focus();
     }
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
@@ -632,7 +657,7 @@ export default function SkinTable({
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [sortOpen]);
+  }, [popover]);
 
   const itemData: CellData = useMemo(
     () => ({
@@ -646,7 +671,10 @@ export default function SkinTable({
   );
 
   return (
-    <div id="infinite-skins" className={sortOpen ? "sort-open" : undefined}>
+    <div
+      id="infinite-skins"
+      className={popover != null ? "popover-open" : undefined}
+    >
       <HintPill
         storageKey={GRID_HINT_KEY}
         done={false}
@@ -661,7 +689,7 @@ export default function SkinTable({
         onLogoClick={() => {
           setInputValue("");
           setSort("top");
-          setSortOpen(false);
+          setPopover(null);
           gridRef.current?.scrollTo({ scrollTop: 0 });
         }}
       >
@@ -680,7 +708,7 @@ export default function SkinTable({
               setInputValue(e.target.value);
               // Searches aren't sorted: the sort button gives way to the
               // clear button, and its menu closes.
-              if (e.target.value !== "") setSortOpen(false);
+              if (e.target.value !== "" && sortOpen) setPopover(null);
             }}
             ref={searchInputRef}
             onKeyDown={(e) => {
@@ -703,10 +731,51 @@ export default function SkinTable({
               aria-label="Searching"
             />
           )}
+          {filtersOpen && (
+            <div
+              id="grid-filters-menu"
+              ref={popoverRef}
+              className="floating-menu-popover search-filters"
+              role="group"
+              aria-label="Search filters"
+            >
+              {SEARCH_FILTER_GROUPS.map((group) => (
+                <div
+                  key={group.label}
+                  className="search-filter-group"
+                  role="group"
+                  aria-label={group.label}
+                >
+                  <div className="search-filter-heading" aria-hidden>
+                    {group.label}
+                  </div>
+                  <div className="search-filter-pills">
+                    {group.filters.map(({ filter, label }) => {
+                      const on = hasFilter(inputValue, filter);
+                      return (
+                        <button
+                          key={filter}
+                          type="button"
+                          className="search-filter"
+                          aria-pressed={on}
+                          // Leaves focus where it was, like the box's other
+                          // buttons.
+                          onPointerDown={(e) => e.preventDefault()}
+                          onClick={() => setFilter(filter, !on)}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           {sortOpen && inputValue === "" && (
             <div
               id="grid-sort-menu"
-              ref={sortMenuRef}
+              ref={popoverRef}
               className="floating-menu-popover"
               role="group"
               aria-label="Sort skins"
@@ -737,43 +806,64 @@ export default function SkinTable({
               })}
             </div>
           )}
-          {inputValue === "" && (
+          {/* The filters button, then the sort button (or, with a search,
+              the clear button). */}
+          <div className="grid-search-actions">
             <button
               type="button"
-              className="grid-sort-button"
-              aria-label={`Sort: ${SORT_LABELS[sort]}`}
-              title="Sort skins"
-              aria-expanded={sortOpen}
-              aria-controls="grid-sort-menu"
-              ref={sortButtonRef}
+              className={
+                "grid-filters-button" + (filtering ? " is-filtering" : "")
+              }
+              aria-label={filtering ? "Filters (some on)" : "Filters"}
+              title="Search filters"
+              aria-expanded={filtersOpen}
+              aria-controls="grid-filters-menu"
+              ref={filtersButtonRef}
               // Leaves focus where it was, like the clear button.
               onPointerDown={(e) => e.preventDefault()}
-              onClick={toggleSort}
+              onClick={toggleFiltersForm}
             >
-              <span>{SORT_LABELS[sort]}</span>
-              <ArrowUpDown size={16} strokeWidth={2.25} aria-hidden />
+              <SlidersHorizontal size={16} strokeWidth={2.25} aria-hidden />
             </button>
-          )}
-          {inputValue !== "" && (
-            <button
-              type="button"
-              className="grid-search-clear"
-              aria-label="Clear search"
-              title="Clear search"
-              // Leaves focus where it was, so a tap doesn't summon the
-              // keyboard on mobile.
-              onPointerDown={(e) => e.preventDefault()}
-              onClick={(e) => {
-                const viaKeyboard = document.activeElement === e.currentTarget;
-                setInputValue("");
-                // The button goes away, so focus would otherwise fall to the
-                // page.
-                if (viaKeyboard) searchInputRef.current?.focus();
-              }}
-            >
-              <X size={16} strokeWidth={2.5} aria-hidden />
-            </button>
-          )}
+            {inputValue === "" && (
+              <button
+                type="button"
+                className="grid-sort-button"
+                aria-label={`Sort: ${SORT_LABELS[sort]}`}
+                title="Sort skins"
+                aria-expanded={sortOpen}
+                aria-controls="grid-sort-menu"
+                ref={sortButtonRef}
+                // Leaves focus where it was, like the clear button.
+                onPointerDown={(e) => e.preventDefault()}
+                onClick={toggleSort}
+              >
+                <span>{SORT_LABELS[sort]}</span>
+                <ArrowUpDown size={16} strokeWidth={2.25} aria-hidden />
+              </button>
+            )}
+            {inputValue !== "" && (
+              <button
+                type="button"
+                className="grid-search-clear"
+                aria-label="Clear search"
+                title="Clear search"
+                // Leaves focus where it was, so a tap doesn't summon the
+                // keyboard on mobile.
+                onPointerDown={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  const viaKeyboard =
+                    document.activeElement === e.currentTarget;
+                  setInputValue("");
+                  // The button goes away, so focus would otherwise fall to
+                  // the page.
+                  if (viaKeyboard) searchInputRef.current?.focus();
+                }}
+              >
+                <X size={16} strokeWidth={2.5} aria-hidden />
+              </button>
+            )}
+          </div>
         </div>
       </FloatingBar>
 

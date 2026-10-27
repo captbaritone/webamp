@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { parseSearch } from "./searchQuery";
 import Grid from "./Grid";
 import { getMuseumPageSkins, getSearchSkins } from "./getMuseumPageSkins";
 import * as Skins from "../../..//data/skins";
@@ -23,7 +24,9 @@ export default async function SkinTable({ searchParams }) {
   const sort = parseMuseumSort(sortParam);
   const seed = sort === "random" ? pickRandomSeed() : null;
   // With a search in the URL, start with its results rather than the museum's
-  // first page (which loads if the search is cleared).
+  // first page (which loads if the search is cleared). Not for one using
+  // has:/filter: syntax, which our SQLite search can't apply: the grid
+  // searches Algolia itself, as when typing.
   const [
     initialSkins,
     initialSearchSkins,
@@ -32,7 +35,7 @@ export default async function SkinTable({ searchParams }) {
     downloadsCount,
   ] = await Promise.all([
     search === "" ? getMuseumPageSkins(0, 50, sort, seed) : [],
-    search === ""
+    search === "" || parseSearch(search).hasSyntax
       ? null
       : getSearchSkins(search).catch((error) => {
           // The grid will run the search itself.

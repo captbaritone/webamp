@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { getMuseumPageSkins, getSkinDetails } from "./getMuseumPageSkins";
 import { GridSkin, SkinDetails, toGridSkin } from "./gridSkin";
 import { pickRandomSeed, type MuseumSort } from "./museumList";
+import { parseSearch } from "./searchQuery";
 import {
   algoliaSearch,
   graphqlSearch,
@@ -204,19 +205,22 @@ export function cacheSearch(query: string, skins: GridSkin[]): void {
   }
 }
 
-// Same backends as the legacy museum search. If Algolia is enabled but
-// failing (e.g. out of quota) fall back to our own SQLite FTS search.
+// Same backends as the legacy museum search, with the same has:/filter:
+// syntax (see searchQuery.ts). If Algolia is enabled but failing (e.g. out
+// of quota) fall back to our own SQLite FTS search, which applies only the
+// NSFW filter and ignores the rest.
 async function runSearch(query: string): Promise<{
   hits: Array<{ objectID: string; fileName: string; nsfw?: any }>;
 }> {
+  const { text, options } = parseSearch(query);
   if (USE_ALGOLIA) {
     try {
-      return await algoliaSearch(query);
+      return await algoliaSearch(text, options);
     } catch (error) {
       console.warn("Algolia search failed, falling back to SQLite", error);
     }
   }
-  return graphqlSearch(query);
+  return graphqlSearch(text, options);
 }
 
 /** A search's results, from the cache if we have them. */

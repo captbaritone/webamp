@@ -45,7 +45,11 @@ import type { MuseumSort } from "./museumList";
 //   as its own, so a list is its query and, for the museum, its `sort`
 //   (ListContext, session_start, grid_skin_click). Positions in a list mean
 //   something different in each order. Adds sort_open and grid_sort.
-export const EVENT_SCHEMA_VERSION = 9;
+// - 10: searches understand the classic museum's has:/filter: syntax again
+//   (e.g. has:ani; before, it was searched for as words), and the search box
+//   has a menu of those filters. Adds search_filters_open and
+//   search_filter_toggle.
+export const EVENT_SCHEMA_VERSION = 10;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -224,6 +228,11 @@ export type UserEvent =
   | { type: "sort_open" }
   // One of them was chosen (even the one already chosen).
   | { type: "grid_sort"; sort: MuseumSort }
+  // The filters button in the search box opened the menu of has: filters.
+  | { type: "search_filters_open" }
+  // One of them was turned on (`on`) or off, adding it to the search or
+  // taking it out.
+  | { type: "search_filter_toggle"; filter: string; on: boolean }
   // A skin in the grid was tapped. Position is its index in the list
   // (0-based); query is the search it was found with, if any.
   | ({
@@ -334,6 +343,8 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<
   "grid_search",
   "sort_open",
   "grid_sort",
+  "search_filters_open",
+  "search_filter_toggle",
   "grid_skin_click",
   "skins_fetch_start",
   "skins_fetch_success",
