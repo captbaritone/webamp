@@ -11,7 +11,8 @@ export default function StaticPage({ children }: StaticPageProps) {
       style={{
         minHeight: "100dvh",
         backgroundColor: "#1a1a1a",
-        paddingBottom: "5rem", // Space for bottom menu bar
+        // Room to scroll the end clear of the floating bar.
+        paddingBottom: "var(--floating-bar-space)",
         boxSizing: "border-box",
       }}
     >

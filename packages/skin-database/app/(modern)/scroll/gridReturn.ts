@@ -11,19 +11,79 @@ import { gridPath } from "./paths";
 import { getListPosition } from "./listPosition";
 import { showScreenshotInsteadOfWebamp } from "./Webamp";
 
-// The page before this one in the tab, and this one, as "grid", "feed" or a
-// pathname. The feed counts as one page, though its URL changes as you scroll.
+// A page, as "grid", "feed" or a pathname. The feed counts as one page,
+// though its URL changes as you scroll.
+function pageOf(pathname: string): string {
+  if (pathname === "/") return "grid";
+  if (pathname.startsWith("/skin/")) return "feed";
+  return pathname;
+}
+
+// The page before this one in the tab, and this one, as far as we've seen.
 let currentPage: string | null = null;
 let previousPage: string | null = null;
+const listeners = new Set<() => void>();
 
-/** Note the page the tab is on (see BottomMenuBar, which is on every page). */
+/** Note the page the tab is on (see layout.tsx, which is on every page). */
 export function notePathname(pathname: string): void {
-  let page = pathname;
-  if (pathname === "/") page = "grid";
-  if (pathname.startsWith("/skin/")) page = "feed";
+  const page = pageOf(pathname);
   if (page === currentPage) return;
   previousPage = currentPage;
   currentPage = page;
+  listeners.forEach((listener) => listener());
+}
+
+// The bits of the Navigation API used to see where Back goes. (TypeScript's
+// DOM types don't have it yet.) Its entries are this tab's history on this
+// site.
+type NavigationApi = EventTarget & {
+  currentEntry: { index: number } | null;
+  entries(): { url: string | null }[];
+};
+
+function navigationApi(): NavigationApi | null {
+  return (window as { navigation?: NavigationApi }).navigation ?? null;
+}
+
+/**
+ * Where Back goes in this tab: the page of the previous history entry, if
+ * it's on this site. Null if Back would leave the site or there's nothing to
+ * go back to, as when a link to this page opened it.
+ */
+export function previousPageInTab(): string | null {
+  const navigation = navigationApi();
+  if (navigation?.currentEntry != null) {
+    const { url } =
+      navigation.entries()[navigation.currentEntry.index - 1] ?? {};
+    return url == null ? null : pageOf(new URL(url).pathname);
+  }
+  // Without the Navigation API, the page we last saw before this one. After
+  // going Back that's the page we came back from, so it's only a guess.
+  return previousPage;
+}
+
+/** Calls `listener` when previousPageInTab() may have changed. */
+export function subscribeToPreviousPage(listener: () => void): () => void {
+  listeners.add(listener);
+  const navigation = navigationApi();
+  // Next updates history from a useInsertionEffect, where updating React state
+  // isn't allowed, and the event fires right away, so wait until after.
+  const onEntryChange = () => queueMicrotask(listener);
+  navigation?.addEventListener("currententrychange", onEntryChange);
+  return () => {
+    listeners.delete(listener);
+    navigation?.removeEventListener("currententrychange", onEntryChange);
+  };
+}
+
+/** Back to the previous page in the tab, animating into the grid if it's that. */
+export function goBack(router: { push(href: string): void }): void {
+  if (previousPageInTab() === "grid") {
+    returnToGrid(router);
+    return;
+  }
+  setNextViewVia("back");
+  history.back();
 }
 
 export function returnToGrid(
@@ -32,7 +92,7 @@ export function returnToGrid(
 ): void {
   setNextViewVia(via);
   showScreenshotInsteadOfWebamp();
-  if (previousPage === "grid") {
+  if (previousPageInTab() === "grid") {
     backWithTransition();
   } else {
     router.push(gridPath(getListPosition()?.query ?? ""));

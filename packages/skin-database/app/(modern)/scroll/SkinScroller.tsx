@@ -79,8 +79,7 @@ function pageInView(container: HTMLElement): HTMLElement | null {
   return nearest;
 }
 
-// Load readmes and like counts for this many skins either side of the one in
-// view.
+// Load readmes for this many skins either side of the one in view.
 const DETAILS_BEHIND = 2;
 const DETAILS_AHEAD = 5;
 
@@ -566,7 +565,7 @@ export default function SkinScroller({
     setShownAfter((n) => n + SHOW_MORE);
   }, [items.length, visiblePos, lastShown, last, listLength]);
 
-  // Readmes and like counts for the skins around the one in view.
+  // Readmes for the skins around the one in view.
   useEffect(() => {
     const md5s = items
       .slice(
@@ -731,7 +730,8 @@ export default function SkinScroller({
       />
       {/*
         Fades out whatever runs off the bottom of the page (usually the readme)
-        into the menu bar. Fixed, so it stays put as you scroll between skins.
+        above the floating bar. Fixed, so it stays put as you scroll between
+        skins.
       */}
       <div className="feed-bottom-fade" aria-hidden />
       <div className="feed-top-shadow" aria-hidden />

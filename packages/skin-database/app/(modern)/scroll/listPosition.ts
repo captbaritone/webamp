@@ -11,7 +11,7 @@ import type { GridSkin } from "./gridSkin";
 // but a link to a skin opened fresh has no list (see followingList).
 //
 // Kept apart from skinList.ts, which loads skins with server actions, so the
-// menu bar and back links (on every page) don't bring those along.
+// back links don't bring those along.
 
 const listeners = new Set<() => void>();
 
@@ -25,7 +25,7 @@ function subscribe(listener: () => void): () => void {
 /**
  * The skin the visitor was last on in a list: the one in view in the feed, or
  * the first one on screen in the grid. The feed opens into this list when
- * it's opened on this skin (from the grid, the menu bar, or Forward), and the
+ * it's opened on this skin (from the grid or Forward), and the
  * grid comes back to it.
  */
 export type ListPosition = { query: string; index: number; skin: GridSkin };

@@ -31,7 +31,15 @@
 //   session's user agent (the session table).
 // - 7: adds menu_open. Before, opening the bottom bar's menu wasn't logged,
 //   only following a link in it (link_click).
-export const EVENT_SCHEMA_VERSION = 7;
+// - 8: no bottom menu bar, so no Grid and Feed buttons: the feed is reached
+//   only from the grid (or a link), and nothing is reached "via" "menu". Its
+//   menu became a "…" button in a bar floating at the bottom of every page,
+//   now with Upload in it, so menu_open counts opening that. Off the grid,
+//   that bar also has a Back button (to the page before, or "Browse skins"
+//   into the grid if there wasn't one; logged "via" "back"), in place of the
+//   feed's back arrow beside each skin's title. And no like button, so no
+//   skin_like.
+export const EVENT_SCHEMA_VERSION = 8;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -43,8 +51,8 @@ export type MuseumView = "grid" | "feed";
 // How the visitor got to a view (other than when the session started on it).
 export type ViewVia =
   | "grid" // tapped a skin in the grid
-  | "menu" // the bottom menu bar
-  | "back" // the feed's back arrow or Escape
+  | "menu" // the bottom menu bar's Grid and Feed buttons (before version 8)
+  | "back" // the Back button (before version 8, the feed's back arrow), or Escape in the feed
   | "history"; // the browser's back/forward buttons, or anything else
 
 // How a skin came into view in the feed. Its first skin came in however the
@@ -169,11 +177,10 @@ export type UserEvent =
   // Webamp's playback state changed (e.g. "PLAYING", "PAUSED", "STOPPED").
   // Music playing explains long dwell without implying interest in the skin.
   | { type: "audio_status"; status: string; skinMd5: string | null }
-  // The feed couldn't load skins' readmes and like counts.
+  // The feed couldn't load skins' readmes (before version 8, and like counts).
   | { type: "details_fetch_failure"; errorMessage: string }
   | { type: "readme_expand"; skinMd5: string }
   | { type: "skin_download"; skinMd5: string }
-  | { type: "skin_like"; skinMd5: string; liked: boolean }
   | { type: "skin_flag_nsfw"; skinMd5: string }
   // Chose to see NSFW skins (from the cover over one in the feed).
   | { type: "nsfw_reveal"; skinMd5: string }
@@ -183,7 +190,8 @@ export type UserEvent =
   | { type: "scroll_hint_shown" }
   // The grid's "Tap a skin" hint was shown.
   | { type: "grid_hint_shown" }
-  // The bottom bar's menu (About, Feedback, GitHub) was opened.
+  // The "…" menu (About, Upload, Feedback, Donate, GitHub) was opened. Before
+  // version 8, the bottom bar's menu, without Upload.
   | { type: "menu_open" }
   // Skins in the grid that were on screen for a moment (GRID_IMPRESSION_MS)
   // once scrolling stopped, as [md5, position, source]. Each skin is reported
@@ -219,7 +227,7 @@ export type UserEvent =
  * grid_open with session_start/view_switch; ViewContext's `position` (depth
  * into a feed session) and `source` with listIndex, query and depth;
  * skin_view_end's `exit` with endedBy; and the fetch events with
- * details_fetch_failure.
+ * details_fetch_failure. Version 8 removed skin_like.
  */
 export type LegacyEvent =
   | {
@@ -263,7 +271,9 @@ export type LegacyEvent =
       layout: "mobile" | "desktop";
       pointer: "coarse" | "fine";
     }
-  | { type: "skin_view"; skinMd5: string };
+  | { type: "skin_view"; skinMd5: string }
+  // The like button, before version 8. It wasn't saved anywhere.
+  | { type: "skin_like"; skinMd5: string; liked: boolean };
 
 // What's sent and stored for each event.
 export type LoggedEvent = UserEvent & {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, ReactNode } from "react";
-import { Heart, Share2, Flag, Download, Check } from "lucide-react";
+import { Share2, Flag, Download, Check } from "lucide-react";
 import { ClientSkin } from "./gridSkin";
 import { useEventLogger } from "./eventLogger";
 import { fetchGraphql } from "./graphql";
@@ -15,7 +15,6 @@ export default function SkinActionIcons({ skin }: Props) {
     // Laid out in scroll.css: a row under the skin on mobile, a column beside
     // it on desktop.
     <div className="skin-action-icons">
-      <LikeButton skin={skin} />
       <ShareButton skin={skin} />
       <FlagButton skin={skin} />
       <DownloadButton skin={skin} />
@@ -48,54 +47,6 @@ function Button({
     >
       {children}
     </button>
-  );
-}
-
-// Compact counts like "2.9k" or "20.6k" keep the label short under the icon.
-// A fixed locale so the server-rendered text matches the client's.
-const LIKE_COUNT_FORMAT = new Intl.NumberFormat("en", {
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
-
-function formatLikeCount(count: number): string {
-  // Intl uses "K"; we prefer lowercase for thousands.
-  return LIKE_COUNT_FORMAT.format(count).replace(/K$/, "k");
-}
-
-type LikeButtonProps = {
-  skin: ClientSkin;
-};
-
-function LikeButton({ skin }: LikeButtonProps) {
-  const logger = useEventLogger();
-  const [isLiked, setIsLiked] = useState(false);
-  // Counting our like (the count can arrive after the skin, see skinList.ts).
-  const likeCount = skin.likeCount + (isLiked ? 1 : 0);
-
-  const handleLike = async () => {
-    const newLikedState = !isLiked;
-    setIsLiked(newLikedState);
-
-    logger.log({
-      type: "skin_like",
-      skinMd5: skin.md5,
-      liked: newLikedState,
-    });
-  };
-
-  return (
-    <Button onClick={handleLike} aria-label={isLiked ? "Unlike" : "Like"}>
-      <Heart
-        size={32}
-        color="white"
-        fill={isLiked ? "white" : "none"}
-        strokeWidth={2}
-      />
-      {likeCount > 0 && (
-        <span className="skin-like-count">{formatLikeCount(likeCount)}</span>
-      )}
-    </Button>
   );
 }
 

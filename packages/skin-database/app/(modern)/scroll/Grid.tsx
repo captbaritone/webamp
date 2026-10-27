@@ -16,7 +16,6 @@ import { FixedSizeGrid as Grid } from "react-window";
 import {
   SCREENSHOT_WIDTH,
   SKIN_RATIO,
-  MOBILE_MAX_WIDTH,
 } from "../../../legacy-client/src/constants";
 import { GridSkin } from "./gridSkin";
 import { MAX_GRID_IMPRESSIONS, type ListSource } from "./eventTypes";
@@ -36,7 +35,8 @@ import { corsScreenshotUrl } from "./skinTint";
 import HintPill, { markHintDone } from "./HintPill";
 import { EyeOff, Pointer, Search, X } from "lucide-react";
 import { rememberSkinNsfw, useShowNsfw } from "./nsfwConsent";
-import { isModifiedClick } from "./BottomMenuBar";
+import { isModifiedClick } from "./MuseumMenu";
+import FloatingBar from "./FloatingBar";
 
 // Remembered once the visitor has tapped a skin (see HintPill).
 const GRID_HINT_KEY = "grid-hint-dismissed";
@@ -314,7 +314,7 @@ export default function SkinTable({
     [columnCount, skins]
   );
 
-  // Coming back to the grid (e.g. with the feed's back arrow) returns to the
+  // Coming back to the grid (e.g. with the feed's Back button) returns to the
   // skin you were on: the one in view in the feed, if you were in the feed
   // showing this list, otherwise where this visit to the grid was scrolled
   // to. The grid is first rendered already scrolled there, so the skin you
@@ -457,6 +457,8 @@ export default function SkinTable({
   // Keyboard shortcuts to jump to the search box: "/" (when not already typing
   // somewhere) and Cmd/Ctrl+K (from anywhere).
   const searchInputRef = useRef<HTMLInputElement>(null);
+  // For the logo, which scrolls back to the top.
+  const gridRef = useRef<Grid>(null);
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       const input = searchInputRef.current;
@@ -521,8 +523,14 @@ export default function SkinTable({
       >
         Tap a skin to try it in Webamp
       </HintPill>
-      <div className="grid-search" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
-        <div style={{ position: "relative" }}>
+      {/* Here, the logo goes back to the start of the museum. */}
+      <FloatingBar
+        onLogoClick={() => {
+          setInputValue("");
+          gridRef.current?.scrollTo({ scrollTop: 0 });
+        }}
+      >
+        <div className="grid-search-field">
           <Search className="grid-search-icon" size={18} aria-hidden />
           <input
             className={
@@ -576,7 +584,7 @@ export default function SkinTable({
             </button>
           )}
         </div>
-      </div>
+      </FloatingBar>
 
       {showSearchResults && searchError && (
         <div className="grid-message grid-message-error">{searchError}</div>
@@ -591,6 +599,7 @@ export default function SkinTable({
       {windowSize != null &&
         (!showSearchResults || (!searchError && skins.length > 0)) && (
           <Grid
+            ref={gridRef}
             itemKey={itemKey}
             itemData={itemData}
             columnCount={columnCount}

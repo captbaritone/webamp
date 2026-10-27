@@ -12,7 +12,7 @@ type ScrollHintPillProps = {
   onTap: () => void;
 };
 
-/** On mobile, a "Swipe up" hint above the bottom menu bar (see HintPill). */
+/** On mobile, a "Swipe up" hint above the floating bar (see HintPill). */
 export function ScrollHintPill({
   hasScrolled,
   onShown,

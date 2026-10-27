@@ -42,16 +42,12 @@ export async function getSkinDetailsFor(
 }
 
 async function getDetails(model: SkinModel): Promise<SkinDetails> {
-  const [readme, tweet] = await Promise.all([
-    model.getReadme(),
-    model.getTweet(),
-  ]);
+  const readme = await model.getReadme();
   const readmeText = readme?.trim() ?? "";
   return {
     readme:
       readmeText.length > README_MAX_LENGTH
         ? `${readmeText.slice(0, README_MAX_LENGTH)}…`
         : readmeText,
-    likeCount: tweet ? tweet.getLikes() : 0,
   };
 }

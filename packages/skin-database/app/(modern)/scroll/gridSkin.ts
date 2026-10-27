@@ -38,7 +38,6 @@ export function toGridSkin(
 // skins around the one in view.
 export type SkinDetails = {
   readme: string;
-  likeCount: number;
 };
 
 // A skin as the feed shows it. Until its details arrive, `readme` is null.
@@ -47,7 +46,6 @@ export type ClientSkin = GridSkin & {
   downloadUrl: string;
   shareUrl: string;
   readme: string | null;
-  likeCount: number;
 };
 
 export function toClientSkin(
@@ -61,6 +59,5 @@ export function toClientSkin(
     downloadUrl: skinUrl,
     shareUrl: `https://skins.webamp.org${skinPath(skin.md5, skin.fileName)}`,
     readme: details?.readme ?? null,
-    likeCount: details?.likeCount ?? 0,
   };
 }

@@ -8,7 +8,6 @@ import {
 import { ClientSkin } from "./gridSkin";
 import SkinActionIcons from "./SkinActionIcons";
 import SkinReadme from "./SkinReadme";
-import BackToGrid from "./BackToGrid";
 import SkinScreenshot from "./SkinScreenshot";
 import { useShowNsfw } from "./nsfwConsent";
 import NsfwCover from "./NsfwCover";
@@ -51,7 +50,6 @@ export default memo(function SkinPage({
     >
       <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
         <div className="skin-title-row">
-          <BackToGrid />
           <h2 className="skin-title" title={skin.fileName}>
             {skin.fileName}
           </h2>

@@ -21,7 +21,7 @@ type ExpandedBox = { left: number; width: number };
 /**
  * The full readme, clipped to the space under the skin. If it
  * doesn't all fit it fades out, and tapping it slides it up over the skin
- * (its bottom resting on the bottom menu bar) to reveal the rest, scrolling if
+ * (its bottom resting on the floating bar) to reveal the rest, scrolling if
  * there's still more.
  */
 export default function SkinReadme({ skin, focused }: Props) {

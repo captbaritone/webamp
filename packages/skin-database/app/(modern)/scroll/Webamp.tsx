@@ -200,7 +200,7 @@ async function createWebamp(
     initialTracks,
     enableHotkeys: true,
     // Only needs to sit above its own screenshot. Anything higher puts it on
-    // top of the bottom menu bar and its popup.
+    // top of the feed's overlays (see the layering note in scroll.css).
     zIndex: 1,
   });
   // Still the default skin's: the initial skin is loading.

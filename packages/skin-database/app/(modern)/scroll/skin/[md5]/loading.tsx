@@ -4,7 +4,6 @@
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { useParams } from "next/navigation";
 import { MOBILE_MAX_WIDTH } from "../../../../../legacy-client/src/constants";
-import BackToGrid from "../../BackToGrid";
 import SkinScreenshot from "../../SkinScreenshot";
 import { getKnownNsfw, useShowNsfw } from "../../nsfwConsent";
 
@@ -26,7 +25,6 @@ export default function Loading() {
       <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
         {/* Same row as SkinPage, so the skin doesn't move when it loads. */}
         <div className="skin-title-row">
-          <BackToGrid />
           <div className="skin-title" aria-hidden>
             &nbsp;
           </div>

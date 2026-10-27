@@ -1,8 +1,10 @@
 "use client";
 
-// @ts-expect-error - unstable_ViewTransition is not yet in @types/react
-import { unstable_ViewTransition as ViewTransition, ReactNode } from "react";
-import BottomMenuBar from "./BottomMenuBar";
+import { ReactNode, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { notePathname } from "./gridReturn";
+import FloatingBar from "./FloatingBar";
+import BackButton from "./BackButton";
 import "./scroll.css";
 
 type LayoutProps = {
@@ -10,6 +12,10 @@ type LayoutProps = {
 };
 
 export default function Layout({ children }: LayoutProps) {
+  const pathname = usePathname();
+  useEffect(() => {
+    notePathname(pathname);
+  }, [pathname]);
   return (
     <div
       style={{
@@ -18,9 +24,12 @@ export default function Layout({ children }: LayoutProps) {
       }}
     >
       {children}
-      <ViewTransition>
-        <BottomMenuBar />
-      </ViewTransition>
+      {/* The grid has its own, with its search box in the middle. */}
+      {pathname !== "/" && (
+        <FloatingBar>
+          <BackButton />
+        </FloatingBar>
+      )}
     </div>
   );
 }
