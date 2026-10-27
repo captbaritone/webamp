@@ -31,7 +31,12 @@ import {
   seedMuseum,
   useMuseum,
 } from "./skinList";
-import { MUSEUM_SORTS, parseMuseumSort, type MuseumSort } from "./museumList";
+import {
+  MUSEUM_SORTS,
+  parseMuseumSort,
+  UNLISTED_SORTS,
+  type MuseumSort,
+} from "./museumList";
 import { getListPosition, setListPosition } from "./listPosition";
 import { corsScreenshotUrl } from "./skinTint";
 import HintPill, { markHintDone } from "./HintPill";
@@ -706,7 +711,9 @@ export default function SkinTable({
               role="group"
               aria-label="Sort skins"
             >
-              {MUSEUM_SORTS.map((s) => {
+              {MUSEUM_SORTS.filter(
+                (s) => !UNLISTED_SORTS.has(s) || s === sort
+              ).map((s) => {
                 const Icon = SORT_ICONS[s];
                 return (
                   <button

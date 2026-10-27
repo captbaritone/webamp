@@ -20,6 +20,11 @@ export const MUSEUM_SORTS: readonly MuseumSort[] = [
   "random",
 ];
 
+// Orders that work (by URL, e.g. ?sort=downloads) but aren't in the sort
+// menu, except while they're the one shown. Downloads stays out until it has
+// enough data behind it to be good.
+export const UNLISTED_SORTS: ReadonlySet<MuseumSort> = new Set(["downloads"]);
+
 export function parseMuseumSort(value: unknown): MuseumSort {
   return value === "downloads" || value === "newest" || value === "random"
     ? value
