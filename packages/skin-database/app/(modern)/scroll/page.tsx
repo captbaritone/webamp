@@ -4,7 +4,11 @@ import Grid from "./Grid";
 import { getMuseumPageSkins, getSearchSkins } from "./getMuseumPageSkins";
 import * as Skins from "../../..//data/skins";
 import { museumMetadata } from "../../museumMetadata";
-import { museumListLength } from "./museumList";
+import {
+  museumListLength,
+  parseMuseumSort,
+  pickRandomSeed,
+} from "./museumList";
 
 // The museum's home page (served at / by middleware.ts).
 export async function generateMetadata({ searchParams }): Promise<Metadata> {
@@ -13,28 +17,38 @@ export async function generateMetadata({ searchParams }): Promise<Metadata> {
 }
 
 export default async function SkinTable({ searchParams }) {
-  const { query } = await searchParams;
+  const { query, sort: sortParam } = await searchParams;
   const initialQuery = typeof query === "string" ? query : "";
   const search = initialQuery.trim();
+  const sort = parseMuseumSort(sortParam);
+  const seed = sort === "random" ? pickRandomSeed() : null;
   // With a search in the URL, start with its results rather than the museum's
   // first page (which loads if the search is cleared).
-  const [initialSkins, initialSearchSkins, skinCount] = await Promise.all([
-    search === "" ? getMuseumPageSkins(0, 50) : [],
-    search === ""
-      ? null
-      : getSearchSkins(search).catch((error) => {
-          // The grid will run the search itself.
-          console.error("Initial search failed", error);
-          return null;
-        }),
-    Skins.getMuseumPageCount(),
-  ]);
+  const [initialSkins, initialSearchSkins, skinCount, sortedCount] =
+    await Promise.all([
+      search === "" ? getMuseumPageSkins(0, 50, sort, seed) : [],
+      search === ""
+        ? null
+        : getSearchSkins(search).catch((error) => {
+            // The grid will run the search itself.
+            console.error("Initial search failed", error);
+            return null;
+          }),
+      Skins.getMuseumPageCount(),
+      Skins.getSortedMuseumCount(),
+    ]);
   return (
     <Grid
       initialSkins={initialSkins}
       initialSearchSkins={initialSearchSkins}
-      initialTotal={museumListLength(skinCount)}
+      totals={{
+        top: museumListLength(skinCount),
+        newest: sortedCount,
+        random: sortedCount,
+      }}
       initialQuery={initialQuery}
+      initialSort={sort}
+      initialSeed={seed}
     />
   );
 }

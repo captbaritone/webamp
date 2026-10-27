@@ -8,6 +8,7 @@ import {
   type ViewVia,
 } from "./eventTypes";
 import { DESKTOP_MEDIA_QUERY } from "./breakpoints";
+import type { MuseumSort } from "./museumList";
 
 const ENDPOINT = "/scroll/events";
 // Send a batch once this many events are queued, or this long after the first
@@ -249,6 +250,7 @@ export function enterView(
   view: MuseumView,
   context: {
     query: string | null;
+    sort: MuseumSort | null;
     skinMd5: string | null;
     listIndex: number | null;
   }
@@ -262,6 +264,7 @@ export function enterView(
       type: "session_start",
       view,
       query: context.query,
+      sort: context.sort,
       skinMd5: context.skinMd5,
       ...getVisitContext(),
     });

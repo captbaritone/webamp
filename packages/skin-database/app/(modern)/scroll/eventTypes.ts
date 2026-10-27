@@ -3,6 +3,8 @@
 // /scroll/events endpoint (which validates and stores them) and analysis
 // tasks. Nothing here imports server code, so client components can use it.
 
+import type { MuseumSort } from "./museumList";
+
 // Bump when what an event means or contains changes, so analysis never mixes
 // data collected under different rules. Stored on every event as `v`.
 //
@@ -39,7 +41,11 @@
 //   into the grid if there wasn't one; logged "via" "back"), in place of the
 //   feed's back arrow beside each skin's title. And no like button, so no
 //   skin_like.
-export const EVENT_SCHEMA_VERSION = 8;
+// - 9: the museum can be browsed newest first or in a random order, as well
+//   as its own, so a list is its query and, for the museum, its `sort`
+//   (ListContext, session_start, grid_skin_click). Positions in a list mean
+//   something different in each order. Adds sort_open and grid_sort.
+export const EVENT_SCHEMA_VERSION = 9;
 
 // The most skins in one grid_impressions event (more are split across
 // several), keeping it within the endpoint's size limit.
@@ -77,9 +83,12 @@ export type WebampTarget =
   | "drag" // a window's draggable area (title bar, background)
   | "control"; // anything else: buttons, the playlist, the equalizer
 
-// A list of skins: the museum (`query` null) or a search.
+// A list of skins: the museum (`query` null) in one of its orders, or a
+// search (`sort` null: searches are best match first). Before version 9 the
+// museum was only in its own order ("top"), and there's no `sort`.
 type ListContext = {
   query: string | null;
+  sort: MuseumSort | null;
 };
 
 // Why a skin is where it is in a list: it's in its place in the museum's
@@ -111,6 +120,7 @@ export type UserEvent =
       // The view the session started on, and what it showed.
       view: MuseumView;
       query: string | null;
+      sort: MuseumSort | null;
       // For the feed: the skin it opened on.
       skinMd5: string | null;
       // Host of an external referrer (e.g. "twitter.com"), if any.
@@ -209,15 +219,19 @@ export type UserEvent =
   | { type: "link_click"; href: string; external: boolean; newTab: boolean }
   // A search's results arrived.
   | { type: "grid_search"; query: string; resultCount: number }
+  // The sort button in the grid's search box opened the menu of the
+  // museum's orders.
+  | { type: "sort_open" }
+  // One of them was chosen (even the one already chosen).
+  | { type: "grid_sort"; sort: MuseumSort }
   // A skin in the grid was tapped. Position is its index in the list
   // (0-based); query is the search it was found with, if any.
-  | {
+  | ({
       type: "grid_skin_click";
       skinMd5: string;
       position: number;
       source: ListSource;
-      query: string | null;
-    };
+    } & ListContext);
 
 /**
  * Events (and shapes of events) only in earlier versions' data. Version 4
@@ -318,6 +332,8 @@ export const USER_EVENT_TYPES: ReadonlySet<string> = new Set<
   "grid_hint_shown",
   "menu_open",
   "grid_search",
+  "sort_open",
+  "grid_sort",
   "grid_skin_click",
   "skins_fetch_start",
   "skins_fetch_success",

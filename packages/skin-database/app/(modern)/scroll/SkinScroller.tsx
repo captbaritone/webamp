@@ -122,13 +122,15 @@ export default function SkinScroller({
 
   // Which list this visit to the feed shows, and where the skin it opened on
   // is in it (null: shown first, followed by the list from the top).
-  const [{ query, index: anchor }] = useState(() => {
+  const [{ query, sort, index: anchor }] = useState(() => {
     seedDetails(linkedSkin.md5, linkedDetails);
     return typeof window === "undefined"
-      ? { query: "", index: null }
+      ? { query: "", sort: "top" as const, index: null }
       : followingList(linkedSkin.md5);
   });
-  const museum = useMuseum();
+  // How events name the list: searches aren't sorted.
+  const listSort = query === "" ? sort : null;
+  const museum = useMuseum(sort);
   const search = useSearch(query);
   const list = query === "" ? museum.skins : search;
   // How long the list is, once known.
@@ -147,8 +149,8 @@ export default function SkinScroller({
   const first = anchor == null ? 0 : Math.max(0, anchor - shownBefore);
   const last = (anchor ?? -1) + shownAfter;
   useEffect(() => {
-    if (query === "") loadMuseumRange(first, last);
-  }, [query, first, last]);
+    if (query === "") loadMuseumRange(sort, first, last);
+  }, [query, sort, first, last]);
 
   const items = useMemo(() => {
     // The list's copy of the skin opened on, once loaded, says whether it's
@@ -306,6 +308,7 @@ export default function SkinScroller({
       skinMd5: view.skinMd5,
       source: view.source,
       query: query || null,
+      sort: listSort,
       listIndex: view.listIndex,
       depth: view.depth,
       via,
@@ -324,6 +327,7 @@ export default function SkinScroller({
       skinMd5: view.skinMd5,
       source: view.source,
       query: query || null,
+      sort: listSort,
       listIndex: view.listIndex,
       depth: view.depth,
       durationMs: Math.round(now - view.startedAt),
@@ -592,6 +596,7 @@ export default function SkinScroller({
     if (arrivedViaRef.current == null) {
       arrivedViaRef.current = enterView("feed", {
         query: query || null,
+        sort: listSort,
         skinMd5: linkedSkin.md5,
         listIndex: anchor,
       });
@@ -644,7 +649,12 @@ export default function SkinScroller({
     setFeedSkin(visibleMd5);
     const item = visibleRef.current;
     if (item.listIndex != null) {
-      setListPosition({ query, index: item.listIndex, skin: item.skin });
+      setListPosition({
+        query,
+        sort,
+        index: item.listIndex,
+        skin: item.skin,
+      });
     }
 
     if (openViewRef.current?.skinMd5 !== visibleMd5) {

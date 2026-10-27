@@ -40,6 +40,8 @@ export type View = {
   source: string;
   listIndex: number | null;
   query: string | null;
+  // The museum's order (null for a search). Before version 9, "top".
+  sort: string | null;
   depth: number;
   // Into this visit to the feed (0 for the skin it opened on).
   visitDepth: number;
@@ -105,6 +107,8 @@ export type Impression = {
   position: number;
   source: string;
   query: string | null;
+  // The museum's order (null for a search). Before version 9, "top".
+  sort: string | null;
   clicked: boolean;
 };
 
@@ -131,6 +135,13 @@ const ACTION_FIELDS: Record<string, keyof View> = {
   readme_expand: "readmeExpanded",
   nsfw_reveal: "nsfwRevealed",
 };
+
+// The order of the list an event is about: for the museum, its `sort` (from
+// version 9; before, there was only its own order), and null for a search.
+function listSort(event: StoredEvent): string | null {
+  if (event.query != null) return null;
+  return event.sort ?? "top";
+}
 
 export function analyze(stored: StoredSession[]): Analysis {
   const analysis: Analysis = {
@@ -205,6 +216,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
           source: event.source ?? (event.listIndex == null ? "link" : "list"),
           listIndex: event.listIndex ?? null,
           query: event.query ?? null,
+          sort: listSort(event),
           depth: event.depth,
           visitDepth: visitDepth++,
           activeMs: null,
@@ -280,7 +292,7 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
         break;
       case "grid_impressions":
         for (const [skinMd5, position, source] of event.skins ?? []) {
-          const key = `${event.query}\n${skinMd5}`;
+          const key = `${event.query}\n${listSort(event)}\n${skinMd5}`;
           if (impressions.has(key)) continue;
           impressions.set(key, {
             sessionId: session.id,
@@ -288,13 +300,16 @@ function analyzeSession(session: StoredSession, analysis: Analysis): void {
             position,
             source: source ?? "list",
             query: event.query ?? null,
+            sort: listSort(event),
             clicked: false,
           });
         }
         break;
       case "grid_skin_click": {
         gridClicks++;
-        const impression = impressions.get(`${event.query}\n${event.skinMd5}`);
+        const impression = impressions.get(
+          `${event.query}\n${listSort(event)}\n${event.skinMd5}`
+        );
         if (impression != null) impression.clicked = true;
         break;
       }

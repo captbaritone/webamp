@@ -1,3 +1,5 @@
+import type { MuseumSort } from "./museumList";
+
 // Public URLs for the museum's pages. The new UI's routes live under /scroll,
 // and middleware.ts maps these onto them.
 
@@ -7,7 +9,9 @@ export function skinPath(md5: string, fileName: string): string {
   return `/skin/${md5}/${encodeURIComponent(fileName)}`;
 }
 
-// The grid, showing the museum ("") or a search.
-export function gridPath(query: string): string {
-  return query === "" ? "/" : `/?${new URLSearchParams({ query })}`;
+// The grid, showing a search, or the museum ("") in this order. (Searches
+// aren't sorted.)
+export function gridPath(query: string, sort: MuseumSort = "top"): string {
+  if (query !== "") return `/?${new URLSearchParams({ query })}`;
+  return sort === "top" ? "/" : `/?${new URLSearchParams({ sort })}`;
 }

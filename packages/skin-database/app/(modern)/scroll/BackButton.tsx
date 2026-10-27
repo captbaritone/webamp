@@ -43,7 +43,7 @@ export default function BackButton() {
 
   return (
     <Link
-      href={gridPath(position?.query ?? "")}
+      href={gridPath(position?.query ?? "", position?.sort)}
       className="floating-bar-back"
       onClick={(e) => {
         if (isModifiedClick(e)) return;

@@ -105,7 +105,9 @@ function rankByGridRate(
       .map((v) => key(v.sessionId, v.skinMd5))
   );
   const impressions = analysis.impressions
-    .filter((i) => i.query == null)
+    // Positions in the museum's own order only: in the others (newest
+    // first, random) a position says nothing about a skin's rank.
+    .filter((i) => i.query == null && i.sort === "top")
     .map((i) => ({ ...i, hit: outcome(i, downloaded) }));
   if (impressions.length === 0) return [];
 

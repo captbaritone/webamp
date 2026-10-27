@@ -547,6 +547,82 @@ button {
   outline-offset: 2px;
 }
 
+/*
+ * The sort button, in place of the clear button while the search box is
+ * empty: the order's name, and an icon. It opens a menu like the "…" menu.
+ */
+/* Room for each order's name (measured, plus a gap). */
+.grid-search-input.has-sort.sort-top {
+  padding-right: 5.25rem;
+}
+
+.grid-search-input.has-sort.sort-newest {
+  padding-right: 6.75rem;
+}
+
+.grid-search-input.has-sort.sort-random {
+  padding-right: 7.25rem;
+}
+
+/* Inset the same 0.25rem from the box's top, bottom and end, so its round
+   end follows the box's. */
+.grid-sort-button {
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: calc(100% - 0.5rem);
+  padding: 0 0.625rem 0 0.75rem;
+  border: none;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.grid-sort-button:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+.grid-sort-button[aria-expanded="true"] {
+  background-color: #f2f2f2;
+  color: #111;
+}
+
+.grid-sort-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* The sort menu's items are buttons, not links like the "…" menu's. */
+.grid-sort-item {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.grid-sort-item[aria-pressed="true"] {
+  color: #fff;
+}
+
+.grid-sort-check {
+  margin-left: auto;
+}
+
+/* The sort menu takes the place of the grid's "Tap a skin" hint. */
+.sort-open .hint-pill-grid {
+  display: none;
+}
+
 /* In place of the grid: a failed search, or one with no results. */
 .grid-message {
   display: flex;

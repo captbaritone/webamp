@@ -3,12 +3,18 @@
 import {
   getMuseumPage,
   getRandomMuseumPage,
+  getSortedMuseumPage,
   type MuseumPage,
 } from "../../../data/skins";
 import UserContext from "../../../data/UserContext";
 import { search_classic_skins } from "../../../api/graphql/resolvers/SkinResolver";
 import { GridSkin, SkinDetails, toGridSkin } from "./gridSkin";
-import { isRandomPlace, museumPosition } from "./museumList";
+import {
+  isRandomPlace,
+  MAX_RANDOM_SEED,
+  museumPosition,
+  type MuseumSort,
+} from "./museumList";
 import { getLinkedSkin, getSkinDetailsFor, isLinkableSkin } from "./feedSkins";
 
 const MAX_PAGE_SIZE = 100;
@@ -17,22 +23,37 @@ const MAX_PAGE_SIZE = 100;
 const EXTRA_RANDOM_SKINS = 5;
 
 /**
- * Places `offset` to `offset + limit` of the museum list: the museum's skins,
- * with random ones in the places for them (see museumList.ts). Picked anew
- * for each request; the client keeps each page it gets for the visit.
+ * Places `offset` to `offset + limit` of the museum list in this order (see
+ * museumList.ts). In its own order ("top"), the museum's skins with random
+ * ones in the places for them, picked anew for each request; the client
+ * keeps each page it gets for the visit. A random order is picked by `seed`.
  */
 export async function getMuseumPageSkins(
   offset: number,
-  limit: number
+  limit: number,
+  sort: MuseumSort = "top",
+  seed: number | null = null
 ): Promise<GridSkin[]> {
   if (
     !Number.isInteger(offset) ||
     offset < 0 ||
     !Number.isInteger(limit) ||
     limit < 1 ||
-    limit > MAX_PAGE_SIZE
+    limit > MAX_PAGE_SIZE ||
+    !(sort === "top" || sort === "newest" || sort === "random") ||
+    (sort === "random" &&
+      !(Number.isInteger(seed) && seed! >= 1 && seed! <= MAX_RANDOM_SEED))
   ) {
     throw new Error("Invalid request");
+  }
+  if (sort !== "top") {
+    const skins = await getSortedMuseumPage({
+      sort,
+      seed: seed ?? 1,
+      offset,
+      first: limit,
+    });
+    return skins.map((skin) => toGridSkin(skin.md5, skin.fileName, skin.nsfw));
   }
   const places = Array.from({ length: limit }, (_, i) => offset + i);
   const museumPlaces = places.filter((place) => !isRandomPlace(place));

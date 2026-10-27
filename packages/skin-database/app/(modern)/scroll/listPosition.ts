@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import type { GridSkin } from "./gridSkin";
+import type { MuseumSort } from "./museumList";
 
 // Which list of skins (see skinList.ts) the visitor is in, and where. It lives
 // here for the visit (this tab, until it's reloaded), not in URLs: the feed's
@@ -28,7 +29,13 @@ function subscribe(listener: () => void): () => void {
  * it's opened on this skin (from the grid or Forward), and the
  * grid comes back to it.
  */
-export type ListPosition = { query: string; index: number; skin: GridSkin };
+export type ListPosition = {
+  query: string;
+  // The museum's order, when `query` is "" (otherwise "top").
+  sort: MuseumSort;
+  index: number;
+  skin: GridSkin;
+};
 
 let position: ListPosition | null = null;
 
@@ -36,6 +43,7 @@ export function setListPosition(next: ListPosition): void {
   if (
     position != null &&
     position.query === next.query &&
+    position.sort === next.sort &&
     position.index === next.index &&
     position.skin.md5 === next.skin.md5
   ) {
@@ -66,10 +74,15 @@ export function useListPosition(): ListPosition | null {
  */
 export function followingList(md5: string): {
   query: string;
+  sort: MuseumSort;
   index: number | null;
 } {
   if (position != null && position.skin.md5 === md5) {
-    return { query: position.query, index: position.index };
+    return {
+      query: position.query,
+      sort: position.sort,
+      index: position.index,
+    };
   }
-  return { query: "", index: null };
+  return { query: "", sort: "top", index: null };
 }

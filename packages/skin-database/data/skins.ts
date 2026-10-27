@@ -797,6 +797,73 @@ LIMIT ? OFFSET ?`,
   });
 }
 
+// For the museum's random order: a prime above every skin's id, so that
+// multiplying ids by a seed below it, mod it, shuffles them (and the product
+// fits in SQLite's 64-bit integers).
+export const RANDOM_ORDER_PRIME = 2147483647;
+
+/**
+ * The museum's skins other than NSFW ones, newest first (by when they were
+ * added: skins.id), or in a random order picked by `seed` (an integer from 1
+ * to RANDOM_ORDER_PRIME - 1; the same seed, the same order). Each order's
+ * whole list is sorted for a page, which takes ~100ms over the museum.
+ */
+export async function getSortedMuseumPage({
+  sort,
+  seed,
+  offset,
+  first,
+}: {
+  sort: "newest" | "random";
+  seed: number;
+  offset: number;
+  first: number;
+}): Promise<MuseumPage> {
+  const order =
+    sort === "newest"
+      ? "skins.id DESC"
+      : `(skins.id * ${Math.trunc(seed)}) % ${RANDOM_ORDER_PRIME}`;
+  const skins = await knex.raw(
+    `
+SELECT
+  skins.md5,
+  (SELECT file_path from files WHERE files.skin_md5 = skins.md5 LIMIT 1) as file_path
+FROM
+  museum_sort_order
+INNER JOIN skins ON skins.md5 = museum_sort_order.skin_md5
+WHERE
+  skins.md5 NOT IN (SELECT skin_md5 FROM skin_reviews WHERE review = 'NSFW')
+ORDER BY ${order}
+LIMIT ? OFFSET ?`,
+    [first, offset]
+  );
+  return skins.map(({ md5, file_path }) => ({
+    fileName: path.basename(file_path),
+    md5,
+    nsfw: false,
+  }));
+}
+
+// How many skins getSortedMuseumPage's orders have. Changes only as skins are
+// added or reviewed, so it's kept for a minute rather than counted per page.
+let sortedMuseumCount: { count: number; at: number } | null = null;
+
+export async function getSortedMuseumCount(): Promise<number> {
+  if (sortedMuseumCount != null && Date.now() - sortedMuseumCount.at < 60_000) {
+    return sortedMuseumCount.count;
+  }
+  const rows = await knex.raw(
+    `
+SELECT COUNT(*) as count
+FROM museum_sort_order
+INNER JOIN skins ON skins.md5 = museum_sort_order.skin_md5
+WHERE skins.md5 NOT IN (SELECT skin_md5 FROM skin_reviews WHERE review = 'NSFW')`
+  );
+  const count = Number(rows[0]?.count ?? 0);
+  sortedMuseumCount = { count, at: Date.now() };
+  return count;
+}
+
 /**
  * Random skins from the museum (any of them, however they rank), excluding
  * NSFW ones. Rather than sorting the museum with ORDER BY random(), picks

@@ -95,7 +95,8 @@ export function returnToGrid(
   if (previousPageInTab() === "grid") {
     backWithTransition();
   } else {
-    router.push(gridPath(getListPosition()?.query ?? ""));
+    const position = getListPosition();
+    router.push(gridPath(position?.query ?? "", position?.sort));
   }
 }
 

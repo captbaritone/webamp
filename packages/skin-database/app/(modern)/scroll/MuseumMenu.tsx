@@ -29,13 +29,15 @@ export default function MuseumMenu() {
   };
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Close the menu on a click outside it, or on Escape.
+  // Close the menu on a press outside it, or on Escape. A pointerdown, not a
+  // mousedown: buttons that keep focus where it is (the search box's clear
+  // and sort buttons) cancel their pointerdown, and with it the mousedown.
   useEffect(() => {
     if (!isMenuOpen) return;
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: PointerEvent) {
       const target = event.target as Element;
       // Let the toggle button handle its own clicks. Otherwise this closes the
-      // menu on mousedown and the button's click immediately reopens it.
+      // menu on pointerdown and the button's click immediately reopens it.
       if (target.closest("[data-menu-toggle]")) {
         return;
       }
@@ -48,10 +50,10 @@ export default function MuseumMenu() {
       setIsMenuOpen(false);
       toggleRef.current?.focus();
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMenuOpen]);
