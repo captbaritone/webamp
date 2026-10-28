@@ -14,6 +14,7 @@ export interface MilkdropState {
   // TODO: This could probably be simplified to just a date and we could assume
   // the song title is the message.
   message: MilkdropMessage | null;
+  reduceFlashing: boolean;
 }
 
 const defaultMilkdropState: MilkdropState = {
@@ -27,6 +28,7 @@ const defaultMilkdropState: MilkdropState = {
   randomize: true,
   cycling: true,
   message: null,
+  reduceFlashing: true,
 };
 
 export const milkdrop = (
@@ -84,6 +86,8 @@ export const milkdrop = (
       return { ...state, randomize: !state.randomize };
     case "TOGGLE_PRESET_CYCLING":
       return { ...state, cycling: !state.cycling };
+    case "TOGGLE_REDUCE_FLASHING":
+      return { ...state, reduceFlashing: !state.reduceFlashing };
     case "SCHEDULE_MILKDROP_MESSAGE":
       return {
         ...state,

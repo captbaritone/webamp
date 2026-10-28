@@ -533,6 +533,7 @@ export type Action =
       type: "TOGGLE_RANDOMIZE_PRESETS";
     }
   | { type: "TOGGLE_PRESET_CYCLING" }
+  | { type: "TOGGLE_REDUCE_FLASHING" }
   | {
       type: "RESOLVE_PRESET_AT_INDEX";
       index: number;
