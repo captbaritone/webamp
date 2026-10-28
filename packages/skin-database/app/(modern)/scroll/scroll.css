@@ -885,6 +885,8 @@ button {
   );
   pointer-events: none;
   z-index: 500;
+  /* With the backdrop, like .feed-bottom-fade. */
+  animation: feed-backdrop-in 0.8s ease-out both;
 }
 
 /*
@@ -903,6 +905,9 @@ button {
   background: linear-gradient(to bottom, transparent, var(--feed-edge) 2.5rem);
   pointer-events: none;
   z-index: 500;
+  /* Darkens with the backdrop it blends into, rather than appearing as a
+     dark band over the page's plain background while the backdrop fades in. */
+  animation: feed-backdrop-in 0.8s ease-out both;
 }
 
 /*
