@@ -319,7 +319,13 @@ button {
   left: 50%;
   transform: translateX(-50%);
   box-sizing: border-box;
+  /*
+   * Sized by the window's width alone. (Sizing it like the feed's column,
+   * from the window's height, crushed it in short windows.) The cap is about
+   * that column's width in a typical desktop window.
+   */
   width: 100%;
+  max-width: 34rem;
   padding: 0 1rem;
   z-index: 998;
   display: flex;

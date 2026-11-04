@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { ReactNode } from "react";
-import { MOBILE_MAX_WIDTH } from "../../../legacy-client/src/constants";
 import MuseumMenu, { isModifiedClick } from "./MuseumMenu";
 
 type Props = {
@@ -18,7 +17,7 @@ type Props = {
 // --floating-bar-space.
 export default function FloatingBar({ onLogoClick, children }: Props) {
   return (
-    <div className="floating-bar" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
+    <div className="floating-bar">
       <Link
         href="/"
         className="floating-bar-logo"
