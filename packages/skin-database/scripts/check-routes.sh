@@ -31,7 +31,7 @@ describe() {
   location=$(grep -i '^location:' <<<"$headers" | tr -d '\r' | awk '{print $2}')
   if [[ "$status" == 30* ]]; then
     echo "$status ${location#"$BASE"}"
-  elif [[ "$status" == 200 ]] && grep -q 'data-hamburger-toggle' "$body"; then
+  elif [[ "$status" == 200 ]] && grep -q 'class="floating-bar"' "$body"; then
     echo "new"
   elif [[ "$status" == 200 ]] && grep -qi '<html' "$body"; then
     echo "classic"
