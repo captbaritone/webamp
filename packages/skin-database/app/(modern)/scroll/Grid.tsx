@@ -171,16 +171,37 @@ const SORT_ICONS: Record<MuseumSort, typeof Star> = {
 // the window, so it isn't rendered on the server (or the first client render,
 // which has to match it). Navigating to the grid renders it straight away, so
 // a view transition into it sees its tiles.
-type WindowSize = { width: number; height: number };
+//
+// With the width a scrollbar takes from the grid: none where scrollbars
+// overlay the content (macOS, phones), but on Windows, say, about 17px. Its
+// columns fit in what's left.
+type WindowSize = { width: number; height: number; scrollbarWidth: number };
 let windowSize: WindowSize | null = null;
 
 function getWindowSize(): WindowSize {
   const width = document.documentElement.clientWidth;
   const height = document.documentElement.clientHeight;
   if (windowSize?.width !== width || windowSize.height !== height) {
-    windowSize = { width, height };
+    // Measured again with the size, as zooming changes both.
+    windowSize = { width, height, scrollbarWidth: measureScrollbarWidth() };
   }
   return windowSize;
+}
+
+// The width of a vertical scrollbar, like the grid's. From rects rather than
+// clientWidth, which is rounded: zoomed, a scrollbar can be a fraction of a
+// pixel wide.
+function measureScrollbarWidth(): number {
+  const outer = document.createElement("div");
+  outer.style.cssText =
+    "position: absolute; top: -9999px; width: 100px; height: 100px; overflow-y: scroll";
+  const inner = document.createElement("div");
+  outer.appendChild(inner);
+  document.body.appendChild(outer);
+  const scrollbarWidth =
+    outer.getBoundingClientRect().width - inner.getBoundingClientRect().width;
+  outer.remove();
+  return scrollbarWidth;
 }
 
 function subscribeToResize(onChange: () => void): () => void {
@@ -203,6 +224,8 @@ export default function SkinTable({
   const windowSize = useMountedWindowSize();
   const windowWidth = windowSize?.width ?? 0;
   const windowHeight = windowSize?.height ?? 0;
+  // What the columns have to fit in: the grid, less its scrollbar.
+  const gridContentWidth = windowWidth - (windowSize?.scrollbarWidth ?? 0);
 
   const logger = useEventLogger();
 
@@ -341,9 +364,9 @@ export default function SkinTable({
 
   const columnCount = Math.max(
     1,
-    Math.round(windowWidth / (SCREENSHOT_WIDTH * 0.9))
+    Math.round(gridContentWidth / (SCREENSHOT_WIDTH * 0.9))
   );
-  const columnWidth = windowWidth / columnCount;
+  const columnWidth = gridContentWidth / columnCount;
   const rowHeight = columnWidth * SKIN_RATIO;
 
   // The rows the grid last rendered (including overscan).
@@ -886,7 +909,9 @@ export default function SkinTable({
             onScroll={onScroll}
             initialScrollTop={initialScrollTop}
             onItemsRendered={onItemsRendered}
-            style={{ overflowY: "scroll" }}
+            // The columns fill the width exactly, so it never scrolls
+            // sideways (even by a rounding error).
+            style={{ overflowY: "scroll", overflowX: "hidden" }}
           >
             {Cell}
           </Grid>
