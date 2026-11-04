@@ -191,3 +191,7 @@ export function togglePresetCycling(): Action {
 export function scheduleMilkdropMessage(message: string): Action {
   return { type: "SCHEDULE_MILKDROP_MESSAGE", message };
 }
+
+export function toggleReduceFlashing(): Action {
+  return { type: "TOGGLE_REDUCE_FLASHING" };
+}
