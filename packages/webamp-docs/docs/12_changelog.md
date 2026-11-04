@@ -22,6 +22,7 @@ If you want access to the changes in this section before they are officially rel
 - Fix TypeScript types under `moduleResolution: "node16"` or `"nodenext"`, where the default export of each entrypoint was typed as a namespace rather than the `Webamp` class.
 - Fix skins with a `region.txt` (custom window shapes) being cut off in Firefox when Webamp is scaled with CSS `zoom`: the window shape didn't scale with the window, so only part of the main and equalizer windows showed.
 - Fix a memory leak when changing skins: each skin loaded into a Webamp instance (for example with [`webamp.setSkinFromUrl(url)`](./06_API/03_instance-methods.md#setskinfromurlurl-string-void)) kept a few small objects alive until the instance was disposed, so a long-lived instance that changes skins many times grew without limit. Unsubscribing from [`webamp.onTrackDidChange(cb)`](./06_API/03_instance-methods.md#ontrackdidchangecb-trackinfo-loadedurltrack--null--void---void) had the same problem.
+- Fix Webamp making the page about 18px taller than its content. The element Webamp adds to the end of `<body>` to hold skin window shapes took up a line of height, so a page that otherwise exactly fit the viewport could scroll.
 
 ## 2.3.1
 

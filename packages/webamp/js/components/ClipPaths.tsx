@@ -28,8 +28,10 @@ export default function ClipPaths({ children }: Props) {
     return () => paths.remove();
   }, [paths]);
 
+  // Block, not inline: an inline svg sits in a line box, which makes the div
+  // a line tall and the page that much taller than the viewport.
   return createPortal(
-    <svg height={0} width={0}>
+    <svg height={0} width={0} style={{ display: "block" }}>
       <defs>
         {Object.entries(children).map(([id, { polygons, width, height }]) => (
           <clipPath
