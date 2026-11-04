@@ -1,6 +1,6 @@
 import { knex } from "../db";
-import { analyze, botReasons, type Analysis } from "../app/dev/events/analyze";
-import { forEachSessionBatch } from "../app/dev/events/loadEvents";
+import { analyze, botReasons, type Analysis } from "../events/analyze";
+import { forEachSessionBatch } from "../events/loadEvents";
 
 // The museum's "Downloads" order: skins by how often seeing them in the
 // museum grid led to a download, from people's sessions in the whole event

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Copies production's event log (the new museum UI's user_log_events, and its
 # sessions, with their user agents) into events.sqlite3 here (git-ignored,
-# like the other databases), for the dev dashboard at /dev/events. Reads
-# production without changing it.
+# like the other databases), for looking into the data locally
+# (events/loadEvents.ts reads it as the "pulled" source). Reads production
+# without changing it.
 #
 #   bash scripts/pull-events.sh
 set -euo pipefail

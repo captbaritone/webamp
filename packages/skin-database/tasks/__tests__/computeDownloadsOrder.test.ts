@@ -1,4 +1,4 @@
-import { analyze, type StoredEvent } from "../../app/dev/events/analyze";
+import { analyze, type StoredEvent } from "../../events/analyze";
 import {
   addToGridTally,
   newGridTally,

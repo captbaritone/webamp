@@ -1,12 +1,13 @@
 import fs from "fs";
 import path from "path";
 import Knex from "knex";
-import { knex as appKnex } from "../../../db";
+import { knex as appKnex } from "../db";
 import type { StoredEvent, StoredSession } from "./analyze";
 
-// Where the dashboard reads events from: the dev server's own database, or a
-// copy of production's event log made by scripts/pull-events.sh.
-export const PULLED_EVENTS_FILE = "events.sqlite3";
+// Reading the museum's event log: from this checkout's own database, or from
+// a copy of production's log made by scripts/pull-events.sh (for looking
+// into the data locally).
+const PULLED_EVENTS_FILE = "events.sqlite3";
 
 export type EventSource = "pulled" | "local";
 
@@ -15,7 +16,7 @@ function pulledPath(): string {
 }
 
 /** When the production copy was pulled, if there is one. */
-export function pulledAt(): Date | null {
+function pulledAt(): Date | null {
   try {
     return fs.statSync(pulledPath()).mtime;
   } catch {
@@ -46,31 +47,10 @@ function database(source: EventSource): ReturnType<typeof Knex> {
 
 type EventRow = { session_id: string; timestamp: number; metadata: string };
 
-/** Each session's events, from `minVersion` on, received since `since`. */
-export async function loadSessions(
-  source: EventSource,
-  { minVersion, since }: { minVersion: number; since: number | null }
-): Promise<StoredSession[]> {
-  let query = database(source)("user_log_events")
-    .select("session_id", "timestamp", "metadata")
-    .orderBy("id", "asc");
-  if (since != null) {
-    // Whole sessions: any that had events since then.
-    query = query.whereIn(
-      "session_id",
-      database(source)("user_log_events")
-        .distinct("session_id")
-        .where("timestamp", ">=", since)
-    );
-  }
-  const rows: EventRow[] = await query;
-  const userAgents = await loadUserAgents(database(source));
-  return toSessions(rows, userAgents, minVersion);
-}
-
 /**
  * Every session's events, from `minVersion` on, `batchSize` sessions at a
- * time, for work over the whole log that needn't hold it all in memory.
+ * time, so work over the whole log needn't hold it all in memory (all of it
+ * takes more than the server has).
  * Reading a batch uses the index on user_log_events.session_id.
  */
 export async function forEachSessionBatch(

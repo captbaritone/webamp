@@ -78,7 +78,7 @@ main() {
   if [[ "${1:-}" == "--classic" || "${1:-}" == "--new" ]]; then
     local ui="${1#--}"
     # Next loads this file at startup; MUSEUM_UI is read per request. Keep
-    # the file's other settings (e.g. DEV_DASHBOARD_TOKEN).
+    # the file's other settings.
     touch .env.production.local
     {
       grep -v '^MUSEUM_UI=' .env.production.local || true

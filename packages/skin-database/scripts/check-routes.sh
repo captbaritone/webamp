@@ -67,7 +67,7 @@ check "/skin/$MD5" new classic
 check "/skin/$MD5/$FILE" new classic
 check "/skin/$MD5/$FILE/null" new any
 check "/skin/00000000000000000000000000000000/x.wsz" 404 any
-# The event dashboard is development-only.
+# The event dashboard is gone.
 check "/dev/events" 404 any
 check "/about" new classic
 check "/feedback" new classic

@@ -1,9 +1,4 @@
-import {
-  analyze,
-  botReasons,
-  feedRetention,
-  type StoredEvent,
-} from "../analyze";
+import { analyze, botReasons, type StoredEvent } from "../analyze";
 
 const A = "a".repeat(32);
 const B = "b".repeat(32);
@@ -161,17 +156,6 @@ test("tells sessions that ended from ones discarded in the background", () => {
     ["discarded", "hidden"],
     ["resumed", "cut_off"],
   ]);
-});
-
-test("retention counts how far each visit to the feed got", () => {
-  const result = analyze([
-    session("s1", [
-      ...view(A, 0, 5000, "next_skin"),
-      ...view(B, 1, 5000, "session_end"),
-    ]),
-    session("s2", [...view(A, 0, 5000, "session_end")]),
-  ]);
-  expect(feedRetention(result.views, 3)).toEqual([1, 0.5, 0]);
 });
 
 test("spots sessions that don't look like people", () => {
