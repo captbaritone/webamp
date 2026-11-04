@@ -3,15 +3,18 @@ import { analyze, botReasons, type Analysis } from "../app/dev/events/analyze";
 import { forEachSessionBatch } from "../app/dev/events/loadEvents";
 
 // The museum's "Downloads" order: skins by how often seeing them in the
-// museum grid led to a download, against how often it would for an average
-// skin at the same positions (skins near the top get downloaded more whatever
-// they look like), from people's sessions in the whole event log. Rebuilt
-// nightly, after the museum's own order (see computeMuseumOrder), into
-// museum_downloads_order.
+// museum grid led to a download, from people's sessions in the whole event
+// log. Rebuilt nightly, after the museum's own order (see
+// computeMuseumOrder), into museum_downloads_order.
+//
+// Where in the grid a skin was seen isn't corrected for. Random skins, which
+// appear at many positions, get about as many downloads per view at any of
+// them (0.29% at position 14, 0.19% at 10,000; Nov 2026). Correcting by
+// position compared each of the museum's first skins, which always appear at
+// the same place, with itself.
 
-// Skins with fewer views in the grid (in the museum's own order) than this
-// don't have a score worth ranking by. They follow the scored skins, in the
-// museum's own order.
+// Skins with fewer grid views than this, or no downloads, don't have a score
+// worth ranking by. They follow the scored skins, in the museum's own order.
 export const MIN_GRID_VIEWS = 20;
 
 // Sessions read from the log at a time.
@@ -37,7 +40,7 @@ export async function computeDownloadsOrder(): Promise<{
     }
   );
   const ranked = rankGridTally(tally).filter(
-    (skin) => skin.gridViews >= MIN_GRID_VIEWS
+    (skin) => skin.gridViews >= MIN_GRID_VIEWS && skin.downloads > 0
   );
 
   // The skins the museum lists, other than NSFW ones. Read before the
@@ -84,31 +87,23 @@ ORDER BY museum_sort_order.rowid`);
 
 // Scoring
 
-// How much a skin's own record counts against what's expected of it: with
-// little data a skin stays near the average rather than topping the list on
-// one lucky download.
-const PSEUDO_EXPECTED = 2;
-// Smoothing for each grid position's rate, in grid views at the overall
-// rate. Downloads from the grid are rare enough that deep positions often
-// have none.
-const PRIOR_IMPRESSIONS = 100;
+// How many downloads' worth of average a skin's score starts from, so that
+// with little data it stays near the average rather than topping the list on
+// a lucky download or two. At ~0.36% downloads per view, a skin's own record
+// outweighs it after ~2,800 grid views.
+const PSEUDO_EXPECTED = 10;
 
 /**
- * Views of skins in the museum grid, in the museum's own order, and how many
- * led to a download in the same session: by position (bucketed), and by
- * skin. Added to a batch of sessions at a time, so the whole log needn't be
- * in memory at once (all of it takes over 4GB).
+ * Views of skins in the museum grid, in any of its orders but not in
+ * searches (people searching are after something in particular), and how
+ * many led to a download in the same session, by skin. Added to a batch of
+ * sessions at a time, so the whole log needn't be in memory at once (all of
+ * it takes over 4GB).
  */
-export type GridTally = {
-  buckets: Map<number, { n: number; hits: number }>;
-  skins: Map<
-    string,
-    { n: number; hits: number; byBucket: Map<number, number> }
-  >;
-};
+export type GridTally = Map<string, { n: number; hits: number }>;
 
 export function newGridTally(): GridTally {
-  return { buckets: new Map(), skins: new Map() };
+  return new Map();
 }
 
 export function addToGridTally(tally: GridTally, analysis: Analysis): void {
@@ -118,66 +113,38 @@ export function addToGridTally(tally: GridTally, analysis: Analysis): void {
       .map((v) => `${v.sessionId}\n${v.skinMd5}`)
   );
   for (const i of analysis.impressions) {
-    // Positions in the museum's own order only: in the others (newest
-    // first, random, this one) a position says nothing about a skin's rank.
-    if (i.query != null || i.sort !== "top") continue;
-    const hit = downloaded.has(`${i.sessionId}\n${i.skinMd5}`);
-    const bucket = positionBucket(i.position);
-    const b = tally.buckets.get(bucket) ?? { n: 0, hits: 0 };
-    b.n++;
-    if (hit) b.hits++;
-    tally.buckets.set(bucket, b);
-    let s = tally.skins.get(i.skinMd5);
+    if (i.query != null || i.sort == null) continue;
+    let s = tally.get(i.skinMd5);
     if (s == null) {
-      s = { n: 0, hits: 0, byBucket: new Map() };
-      tally.skins.set(i.skinMd5, s);
+      s = { n: 0, hits: 0 };
+      tally.set(i.skinMd5, s);
     }
     s.n++;
-    if (hit) s.hits++;
-    s.byBucket.set(bucket, (s.byBucket.get(bucket) ?? 0) + 1);
+    if (downloaded.has(`${i.sessionId}\n${i.skinMd5}`)) s.hits++;
   }
 }
 
 /**
- * Each skin's downloads against the downloads an average skin would get at
- * the positions it was seen in, best first (ties to the skin with more grid
- * views).
+ * Each skin's downloads against the downloads an average skin would get from
+ * as many grid views, best first (ties to the skin with more grid views).
  */
 export function rankGridTally(
   tally: GridTally
-): Array<{ md5: string; score: number; gridViews: number }> {
+): Array<{ md5: string; score: number; gridViews: number; downloads: number }> {
   let n = 0;
   let hits = 0;
-  for (const b of tally.buckets.values()) {
-    n += b.n;
-    hits += b.hits;
+  for (const s of tally.values()) {
+    n += s.n;
+    hits += s.hits;
   }
   if (n === 0) return [];
   const overall = hits / n;
-  const expectedAt = new Map(
-    [...tally.buckets].map(([bucket, b]) => [
-      bucket,
-      (b.hits + PRIOR_IMPRESSIONS * overall) / (b.n + PRIOR_IMPRESSIONS),
-    ])
-  );
-  return [...tally.skins]
-    .map(([md5, s]) => {
-      let expected = 0;
-      for (const [bucket, count] of s.byBucket) {
-        expected += count * expectedAt.get(bucket)!;
-      }
-      return {
-        md5,
-        score: (s.hits + PSEUDO_EXPECTED) / (expected + PSEUDO_EXPECTED),
-        gridViews: s.n,
-      };
-    })
+  return [...tally]
+    .map(([md5, s]) => ({
+      md5,
+      score: (s.hits + PSEUDO_EXPECTED) / (s.n * overall + PSEUDO_EXPECTED),
+      gridViews: s.n,
+      downloads: s.hits,
+    }))
     .sort((a, b) => b.score - a.score || b.gridViews - a.gridViews);
-}
-
-// Each of the first 20 positions on its own, then wider and wider ranges:
-// 20–23, 24–28, ... (four per doubling).
-function positionBucket(position: number): number {
-  if (position < 20) return position;
-  return 20 + Math.floor(Math.log2(position / 20) * 4);
 }
