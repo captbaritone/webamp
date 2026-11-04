@@ -8,7 +8,6 @@ import SkinModel from "../data/SkinModel";
 import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 import DiscordEventHandler from "../api/DiscordEventHandler";
-import { execFile } from "../utils";
 import * as IAService from "../services/internetArchive";
 
 export async function findItemsMissingImages(): Promise<string[]> {
@@ -163,36 +162,67 @@ const INVALID_IDENTIFIERS = new Set([
   "winampskins_Episode1_5",
 ]);
 
-export async function identifierExists(identifier: string): Promise<boolean> {
-  if (INVALID_IDENTIFIERS.has(identifier)) {
-    return true;
+// How many identifiers to try for a skin before giving up on it for the night.
+const MAX_IDENTIFIER_ATTEMPTS = 10;
+
+// Whether an identifier is free to upload to, taken, or already holds this
+// skin: an earlier upload that failed after the skin file arrived (e.g. it
+// timed out waiting for the response), which we never recorded.
+type IdentifierStatus = "free" | "taken" | "holds-skin";
+
+async function identifierStatus(
+  identifier: string,
+  md5: string,
+  rejected: ReadonlySet<string>
+): Promise<IdentifierStatus> {
+  if (INVALID_IDENTIFIERS.has(identifier) || rejected.has(identifier)) {
+    return "taken";
   }
   const existing = await knex("ia_items")
     .whereRaw("LOWER(identifier) = LOWER(?)", identifier)
     .select([]);
   if (existing.length > 0) {
-    return true;
+    return "taken";
   }
-  return IAService.identifierExists(identifier);
+  // Only finds an item by exactly this identifier. One whose identifier
+  // differs only in case also takes it, but shows up only when we upload (see
+  // archive()).
+  const metadata = await IAService.itemMetadata(identifier);
+  if (Object.keys(metadata).length === 0) {
+    return "free";
+  }
+  const files: Array<{ name: string; md5?: string }> = metadata.files ?? [];
+  const holdsSkin = files.some(
+    (file) => file.md5 === md5 && /\.(wsz|zip)$/i.test(file.name)
+  );
+  return holdsSkin ? "holds-skin" : "taken";
 }
 
-async function getNewIdentifier(filename: string): Promise<string> {
+/**
+ * The identifier to upload a skin to: winampskins_<name>, then _1, _2... until
+ * one is free (or already holds this skin), skipping any in `rejected`.
+ */
+export async function pickIdentifier(
+  filename: string,
+  md5: string,
+  rejected: ReadonlySet<string> = new Set()
+): Promise<{ identifier: string; holdsSkin: boolean }> {
   // The internet archive has a max identifier length of 80 chars.
   const identifierBase = `winampskins_${sanitize(
     path.parse(filename).name
   )}`.slice(0, 76);
-  let counter = 0;
-  function getIdentifier() {
-    return identifierBase + (counter === 0 ? "" : `_${counter}`);
+  for (let counter = 0; ; counter++) {
+    const identifier = identifierBase + (counter === 0 ? "" : `_${counter}`);
+    const status = await identifierStatus(identifier, md5, rejected);
+    if (status !== "taken") {
+      return { identifier, holdsSkin: status === "holds-skin" };
+    }
   }
-  while (await identifierExists(getIdentifier())) {
-    counter++;
-  }
-  return getIdentifier();
 }
 
 export async function archive(skin: SkinModel): Promise<string> {
   const filename = await skin.getFileName(true);
+  const md5 = skin.getMd5();
 
   const screenshotFilename = await skin.getScreenshotFileName();
   const title = `Winamp Skin: ${filename}`;
@@ -202,21 +232,6 @@ export async function archive(skin: SkinModel): Promise<string> {
     downloadToTemp(skin.getScreenshotUrl(), screenshotFilename),
   ]);
 
-  // Pick identifier
-  const identifier = await getNewIdentifier(filename);
-
-  console.log(`Going to try to upload with identifier "${identifier}"...`);
-
-  // Path to the ia command in the virtual environment
-  const IA_COMMAND = path.join(__dirname, "../.venv/bin/ia");
-
-  // Environment variables for the virtual environment
-  const venvEnv = {
-    ...process.env,
-    PATH: `${path.join(__dirname, "../.venv/bin")}:${process.env.PATH}`,
-    VIRTUAL_ENV: path.join(__dirname, "../.venv"),
-  };
-
   const metadata = {
     collection: "winampskins",
     skintype: "wsz",
@@ -224,21 +239,51 @@ export async function archive(skin: SkinModel): Promise<string> {
     title: title,
   };
 
-  // Build arguments array for ia upload command
-  const args = [
-    "upload",
-    identifier,
-    skinFile,
-    screenshotFile,
-    `--metadata=collection:${metadata.collection}`,
-    `--metadata=skintype:${metadata.skintype}`,
-    `--metadata=mediatype:${metadata.mediatype}`,
-    `--metadata=title:${metadata.title}`,
-  ];
+  // Identifiers the archive refused for being taken by an item whose
+  // identifier differs only in case, which we can't look up beforehand.
+  const rejected = new Set<string>();
+  for (let attempt = 0; attempt < MAX_IDENTIFIER_ATTEMPTS; attempt++) {
+    const { identifier, holdsSkin } = await pickIdentifier(
+      filename,
+      md5,
+      rejected
+    );
 
-  await execFile(IA_COMMAND, args, { env: venvEnv });
-  await knex("ia_items").insert({ skin_md5: skin.getMd5(), identifier });
-  return identifier;
+    if (holdsSkin) {
+      // Finish the earlier upload rather than making a second item.
+      console.log(`Found ${md5} already uploaded as "${identifier}"`);
+      const files: Array<{ name: string }> =
+        (await IAService.itemMetadata(identifier)).files ?? [];
+      if (!files.some((file) => /\.png$/i.test(file.name))) {
+        await IAService.uploadFile(identifier, screenshotFile);
+      }
+      await knex("ia_items").insert({ skin_md5: md5, identifier });
+      return identifier;
+    }
+
+    console.log(`Going to try to upload with identifier "${identifier}"...`);
+    try {
+      await IAService.uploadFiles(
+        identifier,
+        [skinFile, screenshotFile],
+        metadata
+      );
+    } catch (e) {
+      if (/case alias may already exist/.test(e.message)) {
+        console.log(
+          `"${identifier}" is taken by an item with the same name in another case; trying the next one.`
+        );
+        rejected.add(identifier);
+        continue;
+      }
+      throw e;
+    }
+    await knex("ia_items").insert({ skin_md5: md5, identifier });
+    return identifier;
+  }
+  throw new Error(
+    `No free identifier for ${md5} (${filename}) after ${MAX_IDENTIFIER_ATTEMPTS} tries; case alias may already exist`
+  );
 }
 
 export async function syncToArchive(handler: DiscordEventHandler) {

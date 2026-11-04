@@ -178,7 +178,9 @@ export default class SkinModel {
       throw new Error("Modern skins do not have screenshots yet.");
     }
     const skinFilename = await this.getFileName();
-    return skinFilename.replace(/\.(wsz|zip)$/, ".png");
+    // Any case: a skin named FOO.WSZ would otherwise get a screenshot named
+    // FOO.WSZ too (and the Internet Archive item a PNG posing as a skin).
+    return skinFilename.replace(/\.(wsz|zip)$/i, ".png");
   }
 
   getMd5(): string {

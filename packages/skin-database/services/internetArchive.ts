@@ -56,12 +56,17 @@ export async function uploadFiles(
   await execFile(IA_COMMAND, args, { env: getVenvEnv() });
 }
 
-export async function identifierExists(identifier: string): Promise<boolean> {
+// An item's metadata, including its files (name, md5...). Empty if there's no
+// item by exactly that identifier.
+export async function itemMetadata(identifier: string): Promise<any> {
   const result = await execFile(IA_COMMAND, ["metadata", identifier], {
     env: getVenvEnv(),
   });
-  const data = JSON.parse(result.stdout);
-  return Object.keys(data).length > 0;
+  return JSON.parse(result.stdout);
+}
+
+export async function identifierExists(identifier: string): Promise<boolean> {
+  return Object.keys(await itemMetadata(identifier)).length > 0;
 }
 
 export async function setMetadata(
