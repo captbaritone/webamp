@@ -15,6 +15,7 @@ If you want access to the changes in this section before they are officially rel
 - The Milkdrop window now has a stable id, `#milkdrop-window`, like `#main-window`, `#equalizer-window` and `#playlist-window`.
 - Added a new Webamp instance method: [`webamp.onMediaError(cb)`](./06_API/03_instance-methods.md#onmediaerrorcb-error--code-number---void---void), which is called when a track fails to load or play.
 - Added a new Webamp instance method: [`webamp.setTracks(tracks)`](./06_API/03_instance-methods.md#settrackstracks-track-void), which replaces the playlist without starting playback.
+- Added a new [`focusIndicator`](./06_API/02_webamp-constructor.md#focusindicator) option, which draws a focus ring around the focused control for keyboard users. It is off by default, only appears for keyboard focus, and is drawn outside the control so skins render unchanged.
 
 ### Bug Fixes
 
