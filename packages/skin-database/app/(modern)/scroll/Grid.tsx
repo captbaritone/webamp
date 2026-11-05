@@ -178,14 +178,26 @@ const SORT_ICONS: Record<MuseumSort, typeof Star> = {
 type WindowSize = { width: number; height: number; scrollbarWidth: number };
 let windowSize: WindowSize | null = null;
 
-function getWindowSize(): WindowSize {
+// Measured when the grid subscribes and on resize, never while React reads the
+// snapshot. Rendering the grid can change the window's size: if it gives the
+// page a scrollbar that takes up room (Windows), clientWidth shrinks, the
+// narrower grid can take it away again, and so on. React re-reads the snapshot
+// after every commit and re-renders if it changed, so reading the size there
+// went round that loop until React gave up ("Maximum update depth exceeded").
+function measureWindowSize(): boolean {
   const width = document.documentElement.clientWidth;
   const height = document.documentElement.clientHeight;
-  if (windowSize?.width !== width || windowSize.height !== height) {
-    // Measured again with the size, as zooming changes both.
-    windowSize = { width, height, scrollbarWidth: measureScrollbarWidth() };
+  if (windowSize?.width === width && windowSize.height === height) {
+    return false;
   }
-  return windowSize;
+  // Measured again with the size, as zooming changes both.
+  windowSize = { width, height, scrollbarWidth: measureScrollbarWidth() };
+  return true;
+}
+
+function getWindowSize(): WindowSize {
+  if (windowSize == null) measureWindowSize();
+  return windowSize!;
 }
 
 // The width of a vertical scrollbar, like the grid's. From rects rather than
@@ -205,8 +217,14 @@ function measureScrollbarWidth(): number {
 }
 
 function subscribeToResize(onChange: () => void): () => void {
-  window.addEventListener("resize", onChange);
-  return () => window.removeEventListener("resize", onChange);
+  // The window may have changed size since the grid was last shown. React
+  // checks the snapshot again once subscribed, so this needs no onChange.
+  measureWindowSize();
+  const onResize = () => {
+    if (measureWindowSize()) onChange();
+  };
+  window.addEventListener("resize", onResize);
+  return () => window.removeEventListener("resize", onResize);
 }
 
 function useMountedWindowSize(): WindowSize | null {
