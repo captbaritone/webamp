@@ -1,4 +1,4 @@
-import { spriteNumber, spriteOffsets } from "./Band";
+import { spriteNumber, spriteOffsets, bandValueText } from "./Band";
 
 describe("spriteNumber", () => {
   it("gives the first sprite", () => {
@@ -33,5 +33,14 @@ describe("spriteOffsets", () => {
     const actual = spriteOffsets(27);
     const expected = { x: 13, y: 1 };
     expect(actual).toEqual(expected);
+  });
+});
+
+describe("bandValueText", () => {
+  it("describes the value in decibels", () => {
+    expect(bandValueText(0)).toBe("-12.0 dB");
+    expect(bandValueText(50)).toBe("0.0 dB");
+    expect(bandValueText(75)).toBe("+6.0 dB");
+    expect(bandValueText(100)).toBe("+12.0 dB");
   });
 });

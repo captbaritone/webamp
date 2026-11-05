@@ -12,7 +12,16 @@ type Props = {
   onAfterChange?: () => void;
   requireClicksOriginateLocally?: boolean;
   disabled?: boolean;
+  // If provided, the slider is exposed to keyboard and screen reader users as a
+  // vertical `role="slider"` with this accessible name.
+  label?: string;
+  // Human readable version of the current value, e.g. "+3.0 dB".
+  valueText?: string;
+  // How far the arrow keys move the slider, as a fraction of its range.
+  keyboardStep?: number;
 };
+
+const PAGE_STEP = 0.1;
 
 type RegOptions = {
   target: HTMLElement;
@@ -33,9 +42,13 @@ export default function VerticalSlider({
   onAfterChange,
   requireClicksOriginateLocally = true,
   disabled,
+  label,
+  valueText,
+  keyboardStep = 0.01,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
+  const keyboardChangeInProgress = useRef(false);
 
   function registerMoveListener({ target, clientY }: RegOptions) {
     const sliderNode = ref.current;
@@ -109,9 +122,73 @@ export default function VerticalSlider({
     }
   }
 
+  // Note that `value` is the handle's offset from the top, so moving "up"
+  // decreases it.
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    let newValue: number;
+    switch (e.key) {
+      case "ArrowUp":
+      case "ArrowRight":
+        newValue = value - keyboardStep;
+        break;
+      case "ArrowDown":
+      case "ArrowLeft":
+        newValue = value + keyboardStep;
+        break;
+      case "PageUp":
+        newValue = value - PAGE_STEP;
+        break;
+      case "PageDown":
+        newValue = value + PAGE_STEP;
+        break;
+      case "Home":
+        newValue = 1;
+        break;
+      case "End":
+        newValue = 0;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    keyboardChangeInProgress.current = true;
+    if (onBeforeChange != null) {
+      onBeforeChange();
+    }
+    onChange(Utils.clamp(newValue, 0, 1));
+  }
+
+  function handleKeyUp() {
+    if (!keyboardChangeInProgress.current) {
+      return;
+    }
+    keyboardChangeInProgress.current = false;
+    if (onAfterChange != null) {
+      onAfterChange();
+    }
+  }
+
+  const sliderProps =
+    label == null
+      ? {}
+      : {
+          role: "slider",
+          tabIndex: disabled ? -1 : 0,
+          "aria-label": label,
+          "aria-orientation": "vertical" as const,
+          "aria-valuemin": 0,
+          "aria-valuemax": 100,
+          "aria-valuenow": Math.round((1 - value) * 100),
+          "aria-valuetext": valueText,
+          "aria-disabled": disabled,
+          onKeyDown: disabled ? undefined : handleKeyDown,
+          onKeyUp: disabled ? undefined : handleKeyUp,
+        };
+
   const offset = Math.floor((height - handleHeight) * value);
   return (
     <div
+      {...sliderProps}
       style={{ height, width }}
       onPointerDown={disabled ? undefined : handlePointerDown}
       onPointerEnter={
