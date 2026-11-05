@@ -11,6 +11,26 @@ import {
 const ACTIVE_CLASSNAME = "winamp-active";
 const LEFT_MOUSE_NUMBER = 0;
 
+/**
+ * Calls `activate` if the event is Enter or Space pressed on an element itself,
+ * as a native `<button>` would. Useful for elements that cannot be rendered as
+ * a `WinampButton`.
+ */
+export function handleActivationKey(
+  e: ReactKeyboardEvent<HTMLElement>,
+  activate: () => void
+) {
+  // Ignore key events bubbling up from focusable descendants.
+  if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) {
+    return;
+  }
+  // Prevent Space from scrolling the page.
+  e.preventDefault();
+  if (!e.repeat) {
+    activate();
+  }
+}
+
 interface DetailedHTMLPropsAndMore
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   requireClicksOriginateLocally?: boolean;
@@ -97,15 +117,8 @@ export default function WinampButton({
     if (originalOnKeyDown != null) {
       originalOnKeyDown(e);
     }
-    // Ignore key events bubbling up from focusable descendants.
-    if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) {
-      return;
-    }
-    // Prevent Space from scrolling the page.
-    e.preventDefault();
-    if (!e.repeat) {
-      e.currentTarget.click();
-    }
+    const target = e.currentTarget;
+    handleActivationKey(e, () => target.click());
   };
 
   const buttonProps =
