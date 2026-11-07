@@ -48,7 +48,10 @@ export default memo(function SkinPage({
       data-skin-md5={skin.md5}
       className={usingWebamp ? "skin-page using-webamp" : "skin-page"}
     >
-      <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
+      <div
+        className="skin-column"
+        style={{ "--feed-column-max": MOBILE_MAX_WIDTH } as React.CSSProperties}
+      >
         <div className="skin-title-row">
           <h2 className="skin-title" title={skin.fileName}>
             {skin.fileName}

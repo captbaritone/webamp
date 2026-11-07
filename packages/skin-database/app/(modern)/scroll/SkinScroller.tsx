@@ -688,7 +688,7 @@ export default function SkinScroller({
         style={{
           // Full width so the wheel scrolls from anywhere on desktop, and so
           // the action icons can sit beside the skin. Each page constrains its
-          // own content to MOBILE_MAX_WIDTH.
+          // own content (see .skin-column in scroll.css).
           height: "100dvh",
           // Not while the visitor is using Webamp.
           overflowY: usingWebampOn == null ? "scroll" : "hidden",

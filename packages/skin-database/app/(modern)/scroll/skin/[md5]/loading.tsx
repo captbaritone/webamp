@@ -22,7 +22,10 @@ export default function Loading() {
   const hidden = nsfw === true && !showNsfw;
   return (
     <div className="skin-page">
-      <div className="skin-column" style={{ maxWidth: MOBILE_MAX_WIDTH }}>
+      <div
+        className="skin-column"
+        style={{ "--feed-column-max": MOBILE_MAX_WIDTH } as React.CSSProperties}
+      >
         {/* Same row as SkinPage, so the skin doesn't move when it loads. */}
         <div className="skin-title-row">
           <div className="skin-title" aria-hidden>

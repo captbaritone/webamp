@@ -96,20 +96,54 @@ button {
 }
 
 /*
- * The column holding a page's title, skin, icons and readme (its max width is
- * set inline from MOBILE_MAX_WIDTH). The readme fills whatever space the skin
- * leaves. On mobile it would otherwise run edge to edge, so give it a small
- * gutter.
+ * The column holding a page's title, skin, icons and readme (at most
+ * --feed-column-max wide, set inline from MOBILE_MAX_WIDTH). The readme fills
+ * whatever space the skin leaves. On mobile it would otherwise run edge to
+ * edge, so give it a small gutter.
  */
 .skin-column {
+  --skin-column-gutter: 0.75rem;
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
   width: 100%;
+  max-width: var(--feed-column-max);
   margin: 0 auto;
-  padding: 0 0.75rem;
+  padding: 0 var(--skin-column-gutter);
   box-sizing: border-box;
+}
+
+/*
+ * An experiment, for now only with ?integer-scale in the URL (see
+ * app/layout.tsx, which sets .integer-scale on <html>):
+ *
+ * Pixel art only looks right at a whole number of screen pixels per pixel of
+ * the skin: in between, some of its pixels are drawn a screen pixel wider than
+ * others. So, where the browser can round, the skin (and the column with it)
+ * is the widest that fits at such a scale: a multiple of its 275 pixels, in
+ * screen pixels. --device-pixel is a screen pixel in CSS pixels (also set in
+ * app/layout.tsx). If not even one screen pixel per pixel fits, it fills the
+ * column as before.
+ *
+ * The gutter is smaller, as rounding down usually leaves more: a 390px wide
+ * iPhone fits the skin at four screen pixels per pixel, with about 12px
+ * either side.
+ */
+@supports (width: round(down, 10px, 1px)) {
+  .integer-scale .skin-column {
+    --skin-column-gutter: 0.5rem;
+    --skin-fit: calc(
+      min(100%, var(--feed-column-max)) - 2 * var(--skin-column-gutter)
+    );
+    --skin-pixels: calc(275 * var(--device-pixel, 1px));
+    max-width: calc(
+      max(
+          round(down, var(--skin-fit), var(--skin-pixels)),
+          min(var(--skin-fit), var(--skin-pixels))
+        ) + 2 * var(--skin-column-gutter)
+    );
+  }
 }
 
 /* The skin's filename, centered above the skin. */
@@ -1073,8 +1107,9 @@ button {
  */
 @media (min-aspect-ratio: 3/4) {
   /* Already narrower than the screen; no gutter needed. */
-  .skin-column {
-    padding: 0;
+  .skin-column,
+  .integer-scale .skin-column {
+    --skin-column-gutter: 0px;
   }
 
   /* No icon row under the skin here, so give the readme some room. */
