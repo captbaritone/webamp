@@ -401,6 +401,10 @@ program
   )
   .option("--refresh-content-hash", "Refresh content hash")
   .option("--update-search-index", "Update the algolia search index")
+  .option(
+    "--compute-transparent-pixels",
+    "Work out transparent_pixels for skins that don't have it yet"
+  )
   .option("--configure-r2-cors", "Configure CORS for r2")
   .option(
     "--compute-museum-order",
@@ -415,6 +419,7 @@ program
       refreshArchiveFiles,
       refreshContentHash,
       updateSearchIndex,
+      computeTransparentPixels,
       configureR2Cors,
       computeMuseumOrder,
       foo,
@@ -440,6 +445,10 @@ program
           error
         );
       }
+    }
+    if (computeTransparentPixels) {
+      const count = await Skins.computeMissingTransparentPixels();
+      console.log(`Set transparent_pixels for ${count} skins.`);
     }
     if (configureR2Cors) {
       await S3.configureCors();

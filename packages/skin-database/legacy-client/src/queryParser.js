@@ -1,10 +1,24 @@
+/**
+ * Splits a search into its words and its has:/filter: terms. Returns:
+ *
+ * - The words.
+ * - The terms as Algolia search parameters (`filters`, `numericFilters`).
+ * - The terms as the filters our own search applies (search_classic_skins):
+ *   `{ ani: true }` for has:ani, `{ nsfw: false }` for -filter:nsfw.
+ * - Whether those say everything the terms do. A comparison
+ *   (has:transparency>100) or an attribute we don't know (has:sparkles)
+ *   can't be said there.
+ */
 function parseQuery(query) {
   const filters = [];
   const numericFilters = [];
+  const searchFilters = {};
+  let searchFiltersComplete = true;
   const newQuery = query
     .replace(
       /has:([a-z]+)([><]=?)(\d+)/g,
       (_, attribute, comparison, number) => {
+        searchFiltersComplete = false;
         const numericAttribute = numericAttributeMap[attribute];
         if (numericAttribute == null) {
           return undefined;
@@ -23,8 +37,12 @@ function parseQuery(query) {
         numericFilters.push(
           `${numericAttribute.name}${comparison}${numericAttribute.boolThreshold}`
         );
+        searchFilters[attribute] = !not;
       } else if (boolAttribute != null) {
         filters.push(`${boolAttribute.name}=${not ? 0 : 1}`);
+        searchFilters[attribute] = !not;
+      } else {
+        searchFiltersComplete = false;
       }
       return "";
     });
@@ -35,7 +53,7 @@ function parseQuery(query) {
   if (numericFilters.length) {
     options.numericFilters = numericFilters.join(" AND ");
   }
-  return [newQuery, options];
+  return [newQuery, options, searchFilters, searchFiltersComplete];
 }
 
 const boolAttributeMap = {
@@ -56,6 +74,8 @@ const boolAttributeMap = {
   /* Is skinamp */
 };
 
+// Our own search's transparency and likes filters use these thresholds
+// too (see api/graphql/resolvers/SkinResolver.ts).
 const numericAttributeMap = {
   transparency: {
     name: "transparentPixels",

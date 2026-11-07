@@ -1059,7 +1059,7 @@ export function getSchema(): GraphQLSchema {
                     }
                 },
                 search_classic_skins: {
-                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.\n\n`nsfw` limits the results to skins that are (true) or aren't (false) flagged\nNSFW, like the museum's `filter:nsfw` and `-filter:nsfw`. With a filter, an\nempty query lists every matching skin, most liked first.",
+                    description: "Search the database using SQLite's FTS (full text search) index.\n\nUseful for locating a particular skin.\n\nThe query can narrow the search with the museum search box's terms, each\nnegated with a leading `-`: `has:playlist`, `has:equalizer`, `has:browser`,\n`has:media`, `has:general`, `has:video` (skinned windows), `has:mikro`,\n`has:vidamp`, `has:avs` (plugins), `has:cur`, `has:ani` (cursors),\n`has:transparency` (a shaped skin), `has:likes` and `filter:nsfw`. So\n`zelda has:ani -filter:nsfw`. With terms, a query with no words lists every\nmatching skin, most liked first. Comparisons (`has:transparency>100`) and\nunknown terms are ignored.\n\n`nsfw` is the same as `filter:nsfw` (true) or `-filter:nsfw` (false).",
                     name: "search_classic_skins",
                     type: new GraphQLList(ClassicSkinType),
                     args: {

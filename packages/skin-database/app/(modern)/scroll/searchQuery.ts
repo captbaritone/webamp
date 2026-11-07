@@ -1,20 +1,21 @@
 import parseQuery from "../../../legacy-client/src/queryParser";
 
-// A search's words, and the Algolia filters asked for by its has:/filter:
-// terms (e.g. has:ani, -filter:nsfw; see legacy-client/src/queryParser.js).
-// Algolia applies them; our SQLite search (the fallback, and the server's
-// render of a search link) can only apply the NSFW one, and ignores the rest.
+// A search's words, and the Algolia filters asked for by its has:/filter: terms
+// (e.g. has:ani, -filter:nsfw; see legacy-client/src/queryParser.js). Our
+// SQLite search (the fallback, and the server's render of a search link) takes
+// the whole search and applies the terms itself.
 export type ParsedSearch = {
   text: string;
   options: { filters?: string; numericFilters?: string };
-  // Whether it uses that syntax at all (including terms for attributes the
-  // parser doesn't know, which it drops).
-  hasSyntax: boolean;
+  // Whether our search can apply every term. It can't take a comparison
+  // (has:transparency>100), or a term for an attribute the parser doesn't
+  // know (which it drops).
+  filtersComplete: boolean;
 };
 
 export function parseSearch(query: string): ParsedSearch {
-  const [text, options] = parseQuery(query);
-  return { text: text.trim(), options, hasSyntax: text !== query };
+  const [text, options, , filtersComplete] = parseQuery(query);
+  return { text: text.trim(), options, filtersComplete };
 }
 
 // The filters the search box's filters menu offers (see Grid.tsx), in

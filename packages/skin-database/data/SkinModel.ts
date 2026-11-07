@@ -363,6 +363,12 @@ export default class SkinModel {
   }
 
   async transparentPixels(): Promise<number> {
+    return this.row.transparent_pixels ?? this.computeTransparentPixels();
+  }
+
+  // From region.txt. Stored as skins.transparent_pixels (see
+  // Skins.setTransparentPixels), since the museum's search filters on it.
+  async computeTransparentPixels(): Promise<number> {
     const region = await this._getFile("region", "txt");
     if (region == null) {
       return 0;

@@ -270,3 +270,37 @@ describe("seeded", () => {
     });
   });
 });
+
+test("computeMissingTransparentPixels", async () => {
+  await knex("skins").insert([
+    { md5: "shaped", skin_type: 1, emails: "" },
+    { md5: "rectangular", skin_type: 1, emails: "" },
+    { md5: "not_yet_extracted", skin_type: 1, emails: "" },
+  ]);
+  // The main window's top half: the bottom half is transparent.
+  const region = "[Normal]\nNumPoints=4\nPointList=0,0,275,0,275,58,0,58\n";
+  await knex("file_info").insert({
+    file_md5: "region_md5",
+    text_content: region,
+  });
+  await knex("archive_files").insert([
+    {
+      skin_md5: "shaped",
+      file_md5: "region_md5",
+      file_name: "Skin/region.txt",
+    },
+    { skin_md5: "rectangular", file_md5: "main_md5", file_name: "MAIN.BMP" },
+  ]);
+
+  await Skins.computeMissingTransparentPixels();
+  const rows = await knex("skins")
+    .select("md5", "transparent_pixels")
+    // Earlier tests leave skins of their own.
+    .whereIn("md5", ["shaped", "rectangular", "not_yet_extracted"])
+    .orderBy("md5");
+  expect(rows).toEqual([
+    { md5: "not_yet_extracted", transparent_pixels: null },
+    { md5: "rectangular", transparent_pixels: 0 },
+    { md5: "shaped", transparent_pixels: 275 * 58 },
+  ]);
+});

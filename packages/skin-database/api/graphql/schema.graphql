@@ -440,9 +440,16 @@ type Query {
   
   Useful for locating a particular skin.
   
-  `nsfw` limits the results to skins that are (true) or aren't (false) flagged
-  NSFW, like the museum's `filter:nsfw` and `-filter:nsfw`. With a filter, an
-  empty query lists every matching skin, most liked first.
+  The query can narrow the search with the museum search box's terms, each
+  negated with a leading `-`: `has:playlist`, `has:equalizer`, `has:browser`,
+  `has:media`, `has:general`, `has:video` (skinned windows), `has:mikro`,
+  `has:vidamp`, `has:avs` (plugins), `has:cur`, `has:ani` (cursors),
+  `has:transparency` (a shaped skin), `has:likes` and `filter:nsfw`. So
+  `zelda has:ani -filter:nsfw`. With terms, a query with no words lists every
+  matching skin, most liked first. Comparisons (`has:transparency>100`) and
+  unknown terms are ignored.
+  
+  `nsfw` is the same as `filter:nsfw` (true) or `-filter:nsfw` (false).
   """
   search_classic_skins(first: Int! = 10, nsfw: Boolean = null, offset: Int! = 0, query: String!): [ClassicSkin] @semanticNonNull
   """

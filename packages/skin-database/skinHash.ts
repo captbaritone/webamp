@@ -2,6 +2,7 @@ import JSZip from "jszip";
 import md5 from "md5";
 import { knex } from "./db";
 import SkinModel from "./data/SkinModel";
+import * as Skins from "./data/skins";
 
 type FileData = {
   fileName: string;
@@ -98,4 +99,6 @@ export async function setHashesForSkin(skin: SkinModel): Promise<void> {
       await knex("file_info").insert(row);
     }
   }
+  // Needs file_info's text for region.txt, so after it.
+  await Skins.setTransparentPixels(skin.getMd5());
 }

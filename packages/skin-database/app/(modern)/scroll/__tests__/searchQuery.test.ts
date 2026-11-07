@@ -4,12 +4,12 @@ test("splits has: filters from a search's words", () => {
   expect(parseSearch("zelda has:ani")).toEqual({
     text: "zelda",
     options: { filters: "ani=1" },
-    hasSyntax: true,
+    filtersComplete: true,
   });
   expect(parseSearch("has:transparency")).toEqual({
     text: "",
     options: { numericFilters: "transparentPixels>=4000" },
-    hasSyntax: true,
+    filtersComplete: true,
   });
 });
 
@@ -19,14 +19,15 @@ test("leaves titles with colons alone", () => {
     expect(parseSearch(query)).toEqual({
       text: query,
       options: {},
-      hasSyntax: false,
+      filtersComplete: true,
     });
   }
 });
 
-test("counts terms for unknown attributes as syntax", () => {
-  // The parser drops them, so the server's search would differ.
-  expect(parseSearch("has:sparkles").hasSyntax).toBe(true);
+test("knows which terms our own search can't take", () => {
+  // The parser drops unknown attributes, so the server's search would differ.
+  expect(parseSearch("has:sparkles").filtersComplete).toBe(false);
+  expect(parseSearch("has:transparency>100").filtersComplete).toBe(false);
 });
 
 test("adds and removes a filter term, leaving the rest", () => {

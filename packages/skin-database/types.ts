@@ -20,6 +20,8 @@ export type SkinRow = {
   emails: string;
   // readme_text: string;
   average_color?: string;
+  // See transparentPixels() in SkinModel. Null until worked out.
+  transparent_pixels?: number | null;
 };
 
 export type TweetRow = {

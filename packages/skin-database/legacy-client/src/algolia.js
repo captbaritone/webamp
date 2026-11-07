@@ -10,21 +10,19 @@ const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
 export const USE_ALGOLIA = true;
 
 // Fallback search that uses SQLite. Useful for when we've exceeded the Algolia
-// search quota. Of the queryParser filters `options` can hold, only nsfw
-// (filter:nsfw / -filter:nsfw) is supported here.
-export async function graphqlSearch(query, options = {}) {
-  const nsfwFilter = /\bnsfw=([01])\b/.exec(options.filters ?? "");
-  const nsfw = nsfwFilter == null ? null : nsfwFilter[1] === "1";
+// search quota. Takes the whole search, has:/filter: terms and all: the
+// server applies them, except comparisons such as has:transparency>100.
+export async function graphqlSearch(query) {
   const queryText = gql`
-    query SearchQuery($query: String!, $nsfw: Boolean) {
-      search_classic_skins(query: $query, first: 500, nsfw: $nsfw) {
+    query SearchQuery($query: String!) {
+      search_classic_skins(query: $query, first: 500) {
         filename(normalize_extension: true)
         md5
         nsfw
       }
     }
   `;
-  const data = await Utils.fetchGraphql(queryText, { query, nsfw });
+  const data = await Utils.fetchGraphql(queryText, { query });
   const hits = data.search_classic_skins.map((skin) => {
     return {
       objectID: skin.md5,

@@ -25,8 +25,8 @@ export default async function SkinTable({ searchParams }) {
   const seed = sort === "random" ? pickRandomSeed() : null;
   // With a search in the URL, start with its results rather than the museum's
   // first page (which loads if the search is cleared). Not for one using
-  // has:/filter: syntax, which our SQLite search can't apply: the grid
-  // searches Algolia itself, as when typing.
+  // has:/filter: terms our SQLite search can't apply (a comparison such as
+  // has:transparency>100): the grid searches Algolia itself, as when typing.
   const [
     initialSkins,
     initialSearchSkins,
@@ -35,7 +35,7 @@ export default async function SkinTable({ searchParams }) {
     downloadsCount,
   ] = await Promise.all([
     search === "" ? getMuseumPageSkins(0, 50, sort, seed) : [],
-    search === "" || parseSearch(search).hasSyntax
+    search === "" || !parseSearch(search).filtersComplete
       ? null
       : getSearchSkins(search).catch((error) => {
           // The grid will run the search itself.

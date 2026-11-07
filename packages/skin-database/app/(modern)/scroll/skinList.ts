@@ -220,7 +220,7 @@ async function runSearch(query: string): Promise<{
       console.warn("Algolia search failed, falling back to SQLite", error);
     }
   }
-  return graphqlSearch(text, options);
+  return graphqlSearch(query);
 }
 
 /** A search's results, from the cache if we have them. */

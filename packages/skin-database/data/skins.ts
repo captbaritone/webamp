@@ -319,6 +319,61 @@ export async function updateSearchIndexes(
   return results;
 }
 
+/**
+ * Store how many pixels a classic skin's region.txt makes transparent (see
+ * SkinModel.transparentPixels), from the archive files we have for it.
+ */
+export async function setTransparentPixels(md5: string): Promise<void> {
+  // A context of its own, so the archive files are read afresh rather than
+  // from before they were (re)written.
+  const skin = await SkinModel.fromMd5Assert(new UserContext(), md5);
+  if (skin.getSkinType() !== "CLASSIC") return;
+  await knex("skins")
+    .where({ md5 })
+    .update({ transparent_pixels: await skin.computeTransparentPixels() });
+}
+
+/**
+ * Work out transparent_pixels for the classic skins that don't have it yet,
+ * once their archive files are recorded. Returns how many were set.
+ */
+export async function computeMissingTransparentPixels(): Promise<number> {
+  const missing = () =>
+    knex("skins")
+      .where("skin_type", 1)
+      .whereNull("transparent_pixels")
+      .count({ count: "*" })
+      .then(([{ count }]) => Number(count));
+  const before = await missing();
+  // Most have no region.txt, so nothing transparent: one statement for them.
+  // (LIKE is a superset of the file name computeTransparentPixels looks for,
+  // so this never zeroes a skin that has one.)
+  await knex.raw(
+    `UPDATE skins SET transparent_pixels = 0
+     WHERE skin_type = 1
+       AND transparent_pixels IS NULL
+       AND EXISTS (SELECT 1 FROM archive_files WHERE skin_md5 = skins.md5)
+       AND NOT EXISTS (
+         SELECT 1 FROM archive_files
+         WHERE skin_md5 = skins.md5 AND file_name LIKE '%region_txt'
+       )`
+  );
+  const rows: Array<{ md5: string }> = await knex("skins")
+    .select("md5")
+    .where("skin_type", 1)
+    .whereNull("transparent_pixels")
+    .whereExists(
+      knex("archive_files")
+        .select(knex.raw("1"))
+        .whereRaw("archive_files.skin_md5 = skins.md5")
+    );
+  for (const [i, { md5 }] of rows.entries()) {
+    await setTransparentPixels(md5);
+    if ((i + 1) % 1000 === 0) console.log(`${i + 1} of ${rows.length}`);
+  }
+  return before - (await missing());
+}
+
 export async function updateSearchIndex(
   ctx: UserContext,
   md5: string

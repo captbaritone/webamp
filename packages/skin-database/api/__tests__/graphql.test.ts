@@ -568,6 +568,64 @@ test("search_classic_skins ranks file name matches above readme matches", async 
   ]);
 });
 
+test("search_classic_skins filters like the museum's has: terms", async () => {
+  await knex("archive_files").insert([
+    {
+      skin_md5: "an_approved_md5",
+      file_md5: "f1",
+      file_name: "Approved/EQMAIN.BMP",
+    },
+    { skin_md5: "an_approved_md5", file_md5: "f2", file_name: "pointer.ani" },
+    { skin_md5: "a_tweeted_md5", file_md5: "f3", file_name: "eqmain.png" },
+    // A general purpose window needs GENEX.bmp too.
+    { skin_md5: "a_tweeted_md5", file_md5: "f4", file_name: "GEN.bmp" },
+  ]);
+  await knex("skins")
+    .where({ md5: "a_tweeted_md5" })
+    .update({ transparent_pixels: 5000 });
+  await knex("tweets")
+    .where({ skin_md5: "a_tweeted_md5" })
+    .update({ likes: 3 });
+
+  const search = async (query: string, nsfw: boolean | null = null) => {
+    const { data } = await graphQLRequest(
+      `query($query: String!, $nsfw: Boolean) {
+        search_classic_skins(query: $query, nsfw: $nsfw, first: 100) { md5 }
+      }`,
+      { query, nsfw }
+    );
+    return data.search_classic_skins
+      .map((skin: { md5: string }) => skin.md5)
+      .sort();
+  };
+
+  expect(await search("has:equalizer")).toEqual([
+    "a_tweeted_md5",
+    "an_approved_md5",
+  ]);
+  expect(await search("has:equalizer -has:ani")).toEqual(["a_tweeted_md5"]);
+  expect(await search("has:ani")).toEqual(["an_approved_md5"]);
+  expect(await search("has:general")).toEqual([]);
+  expect(await search("has:transparency")).toEqual(["a_tweeted_md5"]);
+  expect(await search("has:likes")).toEqual(["a_tweeted_md5"]);
+  expect(await search("filter:nsfw")).toEqual(["a_nsfw_md5"]);
+  expect(await search("-has:equalizer")).toEqual([
+    "48bbdbbeb03d347e59b1eebda4d352d0",
+    "a_fake_md5",
+    "a_nsfw_md5",
+    "a_rejected_md5",
+  ]);
+  // With words to match.
+  expect(await search("tweeted has:equalizer")).toEqual(["a_tweeted_md5"]);
+  expect(await search("approved has:transparency")).toEqual([]);
+  // The nsfw argument says the same as filter:nsfw. If they disagree,
+  // nothing matches.
+  expect(await search("", true)).toEqual(["a_nsfw_md5"]);
+  expect(await search("-filter:nsfw", true)).toEqual([]);
+  // No words and no terms: nothing.
+  expect(await search("")).toEqual([]);
+});
+
 test("the search index follows skins and their files", async () => {
   const search = async (query: string) => {
     const { data } = await graphQLRequest(

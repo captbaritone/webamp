@@ -158,9 +158,7 @@ const searchEpic = (actions) =>
       const [newQuery, options] = queryParser(query);
 
       return from(
-        USE_ALGOLIA
-          ? algoliaSearch(newQuery, options)
-          : graphqlSearch(newQuery, options)
+        USE_ALGOLIA ? algoliaSearch(newQuery, options) : graphqlSearch(query)
       ).pipe(
         map((content) => {
           const matchingSkins = content.hits.map((hit) => ({
