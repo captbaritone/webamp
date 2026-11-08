@@ -165,6 +165,11 @@ const INVALID_IDENTIFIERS = new Set([
 // How many identifiers to try for a skin before giving up on it for the night.
 const MAX_IDENTIFIER_ATTEMPTS = 10;
 
+// After this many identifiers refused for clashing in case, add the skin's md5
+// to the name: a long run of _1, _2... can be held by hidden items (all of
+// winampskins_episode1_N are), which we can't see to count past.
+const CASE_ALIASES_BEFORE_MD5 = 5;
+
 // Whether an identifier is free to upload to, taken, or already holds this
 // skin: an earlier upload that failed after the skin file arrived (e.g. it
 // timed out waiting for the response), which we never recorded.
@@ -200,7 +205,8 @@ async function identifierStatus(
 
 /**
  * The identifier to upload a skin to: winampskins_<name>, then _1, _2... until
- * one is free (or already holds this skin), skipping any in `rejected`.
+ * one is free (or already holds this skin), skipping any in `rejected`. Once
+ * enough have been rejected, winampskins_<name>_<md5 prefix> instead.
  */
 export async function pickIdentifier(
   filename: string,
@@ -208,9 +214,12 @@ export async function pickIdentifier(
   rejected: ReadonlySet<string> = new Set()
 ): Promise<{ identifier: string; holdsSkin: boolean }> {
   // The internet archive has a max identifier length of 80 chars.
-  const identifierBase = `winampskins_${sanitize(
+  let identifierBase = `winampskins_${sanitize(
     path.parse(filename).name
   )}`.slice(0, 76);
+  if (rejected.size >= CASE_ALIASES_BEFORE_MD5) {
+    identifierBase = `${identifierBase.slice(0, 67)}_${md5.slice(0, 8)}`;
+  }
   for (let counter = 0; ; counter++) {
     const identifier = identifierBase + (counter === 0 ? "" : `_${counter}`);
     const status = await identifierStatus(identifier, md5, rejected);

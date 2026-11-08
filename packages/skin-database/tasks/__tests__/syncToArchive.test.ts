@@ -51,6 +51,15 @@ test("skips identifiers the archive refused", async () => {
   );
 });
 
+test("adds the md5 to the name once many identifiers were refused", async () => {
+  const rejected = new Set(
+    ["", "_1", "_2", "_3", "_4"].map((n) => `winampskins_Episode1${n}`)
+  );
+  expect((await pickIdentifier("Episode1.wsz", MD5, rejected)).identifier).toBe(
+    "winampskins_Episode1_aaaaaaaa"
+  );
+});
+
 test("finds an earlier upload of the same skin we never recorded", async () => {
   items.winampskins_CalAmp = {
     files: [{ name: "CalAmp.wsz", md5: OTHER_MD5 }],
