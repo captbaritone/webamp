@@ -708,6 +708,10 @@ export function getMilkdropFullscreenEnabled(state: AppState): boolean {
   return state.milkdrop.display === "FULLSCREEN";
 }
 
+export function getReduceFlashing(state: AppState): boolean {
+  return state.milkdrop.reduceFlashing;
+}
+
 export function getPresets(state: AppState): any {
   return state.milkdrop.presets;
 }
