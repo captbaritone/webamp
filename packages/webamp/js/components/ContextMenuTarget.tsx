@@ -3,6 +3,8 @@ import ContextMenu from "./ContextMenu";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   renderMenu: () => React.ReactNode;
+  // Accessible name of the button which opens the menu.
+  label: string;
   top?: boolean;
   bottom?: boolean;
 }
@@ -26,6 +28,7 @@ function getNodeOffset(node: HTMLDivElement | null) {
 function ContextMenuTarget(props: Props) {
   const handleNode = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(false);
+  const [openedWithKeyboard, setOpenedWithKeyboard] = useState(false);
   useEffect(() => {
     if (!selected) {
       return;
@@ -58,14 +61,51 @@ function ContextMenuTarget(props: Props) {
         { top: 0, left: 0 };
   }, [selected]);
 
-  const { renderMenu, children, top, bottom, ...passThroughProps } = props;
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+    switch (e.key) {
+      case "Enter":
+      case " ":
+      case "ArrowDown":
+        setOpenedWithKeyboard(true);
+        setSelected(true);
+        break;
+      case "Escape":
+        setSelected(false);
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    // Don't let global hotkeys (e.g. arrow keys) also handle this.
+    e.stopPropagation();
+  }
+
+  function closeMenu() {
+    setSelected(false);
+    handleNode.current?.focus();
+  }
+
+  const { renderMenu, children, top, bottom, label, ...passThroughProps } =
+    props;
   return (
     <div {...passThroughProps}>
       <div
         className="handle"
         style={{ width: "100%", height: "100%" }}
         ref={handleNode}
-        onClick={() => setSelected(!selected)}
+        role="button"
+        tabIndex={0}
+        aria-label={label}
+        aria-haspopup="menu"
+        aria-expanded={selected}
+        onKeyDown={handleKeyDown}
+        onClick={() => {
+          setOpenedWithKeyboard(false);
+          setSelected(!selected);
+        }}
       >
         {children}
       </div>
@@ -75,6 +115,8 @@ function ContextMenuTarget(props: Props) {
         offsetLeft={offset.left}
         top={top}
         bottom={bottom}
+        focusFirstItem={openedWithKeyboard}
+        onClose={closeMenu}
       >
         {renderMenu()}
       </ContextMenu>

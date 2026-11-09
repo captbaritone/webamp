@@ -9,6 +9,7 @@ const MiscOptionsContextMenu = () => {
     <ContextMenuTarget
       style={{ width: "100%", height: "100%" }}
       top
+      label="Misc Options"
       renderMenu={() => (
         <Node onClick={downloadHtmlPlaylist} label="Generate HTML playlist" />
       )}

@@ -13,6 +13,7 @@ const PresetsContextMenu = () => {
     <ContextMenuTarget
       top
       id="presets-context"
+      label="Presets"
       renderMenu={() => (
         <>
           <Parent label="Load">

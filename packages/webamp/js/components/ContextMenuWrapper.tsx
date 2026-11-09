@@ -72,6 +72,7 @@ export default function ContextMenuWraper({
         selected={openPosition != null}
         offsetTop={openPosition?.y ?? 0}
         offsetLeft={openPosition?.x ?? 0}
+        onClose={closeMenu}
       >
         {renderContents()}
       </ContextMenu>
