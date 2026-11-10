@@ -79,6 +79,14 @@ const tracks = (
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED,
         },
       };
+    case "SET_TRACK_DEFAULT_NAME":
+      return {
+        ...state,
+        [(action as any).id]: {
+          ...state[(action as any).id],
+          defaultName: (action as any).defaultName,
+        },
+      };
     case "SET_MEDIA_DURATION": {
       return {
         ...state,
