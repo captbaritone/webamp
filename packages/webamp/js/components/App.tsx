@@ -21,7 +21,11 @@ import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
 import { IMedia } from "../media";
-import { useTypedSelector, useActionCreator } from "../hooks";
+import {
+  useTypedSelector,
+  useActionCreator,
+  useRestoreFocusOnRemoval,
+} from "../hooks";
 import Css from "./Css";
 
 // @ts-ignore
@@ -57,8 +61,12 @@ export default function App({
     node.id = "webamp";
     // @ts-ignore I think I'm supposed to set this with setAttribute, but I can't confirm.
     node.role = "application";
+    // Allow focus to be moved here when every window has been closed.
+    node.tabIndex = -1;
     return node;
   });
+
+  useRestoreFocusOnRemoval(webampNode);
 
   useLayoutEffect(() => {
     webampNode.style.zIndex = String(zIndex);
