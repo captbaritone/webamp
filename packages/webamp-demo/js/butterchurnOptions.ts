@@ -7,6 +7,31 @@ const KNOWN_PRESET_URLS_REGEXES = [
   /^https:\/\/s3-us-east-2\.amazonaws\.com\/butterchurn-presets\/.*\.json$/,
 ];
 
+const KNOWN_MILK_URLS_REGEXES = [/^https:\/\/archive\.org\/cors\/md_.*\.milk$/];
+
+const PRESET_CONVERTER_ENDPOINT =
+  "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter";
+
+function importConvertPreset() {
+  return import(
+    /* webpackChunkName: "milkdrop-preset-converter" */
+    // @ts-ignore
+    "milkdrop-preset-converter-aws"
+  );
+}
+
+async function loadMilkdropPresetURL(url: string): Promise<Object> {
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch Milkdrop preset: ${resp.status}`);
+  }
+  const [milk, { convertPreset }] = await Promise.all([
+    resp.text(),
+    importConvertPreset(),
+  ]);
+  return convertPreset(milk, PRESET_CONVERTER_ENDPOINT);
+}
+
 function presetNameFromURL(url: string) {
   try {
     const urlParts = url.split("/");
@@ -39,15 +64,8 @@ export function getButterchurnOptions(
         "butterchurn"
       );
     },
-    importConvertPreset: () => {
-      return import(
-        /* webpackChunkName: "milkdrop-preset-converter" */
-        // @ts-ignore
-        "milkdrop-preset-converter-aws"
-      );
-    },
-    presetConverterEndpoint:
-      "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter",
+    importConvertPreset,
+    presetConverterEndpoint: PRESET_CONVERTER_ENDPOINT,
     getPresets: async () => {
       if ("URLSearchParams" in window) {
         const params = new URLSearchParams(location.search);
@@ -86,7 +104,23 @@ export function getButterchurnOptions(
             ];
           }
         } else if (milkdropPresetUrl) {
-          throw new Error("We still need to implement this");
+          if (
+            !KNOWN_MILK_URLS_REGEXES.some((pattern) =>
+              pattern.test(milkdropPresetUrl)
+            )
+          ) {
+            console.error(
+              "Unsupported URL passed as milkdropPresetUrl query param."
+            );
+          } else {
+            return [
+              {
+                name: presetNameFromURL(milkdropPresetUrl),
+                getButterchrunPresetObject: () =>
+                  loadMilkdropPresetURL(milkdropPresetUrl),
+              },
+            ];
+          }
         }
       }
 
