@@ -42,7 +42,14 @@ export async function getPlaylist(
     }
   );
 
-  return await result.json();
+  if (!result.ok) {
+    throw new Error(`SoundCloud playlist request failed: ${result.status}`);
+  }
+  const playlist = await result.json();
+  if (!Array.isArray(playlist?.tracks)) {
+    throw new Error("SoundCloud playlist response had no tracks");
+  }
+  return playlist;
 }
 
 export function tracksFromPlaylist(playlist: SoundCloudPlaylist): Track[] {
