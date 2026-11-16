@@ -80,8 +80,13 @@ async function main() {
   }
   let soundcloudPlaylist = null;
   if (soundcloudPlaylistId != null) {
-    // @ts-ignore
-    soundcloudPlaylist = await SoundCloud.getPlaylist(soundcloudPlaylistId);
+    try {
+      soundcloudPlaylist = await SoundCloud.getPlaylist(soundcloudPlaylistId);
+    } catch (e) {
+      // SoundCloud's API now rejects our client id. Fall back to the default
+      // tracks rather than failing to start.
+      console.error(e);
+    }
   }
   const config = await getWebampConfig(screenshot, skinUrl, soundcloudPlaylist);
 
