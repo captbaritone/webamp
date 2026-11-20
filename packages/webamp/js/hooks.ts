@@ -197,3 +197,73 @@ export function useTypedDispatch(): (action: Action | Thunk) => void {
   // @ts-ignore
   return useDispatch();
 }
+
+/**
+ * When a keyboard user closes a window (or Webamp itself), the focused element
+ * is removed from the DOM and the browser drops focus to `<body>`. Instead,
+ * move focus to a defined place: the window that contained it if that is still
+ * open (e.g. a button was removed by toggling shade mode), otherwise the main
+ * window, otherwise another open window, otherwise the Webamp root node.
+ *
+ * We only do this for keyboard users. Moving focus selects the window it lands
+ * in, which would visibly change the title bar for pointer users.
+ *
+ * Firefox does not fire `blur`/`focusout` when a focused element is removed, so
+ * we watch for removals with a `MutationObserver`, like `<FocusTarget />` does.
+ */
+export function useRestoreFocusOnRemoval(root: HTMLElement) {
+  useEffect(() => {
+    // The most recently focused element within Webamp, or `null` if the user
+    // has since moved focus elsewhere in the page.
+    let lastFocused: Element | null = null;
+    // The window containing `lastFocused`.
+    let lastWindow: HTMLElement | null = null;
+    let usingKeyboard = false;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as Element;
+      lastFocused = root.contains(target) ? target : null;
+      lastWindow = lastFocused?.closest("[data-window-id]") ?? null;
+    };
+    const handleKeyDown = () => {
+      usingKeyboard = true;
+    };
+    const handlePointerDown = (e: PointerEvent) => {
+      usingKeyboard = false;
+      if (!root.contains(e.target as Node)) {
+        lastFocused = null;
+      }
+    };
+
+    const observer = new MutationObserver(() => {
+      const focusWasLost =
+        document.activeElement == null ||
+        document.activeElement === document.body;
+      if (
+        !usingKeyboard ||
+        !focusWasLost ||
+        lastFocused == null ||
+        lastFocused.isConnected
+      ) {
+        return;
+      }
+      const target =
+        (lastWindow?.isConnected ? lastWindow : null) ??
+        root.querySelector<HTMLElement>('[data-window-id="main"]') ??
+        root.querySelector<HTMLElement>("[data-window-id]") ??
+        root;
+      target.focus();
+    });
+    observer.observe(root, { childList: true, subtree: true });
+
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("focusin", handleFocusIn);
+      document.removeEventListener("keydown", handleKeyDown, true);
+      document.removeEventListener("pointerdown", handlePointerDown, true);
+    };
+  }, [root]);
+}
