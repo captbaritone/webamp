@@ -567,6 +567,7 @@ class Webamp {
         <App
           media={this.media}
           filePickers={this.options.filePickers || []}
+          focusIndicator={this.options.focusIndicator ?? false}
           onMount={onMount}
           parentDomNode={contained ? node : document.body}
         />
