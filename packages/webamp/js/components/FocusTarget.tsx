@@ -4,6 +4,15 @@ import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useActionCreator, useTypedSelector } from "../hooks";
 
+// Accessible names for each window, so screen reader users know which window
+// a control belongs to (several windows have a "Close" button, for example).
+const WINDOW_LABELS: Record<WindowId, string> = {
+  main: "Main window",
+  equalizer: "Equalizer",
+  playlist: "Playlist",
+  milkdrop: "Milkdrop",
+};
+
 interface Props {
   onKeyDown?(e: KeyboardEvent): void;
   windowId: WindowId;
@@ -71,6 +80,8 @@ function FocusTarget({ onKeyDown, windowId, children }: Props) {
       onPointerDown={focusHandler}
       onFocus={focusHandler}
       tabIndex={-1}
+      role="group"
+      aria-label={WINDOW_LABELS[windowId]}
       style={{ height: "100%", width: "100%" }}
     >
       {children}
