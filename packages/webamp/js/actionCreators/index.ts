@@ -103,6 +103,7 @@ export {
   toggleRandomizePresets,
   togglePresetCycling,
   scheduleMilkdropMessage,
+  toggleReduceFlashing,
 } from "./milkdrop";
 
 export function close(): Thunk {
