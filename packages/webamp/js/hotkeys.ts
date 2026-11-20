@@ -20,7 +20,12 @@ import { Dispatch } from "./types";
 
 const IGNORE_EVENTS_FROM_TAGS = new Set(["input", "textarea", "select"]);
 
-export function bindHotkeys(dispatch: Dispatch): () => void {
+// By default hotkeys are handled anywhere in the document. Pass a `target` to
+// only handle them when focus is within that element.
+export function bindHotkeys(
+  dispatch: Dispatch,
+  target: Document | HTMLElement = document
+): () => void {
   let currentPos: number = 0;
   const trigger = [
     78, // N
@@ -148,9 +153,12 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
       }
     }
   };
-  document.addEventListener("keydown", listener);
+  // TypeScript can't pick the right overload for the `Document | HTMLElement`
+  // union.
+  const eventListener = listener as EventListener;
+  target.addEventListener("keydown", eventListener);
 
   return () => {
-    document.removeEventListener("keydown", listener);
+    target.removeEventListener("keydown", eventListener);
   };
 }
