@@ -14,6 +14,7 @@ import EqualizerShade from "./EqualizerShade";
 
 import { Band as BandType } from "../../types";
 import FocusTarget from "../FocusTarget";
+import WinampButton from "../WinampButton";
 import { useTypedSelector, useActionCreator } from "../../hooks";
 import EqTitleButtons from "./EqTitleButtons";
 
@@ -88,9 +89,21 @@ const EqualizerWindow = () => {
             <EqGraph />
             <PresetsContextMenu />
             <Band id="preamp" band="preamp" onChange={setPreampValue} />
-            <div id="plus12db" onClick={setEqToMax} />
-            <div id="zerodb" onClick={setEqToMid} />
-            <div id="minus12db" onClick={setEqToMin} />
+            <WinampButton
+              id="plus12db"
+              aria-label="Set all bands to +12 dB"
+              onClick={setEqToMax}
+            />
+            <WinampButton
+              id="zerodb"
+              aria-label="Set all bands to 0 dB"
+              onClick={setEqToMid}
+            />
+            <WinampButton
+              id="minus12db"
+              aria-label="Set all bands to -12 dB"
+              onClick={setEqToMin}
+            />
             <div onPointerDown={onPointerDownHz}>
               {BANDS.map((hertz) => (
                 <Band
