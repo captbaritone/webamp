@@ -87,6 +87,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
         >
           <ContextMenuTarget
             id="option-context"
+            label="Winamp Menu"
             bottom
             renderMenu={() => <MainContextMenu filePickers={filePickers} />}
           >

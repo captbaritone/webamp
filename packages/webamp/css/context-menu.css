@@ -56,9 +56,17 @@
 }
 
 #webamp-context-menu .context-menu li:hover,
-#webamp-context-menu .context-menu li:hover a {
+#webamp-context-menu .context-menu li:hover a,
+#webamp-context-menu .context-menu li:focus-visible,
+#webamp-context-menu .context-menu li:focus-visible > a,
+#webamp-context-menu .context-menu li.expanded {
   background-color: #224eb7;
   color: #ffffff;
+}
+
+/* The highlight above is the focus indicator for keyboard users. */
+#webamp-context-menu .context-menu li:focus {
+  outline: none;
 }
 
 #webamp-context-menu .context-menu li.hr {
@@ -83,6 +91,7 @@
   margin-left: -3px;
 }
 
-#webamp-context-menu .context-menu li:hover > ul {
+#webamp-context-menu .context-menu li:hover > ul,
+#webamp-context-menu .context-menu li.expanded > ul {
   display: block;
 }

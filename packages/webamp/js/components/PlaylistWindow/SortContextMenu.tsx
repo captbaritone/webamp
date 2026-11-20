@@ -14,6 +14,7 @@ export default function SortContextMenu() {
     <ContextMenuTarget
       style={{ width: "100%", height: "100%" }}
       top
+      label="Sort List"
       renderMenu={() => (
         <>
           <Node label="Sort list by title" onClick={sortListByTitle} />
