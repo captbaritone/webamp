@@ -17,6 +17,7 @@ import SkinModel from "../data/SkinModel";
 import UserContext from "../data/UserContext";
 import { withBufferAsTempFile } from "../utils";
 import fs from "fs";
+import path from "path";
 
 const agent = new AtpAgent({ service: "https://bsky.social" });
 
@@ -71,12 +72,16 @@ async function post(md5: string): Promise<string> {
     }
   );
 
+  // The link opens the skin's museum page. Without its extension, the name
+  // reads as a skin rather than a file to download.
+  const linkText = path.parse(name).name;
   const facets: AppBskyRichtextFacet.Main[] = [
     {
       $type: "app.bsky.richtext.facet",
       index: {
         byteStart: 0,
-        byteEnd: name.length,
+        // Facet offsets count UTF-8 bytes, not characters.
+        byteEnd: Buffer.byteLength(linkText),
       },
       features: [
         {
@@ -88,7 +93,7 @@ async function post(md5: string): Promise<string> {
   ];
 
   const postData = await buildPost(
-    `${name} via the Winamp Skin Museum`,
+    `${linkText} via the Winamp Skin Museum`,
     facets,
     buildImageEmbed(blob, width * 2, height * 2)
   );
