@@ -40,7 +40,7 @@ Related communites:
 An incomplete list of websites using Webamp:
 
 - [Internet Archive](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/) - The Internet Archive lets you preview winamp skins and listen to audio tracks using Webamp
-- [Winampify.io](https://winampify.io/) - An online Spotify client using Webamp
+- [Winampify.io](https://github.com/remigallego/winampify) - Source code for a Spotify client built with Webamp
 - [Webamp Desktop](https://desktop.webamp.org/) - An Electron app version of Webamp
 - [98.js.org](https://98.js.org/) - A Windows 98 clone in JavaScript ([GitHub](https://github.com/1j01/98))
 - [winxp.now.sh](https://winxp.now.sh/) - A Windows XP clone in JavaScript with React ([GitHub](https://github.com/ShizukuIchi))
@@ -113,7 +113,7 @@ The monorepo dependency graph is automatically managed by Turborepo:
 For more details on individual packages, see their respective README files.
 
 [techcrunch]: https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
-[motherboard]: https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
+[motherboard]: https://www.vice.com/en/article/winamp-2-mp3-music-player-emulator/
 [gizmodo]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
 [1]: https://news.ycombinator.com/item?id=8565665
 [2]: https://news.ycombinator.com/item?id=15314629
